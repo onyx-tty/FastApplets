@@ -1,9 +1,6 @@
 #include "PowerMainWindow.h"
 
 #include <QApplication>
-#include <QPushButton>
-#include <QHBoxLayout>
-#include <QSizePolicy>
 #include <QDebug>
 
 int main(int argc, char* argv[]) {
