@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.16)
 
-project(power-applet VERSION 0.3.0 LANGUAGES CXX)
+project(power-applet VERSION 0.4.0 LANGUAGES CXX)
 
 set(CMAKE_AUTOUIC ON)
 set(CMAKE_AUTOMOC ON)
@@ -14,9 +14,9 @@ set(CMAKE_LINKER_FLAGS "${CMAKE_LINKER_FLAGS} -fsanitize=address")
 
 set(QT_VERSION_MAJOR 6)
 
-find_package(Qt6 REQUIRED COMPONENTS Widgets)
+find_package(Qt6 REQUIRED COMPONENTS Widgets DBus)
 # TODO Qt5 fallback support
-#find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Widgets)
+#find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Widgets DBus)
 
 set(INCLUDED_HEADERS
         ../../MainWindow.h
@@ -35,6 +35,7 @@ set(PROJECT_HEADERS
         ../../Config/PowerLayout.h
         Widgets/PowerButton.h
         Widgets/ButtonList.h
+        DBus/PowerActionManager.h
 )
 
 set(PROJECT_SOURCES
@@ -42,6 +43,7 @@ set(PROJECT_SOURCES
         PowerMainWindow.cpp
         ../../Config/PowerLayout.cpp
         Widgets/ButtonList.cpp
+        DBus/PowerActionManager.cpp
 )
 
 set(PROJECT_RESOURCES
@@ -70,6 +72,7 @@ endif()
 # Linked libraries
 target_link_libraries(power-applet PRIVATE
         Qt${QT_VERSION_MAJOR}::Widgets
+        Qt${QT_VERSION_MAJOR}::DBus
 )
 
 include(GNUInstallDirs)
