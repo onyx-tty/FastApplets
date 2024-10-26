@@ -1,21 +1,35 @@
 #+TITLE: Pretty Applets TODO
 #+Description: Contains what needs to be done in the project as a whole
 
-* DONE Git repo
-* TODO Finish MainWindow
-* TODO Proper keybindings with signals and slots
-* TODO Finished styling
-* TODO D-Bus API
-* TODO Find potential memory leaks
-* TODO Customizable window dimensions
-* TODO Customizable icons
-* TODO Customizable styles
-* TODO Compatibility with other inits
-* TODO Applets
-** [ ] Power menu applet
-** [ ] System management applet
+* Applets [1/5]
+** DONE Power menu applet
+** TODO System management applet
 *** A separate application for its management may be required depending on the complexity
-** [ ] Security menu applet
+** TODO Security menu applet
 *** Similar to the above, but mostly for inspecting system security
-** [ ] Weather applet
-** [ ] Qtile theme applet
+** TODO Weather applet
+** TODO WM theme applet
+
+* Base [0/9]
+  *Phase 1*
+** TODO License
+** TODO Error handling in all relevant places
+** TODO Fallback icons
+** TODO Move window dimensions to DefaultLayout.h and Layout.h
+** TODO Debug functions
+** TODO Shared keybindings
+*Phase 2*
+** TODO Customizable:
+*** [ ] Window dimensions
+*** [X] Icons
+*** [ ] Layouts
+*** [ ] Styles
+** TODO Daemonization
+** TODO Flags and/or config file
+
+* PowerApplet [0/3]
+  *Phase 1*
+** TODO Consider making PowerButton polymorphic
+** TODO Proper keybindings
+*Phase 2*
+** TODO Compatibility with other Linux inits
