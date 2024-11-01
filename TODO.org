@@ -10,9 +10,9 @@
 ** TODO Weather applet
 ** TODO WM theme applet
 
-* Base [0/9]
+* Base [1/9]
   *Phase 1*
-** TODO License
+** DONE License
 ** TODO Error handling in all relevant places
 ** TODO Fallback icons
 ** TODO Move window dimensions to DefaultLayout.h and Layout.h
