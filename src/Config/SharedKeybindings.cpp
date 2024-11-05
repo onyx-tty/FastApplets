@@ -1,4 +1,4 @@
- /* Pretty Applets
+/* Pretty Applets
 
    Copyright (C) 2024 Łukasz Wrodarczyk
 
