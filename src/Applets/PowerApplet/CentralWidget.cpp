@@ -79,67 +79,35 @@ void CentralWidget::selectButton(QKeyEvent* event,
                                  std::array<unsigned, 4>& acceptable_keys) {
         qInfo() << "Current combo: " << last_key.first->key() << event->key();
         QFocusEvent selection(QEvent::FocusIn, Qt::OtherFocusReason);
-        switch (last_key.first->key()) { // TODO A lot of redundant code, consider a loop
-        case Qt::Key_1:
-                qInfo() << button_list[0]->text() << "selected!";
-                last_key.second = button_list[0];
-                emit button_list[0]->focusInEvent(&selection);
-                break;
-        case Qt::Key_2:
-                qInfo() << button_list[1]->text() << "selected!";
-                last_key.second = button_list[1];
-                emit button_list[1]->focusInEvent(&selection);
-                break;
-        case Qt::Key_3:
-                qInfo() << button_list[2]->text() << "selected!";
-                last_key.second = button_list[2];
-                emit button_list[2]->focusInEvent(&selection);
-                break;
-        case Qt::Key_4:
-                qInfo() << button_list[3]->text() << "selected!";
-                last_key.second = button_list[3];
-                emit button_list[3]->focusInEvent(&selection);
-                break;
-        default:
-                if (std::find(std::begin(acceptable_keys), std::end(acceptable_keys), event->key())
-                ==  std::end(acceptable_keys)) {
-                        qInfo() << "INFO! Keys not within the range of acceptable_keys!";
-                        break;
-                }
 
-                if (!last_key.second) {
-                        qWarning() << "WARNING! last_key.second is null, cannot emit safely!";
-                        break;
+        for (unsigned i = 0; i <= 3; ++i) {
+                if (event->key() == Qt::Key_1 + i) {
+                        qInfo() << button_list[i]->text() << "selected!";
+                        last_key.second = button_list[i];
+                        emit button_list[i]->focusInEvent(&selection);
+                        return;
                 }
-
-                emit last_key.second->focusOutEvent(new QFocusEvent(QEvent::FocusOut, Qt::OtherFocusReason));
-                qInfo() << "diff key, dropping selection!";
-                break;
         }
+
+        if (!last_key.second) {
+                qWarning() << "WARNING! last_key.second is null, cannot emit safely!";
+                return;
+        } else {
+                qInfo() << "INFO! Keys not within the range of acceptable_keys!";
+        }
+        QFocusEvent selection_dropped(QEvent::FocusOut, Qt::OtherFocusReason);
+
+        emit last_key.second->focusOutEvent(&selection_dropped);
 }
 
-
-void CentralWidget::clickButton(QKeyEvent* event) { // TODO Again, a lot of redundant text. Consider looping
+void CentralWidget::clickButton(QKeyEvent* event) {
         qInfo() << "Current combo: " << last_key.first->key() << event->key();
-        switch (event->key()) {
-        case Qt::Key_1:
-                qInfo() << button_list[0]->text() << "clicked!";
-                emit button_list[0]->clicked();
-                break;
-        case Qt::Key_2:
-                qInfo() << button_list[1]->text() << "clicked!";
-                emit button_list[1]->clicked();
-                break;
-        case Qt::Key_3:
-                qInfo() << button_list[2]->text() << "clicked!";
-                emit button_list[2]->clicked();
-                break;
-        case Qt::Key_4:
-                qInfo() << button_list[3]->text() << "clicked!";
-                emit button_list[3]->clicked();
-                break;
-        default:
-                qInfo() << "diff key";
-                break;
+        for (unsigned i = 0; i <= 3; ++i) {
+                if (event->key() == Qt::Key_1 + i) {
+                        qInfo() << button_list[i]->text() << "clicked!";
+                        emit button_list[i]->clicked();
+                        return;
+                }
         }
+        qInfo() << "diff key";
 }
