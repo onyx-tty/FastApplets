@@ -1,0 +1,94 @@
+cmake_minimum_required(VERSION 3.16)
+
+project(weather-applet VERSION 0.1 LANGUAGES CXX)
+
+set(CMAKE_AUTOUIC ON)
+set(CMAKE_AUTOMOC ON)
+set(CMAKE_AUTORCC ON)
+
+set(CMAKE_CXX_STANDARD 23)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+# TODO Build type checking to disable sanitizer for release versions
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fsanitize=address -fno-omit-frame-pointer -g")
+set(CMAKE_LINKER_FLAGS "${CMAKE_LINKER_FLAGS} -fsanitize=address")
+
+set(QT_VERSION_MAJOR 6)
+
+find_package(Qt6 REQUIRED COMPONENTS Widgets DBus Gui)
+# TODO Qt5 fallback support
+#find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Widgets DBus Gui)
+find_package(CURL REQUIRED)
+
+set(INCLUDED_HEADERS
+        ../../MainWindow.h
+        ../../Widgets/Button.h
+        ../../Config/SharedLayout.h
+        ../../Config/SharedKeybindings.h
+        ../../Config/WeatherLayout.h
+)
+
+set(INCLUDED_SOURCES
+        ../../MainWindow.cpp
+        ../../Widgets/Button.cpp
+        ../../Config/SharedLayout.cpp
+        ../../Config/SharedKeybindings.cpp
+        ../../Config/WeatherLayout.cpp
+)
+
+set(PROJECT_HEADERS
+        WeatherMainWindow.h
+        CentralWidget.h
+        API/CurlHandler.h
+        API/OpenWeather.h
+)
+
+set(PROJECT_SOURCES
+        main.cpp
+        WeatherMainWindow.cpp
+        CentralWidget.cpp
+        API/CurlHandler.cpp
+        API/OpenWeather.cpp
+)
+
+set(PROJECT_RESOURCES
+
+)
+
+set(CODEBASE
+        ${INCLUDED_HEADERS}
+        ${INCLUDED_SOURCES}
+        ${PROJECT_HEADERS}
+        ${PROJECT_SOURCES}
+        ${PROJECT_RESOURCES}
+)
+
+if(QT_VERSION_MAJOR GREATER_EQUAL 6)
+        qt_add_executable(weather-applet
+                MANUAL_FINALIZATION
+                ${CODEBASE}
+        )
+else()
+        add_executable(weather-applet
+                ${CODEBASE}
+        )
+endif()
+
+include_directories(${CURL_INCLUDE_DIR})
+
+# Linked libraries
+target_link_libraries(weather-applet PRIVATE
+        Qt${QT_VERSION_MAJOR}::Widgets
+        Qt${QT_VERSION_MAJOR}::Gui
+        ${CURL_LIBRARIES}
+)
+
+include(GNUInstallDirs)
+install(TARGETS weather-applet
+        BUNDLE DESTINATION .
+        LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+        RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+)
+
+if(QT_VERSION_MAJOR EQUAL 6)
+        qt_finalize_executable(weather-applet)
+endif()

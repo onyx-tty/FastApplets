@@ -21,6 +21,7 @@
 #include <QIcon>
 #include <QSize>
 #include <QSizePolicy>
+#include <QApplication>
 
 class PowerButton; // external
 
@@ -52,12 +53,19 @@ struct LayoutProp {
         explicit LayoutProp();
 };
 
+struct EnvProp {
+        QString& getProjectRoot(QApplication& app, const QString& marker = "README.md");
+
+        explicit EnvProp();
+};
+
 /* Actual Layout Manager */
 struct LayoutManager {
         static MainWindowProp main_window_prop;
         static StyleProp      style_prop;
         static ButtonProp     button_prop;
         static LayoutProp     layout_prop;
+        static EnvProp        env_prop;
 
         explicit LayoutManager();
 };

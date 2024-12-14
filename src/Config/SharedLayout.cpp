@@ -38,7 +38,39 @@ ButtonProp::ButtonProp() :
         text_alignment(Qt::Alignment(Qt::AlignHCenter | Qt::AlignTop)), icon_size(QSize(64, 64)),
         icon_alignment(Qt::AlignHCenter | Qt::AlignCenter) {};
 
-LayoutProp::LayoutProp() : button_policy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding)) {};
+LayoutProp::LayoutProp() :
+        button_policy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding)) {};
+
+QString& EnvProp::getProjectRoot(QApplication& app, const QString& marker) {
+        static QString project_root;
+
+        if (!project_root.isEmpty()) { // TODO This is too nested, clean it up
+                return project_root;
+        }
+
+        QStringList search_paths = {app.applicationDirPath(), QDir::currentPath()};
+        for (const QString& start_directory : search_paths) {
+                qInfo() << "Searching paths...";
+                QDir directory(start_directory);
+                while (!directory.isRoot()) {
+                        qInfo() << "Current directory:" << directory.filesystemAbsolutePath();
+                        if (QFileInfo::exists((directory.filePath(marker)))) {
+                                qInfo() << "Match!";
+                                project_root = directory.absolutePath();
+                                return project_root;
+                        } else {
+                                directory.cdUp();
+                        }
+                }
+        }
+        // if not found
+        if (project_root.isEmpty()) {
+                qFatal("Fatal! Project root directory not located in locateProjectRoot()!");
+                return project_root; // will never occur because of termination
+        }
+}
+
+EnvProp::EnvProp() {};
 
 LayoutManager::LayoutManager() {};
 
@@ -46,3 +78,4 @@ MainWindowProp LayoutManager::main_window_prop;
 StyleProp      LayoutManager::style_prop;
 ButtonProp     LayoutManager::button_prop;
 LayoutProp     LayoutManager::layout_prop;
+EnvProp        LayoutManager::env_prop;
