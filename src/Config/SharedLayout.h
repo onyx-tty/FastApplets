@@ -18,6 +18,7 @@
 #ifndef SHARED_LAYOUT_H
 #define SHARED_LAYOUT_H
 
+#include <QApplication>
 #include <QIcon>
 #include <QSize>
 #include <QSizePolicy>
@@ -39,9 +40,9 @@ struct StyleProp {
 };
 
 struct ButtonProp {
-        const Qt::Alignment          text_alignment;
-        const QSize                  icon_size;
-        const Qt::Alignment          icon_alignment;
+        const Qt::Alignment text_alignment;
+        const QSize         icon_size;
+        const Qt::Alignment icon_alignment;
 
         explicit ButtonProp();
 };
@@ -52,12 +53,27 @@ struct LayoutProp {
         explicit LayoutProp();
 };
 
+struct EnvProp {
+        std::string   project_root_marker;
+        std::string   dotenv_filepath;
+        bool          is_initialized;
+        QApplication* app;
+
+        QString& getProjectRoot(QApplication& app, const QString& marker = "README.md");
+        void     initDotenvFilepath(QApplication& app, const QString& marker = "README.md");
+        bool&    isInitialized();
+
+        explicit EnvProp(QApplication* app);
+};
+
 /* Actual Layout Manager */
 struct LayoutManager {
         static MainWindowProp main_window_prop;
         static StyleProp      style_prop;
         static ButtonProp     button_prop;
         static LayoutProp     layout_prop;
+
+        static EnvProp& getEnvProp(QApplication* app);
 
         explicit LayoutManager();
 };
