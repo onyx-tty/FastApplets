@@ -18,6 +18,7 @@
 #ifndef OPEN_WEATHER_H
 #define OPEN_WEATHER_H
 
+#include "../../../Config/WeatherLayout.h"
 #include "CurlHandler.h"
 
 #include <QWidget>
@@ -29,23 +30,19 @@ using json = nlohmann::json;
 
 class OpenWeatherAPI final {
 private:
-        QWidget*      parent;
-        QApplication* app;
-        CurlHandler   curl;
-        std::string   dotenv_filepath; // TODO Move to a layout file
-        std::string   api_key; // TODO Move to a layout file
-        json          api_response;
+        QWidget*             parent;
+        QApplication*        app;
+        CurlHandler          curl;
+        json                 api_response;
 
-        std::string userURL(std::string& api_key);
-        QString     locateProjectRoot(const QString& marker);
-        std::string fetchAPIKey();
-        void        parseResponse();
+        std::string getUserURL();
 
 public:
-        explicit OpenWeatherAPI(QWidget* parent, QApplication* app);
+        explicit OpenWeatherAPI(QWidget* parent, QApplication* app, WeatherEnvProp& env_prop);
         ~OpenWeatherAPI();
 
-        void          printResponse() const;
+        void                callAPI();
+        void                printResponse() const;
         const QApplication* getApp() const;
         const CurlHandler&  getCurl() const;
 };

@@ -70,7 +70,16 @@ QString& EnvProp::getProjectRoot(QApplication& app, const QString& marker) {
         }
 }
 
-EnvProp::EnvProp() {};
+void EnvProp::initDotenvFilepath(QApplication& app, const QString& marker) {
+        dotenv_filepath = getProjectRoot(app, marker).toStdString() + "/src/Config/.env";
+}
+
+bool& EnvProp::isInitialized() {
+        return is_initialized;
+}
+
+EnvProp::EnvProp(QApplication* app) :
+        project_root_marker("README.md"), is_initialized(true), app(app) {};
 
 LayoutManager::LayoutManager() {};
 
@@ -78,4 +87,8 @@ MainWindowProp LayoutManager::main_window_prop;
 StyleProp      LayoutManager::style_prop;
 ButtonProp     LayoutManager::button_prop;
 LayoutProp     LayoutManager::layout_prop;
-EnvProp        LayoutManager::env_prop;
+EnvProp&       LayoutManager::getEnvProp(QApplication* app) {
+        static EnvProp env_prop(app);
+
+        return env_prop;
+}

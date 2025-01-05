@@ -35,14 +35,20 @@ struct WeatherStyleProp : public StyleProp {
 };
 
 struct WeatherEnvProp : public EnvProp {
-        explicit WeatherEnvProp();
+        // TODO Rewrite to include other weather APIs
+        std::string& getOpenWeatherKey(const QString& marker = "README.md");
+
+        explicit WeatherEnvProp(QApplication* app);
 };
 
-class WeatherLayoutManager {
+struct WeatherLayoutManager : public LayoutManager {
         static WeatherMainWindowProp main_window_prop;
         static WeatherStyleProp      style_prop;
 
+        static WeatherEnvProp& getEnvProp(QApplication* app);
+
         explicit WeatherLayoutManager();
+        explicit WeatherLayoutManager(QApplication* app);
 };
 
 #endif // WEATHER_LAYOUT_H

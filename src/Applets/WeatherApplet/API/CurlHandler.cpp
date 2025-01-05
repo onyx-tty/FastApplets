@@ -52,7 +52,7 @@ CurlHandler::~CurlHandler() {
         curl_global_cleanup();
 }
 
-const std::string& CurlHandler::fetchData(const std::string& target_url) {
+void CurlHandler::fetchData(const std::string& target_url) {
         CURLcode result;
         setOpt(CURLOPT_URL, target_url.c_str());
 
@@ -64,10 +64,9 @@ const std::string& CurlHandler::fetchData(const std::string& target_url) {
         }
 
         qInfo() << "Response size: " << response_buffer.size();
-        return response_buffer;
 }
 
-const std::string& CurlHandler::getResponseAddress() const {
+const std::string& CurlHandler::getResponse() const {
         return response_buffer;
 }
 

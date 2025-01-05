@@ -19,7 +19,7 @@
 #define CENTRAL_WIDGET_H
 
 #include "../../Config/DefaultKeybindings.h"
-#include "../../Config/DefaultLayout.h"
+#include "../../Config/WeatherLayout.h"
 #include "API/OpenWeather.h"
 
 #include <QApplication>
@@ -33,10 +33,10 @@ public:
         explicit CentralWidget(QWidget* parent, QApplication* app);
 
 private:
-        QHBoxLayout*      main_layout;
-        LayoutManager     layout;
-        KeybindingManager keybindings;
-        OpenWeatherAPI    open_weather_api;
+        QHBoxLayout*         main_layout;
+        WeatherLayoutManager layout;
+        KeybindingManager    keybindings;
+        OpenWeatherAPI       open_weather_api;
 };
 
 #endif // CENTRAL_WIDGET_H

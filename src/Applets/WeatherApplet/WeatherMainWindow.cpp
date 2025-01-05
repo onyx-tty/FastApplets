@@ -18,6 +18,6 @@
 #include "WeatherMainWindow.h"
 
 WeatherMainWindow::WeatherMainWindow(QApplication* app, QWidget* parent) :
-        MainWindow(parent), central_widget(parent, this, app) {}
+        MainWindow(parent), central_widget(this, app) {}
 
 WeatherMainWindow::~WeatherMainWindow() {}

@@ -24,58 +24,35 @@
 
 #include <cstdlib>
 #include <curl/curl.h>
-#include <fstream>
-#include <regex>
 #include <string>
-#include <utility>
 
 // TODO Runtime input of API keys
-std::string OpenWeatherAPI::userURL(std::string& api_key) {
+std::string OpenWeatherAPI::getUserURL() {
         // TODO New layout file
         std::string url = "http://api.openweathermap.org/data/2.5/forecast?id=524901&appid="
-                        + api_key;
+                        + WeatherLayoutManager::getEnvProp(app).getOpenWeatherKey();
         return url;
 }
 
-std::string OpenWeatherAPI::fetchAPIKey() {
-        std::ifstream                       file(dotenv_filepath, std::ifstream::in);
-        // Expect to find a 32-character long alphanumeric value followed by '='
-        std::pair<std::string, std::string> item{"^OPENWEATHER_API_KEY\\s*=\\s*", "\\w{32}"};
-
-        qInfo() << "Attempting to start the loop in" << __func__;
-        for (std::string line; std::getline(file, line);) {
-                std::smatch results;
-                qInfo() << "Line:" << line;
-
-                if (std::regex_search(line, results, std::regex(item.second))) {
-                        item.second = results.str(0);
-                        qInfo() << "Found: " << item.second;
-                        file.close();
-                        return item.second;
-                }
-        }
-
-        // If no match is found
-        qCritical() << "Critical! API key not found!";
-        QApplication::quit();
-        return "";
-}
-
-void OpenWeatherAPI::parseResponse() {
-        api_response = json::parse(curl.getResponseAddress());
-}
-
-OpenWeatherAPI::OpenWeatherAPI(QWidget* parent, QApplication* app) :
-        parent(parent), app(app),
-        dotenv_filepath(locateProjectRoot().toStdString() + "/src/Config/.env"),
-        api_key(fetchAPIKey()), curl(userURL(api_key)) {
+OpenWeatherAPI::OpenWeatherAPI(QWidget* parent, QApplication* app, WeatherEnvProp& env_prop) :
+        parent(parent), app(app) {
+        callAPI();
         printResponse();
 }
 
 OpenWeatherAPI::~OpenWeatherAPI() {}
 
+void OpenWeatherAPI::callAPI() {
+        curl.fetchData(getUserURL());
+        api_response = json::parse(curl.getResponse());
+}
+
 void OpenWeatherAPI::printResponse() const {
-        qInfo() << api_response.dump(8);
+        if (api_response.empty()) {
+                qWarning() << "API response is empty";
+        } else {
+                qInfo() << api_response.dump(8);
+        }
 }
 
 const QApplication* OpenWeatherAPI::getApp() const {

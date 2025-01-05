@@ -18,4 +18,6 @@
 #include "CentralWidget.h"
 
 CentralWidget::CentralWidget(QWidget *parent, QApplication* app) :
-        QWidget(parent), main_layout(new QHBoxLayout(this)), open_weather_api(parent, app) {};
+        QWidget(parent), main_layout(new QHBoxLayout(this)), open_weather_api(parent, app, layout.getEnvProp(app)) {
+
+};

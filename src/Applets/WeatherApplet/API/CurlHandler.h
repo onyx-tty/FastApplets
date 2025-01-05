@@ -38,8 +38,8 @@ public:
         explicit CurlHandler();
         ~CurlHandler();
 
-        const std::string& fetchData(const std::string& target_url);
-        const std::string& getResponseAddress() const;
+        void               fetchData(const std::string& target_url);
+        const std::string& getResponse() const;
         const std::string  popResponse();
         void               setOpt(CURLoption&& option, auto&& value);
 };
