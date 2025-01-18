@@ -40,6 +40,8 @@ public:
 
         void               fetchData(const std::string& target_url);
         const std::string& getResponse() const;
+        // Get a specific part of the received response, mostly meant for debugging
+        const std::string  getResponse(size_t character, size_t length) const;
         const std::string  popResponse();
         void               setOpt(CURLoption&& option, auto&& value);
 };

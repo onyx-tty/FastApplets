@@ -36,8 +36,6 @@ std::string OpenWeatherAPI::getUserURL() {
 
 OpenWeatherAPI::OpenWeatherAPI(QWidget* parent, QApplication* app, WeatherEnvProp& env_prop) :
         parent(parent), app(app) {
-        callAPI();
-        printResponse();
 }
 
 OpenWeatherAPI::~OpenWeatherAPI() {}
@@ -53,6 +51,10 @@ void OpenWeatherAPI::printResponse() const {
         } else {
                 qInfo() << api_response.dump(8);
         }
+}
+
+const json& OpenWeatherAPI::getResponse() const {
+        return api_response;
 }
 
 const QApplication* OpenWeatherAPI::getApp() const {

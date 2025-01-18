@@ -20,6 +20,18 @@
 
 #include "SharedLayout.h"
 
+#include <QPixmap>
+#include <QString>
+#include <QHBoxLayout>
+#include <QVBoxLayout>
+
+#include <vector>
+#include <unordered_map>
+#include <utility>
+
+using WeatherIconMap = std::unordered_map<QString, QPixmap>;
+using WeatherCellGrid = std::unordered_map<QString, std::pair<QPixmap, std::vector<QString>>>;
+
 struct WeatherMainWindowProp : public MainWindowProp {
         const QSize   size;
         const QString title;
@@ -41,9 +53,19 @@ struct WeatherEnvProp : public EnvProp {
         explicit WeatherEnvProp(QApplication* app);
 };
 
+struct WeatherLayoutProp : public LayoutProp {
+        const WeatherIconMap weather_icons;
+
+        explicit WeatherLayoutProp();
+
+        std::array<WeatherCellGrid*, 3> cellGridSingleton(QWidget* parent, QHBoxLayout* layout,
+                                                          bool&& is_instantiated);
+};
+
 struct WeatherLayoutManager : public LayoutManager {
         static WeatherMainWindowProp main_window_prop;
         static WeatherStyleProp      style_prop;
+        static WeatherLayoutProp     layout_prop;
 
         static WeatherEnvProp& getEnvProp(QApplication* app);
 

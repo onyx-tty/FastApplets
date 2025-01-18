@@ -20,10 +20,11 @@
 
 #include "../../Config/DefaultKeybindings.h"
 #include "../../Config/WeatherLayout.h"
-#include "API/OpenWeather.h"
+#include "API/WeatherParser.h"
 
 #include <QApplication>
 #include <QHBoxLayout>
+#include <QVBoxLayout>
 #include <QWidget>
 
 class CentralWidget final : public QWidget {
@@ -33,10 +34,20 @@ public:
         explicit CentralWidget(QWidget* parent, QApplication* app);
 
 private:
-        QHBoxLayout*         main_layout;
+        QHBoxLayout* main_layout;
+        /*-----------< MAIN SPLIT >------------*/
+        QVBoxLayout* current_day_layout;
+        QVBoxLayout* auxiliary_layout;
+        /*-----------< LEFT SPLIT >------------*/
+        /*		  		       */
+        /*-----------< RIGHT SPLIT >-----------*/
+        QVBoxLayout* details_layout;
+        QVBoxLayout* time_passage_layout;
+        /*-------------------------------------*/
+
         WeatherLayoutManager layout;
         KeybindingManager    keybindings;
-        OpenWeatherAPI       open_weather_api;
+        WeatherParser        weather_parser;
 };
 
 #endif // CENTRAL_WIDGET_H

@@ -19,6 +19,7 @@ find_package(Qt6 REQUIRED COMPONENTS Widgets DBus Gui)
 #find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Widgets DBus Gui)
 find_package(CURL REQUIRED)
 
+
 set(INCLUDED_HEADERS
         ../../MainWindow.h
         ../../Widgets/Button.h
@@ -40,6 +41,8 @@ set(PROJECT_HEADERS
         CentralWidget.h
         API/CurlHandler.h
         API/OpenWeather.h
+        API/WeatherData.h
+        API/WeatherParser.h
 )
 
 set(PROJECT_SOURCES
@@ -48,6 +51,8 @@ set(PROJECT_SOURCES
         CentralWidget.cpp
         API/CurlHandler.cpp
         API/OpenWeather.cpp
+        API/WeatherData.cpp
+        API/WeatherParser.cpp
 )
 
 set(PROJECT_RESOURCES

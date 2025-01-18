@@ -32,6 +32,7 @@ size_t CurlHandler::writeCallback(char* ptr, size_t chunk_element_size,
 
 void CurlHandler::initOptions() {
         curl_global_init(CURL_GLOBAL_DEFAULT);
+        qInfo() << "Curl initialized!";
 
         // TODO Dotenv appid accessed
         setOpt(CURLOPT_WRITEDATA, &response_buffer);
@@ -41,7 +42,6 @@ void CurlHandler::initOptions() {
         // debug
         setOpt(CURLOPT_VERBOSE, 1L);
 }
-
 
 CurlHandler::CurlHandler() : curl(curl_easy_init()) {
         initOptions();
@@ -55,6 +55,7 @@ CurlHandler::~CurlHandler() {
 void CurlHandler::fetchData(const std::string& target_url) {
         CURLcode result;
         setOpt(CURLOPT_URL, target_url.c_str());
+        response_buffer.clear(); // overwrite the buffer
 
         // setOpt has already checked for the validity of curl
         result = curl_easy_perform(curl);
@@ -68,6 +69,10 @@ void CurlHandler::fetchData(const std::string& target_url) {
 
 const std::string& CurlHandler::getResponse() const {
         return response_buffer;
+}
+
+const std::string CurlHandler::getResponse(size_t character, size_t length) const {
+        return response_buffer.substr(character, length);
 }
 
 const std::string CurlHandler::popResponse() {

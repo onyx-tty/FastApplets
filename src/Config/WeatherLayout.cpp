@@ -61,6 +61,42 @@ std::string& WeatherEnvProp::getOpenWeatherKey(
 
 WeatherEnvProp::WeatherEnvProp(QApplication* app) : EnvProp(app) {};
 
+/*
+std::array<WeatherCellGrid*, 3> WeatherLayoutProp::cellGridSingleton(QWidget*     parent,
+                                                                     QHBoxLayout* layout,
+                                                                     bool&&       is_instantiated) {
+        if (!parent || !layout) {
+                qFatal() << "Invalid parent and/or layout in" << __func__ << "!\n";
+                QApplication::quit();
+        }
+        if (!is_instantiated) {
+                qCritical() << "Singleton not initialized properly in" << __func__ << "!\n";
+                QApplication::quit();
+        }
+
+        WeatherCellGrid* today_cells =
+                new WeatherCellGrid{{QString("current_weather"), {QPixmap(), {}}},
+                                    {QString("current_temperature"), {QPixmap(), {}}},
+                                    {QString("city_name"), {QPixmap(), {}}},
+                                    {QString("current_wind_speed"), {QPixmap(), {}}},
+                                    {QString("current_humidity"), {QPixmap(), {}}},
+                                    {QString("current_rainfall"), {QPixmap(), {}}},
+                                    {QString("current_atmosp")}
+                };
+        
+        WeatherCellGrid* detail_cells = new WeatherCellGrid{
+
+        };
+        WeatherCellGrid* weekly_cells = new WeatherCellGrid{
+
+        };
+
+        std::array<WeatherCellGrid*, 3> compound_cells = {today_cells, detail_cells, weekly_cells};
+
+        return compound_cells;
+}
+*/
+
 WeatherEnvProp& WeatherLayoutManager::getEnvProp(QApplication* app) {
         return static_cast<WeatherEnvProp&>(LayoutManager::getEnvProp(app));
 }

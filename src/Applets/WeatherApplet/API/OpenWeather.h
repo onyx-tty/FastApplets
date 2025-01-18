@@ -23,17 +23,17 @@
 
 #include <QWidget>
 
-#include <curl/curl.h>
 #include <nlohmann/json.hpp>
+#include <string>
 
 using json = nlohmann::json;
 
 class OpenWeatherAPI final {
 private:
-        QWidget*             parent;
-        QApplication*        app;
-        CurlHandler          curl;
-        json                 api_response;
+        QWidget*      parent;
+        QApplication* app;
+        CurlHandler   curl;
+        json          api_response;
 
         std::string getUserURL();
 
@@ -43,6 +43,7 @@ public:
 
         void                callAPI();
         void                printResponse() const;
+        const json&         getResponse() const;
         const QApplication* getApp() const;
         const CurlHandler&  getCurl() const;
 };

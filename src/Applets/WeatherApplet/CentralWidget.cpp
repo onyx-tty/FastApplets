@@ -17,7 +17,8 @@
 
 #include "CentralWidget.h"
 
-CentralWidget::CentralWidget(QWidget *parent, QApplication* app) :
-        QWidget(parent), main_layout(new QHBoxLayout(this)), open_weather_api(parent, app, layout.getEnvProp(app)) {
-
+CentralWidget::CentralWidget(QWidget *parent, QApplication *app) :
+        QWidget(parent), main_layout(new QHBoxLayout(this)),
+        weather_parser(this, app, layout.getEnvProp(app)) {
+        weather_parser.updateWeatherData();
 };
