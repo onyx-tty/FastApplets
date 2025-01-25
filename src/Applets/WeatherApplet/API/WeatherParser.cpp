@@ -18,7 +18,9 @@
 #include "WeatherParser.h"
 #include "WeatherData.h"
 
+#include <QApplication>
 #include <QDebug>
+#include <QImage>
 #include <QString>
 
 #include <chrono>
@@ -26,20 +28,41 @@
 #include <cstdlib>
 #include <ctime>
 #include <nlohmann/json.hpp>
+#include <string>
+#include <utility>
 
 using json = nlohmann::json;
 
+std::array<HourlyWeatherData, 8> initHours() {
+        qInfo() << "Starting" << __func__;
+        static auto weather = WeatherCondition("blank", "blank", QImage(), QImage());
+        static auto hour    = HourlyWeatherData(0, *&weather, 0, 0, 0, 0, 0, 0, 0);
+
+        return std::array<HourlyWeatherData, 8>{*&hour, *&hour, *&hour, *&hour,
+                                                *&hour, *&hour, *&hour, *&hour};
+}
+
 WeatherParser::WeatherParser(QWidget* parent, QApplication* app, WeatherEnvProp& env_prop) :
-        open_weather(parent, app, env_prop) {}
+        open_weather(parent, app, env_prop), weather_data(initHours()) {}
 
 void WeatherParser::updateWeatherData() {
+        qInfo() << "Starting" << __func__;
         using std::pair;
         open_weather.callAPI();
         const json& response = open_weather.getResponse();
 
+        qInfo() << "Starting recursion in" << __func__;
         recursiveJsonIteration(pair(std::string(""), response), [this](const json& response, int i) {
                 extractHourlyWeather(response, i);
         });
+
+        qInfo() << "Setting temperature range in" << __func__;
+        weather_data.setTemperatureRange();
+        qInfo() << "Printing daily weather info in" << __func__;
+        weather_data.printDailyWeatherInfo();
+
+        qInfo() << "SUCCESS!";
+        QApplication::quit(); // TODO For now, all we need is info display!
 }
 
 // TODO Too nested, refactor and optimize
@@ -48,33 +71,106 @@ void WeatherParser::recursiveJsonIteration(std::pair<const std::string&, const j
         using std::pair;
         static int index_buffer;
 
+        qInfo() << "---------------------------------------------------------------------";
+
+        qInfo() << "Starting recursion in " << __func__ << "!"
+                << "index_buffer = " << index_buffer;
+
         if (response.second.is_object()) {
+                qInfo() << "DESCEND! OBJECT";
                 for (auto& [key, value] : response.second.items()) {
+                        qInfo() << key;
                         if (value.is_array() || value.is_object()) {
+                                qInfo() << key << ":" << value.dump().substr(0, 100)
+                                        << "\nNew layer of recursion will now proceed for"
+                                        << value.dump().substr(0, 100) << "!";
                                 recursiveJsonIteration(pair(key, value), parseItem);
                         }
                 }
         } else if (response.second.is_array()) {
+                qInfo() << "DESCEND! ARRAY";
+                qInfo() << "Given response is an array! Starting a for loop";
                 for (auto& [key, value] : response.second.items()) {
+                        qInfo() << key;
                         if (key == "list") {
+                                qInfo() << "Found list of hours, a for loop will now start!";
                                 for (int i = 0; i < value.size(); ++i) {
                                         index_buffer = i;
+                                        qInfo() << "index_buffer updated to match the new hour, "
+                                                << index_buffer
+                                                << ", new layer of recursion will now proceed!";
                                         recursiveJsonIteration(pair(key, value[i]), parseItem);
                                 }
                         } else if (key == "main") {
-                                for (auto& [key2, value2] : value.items())
+                                qInfo() << "Found temperature values for index " << index_buffer;
+                                for (auto& [key2, value2] : value.items()) {
+                                        qInfo() << "Parsing " << value.template get<std::string>();
                                         parseItem(value2, index_buffer);
+                                }
                         } else if (key == "weather") {
+                                qInfo() << "Key is a weather nest, fetching the weather ID within " "it, parsing:"
+                                        << value.template get<std::string>();
                                 parseItem(value[index_buffer].at("id"), index_buffer);
+                        } else {
+                                qInfo() << "We haven't received a recognizable key, our key is:"
+                                        << key;
+                                for (auto& item : value) {
+                                        qInfo() << key << ":" << item.dump().substr(0, 100)
+                                                << "\nNew recursive layer will now begin!";
+                                        recursiveJsonIteration(pair(key, item), parseItem);
+                                }
                         }
                 }
+        } else if (response.second.is_string() || response.second.is_number() || response.second.is_boolean()) {
+                qInfo() << "PARSE! VARIABLE";
+                qInfo() << "Given variable" << response.second.dump()
+                        << "belonging to" << response.first;
+                parseItem(response.second, index_buffer);
         } else {
-                qWarning() << "Given uniterable object" << response.second.type_name()
-                           << response.first << "in" << __func__
+                qInfo() << "FAIL! Unpredictable & uniterable?";
+                qWarning() << "Given flawed object" << response.second.type_name() << response.first
+                           << QString("in " + QString(__func__))
                            << ", this could be a result of failed control flow!";
         }
 
         return;
+}
+
+// TODO This could be refactored with "chunk.at()" in mind
+void WeatherParser::extractHourlyWeather(const json& chunk, int i) {
+        qInfo() << "Parsing object " << chunk.dump() << "!";
+        for (auto& [key, value] : chunk.items()) {
+                if (key == "dt") {
+                        qInfo() << "Found current date in UNIX time: " << value.template get<int>();
+                        weather_data.hours[i].time = value.template get<int>();
+                } else if (key == "temp") {
+                        qInfo() << "Found temperature: " << value.template get<float>();
+                        weather_data.hours[i].temperature = value;
+                } else if (key == "pressure") {
+                        qInfo() << "Found atmospheric pressure: " << value.template get<int>();
+                        weather_data.hours[i].atmospheric_pressure = value;
+                } else if (key == "rain") {
+                        qInfo() << "Found rainfall: " << value.template get<float>();
+                        weather_data.hours[i].rain = value;
+                } else if (key == "humidity") {
+                        qInfo() << "Found humidity: " << value.template get<float>();
+                        weather_data.hours[i].humidity = value;
+                } else if (key == "wind") {
+                        qInfo() << "Found wind: " << value.template get<int>();
+                        weather_data.hours[i].wind_speed = value;
+                } else if (key == "id") {
+                        auto weather_address = weather_data.hours[i].weathers.find(
+                                value.template get<unsigned>());
+                        if (weather_address != weather_data.hours[i].weathers.end()) {
+                                auto& weather = weather_address->second;
+                                qInfo() << "Found weather id: " << value.template get<int>()
+                                        << " which corresponds to: " << weather.name << " "
+                                        << weather.detailed_name;
+                                weather_data.hours[i].weather = weather_data.hours[i].weathers.at(
+                                        value);
+                        }
+                }
+        }
 }
 
 unsigned WeatherParser::findClosestHour() {
@@ -92,25 +188,4 @@ unsigned WeatherParser::findClosestHour() {
                 } else continue;
         }
         qFatal("Something went wrong because %s wasn't able to find the closest hour!", __func__);
-};
-
-// TODO This could be refactored with "chunk.at()" in mind
-void WeatherParser::extractHourlyWeather(const json& chunk, int i) {
-        for (auto& [key, value] : chunk.items()) {
-                if (key == "dt") {
-                        weather_data.hours[i].time = value.template get<int>();
-                } else if (key == "temp") {
-                        weather_data.hours[i].temperature = value;
-                } else if (key == "pressure") {
-                        weather_data.hours[i].atmospheric_pressure = value;
-                } else if (key == "rain") {
-                        weather_data.hours[i].rain = value;
-                } else if (key == "humidity") {
-                        weather_data.hours[i].humidity = value;
-                } else if (key == "wind") {
-                        weather_data.hours[i].wind_speed = value;
-                } else if (key == "id") {
-                        weather_data.hours[i].weather = weather_data.hours[i].weathers.at(value);
-                }
-        }
 };

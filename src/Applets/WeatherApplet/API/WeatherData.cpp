@@ -19,20 +19,6 @@
 
 #include <QDebug>
 
-std::array<HourlyWeatherData, 8> initDefaultHourlyWeatherData() {
-        using hour_array = std::array<HourlyWeatherData, 8>;
-        WeatherCondition blank("name", "detailed_name", QImage(), QImage());
-        hour_array       hours = {HourlyWeatherData(0, blank, 0, 0, 0, 0, 0, 0, 0),
-                                  HourlyWeatherData(1, blank, 0, 0, 0, 0, 0, 0, 0),
-                                  HourlyWeatherData(2, blank, 0, 0, 0, 0, 0, 0, 0),
-                                  HourlyWeatherData(3, blank, 0, 0, 0, 0, 0, 0, 0),
-                                  HourlyWeatherData(4, blank, 0, 0, 0, 0, 0, 0, 0),
-                                  HourlyWeatherData(5, blank, 0, 0, 0, 0, 0, 0, 0),
-                                  HourlyWeatherData(6, blank, 0, 0, 0, 0, 0, 0, 0),
-                                  HourlyWeatherData(7, blank, 0, 0, 0, 0, 0, 0, 0)};
-        return std::move(hours);
-}
-
 WeatherCondition::WeatherCondition(std::string name, std::string detailed_name, QImage day_icon,
                                    QImage night_icon) :
         name(name), detailed_name(name), day_icon(day_icon), night_icon(night_icon) {
@@ -66,6 +52,12 @@ WeatherCondition& WeatherCondition::operator=(WeatherCondition&& other) {
                 night_icon    = std::move(other.night_icon);
         }
         return *this;
+}
+
+QString WeatherCondition::getWeatherConditionInfo() {
+        qDebug() << "Name:" << name << "Detailed name:" << detailed_name;
+        std::string temporary = "{" + name + " " + detailed_name + "}";
+        return QString::fromStdString(std::move(temporary));
 }
 
 HourlyWeatherData::HourlyWeatherData(decltype(time) time, decltype(weather) weather,
@@ -139,6 +131,13 @@ void HourlyWeatherData::setWeatherData(decltype(time) time, decltype(weather) we
         this->wind_speed           = wind_speed;
 }
 
+void HourlyWeatherData::printHourlyWeatherInfo() {
+        qInfo() << "Time:" << time << "Weather:" /*<< weather.getWeatherConditionInfo() */
+                << "Temperature:" << temperature << "Min:" << temperature_min
+                << "Max:" << temperature_max << "Pressure:" << atmospheric_pressure << "Rain:" << rain << "Humidity:" << humidity
+                << "Wind speed:" << wind_speed;
+}
+
 void DailyWeatherData::setTemperatureRange() {
         if (hours.empty()) return;
 
@@ -154,14 +153,20 @@ void DailyWeatherData::setTemperatureRange() {
         max_temperature = *max;
 }
 
-DailyWeatherData::DailyWeatherData() : hours(initDefaultHourlyWeatherData()) {}
+DailyWeatherData::DailyWeatherData(std::array<HourlyWeatherData, 8> hours) : hours(hours) {}
 
-std::unordered_map<unsigned, WeatherCondition> HourlyWeatherData::weathers{
-        {200,
-         WeatherCondition("Thunderstorm", "thunderstorm with light rain", QImage(), QImage())},
+void DailyWeatherData::printDailyWeatherInfo() {
+        // TODO What day is it even!?
+        qInfo() << "Daily data: " << "min_temperature:" << min_temperature
+                << "max_temperature:" << max_temperature;
+        for (auto& hour : hours) { hour.printHourlyWeatherInfo(); }
+        qInfo() << "\n";
+}
+
+const std::unordered_map<unsigned, WeatherCondition> HourlyWeatherData::weathers{
+        {200, WeatherCondition("Thunderstorm", "thunderstorm with light rain", QImage(), QImage())},
         {201, WeatherCondition("Thunderstorm", "thunderstorm with rain", QImage(), QImage())},
-        {202,
-         WeatherCondition("Thunderstorm", "thunderstorm with heavy rain", QImage(), QImage())},
+        {202, WeatherCondition("Thunderstorm", "thunderstorm with heavy rain", QImage(), QImage())},
         {210, WeatherCondition("Thunderstorm", "light thunderstorm", QImage(), QImage())},
         {211, WeatherCondition("Thunderstorm", "thunderstorm", QImage(), QImage())},
         {212, WeatherCondition("Thunderstorm", "heavy thunderstorm", QImage(), QImage())},

@@ -25,18 +25,6 @@
 #include <string>
 #include <unordered_map>
 
-enum class WeatherIcon {
-        clear,
-        few_clouds,
-        scattered_clouds,
-        broken_clouds,
-        shower_rain,
-        rain,
-        thunderstorm,
-        snow,
-        mist,
-};
-
 struct WeatherCondition final {
         std::string name;
         std::string detailed_name;
@@ -49,6 +37,8 @@ struct WeatherCondition final {
         WeatherCondition& operator=(const WeatherCondition& other);
         WeatherCondition(WeatherCondition&& other);
         WeatherCondition& operator=(WeatherCondition&& other);
+
+        QString getWeatherConditionInfo();
 };
 
 struct HourlyWeatherData final {
@@ -61,7 +51,7 @@ struct HourlyWeatherData final {
         unsigned                                              rain;
         unsigned                                              humidity;
         unsigned                                              wind_speed;
-        static std::unordered_map<unsigned, WeatherCondition> weathers;
+        const static std::unordered_map<unsigned, WeatherCondition> weathers;
 
         // TODO Alias for all the repeating arguments
         HourlyWeatherData(decltype(time) time, decltype(weather) weather,
@@ -83,6 +73,7 @@ struct HourlyWeatherData final {
                             decltype(atmospheric_pressure) atmospheric_pressure,
                             decltype(rain) rain, decltype(humidity) humidity,
                             decltype(wind_speed) wind_speed);
+        void printHourlyWeatherInfo();
 };
 
 struct DailyWeatherData final {
@@ -93,7 +84,9 @@ struct DailyWeatherData final {
         void setWeatherData(decltype(hours), decltype(min_temperature), decltype(max_temperature));
         void setTemperatureRange();
 
-        DailyWeatherData();
+        DailyWeatherData(std::array<HourlyWeatherData, 8> hours);
+
+        void printDailyWeatherInfo();
 };
 
 #endif // WEATHER_DATA_H
