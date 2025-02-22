@@ -61,57 +61,64 @@ QString WeatherCondition::getData() const {
 }
 
 HourlyWeatherData::HourlyWeatherData(const WeatherCondition& default_weather) :
-        time(0), weather(&default_weather), temperature(-9999.f), temperature_min(-9999.f),
-        temperature_max(-9999.f), atmospheric_pressure(-9999), rain(-9999), humidity(-9999),
-        wind_speed(-9999) {}
+        time(0), weather(&default_weather), temperature(-9999.f), temperature_feels_like(-9999.f),
+        temperature_min(-9999.f), temperature_max(-9999.f), atmospheric_pressure(-9999),
+        rain(-9999.f), humidity(-9999), wind_speed(-9999.f) {}
 
 HourlyWeatherData::HourlyWeatherData(const HourlyWeatherData& other) :
         time(other.time), weather(other.weather), temperature(other.temperature),
+        temperature_feels_like(other.temperature_feels_like),
         temperature_min(other.temperature_min), temperature_max(other.temperature_max),
         atmospheric_pressure(other.atmospheric_pressure), rain(other.rain),
         humidity(other.humidity), wind_speed(other.wind_speed) {}
 
 HourlyWeatherData& HourlyWeatherData::operator=(const HourlyWeatherData& other) {
         if (this != &other) {
-                time                 = other.time;
-                weather              = other.weather;
-                temperature          = other.temperature;
-                temperature_min      = other.temperature_min;
-                temperature_max      = other.temperature_max;
-                atmospheric_pressure = other.atmospheric_pressure;
-                rain                 = other.rain;
-                humidity             = other.humidity;
-                wind_speed           = other.wind_speed;
+                time                   = other.time;
+                weather                = other.weather;
+                temperature            = other.temperature;
+                temperature_feels_like = other.temperature_feels_like;
+                temperature_min        = other.temperature_min;
+                temperature_max        = other.temperature_max;
+                atmospheric_pressure   = other.atmospheric_pressure;
+                rain                   = other.rain;
+                humidity               = other.humidity;
+                wind_speed             = other.wind_speed;
         }
         return *this;
 }
 
 HourlyWeatherData::HourlyWeatherData(HourlyWeatherData&& other) :
         time(other.time), weather(other.weather), temperature(other.temperature),
+        temperature_feels_like(other.temperature_feels_like),
         temperature_min(other.temperature_min), temperature_max(other.temperature_max),
         atmospheric_pressure(other.atmospheric_pressure), rain(other.rain),
         humidity(other.humidity), wind_speed(other.wind_speed) {}
 
 HourlyWeatherData& HourlyWeatherData::operator=(HourlyWeatherData&& other) {
         if (this != &other) {
-                time                 = other.time;
-                weather              = other.weather;
-                temperature          = other.temperature;
-                temperature_min      = other.temperature_min;
-                temperature_max      = other.temperature_max;
-                atmospheric_pressure = other.atmospheric_pressure;
-                rain                 = other.rain;
-                humidity             = other.humidity;
-                wind_speed           = other.wind_speed;
+                time                   = other.time;
+                weather                = other.weather;
+                temperature            = other.temperature;
+                temperature_feels_like = other.temperature_feels_like;
+                temperature_min        = other.temperature_min;
+                temperature_max        = other.temperature_max;
+                atmospheric_pressure   = other.atmospheric_pressure;
+                rain                   = other.rain;
+                humidity               = other.humidity;
+                wind_speed             = other.wind_speed;
         }
         return *this;
 }
 
 void HourlyWeatherData::printData() const {
+        // TODO Centralized position for default invalid values like the -9999 here
         qInfo() << "Time:" << time << "Weather:" << weather->getData()
-                << "Temperature:" << temperature << "Min:" << temperature_min
-                << "Max:" << temperature_max << "Pressure:" << atmospheric_pressure
-                << "Rain:" << rain << "Humidity:" << humidity << "Wind speed:" << wind_speed;
+                << "Temperature:" << temperature << "Feels like:" << temperature_feels_like
+                << "Min:" << temperature_min << "Max:" << temperature_max
+                << "Pressure:" << atmospheric_pressure
+                << "Rain:" << ((rain != -9999) ? std::to_string(rain) : "N/A")
+                << "Humidity:" << humidity << "Wind speed:" << wind_speed;
 }
 
 WeatherData::WeatherData(const std::array<HourlyWeatherData, 39> hours) : hours(hours) {}

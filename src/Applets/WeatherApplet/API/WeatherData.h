@@ -45,12 +45,13 @@ struct HourlyWeatherData final {
         std::time_t             time;
         const WeatherCondition* weather;
         float                   temperature;
+        float                   temperature_feels_like;
         float                   temperature_min;
         float                   temperature_max;
         int                     atmospheric_pressure;
-        int                     rain;
+        float                   rain;
         int                     humidity;
-        int                     wind_speed;
+        float                   wind_speed;
 
         // TODO Alias for all the repeating arguments
         HourlyWeatherData(const WeatherCondition& default_weather);

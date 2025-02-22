@@ -87,9 +87,7 @@ void WeatherParser::traverseJson(
                                 throw std::invalid_argument(
                                         "Expected integral type, received something else\n");
                         }
-                } catch (...) {
-                        return false;
-                }
+                } catch (...) { return false; }
                 return true;
         };
 
@@ -113,9 +111,7 @@ void WeatherParser::traverseJson(
                         } else traverseJson(prime_key, item, path, handler, index); // if not
 
                         // if another item in hour list, we're proceeding to the next hour
-                        if (prime_key == "list") {
-                                index++;
-                        }
+                        if (prime_key == "list") { index++; }
                 }
         } else {
                 handler(prime_key, prime_value, path, index);
@@ -133,11 +129,14 @@ void WeatherParser::processWeatherItem(const std::string& key, const json& value
         }
 
         if (key == "dt") {
-                qDebug() << "Found current date in UNIX time:" << value.template get<int>();
+                qDebug() << "Found UNIX time:" << value.template get<int>();
                 weather_data.getHours()[index].time = value.template get<int>();
         } else if (key == "temp") {
                 qDebug() << "Found temperature:" << value.template get<float>();
                 weather_data.getHours()[index].temperature = value;
+        } else if (key == "feels_like") {
+                qDebug() << "Found temperature_feels_like:" << value.template get<float>();
+                weather_data.getHours()[index].temperature_feels_like = value;
         } else if (key == "temp_min") {
                 qDebug() << "Found temperature_min:" << value.template get<float>();
                 weather_data.getHours()[index].temperature_min = value;
@@ -147,19 +146,18 @@ void WeatherParser::processWeatherItem(const std::string& key, const json& value
         } else if (key == "pressure") {
                 qDebug() << "Found atmospheric pressure:" << value.template get<int>();
                 weather_data.getHours()[index].atmospheric_pressure = value;
-        // TODO Rain is more complicated and can only be obtained if it rains, so for the time being it won't work
-        } else if (key == "rain") {
+        // needs to be tested
+        } else if (key == "3h") {
                 qDebug() << "Found rainfall:" << value.template get<float>();
                 weather_data.getHours()[index].rain = value;
         } else if (key == "humidity") {
                 qDebug() << "Found humidity:" << value.template get<float>();
                 weather_data.getHours()[index].humidity = value;
-        } else if (key == "wind") {
-        // TODO Wind is more complicated and has its own nest
-                qDebug() << "Found wind:" << value.template get<int>();
+        } else if (key == "speed") {
+                qDebug() << "Found wind speed:" << value.template get<float>();
                 weather_data.getHours()[index].wind_speed = value;
         } else if (key == "id") {
-                // TODO WeatherCondition reference instead of separate weather_id int
+                // TODO WeatherCondition reference instead of a separate weather_id int
                 int weather_id = value.template get<int>();
                 if (weather_data.weathers.find(weather_id) != weather_data.weathers.end()) {
                         weather_data.getHours()[index].weather = &weather_data.weathers.at(
