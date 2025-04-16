@@ -18,11 +18,16 @@
 #ifndef TIME_H
 #define TIME_H
 
-#include <ctime>
 #include <chrono>
+#include <ctime>
+#include <optional>
 
-const time_t findMidnight();
-const time_t findMidnight(const std::chrono::time_point<std::chrono::system_clock> timedate);
-const int findClosestHour();
+time_t findCurrentUnixTime();
+time_t findMidnight();
+time_t findMidnight(const std::chrono::time_point<std::chrono::system_clock> timedate);
+int    findHourSpacing(const time_t later, const time_t earlier);
+std::optional<const int> findWeatherBlocsFitCount(const time_t later, const time_t earlier,
+                                                  const int hour_spacing);
+time_t                   findCloserHour(const time_t hour1, const time_t hour2); 
 
 #endif // TIME_H
