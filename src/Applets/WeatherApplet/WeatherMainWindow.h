@@ -27,10 +27,10 @@ class WeatherMainWindow : public MainWindow {
         Q_OBJECT
 
 public:
-        WeatherMainWindow(QApplication* app, QWidget* parent = nullptr);
+        WeatherMainWindow(QApplication* app, QWidget* const parent = nullptr);
         ~WeatherMainWindow();
 
 private:
-        CentralWidget central_widget;
+        CentralWidget* central_widget;
 };
 #endif // WEATHER_MAIN_WINDOW_H

@@ -18,19 +18,14 @@
 #ifndef WEATHER_LAYOUT_H
 #define WEATHER_LAYOUT_H
 
+#include "../Applets/WeatherApplet/API/WeatherData.h"
 #include "SharedLayout.h"
 
-#include <QHBoxLayout>
-#include <QPixmap>
+#include <QSize>
 #include <QString>
-#include <QVBoxLayout>
 
+#include <string>
 #include <unordered_map>
-#include <utility>
-#include <vector>
-
-using WeatherIconMap  = std::unordered_map<QString, QPixmap>;
-using WeatherCellGrid = std::unordered_map<QString, std::pair<QPixmap, std::vector<QString>>>;
 
 struct WeatherMainWindowProp : public MainWindowProp {
         const QSize   size;
@@ -54,13 +49,9 @@ struct WeatherEnvProp : public EnvProp {
 };
 
 struct WeatherLayoutProp : public LayoutProp {
-        const WeatherIconMap weather_icons;
+        static const std::unordered_map<int, WeatherCondition> weather_list;
 
         explicit WeatherLayoutProp();
-        /*
-        std::array<WeatherCellGrid*, 3> cellGridSingleton(QWidget* parent, QHBoxLayout* layout,
-                                                          bool&& is_instantiated);
-*/
 };
 
 struct WeatherLayoutManager : public LayoutManager {
@@ -71,7 +62,6 @@ struct WeatherLayoutManager : public LayoutManager {
         static const WeatherEnvProp& getEnvProp(const QApplication* app);
 
         explicit WeatherLayoutManager();
-        explicit WeatherLayoutManager(const QApplication* app);
 };
 
 #endif // WEATHER_LAYOUT_H

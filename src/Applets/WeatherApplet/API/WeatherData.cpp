@@ -16,11 +16,29 @@
    along with this program.  If not, see <https://www.gnu.org/licenses/>. */
 
 #include "WeatherData.h"
+#include "../../../Config/WeatherLayout.h"
 
 #include <QDebug>
 
-WeatherCondition::WeatherCondition(std::string name, std::string detailed_name,
-                                   const QImage& day_icon, const QImage& night_icon) :
+#include <algorithm>
+
+const std::array<HourlyWeatherData, 39> debugInitHours() {
+        // TODO Reusable debug function printing out the invoking function's name
+        qDebug() << "Starting" << __func__;
+        auto hour = HourlyWeatherData();
+
+        // TODO I can already tell this isn't a good idea
+        return std::array<HourlyWeatherData, 39>{*&hour, *&hour, *&hour, *&hour, *&hour, *&hour,
+                                                 *&hour, *&hour, *&hour, *&hour, *&hour, *&hour,
+                                                 *&hour, *&hour, *&hour, *&hour, *&hour, *&hour,
+                                                 *&hour, *&hour, *&hour, *&hour, *&hour, *&hour,
+                                                 *&hour, *&hour, *&hour, *&hour, *&hour, *&hour,
+                                                 *&hour, *&hour, *&hour, *&hour, *&hour, *&hour,
+                                                 *&hour, *&hour, *&hour};
+}
+
+WeatherCondition::WeatherCondition(QString name, QString detailed_name, const QImage& day_icon,
+                                   const QImage& night_icon) :
         name(std::move(name)), detailed_name(std::move(detailed_name)), day_icon(day_icon),
         night_icon(night_icon) {
         qInfo() << "WeatherCondition registered:" << name << detailed_name << day_icon
@@ -56,25 +74,27 @@ WeatherCondition& WeatherCondition::operator=(WeatherCondition&& other) {
 }
 
 QString WeatherCondition::getData() const {
-        std::string temporary = "{" + name + " " + detailed_name + "}";
-        return QString::fromStdString(std::move(temporary));
+        return QString("{" + name + " : " + detailed_name + "}");
 }
 
-HourlyWeatherData::HourlyWeatherData(const WeatherCondition& default_weather) :
-        time(0), weather(&default_weather), temperature(-9999.f), temperature_feels_like(-9999.f),
-        temperature_min(-9999.f), temperature_max(-9999.f), atmospheric_pressure(-9999),
-        rain(-9999.f), humidity(-9999), wind_speed(-9999.f) {}
+HourlyWeatherData::HourlyWeatherData() :
+        day("N/A"), time(0), city_name("N/A"), weather(&WeatherLayoutProp::weather_list.at(9999)),
+        temperature(-9999.f), temperature_feels_like(-9999.f), temperature_min(-9999.f),
+        temperature_max(-9999.f), atmospheric_pressure(-9999), rain(-9999.f), humidity(-9999),
+        wind_speed(-9999.f) {}
 
 HourlyWeatherData::HourlyWeatherData(const HourlyWeatherData& other) :
-        time(other.time), weather(other.weather), temperature(other.temperature),
-        temperature_feels_like(other.temperature_feels_like),
+        day(other.day), time(other.time), city_name(other.city_name), weather(other.weather),
+        temperature(other.temperature), temperature_feels_like(other.temperature_feels_like),
         temperature_min(other.temperature_min), temperature_max(other.temperature_max),
         atmospheric_pressure(other.atmospheric_pressure), rain(other.rain),
         humidity(other.humidity), wind_speed(other.wind_speed) {}
 
 HourlyWeatherData& HourlyWeatherData::operator=(const HourlyWeatherData& other) {
         if (this != &other) {
+                day                    = other.day;
                 time                   = other.time;
+                city_name              = other.city_name;
                 weather                = other.weather;
                 temperature            = other.temperature;
                 temperature_feels_like = other.temperature_feels_like;
@@ -89,15 +109,17 @@ HourlyWeatherData& HourlyWeatherData::operator=(const HourlyWeatherData& other) 
 }
 
 HourlyWeatherData::HourlyWeatherData(HourlyWeatherData&& other) :
-        time(other.time), weather(other.weather), temperature(other.temperature),
-        temperature_feels_like(other.temperature_feels_like),
+        day(other.day), time(other.time), city_name(other.city_name), weather(other.weather),
+        temperature(other.temperature), temperature_feels_like(other.temperature_feels_like),
         temperature_min(other.temperature_min), temperature_max(other.temperature_max),
         atmospheric_pressure(other.atmospheric_pressure), rain(other.rain),
         humidity(other.humidity), wind_speed(other.wind_speed) {}
 
 HourlyWeatherData& HourlyWeatherData::operator=(HourlyWeatherData&& other) {
         if (this != &other) {
+                day                    = std::move(other.day);
                 time                   = other.time;
+                city_name              = std::move(other.city_name);
                 weather                = other.weather;
                 temperature            = other.temperature;
                 temperature_feels_like = other.temperature_feels_like;
@@ -112,87 +134,82 @@ HourlyWeatherData& HourlyWeatherData::operator=(HourlyWeatherData&& other) {
 }
 
 void HourlyWeatherData::printData() const {
-        // TODO Centralized position for default invalid values like the -9999 here
-        qInfo() << "Time:" << time << "Weather:" << weather->getData()
-                << "Temperature:" << temperature << "Feels like:" << temperature_feels_like
-                << "Min:" << temperature_min << "Max:" << temperature_max
-                << "Pressure:" << atmospheric_pressure
-                << "Rain:" << ((rain != -9999) ? std::to_string(rain) : "N/A")
+        // TODO std::optional
+        qInfo() << "Day:" << day << "Time:" << time << "City name:" << city_name
+                << "Weather:" << weather->getData() << "Temperature:" << temperature
+                << "Feels like:" << temperature_feels_like << "Min:" << temperature_min
+                << "Max:" << temperature_max << "Pressure:" << atmospheric_pressure
+                << "Rain:" << ((rain != -9999) ? QString::number(rain) : "N/A")
                 << "Humidity:" << humidity << "Wind speed:" << wind_speed;
 }
 
-WeatherData::WeatherData(const std::array<HourlyWeatherData, 39> hours) : hours(hours) {}
+std::array<HourlyWeatherData, 39> WeatherData::hours(debugInitHours());
 
-std::array<HourlyWeatherData, 39>& WeatherData::getHours() {
-        return hours;
-}
-
-void WeatherData::printData() const {
+void WeatherData::printData() {
         for (auto& hour : hours) hour.printData();
 }
 
-const std::unordered_map<int, WeatherCondition> WeatherData::weathers{
-        {200, WeatherCondition("Thunderstorm", "thunderstorm with light rain", QImage(), QImage())},
-        {201, WeatherCondition("Thunderstorm", "thunderstorm with rain", QImage(), QImage())},
-        {202, WeatherCondition("Thunderstorm", "thunderstorm with heavy rain", QImage(), QImage())},
-        {210, WeatherCondition("Thunderstorm", "light thunderstorm", QImage(), QImage())},
-        {211, WeatherCondition("Thunderstorm", "thunderstorm", QImage(), QImage())},
-        {212, WeatherCondition("Thunderstorm", "heavy thunderstorm", QImage(), QImage())},
-        {221, WeatherCondition("Thunderstorm", "ragged thunderstorm", QImage(), QImage())},
-        {230,
-         WeatherCondition("Thunderstorm", "thunderstorm with light drizzle", QImage(), QImage())},
-        {231, WeatherCondition("Thunderstorm", "thunderstorm with drizzle", QImage(), QImage())},
-        {232,
-         WeatherCondition("Thunderstorm", "thunderstorm with heavy drizzle", QImage(), QImage())},
+void WeatherData::fillDayNames(const int&                      blocs_per_day,
+                               const std::optional<const int>& first_day_blocs) {
+        if (first_day_blocs.value_or(0) > blocs_per_day) {
+                qFatal("First day blocs %i is higher than blocs per day %i! Not allowed! WD",
+                       first_day_blocs.value(), blocs_per_day);
+                QApplication::quit();
+        }
+        int        last_day_blocs = blocs_per_day - first_day_blocs.value_or(0);
+        const auto begin          = hours.begin();
+        const auto end            = hours.end();
+        std::pair<HourlyWeatherData*, HourlyWeatherData*>
+                bloc_border{begin, (begin + first_day_blocs.value_or(0))};
+        QString error_message = "In" + QString(__func__)
+                              + "current_day iterator has been reached prematurely"
+                              + "This implies faulty code in that function, repairs needed!";
+        std::array<QString, 6> day{"Today", "Tomorrow", "Day 3", "Day 4", "Day 5", "Day 6"};
+        auto                   current_day = day.cbegin();
+        auto                   setDayName  = [&current_day](HourlyWeatherData& hour) {
+                static int cnt      = 0;
+                auto*      hour_ptr = &hour;
+                if (!hour_ptr) {
+                        qCritical() << "hour is null! Quitting...";
+                        QApplication::quit();
+                } else qDebug() << hour_ptr->time;
+                if (!current_day) {
+                        qCritical() << cnt << "current_day out of scope! Quitting...";
+                        QApplication::quit();
+                } else qDebug() << cnt << "Current day is" << *current_day;
+                hour_ptr->day = *current_day;
+                cnt++;
+        };
 
-        {300, WeatherCondition("Drizzle", "light intensity drizzle", QImage(), QImage())},
-        {301, WeatherCondition("Drizzle", "drizzle", QImage(), QImage())},
-        {302, WeatherCondition("Drizzle", "heavy intensity drizzle", QImage(), QImage())},
-        {310, WeatherCondition("Drizzle", "light intensity drizzle rain", QImage(), QImage())},
-        {311, WeatherCondition("Drizzle", "drizzle rain", QImage(), QImage())},
-        {312, WeatherCondition("Drizzle", "heavy intensity drizzle rain", QImage(), QImage())},
-        {313, WeatherCondition("Drizzle", "shower rain and drizzle", QImage(), QImage())},
-        {314, WeatherCondition("Drizzle", "heavy shower rain and drizzle", QImage(), QImage())},
-        {321, WeatherCondition("Drizzle", "shower drizzle", QImage(), QImage())},
-
-        {500, WeatherCondition("Rain", "light rain", QImage(), QImage())},
-        {501, WeatherCondition("Rain", "moderate rain", QImage(), QImage())},
-        {502, WeatherCondition("Rain", "heavy intensity rain", QImage(), QImage())},
-        {503, WeatherCondition("Rain", "very heavy rain", QImage(), QImage())},
-        {504, WeatherCondition("Rain", "extreme rain", QImage(), QImage())},
-        {511, WeatherCondition("Rain", "freezing rain", QImage(), QImage())},
-        {520, WeatherCondition("Rain", "light intensity shower rain", QImage(), QImage())},
-        {521, WeatherCondition("Rain", "shower rain", QImage(), QImage())},
-        {522, WeatherCondition("Rain", "heavy intensity shower rain", QImage(), QImage())},
-        {531, WeatherCondition("Rain", "ragged shower rain", QImage(), QImage())},
-
-        {600, WeatherCondition("Snow", "light snow", QImage(), QImage())},
-        {601, WeatherCondition("Snow", "snow", QImage(), QImage())},
-        {602, WeatherCondition("Snow", "heavy snow", QImage(), QImage())},
-        {611, WeatherCondition("Snow", "sleet", QImage(), QImage())},
-        {612, WeatherCondition("Snow", "light shower sleet", QImage(), QImage())},
-        {613, WeatherCondition("Snow", "shower sleet", QImage(), QImage())},
-        {615, WeatherCondition("Snow", "light rain and snow", QImage(), QImage())},
-        {616, WeatherCondition("Snow", "rain and snow", QImage(), QImage())},
-        {620, WeatherCondition("Snow", "light shower snow", QImage(), QImage())},
-        {621, WeatherCondition("Snow", "shower snow", QImage(), QImage())},
-        {622, WeatherCondition("Snow", "heavy shower snow", QImage(), QImage())},
-
-        {701, WeatherCondition("Mist", "mist", QImage(), QImage())},
-        {711, WeatherCondition("Smoke", "smoke", QImage(), QImage())},
-        {721, WeatherCondition("Haze", "haze", QImage(), QImage())},
-        {731, WeatherCondition("Dust", "sand/dust whirls", QImage(), QImage())},
-        {741, WeatherCondition("Fog", "fog", QImage(), QImage())},
-        {751, WeatherCondition("Sand", "sand", QImage(), QImage())},
-        {761, WeatherCondition("Dust", "dust", QImage(), QImage())},
-        {762, WeatherCondition("Ash", "volcanic ash", QImage(), QImage())},
-        {771, WeatherCondition("Squall", "squalls", QImage(), QImage())},
-        {781, WeatherCondition("Tornado", "tornado", QImage(), QImage())},
-
-        {800, WeatherCondition("Clear", "clear sky", QImage(), QImage())},
-
-        {801, WeatherCondition("Clouds", "few clouds: 11-25%", QImage(), QImage())},
-        {802, WeatherCondition("Clouds", "scattered clouds: 25-50%", QImage(), QImage())},
-        {803, WeatherCondition("Clouds", "broken clouds: 51-84%", QImage(), QImage())},
-        {804, WeatherCondition("Clouds", "overcast clouds: 85-100%", QImage(), QImage())},
-        {9999, WeatherCondition("NULL", "NULL", QImage(), QImage())}};
+        // First day
+        if (current_day != day.end()) {
+                qDebug() << "First for_each group call of setDayName will now proceed!";
+                std::for_each(bloc_border.first, bloc_border.second, setDayName);
+                current_day++;
+                bloc_border.first  += first_day_blocs.value_or(0);
+                bloc_border.second += blocs_per_day;
+        }
+        // Days in-between
+        for (; bloc_border.second + blocs_per_day < end - last_day_blocs;
+             bloc_border.first += blocs_per_day, bloc_border.second += blocs_per_day) {
+                if (current_day < day.end()) {
+                        qDebug() << "Second for_each group call of setDayName will now proceed!";
+                        std::for_each(bloc_border.first, bloc_border.second, setDayName);
+                } else {
+                        qFatal("%s", error_message.toStdString().c_str());
+                        QApplication::quit();
+                }
+                current_day++;
+        }
+        // Last day
+        bloc_border.first  = (last_day_blocs == 0) ? end : end - last_day_blocs;
+        bloc_border.second = end;
+        if (bloc_border.first != end) {
+                qDebug() << "Third for_each group call of setDayName will now proceed!";
+                std::for_each(bloc_border.first, bloc_border.second, setDayName);
+                current_day++;
+        } else {
+                qFatal("%s", error_message.toStdString().c_str());
+                QApplication::quit();
+        }
+}

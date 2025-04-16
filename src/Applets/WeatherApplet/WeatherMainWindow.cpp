@@ -16,8 +16,12 @@
    along with this program.  If not, see <https://www.gnu.org/licenses/>. */
 
 #include "WeatherMainWindow.h"
+#include "../../Config/WeatherLayout.h"
 
-WeatherMainWindow::WeatherMainWindow(QApplication* app, QWidget* parent) :
-        MainWindow(parent), central_widget(this, app) {}
+WeatherMainWindow::WeatherMainWindow(QApplication* app, QWidget* const parent) :
+        MainWindow(parent), central_widget(new CentralWidget(this, app)) {
+        resize(central_widget->getLayout().main_window_prop.size);
+        setCentralWidget(central_widget);
+}
 
 WeatherMainWindow::~WeatherMainWindow() {}

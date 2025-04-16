@@ -27,24 +27,52 @@
 #include <QVBoxLayout>
 #include <QWidget>
 
+#include <array>
+
+// TODO Only accept HourlyWeatherData iterators
+template<typename Iterator>
+std::array<const float*, 2> findTemperatureRange(const Iterator begin, const Iterator end);
+
+class CellFactory final {
+public:
+        CellFactory() = delete;
+
+        static QBoxLayout* createCell(QBoxLayout::Direction layout_direction,
+                                      const QImage& icon_img, std::optional<const QString> value,
+                                      const std::vector<QString> text_list);
+};
+
+class CurrentDayLayout final {
+public:
+        explicit CurrentDayLayout();
+
+        QVBoxLayout* getLayout();
+
+private:
+        QVBoxLayout* layout;
+};
+
+class CurrentWeekLayout final {
+public:
+        explicit CurrentWeekLayout();
+
+        void         refreshCells(); // TODO Finish
+        QVBoxLayout* getLayout();
+
+private:
+        QVBoxLayout* layout;
+};
+
 class CentralWidget final : public QWidget {
         Q_OBJECT
 
 public:
         explicit CentralWidget(QWidget* parent, QApplication* app);
 
-private:
-        QHBoxLayout* main_layout;
-        /*-----------< MAIN SPLIT >------------*/
-        QVBoxLayout* current_day_layout;
-        QVBoxLayout* auxiliary_layout;
-        /*-----------< LEFT SPLIT >------------*/
-        /*		  		       */
-        /*-----------< RIGHT SPLIT >-----------*/
-        QVBoxLayout* details_layout;
-        QVBoxLayout* time_passage_layout;
-        /*-------------------------------------*/
+        const WeatherLayoutManager& getLayout();
 
+private:
+        QHBoxLayout*               main_layout;
         const WeatherLayoutManager layout;
         const KeybindingManager    keybindings;
         WeatherParser              weather_parser;

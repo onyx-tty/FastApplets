@@ -19,19 +19,21 @@
 #define WEATHER_DATA_H
 
 #include <QImage>
+#include <QString>
 
 #include <array>
 #include <ctime>
-#include <string>
-#include <unordered_map>
+#include <optional>
+
+constexpr int HOURLY_WEATHER_DATA_HOURS = 39;
 
 struct WeatherCondition final {
-        std::string name;
-        std::string detailed_name;
-        QImage      day_icon;
-        QImage      night_icon;
+        QString name;
+        QString detailed_name;
+        QImage  day_icon;
+        QImage  night_icon;
 
-        WeatherCondition(std::string name, std::string detailed_name, const QImage& day_icon,
+        WeatherCondition(QString name, QString detailed_name, const QImage& day_icon,
                          const QImage& night_icon);
         WeatherCondition(const WeatherCondition& other);
         WeatherCondition& operator=(const WeatherCondition& other);
@@ -42,7 +44,9 @@ struct WeatherCondition final {
 };
 
 struct HourlyWeatherData final {
+        QString                 day;
         std::time_t             time;
+        QString                 city_name;
         const WeatherCondition* weather;
         float                   temperature;
         float                   temperature_feels_like;
@@ -54,7 +58,7 @@ struct HourlyWeatherData final {
         float                   wind_speed;
 
         // TODO Alias for all the repeating arguments
-        HourlyWeatherData(const WeatherCondition& default_weather);
+        HourlyWeatherData();
 
         HourlyWeatherData(const HourlyWeatherData& other);
         HourlyWeatherData& operator=(const HourlyWeatherData& other);
@@ -65,16 +69,17 @@ struct HourlyWeatherData final {
 };
 
 class WeatherData final {
-private:
-        std::array<HourlyWeatherData, 39> hours;
-
 public:
-        static const std::unordered_map<int, WeatherCondition> weathers;
+        // TODO I want it to stay private but I want to be able to
+        //	initialize it freely
+        // TODO Simplify that array as a type stored in one place
+        static std::array<HourlyWeatherData, HOURLY_WEATHER_DATA_HOURS> hours;
 
-        WeatherData(const std::array<HourlyWeatherData, 39> hours);
+        WeatherData() = delete;
 
-        std::array<HourlyWeatherData, 39>& getHours();
-        void                               printData() const;
+        static void printData();
+        static void fillDayNames(const int&                      blocs_per_day,
+                                 const std::optional<const int>& first_day_blocs);
 };
 
 #endif // WEATHER_DATA_H

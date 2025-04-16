@@ -45,6 +45,7 @@ set(PROJECT_HEADERS
         API/OpenWeather.h
         API/WeatherData.h
         API/WeatherParser.h
+        Utils/PresentTime.h
 )
 
 set(PROJECT_SOURCES
@@ -55,6 +56,7 @@ set(PROJECT_SOURCES
         API/OpenWeather.cpp
         API/WeatherData.cpp
         API/WeatherParser.cpp
+        Utils/PresentTime.cpp
 )
 
 set(PROJECT_RESOURCES

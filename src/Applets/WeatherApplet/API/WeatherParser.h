@@ -35,11 +35,10 @@ public:
         explicit WeatherParser(QWidget* const parent, const QApplication* app,
                                const WeatherEnvProp& env_prop);
 
-        void updateWeatherData();
+        WeatherData& getWeatherData();
+        void         updateWeatherData();
 
 private:
-        /* Core */
-        WeatherData    weather_data;
         /* APIs */
         OpenWeatherAPI open_weather;
 

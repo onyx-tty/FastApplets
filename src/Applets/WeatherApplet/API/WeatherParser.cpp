@@ -16,6 +16,7 @@
    along with this program.  If not, see <https://www.gnu.org/licenses/>. */
 
 #include "WeatherParser.h"
+#include "../../../Utils/Time.h"
 #include "WeatherData.h"
 
 #include <QApplication>
@@ -32,31 +33,18 @@
 
 using json = nlohmann::json;
 
-std::array<HourlyWeatherData, 39> debugInitHours() {
-        // TODO Reusable debug function printing out the invoking function's name
-        qDebug() << "Starting" << __func__;
-        auto hour = HourlyWeatherData(WeatherData::weathers.at(9999));
-
-        // TODO I can already tell this isn't a good idea
-        return std::array<HourlyWeatherData, 39>{*&hour, *&hour, *&hour, *&hour, *&hour, *&hour,
-                                                 *&hour, *&hour, *&hour, *&hour, *&hour, *&hour,
-                                                 *&hour, *&hour, *&hour, *&hour, *&hour, *&hour,
-                                                 *&hour, *&hour, *&hour, *&hour, *&hour, *&hour,
-                                                 *&hour, *&hour, *&hour, *&hour, *&hour, *&hour,
-                                                 *&hour, *&hour, *&hour, *&hour, *&hour, *&hour,
-                                                 *&hour, *&hour, *&hour};
-}
-
 WeatherParser::WeatherParser(QWidget* parent, const QApplication* app,
                              const WeatherEnvProp& env_prop) :
-        open_weather(parent, app, env_prop), weather_data(debugInitHours()) {}
+        open_weather(parent, app, env_prop) {}
 
 void WeatherParser::updateWeatherData() {
         qDebug() << "--------------------------";
         qDebug() << "Starting" << __func__ << "!";
+        // fetch data from OpenWeather's API call
         open_weather.callAPI();
         const json& response = open_weather.getResponse();
 
+        // extract and assign weather data from our fetched response
         qDebug() << "Recursion begins in" << __func__;
         int index = 0;
         traverseJson(
@@ -66,8 +54,38 @@ void WeatherParser::updateWeatherData() {
                 },
                 index);
 
+        // time units in seconds
+        constexpr time_t hour = 60 * 60;
+        constexpr time_t day  = hour * 24;
+
+        // time
+        const auto   iter_begin       = WeatherData::hours.cbegin();
+        const auto   iter_end         = WeatherData::hours.cend();
+        const int    hour_spacing     = findHourSpacing((iter_begin + 1)->time, iter_begin->time);
+        const time_t current_midnight = findMidnight();
+        const time_t next_midnight    = current_midnight + day;
+
+        // debug
+        WeatherData::printData();
+        qDebug() << "hour spacing:" << hour_spacing;
+
+        // blocs calculated as index
+        const int blocs_per_day =
+                findWeatherBlocsFitCount(next_midnight, current_midnight, hour_spacing).value();
+        const auto first_day_blocs = findWeatherBlocsFitCount(next_midnight, iter_begin->time,
+                                                              hour_spacing);
+        if (first_day_blocs.value_or(0) > blocs_per_day) {
+                qFatal("First day blocs %i is higher than blocs per day %i! Not allowed! CWL",
+                       first_day_blocs.value(), blocs_per_day);
+                QApplication::quit();
+        }
+
+        // identify day names of each hour
+        WeatherData::fillDayNames(blocs_per_day, first_day_blocs);
+
+        // print daily weather info for debug purposes
         qDebug() << "Printing daily weather info in" << __func__;
-        for (auto& hour : weather_data.getHours()) hour.printData();
+        for (auto& hour : WeatherData::hours) hour.printData();
 
         QApplication::quit(); // TODO For now, all we need is info display!
 }
@@ -104,8 +122,7 @@ void WeatherParser::traverseJson(
                 }
         } else if (prime_value.is_array()) {
                 for (const auto& item : prime_value) {
-                        if (index
-                            == weather_data.getHours().size() - 1) { // if this is the last item
+                        if (index == WeatherData::hours.size() - 1) { // if this is the last item
                                 traverseJson(prime_key, item, path, handler, index);
                                 break; // only look for as many hours as we need
                         } else traverseJson(prime_key, item, path, handler, index); // if not
@@ -123,47 +140,48 @@ void WeatherParser::processWeatherItem(const std::string& key, const json& value
                                        const std::string& path, int& index) {
         qDebug() << "Parsing object" << key << ":" << value.dump() << "! Index is" << index;
 
-        if (index < 0 || index >= weather_data.getHours().size()) {
+        if (index < 0 || index >= WeatherData::hours.size()) {
                 qFatal("Index out of range: %i", index);
                 return;
         }
 
         if (key == "dt") {
                 qDebug() << "Found UNIX time:" << value.template get<int>();
-                weather_data.getHours()[index].time = value.template get<int>();
+                WeatherData::hours[index].time = value.template get<int>();
         } else if (key == "temp") {
                 qDebug() << "Found temperature:" << value.template get<float>();
-                weather_data.getHours()[index].temperature = value;
+                WeatherData::hours[index].temperature = value;
         } else if (key == "feels_like") {
                 qDebug() << "Found temperature_feels_like:" << value.template get<float>();
-                weather_data.getHours()[index].temperature_feels_like = value;
+                WeatherData::hours[index].temperature_feels_like = value;
         } else if (key == "temp_min") {
                 qDebug() << "Found temperature_min:" << value.template get<float>();
-                weather_data.getHours()[index].temperature_min = value;
+                WeatherData::hours[index].temperature_min = value;
         } else if (key == "temp_max") {
                 qDebug() << "Found temperature_max:" << value.template get<float>();
-                weather_data.getHours()[index].temperature_max = value;
+                WeatherData::hours[index].temperature_max = value;
         } else if (key == "pressure") {
                 qDebug() << "Found atmospheric pressure:" << value.template get<int>();
-                weather_data.getHours()[index].atmospheric_pressure = value;
-        // needs to be tested
+                WeatherData::hours[index].atmospheric_pressure = value;
+                // needs to be tested
         } else if (key == "3h") {
                 qDebug() << "Found rainfall:" << value.template get<float>();
-                weather_data.getHours()[index].rain = value;
+                WeatherData::hours[index].rain = value;
         } else if (key == "humidity") {
                 qDebug() << "Found humidity:" << value.template get<float>();
-                weather_data.getHours()[index].humidity = value;
+                WeatherData::hours[index].humidity = value;
         } else if (key == "speed") {
                 qDebug() << "Found wind speed:" << value.template get<float>();
-                weather_data.getHours()[index].wind_speed = value;
+                WeatherData::hours[index].wind_speed = value;
         } else if (key == "id") {
                 // TODO WeatherCondition reference instead of a separate weather_id int
                 int weather_id = value.template get<int>();
-                if (weather_data.weathers.find(weather_id) != weather_data.weathers.end()) {
-                        weather_data.getHours()[index].weather = &weather_data.weathers.at(
+                if (WeatherLayoutProp::weather_list.find(weather_id)
+                    != WeatherLayoutProp::weather_list.end()) {
+                        WeatherData::hours[index].weather = &WeatherLayoutProp::weather_list.at(
                                 weather_id);
                         qDebug() << "And its weather_id is" << weather_id << "corresponding to"
-                                 << weather_data.weathers.at(weather_id).getData();
+                                 << WeatherLayoutProp::weather_list.at(weather_id).getData();
                 }
         } else {
                 qWarning() << "Unexpected key" << key;
