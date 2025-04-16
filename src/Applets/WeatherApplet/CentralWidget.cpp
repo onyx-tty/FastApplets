@@ -28,7 +28,7 @@ std::array<const float*, 2> findTemperatureRange(const Iterator begin, const Ite
                 QApplication::quit();
         }
         std::array<const float*, 2> range{&begin->temperature, &begin->temperature};
-        for (auto it = begin + 1; it != end; ++it) {
+        for (auto it = begin; it != end; ++it) {
                 if (it->temperature < *range[0]) range[0] = &it->temperature; // min
                 if (it->temperature > *range[1]) range[1] = &it->temperature; // max
         }

@@ -43,8 +43,10 @@ void PresentTimeManager::refresh() {
                        WeatherData::hours.size());
                 QApplication::quit();
         }
-        if (WeatherData::hours.size() % hour_spacing != 0) {
-                qFatal("Hour spacing between each weather block is uneven!");
+        // Because we start counting from 1 not 0
+        if ((WeatherData::hours.size() - 1) % hour_spacing != 0) {
+                qFatal("Hour spacing between each weather block is uneven! %zu %zu",
+                       WeatherData::hours.size(), (WeatherData::hours.size() % hour_spacing));
                 qFatal("This is not allowed!");
                 QApplication::quit();
         }

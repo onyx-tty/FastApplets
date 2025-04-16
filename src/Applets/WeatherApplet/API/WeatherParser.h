@@ -28,7 +28,7 @@
 
 // TODO Choosing from APIs on runtime
 
-std::array<HourlyWeatherData, 39> debugInitHours();
+std::array<HourlyWeatherData, HOURLY_WEATHER_DATA_HOURS> debugInitHours();
 
 class WeatherParser final {
 public:

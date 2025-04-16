@@ -22,19 +22,17 @@
 
 #include <algorithm>
 
-const std::array<HourlyWeatherData, 39> debugInitHours() {
+const std::array<HourlyWeatherData, HOURLY_WEATHER_DATA_HOURS> debugInitHours() {
         // TODO Reusable debug function printing out the invoking function's name
         qDebug() << "Starting" << __func__;
         auto hour = HourlyWeatherData();
 
         // TODO I can already tell this isn't a good idea
-        return std::array<HourlyWeatherData, 39>{*&hour, *&hour, *&hour, *&hour, *&hour, *&hour,
-                                                 *&hour, *&hour, *&hour, *&hour, *&hour, *&hour,
-                                                 *&hour, *&hour, *&hour, *&hour, *&hour, *&hour,
-                                                 *&hour, *&hour, *&hour, *&hour, *&hour, *&hour,
-                                                 *&hour, *&hour, *&hour, *&hour, *&hour, *&hour,
-                                                 *&hour, *&hour, *&hour, *&hour, *&hour, *&hour,
-                                                 *&hour, *&hour, *&hour};
+        return std::array<HourlyWeatherData, HOURLY_WEATHER_DATA_HOURS>{
+                *&hour, *&hour, *&hour, *&hour, *&hour, *&hour, *&hour, *&hour, *&hour, *&hour,
+                *&hour, *&hour, *&hour, *&hour, *&hour, *&hour, *&hour, *&hour, *&hour, *&hour,
+                *&hour, *&hour, *&hour, *&hour, *&hour, *&hour, *&hour, *&hour, *&hour, *&hour,
+                *&hour, *&hour, *&hour, *&hour, *&hour, *&hour, *&hour, *&hour, *&hour, *&hour};
 }
 
 WeatherCondition::WeatherCondition(QString name, QString detailed_name, const QImage& day_icon,
@@ -143,7 +141,7 @@ void HourlyWeatherData::printData() const {
                 << "Humidity:" << humidity << "Wind speed:" << wind_speed;
 }
 
-std::array<HourlyWeatherData, 39> WeatherData::hours(debugInitHours());
+std::array<HourlyWeatherData, HOURLY_WEATHER_DATA_HOURS> WeatherData::hours(debugInitHours());
 
 void WeatherData::printData() {
         for (auto& hour : hours) hour.printData();

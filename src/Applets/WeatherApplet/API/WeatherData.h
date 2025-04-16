@@ -25,7 +25,7 @@
 #include <ctime>
 #include <optional>
 
-constexpr int HOURLY_WEATHER_DATA_HOURS = 39;
+constexpr int HOURLY_WEATHER_DATA_HOURS = 40;
 
 struct WeatherCondition final {
         QString name;
