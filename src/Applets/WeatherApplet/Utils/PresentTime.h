@@ -21,6 +21,7 @@
 #include <ctime>
 #include <optional>
 
+// TODO Determine if std::optional is needed (if we need to differentiate "no input" from 0)
 class PresentTimeManager {
 public:
         static constexpr time_t HOUR = 60 * 60;

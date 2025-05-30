@@ -57,7 +57,6 @@ struct HourlyWeatherData final {
         int                     humidity;
         float                   wind_speed;
 
-        // TODO Alias for all the repeating arguments
         HourlyWeatherData();
 
         HourlyWeatherData(const HourlyWeatherData& other);
@@ -70,9 +69,8 @@ struct HourlyWeatherData final {
 
 class WeatherData final {
 public:
-        // TODO I want it to stay private but I want to be able to
-        //	initialize it freely
-        // TODO Simplify that array as a type stored in one place
+        // TODO Private but easy and free initialization
+        // TODO Type alias file
         static std::array<HourlyWeatherData, HOURLY_WEATHER_DATA_HOURS> hours;
 
         WeatherData() = delete;

@@ -74,6 +74,7 @@ QString WeatherCondition::getData() const {
         return QString("{" + name + " : " + detailed_name + "}");
 }
 
+// TODO std::optional
 HourlyWeatherData::HourlyWeatherData() :
         day("N/A"), time(0), city_name("N/A"), weather(&WeatherLayoutProp::weather_list.at(9999)),
         temperature(-9999.f), temperature_feels_like(-9999.f), temperature_min(-9999.f),

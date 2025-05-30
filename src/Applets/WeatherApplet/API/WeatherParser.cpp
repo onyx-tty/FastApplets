@@ -62,7 +62,7 @@ void WeatherParser::updateWeatherData() {
         // debug
         WeatherData::printData();
 
-        // blocs calculated as index
+        // number of blocs for each timestamp, index-friendly
         const int blocs_per_day =
                 findWeatherBlocsFitCount(next_midnight, current_midnight, hour_spacing).value();
         const auto first_day_blocs = findWeatherBlocsFitCount(next_midnight, iter_begin->time,
@@ -72,7 +72,8 @@ void WeatherParser::updateWeatherData() {
                        first_day_blocs.value(), blocs_per_day);
         }
 
-        // identify day names of each hour
+        // identify day names of each hour, assigned to hour->day
+        // TODO This design may not be perfect, HourlyWeatherData should be able to handle it on its own
         WeatherData::fillDayNames(blocs_per_day, first_day_blocs);
 
         // print daily weather info for debug purposes
@@ -100,7 +101,7 @@ void WeatherParser::traverseJson(
         };
 
         // if current key isn't a repeat of last key
-        // (which is always going to happen if we're traversing an array)
+        // (and it'll always be if we're traversing an array)
         if (path.empty() || path.size() < prime_key.size()
             || path.substr(path.size() - prime_key.size()) != prime_key)
                 path += ("/" + prime_key);

@@ -69,7 +69,6 @@ public:
 };
 
 /* Actual Layout Manager */
-// TODO Polymorphism for further customization
 struct LayoutManager {
 private:
         static inline EnvProp env_prop;

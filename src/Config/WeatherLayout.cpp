@@ -121,7 +121,7 @@ const WeatherEnvProp& WeatherLayoutManager::getEnvProp() {
 
 // TODO Too nested, clean this up
 const std::string& WeatherEnvProp::getOpenWeatherKey(const QApplication& app) {
-        // Expect to find a 32-character long alphanumeric key followed by '='
+        // Expect to find a 32-character long alphanumeric key after '='
         static std::pair<std::string, std::string> item{"^OPENWEATHER_API_KEY\\s*=\\s*", "\\w{32}"};
         static bool                                api_key_initialized = false;
 
