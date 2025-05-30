@@ -1,5 +1,4 @@
 #+TITLE: Pretty Applets TODO
-#+Description: Contains what needs to be done in the project as a whole
 
 * Applets [1/5]
 ** DONE Power menu applet
@@ -25,6 +24,7 @@
 ** TODO Flags
 ** TODO TOML configuration
 ** DONE Update the copyright to 2025
+** TODO Separate files for constants and type aliases
 
 * PowerApplet [3/4]
 ** DONE Proper keybindings
@@ -38,4 +38,4 @@
 ** DONE Data structure
 ** DONE UI skeleton
 ** TODO UI layout
-** TODO GUI elements
+** TODO Proper GUI
