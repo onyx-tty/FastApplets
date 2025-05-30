@@ -1,13 +1,13 @@
 #+TITLE: Pretty Applets TODO
 
-* Applets [1/5]
-** DONE Power menu applet
-** TODO Weather applet
-** TODO System management applet with toggle functionality
+* Applets [0/5]
+** PROJ Power menu applet
+** PROJ Weather applet
+** TODO System management applet with status checking and toggle functionality
 ** TODO Security menu applet with toggle functionality
 ** TODO Highly configurable list of programs/shell commands
 
-* Base [3/12]
+* Base [4/13]
 ** DONE LICENSE
 ** TODO README.md
 ** DONE Error handling in all relevant places
