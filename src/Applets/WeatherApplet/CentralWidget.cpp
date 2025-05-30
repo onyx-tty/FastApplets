@@ -30,6 +30,7 @@ std::array<const float*, 2> findTemperatureRange(const Iterator begin, const Ite
                 // TODO std::optional used to properly handle lacking data
                 return {0, 0};
         }
+
         std::array<const float*, 2> range{&begin->temperature, &begin->temperature};
         for (auto it = begin; it != end; ++it) {
                 if (it->temperature < *range[0]) range[0] = &it->temperature; // min

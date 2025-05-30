@@ -34,7 +34,7 @@ class WeatherParser final {
 public:
         explicit WeatherParser(QWidget* const parent, const QApplication& app);
 
-        void         updateWeatherData();
+        void updateWeatherData();
 
 private:
         /* APIs */

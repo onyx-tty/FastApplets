@@ -33,4 +33,5 @@ public:
 private:
         CentralWidget* central_widget;
 };
+
 #endif // WEATHER_MAIN_WINDOW_H

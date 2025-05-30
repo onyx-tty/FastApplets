@@ -14,7 +14,7 @@
 ** DONE Icon inclusion in the executable
 ** TODO Fallback icons
 ** TODO Debug functions
-** TODO Customizable:
+** TODO Customizable
 *** [X] Window dimensions
 *** [X] Icons
 *** [ ] Layouts
