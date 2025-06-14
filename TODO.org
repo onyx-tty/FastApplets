@@ -1,0 +1,21 @@
+#+TITLE: Pretty Applets TODO
+#+Description: Contains what needs to be done in the project as a whole
+
+* DONE Git repo
+* TODO Finish MainWindow
+* TODO Proper keybindings with signals and slots
+* TODO Finished styling
+* TODO D-Bus API
+* TODO Find potential memory leaks
+* TODO Customizable window dimensions
+* TODO Customizable icons
+* TODO Customizable styles
+* TODO Compatibility with other inits
+* TODO Applets
+** [ ] Power menu applet
+** [ ] System management applet
+*** A separate application for its management may be required depending on the complexity
+** [ ] Security menu applet
+*** Similar to the above, but mostly for inspecting system security
+** [ ] Weather applet
+** [ ] Qtile theme applet
