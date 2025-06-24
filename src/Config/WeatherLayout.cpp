@@ -22,6 +22,7 @@
 
 #include <fstream>
 #include <regex>
+#include <string>
 
 using global = LayoutManager;
 
