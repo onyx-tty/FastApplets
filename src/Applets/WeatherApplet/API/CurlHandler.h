@@ -29,20 +29,19 @@ using json = nlohmann::json;
 class CurlHandler final {
 private:
         static CURL* curl;
+        static bool  initialized;
 
         static size_t writeCallback(char* ptr, size_t element_size, size_t element_quantity,
                                     void* user_data);
-        static void   initOptions();
+        static void   initialize();
+        static void   cleanup();
 
 public:
         explicit CurlHandler() = delete;
 
-        static void               fetchData(const std::string& target_url);
-        static const std::string& getResponse();
-        // Get a specific part of the received response, mostly meant for debugging
-        static std::string        getResponse(size_t character, size_t length);
-        static std::string        popResponse();
-        static void               setOpt(CURLoption&& option, auto&& value);
+        static std::string download(const std::string& target_url);
+
+        static void setOpt(CURLoption&& option, auto&& value);
 };
 
 #endif // CURL_HANDLER_H

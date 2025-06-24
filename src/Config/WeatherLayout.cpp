@@ -40,9 +40,49 @@ const WeatherLayoutProp     WeatherLayoutManager::layout_prop(global::layout_pro
 /* WeatherMainWindowProp */
 WeatherMainWindowProp::WeatherMainWindowProp(const QSize size, const QString title) :
         MainWindowProp(size, title), size(size), title(title) {};
+
 /* WeatherStyleProp */
 WeatherStyleProp::WeatherStyleProp(const QString button_stylesheet) :
         StyleProp(button_stylesheet), button_stylesheet(button_stylesheet) {};
+
+/* WeatherEnvProp */
+WeatherEnvProp::WeatherEnvProp() {};
+
+// TODO Too nested, clean this up
+std::string WeatherEnvProp::getOpenWeatherKey(const QApplication& app) {
+        // Expect to find a 32-character long alphanumeric key after '='
+        static std::pair<std::string, std::string> item{"^OPENWEATHER_API_KEY\\s*=\\s*", "\\w{32}"};
+        static bool                                api_key_initialized = false;
+
+        if (!api_key_initialized) {
+                std::ifstream file(global::getEnvProp().getDotenvFilepath().toStdString(),
+                                   std::ifstream::in);
+                for (std::string line; std::getline(file, line);) {
+                        std::smatch results;
+                        qDebug() << "Line:" << line;
+
+                        // if we find our API key, trigger this
+                        if (std::regex_search(line, results, std::regex(item.second))) {
+                                item.second = results.str(0);
+                                qDebug() << "OpenWeather API key found!";
+                                file.close();
+                                api_key_initialized = true;
+                                return item.second;
+                        }
+                }
+                // else if API key wasn't found in the previous loop
+                qCritical() << "OpenWeather API key not found!";
+                QApplication::quit();
+        }
+
+        return item.second;
+}
+
+std::string WeatherEnvProp::getAPICallURL(const QApplication& app) {
+        // id 756135 - Warsaw
+        return std::string("http://api.openweathermap.org/data/2.5/forecast?id=756135&appid="
+                           + getOpenWeatherKey(app));
+}
 
 /* WeatherLayoutProp */
 WeatherLayoutProp::WeatherLayoutProp(const QSizePolicy button_policy,
@@ -114,40 +154,3 @@ const std::unordered_map<int, WeatherCondition> WeatherLayoutProp::weather_list{
         {803, WeatherCondition("Clouds", "broken clouds: 51-84%", QImage(), QImage())},
         {804, WeatherCondition("Clouds", "overcast clouds: 85-100%", QImage(), QImage())},
         {9999, WeatherCondition("NULL", "NULL", QImage(), QImage())}};
-
-/* WeatherEnvProp */
-WeatherEnvProp::WeatherEnvProp() {};
-
-const WeatherEnvProp& WeatherLayoutManager::getEnvProp() {
-        return env_prop;
-}
-
-// TODO Too nested, clean this up
-const std::string& WeatherEnvProp::getOpenWeatherKey(const QApplication& app) {
-        // Expect to find a 32-character long alphanumeric key after '='
-        static std::pair<std::string, std::string> item{"^OPENWEATHER_API_KEY\\s*=\\s*", "\\w{32}"};
-        static bool                                api_key_initialized = false;
-
-        if (!api_key_initialized) {
-                std::ifstream file(global::getEnvProp().getDotenvFilepath().toStdString(),
-                                   std::ifstream::in);
-                for (std::string line; std::getline(file, line);) {
-                        std::smatch results;
-                        qDebug() << "Line:" << line;
-
-                        // if we find our API key, trigger this
-                        if (std::regex_search(line, results, std::regex(item.second))) {
-                                item.second = results.str(0);
-                                qDebug() << "OpenWeather API key found!";
-                                file.close();
-                                api_key_initialized = true;
-                                return item.second;
-                        }
-                }
-                // else if API key wasn't found in the previous loop
-                qCritical() << "OpenWeather API key not found!";
-                QApplication::quit();
-        }
-
-        return item.second;
-}

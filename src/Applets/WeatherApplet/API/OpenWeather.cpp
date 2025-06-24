@@ -26,24 +26,10 @@
 
 #include <string>
 
-std::string OpenWeatherAPI::getUserURL(const QApplication& app) {
-        return "http://api.openweathermap.org/data/2.5/forecast?id=524901&appid="
-                + WeatherLayoutManager::env_prop.getOpenWeatherKey(app);
-}
+json OpenWeatherAPI::fetchWeatherReport(const QApplication& app) {
+        // Build target API call URL from API key and target city expressed as code
+        std::string api_call_url = WeatherLayoutManager::env_prop.getAPICallURL(app);
 
-void OpenWeatherAPI::callAPI() {
-        CurlHandler::fetchData(getUserURL());
-        api_response = json::parse(CurlHandler::getResponse());
-}
-
-void OpenWeatherAPI::printResponse() {
-        if (api_response.empty()) {
-                qWarning() << "API response is empty";
-        } else {
-                qInfo() << api_response.dump(8);
-        }
-}
-
-const json& OpenWeatherAPI::getResponse() {
-        return api_response;
+        // Return our weather report
+        return json::parse(CurlHandler::download(api_call_url));
 }

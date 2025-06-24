@@ -23,22 +23,14 @@
 #include <QWidget>
 
 #include <nlohmann/json.hpp>
-#include <string>
 
 using json = nlohmann::json;
 
 class OpenWeatherAPI final {
-private:
-        static json api_response;
-
-        static std::string getUserUrl();
-
 public:
         explicit OpenWeatherAPI() = delete;
 
-        static void callApi();
-        static void printResponse();
-        static const json& getResponse();
+        static json fetchWeatherReport(const QApplication& app);
 };
 
 #endif // OPEN_WEATHER_H

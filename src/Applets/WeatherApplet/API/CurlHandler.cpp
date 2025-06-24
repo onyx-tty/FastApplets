@@ -20,7 +20,8 @@
 #include <QApplication>
 #include <QDebug>
 
-CURL* CurlHandler::curl = nullptr;
+CURL* CurlHandler::curl        = nullptr;
+bool  CurlHandler::initialized = false;
 
 size_t CurlHandler::writeCallback(char* ptr, size_t chunk_element_size,
                                   size_t chunk_element_quantity, void* user_data) {
@@ -32,59 +33,78 @@ size_t CurlHandler::writeCallback(char* ptr, size_t chunk_element_size,
         return total_chunk_size;
 }
 
-void CurlHandler::initOptions() {
-        curl_global_init(CURL_GLOBAL_DEFAULT);
-        qDebug() << "Curl initialized!";
+void CurlHandler::initialize() {
+        if (!initialized) {
+                // Init libcurl global environment
+                curl_global_init(CURL_GLOBAL_DEFAULT);
 
-        // TODO Dotenv appid accessed
-        setOpt(CURLOPT_WRITEDATA, &response_buffer);
-        setOpt(CURLOPT_WRITEFUNCTION, &writeCallback);
-        setOpt(CURLOPT_MAXFILESIZE, 1024 * 1024 * 2); // limit of 5 mb
+                // Create a curl handle
+                curl = curl_easy_init();
+                if (!curl) { qFatal("Failed to initialize curl handle!"); }
 
-        // debug
-        setOpt(CURLOPT_VERBOSE, 1L);
+                qDebug() << "Curl initialized!";
+
+                // TODO Dotenv appid accessed
+                // Choose and set up reponse buffer for data
+                setOpt(CURLOPT_WRITEFUNCTION, &writeCallback);
+                setOpt(CURLOPT_MAXFILESIZE, 1024 * 1024 * 2); // limit of 2 mb
+
+                // Enable debut output to stdout
+                setOpt(CURLOPT_VERBOSE, 1L);
+
+                // Automatically clean up curl at application exit
+                QObject::connect(qApp, &QCoreApplication::aboutToQuit, []() { cleanup(); });
+                initialized = true; // initialization successfully finalized
+        }
 }
 
-CurlHandler::CurlHandler() : curl(curl_easy_init()) {
-        initOptions();
+void CurlHandler::cleanup() {
+        if (initialized) {
+                curl_easy_cleanup(curl);
+                curl_global_cleanup();
+                initialized = false;
+        }
 }
 
-CurlHandler::~CurlHandler() {
-        curl_easy_cleanup(curl);
-        curl_global_cleanup();
-}
+// New method
+std::string CurlHandler::download(const std::string& target_url) {
+        // Configure our curl if it's not configured yet
+        if (!initialized) { initialize(); }
 
-void CurlHandler::fetchData(const std::string& target_url) {
+        // Obtained data will continue being appended to our response_buffer
+        std::string response_buffer;
+
+        // Tracker for errors
         CURLcode result;
+
+        // Set writing to our response_buffer
+        setOpt(CURLOPT_WRITEDATA, &response_buffer);
+
+        // Specify target url
         setOpt(CURLOPT_URL, target_url.c_str());
-        response_buffer.clear(); // overwrite the buffer
 
-        // setOpt has already checked for the validity of curl
+        // Attempt downloading, success?
         result = curl_easy_perform(curl);
-
         if (result != CURLE_OK) {
-                fprintf(stderr, "curl_easy_perform() returned %s\n", curl_easy_strerror(result));
+                qCritical() << "Curl failed to fetch data from" << target_url << "!";
+                qCritical() << "curl_easy_perform() returned" << curl_easy_strerror(result) << "in"
+                            << __func__;
+                return std::string();
         }
 
-        qInfo() << "Response size: " << response_buffer.size();
-}
+        // Notify us of the size of downloaded data
+        qDebug() << "Response size: " << response_buffer.size();
 
-const std::string& CurlHandler::getResponse() const {
-        return response_buffer;
-}
-
-const std::string CurlHandler::getResponse(size_t character, size_t length) const {
-        return response_buffer.substr(character, length);
-}
-
-const std::string CurlHandler::popResponse() {
+        // Return released response_buffer data
         return std::move(response_buffer);
 }
 
 void CurlHandler::setOpt(CURLoption&& option, auto&& value) {
         if (curl && value) {
                 CURLcode result = curl_easy_setopt(curl, option, value);
-                if (result != CURLE_OK) qFatal("failure at: %s", curl_easy_strerror(result));
+                if (result != CURLE_OK)
+                        qFatal("failure setting curl option at %s in %s",
+                               curl_easy_strerror(result), __func__);
         } else if (!curl) {
                 qFatal("curl is null in %s", __func__);
         } else if (!value) {

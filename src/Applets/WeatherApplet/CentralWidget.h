@@ -18,8 +18,6 @@
 #ifndef CENTRAL_WIDGET_H
 #define CENTRAL_WIDGET_H
 
-#include "API/WeatherParser.h"
-
 #include <QApplication>
 #include <QHBoxLayout>
 #include <QVBoxLayout>
@@ -42,23 +40,23 @@ public:
 
 class CurrentDayLayout final {
 public:
-        explicit CurrentDayLayout();
+        explicit CurrentDayLayout() = delete;
 
-        QVBoxLayout* getLayout();
+        static QVBoxLayout* getLayout();
 
 private:
-        QVBoxLayout* layout;
+        static QVBoxLayout* layout;
 };
 
-class CurrentWeekLayout final {
+class CurrentWeekLayout final : public QWidget {
 public:
-        explicit CurrentWeekLayout();
+        explicit CurrentWeekLayout() = delete;
 
-        void         refreshCells(); // TODO Finish
-        QVBoxLayout* getLayout();
+        static void         refreshCells(); // TODO Finish
+        static QVBoxLayout* getLayout();
 
 private:
-        QVBoxLayout* layout;
+        static QVBoxLayout* layout;
 };
 
 class CentralWidget final : public QWidget {
@@ -69,8 +67,7 @@ public:
         QHBoxLayout* getMainLayout();
 
 private:
-        QHBoxLayout*  main_layout;
-        WeatherParser weather_parser;
+        QHBoxLayout* main_layout;
 };
 
 #endif // CENTRAL_WIDGET_H

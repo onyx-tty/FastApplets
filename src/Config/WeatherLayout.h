@@ -41,10 +41,10 @@ struct WeatherStyleProp : public StyleProp {
 };
 
 struct WeatherEnvProp : public EnvProp {
-        // TODO Rewrite to include other weather APIs
-        static const std::string& getOpenWeatherKey(const QApplication& app);
-
         explicit WeatherEnvProp();
+
+        static std::string getOpenWeatherKey(const QApplication& app);
+        static std::string getAPICallURL(const QApplication& app); // uses getOpenWeatherKey
 };
 
 struct WeatherLayoutProp : public LayoutProp {
@@ -56,18 +56,14 @@ struct WeatherLayoutProp : public LayoutProp {
 
 // TODO Optimize to avoid repeating identical props
 struct WeatherLayoutManager : public LayoutManager {
-private:
-        static inline WeatherEnvProp env_prop;
-
 public:
         static const WeatherMainWindowProp main_window_prop;
         static const WeatherStyleProp      style_prop;
         // TODO WeatherButtonProp
+        static inline const WeatherEnvProp env_prop{};
         static const WeatherLayoutProp     layout_prop;
 
         explicit WeatherLayoutManager() = delete;
-
-        static const WeatherEnvProp& getEnvProp();
 };
 
 #endif // WEATHER_LAYOUT_H

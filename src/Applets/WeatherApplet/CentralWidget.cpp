@@ -18,6 +18,7 @@
 #include "CentralWidget.h"
 #include "../../Config/WeatherLayout.h"
 #include "Utils/PresentTime.h"
+#include "API/WeatherParser.h"
 
 #include <QDebug>
 #include <QLabel>
@@ -77,94 +78,41 @@ QBoxLayout* CellFactory::createCell(const QBoxLayout::Direction layout_direction
         return cell;
 }
 
-CurrentDayLayout::CurrentDayLayout() : layout(new QVBoxLayout) {
-        const auto alignment = QBoxLayout::LeftToRight;
-        auto       now       = WeatherData::hours.cbegin();
-
-        // weather
-        layout->addLayout(CellFactory::createCell(alignment, now->weather->day_icon, {},
-                                                  {now->weather->detailed_name}));
-        // temperature
-        layout->addLayout(CellFactory::createCell(alignment, QImage(),
-                                                  QString::number(now->temperature),
-                                                  {"Temperature"}));
-        // city name
-        // TODO Fetch it from the API call, it's going to be empty until then
-        layout->addLayout(CellFactory::createCell(alignment, QImage(), {}, {now->city_name}));
-        // pressure
-        layout->addLayout(CellFactory::createCell(alignment, QImage(),
-                                                  QString::number(now->atmospheric_pressure),
-                                                  {"Pressure"}));
-        // wind speed
-        layout->addLayout(CellFactory::createCell(alignment, QImage(),
-                                                  QString::number(now->wind_speed), {"Wind"}));
-        // humidity
-        layout->addLayout(CellFactory::createCell(alignment, QImage(),
-                                                  QString::number(now->humidity), {"Humidity"}));
-        // rain
-        layout->addLayout(
-                CellFactory::createCell(alignment, QImage(), QString::number(now->rain), {"Rain"}));
-}
-
 QVBoxLayout* CurrentDayLayout::getLayout() {
         if (!layout) {
-                qFatal("CurrentDayLayout's layout is nullptr, quitting!");
-                QApplication::quit();
+                layout = new QVBoxLayout;
+                const auto alignment = QBoxLayout::LeftToRight;
+                auto       now       = WeatherData::hours.cbegin();
+
+                // weather
+                layout->addLayout(CellFactory::createCell(alignment, now->weather->day_icon, {},
+                                                          {now->weather->detailed_name}));
+                // temperature
+                layout->addLayout(CellFactory::createCell(alignment, QImage(),
+                                                          QString::number(now->temperature),
+                                                          {"Temperature"}));
+                // city name
+                // TODO Fetch it from the API call, it's going to be empty until then
+                layout->addLayout(CellFactory::createCell(alignment, QImage(), {}, {now->city_name}));
+                // pressure
+                layout->addLayout(CellFactory::createCell(alignment, QImage(),
+                                                          QString::number(now->atmospheric_pressure),
+                                                          {"Pressure"}));
+                // wind speed
+                layout->addLayout(CellFactory::createCell(alignment, QImage(),
+                                                          QString::number(now->wind_speed), {"Wind"}));
+                // humidity
+                layout->addLayout(CellFactory::createCell(alignment, QImage(),
+                                                          QString::number(now->humidity), {"Humidity"}));
+                // rain
+                layout->addLayout(
+                        CellFactory::createCell(alignment, QImage(), QString::number(now->rain), {"Rain"}));
         }
 
         return layout;
 }
 
-CurrentWeekLayout::CurrentWeekLayout() : layout(new QVBoxLayout) {
-        // TODO Replace certain elements with WeatherData::fillDayNames
-        constexpr auto cell_alignment     = QBoxLayout::TopToBottom;
-        const auto     begin              = WeatherData::hours.cbegin(), end = WeatherData::hours.cend();
-        const auto&    blocs_per_day      = PresentTimeManager::getBlocsPerDay(),
-                       first_day_blocs    = PresentTimeManager::getFirstDayBlocs().value_or(0),
-                       last_day_blocs     = PresentTimeManager::getLastDayBlocs();
-        using Range                       = std::array<const float*, 2>;
-        const auto formatTemperatureRange = [](const Range& temperature_range) -> const QString {
-                return QString::number(*temperature_range[0]) + "-"
-                     + QString::number(*temperature_range[1]);
-        };
-
-        // First, we set up the range of blocs to be iterated over for the first day
-        // Next, we create a cell for that potentially incomplete day
-        std::pair<const HourlyWeatherData*, const HourlyWeatherData*>
-                bloc_border{begin, (begin + first_day_blocs)};
-        Range   temperature_range = findTemperatureRange(bloc_border.first, bloc_border.second);
-        layout->addLayout(CellFactory::createCell(cell_alignment, QImage(),
-                                                  formatTemperatureRange(temperature_range),
-                                                  {bloc_border.first->day}));
-
-        // We're done with day 1, moving forward we expect a range with the length of blocs_per_day
-        bloc_border.first  = bloc_border.second + 1;
-        bloc_border.second = bloc_border.first + blocs_per_day;
-
-        // Then we iterate over the blocs in-between the first and last days
-        // creating cells along the way
-        for (; bloc_border.second + blocs_per_day < end;
-             bloc_border.first += blocs_per_day, bloc_border.second += blocs_per_day) {
-                temperature_range = findTemperatureRange(bloc_border.first, bloc_border.second);
-                layout->addLayout(CellFactory::createCell(cell_alignment, QImage(),
-                                                          formatTemperatureRange(temperature_range),
-                                                          {bloc_border.first->day}));
-
-                // Keep iterating until adding blocs_per_day makes us go beyond iter_end
-                if (bloc_border.second + blocs_per_day < end) {
-                        continue;
-                } else if (first_day_blocs != blocs_per_day) {
-                        bloc_border.first  = bloc_border.second + 1;
-                        bloc_border.second = bloc_border.first + last_day_blocs;
-                        temperature_range  = findTemperatureRange(bloc_border.first,
-                                                                  bloc_border.second);
-                        layout->addLayout(
-                                CellFactory::createCell(cell_alignment, QImage(),
-                                                        formatTemperatureRange(temperature_range),
-                                                        {bloc_border.first->day}));
-                }
-        }
-}
+QVBoxLayout* CurrentDayLayout::layout = nullptr;
 
 void CurrentWeekLayout::refreshCells() {
         using Range                 = std::array<const float*, 2>;
@@ -177,27 +125,77 @@ void CurrentWeekLayout::refreshCells() {
 
 QVBoxLayout* CurrentWeekLayout::getLayout() {
         if (!layout) {
-                qFatal("CurrentWeekLayout's layout is nullptr, quitting!");
-                QApplication::quit();
+                layout = new QVBoxLayout;
+                // TODO Replace certain elements with WeatherData::fillDayNames
+                constexpr auto cell_alignment     = QBoxLayout::LeftToRight;
+                const auto     begin              = WeatherData::hours.cbegin(), end = WeatherData::hours.cend();
+                const auto&    blocs_per_day      = PresentTimeManager::getBlocsPerDay(),
+                               first_day_blocs    = PresentTimeManager::getFirstDayBlocs().value_or(0),
+                               last_day_blocs     = PresentTimeManager::getLastDayBlocs();
+                using Range                       = std::array<const float*, 2>;
+                const auto formatTemperatureRange = [](const Range& temperature_range) -> const QString {
+                        return QString::number(*temperature_range[0]) + "-"
+                             + QString::number(*temperature_range[1]);
+                };
+
+                // First, we set up the range of blocs to be iterated over for the first day
+                // Next, we create a cell for that potentially incomplete day
+                std::pair<const HourlyWeatherData*, const HourlyWeatherData*>
+                        bloc_border{begin, (begin + first_day_blocs)};
+                Range   temperature_range = findTemperatureRange(bloc_border.first, bloc_border.second);
+                layout->addLayout(CellFactory::createCell(cell_alignment, QImage(),
+                                                          formatTemperatureRange(temperature_range),
+                                                          {bloc_border.first->day}));
+
+                // We're done with day 1, moving forward we expect a range with the length of blocs_per_day
+                bloc_border.first  = bloc_border.second + 1;
+                bloc_border.second = bloc_border.first + blocs_per_day;
+
+                // Then we iterate over the blocs in-between the first and last days
+                // creating cells along the way
+                for (; bloc_border.second + blocs_per_day < end;
+                     bloc_border.first += blocs_per_day, bloc_border.second += blocs_per_day) {
+                        temperature_range = findTemperatureRange(bloc_border.first, bloc_border.second);
+                        layout->addLayout(CellFactory::createCell(cell_alignment, QImage(),
+                                                                  formatTemperatureRange(temperature_range),
+                                                                  {bloc_border.first->day}));
+
+                        // Keep iterating until adding blocs_per_day makes us go beyond iter_end
+                        if (bloc_border.second + blocs_per_day < end) {
+                                continue;
+                        } else if (first_day_blocs != blocs_per_day) {
+                                bloc_border.first  = bloc_border.second + 1;
+                                bloc_border.second = bloc_border.first + last_day_blocs;
+                                temperature_range  = findTemperatureRange(bloc_border.first,
+                                                                          bloc_border.second);
+                                layout->addLayout(
+                                        CellFactory::createCell(cell_alignment, QImage(),
+                                                                formatTemperatureRange(temperature_range),
+                                                                {bloc_border.first->day}));
+                        }
+                }
         }
 
         return layout;
 }
 
+QVBoxLayout* CurrentWeekLayout::layout = nullptr;
+
 CentralWidget::CentralWidget(QWidget* parent, const QApplication& app) :
-        QWidget(parent), main_layout(new QHBoxLayout(this)), weather_parser(this, app) {
+        QWidget(parent), main_layout(new QHBoxLayout(this)) {
         WeatherLayoutManager::setup(app); // We give WeatherLayoutManager access to runtime
-        weather_parser.updateWeatherData();
+        WeatherParser::updateWeatherData(app);
+
         // Split main layout
         auto* left_layout  = new QVBoxLayout;
         auto* right_layout = new QVBoxLayout;
-        main_layout->addLayout(left_layout);
-        main_layout->addLayout(right_layout);
+
+        main_layout->addLayout(left_layout, 1);
+        main_layout->addLayout(right_layout, 1);
+
         // Parts of left layout
-        CurrentDayLayout  current_day_layout;
-        CurrentWeekLayout current_week_layout;
-        left_layout->addLayout(current_day_layout.getLayout());
-        left_layout->addLayout(current_week_layout.getLayout());
+        left_layout->addLayout(CurrentDayLayout::getLayout());
+        left_layout->addLayout(CurrentWeekLayout::getLayout());
 };
 
 QHBoxLayout* CentralWidget::getMainLayout() {
