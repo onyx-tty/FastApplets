@@ -18,32 +18,31 @@
 #ifndef CURL_HANDLER_H
 #define CURL_HANDLER_H
 
+#include <QString>
+
 #include <curl/curl.h>
 #include <nlohmann/json.hpp>
 #include <string>
-#include <QString>
 
 using json = nlohmann::json;
 
 class CurlHandler final {
 private:
-        CURL*       curl;
-        std::string response_buffer;
+        static CURL* curl;
 
         static size_t writeCallback(char* ptr, size_t element_size, size_t element_quantity,
                                     void* user_data);
-        void          initOptions();
+        static void   initOptions();
 
 public:
-        explicit CurlHandler();
-        ~CurlHandler();
+        explicit CurlHandler() = delete;
 
-        void               fetchData(const std::string& target_url);
-        const std::string& getResponse() const;
+        static void               fetchData(const std::string& target_url);
+        static const std::string& getResponse();
         // Get a specific part of the received response, mostly meant for debugging
-        const std::string  getResponse(size_t character, size_t length) const;
-        const std::string  popResponse();
-        void               setOpt(CURLoption&& option, auto&& value);
+        static std::string        getResponse(size_t character, size_t length);
+        static std::string        popResponse();
+        static void               setOpt(CURLoption&& option, auto&& value);
 };
 
 #endif // CURL_HANDLER_H

@@ -20,6 +20,8 @@
 #include <QApplication>
 #include <QDebug>
 
+CURL* CurlHandler::curl = nullptr;
+
 size_t CurlHandler::writeCallback(char* ptr, size_t chunk_element_size,
                                   size_t chunk_element_quantity, void* user_data) {
         size_t total_chunk_size = chunk_element_size * chunk_element_quantity;

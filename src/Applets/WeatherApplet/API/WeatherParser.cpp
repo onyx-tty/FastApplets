@@ -34,19 +34,15 @@
 
 using json = nlohmann::json;
 
-WeatherParser::WeatherParser(QWidget* parent, const QApplication& app) :
-        open_weather(parent, app) {}
-
-void WeatherParser::updateWeatherData() {
+void WeatherParser::updateWeatherData(const QApplication& app) {
         // fetch data from OpenWeather's API call
-        open_weather.callAPI();
-        const json& response = open_weather.getResponse();
+        const json& response = OpenWeatherAPI::fetchWeatherReport(app);
 
         // extract and assign weather data from our fetched response
         int index = 0;
         traverseJson(
                 "", response, "",
-                [this](const std::string& key, const json& data, std::string path, int index) {
+                [](const std::string& key, const json& data, std::string path, int index) {
                         processWeatherItem(key, data, key, index);
                 },
                 index);

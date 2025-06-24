@@ -19,36 +19,28 @@
 #define WEATHER_PARSER_H
 
 #include "OpenWeather.h"
-#include "WeatherData.h"
 
 #include <QApplication>
 #include <QWidget>
 
 #include <string>
 
-// TODO Choosing from APIs on runtime
-
-std::array<HourlyWeatherData, HOURLY_WEATHER_DATA_HOURS> debugInitHours();
-
 class WeatherParser final {
 public:
-        explicit WeatherParser(QWidget* const parent, const QApplication& app);
+        explicit WeatherParser() = delete;
 
-        void updateWeatherData();
+        static void updateWeatherData(const QApplication& app);
 
 private:
-        /* APIs */
-        OpenWeatherAPI open_weather;
-
         // Iterate through received JSON file containing weather data
-        void traverseJson(
+        static void traverseJson(
                 const std::string& prime_key, const json& prime_value, std::string path,
                 const std::function<void(const std::string&, const json&, std::string, int)>& handler,
                 int& index);
 
         // traverseJson will forward us to this method on each single key:pair found that isn't an array or object
-        void processWeatherItem(const std::string& key, const json& value, const std::string& path,
-                                int& index);
+        static void processWeatherItem(const std::string& key, const json& value,
+                                       const std::string& path, int& index);
 };
 
 #endif // WEATHER_PARSER_H

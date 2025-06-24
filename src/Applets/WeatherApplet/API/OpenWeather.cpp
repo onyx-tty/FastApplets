@@ -16,6 +16,7 @@
    along with this program.  If not, see <https://www.gnu.org/licenses/>. */
 
 #include "OpenWeather.h"
+#include "CurlHandler.h"
 #include "../../../Config/WeatherLayout.h"
 
 #include <QApplication>
@@ -23,29 +24,19 @@
 #include <QDir>
 #include <QFileInfo>
 
-#include <cstdlib>
-#include <curl/curl.h>
 #include <string>
 
-// TODO Runtime input of API keys
-const std::string OpenWeatherAPI::getUserURL() {
-        // TODO New layout file
-        const std::string url = "http://api.openweathermap.org/data/2.5/forecast?id=524901&appid="
-                              + WeatherLayoutManager::getEnvProp().getOpenWeatherKey(app);
-        return std::move(url);
+std::string OpenWeatherAPI::getUserURL(const QApplication& app) {
+        return "http://api.openweathermap.org/data/2.5/forecast?id=524901&appid="
+                + WeatherLayoutManager::env_prop.getOpenWeatherKey(app);
 }
-
-OpenWeatherAPI::OpenWeatherAPI(QWidget* parent, const QApplication& app) :
-        parent(parent), app(app) {}
-
-OpenWeatherAPI::~OpenWeatherAPI() {}
 
 void OpenWeatherAPI::callAPI() {
-        curl.fetchData(getUserURL());
-        api_response = json::parse(curl.getResponse());
+        CurlHandler::fetchData(getUserURL());
+        api_response = json::parse(CurlHandler::getResponse());
 }
 
-void OpenWeatherAPI::printResponse() const {
+void OpenWeatherAPI::printResponse() {
         if (api_response.empty()) {
                 qWarning() << "API response is empty";
         } else {
@@ -53,14 +44,6 @@ void OpenWeatherAPI::printResponse() const {
         }
 }
 
-const json& OpenWeatherAPI::getResponse() const {
+const json& OpenWeatherAPI::getResponse() {
         return api_response;
-}
-
-const QApplication& OpenWeatherAPI::getApp() const {
-        return app;
-}
-
-const CurlHandler& OpenWeatherAPI::getCurl() const {
-        return curl;
 }
