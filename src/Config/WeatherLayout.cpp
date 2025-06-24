@@ -33,7 +33,9 @@ using global = LayoutManager;
 const WeatherMainWindowProp WeatherLayoutManager::main_window_prop(global::main_window_prop.size,
                                                                    global::main_window_prop.title);
 const WeatherStyleProp      WeatherLayoutManager::style_prop(global::style_prop.button_stylesheet);
-const WeatherLayoutProp     WeatherLayoutManager::layout_prop(global::layout_prop.button_policy);
+const WeatherLayoutProp     WeatherLayoutManager::layout_prop(global::layout_prop.button_policy,
+                                                              QSizePolicy(QSizePolicy::Expanding,
+                                                                          QSizePolicy::Expanding));
 
 /* WeatherMainWindowProp */
 WeatherMainWindowProp::WeatherMainWindowProp(const QSize size, const QString title) :
@@ -43,8 +45,9 @@ WeatherStyleProp::WeatherStyleProp(const QString button_stylesheet) :
         StyleProp(button_stylesheet), button_stylesheet(button_stylesheet) {};
 
 /* WeatherLayoutProp */
-WeatherLayoutProp::WeatherLayoutProp(const QSizePolicy button_policy) :
-        LayoutProp(button_policy) {};
+WeatherLayoutProp::WeatherLayoutProp(const QSizePolicy button_policy,
+                                     const QSizePolicy cell_policy) :
+        LayoutProp(button_policy), cell_policy(cell_policy) {};
 
 const std::unordered_map<int, WeatherCondition> WeatherLayoutProp::weather_list{
         {200, WeatherCondition("Thunderstorm", "thunderstorm with light rain", QImage(), QImage())},

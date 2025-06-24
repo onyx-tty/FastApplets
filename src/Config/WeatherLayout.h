@@ -48,9 +48,10 @@ struct WeatherEnvProp : public EnvProp {
 };
 
 struct WeatherLayoutProp : public LayoutProp {
+        const QSizePolicy                                      cell_policy;
         static const std::unordered_map<int, WeatherCondition> weather_list;
 
-        explicit WeatherLayoutProp(const QSizePolicy button_policy);
+        explicit WeatherLayoutProp(const QSizePolicy button_policy, const QSizePolicy cell_policy);
 };
 
 // TODO Optimize to avoid repeating identical props
