@@ -25,8 +25,6 @@
 #include <QImage>
 #include <QString>
 
-#include <cmath>
-#include <cstdlib>
 #include <ctime>
 #include <nlohmann/json.hpp>
 #include <string>
