@@ -17,7 +17,7 @@
 
 #include "CentralWidget.h"
 #include "../../Config/WeatherLayout.h"
-#include "Utils/PresentTime.h"
+#include "Utils/PresentTimeManager.h"
 #include "API/WeatherParser.h"
 
 #include <QDebug>

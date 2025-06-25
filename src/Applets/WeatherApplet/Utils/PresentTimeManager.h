@@ -15,8 +15,8 @@
    You should have received a copy of the GNU General Public License
    along with this program.  If not, see <https://www.gnu.org/licenses/>. */
 
-#ifndef PRESENT_TIME_H
-#define PRESENT_TIME_H
+#ifndef PRESENT_TIME_MANAGER_H
+#define PRESENT_TIME_MANAGER_H
 
 #include <ctime>
 #include <optional>
@@ -44,4 +44,4 @@ private:
         PresentTimeManager() = delete;
 };
 
-#endif // PRESENT_TIME_H
+#endif // PRESENT_TIME_MANAGER_H
