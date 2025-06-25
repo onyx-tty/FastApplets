@@ -18,7 +18,7 @@
 #ifndef WEATHER_PARSER_H
 #define WEATHER_PARSER_H
 
-#include "OpenWeather.h"
+#include "OpenWeatherAPI.h"
 
 #include <QApplication>
 #include <QWidget>

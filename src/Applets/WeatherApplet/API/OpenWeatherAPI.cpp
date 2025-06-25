@@ -15,9 +15,9 @@
    You should have received a copy of the GNU General Public License
    along with this program.  If not, see <https://www.gnu.org/licenses/>. */
 
-#include "OpenWeather.h"
 #include "../../../Config/WeatherLayout.h"
 #include "Curl.h"
+#include "OpenWeatherAPI.h"
 
 #include <QApplication>
 #include <QDebug>

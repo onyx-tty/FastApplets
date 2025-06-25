@@ -42,7 +42,7 @@ set(PROJECT_HEADERS
         WeatherMainWindow.h
         CentralWidget.h
         API/Curl.h
-        API/OpenWeather.h
+        API/OpenWeatherAPI.h
         API/WeatherData.h
         API/WeatherParser.h
         Utils/PresentTimeManager.h
@@ -53,7 +53,7 @@ set(PROJECT_SOURCES
         WeatherMainWindow.cpp
         CentralWidget.cpp
         API/Curl.cpp
-        API/OpenWeather.cpp
+        API/OpenWeatherAPI.cpp
         API/WeatherData.cpp
         API/WeatherParser.cpp
         Utils/PresentTimeManager.cpp
