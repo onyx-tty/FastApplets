@@ -15,8 +15,8 @@
    You should have received a copy of the GNU General Public License
    along with this program.  If not, see <https://www.gnu.org/licenses/>. */
 
-#ifndef CURL_HANDLER_H
-#define CURL_HANDLER_H
+#ifndef CURL_H
+#define CURL_H
 
 #include <QString>
 
@@ -26,7 +26,7 @@
 
 using json = nlohmann::json;
 
-class CurlHandler final {
+class Curl final {
 private:
         static CURL* curl;
         static bool  initialized;
@@ -37,11 +37,11 @@ private:
         static void   cleanup();
 
 public:
-        explicit CurlHandler() = delete;
+        explicit Curl() = delete;
 
         static std::string download(const std::string& target_url);
 
         static void setOpt(CURLoption&& option, auto&& value);
 };
 
-#endif // CURL_HANDLER_H
+#endif // CURL_H

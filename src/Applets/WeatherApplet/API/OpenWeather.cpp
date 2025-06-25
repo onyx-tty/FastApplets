@@ -16,8 +16,8 @@
    along with this program.  If not, see <https://www.gnu.org/licenses/>. */
 
 #include "OpenWeather.h"
-#include "CurlHandler.h"
 #include "../../../Config/WeatherLayout.h"
+#include "Curl.h"
 
 #include <QApplication>
 #include <QDebug>
@@ -31,5 +31,5 @@ json OpenWeatherAPI::fetchWeatherReport(const QApplication& app) {
         std::string api_call_url = WeatherLayoutManager::env_prop.getAPICallURL(app);
 
         // Return our weather report
-        return json::parse(CurlHandler::download(api_call_url));
+        return json::parse(Curl::download(api_call_url));
 }

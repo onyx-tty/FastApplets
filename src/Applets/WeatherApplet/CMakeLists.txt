@@ -41,7 +41,7 @@ set(INCLUDED_SOURCES
 set(PROJECT_HEADERS
         WeatherMainWindow.h
         CentralWidget.h
-        API/CurlHandler.h
+        API/Curl.h
         API/OpenWeather.h
         API/WeatherData.h
         API/WeatherParser.h
@@ -52,7 +52,7 @@ set(PROJECT_SOURCES
         main.cpp
         WeatherMainWindow.cpp
         CentralWidget.cpp
-        API/CurlHandler.cpp
+        API/Curl.cpp
         API/OpenWeather.cpp
         API/WeatherData.cpp
         API/WeatherParser.cpp

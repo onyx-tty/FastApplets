@@ -15,15 +15,15 @@
    You should have received a copy of the GNU General Public License
    along with this program.  If not, see <https://www.gnu.org/licenses/>. */
 
-#include "CurlHandler.h"
+#include "Curl.h"
 
 #include <QApplication>
 #include <QDebug>
 
-CURL* CurlHandler::curl        = nullptr;
-bool  CurlHandler::initialized = false;
+CURL* Curl::curl        = nullptr;
+bool  Curl::initialized = false;
 
-size_t CurlHandler::writeCallback(char* ptr, size_t chunk_element_size,
+size_t Curl::writeCallback(char* ptr, size_t chunk_element_size,
                                   size_t chunk_element_quantity, void* user_data) {
         size_t total_chunk_size = chunk_element_size * chunk_element_quantity;
 
@@ -33,7 +33,7 @@ size_t CurlHandler::writeCallback(char* ptr, size_t chunk_element_size,
         return total_chunk_size;
 }
 
-void CurlHandler::initialize() {
+void Curl::initialize() {
         if (!initialized) {
                 // Init libcurl global environment
                 curl_global_init(CURL_GLOBAL_DEFAULT);
@@ -58,7 +58,7 @@ void CurlHandler::initialize() {
         }
 }
 
-void CurlHandler::cleanup() {
+void Curl::cleanup() {
         if (initialized) {
                 curl_easy_cleanup(curl);
                 curl_global_cleanup();
@@ -67,7 +67,7 @@ void CurlHandler::cleanup() {
 }
 
 // New method
-std::string CurlHandler::download(const std::string& target_url) {
+std::string Curl::download(const std::string& target_url) {
         // Configure our curl if it's not configured yet
         if (!initialized) { initialize(); }
 
@@ -99,7 +99,7 @@ std::string CurlHandler::download(const std::string& target_url) {
         return std::move(response_buffer);
 }
 
-void CurlHandler::setOpt(CURLoption&& option, auto&& value) {
+void Curl::setOpt(CURLoption&& option, auto&& value) {
         if (curl && value) {
                 CURLcode result = curl_easy_setopt(curl, option, value);
                 if (result != CURLE_OK)
