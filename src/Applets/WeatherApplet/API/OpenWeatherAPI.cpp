@@ -16,7 +16,7 @@
    along with this program.  If not, see <https://www.gnu.org/licenses/>. */
 
 #include "../../../Config/WeatherLayout.h"
-#include "Curl.h"
+#include "../../../API/Curl.h"
 #include "OpenWeatherAPI.h"
 
 #include <QApplication>

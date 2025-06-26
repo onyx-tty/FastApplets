@@ -26,6 +26,7 @@ set(INCLUDED_HEADERS
         ../../Config/SharedLayout.h
         ../../Config/SharedKeybindings.h
         ../../Config/WeatherLayout.h
+        ../../API/Curl.h
         ../../Utils/Time.h
 )
 
@@ -35,13 +36,13 @@ set(INCLUDED_SOURCES
         ../../Config/SharedLayout.cpp
         ../../Config/SharedKeybindings.cpp
         ../../Config/WeatherLayout.cpp
+        ../../API/Curl.cpp
         ../../Utils/Time.cpp
 )
 
 set(PROJECT_HEADERS
         WeatherMainWindow.h
         CentralWidget.h
-        API/Curl.h
         API/OpenWeatherAPI.h
         API/WeatherData.h
         API/WeatherParser.h
@@ -52,7 +53,6 @@ set(PROJECT_SOURCES
         main.cpp
         WeatherMainWindow.cpp
         CentralWidget.cpp
-        API/Curl.cpp
         API/OpenWeatherAPI.cpp
         API/WeatherData.cpp
         API/WeatherParser.cpp

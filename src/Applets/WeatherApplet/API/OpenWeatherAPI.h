@@ -18,7 +18,7 @@
 #ifndef OPEN_WEATHER_H
 #define OPEN_WEATHER_H
 
-#include "Curl.h"
+#include "../../../API/Curl.h"
 
 #include <QWidget>
 
