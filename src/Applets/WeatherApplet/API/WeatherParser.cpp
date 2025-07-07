@@ -19,6 +19,7 @@
 #include "../../../Config/WeatherLayout.h"
 #include "../../../Utils/Time.h"
 #include "WeatherData.h"
+#include "../../../../modules/TraverseJSON/include/TraverseJSON.h"
 
 #include <QApplication>
 #include <QDebug>
@@ -28,9 +29,11 @@
 #include <ctime>
 #include <nlohmann/json.hpp>
 #include <string>
-#include <type_traits>
 
 using json = nlohmann::json;
+
+using callback  = std::function<void(const std::string&, const json&, std::string, int)>;
+using predicate = std::function<bool()>;
 
 void WeatherParser::updateWeatherData(const QApplication& app) {
         // fetch data from OpenWeather's API call
@@ -38,12 +41,15 @@ void WeatherParser::updateWeatherData(const QApplication& app) {
 
         // extract and assign weather data from our fetched response
         int index = 0;
-        traverseJson(
-                "", response, "",
-                [](const std::string& key, const json& data, std::string path, int index) {
-                        processWeatherItem(key, data, key, index);
-                },
-                index);
+        TraverseJSON::traverseJSON(
+            std::string(""),
+            response,
+            std::string(""),
+            index,
+            [](const std::string& key, const json& data, std::string path, int index) {
+                    processWeatherItem(key, data, key, index);
+            },
+            [](int index) -> bool { return index == (WeatherData::hours.size() - 1); });
 
         // time units in seconds
         constexpr time_t hour = 60 * 60, day = hour * 24;
@@ -73,51 +79,6 @@ void WeatherParser::updateWeatherData(const QApplication& app) {
         // print daily weather info for debug purposes
         qDebug() << "Daily weather info from" << __func__ << ":";
         for (const auto& hour : WeatherData::hours) hour.printData();
-}
-
-// TODO Too nested, refactor and optimize
-void WeatherParser::traverseJson(
-        const std::string& prime_key, const json& prime_value, std::string path,
-        const std::function<void(const std::string&, const json&, std::string, int)>& handler,
-        int&                                                                          index) {
-        // TODO Move elsewhere
-        auto tryStringToIntConversion = [](const std::string& input_string,
-                                           int&               output_number) -> bool {
-                try {
-                        qDebug() << "Trying to convert" << input_string << "to int...";
-                        output_number = std::stoi(input_string);
-                        if (!std::is_integral<decltype(output_number)>::value) {
-                                throw std::invalid_argument(
-                                        "Expected integral type, received something else\n");
-                        }
-                } catch (...) { return false; }
-                return true;
-        };
-
-        // if current key isn't a repeat of last key
-        // (and it'll always be if we're traversing an array)
-        if (path.empty() || path.size() < prime_key.size()
-            || path.substr(path.size() - prime_key.size()) != prime_key)
-                path += ("/" + prime_key);
-        qDebug() << "Path:" << path << ", index:" << index;
-
-        if (prime_value.is_object()) {
-                for (const auto& [key, value] : prime_value.items()) {
-                        traverseJson(key, value, path, handler, index);
-                }
-        } else if (prime_value.is_array()) {
-                for (const auto& item : prime_value) {
-                        if (index == WeatherData::hours.size() - 1) { // if this is the last item
-                                traverseJson(prime_key, item, path, handler, index);
-                                break; // only look for as many hours as we need
-                        } else traverseJson(prime_key, item, path, handler, index); // if not
-
-                        // if another item in hour list, we're proceeding to the next hour
-                        if (prime_key == "list") { index++; }
-                }
-        } else {
-                handler(prime_key, prime_value, path, index);
-        }
 }
 
 // TODO This could be refactored with "chunk.at()" in mind

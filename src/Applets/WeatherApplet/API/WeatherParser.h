@@ -32,13 +32,6 @@ public:
         static void updateWeatherData(const QApplication& app);
 
 private:
-        // Iterate through received JSON file containing weather data
-        static void traverseJson(
-                const std::string& prime_key, const json& prime_value, std::string path,
-                const std::function<void(const std::string&, const json&, std::string, int)>& handler,
-                int& index);
-
-        // traverseJson will forward us to this method on each single key:pair found that isn't an array or object
         static void processWeatherItem(const std::string& key, const json& value,
                                        const std::string& path, int& index);
 };

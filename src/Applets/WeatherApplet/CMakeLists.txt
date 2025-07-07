@@ -19,6 +19,16 @@ find_package(Qt6 REQUIRED COMPONENTS Widgets DBus Gui)
 #find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Widgets DBus Gui)
 find_package(CURL REQUIRED)
 
+# Configure TraverseJSON to enable Qt support
+set(TRAVERSEJSON_ENABLE_QT ON CACHE BOOL "Enable Qt in TraverseJSON")
+
+# TODO Rework to utilize ${PROJECT_ROOT_DIR}, which will require better CMakeLists management, including modularization
+# TODO Use FetchContent to skip git submodule and additional work for the user
+# Add submodules
+add_subdirectory(
+        ../../../modules/TraverseJSON
+        ../../../build/TraverseJSON-build
+)
 
 set(INCLUDED_HEADERS
         ../../MainWindow.h
@@ -89,6 +99,7 @@ target_link_libraries(weather-applet PRIVATE
         Qt${QT_VERSION_MAJOR}::Widgets
         Qt${QT_VERSION_MAJOR}::Gui
         ${CURL_LIBRARIES}
+        TraverseJSON
 )
 
 include(GNUInstallDirs)
