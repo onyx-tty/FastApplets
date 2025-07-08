@@ -1,54 +1,33 @@
 #include "Button.h"
 #include "../Config/SharedLayout.h"
 
-#include <QPushButton>
-#include <QIcon>
-#include <QVBoxLayout>
-
 #include <QGridLayout>
 #include <QLabel>
 
-QPushButton* button::shutdown;
-QPushButton* button::reboot;
-QPushButton* button::suspend;
-QPushButton* button::hibernate;
-
-// Initializes a button of choice with uniform design
-void button::init(QPushButton* button, QIcon button_icon) {
-        button->setIcon(button_icon);
-        button->setIconSize(icon::size);
-        button->setSizePolicy(policy::buttons);
+/* Initializes a button of choice with uniform design */
+// Inheriting constructor defaults from from QPushButton,
+// but customizing the icon, icon size and the alignment of that button
+Button::Button(QWidget* parent, // TODO default icon
+               QVBoxLayout* main_layout,
+               QIcon button_icon,
+               QString text)
+        : QPushButton(parent) {
+        setIcon(button_icon);
+        setIconSize(icon::size);
+        setSizePolicy(policy::buttons);
+        debugAlignIconLeft(text);
+        main_layout->addWidget(this);
 }
 
-// Apply button::init to all buttons in the applet
-void initButtons(QVBoxLayout* main_layout, QWidget* parent) {
-        button::shutdown = new QPushButton(parent);
-        button::init(button::shutdown, icon::shutdown);
-        main_layout->addWidget(button::shutdown);
-        debugAlignIconLeft(button::shutdown, "Shutdown");
-
-        button::reboot = new QPushButton(parent);
-        button::init(button::reboot, icon::reboot);
-        main_layout->addWidget(button::reboot);
-        debugAlignIconLeft(button::reboot, "Reboot");
-
-        button::suspend = new QPushButton(parent);
-        button::init(button::suspend, icon::suspend);
-        main_layout->addWidget(button::suspend);
-        debugAlignIconLeft(button::suspend, "Suspend");
-
-        button::hibernate = new QPushButton(parent);
-        button::init(button::hibernate, icon::hibernate);
-        main_layout->addWidget(button::hibernate);
-        debugAlignIconLeft(button::hibernate, "Hibernate");
-}
-
-void debugAlignIconLeft(QPushButton* button, QString label) { // Temporary solution, will require a QProxyStyle overwrite in the future
+// Workaround that aligns buttons to the left and keeps the text centered (sort of)
+/* It'll likely be removed once I get into actually inheriting from QProxyStyle
+   It may be a bit wasteful, however as of now alternative solutions would clutter the code massively */
+void Button::debugAlignIconLeft(QString label_text) {
         QString style_sheet = "text-align: left;";
-        button->setLayout(new QGridLayout);
-        button->setStyleSheet(QString(style_sheet));
-        QLabel* debug_text = new QLabel(label, button);
-        debug_text->setAlignment(Qt::AlignHCenter | Qt::AlignVCenter); // or center
+        setLayout(new QGridLayout);
+        setStyleSheet(QString(style_sheet));
+        QLabel* debug_text = new QLabel(label_text, this);
+        debug_text->setAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
         debug_text->setAttribute(Qt::WA_TransparentForMouseEvents, true);
-        button->layout()->addWidget(debug_text);
+        layout()->addWidget(debug_text);
 }
