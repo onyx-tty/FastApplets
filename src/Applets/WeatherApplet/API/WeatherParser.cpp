@@ -36,20 +36,19 @@ using callback  = std::function<void(const std::string&, const json&, std::strin
 using predicate = std::function<bool(int)>;
 
 void WeatherParser::updateWeatherData(const QApplication& app) {
+        std::string root_key;
         // fetch data from OpenWeather's API call
         const json& response = OpenWeatherAPI::fetchWeatherReport(app);
+        std::string path;
+        int         index      = 0;
+        // extract and assign each node encountered in our fetched response
+        auto        handleNode = [](const std::string& key, const json& data, std::string path,
+                             int index) { processWeatherItem(key, data, key, index); };
+        // stop traversing the response if we've covered all hours
+        auto predicate = [](int index) -> bool { return index == (WeatherData::hours.size() - 1); };
 
-        // extract and assign weather data from our fetched response
-        int index = 0;
-        TraverseJSON::traverseJSON(
-            std::string(""),
-            response,
-            std::string(""),
-            index,
-            [](const std::string& key, const json& data, std::string path, int index) {
-                    processWeatherItem(key, data, key, index);
-            },
-            [](int index) -> bool { return index == (WeatherData::hours.size() - 1); });
+        // traverse the JSON file, handling each node, and ending the loop when the predicate returns false
+        TraverseJSON::traverseJSON(root_key, response, path, index, handleNode, predicate);
 
         // time units in seconds
         constexpr time_t hour = 60 * 60, day = hour * 24;
