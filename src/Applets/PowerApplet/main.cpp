@@ -1,4 +1,4 @@
-#include "../../MainWindow.h"
+#include "PowerMainWindow.h"
 
 #include <QApplication>
 #include <QPushButton>
@@ -7,8 +7,9 @@
 #include <QDebug>
 
 int main(int argc, char* argv[]) {
+        // Init
         QApplication app(argc, argv);
-        MainWindow applet;
+        PowerMainWindow applet; // QMainWindow -> MainWindow -> PowerMainWindow
 
         // Debug
         qInfo() << applet.returnWindowSize() << Qt::endl;

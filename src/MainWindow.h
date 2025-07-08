@@ -7,19 +7,25 @@
 class MainWindow
 	: public QMainWindow {
 	Q_OBJECT
-        QWidget* center;
-        QVBoxLayout* main_layout;
-private:
-        void initWindow();
-        void initWidgets();
 
-public:
+protected:
+        // Attributes
+        QWidget* central_widget;
+        QVBoxLayout* main_layout; // Move this to PowerMainWindow.h
+
+        // Constructor & destructor
         explicit MainWindow(QWidget* parent = nullptr);
+        virtual ~MainWindow() = default;
 
 public:
         QWidget* returnCentralWidget() const;
+        QVBoxLayout* returnMainLayout() const; // Move this to PowerMainWindow.h
         QSize returnWindowSize() const;
-};
 
+private:
+
+        // Constructor members
+        void initWindow();
+};
 
 #endif // MAIN_WINDOW_H
