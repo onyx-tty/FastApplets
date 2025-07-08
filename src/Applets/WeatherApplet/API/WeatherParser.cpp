@@ -51,16 +51,20 @@ void WeatherParser::updateWeatherData(const QApplication& app) {
         TraverseJSON::traverseJSON(root_key, response, path, index, handleNode, predicate);
 
         // time units in seconds
+        // TODO Move elsewhere
         constexpr time_t hour = 60 * 60, day = hour * 24;
-
-        // time
+        // set up iteration range
         const auto   iter_begin = WeatherData::hours.cbegin(), iter_end = WeatherData::hours.cend();
+        // figure out the exact hour spacing by analyzing the time difference between two hours
         const int    hour_spacing     = findHourSpacing((iter_begin + 1)->time, iter_begin->time);
+        // detect current midnight's and next midnight's UNIX timestamps
         const time_t current_midnight = findMidnight(), next_midnight = current_midnight + day;
 
-        // number of blocs for each timestamp, index-friendly
+        // number of blocs we'll receive for each day, index-friendly
+        // a bloc is a collection of data corresponding to a particular hour
         const int blocs_per_day =
                 findWeatherBlocsFitCount(next_midnight, current_midnight, hour_spacing).value();
+        // first_day_blocs + last_day_blocs = blocs_per_day
         const auto first_day_blocs = findWeatherBlocsFitCount(next_midnight, iter_begin->time,
                                                               hour_spacing);
         if (first_day_blocs.value_or(0) > blocs_per_day) {
@@ -72,9 +76,10 @@ void WeatherParser::updateWeatherData(const QApplication& app) {
         // TODO This design may not be perfect, HourlyWeatherData should be able to handle it on its own
         WeatherData::fillDayNames(blocs_per_day, first_day_blocs);
 
-        // print daily weather info for debug purposes
         // debug
+        // print total weather data
         WeatherData::printData();
+        // print daily weather data
         qDebug() << "Daily weather info from" << __func__ << ":";
         for (const auto& hour : WeatherData::hours) hour.printData();
 }
