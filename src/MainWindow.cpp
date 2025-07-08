@@ -5,27 +5,28 @@
 #include <QIcon>
 #include <QSizePolicy>
 
-MainWindow::MainWindow(QWidget* parent): QMainWindow(parent) {
+MainWindow::MainWindow(QWidget* parent)
+        : QMainWindow(parent) {
         initWindow();
-        initWidgets();
 }
 
-void MainWindow::initWindow() { // Main window params
-        resize(280, 540);
-        setWindowTitle("test_window");
-        center = new QWidget(this);
-        setCentralWidget(center);
-        main_layout = new QVBoxLayout(center);
+QWidget* MainWindow::returnCentralWidget() const {
+        return central_widget;
 }
 
-void MainWindow::initWidgets() { // Widgets to be included
-        // ...
+QVBoxLayout* MainWindow::returnMainLayout() const {
+        return main_layout;
 }
 
 QSize MainWindow::returnWindowSize() const {
         return QWidget::size();
 }
 
-QWidget* MainWindow::returnCentralWidget() const {
-        return center;
+// Main window params
+void MainWindow::initWindow() {
+        resize(280, 540);
+        setWindowTitle("test_window");
+        central_widget = new QWidget(this);
+        setCentralWidget(central_widget);
+        main_layout = new QVBoxLayout(central_widget);
 }
