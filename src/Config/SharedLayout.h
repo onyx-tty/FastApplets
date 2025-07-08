@@ -5,15 +5,11 @@
 #include <QSize>
 #include <QSizePolicy>
 
-namespace icon {
+namespace shared_icon {
 extern const QSize size;
-extern QIcon shutdown;
-extern QIcon reboot;
-extern QIcon suspend;
-extern QIcon hibernate;
 }
 
-namespace policy {
+namespace shared_policy {
 extern const QSizePolicy buttons;
 }
 
