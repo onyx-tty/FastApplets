@@ -16,10 +16,10 @@
    along with this program.  If not, see <https://www.gnu.org/licenses/>. */
 
 #include "WeatherParser.h"
+#include "../../../../modules/TraverseJSON/include/TraverseJSON.h"
 #include "../../../Config/WeatherLayout.h"
 #include "../../../Utils/Time.h"
 #include "WeatherData.h"
-#include "../../../../modules/TraverseJSON/include/TraverseJSON.h"
 
 #include <QApplication>
 #include <QDebug>
@@ -33,7 +33,7 @@
 using json = nlohmann::json;
 
 using callback  = std::function<void(const std::string&, const json&, std::string, int)>;
-using predicate = std::function<bool()>;
+using predicate = std::function<bool(int)>;
 
 void WeatherParser::updateWeatherData(const QApplication& app) {
         // fetch data from OpenWeather's API call
