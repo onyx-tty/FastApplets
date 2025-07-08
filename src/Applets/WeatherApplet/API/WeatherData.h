@@ -25,7 +25,7 @@
 #include <ctime>
 #include <optional>
 
-constexpr int HOURLY_WEATHER_DATA_HOURS = 40;
+constexpr int hourly_weather_data_hours = 40;
 
 struct WeatherCondition final {
         QString name;
@@ -71,7 +71,7 @@ class WeatherData final {
 public:
         // TODO Private but easy and free initialization
         // TODO Type alias file
-        static std::array<HourlyWeatherData, HOURLY_WEATHER_DATA_HOURS> hours;
+        static std::array<HourlyWeatherData, hourly_weather_data_hours> hours;
 
         WeatherData() = delete;
 

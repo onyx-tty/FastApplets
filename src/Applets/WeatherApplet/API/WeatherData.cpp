@@ -23,11 +23,11 @@
 #include <algorithm>
 
 // prevent external linkage via static
-static std::array<HourlyWeatherData, HOURLY_WEATHER_DATA_HOURS> debugInitHours() {
+static std::array<HourlyWeatherData, hourly_weather_data_hours> debugInitHours() {
         const auto hour = HourlyWeatherData();
 
         // TODO I can already tell this isn't a good idea
-        return std::array<HourlyWeatherData, HOURLY_WEATHER_DATA_HOURS>{
+        return std::array<HourlyWeatherData, hourly_weather_data_hours>{
                 *&hour, *&hour, *&hour, *&hour, *&hour, *&hour, *&hour, *&hour, *&hour, *&hour,
                 *&hour, *&hour, *&hour, *&hour, *&hour, *&hour, *&hour, *&hour, *&hour, *&hour,
                 *&hour, *&hour, *&hour, *&hour, *&hour, *&hour, *&hour, *&hour, *&hour, *&hour,
@@ -141,7 +141,7 @@ void HourlyWeatherData::printData() const {
                 << "Humidity:" << humidity << "Wind speed:" << wind_speed;
 }
 
-std::array<HourlyWeatherData, HOURLY_WEATHER_DATA_HOURS> WeatherData::hours(debugInitHours());
+std::array<HourlyWeatherData, hourly_weather_data_hours> WeatherData::hours(debugInitHours());
 
 void WeatherData::printData() {
         for (auto& hour : hours) hour.printData();
