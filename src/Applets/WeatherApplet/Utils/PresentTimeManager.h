@@ -24,9 +24,6 @@
 // TODO Determine if std::optional is needed (if we need to differentiate "no input" from 0)
 class PresentTimeManager {
 public:
-        static constexpr time_t HOUR = 60 * 60;
-        static constexpr time_t DAY  = HOUR * 24;
-
         static const int&                getBlocsPerDay();
         static const std::optional<int>& getFirstDayBlocs();
         static const int&                getLastDayBlocs();

@@ -17,6 +17,7 @@
 
 #include "PresentTimeManager.h"
 #include "../../../Utils/Time.h"
+#include "../../../Utils/TimeConstants.h"
 #include "../API/WeatherData.h"
 
 #include <QApplication>
@@ -34,7 +35,7 @@ void PresentTimeManager::refresh() {
         const auto begin = WeatherData::hours.cbegin(), end = WeatherData::hours.cend();
         hour_spacing     = findHourSpacing((begin + 1)->time, begin->time);
         current_midnight = findMidnight();
-        next_midnight    = current_midnight + DAY;
+        next_midnight    = current_midnight + epoch_duration::day;
         qDebug() << "WeatherData::hours size:" << WeatherData::hours.size() << "in" << __func__;
         qDebug() << "Hour spacing:" << hour_spacing << "in" << __func__;
         if (WeatherData::hours.empty() || WeatherData::hours.size() < 2) {

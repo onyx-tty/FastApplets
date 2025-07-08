@@ -16,6 +16,7 @@
    along with this program.  If not, see <https://www.gnu.org/licenses/>. */
 
 #include "Time.h"
+#include "TimeConstants.h"
 
 #include <QApplication>
 #include <QDebug>
@@ -56,17 +57,14 @@ int findHourSpacing(const time_t later, const time_t earlier) {
                             << __func__;
                 QApplication::quit();
         }
-        // hour in seconds
-        constexpr int hour = 60 * 60;
-
         const int   time_difference = later - earlier;
-        const div_t hour_spacing    = std::div(time_difference, hour);
+        const ldiv_t hour_spacing    = std::ldiv(time_difference, epoch_duration::hour);
 
         if (hour_spacing.rem != 0) {
                 QString res = QString::number(hour_spacing.quot) + "r"
                             + QString::number(hour_spacing.rem);
                 qWarning() << __func__ << "detected that hours aren't spaced evenly!"
-                           << time_difference << "/" << hour << "=" << std::move(res);
+                           << time_difference << "/" << epoch_duration::hour << "=" << std::move(res);
         }
 
         return hour_spacing.quot;

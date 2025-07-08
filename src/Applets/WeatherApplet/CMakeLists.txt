@@ -40,6 +40,7 @@ set(INCLUDED_HEADERS
         ../../Config/WeatherLayout.h
         ../../API/Curl.h
         ../../Utils/Time.h
+        ../../Utils/TimeConstants.h
 )
 
 set(INCLUDED_SOURCES

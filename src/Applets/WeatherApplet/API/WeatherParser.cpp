@@ -19,6 +19,7 @@
 #include "../../../../modules/TraverseJSON/include/TraverseJSON.h"
 #include "../../../Config/WeatherLayout.h"
 #include "../../../Utils/Time.h"
+#include "../../../Utils/TimeConstants.h"
 #include "WeatherData.h"
 
 #include <QApplication>
@@ -50,15 +51,12 @@ void WeatherParser::updateWeatherData(const QApplication& app) {
         // traverse the JSON file, handling each node, and ending the loop when the predicate returns false
         TraverseJSON::traverseJSON(root_key, response, path, index, handleNode, predicate);
 
-        // time units in seconds
-        // TODO Move elsewhere
-        constexpr time_t hour = 60 * 60, day = hour * 24;
         // set up iteration range
         const auto   iter_begin = WeatherData::hours.cbegin(), iter_end = WeatherData::hours.cend();
         // figure out the exact hour spacing by analyzing the time difference between two hours
         const int    hour_spacing     = findHourSpacing((iter_begin + 1)->time, iter_begin->time);
         // detect current midnight's and next midnight's UNIX timestamps
-        const time_t current_midnight = findMidnight(), next_midnight = current_midnight + day;
+        const time_t current_midnight = findMidnight(), next_midnight = current_midnight + epoch_duration::day;
 
         // number of blocs we'll receive for each day, index-friendly
         // a bloc is a collection of data corresponding to a particular hour
