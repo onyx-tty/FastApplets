@@ -58,9 +58,6 @@ void WeatherParser::updateWeatherData(const QApplication& app) {
         const int    hour_spacing     = findHourSpacing((iter_begin + 1)->time, iter_begin->time);
         const time_t current_midnight = findMidnight(), next_midnight = current_midnight + day;
 
-        // debug
-        WeatherData::printData();
-
         // number of blocs for each timestamp, index-friendly
         const int blocs_per_day =
                 findWeatherBlocsFitCount(next_midnight, current_midnight, hour_spacing).value();
@@ -76,6 +73,8 @@ void WeatherParser::updateWeatherData(const QApplication& app) {
         WeatherData::fillDayNames(blocs_per_day, first_day_blocs);
 
         // print daily weather info for debug purposes
+        // debug
+        WeatherData::printData();
         qDebug() << "Daily weather info from" << __func__ << ":";
         for (const auto& hour : WeatherData::hours) hour.printData();
 }
