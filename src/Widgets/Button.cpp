@@ -13,8 +13,8 @@ Button::Button(QWidget* parent, // TODO default icon
                QString text)
         : QPushButton(parent) {
         setIcon(button_icon);
-        setIconSize(icon::size);
-        setSizePolicy(policy::buttons);
+        setIconSize(shared_icon::size);
+        setSizePolicy(shared_policy::buttons);
         debugAlignIconLeft(text);
         main_layout->addWidget(this);
 }

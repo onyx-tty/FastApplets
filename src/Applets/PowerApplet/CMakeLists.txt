@@ -31,11 +31,13 @@ set(INCLUDED_SOURCES
 )
 
 set(PROJECT_HEADERS
+        ../../Config/PowerLayout.h
         Widgets/PowerButton.h
 )
 
 set(PROJECT_SOURCES
         main.cpp
+        ../../Config/PowerLayout.cpp
 )
 
 set(PROJECT_RESOURCES
