@@ -4,18 +4,25 @@
 #include <QPushButton>
 #include <QIcon>
 #include <QVBoxLayout>
+#include <QString>
 
-namespace button {
-extern QPushButton* shutdown;
-extern QPushButton* reboot;
-extern QPushButton* suspend;
-extern QPushButton* hibernate;
+class Button
+        : public QPushButton {
+        Q_OBJECT
 
-void init(QPushButton* button, QIcon icon);
-}
+protected:
+        explicit Button(QWidget* parent,
+                        QVBoxLayout* main_layout,
+                        QIcon button_icon, // TODO default icon
+                        QString text);
 
-void initButtons(QVBoxLayout* main_layout, QWidget* parent);
+        virtual ~Button() = default;
 
-void debugAlignIconLeft(QPushButton* button, QString label); // Temporary solution, will require a QProxyStyle overwrite in the future
+public:
+        // Workaround that aligns buttons to the left and keeps the text centered (sort of)
+        /* It'll likely be removed once I get into actually inheriting from QProxyStyle
+           It may be a bit wasteful, however as of now alternative solutions would clutter the code massively */
+        void debugAlignIconLeft(QString label_text);
+};
 
 #endif // BUTTON_H
