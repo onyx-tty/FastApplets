@@ -16,7 +16,7 @@ class PowerActionManager { // Singleton
 public:
         PowerActionManager(const PowerActionManager&) = delete;
         PowerActionManager& operator=(const PowerActionManager&) = delete;
-        static PowerActionManager& getInstance(QObject* parent);
+        static PowerActionManager& getInstance();
 
         // Power actions
         void shutdown() const;

@@ -7,9 +7,9 @@ const QString target::path{"/org/freedesktop/login1"};
 const QString target::interface{"org.freedesktop.login1.Manager"};
 
 /* public */
-PowerActionManager& PowerActionManager::getInstance(QObject* parent) {
+PowerActionManager& PowerActionManager::getInstance() {
         if (instance == nullptr) {
-                instance = new PowerActionManager(parent);
+                instance = new PowerActionManager();
         }
         return *instance;
 }
