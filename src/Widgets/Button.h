@@ -19,6 +19,7 @@
 #define BUTTON_H
 
 #include <QPushButton>
+#include <QLabel>
 #include <QIcon>
 #include <QVBoxLayout>
 #include <QString>
@@ -28,17 +29,21 @@ class Button
         Q_OBJECT
 
 protected:
+        QLabel* debug_text;
+
         explicit Button(QWidget* parent,
                         QVBoxLayout* main_layout,
                         const QIcon& button_icon, // TODO default icon
                         const QString& text);
         virtual ~Button() = 0;
 
+        void debugAlignIconLeft(QString label_text);
+
 public:
         // Workaround that aligns buttons to the left and keeps the text centered (sort of)
         /* It'll likely be removed once I get into actually inheriting from QProxyStyle
            It may be a bit wasteful, however as of now alternative solutions would clutter the code massively */
-        void debugAlignIconLeft(QString label_text);
+        virtual QString text() const;
 };
 
 #endif // BUTTON_H
