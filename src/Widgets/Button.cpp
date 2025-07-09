@@ -54,3 +54,4 @@ void Button::debugAlignIconLeft(QString label_text) {
 QString Button::text() const { // Returns the true text
         return debug_text->text();
 }
+
