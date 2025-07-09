@@ -8,7 +8,7 @@ class PowerButton final
         Q_OBJECT
 
 public:
-        PowerButton(QWidget* parent, QVBoxLayout* main_layout, QIcon button_icon, QString text)
+        PowerButton(QWidget* parent, QVBoxLayout* main_layout, const QIcon& button_icon, const QString& text)
                 : Button(parent, main_layout, button_icon, text) {}
 };
 
