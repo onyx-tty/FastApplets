@@ -13,9 +13,8 @@ class Button
 protected:
         explicit Button(QWidget* parent,
                         QVBoxLayout* main_layout,
-                        QIcon button_icon, // TODO default icon
-                        QString text);
-
+                        const QIcon& button_icon, // TODO default icon
+                        const QString& text);
         virtual ~Button() = default;
 
 public:

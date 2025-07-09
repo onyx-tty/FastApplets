@@ -9,8 +9,8 @@
 // but customizing the icon, icon size and the alignment of that button
 Button::Button(QWidget* parent, // TODO default icon
                QVBoxLayout* main_layout,
-               QIcon button_icon,
-               QString text)
+               const QIcon& button_icon,
+               const QString& text)
         : QPushButton(parent) {
         setIcon(button_icon);
         setIconSize(shared_icon::size);
