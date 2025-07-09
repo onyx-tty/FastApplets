@@ -17,7 +17,6 @@
 ** TODO Fallback icons
 ** TODO Move window dimensions to DefaultLayout.h and Layout.h
 ** TODO Debug functions
-** TODO Shared keybindings
 *Phase 2*
 ** TODO Customizable:
 *** [ ] Window dimensions
@@ -29,7 +28,8 @@
 
 * PowerApplet [0/3]
   *Phase 1*
-** TODO Consider making PowerButton polymorphic
-** TODO Proper keybindings
-*Phase 2*
+** DONE Proper keybindings
+** TODO Initial optimization
+** TODO Incorporate ButtonList inside CentralWidget
+*Future*
 ** TODO Compatibility with other Linux inits
