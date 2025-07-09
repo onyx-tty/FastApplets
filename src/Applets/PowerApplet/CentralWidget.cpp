@@ -19,6 +19,12 @@
 #include "../../Config/SharedKeybindings.h" // TODO Inherited keybindings
 #include "../../Config/PowerLayout.h"
 
+#include <QApplication>
+#include <QFocusEvent>
+#include <QDebug>
+
+#include <array>
+
 // TODO Clean up syntax for consistency
 
 CentralWidget::CentralWidget(QWidget* parent)
