@@ -50,7 +50,7 @@ QDBusMessage PowerActionManager::sendPowerAction(const QString& method) const {
         method_call.setArguments(arguments);
         QDBusPendingReply<QVariantMap> response = connection.asyncCall(method_call);
         response.waitForFinished();
-        //return responseHandler(response);
+        return responseHandler(response.reply());
 }
 
 QDBusMessage PowerActionManager::responseHandler(QDBusMessage response) const {

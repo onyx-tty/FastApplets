@@ -33,7 +33,7 @@ private:
         explicit PowerActionManager(QObject* parent = nullptr);
 
         QDBusMessage sendPowerAction(const QString& method) const;
-        QDBusMessage responseHandler(QDBusMessage response) const; // does nothing for now
+        QDBusMessage responseHandler(QDBusMessage response) const;
 
 };
 
