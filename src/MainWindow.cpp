@@ -10,6 +10,8 @@ MainWindow::MainWindow(QWidget* parent)
         initWindow();
 }
 
+MainWindow::~MainWindow() = default;
+
 QWidget* MainWindow::returnCentralWidget() const {
         return central_widget;
 }

@@ -15,7 +15,7 @@ protected:
                         QVBoxLayout* main_layout,
                         const QIcon& button_icon, // TODO default icon
                         const QString& text);
-        virtual ~Button() = default;
+        virtual ~Button() = 0;
 
 public:
         // Workaround that aligns buttons to the left and keeps the text centered (sort of)
