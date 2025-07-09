@@ -19,6 +19,8 @@ Button::Button(QWidget* parent, // TODO default icon
         main_layout->addWidget(this);
 }
 
+Button::~Button() = default;
+
 // Workaround that aligns buttons to the left and keeps the text centered (sort of)
 /* It'll likely be removed once I get into actually inheriting from QProxyStyle
    It may be a bit wasteful, however as of now alternative solutions would clutter the code massively */

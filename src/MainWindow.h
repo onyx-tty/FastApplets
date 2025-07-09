@@ -13,7 +13,7 @@ protected:
         QVBoxLayout* main_layout; // Move this to PowerMainWindow.h
 
         explicit MainWindow(QWidget* parent = nullptr);
-        virtual ~MainWindow() = default;
+        virtual ~MainWindow() = 0;
 
 public:
         QWidget* returnCentralWidget() const;
