@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.16)
 
-project(power-applet VERSION 0.5.4 LANGUAGES CXX)
+project(power-applet VERSION 0.6.0 LANGUAGES CXX)
 
 set(CMAKE_AUTOUIC ON)
 set(CMAKE_AUTOMOC ON)
@@ -21,12 +21,14 @@ find_package(Qt6 REQUIRED COMPONENTS Widgets DBus)
 set(INCLUDED_HEADERS
         ../../MainWindow.h
         ../../Config/SharedLayout.h
+        ../../Config/SharedKeybindings.h
         ../../Widgets/Button.h
 )
 
 set(INCLUDED_SOURCES
         ../../MainWindow.cpp
         ../../Config/SharedLayout.cpp
+        ../../Config/SharedKeybindings.cpp
         ../../Widgets/Button.cpp
 )
 
