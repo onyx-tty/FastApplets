@@ -9,11 +9,9 @@ class MainWindow
 	Q_OBJECT
 
 protected:
-        // Attributes
         QWidget* central_widget;
         QVBoxLayout* main_layout; // Move this to PowerMainWindow.h
 
-        // Constructor & destructor
         explicit MainWindow(QWidget* parent = nullptr);
         virtual ~MainWindow() = default;
 
@@ -23,8 +21,6 @@ public:
         QSize returnWindowSize() const;
 
 private:
-
-        // Constructor members
         void initWindow();
 };
 

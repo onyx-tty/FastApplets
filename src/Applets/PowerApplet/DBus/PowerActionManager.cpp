@@ -63,5 +63,4 @@ QDBusMessage PowerActionManager::responseHandler(QDBusMessage response) const {
         return response;
 }
 
-// static variables defined here
 PowerActionManager* PowerActionManager::instance = nullptr;

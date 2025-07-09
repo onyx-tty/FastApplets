@@ -5,7 +5,6 @@
 
 #include <QString>
 
-// TODO Combine this namespace with initAppletButtons()
 namespace power_button { // pointers to heap-allocated Buttons
 extern PowerButton* shutdown;
 extern PowerButton* reboot;

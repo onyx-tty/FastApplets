@@ -29,7 +29,6 @@ private:
         QDBusInterface proxy;
         static PowerActionManager* instance;
 
-        // Methods
         explicit PowerActionManager(QObject* parent = nullptr);
 
         QDBusMessage sendPowerAction(const QString& method) const;
