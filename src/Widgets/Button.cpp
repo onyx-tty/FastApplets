@@ -45,8 +45,12 @@ void Button::debugAlignIconLeft(QString label_text) {
         QString style_sheet = "text-align: left;";
         setLayout(new QGridLayout);
         setStyleSheet(QString(style_sheet));
-        QLabel* debug_text = new QLabel(label_text, this);
+        debug_text = new QLabel(label_text, this);
         debug_text->setAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
         debug_text->setAttribute(Qt::WA_TransparentForMouseEvents, true);
         layout()->addWidget(debug_text);
+}
+
+QString Button::text() const { // Returns the true text
+        return debug_text->text();
 }
