@@ -15,34 +15,14 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <https://www.gnu.org/licenses/>. */
 
-#ifndef MAIN_WINDOW_H
-#define MAIN_WINDOW_H
+#ifndef SHARED_KEYBINDINGS_H
+#define SHARED_KEYBINDINGS_H
 
-#include "Config/SharedKeybindings.h"
+#include <QApplication>
+#include <QKeyEvent>
 
-#include <QMainWindow>
-#include <QVBoxLayout>
-#include <QShortcut>
-#include <QWidget>
+namespace Keybinding {
+extern QKeyEvent* quit;
+}
 
-class MainWindow
-	: public QMainWindow {
-	Q_OBJECT
-
-protected:
-        QWidget* central_widget;
-        QVBoxLayout* main_layout; // Move this to PowerMainWindow.h
-
-        explicit MainWindow(QWidget* parent = nullptr);
-        virtual ~MainWindow() = 0;
-
-public:
-        QWidget* returnCentralWidget() const;
-        QVBoxLayout* returnMainLayout() const; // Move this to PowerMainWindow.h
-        QSize returnWindowSize() const;
-
-private:
-        void initWindow();
-};
-
-#endif // MAIN_WINDOW_H
+#endif // SHARED_KEYBINDINGS_H
