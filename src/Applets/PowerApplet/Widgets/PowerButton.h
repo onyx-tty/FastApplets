@@ -3,7 +3,7 @@
 
 #include "../../../Widgets/Button.h"
 
-class PowerButton
+class PowerButton final
         : public Button {
         Q_OBJECT
 

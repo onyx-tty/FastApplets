@@ -3,7 +3,7 @@
 
 #include "../../MainWindow.h"
 
-class PowerMainWindow
+class PowerMainWindow final
         : public MainWindow {
         Q_OBJECT
 

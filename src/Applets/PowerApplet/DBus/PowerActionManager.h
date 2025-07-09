@@ -11,7 +11,7 @@ extern const QString path;
 extern const QString interface;
 }
 
-class PowerActionManager { // Singleton
+class PowerActionManager final { // Singleton
 
 public:
         PowerActionManager(const PowerActionManager&) = delete;
