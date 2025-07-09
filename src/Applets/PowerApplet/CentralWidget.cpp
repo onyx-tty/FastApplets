@@ -69,8 +69,8 @@ void CentralWidget::keyPressEvent(QKeyEvent* event, PowerButton* button) {
 }
 
 void CentralWidget::selectButton(QKeyEvent* event,
-                                PowerButton* button,
-                                std::array<unsigned, 4>& acceptable_keys) {
+                                 PowerButton* button,
+                                 std::array<unsigned, 4>& acceptable_keys) {
         qInfo() << "Current combo: " << last_key.first->key() << event->key();
         QFocusEvent selection(QEvent::FocusIn, Qt::OtherFocusReason);
         switch (last_key.first->key()) { // TODO A lot of redundant code, consider a loop
