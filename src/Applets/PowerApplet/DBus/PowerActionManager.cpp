@@ -8,10 +8,8 @@ const QString target::interface{"org.freedesktop.login1.Manager"};
 
 /* public */
 PowerActionManager& PowerActionManager::getInstance() {
-        if (instance == nullptr) {
-                instance = new PowerActionManager();
-        }
-        return *instance;
+        static PowerActionManager instance;
+        return instance;
 }
 
 void PowerActionManager::shutdown() const {
@@ -62,5 +60,3 @@ QDBusMessage PowerActionManager::responseHandler(QDBusMessage response) const {
         }
         return response;
 }
-
-PowerActionManager* PowerActionManager::instance = nullptr;

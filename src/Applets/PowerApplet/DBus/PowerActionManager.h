@@ -27,7 +27,6 @@ public:
 private:
         QDBusConnection connection;
         QDBusInterface proxy;
-        static PowerActionManager* instance;
 
         explicit PowerActionManager(QObject* parent = nullptr);
 
