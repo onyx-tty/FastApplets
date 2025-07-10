@@ -38,7 +38,6 @@ CentralWidget::CentralWidget(QWidget* parent)
         button_list = button::list(this, main_layout);
 }
 
-
 // TODO Consider QPointer
 void CentralWidget::lastKeyUpdate(QKeyEvent* event) {
         if (last_key.first) {
@@ -117,7 +116,6 @@ void CentralWidget::selectButton(QKeyEvent* event,
                 // if in range
                 if (event->key() == Qt::Key_1 + i) {
                         qInfo() << button_list[i]->text() << "selected!";
-
                         button_list[i]->setStyleSheet(style::selected);
                         button_list[i]->update();
                         return;
