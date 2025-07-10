@@ -121,7 +121,7 @@ void CentralWidget::clickButton(QKeyEvent* event) {
                 if (event->key() == Qt::Key_1 + i) {
                         qInfo() << button_list[i]->text() << "clicked!";
                         emit button_list[i]->clicked();
-                        return;
+                        QApplication::quit();
                 }
         }
         qInfo() << "diff key";
