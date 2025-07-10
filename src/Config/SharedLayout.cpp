@@ -22,6 +22,9 @@
 #include <QSizePolicy>
 #include <QString>
 
+const QString shared_style::selected = "text-align: left; background-color: lightblue; border: 2px solid blue;";
+const QString shared_style::unselected = "text-align: left;";
+
 const QSize shared_icon::size(64, 64);
 
 const QSizePolicy shared_policy::buttons(QSizePolicy::Expanding, QSizePolicy::Expanding);

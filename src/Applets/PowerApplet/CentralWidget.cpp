@@ -93,13 +93,11 @@ void CentralWidget::selectButton(QKeyEvent* event,
                                  PowerButton* button,
                                  std::array<unsigned, 4>& acceptable_keys) {
         qInfo() << "Current combo: " << last_key.first->key() << event->key();
-        QFocusEvent selection(QEvent::FocusIn, Qt::OtherFocusReason);
 
         for (unsigned i = 0; i <= 3; ++i) {
                 if (event->key() == Qt::Key_1 + i) {
                         qInfo() << button_list[i]->text() << "selected!";
                         last_key.second = button_list[i];
-                        emit button_list[i]->focusInEvent(&selection);
                         return;
                 }
         }
@@ -110,9 +108,8 @@ void CentralWidget::selectButton(QKeyEvent* event,
         } else {
                 qInfo() << "INFO! Keys not within the range of acceptable_keys!";
         }
-        QFocusEvent selection_dropped(QEvent::FocusOut, Qt::OtherFocusReason);
 
-        emit last_key.second->focusOutEvent(&selection_dropped);
+        emit last_key.second->clearFocus();
 }
 
 void CentralWidget::clickButton(QKeyEvent* event) {

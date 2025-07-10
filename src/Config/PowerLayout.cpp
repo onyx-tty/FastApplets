@@ -32,6 +32,10 @@ std::array<PowerButton *, 4> button::list(QWidget *parent, QVBoxLayout *layout) 
         return button_list;
 }
 
+// styles
+const QString style::selected = shared_style::selected;
+const QString style::unselected = shared_style::unselected;
+
 // icon
 const QSize icon::size = shared_icon::size;
 QString icon::location(icon_location);

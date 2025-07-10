@@ -22,6 +22,11 @@
 #include <QSize>
 #include <QSizePolicy>
 
+namespace shared_style {
+extern const QString selected;
+extern const QString unselected;
+}
+
 namespace shared_icon {
 extern const QSize size;
 }

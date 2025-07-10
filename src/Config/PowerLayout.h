@@ -32,6 +32,11 @@ namespace button {
 extern std::array<PowerButton*, 4> list(QWidget* parent, QVBoxLayout* layout);
 }
 
+namespace style {
+extern const QString selected;
+extern const QString unselected;
+}
+
 namespace icon {
 extern const QSize size;
 extern QString location;
