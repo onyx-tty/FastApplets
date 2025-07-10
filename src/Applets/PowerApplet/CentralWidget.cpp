@@ -94,14 +94,6 @@ void CentralWidget::keyPressEvent(QKeyEvent* event, PowerButton* button) {
                 clickButton(event); // TODO Misleading, doesn't always result in a click, rework
         }
 
-        if (last_key.second && last_key.second != button) {
-                last_key.second->setStyleSheet(style::unselected);
-                last_key.second->update();
-        }
-        if (last_key.second) {
-                qInfo() << "EXTREMELY IMPORTANT:" << last_key.first->key()
-                        << last_key.second->text();
-        }
         if (last_key.second && last_key.second != button) { // remove last selection
                 last_key.second->setStyleSheet(style::unselected);
                 last_key.second->update();
