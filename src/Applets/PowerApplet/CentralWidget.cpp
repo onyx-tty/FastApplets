@@ -26,6 +26,11 @@
 #include <array>
 
 // TODO Clean up syntax for consistency
+// TODO std::pair may not be necessary here and could potentially just be
+//	overcomplicating the code
+// TODO It might be possible to delegate some mechanisms here
+//	to the buttons themselves
+//	They should be streamlined if possible
 
 CentralWidget::CentralWidget(QWidget* parent)
         : QWidget(parent) {
