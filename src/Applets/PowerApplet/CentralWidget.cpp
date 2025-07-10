@@ -33,14 +33,29 @@ CentralWidget::CentralWidget(QWidget* parent)
         button_list = button::list(this, main_layout);
 }
 
+
+// TODO Consider QPointer
+void CentralWidget::lastKeyUpdate(QKeyEvent* event) {
+        if (last_key.first) {
+                delete last_key.first;
+        }
+        last_key.first = event->clone();
+        qInfo() << "event updated";
+}
+
+void CentralWidget::lastKeyUpdate(PowerButton* button) {
+        last_key.second = button;
+        qInfo() << "button updated";
+}
+
+void CentralWidget::lastKeyUpdate(QKeyEvent* event, PowerButton* button) {
+        lastKeyUpdate(event);
+        lastKeyUpdate(button);
+}
+
 void CentralWidget::keyPressEvent(QKeyEvent* event) { // match base keyPressEvent args
         keyPressEvent(event, nullptr); // forward to the modified keyPressEvent
         QWidget::keyPressEvent(event); // handle everything else as usual
-}
-
-void CentralWidget::lastKeyUpdateEvent(QKeyEvent* event) {
-        delete last_key.first;
-        last_key.first = event->clone();
 }
 
 void CentralWidget::keyPressEvent(QKeyEvent* event, PowerButton* button) {
@@ -58,19 +73,19 @@ void CentralWidget::keyPressEvent(QKeyEvent* event, PowerButton* button) {
                 QApplication::quit();
         } else if (last_key.first == nullptr && button == nullptr) { // last_key empty
                 qInfo() << "last_key was <nullptr, nullptr>, initializing";
-                lastKeyUpdateEvent(event);
+                lastKeyUpdate(event);
                 last_key.second = button;
         } else if (event->key() == last_key.first->key()) { // key and last_key match
                 qInfo() << "key and last_key match";
                 // pressed either 1, 2, 3 or 4
                 clickButton(event); // TODO Misleading, doesn't always result in a click, rework
                 clear_key(last_key);
-                lastKeyUpdateEvent(event);
+                lastKeyUpdate(event);
         } else {
                 qInfo() << "key and last_key don't match";
                 selectButton(event, button, power_keys);
                 clear_key(last_key);
-                lastKeyUpdateEvent(event);
+                lastKeyUpdate(event);
         }
 }
 
