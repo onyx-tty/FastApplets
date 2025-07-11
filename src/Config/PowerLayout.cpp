@@ -24,10 +24,10 @@ QString icon_location = "Data/";
 // button order
 std::array<PowerButton *, 4> button::list(QWidget *parent, QVBoxLayout *layout) {
         std::array<PowerButton *, 4> button_list = {
-                new PowerButton(parent, layout, icon::shutdown, text::shutdown),
-                new PowerButton(parent, layout, icon::reboot, text::reboot),
-                new PowerButton(parent, layout, icon::suspend, text::suspend),
-                new PowerButton(parent, layout, icon::hibernate, text::hibernate),
+                new PowerButton(parent, layout, icon::shutdown, text::shutdown, "PowerOff"),
+                new PowerButton(parent, layout, icon::reboot, text::reboot, "Reboot"),
+                new PowerButton(parent, layout, icon::suspend, text::suspend, "Suspend"),
+                new PowerButton(parent, layout, icon::hibernate, text::hibernate, "Hibernate"),
         };
         return button_list;
 }

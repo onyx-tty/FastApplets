@@ -29,27 +29,6 @@ PowerActionManager& PowerActionManager::getInstance() {
         return instance;
 }
 
-void PowerActionManager::shutdown() const {
-        sendPowerAction("PowerOff");
-}
-
-void PowerActionManager::reboot() const {
-        sendPowerAction("Reboot");
-}
-
-void PowerActionManager::suspend() const {
-        sendPowerAction("Suspend");
-}
-
-void PowerActionManager::hibernate() const {
-        sendPowerAction("Hibernate");
-}
-
-/* private */
-PowerActionManager::PowerActionManager(QObject* parent)
-        : connection(QDBusConnection::connectToBus(QDBusConnection::SystemBus, target::name)),
-          proxy(target::name, target::path, target::interface, connection, parent) {}
-
 QDBusMessage PowerActionManager::sendPowerAction(const QString& method) const {
         if (!proxy.isValid()) { // TODO Error handling
                 qFatal("Proxy is invalid!\n");
@@ -67,6 +46,11 @@ QDBusMessage PowerActionManager::sendPowerAction(const QString& method) const {
         response.waitForFinished();
         return responseHandler(response.reply());
 }
+
+/* private */
+PowerActionManager::PowerActionManager(QObject* parent)
+        : connection(QDBusConnection::connectToBus(QDBusConnection::SystemBus, target::name)),
+          proxy(target::name, target::path, target::interface, connection, parent) {}
 
 QDBusMessage PowerActionManager::responseHandler(QDBusMessage response) const {
         if (response.type() == QDBusMessage::ErrorMessage) {

@@ -35,11 +35,7 @@ public:
         PowerActionManager& operator=(const PowerActionManager&) = delete;
         static PowerActionManager& getInstance();
 
-        // Power actions
-        void shutdown() const;
-        void reboot() const;
-        void suspend() const;
-        void hibernate() const;
+        QDBusMessage sendPowerAction(const QString& method) const;
 
 private:
         QDBusConnection connection;
@@ -47,7 +43,6 @@ private:
 
         explicit PowerActionManager(QObject* parent = nullptr);
 
-        QDBusMessage sendPowerAction(const QString& method) const;
         QDBusMessage responseHandler(QDBusMessage response) const;
 
 };
