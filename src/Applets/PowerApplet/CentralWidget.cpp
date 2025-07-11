@@ -49,6 +49,7 @@ void CentralWidget::keyPressEvent(QKeyEvent* event) {
 void CentralWidget::keyPressEvent(QKeyEvent* event, PowerButton* button) {
         qInfo() << "INFO! keyPressEvent registered!";
         static bool in_num_range = false; // TODO Temporary variable, improve later
+        static bool last_in_num_range = false; // TODO Temporary variable, remove later
 
         for (unsigned i = 0; i <= 3; ++i) { // update button style
                 if (event->key() == keybindings.power_keys[i]) {
@@ -61,10 +62,31 @@ void CentralWidget::keyPressEvent(QKeyEvent* event, PowerButton* button) {
                 }
                 in_num_range = false;
         }
+        for (unsigned i = 0; i <= 3; ++i) { // TODO This horrible implementation needs a replacement
+                if (last_key.first && last_key.first->key() == keybindings.power_keys[i]) {
+                        last_in_num_range = true;
+                        break;
+                }
+                last_in_num_range = false;
+        }
 
-        if (event->key() == keybindings.quit->key()) { // ESC pressed
+        if (event->key() == keybindings.quit->key() && last_in_num_range) { // ESC pressed with focus, unselect last key
+                for (unsigned i = 0; i <= 3; ++i) {
+                        if (last_key.first->key() == keybindings.power_keys[i]) {
+                                button_list[i]->setStyleSheet(style::unselected);
+                                button_list[i]->update();
+                                button = button_list[i];
+                                last_in_num_range = false;
+                                qInfo() << "ESC with focus, removing selection from"
+                                        << last_key.second->text();
+                                break;
+                        }
+                }
+                last_key.second = nullptr;
+        } else if (event->key() == keybindings.quit->key() && !in_num_range) { // ESC pressed without focus, quit
                 qInfo() << "esc pressed, quitting";
                 QApplication::quit();
+
         // If nullptr or last key differs from the current key
         } else if (!last_key.first || event->key() != last_key.first->key()) {
                 qInfo() << "key and last_key don't match";
