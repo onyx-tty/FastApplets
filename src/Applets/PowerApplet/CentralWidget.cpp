@@ -90,11 +90,11 @@ void CentralWidget::keyPressEvent(QKeyEvent* event, PowerButton* button) {
         // If nullptr or last key differs from the current key
         } else if (!last_key.first || event->key() != last_key.first->key()) {
                 qInfo() << "key and last_key don't match";
-                selectButton(event);
-        // If last key matches the current key
+                selectPowerButton(event);
+                // If last key matches the current key
         } else {
                 qInfo() << "key and last_key match";
-                clickButton(event); // TODO Misleading, doesn't always result in a click, rework
+                clickPowerButton(event); // TODO Misleading, doesn't always result in a click, rework
         }
 
         if (last_key.second && last_key.second != button) { // remove last selection
@@ -133,7 +133,7 @@ void CentralWidget::lastKeyUpdate(QKeyEvent* event, PowerButton* button) {
 }
 
 /* Selects current button, unselects the previous one */
-void CentralWidget::selectButton(QKeyEvent* event) {
+void CentralWidget::selectPowerButton(QKeyEvent* event) {
         // current
         for (unsigned i = 0; i <= 3; ++i) {
                 if (event->key() == keybindings.power_keys[i]) {
@@ -154,7 +154,7 @@ void CentralWidget::selectButton(QKeyEvent* event) {
 }
 
 /* Runs power action, unselects previous button */
-void CentralWidget::clickButton(QKeyEvent* event) {
+void CentralWidget::clickPowerButton(QKeyEvent* event) {
         qInfo() << "Current key combination: " << last_key.first->key() << event->key();
         for (unsigned i = 0; i <= 3; ++i) {
                 if (event->key() == keybindings.power_keys[i]) {
