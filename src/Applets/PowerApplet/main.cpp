@@ -27,6 +27,7 @@ int main(int argc, char* argv[]) {
 
         // Debug
         qInfo() << applet.size() << Qt::endl;
+        qDebug() << "Qt Version:" << qVersion();
 
         // Run
         applet.show();
