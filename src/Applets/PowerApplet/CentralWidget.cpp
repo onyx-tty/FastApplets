@@ -79,11 +79,9 @@ void CentralWidget::keyPressEvent(QKeyEvent* event, PowerButton* button) {
                 last_key.second->update();
                 qInfo() << "Disabling selection in" << last_key.second->text();
         }
-
         if (in_num_range == false) {
                 button = nullptr;
         }
-
         if (last_key.first || last_key.second) {
                 qInfo() << "Current key combination:" << last_key.first->key()
                         << event->key();

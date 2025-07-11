@@ -30,6 +30,5 @@ int main(int argc, char* argv[]) {
 
         // Run
         applet.show();
-
         return app.exec();
 }

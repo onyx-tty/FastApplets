@@ -42,6 +42,7 @@ QDBusMessage PowerActionManager::sendPowerAction(const QString& method) const {
         QList<QVariant> arguments;
         arguments << QVariant::fromValue(true);
         method_call.setArguments(arguments);
+
         QDBusPendingReply<QVariantMap> response = connection.asyncCall(method_call);
         response.waitForFinished();
         return responseHandler(response.reply());
@@ -59,5 +60,6 @@ QDBusMessage PowerActionManager::responseHandler(QDBusMessage response) const {
         } else {
                 qInfo() << response << Qt::endl;
         }
+
         return response;
 }

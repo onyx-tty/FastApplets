@@ -49,7 +49,6 @@ private:
         std::array<PowerButton*, 4> button_list;
         PowerKeybindingManager keybindings;
 
-
         void lastKeyUpdate(QKeyEvent* event);
         void lastKeyUpdate(PowerButton* button);
         void lastKeyUpdate(QKeyEvent* event, PowerButton* button);
