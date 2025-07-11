@@ -52,7 +52,7 @@ set(PROJECT_SOURCES
 )
 
 set(PROJECT_RESOURCES
-
+        Data/Icons.qrc
 )
 
 set(CODEBASE
