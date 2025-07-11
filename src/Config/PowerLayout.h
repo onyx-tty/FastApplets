@@ -35,7 +35,7 @@ extern const QString title;
 
 namespace icon { // Inconsistent solution, this file will need a serious rework
 extern const QSize size;
-extern std::array<QIcon, 4> returnList();
+extern std::array<QIcon, 4> initIcons();
 }
 
 namespace button {

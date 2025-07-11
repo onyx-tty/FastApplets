@@ -27,7 +27,7 @@ QString icon_location = "Data/";
 
 // button order
 std::array<PowerButton *, 4> button::list(QWidget *parent, QHBoxLayout *layout) {
-        std::array<QIcon, 4>         icon_list   = icon::returnList();
+        std::array<QIcon, 4>         icon_list   = icon::initIcons();
         std::array<PowerButton *, 4> button_list = {
                 new PowerButton(parent, layout, icon_list[0], text::shutdown, "PowerOff"),
                 new PowerButton(parent, layout, icon_list[1], text::reboot, "Reboot"),
@@ -38,7 +38,7 @@ std::array<PowerButton *, 4> button::list(QWidget *parent, QHBoxLayout *layout) 
 }
 
 // icons
-std::array<QIcon, 4> icon::returnList() {
+std::array<QIcon, 4> icon::initIcons() {
         return std::array<QIcon, 4>{
                 QIcon(":/Icons/shutdown.svg"),
                 QIcon(":/Icons/reboot.svg"),
