@@ -15,21 +15,16 @@
    You should have received a copy of the GNU General Public License
    along with this program.  If not, see <https://www.gnu.org/licenses/>. */
 
-#ifndef POWER_BUTTON_H
-#define POWER_BUTTON_H
+#include "PowerButton.h"
+#include "../DBus/PowerActionManager.h"
 
-#include "../../../Widgets/Button.h"
-
-class PowerButton final
-        : public Button {
-        Q_OBJECT
-
-public:
-        PowerButton(QWidget* parent,
-                    QVBoxLayout* main_layout,
-                    const QIcon& button_icon,
-                    const QString& text,
-                    const QString& action);
-};
-
-#endif // POWER_BUTTON_H
+PowerButton::PowerButton(QWidget* parent,
+                         QVBoxLayout* main_layout,
+                         const QIcon& button_icon,
+                         const QString& text,
+                         const QString& action)
+        : Button(parent, main_layout, button_icon, text) {
+        connect(this, &PowerButton::clicked, [action]() {
+                PowerActionManager::getInstance().sendPowerAction(action);
+        });
+}

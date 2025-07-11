@@ -45,6 +45,7 @@ set(PROJECT_SOURCES
         PowerMainWindow.cpp
         CentralWidget.cpp
         ../../Config/PowerLayout.cpp
+        Widgets/PowerButton.cpp
         DBus/PowerActionManager.cpp
 )
 
