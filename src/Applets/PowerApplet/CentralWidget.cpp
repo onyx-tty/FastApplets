@@ -38,34 +38,17 @@ CentralWidget::CentralWidget(QWidget* parent)
         button_list = button::list(this, main_layout);
 }
 
-// TODO Consider QPointer
-void CentralWidget::lastKeyUpdate(QKeyEvent* event) {
-        if (last_key.first) {
-                delete last_key.first;
-        }
-        last_key.first = event->clone();
-        qInfo() << "event updated";
-}
 
-void CentralWidget::lastKeyUpdate(PowerButton* button) {
-        last_key.second = button;
-        qInfo() << "button updated";
-}
-
-void CentralWidget::lastKeyUpdate(QKeyEvent* event, PowerButton* button) {
-        lastKeyUpdate(event);
-        lastKeyUpdate(button);
-}
-
-void CentralWidget::keyPressEvent(QKeyEvent* event) { // match base keyPressEvent args
-        keyPressEvent(event, nullptr); // forward to the modified keyPressEvent
+/* Matches base keyPressEvent args and forwards to my modified version */
+void CentralWidget::keyPressEvent(QKeyEvent* event) {
+        keyPressEvent(event, nullptr);
         QWidget::keyPressEvent(event); // handle everything else as usual
 }
 
 void CentralWidget::keyPressEvent(QKeyEvent* event, PowerButton* button) {
         qInfo() << "INFO! keyPressEvent registered!";
-
         static bool in_num_range = false; // TODO Temporary variable, improve later
+
         for (unsigned i = 0; i <= 3; ++i) { // update button style
                 if (event->key() == keybindings.power_keys[i]) {
                         button_list[i]->setStyleSheet(style::selected);
@@ -106,7 +89,27 @@ void CentralWidget::keyPressEvent(QKeyEvent* event, PowerButton* button) {
                 qInfo() << "Current key combination:" << last_key.first->key()
                         << event->key();
         }
-        lastKeyUpdate(event, button); // only update if button has already been processed
+
+        lastKeyUpdate(event, button); // only update when the button has already been processed
+}
+
+// TODO Consider QPointer
+void CentralWidget::lastKeyUpdate(QKeyEvent* event) {
+        if (last_key.first) {
+                delete last_key.first;
+        }
+        last_key.first = event->clone();
+        qInfo() << "event updated";
+}
+
+void CentralWidget::lastKeyUpdate(PowerButton* button) {
+        last_key.second = button;
+        qInfo() << "button updated";
+}
+
+void CentralWidget::lastKeyUpdate(QKeyEvent* event, PowerButton* button) {
+        lastKeyUpdate(event);
+        lastKeyUpdate(button);
 }
 
 void CentralWidget::selectButton(QKeyEvent* event) {
