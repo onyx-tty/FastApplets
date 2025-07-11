@@ -27,26 +27,29 @@ QString icon_location = "Data/";
 
 // button order
 std::array<PowerButton *, 4> button::list(QWidget *parent, QHBoxLayout *layout) {
+        std::array<QIcon, 4>         icon_list   = icon::returnList();
         std::array<PowerButton *, 4> button_list = {
-                new PowerButton(parent, layout, icon::shutdown, text::shutdown, "PowerOff"),
-                new PowerButton(parent, layout, icon::reboot, text::reboot, "Reboot"),
-                new PowerButton(parent, layout, icon::suspend, text::suspend, "Suspend"),
-                new PowerButton(parent, layout, icon::hibernate, text::hibernate, "Hibernate"),
+                new PowerButton(parent, layout, icon_list[0], text::shutdown, "PowerOff"),
+                new PowerButton(parent, layout, icon_list[1], text::reboot, "Reboot"),
+                new PowerButton(parent, layout, icon_list[2], text::suspend, "Suspend"),
+                new PowerButton(parent, layout, icon_list[3], text::hibernate, "Hibernate"),
         };
         return button_list;
+}
+
+// icons
+std::array<QIcon, 4> icon::returnList() {
+        return std::array<QIcon, 4>{
+                QIcon(":/Icons/shutdown.svg"),
+                QIcon(":/Icons/reboot.svg"),
+                QIcon(":/Icons/suspend.svg"),
+                QIcon(":/Icons/hibernate.svg"),
+        };
 }
 
 // styles
 const QString style::selected   = shared_style::selected;
 const QString style::unselected = shared_style::unselected;
-
-// icon
-const QSize icon::size = shared_icon::size;
-QString icon::location(icon_location);
-QIcon icon::shutdown(icon_location + "shutdown.svg");
-QIcon icon::reboot(icon_location + "reboot.svg");
-QIcon icon::suspend(icon_location + "suspend.svg");
-QIcon icon::hibernate(icon_location + "hibernate.svg");
 
 // button alignment
 const Qt::Alignment button_alignment::icon = shared_button_alignment::icon;

@@ -33,6 +33,11 @@ extern QSize size;
 extern const QString title;
 }
 
+namespace icon { // Inconsistent solution, this file will need a serious rework
+extern const QSize size;
+extern std::array<QIcon, 4> returnList();
+}
+
 namespace button {
 extern std::array<PowerButton*, 4> list(QWidget* parent, QHBoxLayout* layout);
 }
@@ -40,15 +45,6 @@ extern std::array<PowerButton*, 4> list(QWidget* parent, QHBoxLayout* layout);
 namespace style {
 extern const QString selected;
 extern const QString unselected;
-}
-
-namespace icon {
-extern const QSize size;
-extern QString location;
-extern QIcon shutdown;
-extern QIcon reboot;
-extern QIcon suspend;
-extern QIcon hibernate;
 }
 
 namespace button_alignment {
