@@ -24,11 +24,9 @@
 /* Initializes a button of choice with uniform design */
 // Inheriting constructor defaults from from QPushButton,
 // but customizing the icon, icon size and the alignment of that button
-Button::Button(QWidget* parent, // TODO Default icon
-               QHBoxLayout* main_layout,
-               const QIcon& button_icon,
-               const QString& text)
-        : QPushButton(parent) {
+Button::Button(QWidget*     parent, // TODO Default icon
+               QHBoxLayout* main_layout, const QIcon& button_icon, const QString& text) :
+        QPushButton(parent) {
         setIcon(button_icon);
         setIconSize(shared_icon::size);
         setSizePolicy(shared_policy::buttons);

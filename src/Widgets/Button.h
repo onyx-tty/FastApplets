@@ -18,22 +18,20 @@
 #ifndef BUTTON_H
 #define BUTTON_H
 
-#include <QPushButton>
-#include <QLabel>
-#include <QIcon>
 #include <QHBoxLayout>
+#include <QIcon>
+#include <QLabel>
+#include <QPushButton>
 #include <QString>
 
-class Button
-        : public QPushButton {
+class Button : public QPushButton {
         Q_OBJECT
 
 protected:
         QLabel* debug_text;
 
-        explicit Button(QWidget* parent,
-                        QHBoxLayout* main_layout,
-                        const QIcon& button_icon, // TODO default icon
+        explicit Button(QWidget* parent, QHBoxLayout* main_layout,
+                        const QIcon&   button_icon, // TODO default icon
                         const QString& text);
         virtual ~Button() = 0;
 
