@@ -20,16 +20,12 @@
 
 #include "../../../Widgets/Button.h"
 
-class PowerButton final
-        : public Button {
+class PowerButton final : public Button {
         Q_OBJECT
 
 public:
-        PowerButton(QWidget* parent,
-                    QHBoxLayout* main_layout,
-                    const QIcon& button_icon,
-                    const QString& text,
-                    const QString& action);
+        PowerButton(QWidget* parent, QHBoxLayout* main_layout, const QIcon& button_icon,
+                    const QString& text, const QString& action);
 };
 
 #endif // POWER_BUTTON_H

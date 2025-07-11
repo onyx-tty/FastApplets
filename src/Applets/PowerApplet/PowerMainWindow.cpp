@@ -18,14 +18,7 @@
 #include "PowerMainWindow.h"
 #include "../../Config/PowerLayout.h"
 
-PowerMainWindow::PowerMainWindow(QWidget* parent)
-        : MainWindow(parent), central_widget(new CentralWidget(this)) {
-        initWidgets();
-}
-
-void PowerMainWindow::initWidgets() {
-        // TODO There's probably a better way to call that namespace
-        power_button::initAll(returnCentralWidget(), returnMainLayout());
+PowerMainWindow::PowerMainWindow(QWidget* parent) : MainWindow(parent) {
         resize(main_window::size);
         setCentralWidget(central_widget);
 }

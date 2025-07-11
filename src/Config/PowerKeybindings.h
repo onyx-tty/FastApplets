@@ -20,13 +20,10 @@
 
 #include "SharedKeybindings.h"
 
-struct PowerKeybindingManager
-        : public KeybindingManager {
-
+struct PowerKeybindingManager : public KeybindingManager {
         std::array<unsigned, 4> power_keys;
 
         explicit PowerKeybindingManager();
 };
-
 
 #endif // POWER_KEYBINDINGS_H

@@ -25,23 +25,23 @@
 // TODO Consider turning these into one manager struct for inheritance
 
 namespace shared_main_window {
-extern QSize size;
+extern QSize         size;
 extern const QString title;
-}
+} // namespace shared_main_window
 
 namespace shared_style {
 extern const QString selected;
 extern const QString unselected;
-}
+} // namespace shared_style
 
 namespace shared_icon {
 extern const QSize size;
-}
+} // namespace shared_icon
 
 namespace shared_button_alignment {
 extern const Qt::Alignment icon;
 extern const Qt::Alignment text;
-}
+} // namespace shared_button_alignment
 
 namespace shared_policy {
 extern const QSizePolicy buttons;

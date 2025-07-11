@@ -18,33 +18,32 @@
 #ifndef POWER_ACTION_MANAGER_H
 #define POWER_ACTION_MANAGER_H
 
-#include <QtDBus/QtDBus> // TODO Don't include directly
 #include <QString>
+#include <QtDBus/QtDBus> // TODO Don't include directly
 
 // org.freedesktop.login1 — The D-Bus interface of systemd-logind
 namespace target {
 extern const QString name;
 extern const QString path;
 extern const QString interface;
-}
+} // namespace target
 
 class PowerActionManager final { // Singleton design
 
 public:
-        PowerActionManager(const PowerActionManager&) = delete;
-        PowerActionManager& operator=(const PowerActionManager&) = delete;
+        PowerActionManager(const PowerActionManager&)                   = delete;
+        PowerActionManager&        operator=(const PowerActionManager&) = delete;
         static PowerActionManager& getInstance();
 
         QDBusMessage sendPowerAction(const QString& method) const;
 
 private:
         QDBusConnection connection;
-        QDBusInterface proxy;
+        QDBusInterface  proxy;
 
         explicit PowerActionManager(QObject* parent = nullptr);
 
         QDBusMessage responseHandler(QDBusMessage response) const;
-
 };
 
 #endif // POWER_ACTION_MANAGER_H

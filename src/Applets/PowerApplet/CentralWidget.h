@@ -21,14 +21,13 @@
 #include "Widgets/PowerButton.h"
 #include "../../Config/PowerKeybindings.h"
 
-#include <QWidget>
 #include <QHBoxLayout>
+#include <QWidget>
 
 #include <array>
 #include <utility>
 
-class CentralWidget final
-        : public QWidget {
+class CentralWidget final : public QWidget {
         Q_OBJECT
 
 public:
@@ -46,8 +45,8 @@ public:
 
 private:
         std::pair<QKeyEvent*, PowerButton*> last_key;
-        std::array<PowerButton*, 4> button_list;
-        PowerKeybindingManager keybindings;
+        std::array<PowerButton*, 4>         button_list;
+        PowerKeybindingManager              keybindings;
 
         void lastKeyUpdate(QKeyEvent* event);
         void lastKeyUpdate(PowerButton* button);

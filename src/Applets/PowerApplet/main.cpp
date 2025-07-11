@@ -22,7 +22,7 @@
 
 int main(int argc, char* argv[]) {
         // Init
-        QApplication app(argc, argv);
+        QApplication    app(argc, argv);
         PowerMainWindow applet; // QMainWindow -> MainWindow -> PowerMainWindow
 
         // Debug

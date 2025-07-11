@@ -19,8 +19,8 @@
 #include "Config/SharedLayout.h"
 
 #include <QHBoxLayout>
-#include <QPushButton>
 #include <QIcon>
+#include <QPushButton>
 #include <QSizePolicy>
 
 MainWindow::MainWindow(QWidget* parent)

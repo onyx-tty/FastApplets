@@ -21,8 +21,7 @@
 #include "../../MainWindow.h"
 #include "CentralWidget.h"
 
-class PowerMainWindow final
-        : public MainWindow {
+class PowerMainWindow final : public MainWindow {
         Q_OBJECT
 
 public:
@@ -30,7 +29,6 @@ public:
 
 private:
         CentralWidget* central_widget;
-
 };
 
 #endif // POWER_MAIN_WINDOW_H

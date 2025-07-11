@@ -20,8 +20,8 @@
 /* Modify to adjust application style */
 
 // window properties
-QSize main_window::size(960, 200);
-const QString title = shared_main_window::title;
+QSize         main_window::size  = QSize(960, 200);
+const QString main_window::title = shared_main_window::title;
 
 QString icon_location = "Data/";
 
@@ -37,7 +37,7 @@ std::array<PowerButton *, 4> button::list(QWidget *parent, QHBoxLayout *layout) 
 }
 
 // styles
-const QString style::selected = shared_style::selected;
+const QString style::selected   = shared_style::selected;
 const QString style::unselected = shared_style::unselected;
 
 // icon

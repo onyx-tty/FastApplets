@@ -18,14 +18,13 @@
 #ifndef MAIN_WINDOW_H
 #define MAIN_WINDOW_H
 
-#include <QMainWindow>
 #include <QHBoxLayout>
+#include <QMainWindow>
 #include <QShortcut>
 #include <QWidget>
 
-class MainWindow
-	: public QMainWindow {
-	Q_OBJECT
+class MainWindow : public QMainWindow {
+        Q_OBJECT
 
 protected:
         explicit MainWindow(QWidget* parent = nullptr);
