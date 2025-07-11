@@ -67,7 +67,7 @@ void CentralWidget::keyPressEvent(QKeyEvent* event, PowerButton* button) {
 
         static bool in_num_range = false; // TODO Temporary variable, improve later
         for (unsigned i = 0; i <= 3; ++i) { // update button style
-                if (event->key() == Qt::Key_1 + i) {
+                if (event->key() == keybindings.power_keys[i]) {
                         button_list[i]->setStyleSheet(style::selected);
                         button_list[i]->update();
                         button = button_list[i];
@@ -79,14 +79,13 @@ void CentralWidget::keyPressEvent(QKeyEvent* event, PowerButton* button) {
         }
 
         // TODO Move to a separate keybindings file (inherited from DefaultKeybindings)
-        std::array<unsigned, 4> power_keys = {Qt::Key_1, Qt::Key_2, Qt::Key_3, Qt::Key_4};
-        if (event->key() == Keybinding::quit->key()) { // ESC pressed
+        if (event->key() == keybindings.quit->key()) { // ESC pressed
                 qInfo() << "esc pressed, quitting";
                 QApplication::quit();
         // If nullptr or last key diff from current key
         } else if (!last_key.first || event->key() != last_key.first->key()) {
                 qInfo() << "key and last_key don't match";
-                selectButton(event, power_keys);
+                selectButton(event);
         // If last key matches current key
         } else {
                 qInfo() << "key and last_key match";
@@ -110,11 +109,10 @@ void CentralWidget::keyPressEvent(QKeyEvent* event, PowerButton* button) {
         lastKeyUpdate(event, button); // only update if button has already been processed
 }
 
-void CentralWidget::selectButton(QKeyEvent* event,
-                                 std::array<unsigned, 4>& acceptable_keys) {
+void CentralWidget::selectButton(QKeyEvent* event) {
         for (unsigned i = 0; i <= 3; ++i) {
                 // if in range
-                if (event->key() == Qt::Key_1 + i) {
+                if (event->key() == keybindings.power_keys[i]) {
                         qInfo() << button_list[i]->text() << "selected!";
                         button_list[i]->setStyleSheet(style::selected);
                         button_list[i]->update();
@@ -135,7 +133,7 @@ void CentralWidget::selectButton(QKeyEvent* event,
 void CentralWidget::clickButton(QKeyEvent* event) {
         qInfo() << "Current key combination: " << last_key.first->key() << event->key();
         for (unsigned i = 0; i <= 3; ++i) {
-                if (event->key() == Qt::Key_1 + i) {
+                if (event->key() == keybindings.power_keys[i]) {
                         qInfo() << button_list[i]->text() << "clicked!";
                         last_key.second->setStyleSheet(style::unselected);
                         last_key.second->update();

@@ -17,4 +17,6 @@
 
 #include "SharedKeybindings.h"
 
-QKeyEvent* Keybinding::quit(new QKeyEvent(QEvent::KeyPress, Qt::Key_Escape, Qt::NoModifier));
+KeybindingManager::KeybindingManager() {
+        quit = new QKeyEvent(QEvent::KeyPress, Qt::Key_Escape, Qt::NoModifier);
+}

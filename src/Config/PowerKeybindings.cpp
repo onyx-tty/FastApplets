@@ -15,16 +15,9 @@
    You should have received a copy of the GNU General Public License
    along with this program.  If not, see <https://www.gnu.org/licenses/>. */
 
-#ifndef SHARED_KEYBINDINGS_H
-#define SHARED_KEYBINDINGS_H
+#include "PowerKeybindings.h"
 
-#include <QApplication>
-#include <QKeyEvent>
-
-struct KeybindingManager {
-        QKeyEvent* quit;
-
-        explicit KeybindingManager();
-};
-
-#endif // SHARED_KEYBINDINGS_H
+PowerKeybindingManager::PowerKeybindingManager()
+        : KeybindingManager() {
+        power_keys = {Qt::Key_1, Qt::Key_2, Qt::Key_3, Qt::Key_4};
+}

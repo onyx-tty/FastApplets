@@ -19,6 +19,7 @@
 #define CENTRAL_WIDGET_H
 
 #include "Widgets/PowerButton.h"
+#include "../../Config/PowerKeybindings.h"
 
 #include <QWidget>
 #include <QVBoxLayout>
@@ -45,14 +46,14 @@ public:
 
 private:
         std::pair<QKeyEvent*, PowerButton*> last_key;
-        PowerButton* last_key_reference;
         std::array<PowerButton*, 4> button_list;
+        PowerKeybindingManager keybindings;
+
 
         void lastKeyUpdate(QKeyEvent* event);
         void lastKeyUpdate(PowerButton* button);
         void lastKeyUpdate(QKeyEvent* event, PowerButton* button);
-        void selectButton(QKeyEvent* event,
-                          std::array<unsigned, 4>& acceptable_keys);
+        void selectButton(QKeyEvent* event);
         void clickButton(QKeyEvent* event);
 };
 

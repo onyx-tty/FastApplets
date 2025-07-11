@@ -15,16 +15,18 @@
    You should have received a copy of the GNU General Public License
    along with this program.  If not, see <https://www.gnu.org/licenses/>. */
 
-#ifndef SHARED_KEYBINDINGS_H
-#define SHARED_KEYBINDINGS_H
+#ifndef POWER_KEYBINDINGS_H
+#define POWER_KEYBINDINGS_H
 
-#include <QApplication>
-#include <QKeyEvent>
+#include "SharedKeybindings.h"
 
-struct KeybindingManager {
-        QKeyEvent* quit;
+struct PowerKeybindingManager
+        : public KeybindingManager {
 
-        explicit KeybindingManager();
+        std::array<unsigned, 4> power_keys;
+
+        explicit PowerKeybindingManager();
 };
 
-#endif // SHARED_KEYBINDINGS_H
+
+#endif // POWER_KEYBINDINGS_H

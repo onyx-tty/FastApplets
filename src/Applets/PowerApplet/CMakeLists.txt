@@ -36,6 +36,7 @@ set(PROJECT_HEADERS
         PowerMainWindow.h
         CentralWidget.h
         ../../Config/PowerLayout.h
+        ../../Config/PowerKeybindings.h
         Widgets/PowerButton.h
         DBus/PowerActionManager.h
 )
@@ -45,6 +46,7 @@ set(PROJECT_SOURCES
         PowerMainWindow.cpp
         CentralWidget.cpp
         ../../Config/PowerLayout.cpp
+        ../../Config/PowerKeybindings.cpp
         Widgets/PowerButton.cpp
         DBus/PowerActionManager.cpp
 )
