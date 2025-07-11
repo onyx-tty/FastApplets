@@ -37,127 +37,97 @@ CentralWidget::CentralWidget(QWidget* parent) : QWidget(parent) {
         button_list = button::list(this, main_layout);
 }
 
-/* Matches base keyPressEvent args and forwards to my modified version */
 void CentralWidget::keyPressEvent(QKeyEvent* event) {
-        keyPressEvent(event, nullptr);
-        QWidget::keyPressEvent(event); // handle everything else as usual
-}
-
-void CentralWidget::keyPressEvent(QKeyEvent* event, PowerButton* button) {
         qInfo() << "INFO! keyPressEvent registered!";
-        static bool in_num_range      = false; // TODO Temporary variable, improve later
-        static bool last_in_num_range = false; // TODO Temporary variable, remove later
 
-        for (unsigned i = 0; i <= 3; ++i) { // update button style
-                if (event->key() == keybindings.power_keys[i]) {
-                        button_list[i]->setStyleSheet(style::selected);
-                        button_list[i]->update();
-                        button       = button_list[i];
-                        in_num_range = true;
-                        qInfo() << "Enabling selection in" << button_list[i]->text();
-                        break;
-                }
-                in_num_range = false;
-        }
-        for (unsigned i = 0; i <= 3; ++i) { // TODO This horrible implementation needs a replacement
-                if (last_key.first && last_key.first->key() == keybindings.power_keys[i]) {
-                        last_in_num_range = true;
-                        break;
-                }
-                last_in_num_range = false;
-        }
+        auto inPowerRange = [](QKeyEvent* event) {
+                int diff = Qt::Key_4 - event->key();
+                return diff >= 0 && diff <= 4;
+        };
 
-        if (event->key() == keybindings.quit->key()
-            && last_in_num_range) { // ESC pressed with focus, unselect last key
-                for (unsigned i = 0; i <= 3; ++i) {
-                        if (last_key.first->key() == keybindings.power_keys[i]) {
-                                button_list[i]->setStyleSheet(style::unselected);
-                                button_list[i]->update();
-                                button            = button_list[i];
-                                last_in_num_range = false;
-                                qInfo() << "ESC with focus, removing selection from"
-                                        << last_key.second->text();
-                                break;
-                        }
-                }
-                last_key.second = nullptr;
-        } else if (event->key() == keybindings.quit->key()
-                   && !in_num_range) { // ESC pressed without focus, quit
-                qInfo() << "esc pressed, quitting";
+        // update button style
+        updatePowerButton(event, style::selected, [&](unsigned i) { ; });
+
+        if (event->key() == keybindings.quit->key() && last_key.first
+            && inPowerRange(last_key.first)) { // ESC pressed with focus, unselect last key
+                updatePowerButton(last_key.first, style::unselected,
+                                [&](unsigned i) { updateLastKey(event, nullptr); });
+        } else if (event->key() == keybindings.quit->key() && !inPowerRange(event)) { // ESC pressed without focus, quit
+                qInfo() << "ESC pressed, quitting!";
                 QApplication::quit();
 
-                // If nullptr or last key differs from the current key
+                // If last key was null or if last key differs from the current key
         } else if (!last_key.first || event->key() != last_key.first->key()) {
-                qInfo() << "key and last_key don't match";
+                qInfo() << "event and last_key.first don't match";
                 selectPowerButton(event);
                 // If last key matches the current key
         } else {
-                qInfo() << "key and last_key match";
+                qInfo() << "event and last_key.first match";
                 clickPowerButton(event); // TODO Misleading, doesn't always result in a click, rework
         }
 
-        if (last_key.second && last_key.second != button) { // remove last selection
-                last_key.second->setStyleSheet(style::unselected);
-                last_key.second->update();
-                qInfo() << "Disabling selection in" << last_key.second->text();
-        }
-        if (in_num_range == false) { button = nullptr; }
-        if (last_key.first || last_key.second) {
-                qInfo() << "Current key combination:" << last_key.first->key() << event->key();
-        }
+        qInfo() << "Current key combination:"
+                << (last_key.first ? QString::number(last_key.first->key()) : "NULL")
+                << QString::number(event->key());
 
-        lastKeyUpdate(event, button); // only update when the button has already been processed
+        for (unsigned i = 0; i != 4; ++i) { // only update when the button has already been processed
+                if (event->key() == keybindings.power_keys[i]) updateLastKey(event, button_list[i]);
+        }
 }
 
 // TODO Consider QPointer
-void CentralWidget::lastKeyUpdate(QKeyEvent* event) {
+void CentralWidget::updateLastKey(QKeyEvent* event) {
         if (last_key.first) { delete last_key.first; }
         last_key.first = event->clone();
         qInfo() << "event updated";
 }
 
-void CentralWidget::lastKeyUpdate(PowerButton* button) {
+void CentralWidget::updateLastKey(PowerButton* button) {
         last_key.second = button;
         qInfo() << "button updated";
 }
 
-void CentralWidget::lastKeyUpdate(QKeyEvent* event, PowerButton* button) {
-        lastKeyUpdate(event);
-        lastKeyUpdate(button);
+void CentralWidget::updateLastKey(QKeyEvent* event, PowerButton* button) {
+        updateLastKey(event);
+        updateLastKey(button);
+}
+
+void CentralWidget::updatePowerButton(PowerButton* button, const QString& style) {
+        button->setStyleSheet(style);
+        button->update();
+}
+
+void CentralWidget::updatePowerButton(QKeyEvent* event, const QString& style,
+                                      auto&& action) {
+        for (unsigned i = 0; i != 4; ++i) {
+                if (event->key() == keybindings.power_keys[i]) {
+                        updatePowerButton(button_list[i], style);
+                        action(i); // let lambda access i
+                        return;
+                }
+        }
 }
 
 /* Selects current button, unselects the previous one */
 void CentralWidget::selectPowerButton(QKeyEvent* event) {
-        // current
-        for (unsigned i = 0; i <= 3; ++i) {
-                if (event->key() == keybindings.power_keys[i]) {
-                        qInfo() << button_list[i]->text() << "selected!";
-                        button_list[i]->setStyleSheet(style::selected);
-                        button_list[i]->update();
-                        return;
-                }
-        }
-        // previous
+        // select current
+        updatePowerButton(event, style::selected,
+                          [&](unsigned i) { qInfo() << button_list[i]->text() << "selected!"; });
+        // unselect previous
         if (!last_key.second) {
                 qWarning() << "INFO! last_key.second is null!";
         } else {
                 qInfo() << "INFO! Key not within the range of power keys!";
-                last_key.second->setStyleSheet(style::unselected);
-                last_key.second->update();
+                updatePowerButton(last_key.second, style::unselected);
         }
 }
 
 /* Runs power action, unselects previous button */
 void CentralWidget::clickPowerButton(QKeyEvent* event) {
-        qInfo() << "Current key combination: " << last_key.first->key() << event->key();
-        for (unsigned i = 0; i <= 3; ++i) {
-                if (event->key() == keybindings.power_keys[i]) {
-                        qInfo() << button_list[i]->text() << "clicked!";
-                        last_key.second->setStyleSheet(style::unselected);
-                        last_key.second->update();
-                        emit button_list[i]->clicked();
-                        QApplication::quit();
-                }
-        }
+        updatePowerButton(last_key.first, style::unselected,
+                          [&](unsigned i) {
+                                  emit button_list[i]->clicked();
+                                  QApplication::quit();
+                          });
         qInfo() << "diff key";
 }
