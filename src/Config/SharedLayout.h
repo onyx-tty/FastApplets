@@ -22,6 +22,7 @@
 #include <QSize>
 #include <QSizePolicy>
 
+// TODO Consider turning these into one manager struct for inheritance
 namespace shared_style {
 extern const QString selected;
 extern const QString unselected;

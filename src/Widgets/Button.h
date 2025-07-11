@@ -37,12 +37,10 @@ protected:
                         const QString& text);
         virtual ~Button() = 0;
 
+        /* Workaround which aligns buttons to the left, and keeps the text centered via a proxy label */
         void debugAlignIconLeft(QString label_text);
 
 public:
-        // Workaround that aligns buttons to the left and keeps the text centered (sort of)
-        /* It'll likely be removed once I get into actually inheriting from QProxyStyle
-           It may be a bit wasteful, however as of now alternative solutions would clutter the code massively */
         virtual QString text() const;
 };
 
