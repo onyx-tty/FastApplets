@@ -21,8 +21,10 @@
 #include <QApplication>
 #include <QKeyEvent>
 
-namespace Keybinding {
-extern QKeyEvent* quit;
-}
+struct KeybindingManager {
+        QKeyEvent* quit;
+
+        explicit KeybindingManager();
+};
 
 #endif // SHARED_KEYBINDINGS_H
