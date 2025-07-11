@@ -54,7 +54,7 @@ extern QString hibernate;
 }
 
 namespace policy {
-extern const QSizePolicy buttons; // expanding
+extern const QSizePolicy buttons;
 }
 
 #endif // POWER_LAYOUT_H

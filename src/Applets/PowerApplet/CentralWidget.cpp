@@ -61,7 +61,6 @@ void CentralWidget::keyPressEvent(QKeyEvent* event, PowerButton* button) {
                 in_num_range = false;
         }
 
-        // TODO Move to a separate keybindings file (inherited from DefaultKeybindings)
         if (event->key() == keybindings.quit->key()) { // ESC pressed
                 qInfo() << "esc pressed, quitting";
                 QApplication::quit();
@@ -85,7 +84,7 @@ void CentralWidget::keyPressEvent(QKeyEvent* event, PowerButton* button) {
                 button = nullptr;
         }
 
-        if (last_key.first || last_key.second) { // not nullptr
+        if (last_key.first || last_key.second) {
                 qInfo() << "Current key combination:" << last_key.first->key()
                         << event->key();
         }
@@ -126,9 +125,8 @@ void CentralWidget::selectButton(QKeyEvent* event) {
         // previous
         if (!last_key.second) {
                 qWarning() << "INFO! last_key.second is null!";
-        } else { // if not in range and last_key.second not nullptr
-                qInfo() << "INFO! Key not within the range of acceptable_keys!";
-                // unselect previous key
+        } else {
+                qInfo() << "INFO! Key not within the range of power keys!";
                 last_key.second->setStyleSheet(style::unselected);
                 last_key.second->update();
         }
