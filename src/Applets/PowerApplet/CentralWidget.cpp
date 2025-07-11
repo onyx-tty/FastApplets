@@ -65,11 +65,11 @@ void CentralWidget::keyPressEvent(QKeyEvent* event, PowerButton* button) {
         if (event->key() == keybindings.quit->key()) { // ESC pressed
                 qInfo() << "esc pressed, quitting";
                 QApplication::quit();
-        // If nullptr or last key diff from current key
+        // If nullptr or last key differs from the current key
         } else if (!last_key.first || event->key() != last_key.first->key()) {
                 qInfo() << "key and last_key don't match";
                 selectButton(event);
-        // If last key matches current key
+        // If last key matches the current key
         } else {
                 qInfo() << "key and last_key match";
                 clickButton(event); // TODO Misleading, doesn't always result in a click, rework
@@ -112,9 +112,10 @@ void CentralWidget::lastKeyUpdate(QKeyEvent* event, PowerButton* button) {
         lastKeyUpdate(button);
 }
 
+/* Selects current button, unselects the previous one */
 void CentralWidget::selectButton(QKeyEvent* event) {
+        // current
         for (unsigned i = 0; i <= 3; ++i) {
-                // if in range
                 if (event->key() == keybindings.power_keys[i]) {
                         qInfo() << button_list[i]->text() << "selected!";
                         button_list[i]->setStyleSheet(style::selected);
@@ -122,7 +123,7 @@ void CentralWidget::selectButton(QKeyEvent* event) {
                         return;
                 }
         }
-        // if null
+        // previous
         if (!last_key.second) {
                 qWarning() << "INFO! last_key.second is null!";
         } else { // if not in range and last_key.second not nullptr
@@ -133,6 +134,7 @@ void CentralWidget::selectButton(QKeyEvent* event) {
         }
 }
 
+/* Runs power action, unselects previous button */
 void CentralWidget::clickButton(QKeyEvent* event) {
         qInfo() << "Current key combination: " << last_key.first->key() << event->key();
         for (unsigned i = 0; i <= 3; ++i) {

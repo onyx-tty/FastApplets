@@ -24,8 +24,8 @@
 
 MainWindow::MainWindow(QWidget* parent)
         : QMainWindow(parent) {
-        resize(280, 540);
-        setWindowTitle("test_window");
+        resize(280, 540); // TODO Move to SharedLayout
+        setWindowTitle("test_window"); // TODO Move to SharedLayout
 }
 
 MainWindow::~MainWindow() = default;

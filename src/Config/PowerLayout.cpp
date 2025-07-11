@@ -17,7 +17,7 @@
 
 #include "PowerLayout.h"
 
-// Modify these as much as you want to customize the appearance
+// Modify to adjust application style
 
 QString icon_location = "Data/";
 

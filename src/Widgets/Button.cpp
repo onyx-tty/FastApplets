@@ -24,7 +24,7 @@
 /* Initializes a button of choice with uniform design */
 // Inheriting constructor defaults from from QPushButton,
 // but customizing the icon, icon size and the alignment of that button
-Button::Button(QWidget* parent, // TODO default icon
+Button::Button(QWidget* parent, // TODO Default icon
                QVBoxLayout* main_layout,
                const QIcon& button_icon,
                const QString& text)
@@ -38,19 +38,16 @@ Button::Button(QWidget* parent, // TODO default icon
 
 Button::~Button() = default;
 
-// Workaround that aligns buttons to the left and keeps the text centered (sort of)
-/* It'll likely be removed once I get into actually inheriting from QProxyStyle
-   It may be a bit wasteful, however as of now alternative solutions would clutter the code massively */
+/* Workaround which aligns buttons to the left, and keeps the text centered via a proxy label */
 void Button::debugAlignIconLeft(QString label_text) {
         setLayout(new QGridLayout);
         setStyleSheet(QString(shared_style::unselected));
-        debug_text = new QLabel(label_text, this);
+        debug_text = new QLabel(label_text, this); // label that acts as a button text replacement
         debug_text->setAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
         debug_text->setAttribute(Qt::WA_TransparentForMouseEvents, true);
         layout()->addWidget(debug_text);
 }
 
-QString Button::text() const { // Returns the true text
+QString Button::text() const { // Returns text from the label, not the button itself
         return debug_text->text();
 }
-

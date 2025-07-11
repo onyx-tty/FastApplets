@@ -53,8 +53,8 @@ private:
         void lastKeyUpdate(QKeyEvent* event);
         void lastKeyUpdate(PowerButton* button);
         void lastKeyUpdate(QKeyEvent* event, PowerButton* button);
-        void selectButton(QKeyEvent* event);
-        void clickButton(QKeyEvent* event);
+        void selectButton(QKeyEvent* event); // TODO Rename to selectPowerButton
+        void clickButton(QKeyEvent* event); // TODO Rename to clickPowerButton
 };
 
 #endif // CENTRAL_WIDGET_H
