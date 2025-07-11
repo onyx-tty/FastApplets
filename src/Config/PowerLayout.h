@@ -28,6 +28,11 @@
 
 #include <array>
 
+namespace main_window {
+extern QSize size;
+extern const QString title;
+}
+
 namespace button {
 extern std::array<PowerButton*, 4> list(QWidget* parent, QVBoxLayout* layout);
 }
@@ -44,6 +49,11 @@ extern QIcon shutdown;
 extern QIcon reboot;
 extern QIcon suspend;
 extern QIcon hibernate;
+}
+
+namespace button_alignment {
+extern const Qt::Alignment icon;
+extern const Qt::Alignment text;
 }
 
 namespace text {

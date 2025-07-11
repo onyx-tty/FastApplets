@@ -22,9 +22,20 @@
 #include <QSizePolicy>
 #include <QString>
 
-const QString shared_style::selected = "text-align: left; background-color: lightblue; border: 2px solid blue;";
-const QString shared_style::unselected = "text-align: left;";
+// main window
+QSize shared_main_window::size(600, 300);
+const QString shared_main_window::title = "test_window";
 
+// style
+const QString shared_style::selected = "text-align: center top; background-color: lightblue; border: 2px solid blue;";
+const QString shared_style::unselected = "text-align: center top;";
+
+// icons
 const QSize shared_icon::size(64, 64);
 
+// button alignment
+const Qt::Alignment shared_button_alignment::icon(Qt::AlignHCenter | Qt::AlignBottom);
+const Qt::Alignment shared_button_alignment::text(Qt::AlignHCenter | Qt::AlignTop);
+
+// policies
 const QSizePolicy shared_policy::buttons(QSizePolicy::Expanding, QSizePolicy::Expanding);

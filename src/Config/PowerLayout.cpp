@@ -17,7 +17,11 @@
 
 #include "PowerLayout.h"
 
-// Modify to adjust application style
+/* Modify to adjust application style */
+
+// window properties
+QSize main_window::size(960, 200);
+const QString title = shared_main_window::title;
 
 QString icon_location = "Data/";
 
@@ -43,6 +47,10 @@ QIcon icon::shutdown(icon_location + "shutdown.svg");
 QIcon icon::reboot(icon_location + "reboot.svg");
 QIcon icon::suspend(icon_location + "suspend.svg");
 QIcon icon::hibernate(icon_location + "hibernate.svg");
+
+// button alignment
+const Qt::Alignment button_alignment::icon = shared_button_alignment::icon;
+const Qt::Alignment button_alignment::text = shared_button_alignment::text;
 
 // text
 QString text::shutdown("Shutdown");
