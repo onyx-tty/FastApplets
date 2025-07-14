@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.16)
 
-project(power-applet VERSION 0.9.0 LANGUAGES CXX)
+project(power-applet VERSION 0.10.0 LANGUAGES CXX)
 
 set(CMAKE_AUTOUIC ON)
 set(CMAKE_AUTOMOC ON)
@@ -14,9 +14,9 @@ set(CMAKE_LINKER_FLAGS "${CMAKE_LINKER_FLAGS} -fsanitize=address")
 
 set(QT_VERSION_MAJOR 6)
 
-find_package(Qt6 REQUIRED COMPONENTS Widgets DBus)
+find_package(Qt6 REQUIRED COMPONENTS Widgets Gui DBus)
 # TODO Qt5 fallback support
-#find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Widgets DBus)
+#find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Widgets Gui DBus)
 
 set(INCLUDED_HEADERS
         ../../MainWindow.h
@@ -76,6 +76,7 @@ endif()
 # Linked libraries
 target_link_libraries(power-applet PRIVATE
         Qt${QT_VERSION_MAJOR}::Widgets
+        Qt${QT_VERSION_MAJOR}::Gui
         Qt${QT_VERSION_MAJOR}::DBus
 )
 
