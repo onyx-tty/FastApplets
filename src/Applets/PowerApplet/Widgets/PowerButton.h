@@ -15,8 +15,7 @@
    You should have received a copy of the GNU General Public License
    along with this program.  If not, see <https://www.gnu.org/licenses/>. */
 
-#ifndef POWER_BUTTON_H
-#define POWER_BUTTON_H
+#pragma once
 
 #include "../../../Widgets/Button.h"
 
@@ -31,5 +30,3 @@ public:
 
         const QString& getDBusAction();
 };
-
-#endif // POWER_BUTTON_H

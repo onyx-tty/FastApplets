@@ -15,8 +15,7 @@
    You should have received a copy of the GNU General Public License
    along with this program.  If not, see <https://www.gnu.org/licenses/>. */
 
-#ifndef POWER_ACTION_MANAGER_H
-#define POWER_ACTION_MANAGER_H
+#pragma once
 
 #include <QString>
 #include <QtDBus/QtDBus> // TODO Don't include directly
@@ -45,5 +44,3 @@ private:
 
         QDBusMessage responseHandler(const QDBusMessage response) const;
 };
-
-#endif // POWER_ACTION_MANAGER_H

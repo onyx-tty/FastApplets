@@ -15,8 +15,7 @@
    You should have received a copy of the GNU General Public License
    along with this program.  If not, see <https://www.gnu.org/licenses/>. */
 
-#ifndef POWER_MAIN_WINDOW_H
-#define POWER_MAIN_WINDOW_H
+#pragma once
 
 #include "../../MainWindow.h"
 #include "CentralWidget.h"
@@ -29,5 +28,3 @@ public:
 
         PowerMainWindow(const QApplication& app, QWidget* const parent = nullptr);
 };
-
-#endif // POWER_MAIN_WINDOW_H

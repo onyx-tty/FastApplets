@@ -15,8 +15,7 @@
    You should have received a copy of the GNU General Public License
    along with this program.  If not, see <https://www.gnu.org/licenses/>. */
 
-#ifndef POWER_KEYBINDINGS_H
-#define POWER_KEYBINDINGS_H
+#pragma once
 
 #include "SharedKeybindings.h"
 
@@ -30,5 +29,3 @@ struct PowerKeybindingManager : public KeybindingManager {
 
         static void printKeybindings();
 };
-
-#endif // POWER_KEYBINDINGS_H

@@ -15,8 +15,7 @@
    You should have received a copy of the GNU General Public License
    along with this program.  If not, see <https://www.gnu.org/licenses/>. */
 
-#ifndef BUTTON_H
-#define BUTTON_H
+#pragma once
 
 #include <QHBoxLayout>
 #include <QIcon>
@@ -49,5 +48,3 @@ public:
         const bool            isFocused() const;
         virtual const QString text() const; /* Returns text from the label, not the button itself */
 };
-
-#endif // BUTTON_H

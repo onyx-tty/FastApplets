@@ -15,8 +15,7 @@
    You should have received a copy of the GNU General Public License
    along with this program.  If not, see <https://www.gnu.org/licenses/>. */
 
-#ifndef TIME_CONSTANTS_H
-#define TIME_CONSTANTS_H
+#pragma once
 
 #include <ctime>
 
@@ -28,5 +27,3 @@ constexpr time_t week = day * 7;
 
 // Months and more are ommitted due to variable lengths (e.g. leap years, month lengths)
 }
-
-#endif // TIME_CONSTANTS_H

@@ -15,8 +15,7 @@
    You should have received a copy of the GNU General Public License
    along with this program.  If not, see <https://www.gnu.org/licenses/>. */
 
-#ifndef POWER_LAYOUT_H
-#define POWER_LAYOUT_H
+#pragma once
 
 #include "SharedLayout.h"
 #include "../Applets/PowerApplet/Widgets/PowerButton.h"
@@ -87,5 +86,3 @@ public:
         static void                   setup(const QApplication& app, QBoxLayout* layout);
         static bool                   isSetUp();
 };
-
-#endif // POWER_LAYOUT_H

@@ -15,8 +15,7 @@
    You should have received a copy of the GNU General Public License
    along with this program.  If not, see <https://www.gnu.org/licenses/>. */
 
-#ifndef CENTRAL_WIDGET_H
-#define CENTRAL_WIDGET_H
+#pragma once
 
 #include "Widgets/PowerButton.h"
 
@@ -64,5 +63,3 @@ private:
         void updateActions();
         void resetActions();
 };
-
-#endif // CENTRAL_WIDGET_H
