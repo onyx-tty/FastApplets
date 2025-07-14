@@ -19,6 +19,7 @@
 #define POWER_MAIN_WINDOW_H
 
 #include "../../MainWindow.h"
+#include "CentralWidget.h"
 
 class PowerMainWindow final
         : public MainWindow {
@@ -28,7 +29,7 @@ public:
         PowerMainWindow(QWidget* parent = nullptr);
 
 private:
-        void initWidgets();
+        CentralWidget* central_widget;
 
 };
 
