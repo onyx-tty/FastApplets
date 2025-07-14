@@ -19,7 +19,7 @@
 #define MAIN_WINDOW_H
 
 #include <QMainWindow>
-#include <QVBoxLayout>
+#include <QHBoxLayout>
 #include <QShortcut>
 #include <QWidget>
 
