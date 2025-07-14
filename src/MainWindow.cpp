@@ -24,17 +24,8 @@
 
 MainWindow::MainWindow(QWidget* parent)
         : QMainWindow(parent) {
-        initWindow();
+        resize(280, 540);
+        setWindowTitle("test_window");
 }
 
 MainWindow::~MainWindow() = default;
-
-
-// Main window params
-void MainWindow::initWindow() {
-        resize(280, 540);
-        setWindowTitle("test_window");
-        central_widget = new QWidget(this);
-        setCentralWidget(central_widget);
-        main_layout = new QVBoxLayout(central_widget);
-}

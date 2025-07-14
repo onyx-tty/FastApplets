@@ -18,8 +18,6 @@
 #ifndef MAIN_WINDOW_H
 #define MAIN_WINDOW_H
 
-#include "Config/SharedKeybindings.h"
-
 #include <QMainWindow>
 #include <QVBoxLayout>
 #include <QShortcut>
@@ -30,9 +28,6 @@ class MainWindow
 	Q_OBJECT
 
 protected:
-        QWidget* central_widget;
-        QVBoxLayout* main_layout; // Move this to PowerMainWindow.h
-
         explicit MainWindow(QWidget* parent = nullptr);
         virtual ~MainWindow() = 0;
 
