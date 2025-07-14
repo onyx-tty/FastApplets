@@ -25,7 +25,7 @@
 // Inheriting constructor defaults from from QPushButton,
 // but customizing the icon, icon size and the alignment of that button
 Button::Button(QWidget* parent, // TODO Default icon
-               QVBoxLayout* main_layout,
+               QHBoxLayout* main_layout,
                const QIcon& button_icon,
                const QString& text)
         : QPushButton(parent) {

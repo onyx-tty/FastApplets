@@ -21,7 +21,7 @@
 #include <QPushButton>
 #include <QLabel>
 #include <QIcon>
-#include <QVBoxLayout>
+#include <QHBoxLayout>
 #include <QString>
 
 class Button
@@ -32,7 +32,7 @@ protected:
         QLabel* debug_text;
 
         explicit Button(QWidget* parent,
-                        QVBoxLayout* main_layout,
+                        QHBoxLayout* main_layout,
                         const QIcon& button_icon, // TODO default icon
                         const QString& text);
         virtual ~Button() = 0;

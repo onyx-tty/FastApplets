@@ -34,7 +34,7 @@ extern const QString title;
 }
 
 namespace button {
-extern std::array<PowerButton*, 4> list(QWidget* parent, QVBoxLayout* layout);
+extern std::array<PowerButton*, 4> list(QWidget* parent, QHBoxLayout* layout);
 }
 
 namespace style {

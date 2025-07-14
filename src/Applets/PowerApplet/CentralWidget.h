@@ -22,7 +22,7 @@
 #include "../../Config/PowerKeybindings.h"
 
 #include <QWidget>
-#include <QVBoxLayout>
+#include <QHBoxLayout>
 
 #include <array>
 #include <utility>
@@ -32,7 +32,7 @@ class CentralWidget final
         Q_OBJECT
 
 public:
-        QVBoxLayout* main_layout;
+        QHBoxLayout* main_layout;
 
         explicit CentralWidget(QWidget* parent);
 

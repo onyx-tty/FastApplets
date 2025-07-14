@@ -19,7 +19,7 @@
 #include "../DBus/PowerActionManager.h"
 
 PowerButton::PowerButton(QWidget* parent,
-                         QVBoxLayout* main_layout,
+                         QHBoxLayout* main_layout,
                          const QIcon& button_icon,
                          const QString& text,
                          const QString& action)

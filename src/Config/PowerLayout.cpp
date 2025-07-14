@@ -26,7 +26,7 @@ const QString title = shared_main_window::title;
 QString icon_location = "Data/";
 
 // button order
-std::array<PowerButton *, 4> button::list(QWidget *parent, QVBoxLayout *layout) {
+std::array<PowerButton *, 4> button::list(QWidget *parent, QHBoxLayout *layout) {
         std::array<PowerButton *, 4> button_list = {
                 new PowerButton(parent, layout, icon::shutdown, text::shutdown, "PowerOff"),
                 new PowerButton(parent, layout, icon::reboot, text::reboot, "Reboot"),

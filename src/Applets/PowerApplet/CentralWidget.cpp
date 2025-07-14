@@ -34,7 +34,8 @@
 
 CentralWidget::CentralWidget(QWidget* parent)
         : QWidget(parent) {
-        main_layout = new QVBoxLayout(this);
+        last_key = std::pair<QKeyEvent*, PowerButton*> (nullptr, nullptr);
+        main_layout = new QHBoxLayout(this);
         button_list = button::list(this, main_layout);
 }
 
