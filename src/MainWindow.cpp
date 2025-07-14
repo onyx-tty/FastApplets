@@ -16,6 +16,7 @@
    along with this program.  If not, see <https://www.gnu.org/licenses/>. */
 
 #include "MainWindow.h"
+#include "Config/SharedLayout.h"
 
 #include <QHBoxLayout>
 #include <QPushButton>
@@ -24,8 +25,8 @@
 
 MainWindow::MainWindow(QWidget* parent)
         : QMainWindow(parent) {
-        resize(280, 540); // TODO Move to SharedLayout
-        setWindowTitle("test_window"); // TODO Move to SharedLayout
+        resize(shared_main_window::size);
+        setWindowTitle(shared_main_window::title);
 }
 
 MainWindow::~MainWindow() = default;
