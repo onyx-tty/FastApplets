@@ -60,7 +60,7 @@ protected:
         QString dotenv_filepath;
 
 public:
-        explicit EnvProp();
+        EnvProp() = default;
 
         // TODO Error handling for incorrect project root
         void initProjectEnvironment(const QApplication& app, const QString project_root_marker);
