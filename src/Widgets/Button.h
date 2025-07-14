@@ -37,8 +37,9 @@ protected:
                         const QString& text);
         virtual ~Button() = 0;
 
-        /* Workaround which aligns buttons to the left, and keeps the text centered via a proxy label */
-        void debugAlignIconLeft(QString label_text);
+        /* Workaround which aligns buttons to a desired position,
+           and keeps the text realigned and separate via a proxy label */
+        void debugAlignIcon(QString label_text);
 
 public:
         virtual QString text() const;

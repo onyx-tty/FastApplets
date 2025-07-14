@@ -32,18 +32,18 @@ Button::Button(QWidget* parent, // TODO Default icon
         setIcon(button_icon);
         setIconSize(shared_icon::size);
         setSizePolicy(shared_policy::buttons);
-        debugAlignIconLeft(text);
+        debugAlignIcon(text);
         main_layout->addWidget(this);
 }
 
 Button::~Button() = default;
 
 /* Workaround which aligns buttons to the left, and keeps the text centered via a proxy label */
-void Button::debugAlignIconLeft(QString label_text) {
+void Button::debugAlignIcon(QString label_text) {
         setLayout(new QGridLayout);
         setStyleSheet(QString(shared_style::unselected));
         debug_text = new QLabel(label_text, this); // label that acts as a button text replacement
-        debug_text->setAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
+        debug_text->setAlignment(shared_button_alignment::text);
         debug_text->setAttribute(Qt::WA_TransparentForMouseEvents, true);
         layout()->addWidget(debug_text);
 }
