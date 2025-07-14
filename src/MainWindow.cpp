@@ -29,17 +29,6 @@ MainWindow::MainWindow(QWidget* parent)
 
 MainWindow::~MainWindow() = default;
 
-QWidget* MainWindow::returnCentralWidget() const {
-        return central_widget;
-}
-
-QVBoxLayout* MainWindow::returnMainLayout() const {
-        return main_layout;
-}
-
-QSize MainWindow::returnWindowSize() const {
-        return QWidget::size();
-}
 
 // Main window params
 void MainWindow::initWindow() {

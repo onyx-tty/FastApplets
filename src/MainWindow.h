@@ -36,11 +36,6 @@ protected:
         explicit MainWindow(QWidget* parent = nullptr);
         virtual ~MainWindow() = 0;
 
-public:
-        QWidget* returnCentralWidget() const;
-        QVBoxLayout* returnMainLayout() const; // Move this to PowerMainWindow.h
-        QSize returnWindowSize() const;
-
 private:
         void initWindow();
 };
