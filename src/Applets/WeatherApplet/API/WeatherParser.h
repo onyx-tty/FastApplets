@@ -15,8 +15,7 @@
    You should have received a copy of the GNU General Public License
    along with this program.  If not, see <https://www.gnu.org/licenses/>. */
 
-#ifndef WEATHER_PARSER_H
-#define WEATHER_PARSER_H
+#pragma once
 
 #include "OpenWeatherAPI.h"
 
@@ -35,5 +34,3 @@ private:
         static void processWeatherItem(const std::string& key, const json& value,
                                        const std::string& path, int& index);
 };
-
-#endif // WEATHER_PARSER_H

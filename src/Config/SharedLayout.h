@@ -15,8 +15,7 @@
    You should have received a copy of the GNU General Public License
    along with this program.  If not, see <https://www.gnu.org/licenses/>. */
 
-#ifndef SHARED_LAYOUT_H
-#define SHARED_LAYOUT_H
+#pragma once
 
 #include <QApplication>
 #include <QIcon>
@@ -85,5 +84,3 @@ public:
         static void           setup(const QApplication& app);
         static bool           isSetUp();
 };
-
-#endif // SHARED_LAYOUT_H

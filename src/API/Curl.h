@@ -15,8 +15,7 @@
    You should have received a copy of the GNU General Public License
    along with this program.  If not, see <https://www.gnu.org/licenses/>. */
 
-#ifndef CURL_H
-#define CURL_H
+#pragma once
 
 #include <QString>
 
@@ -43,5 +42,3 @@ public:
 
         static void setOpt(CURLoption&& option, auto&& value);
 };
-
-#endif // CURL_H

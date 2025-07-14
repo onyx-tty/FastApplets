@@ -15,8 +15,7 @@
    You should have received a copy of the GNU General Public License
    along with this program.  If not, see <https://www.gnu.org/licenses/>. */
 
-#ifndef TIME_H
-#define TIME_H
+#pragma once
 
 #include <chrono>
 #include <ctime>
@@ -29,5 +28,3 @@ int    findHourSpacing(const time_t later, const time_t earlier);
 std::optional<const int> findWeatherBlocsFitCount(const time_t later, const time_t earlier,
                                                   const int hour_spacing);
 time_t                   findCloserHour(const time_t hour1, const time_t hour2); 
-
-#endif // TIME_H

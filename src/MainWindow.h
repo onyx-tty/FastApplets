@@ -15,8 +15,7 @@
    You should have received a copy of the GNU General Public License
    along with this program.  If not, see <https://www.gnu.org/licenses/>. */
 
-#ifndef MAIN_WINDOW_H
-#define MAIN_WINDOW_H
+#pragma once
 
 #include <QHBoxLayout>
 #include <QMainWindow>
@@ -33,5 +32,3 @@ protected:
 private:
         void initWindow();
 };
-
-#endif // MAIN_WINDOW_H

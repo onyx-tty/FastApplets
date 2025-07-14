@@ -15,8 +15,7 @@
    You should have received a copy of the GNU General Public License
    along with this program.  If not, see <https://www.gnu.org/licenses/>. */
 
-#ifndef WEATHER_LAYOUT_H
-#define WEATHER_LAYOUT_H
+#pragma once
 
 #include "../Applets/WeatherApplet/API/WeatherData.h"
 #include "SharedLayout.h"
@@ -65,5 +64,3 @@ public:
 
         explicit WeatherLayoutManager() = delete;
 };
-
-#endif // WEATHER_LAYOUT_H

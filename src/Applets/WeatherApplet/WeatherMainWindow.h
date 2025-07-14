@@ -15,8 +15,7 @@
    You should have received a copy of the GNU General Public License
    along with this program.  If not, see <https://www.gnu.org/licenses/>. */
 
-#ifndef WEATHER_MAIN_WINDOW_H
-#define WEATHER_MAIN_WINDOW_H
+#pragma once
 
 #include "../../MainWindow.h"
 #include "CentralWidget.h"
@@ -33,5 +32,3 @@ public:
 private:
         CentralWidget* central_widget;
 };
-
-#endif // WEATHER_MAIN_WINDOW_H

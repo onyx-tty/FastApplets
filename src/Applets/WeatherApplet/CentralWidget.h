@@ -15,8 +15,7 @@
    You should have received a copy of the GNU General Public License
    along with this program.  If not, see <https://www.gnu.org/licenses/>. */
 
-#ifndef CENTRAL_WIDGET_H
-#define CENTRAL_WIDGET_H
+#pragma once
 
 #include <QApplication>
 #include <QHBoxLayout>
@@ -69,5 +68,3 @@ public:
 private:
         QHBoxLayout* main_layout;
 };
-
-#endif // CENTRAL_WIDGET_H

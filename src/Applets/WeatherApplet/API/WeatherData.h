@@ -15,8 +15,7 @@
    You should have received a copy of the GNU General Public License
    along with this program.  If not, see <https://www.gnu.org/licenses/>. */
 
-#ifndef WEATHER_DATA_H
-#define WEATHER_DATA_H
+#pragma once
 
 #include <QImage>
 #include <QString>
@@ -79,5 +78,3 @@ public:
         static void fillDayNames(const int&                      blocs_per_day,
                                  const std::optional<const int>& first_day_blocs);
 };
-
-#endif // WEATHER_DATA_H

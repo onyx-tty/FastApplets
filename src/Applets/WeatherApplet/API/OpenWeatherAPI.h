@@ -15,8 +15,7 @@
    You should have received a copy of the GNU General Public License
    along with this program.  If not, see <https://www.gnu.org/licenses/>. */
 
-#ifndef OPEN_WEATHER_H
-#define OPEN_WEATHER_H
+#pragma once
 
 #include "../../../API/Curl.h"
 
@@ -32,5 +31,3 @@ public:
 
         static json fetchWeatherReport(const QApplication& app);
 };
-
-#endif // OPEN_WEATHER_H
