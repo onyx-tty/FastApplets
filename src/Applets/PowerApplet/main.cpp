@@ -26,7 +26,7 @@ int main(int argc, char* argv[]) {
         PowerMainWindow applet; // QMainWindow -> MainWindow -> PowerMainWindow
 
         // Debug
-        qInfo() << applet.returnWindowSize() << Qt::endl;
+        qInfo() << applet.size() << Qt::endl;
 
         // Run
         applet.show();
