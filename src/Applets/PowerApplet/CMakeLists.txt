@@ -37,7 +37,6 @@ set(PROJECT_HEADERS
         CentralWidget.h
         ../../Config/PowerLayout.h
         Widgets/PowerButton.h
-        Widgets/ButtonList.h
         DBus/PowerActionManager.h
 )
 
@@ -46,7 +45,6 @@ set(PROJECT_SOURCES
         PowerMainWindow.cpp
         CentralWidget.cpp
         ../../Config/PowerLayout.cpp
-        Widgets/ButtonList.cpp
         DBus/PowerActionManager.cpp
 )
 

@@ -30,6 +30,6 @@
   *Phase 1*
 ** DONE Proper keybindings
 ** TODO Initial optimization
-** TODO Incorporate ButtonList inside CentralWidget
+** DONE Incorporate ButtonList inside CentralWidget
 *Future*
 ** TODO Compatibility with other Linux inits

@@ -19,11 +19,18 @@
 #define POWER_LAYOUT_H
 
 #include "SharedLayout.h"
+#include "../Applets/PowerApplet/Widgets/PowerButton.h"
 
 #include <QSize>
 #include <QSizePolicy>
 #include <QString>
 #include <QIcon>
+
+#include <array>
+
+namespace button {
+extern std::array<PowerButton*, 4> list(QWidget* parent, QVBoxLayout* layout);
+}
 
 namespace icon {
 extern const QSize size;

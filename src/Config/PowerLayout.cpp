@@ -19,7 +19,18 @@
 
 // Modify these as much as you want to customize the appearance
 
-const QString icon_location = "Data/";
+QString icon_location = "Data/";
+
+// button order
+std::array<PowerButton *, 4> button::list(QWidget *parent, QVBoxLayout *layout) {
+        std::array<PowerButton *, 4> button_list = {
+                new PowerButton(parent, layout, icon::shutdown, text::shutdown),
+                new PowerButton(parent, layout, icon::reboot, text::reboot),
+                new PowerButton(parent, layout, icon::suspend, text::suspend),
+                new PowerButton(parent, layout, icon::hibernate, text::hibernate),
+        };
+        return button_list;
+}
 
 // icon
 const QSize icon::size = shared_icon::size;

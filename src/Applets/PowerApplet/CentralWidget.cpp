@@ -16,12 +16,14 @@
    along with this program.  If not, see <https://www.gnu.org/licenses/>. */
 
 #include "CentralWidget.h"
-#include "Widgets/ButtonList.h"
+#include "../../Config/SharedKeybindings.h" // TODO Inherited keybindings
+#include "../../Config/PowerLayout.h"
 
 // TODO Clean up syntax for consistency
 
 CentralWidget::CentralWidget(QWidget* parent)
         : QWidget(parent) {
         main_layout = new QVBoxLayout(this);
-        power_button::initAll(this, main_layout);
+        button_list = button::list(this, main_layout);
+}
 }
