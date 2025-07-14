@@ -23,6 +23,9 @@
 #include <QWidget>
 #include <QVBoxLayout>
 
+#include <array>
+#include <utility>
+
 class CentralWidget final
         : public QWidget {
         Q_OBJECT
@@ -31,6 +34,18 @@ public:
         QVBoxLayout* main_layout;
 
         explicit CentralWidget(QWidget* parent);
+
+        void keyPressEvent(QKeyEvent* event) override;
+        void lastKeyUpdateEvent(QKeyEvent* event);
+        void keyPressEvent(QKeyEvent* event, PowerButton* button);
+        void selectButton(QKeyEvent* event,
+                                        PowerButton* button,
+                                        std::array<unsigned, 4>& acceptable_keys);
+        void clickButton(QKeyEvent* event);
+
+private:
+        std::pair<QKeyEvent*, PowerButton*> last_key;
+        std::array<PowerButton*, 4> button_list;
 };
 
 #endif // CENTRAL_WIDGET_H
