@@ -28,7 +28,4 @@ class MainWindow : public QMainWindow {
 protected:
         explicit MainWindow(QWidget* parent = nullptr);
         virtual ~MainWindow() = 0;
-
-private:
-        void initWindow();
 };
