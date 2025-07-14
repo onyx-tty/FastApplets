@@ -15,23 +15,22 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <https://www.gnu.org/licenses/>. */
 
-// TODO Remove these unnecessary files, button lists should be initialized inside the CentralWidget class
+#ifndef CENTRAL_WIDGET_H
+#define CENTRAL_WIDGET_H
 
-#ifndef BUTTON_LIST_H
-#define BUTTON_LIST_H
+#include "Widgets/PowerButton.h"
 
-#include "../Widgets/PowerButton.h"
+#include <QWidget>
+#include <QVBoxLayout>
 
-#include <QString>
+class CentralWidget final
+        : public QWidget {
+        Q_OBJECT
 
-namespace power_button { // pointers to heap-allocated Buttons
-extern PowerButton* shutdown;
-extern PowerButton* reboot;
-extern PowerButton* suspend;
-extern PowerButton* hibernate;
-// TODO Make this more layout-agnostic once the layout attribute is moved from
-//      MainWindow to PowerMainWindow
-extern void initAll(QWidget* parent, QVBoxLayout* layout); // initializes heap-allocated buttons
-}                                                          // from the pointers above
+public:
+        QVBoxLayout* main_layout;
 
-#endif // BUTTON_LIST_H
+        explicit CentralWidget(QWidget* parent);
+};
+
+#endif // CENTRAL_WIDGET_H

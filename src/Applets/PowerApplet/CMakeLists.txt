@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.16)
 
-project(power-applet VERSION 0.6.0 LANGUAGES CXX)
+project(power-applet VERSION 0.7.0 LANGUAGES CXX)
 
 set(CMAKE_AUTOUIC ON)
 set(CMAKE_AUTOMOC ON)
@@ -34,6 +34,7 @@ set(INCLUDED_SOURCES
 
 set(PROJECT_HEADERS
         PowerMainWindow.h
+        CentralWidget.h
         ../../Config/PowerLayout.h
         Widgets/PowerButton.h
         Widgets/ButtonList.h
@@ -43,6 +44,7 @@ set(PROJECT_HEADERS
 set(PROJECT_SOURCES
         main.cpp
         PowerMainWindow.cpp
+        CentralWidget.cpp
         ../../Config/PowerLayout.cpp
         Widgets/ButtonList.cpp
         DBus/PowerActionManager.cpp
