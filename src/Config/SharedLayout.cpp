@@ -65,8 +65,6 @@ ButtonProp::ButtonProp(const Qt::Alignment text_alignment, const QSize icon_size
 LayoutProp::LayoutProp(const QSizePolicy button_policy) : button_policy(button_policy) {};
 
 /* EnvProp */
-EnvProp::EnvProp() {};
-
 void EnvProp::initProjectEnvironment(const QApplication& app, const QString project_root_marker) {
         QStringList search_paths = {app.applicationDirPath(), QDir::currentPath()};
         qDebug() << "Determining project root...";
