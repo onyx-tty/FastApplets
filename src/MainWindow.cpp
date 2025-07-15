@@ -23,10 +23,9 @@
 #include <QPushButton>
 #include <QSizePolicy>
 
-MainWindow::MainWindow(QWidget* parent)
-        : QMainWindow(parent) {
-        resize(shared_main_window::size);
-        setWindowTitle(shared_main_window::title);
+MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent) {
+        resize(LayoutManager::main_window_prop.size);
+        setWindowTitle(LayoutManager::main_window_prop.title);
 }
 
 MainWindow::~MainWindow() = default;

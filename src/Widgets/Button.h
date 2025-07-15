@@ -31,8 +31,8 @@ protected:
         QLabel* debug_text;
 
         explicit Button(QWidget* parent, QHBoxLayout* main_layout,
-                        const QIcon&   button_icon, // TODO default icon
-                        const QString& text);
+                        const QIcon   button_icon, // TODO default icon
+                        const QString button_text);
         virtual ~Button() = 0;
 
         /* Workaround which aligns buttons to a desired position,

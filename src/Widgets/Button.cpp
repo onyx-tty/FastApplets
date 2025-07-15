@@ -21,17 +21,23 @@
 #include <QGridLayout>
 #include <QLabel>
 
+using lm = LayoutManager;
+
 /* Initializes a button of choice with uniform design */
 // Inheriting constructor defaults from from QPushButton,
 // but customizing the icon, icon size and the alignment of that button
 Button::Button(QWidget*     parent, // TODO Default icon
-               QHBoxLayout* main_layout, const QIcon& button_icon, const QString& text) :
+               QHBoxLayout* main_layout, const QIcon button_icon, const QString button_text) :
         QPushButton(parent) {
         setIcon(button_icon);
-        setIconSize(shared_icon::size);
-        setSizePolicy(shared_policy::buttons);
-        debugAlignIcon(text);
+        setIconSize(lm::button_prop.icon_size);
+        setSizePolicy(lm::layout_prop.button_policy);
+        debugAlignIcon(button_text);
         main_layout->addWidget(this);
+        QObject::connect(this, &QObject::destroyed, this,
+                         [](QObject* obj) { qInfo() << "Button destroyed:" << obj; });
+        QObject::connect(this, &QObject::destroyed, this,
+                         [](QObject* obj) { qInfo() << "debug_text (QLabel) destroyed:" << obj; });
 }
 
 Button::~Button() = default;
@@ -39,11 +45,12 @@ Button::~Button() = default;
 /* Workaround which aligns buttons to the left, and keeps the text centered via a proxy label */
 void Button::debugAlignIcon(QString label_text) {
         setLayout(new QGridLayout);
-        setStyleSheet(QString(shared_style::unselected));
+        setStyleSheet(QString(lm::style_prop.unselected));
         debug_text = new QLabel(label_text, this); // label that acts as a button text replacement
-        debug_text->setAlignment(shared_button_alignment::text);
+        debug_text->setAlignment(lm::button_prop.text_alignment);
         debug_text->setAttribute(Qt::WA_TransparentForMouseEvents, true);
         layout()->addWidget(debug_text);
+        qInfo() << "debug_text successfully initialized with text:" << label_text;
 }
 
 QString Button::text() const { // Returns text from the label, not the button itself
