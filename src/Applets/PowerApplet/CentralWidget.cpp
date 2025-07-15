@@ -96,14 +96,6 @@ void CentralWidget::updateLastKey(QKeyEvent* event, PowerButton* button) {
 }
 
 void CentralWidget::setPowerButtonStyle(PowerButton* button, const QString style, QKeyEvent* event) {
-        try {
-                button->setStyleSheet(style);
-        } catch (...) {
-                qWarning() << "There's a problem! Button:" << button << "is"
-                           << ((button) ? "true" : "false");
-                qWarning() << "event is" << ((event) ? "true" : "false");
-        }
-
         button->update();
 }
 
