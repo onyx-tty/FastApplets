@@ -42,13 +42,13 @@ QDBusMessage PowerActionManager::sendPowerAction(const QString& method) const {
                 return QDBusMessage();
         }
 
-        QDBusMessage    method_call = QDBusMessage::createMethodCall(dbus_target::name, dbus_target::path,
-                                                                     dbus_target::interface, method);
+        auto            call = QDBusMessage::createMethodCall(dbus_target::name, dbus_target::path,
+                                                              dbus_target::interface, method);
         QList<QVariant> arguments;
         arguments << QVariant::fromValue(true);
-        method_call.setArguments(arguments);
+        call.setArguments(arguments);
 
-        QDBusPendingReply<QVariantMap> response = connection.asyncCall(method_call);
+        QDBusPendingReply<QVariantMap> response = connection.asyncCall(call);
         response.waitForFinished();
         return responseHandler(std::move(response.reply()));
 }
