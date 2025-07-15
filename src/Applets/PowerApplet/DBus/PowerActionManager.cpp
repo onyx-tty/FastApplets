@@ -23,9 +23,12 @@
 #include <QVariant>
 #include <QVariantMap>
 
-const QString target::name{"org.freedesktop.login1"};
-const QString target::path{"/org/freedesktop/login1"};
-const QString target::interface{"org.freedesktop.login1.Manager"};
+// org.freedesktop.login1 — The D-Bus interface of systemd-logind
+namespace target {
+const QString name = "org.freedesktop.login1";
+const QString path = "/org/freedesktop/login1";
+const QString interface = "org.freedesktop.login1.Manager";
+} // namespace target
 
 /* public */
 PowerActionManager& PowerActionManager::getInstance() {

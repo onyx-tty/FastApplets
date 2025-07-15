@@ -23,13 +23,6 @@
 #include <QDBusMessage>
 #include <QString>
 
-// org.freedesktop.login1 — The D-Bus interface of systemd-logind
-namespace target {
-extern const QString name;
-extern const QString path;
-extern const QString interface;
-} // namespace target
-
 // TODO Static class
 class PowerActionManager final {
 public:
