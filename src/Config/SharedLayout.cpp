@@ -40,11 +40,11 @@ QString setStyleUnselected() {
 }
 
 Qt::Alignment setButtonTextAlignment() {
-        return Qt::Alignment(Qt::AlignHCenter | Qt::AlignBottom);
+        return Qt::Alignment(Qt::AlignHCenter | Qt::AlignTop);
 }
 
 Qt::Alignment setButtonIconAlignment() {
-        return Qt::Alignment(Qt::AlignHCenter | Qt::AlignTop);
+        return Qt::Alignment(Qt::AlignHCenter | Qt::AlignCenter);
 }
 
 QSize setButtonIconSize() {
