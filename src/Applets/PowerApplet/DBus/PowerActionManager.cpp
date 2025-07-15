@@ -51,10 +51,9 @@ QDBusMessage PowerActionManager::sendPowerAction(const QString& method) {
 
 QDBusMessage PowerActionManager::responseHandler(QDBusMessage response) {
         if (response.type() == QDBusMessage::ErrorMessage) {
-                qCritical() << "Error sending action. Response: " << response.errorMessage()
-                            << Qt::endl;
+                qCritical() << "Error sending action. Response: " << response.errorMessage();
         } else {
-                qInfo() << response << Qt::endl;
+                qInfo() << response;
         }
 
         return std::move(response);
