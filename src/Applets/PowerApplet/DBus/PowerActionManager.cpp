@@ -24,11 +24,11 @@
 #include <QVariantMap>
 
 // org.freedesktop.login1 — The D-Bus interface of systemd-logind
-namespace target {
-const QString name = "org.freedesktop.login1";
-const QString path = "/org/freedesktop/login1";
-const QString interface = "org.freedesktop.login1.Manager";
-} // namespace target
+namespace dbus_target {
+static const char* name      = "org.freedesktop.login1";
+static const char* path      = "/org/freedesktop/login1";
+static const char* interface = "org.freedesktop.login1.Manager";
+} // namespace dbus_target
 
 /* public */
 PowerActionManager& PowerActionManager::getInstance() {
@@ -41,12 +41,9 @@ QDBusMessage PowerActionManager::sendPowerAction(const QString& method) const {
                 qFatal("D-Bus proxy is invalid!");
                 return QDBusMessage();
         }
-}
 
-        QDBusMessage method_call = QDBusMessage::createMethodCall(target::name,
-                                                                  target::path,
-                                                                  target::interface,
-                                                                  method);
+        QDBusMessage    method_call = QDBusMessage::createMethodCall(dbus_target::name, dbus_target::path,
+                                                                     dbus_target::interface, method);
         QList<QVariant> arguments;
         arguments << QVariant::fromValue(true);
         method_call.setArguments(arguments);
@@ -58,8 +55,8 @@ QDBusMessage PowerActionManager::sendPowerAction(const QString& method) const {
 
 /* private */
 PowerActionManager::PowerActionManager() :
-        connection(QDBusConnection::connectToBus(QDBusConnection::SystemBus, target::name)),
-        proxy(target::name, target::path, target::interface, connection, nullptr) {}
+        connection(QDBusConnection::connectToBus(QDBusConnection::SystemBus, dbus_target::name)),
+        proxy(dbus_target::name, dbus_target::path, dbus_target::interface, connection, nullptr) {}
 
 QDBusMessage PowerActionManager::responseHandler(const QDBusMessage response) const {
         if (response.type() == QDBusMessage::ErrorMessage) {
