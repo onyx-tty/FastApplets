@@ -38,5 +38,5 @@ private:
 
         explicit PowerActionManager();
 
-        QDBusMessage responseHandler(const QDBusMessage response) const;
+        QDBusMessage responseHandler(QDBusMessage response) const;
 };

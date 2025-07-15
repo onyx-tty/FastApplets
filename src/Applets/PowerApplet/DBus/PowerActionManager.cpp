@@ -55,7 +55,7 @@ PowerActionManager::PowerActionManager() :
         connection(QDBusConnection::connectToBus(QDBusConnection::SystemBus, dbus_target::name)),
         proxy(dbus_target::name, dbus_target::path, dbus_target::interface, connection, nullptr) {}
 
-QDBusMessage PowerActionManager::responseHandler(const QDBusMessage response) const {
+QDBusMessage PowerActionManager::responseHandler(QDBusMessage response) const {
         if (response.type() == QDBusMessage::ErrorMessage) {
                 qCritical() << "Error sending action. Response: " << response.errorMessage()
                             << Qt::endl;
