@@ -21,11 +21,9 @@
 
 #include <nlohmann/json.hpp>
 
-using json = nlohmann::json;
-
 class OpenWeatherAPI final {
 public:
         explicit OpenWeatherAPI() = delete;
 
-        static json fetchWeatherReport(const QApplication& app);
+        static nlohmann::json fetchWeatherReport(const QApplication& app);
 };

@@ -30,6 +30,6 @@ public:
         static void updateWeatherData(const QApplication& app);
 
 private:
-        static void processWeatherItem(const std::string& key, const json& value,
+        static void processWeatherItem(const std::string& key, const nlohmann::json& value,
                                        const std::string& path, int& index);
 };

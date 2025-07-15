@@ -26,6 +26,8 @@
 
 #include <string>
 
+using nlohmann::json;
+
 json OpenWeatherAPI::fetchWeatherReport(const QApplication& app) {
         // Build target API call URL from API key and target city expressed as code
         std::string api_call_url = WeatherLayoutManager::env_prop.getAPICallURL(app);
