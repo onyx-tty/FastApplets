@@ -18,8 +18,7 @@
 #pragma once
 
 #include <QApplication>
-#include <QHBoxLayout>
-#include <QVBoxLayout>
+#include <QBoxLayout>
 #include <QWidget>
 
 #include <array>

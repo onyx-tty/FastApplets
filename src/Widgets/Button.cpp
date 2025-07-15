@@ -18,12 +18,9 @@
 #include "Button.h"
 #include "../Config/SharedLayout.h"
 
-#include <QColor>
 #include <QDebug>
 #include <QGridLayout>
 #include <QLabel>
-#include <QPainter>
-#include <QPalette>
 #include <QStyleOptionButton>
 #include <QStylePainter>
 

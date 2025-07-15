@@ -20,7 +20,6 @@
 #include "../../../Utils/TimeConstants.h"
 #include "../API/WeatherData.h"
 
-#include <QApplication>
 #include <QDebug>
 
 time_t             PresentTimeManager::current_midnight;

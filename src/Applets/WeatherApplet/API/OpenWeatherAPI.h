@@ -17,8 +17,6 @@
 
 #pragma once
 
-#include "../../../API/Curl.h"
-
 #include <QWidget>
 
 #include <nlohmann/json.hpp>

@@ -20,8 +20,6 @@
 #include "../../MainWindow.h"
 #include "CentralWidget.h"
 
-#include <QMainWindow>
-
 class WeatherMainWindow : public MainWindow {
         Q_OBJECT
 

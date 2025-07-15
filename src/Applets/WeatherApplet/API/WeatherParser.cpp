@@ -20,6 +20,7 @@
 #include "../../../Config/WeatherLayout.h"
 #include "../../../Utils/Time.h"
 #include "../../../Utils/TimeConstants.h"
+#include "OpenWeatherAPI.h"
 #include "WeatherData.h"
 
 #include <QApplication>

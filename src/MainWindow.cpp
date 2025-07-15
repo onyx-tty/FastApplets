@@ -18,11 +18,6 @@
 #include "MainWindow.h"
 #include "Config/SharedLayout.h"
 
-#include <QHBoxLayout>
-#include <QIcon>
-#include <QPushButton>
-#include <QSizePolicy>
-
 MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent) {
         resize(LayoutManager::main_window_prop.size);
         setWindowTitle(LayoutManager::main_window_prop.title);

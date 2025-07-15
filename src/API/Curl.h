@@ -17,13 +17,8 @@
 
 #pragma once
 
-#include <QString>
-
 #include <curl/curl.h>
-#include <nlohmann/json.hpp>
 #include <string>
-
-using json = nlohmann::json;
 
 class Curl final {
 private:

@@ -17,11 +17,10 @@
 
 #pragma once
 
-#include "OpenWeatherAPI.h"
-
 #include <QApplication>
 #include <QWidget>
 
+#include <nlohmann/json.hpp>
 #include <string>
 
 class WeatherParser final {
