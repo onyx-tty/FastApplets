@@ -45,13 +45,13 @@ public:
 
 private:
         std::pair<QKeyEvent*, PowerButton*> last_key;
+        PowerButton* last_key_reference;
         std::array<PowerButton*, 4> button_list;
 
         void lastKeyUpdate(QKeyEvent* event);
         void lastKeyUpdate(PowerButton* button);
         void lastKeyUpdate(QKeyEvent* event, PowerButton* button);
         void selectButton(QKeyEvent* event,
-                          PowerButton* button,
                           std::array<unsigned, 4>& acceptable_keys);
         void clickButton(QKeyEvent* event);
 };

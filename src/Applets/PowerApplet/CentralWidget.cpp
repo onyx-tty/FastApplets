@@ -61,62 +61,89 @@ void CentralWidget::keyPressEvent(QKeyEvent* event) { // match base keyPressEven
 void CentralWidget::keyPressEvent(QKeyEvent* event, PowerButton* button) {
         qInfo() << "INFO! keyPressEvent registered!";
 
-        auto clear_key = [](std::pair<QKeyEvent*, PowerButton*> key) {
-                key.first = nullptr;
-                key.second = nullptr;
-        };
+        static bool in_num_range = false; // TODO Temporary variable, improve later
+        for (unsigned i = 0; i <= 3; ++i) { // update button style
+                if (event->key() == Qt::Key_1 + i) {
+                        button_list[i]->setStyleSheet(style::selected);
+                        button_list[i]->update();
+                        button = button_list[i];
+                        in_num_range = true;
+                        qInfo() << "Enabling selection in" << button_list[i]->text();
+                        break;
+                }
+                in_num_range = false;
+        }
 
         // TODO Move to a separate keybindings file (inherited from DefaultKeybindings)
         std::array<unsigned, 4> power_keys = {Qt::Key_1, Qt::Key_2, Qt::Key_3, Qt::Key_4};
         if (event->key() == Keybinding::quit->key()) { // ESC pressed
                 qInfo() << "esc pressed, quitting";
                 QApplication::quit();
-        } else if (last_key.first == nullptr && button == nullptr) { // last_key empty
-                qInfo() << "last_key was <nullptr, nullptr>, initializing";
-                lastKeyUpdate(event);
-                last_key.second = button;
-        } else if (event->key() == last_key.first->key()) { // key and last_key match
-                qInfo() << "key and last_key match";
-                // pressed either 1, 2, 3 or 4
-                clickButton(event); // TODO Misleading, doesn't always result in a click, rework
-                clear_key(last_key);
-                lastKeyUpdate(event);
-        } else {
+        // If nullptr or last key diff from current key
+        } else if (!last_key.first || event->key() != last_key.first->key()) {
                 qInfo() << "key and last_key don't match";
-                selectButton(event, button, power_keys);
-                clear_key(last_key);
-                lastKeyUpdate(event);
+                selectButton(event, power_keys);
+        // If last key matches current key
+        } else {
+                qInfo() << "key and last_key match";
+                clickButton(event); // TODO Misleading, doesn't always result in a click, rework
         }
+
+        if (last_key.second && last_key.second != button) {
+                last_key.second->setStyleSheet(style::unselected);
+                last_key.second->update();
+        }
+        if (last_key.second) {
+                qInfo() << "EXTREMELY IMPORTANT:" << last_key.first->key()
+                        << last_key.second->text();
+        }
+        if (last_key.second && last_key.second != button) { // remove last selection
+                last_key.second->setStyleSheet(style::unselected);
+                last_key.second->update();
+                qInfo() << "Disabling selection in" << last_key.second->text();
+        }
+
+        if (in_num_range == false) {
+                button = nullptr;
+        }
+
+        if (last_key.first || last_key.second) { // not nullptr
+                qInfo() << "Current key combination:" << last_key.first->key()
+                        << event->key();
+        }
+        lastKeyUpdate(event, button); // only update if button has already been processed
 }
 
 void CentralWidget::selectButton(QKeyEvent* event,
-                                 PowerButton* button,
                                  std::array<unsigned, 4>& acceptable_keys) {
-        qInfo() << "Current combo: " << last_key.first->key() << event->key();
-
         for (unsigned i = 0; i <= 3; ++i) {
+                // if in range
                 if (event->key() == Qt::Key_1 + i) {
                         qInfo() << button_list[i]->text() << "selected!";
-                        last_key.second = button_list[i];
+
+                        button_list[i]->setStyleSheet(style::selected);
+                        button_list[i]->update();
                         return;
                 }
         }
-
+        // if null
         if (!last_key.second) {
-                qWarning() << "WARNING! last_key.second is null, cannot emit safely!";
-                return;
-        } else {
-                qInfo() << "INFO! Keys not within the range of acceptable_keys!";
+                qWarning() << "INFO! last_key.second is null!";
+        } else { // if not in range and last_key.second not nullptr
+                qInfo() << "INFO! Key not within the range of acceptable_keys!";
+                // unselect previous key
+                last_key.second->setStyleSheet(style::unselected);
+                last_key.second->update();
         }
-
-        emit last_key.second->clearFocus();
 }
 
 void CentralWidget::clickButton(QKeyEvent* event) {
-        qInfo() << "Current combo: " << last_key.first->key() << event->key();
+        qInfo() << "Current key combination: " << last_key.first->key() << event->key();
         for (unsigned i = 0; i <= 3; ++i) {
                 if (event->key() == Qt::Key_1 + i) {
                         qInfo() << button_list[i]->text() << "clicked!";
+                        last_key.second->setStyleSheet(style::unselected);
+                        last_key.second->update();
                         emit button_list[i]->clicked();
                         QApplication::quit();
                 }
