@@ -37,10 +37,7 @@ PowerActionManager& PowerActionManager::getInstance() {
 }
 
 QDBusMessage PowerActionManager::sendPowerAction(const QString& method) const {
-        if (!proxy.isValid()) {
-                qFatal("D-Bus proxy is invalid!");
-                return QDBusMessage();
-        }
+        if (!proxy.isValid()) { qFatal("D-Bus proxy is invalid!"); }
 
         auto            call = QDBusMessage::createMethodCall(dbus_target::name, dbus_target::path,
                                                               dbus_target::interface, method);
