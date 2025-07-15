@@ -42,9 +42,8 @@ Button::~Button() = default;
 /* It'll likely be removed once I get into actually inheriting from QProxyStyle
    It may be a bit wasteful, however as of now alternative solutions would clutter the code massively */
 void Button::debugAlignIconLeft(QString label_text) {
-        QString style_sheet = "text-align: left;";
         setLayout(new QGridLayout);
-        setStyleSheet(QString(style_sheet));
+        setStyleSheet(QString(shared_style::unselected));
         debug_text = new QLabel(label_text, this);
         debug_text->setAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
         debug_text->setAttribute(Qt::WA_TransparentForMouseEvents, true);
