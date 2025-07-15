@@ -17,6 +17,9 @@
 
 #include "PowerKeybindings.h"
 
+#include <QDebug>
+#include <qnamespace.h>
+
 const keybindings PowerKeybindingManager::shutdown({Qt::Key_1});
 const keybindings PowerKeybindingManager::reboot({Qt::Key_2});
 const keybindings PowerKeybindingManager::suspend({Qt::Key_3});

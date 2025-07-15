@@ -17,7 +17,11 @@
 
 #include "PowerActionManager.h"
 
+#include <QDBusPendingReply>
 #include <QDebug>
+#include <QList>
+#include <QVariant>
+#include <QVariantMap>
 
 const QString target::name{"org.freedesktop.login1"};
 const QString target::path{"/org/freedesktop/login1"};
@@ -34,6 +38,7 @@ QDBusMessage PowerActionManager::sendPowerAction(const QString& method) const {
                 qFatal("D-Bus proxy is invalid!");
                 return QDBusMessage();
         }
+}
 
         QDBusMessage method_call = QDBusMessage::createMethodCall(target::name,
                                                                   target::path,

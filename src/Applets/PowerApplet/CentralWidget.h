@@ -20,6 +20,7 @@
 #include "Widgets/PowerButton.h"
 
 #include <QBoxLayout>
+#include <QKeyEvent>
 #include <QWidget>
 
 #include <array>
