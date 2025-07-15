@@ -22,6 +22,7 @@
 #include <QSizePolicy>
 #include <QString>
 
+/* Customize here */
 QSize setMainWindowSize() {
         return QSize(960, 220);
 }
@@ -68,7 +69,6 @@ LayoutProp::LayoutProp(QSizePolicy button_policy) : button_policy(button_policy)
 
 LayoutManager::LayoutManager() {};
 
-/* Customize here */
 MainWindowProp LayoutManager::main_window_prop;
 StyleProp      LayoutManager::style_prop;
 ButtonProp     LayoutManager::button_prop;

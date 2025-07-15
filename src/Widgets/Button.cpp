@@ -42,7 +42,6 @@ Button::Button(QWidget*     parent, // TODO Default icon
 
 Button::~Button() = default;
 
-/* Workaround which aligns buttons to the left, and keeps the text centered via a proxy label */
 void Button::debugAlignIcon(QString label_text) {
         setLayout(new QGridLayout);
         setStyleSheet(QString(lm::style_prop.unselected));
