@@ -30,13 +30,12 @@ static const char* path      = "/org/freedesktop/login1";
 static const char* interface = "org.freedesktop.login1.Manager";
 } // namespace dbus_target
 
-/* public */
-PowerActionManager& PowerActionManager::getInstance() {
-        static PowerActionManager instance;
-        return instance;
-}
-
-QDBusMessage PowerActionManager::sendPowerAction(const QString& method) const {
+// TODO Check for validity of power action
+QDBusMessage PowerActionManager::sendPowerAction(const QString& method) {
+        const auto connection = QDBusConnection::connectToBus(QDBusConnection::SystemBus,
+                                                              dbus_target::name);
+        const auto proxy      = QDBusInterface(dbus_target::name, dbus_target::path,
+                                               dbus_target::interface, connection, nullptr);
         if (!proxy.isValid()) { qFatal("D-Bus proxy is invalid!"); }
 
         auto            call = QDBusMessage::createMethodCall(dbus_target::name, dbus_target::path,
@@ -50,12 +49,7 @@ QDBusMessage PowerActionManager::sendPowerAction(const QString& method) const {
         return responseHandler(std::move(response.reply()));
 }
 
-/* private */
-PowerActionManager::PowerActionManager() :
-        connection(QDBusConnection::connectToBus(QDBusConnection::SystemBus, dbus_target::name)),
-        proxy(dbus_target::name, dbus_target::path, dbus_target::interface, connection, nullptr) {}
-
-QDBusMessage PowerActionManager::responseHandler(QDBusMessage response) const {
+QDBusMessage PowerActionManager::responseHandler(QDBusMessage response) {
         if (response.type() == QDBusMessage::ErrorMessage) {
                 qCritical() << "Error sending action. Response: " << response.errorMessage()
                             << Qt::endl;

@@ -21,9 +21,8 @@
 PowerButton::PowerButton(QBoxLayout* const layout, const QIcon icon, const QString text,
                          const QString dbus_action) :
         Button(layout, icon, text), dbus_action(dbus_action) {
-        connect(this, &PowerButton::clicked, [&dbus_action]() {
-                PowerActionManager::getInstance().sendPowerAction(dbus_action);
-        });
+        connect(this, &PowerButton::clicked,
+                [&dbus_action]() { PowerActionManager::sendPowerAction(dbus_action); });
 }
 
 const QString& PowerButton::getDBusAction() {

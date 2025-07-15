@@ -23,20 +23,12 @@
 #include <QDBusMessage>
 #include <QString>
 
-// TODO Static class
 class PowerActionManager final {
 public:
-        PowerActionManager(const PowerActionManager&)                   = delete;
-        PowerActionManager&        operator=(const PowerActionManager&) = delete;
-        static PowerActionManager& getInstance();
-
-        QDBusMessage sendPowerAction(const QString& method) const;
+        static QDBusMessage sendPowerAction(const QString& method);
 
 private:
-        QDBusConnection connection;
-        QDBusInterface  proxy;
+        explicit PowerActionManager() = delete;
 
-        explicit PowerActionManager();
-
-        QDBusMessage responseHandler(QDBusMessage response) const;
+        static QDBusMessage responseHandler(QDBusMessage response);
 };
