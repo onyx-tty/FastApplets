@@ -17,6 +17,9 @@
 
 #include "SharedKeybindings.h"
 
+#include <QDebug>
+#include <qnamespace.h>
+
 void printKeybindingKey(const int& key) { // used as function pointer to std::for_each
         qDebug().noquote() << " " << key << " ";
 }
