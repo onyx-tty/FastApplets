@@ -40,12 +40,11 @@ using predicate = std::function<bool(int)>;
 void WeatherParser::updateWeatherData(const QApplication& app) {
         std::string root_key, path;
         // fetch data from OpenWeather's API call
-        const json& response = OpenWeatherAPI::fetchWeatherReport(app);
+        const json& response   = OpenWeatherAPI::fetchWeatherReport(app);
         int         index      = 0;
         // extract and assign each node encountered in our fetched response
-        auto handleNode = [](const std::string& key, const json& data, std::string path, int index) {
-                processWeatherItem(key, data, key, index);
-        };
+        auto        handleNode = [](const std::string& key, const json& data, std::string path,
+                             int index) { processWeatherItem(key, data, key, index); };
         // stop traversing the response if we've covered all hours
         auto predicate = [](int index) -> bool { return index == (WeatherData::hours.size() - 1); };
 
@@ -57,7 +56,8 @@ void WeatherParser::updateWeatherData(const QApplication& app) {
         // figure out the exact hour spacing by analyzing the time difference between two hours
         const int    hour_spacing     = findHourSpacing((iter_begin + 1)->time, iter_begin->time);
         // detect current midnight's and next midnight's UNIX timestamps
-        const time_t current_midnight = findMidnight(), next_midnight = current_midnight + epoch_duration::day;
+        const time_t current_midnight = findMidnight(),
+                     next_midnight    = current_midnight + epoch_duration::day;
 
         // number of blocs we'll receive for each day, index-friendly
         // a bloc is a collection of data corresponding to a particular hour

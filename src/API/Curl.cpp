@@ -23,8 +23,8 @@
 CURL* Curl::curl        = nullptr;
 bool  Curl::initialized = false;
 
-size_t Curl::writeCallback(char* ptr, size_t chunk_element_size,
-                                  size_t chunk_element_quantity, void* user_data) {
+size_t Curl::writeCallback(char* ptr, size_t chunk_element_size, size_t chunk_element_quantity,
+                           void* user_data) {
         size_t total_chunk_size = chunk_element_size * chunk_element_quantity;
 
         std::string* data_buffer = static_cast<std::string*>(user_data);
