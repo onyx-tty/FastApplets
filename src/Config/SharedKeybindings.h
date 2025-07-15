@@ -17,9 +17,6 @@
 
 #pragma once
 
-#include <QApplication>
-#include <QKeyEvent>
-
 #include <unordered_set>
 
 using keybindings = std::unordered_set<int>;

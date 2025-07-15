@@ -21,7 +21,6 @@
 
 #include <QApplication>
 #include <QDebug>
-#include <QFocusEvent>
 
 using Keybinding = PowerKeybindingManager;
 

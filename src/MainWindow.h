@@ -17,10 +17,7 @@
 
 #pragma once
 
-#include <QHBoxLayout>
 #include <QMainWindow>
-#include <QShortcut>
-#include <QWidget>
 
 class MainWindow : public QMainWindow {
         Q_OBJECT

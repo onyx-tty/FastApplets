@@ -17,8 +17,11 @@
 
 #pragma once
 
+#include <QDBusConnection>
+#include <QDBusConnectionInterface>
+#include <QDBusInterface>
+#include <QDBusMessage>
 #include <QString>
-#include <QtDBus/QtDBus> // TODO Don't include directly
 
 // org.freedesktop.login1 — The D-Bus interface of systemd-logind
 namespace target {

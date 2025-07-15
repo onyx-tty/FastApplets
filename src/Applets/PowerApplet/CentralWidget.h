@@ -19,7 +19,7 @@
 
 #include "Widgets/PowerButton.h"
 
-#include <QHBoxLayout>
+#include <QBoxLayout>
 #include <QWidget>
 
 #include <array>

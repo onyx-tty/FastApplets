@@ -20,7 +20,6 @@
 #include "SharedLayout.h"
 #include "../Applets/PowerApplet/Widgets/PowerButton.h"
 
-#include <QHBoxLayout>
 #include <QIcon>
 #include <QSize>
 #include <QSizePolicy>
