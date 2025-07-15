@@ -68,9 +68,7 @@ std::array<PowerButton*, 4>& PowerLayoutProp::buttonListSingleton(QWidget*     p
                 new PowerButton(parent, layout, button_icons[0], button_text[0], "PowerOff"),
                 new PowerButton(parent, layout, button_icons[1], button_text[1], "Reboot"),
                 new PowerButton(parent, layout, button_icons[2], button_text[2], "Suspend"),
-                new PowerButton(parent, layout, button_icons[3], button_text[3],
-                                "Hibernate")};
-        qInfo() << "button_list successfully initialized!";
+                new PowerButton(parent, layout, button_icons[3], button_text[3], "Hibernate")};
 
         return button_list;
 }
