@@ -39,9 +39,8 @@ public:
         void keyPressEvent(QKeyEvent* event) override;
         void lastKeyUpdateEvent(QKeyEvent* event);
         void keyPressEvent(QKeyEvent* event, PowerButton* button);
-        void selectButton(QKeyEvent* event,
-                                        PowerButton* button,
-                                        std::array<unsigned, 4>& acceptable_keys);
+        void selectButton(QKeyEvent* event, PowerButton* button,
+                          std::array<int, 4>& acceptable_keys);
         void clickButton(QKeyEvent* event);
 
 private:
