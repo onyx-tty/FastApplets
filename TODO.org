@@ -8,12 +8,12 @@
 ** TODO Security menu applet with toggle functionality
 ** TODO Highly configurable list of programs/shell commands
 
-* Base [2/8]
+* Base [2/11]
 *Phase 1*
 ** DONE LICENSE
 ** TODO README.md
 ** TODO Error handling in all relevant places
-** TODO Icon inclusion in the executable
+** DONE Icon inclusion in the executable
 ** TODO Fallback icons
 ** TODO Debug functions
 *Phase 2*
