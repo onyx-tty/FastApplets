@@ -19,6 +19,7 @@
 #define CENTRAL_WIDGET_H
 
 #include "Widgets/PowerButton.h"
+#include "../../Config/PowerLayout.h"
 #include "../../Config/PowerKeybindings.h"
 
 #include <QHBoxLayout>
@@ -46,12 +47,13 @@ public:
 private:
         std::pair<QKeyEvent*, PowerButton*> last_key;
         std::array<PowerButton*, 4>         button_list;
+        PowerLayoutManager                  layout;
         PowerKeybindingManager              keybindings;
 
         void updateLastKey(QKeyEvent* event, PowerButton* button);
-        void setPowerButtonStyle(PowerButton* button, const QString& style);
+        void setPowerButtonStyle(PowerButton* button, const QString style, QKeyEvent* event);
         // receive lambda as a parameter 'action'
-        void updatePowerButton(QKeyEvent* event, const QString& style,
+        void updatePowerButton(QKeyEvent* event, const QString style,
                                auto&& action);
 };
 

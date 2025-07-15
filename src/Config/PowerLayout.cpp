@@ -16,50 +16,66 @@
    along with this program.  If not, see <https://www.gnu.org/licenses/>. */
 
 #include "PowerLayout.h"
+#include "../Applets/PowerApplet/Widgets/PowerButton.h"
+
+#include <QApplication>
+#include <QSizePolicy>
+#include <QString>
+
+#include <array>
 
 /* Modify to adjust application style */
 
-// window properties
-QSize         main_window::size  = QSize(960, 200);
-const QString main_window::title = shared_main_window::title;
+using lm = LayoutManager;
 
-QString icon_location = "Data/";
+QSizePolicy setButtonPolicy() {
+        QSizePolicy button_policy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+        return button_policy;
+}
 
-// button order
-std::array<PowerButton *, 4> button::list(QWidget *parent, QHBoxLayout *layout) {
-        std::array<QIcon, 4>         icon_list   = icon::initIcons();
-        std::array<PowerButton *, 4> button_list = {
-                new PowerButton(parent, layout, icon_list[0], text::shutdown, "PowerOff"),
-                new PowerButton(parent, layout, icon_list[1], text::reboot, "Reboot"),
-                new PowerButton(parent, layout, icon_list[2], text::suspend, "Suspend"),
-                new PowerButton(parent, layout, icon_list[3], text::hibernate, "Hibernate"),
-        };
+std::array<QIcon, 4> setButtonIcons() {
+        Q_INIT_RESOURCE(Icons);
+        std::array<QIcon, 4> button_icons{QIcon(":/Icons/shutdown.svg"),
+                                          QIcon(":/Icons/reboot.svg"), QIcon(":/Icons/suspend.svg"),
+                                          QIcon(":/Icons/hibernate.svg")};
+        return button_icons;
+}
+
+std::array<QString, 4> setButtonText() {
+        std::array<QString, 4> button_text{"Shutdown", "Reboot", "Suspend", "Hibernate"};
+        return button_text;
+}
+
+PowerLayoutProp::PowerLayoutProp() :
+        LayoutProp(setButtonPolicy()), button_icons(setButtonIcons()),
+        button_text(setButtonText()) {};
+
+PowerLayoutManager::PowerLayoutManager() {};
+
+std::array<PowerButton*, 4>& PowerLayoutProp::buttonListSingleton(QWidget*     parent,
+                                                                  QHBoxLayout* layout,
+                                                                  bool&&       is_instantiated) {
+        if (!parent || !layout) {
+                qFatal() << "Invalid parent and/or layout in" << __func__ << "!\n";
+                QApplication::quit();
+        }
+        if (!is_instantiated) {
+                qCritical() << "Singleton not initialized properly in" << __func__ << "!\n";
+                QApplication::quit();
+        }
+
+        static std::array<PowerButton*, 4> button_list{
+                new PowerButton(parent, layout, button_icons[0], button_text[0], "PowerOff"),
+                new PowerButton(parent, layout, button_icons[1], button_text[1], "Reboot"),
+                new PowerButton(parent, layout, button_icons[2], button_text[2], "Suspend"),
+                new PowerButton(parent, layout, button_icons[3], button_text[3],
+                                "Hibernate")};
+        qInfo() << "button_list successfully initialized!";
+
         return button_list;
 }
 
-// icons
-std::array<QIcon, 4> icon::initIcons() {
-        return std::array<QIcon, 4>{
-                QIcon(":/Icons/shutdown.svg"),
-                QIcon(":/Icons/reboot.svg"),
-                QIcon(":/Icons/suspend.svg"),
-                QIcon(":/Icons/hibernate.svg"),
-        };
-}
-
-// styles
-const QString style::selected   = shared_style::selected;
-const QString style::unselected = shared_style::unselected;
-
-// button alignment
-const Qt::Alignment button_alignment::icon = shared_button_alignment::icon;
-const Qt::Alignment button_alignment::text = shared_button_alignment::text;
-
-// text
-QString text::shutdown("Shutdown");
-QString text::reboot("Reboot");
-QString text::suspend("Suspend");
-QString text::hibernate("Hibernate");
-
-// policy
-const QSizePolicy policy::buttons = shared_policy::buttons;
+MainWindowProp  PowerLayoutManager::main_window_prop;
+StyleProp       PowerLayoutManager::style_prop;
+ButtonProp      PowerLayoutManager::button_prop;
+PowerLayoutProp PowerLayoutManager::layout_prop;

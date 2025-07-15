@@ -18,7 +18,7 @@
 #include "PowerMainWindow.h"
 #include "../../Config/PowerLayout.h"
 
-PowerMainWindow::PowerMainWindow(QWidget* parent) : MainWindow(parent) {
-        resize(main_window::size);
+PowerMainWindow::PowerMainWindow(QWidget* parent) : MainWindow(parent), central_widget(new CentralWidget(this)) {
+        resize(PowerLayoutManager::main_window_prop.size);
         setCentralWidget(central_widget);
 }

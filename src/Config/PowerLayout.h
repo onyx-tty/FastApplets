@@ -21,46 +21,33 @@
 #include "SharedLayout.h"
 #include "../Applets/PowerApplet/Widgets/PowerButton.h"
 
+#include <QHBoxLayout>
+#include <QIcon>
 #include <QSize>
 #include <QSizePolicy>
 #include <QString>
-#include <QIcon>
 
-#include <array>
+// TODO Make consistent with SharedLayout
+// TODO Decide whether separate init functions even enhance readability
 
-namespace main_window {
-extern QSize size;
-extern const QString title;
-}
+struct PowerLayoutProp : public LayoutProp {
+        const std::array<QIcon, 4>   button_icons;
+        const std::array<QString, 4> button_text;
 
-namespace icon { // Inconsistent solution, this file will need a serious rework
-extern const QSize size;
-extern std::array<QIcon, 4> initIcons();
-}
+        explicit PowerLayoutProp();
 
-namespace button {
-extern std::array<PowerButton*, 4> list(QWidget* parent, QHBoxLayout* layout);
-}
+        std::array<PowerButton *, 4> &buttonListSingleton(QWidget *parent, QHBoxLayout *layout,
+                                                          bool &&is_instantiated);
+};
 
-namespace style {
-extern const QString selected;
-extern const QString unselected;
-}
+/* Actual Layout Manager */
+struct PowerLayoutManager : public LayoutManager {
+        static MainWindowProp  main_window_prop;
+        static StyleProp       style_prop;
+        static ButtonProp      button_prop;
+        static PowerLayoutProp layout_prop;
 
-namespace button_alignment {
-extern const Qt::Alignment icon;
-extern const Qt::Alignment text;
-}
-
-namespace text {
-extern QString shutdown;
-extern QString reboot;
-extern QString suspend;
-extern QString hibernate;
-}
-
-namespace policy {
-extern const QSizePolicy buttons;
-}
+        explicit PowerLayoutManager();
+};
 
 #endif // POWER_LAYOUT_H

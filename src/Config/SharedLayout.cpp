@@ -22,21 +22,54 @@
 #include <QSizePolicy>
 #include <QString>
 
-// main window
-QSize         shared_main_window::size(600, 300);
-const QString shared_main_window::title = "test_window";
+QSize setMainWindowSize() {
+        return QSize(960, 220);
+}
 
-// style
-const QString shared_style::selected =
-        "text-align: center top; background-color: lightblue; border: 2px solid blue;";
-const QString shared_style::unselected = "text-align: center top;";
+QString setMainWindowTitle() {
+        return QString("test_window");
+}
 
-// icons
-const QSize shared_icon::size(64, 64);
+QString setStyleSelected() {
+        return QString(
+                "text-align: center top; background-color: lightblue; border: 2px solid blue;");
+}
 
-// button alignment
-const Qt::Alignment shared_button_alignment::icon(Qt::AlignHCenter | Qt::AlignBottom);
-const Qt::Alignment shared_button_alignment::text(Qt::AlignHCenter | Qt::AlignTop);
+QString setStyleUnselected() {
+        return QString("text-align: center top;");
+}
 
-// policies
-const QSizePolicy shared_policy::buttons(QSizePolicy::Expanding, QSizePolicy::Expanding);
+Qt::Alignment setButtonTextAlignment() {
+        return Qt::Alignment(Qt::AlignHCenter | Qt::AlignBottom);
+}
+
+Qt::Alignment setButtonIconAlignment() {
+        return Qt::Alignment(Qt::AlignHCenter | Qt::AlignTop);
+}
+
+QSize setButtonIconSize() {
+        return QSize(64, 64);
+}
+
+QSizePolicy setButtonSizePolicy() {
+        return QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+}
+
+MainWindowProp::MainWindowProp() : size(setMainWindowSize()), title(setMainWindowTitle()) {};
+
+StyleProp::StyleProp() : selected(setStyleSelected()), unselected(setStyleUnselected()) {};
+
+// TODO Text size
+ButtonProp::ButtonProp() :
+        text_alignment(setButtonTextAlignment()), icon_size(setButtonIconSize()),
+        icon_alignment(setButtonIconAlignment()) {};
+
+LayoutProp::LayoutProp(QSizePolicy button_policy) : button_policy(button_policy) {};
+
+LayoutManager::LayoutManager() {};
+
+/* Customize here */
+MainWindowProp LayoutManager::main_window_prop;
+StyleProp      LayoutManager::style_prop;
+ButtonProp     LayoutManager::button_prop;
+LayoutProp     LayoutManager::layout_prop(setButtonSizePolicy());

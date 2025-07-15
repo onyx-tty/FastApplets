@@ -18,9 +18,19 @@
 #include "PowerButton.h"
 #include "../DBus/PowerActionManager.h"
 
-PowerButton::PowerButton(QWidget* parent, QHBoxLayout* main_layout, const QIcon& button_icon,
-                         const QString& text, const QString& action) :
-        Button(parent, main_layout, button_icon, text) {
-        connect(this, &PowerButton::clicked,
-                [action]() { PowerActionManager::getInstance().sendPowerAction(action); });
+PowerButton::PowerButton(QWidget* parent, QHBoxLayout* main_layout, const QIcon button_icon,
+                         const QString button_text, const QString action) :
+        Button(parent, main_layout, button_icon, button_text) {
+        try {
+                connect(this, &PowerButton::clicked,
+                        [action]() { PowerActionManager::getInstance().sendPowerAction(action); });
+                qInfo() << "PowerButton constructor initialized: Action = " << action;
+        } catch (const std::exception& e) {
+                qCritical() << "PowerButton constructor failed for action" << action << ":"
+                            << e.what();
+        } catch (...) {
+                qCritical() << "PowerButton constructor encountered an unknown error for action"
+                            << action;
+        }
+        this->text();
 }

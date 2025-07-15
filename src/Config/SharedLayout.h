@@ -22,29 +22,44 @@
 #include <QSize>
 #include <QSizePolicy>
 
-// TODO Consider turning these into one manager struct for inheritance
+class PowerButton; // external
 
-namespace shared_main_window {
-extern QSize         size;
-extern const QString title;
-} // namespace shared_main_window
+struct MainWindowProp {
+        const QSize   size;
+        const QString title;
 
-namespace shared_style {
-extern const QString selected;
-extern const QString unselected;
-} // namespace shared_style
+        explicit MainWindowProp();
+};
 
-namespace shared_icon {
-extern const QSize size;
-} // namespace shared_icon
+struct StyleProp {
+        const QString selected;
+        const QString unselected;
 
-namespace shared_button_alignment {
-extern const Qt::Alignment icon;
-extern const Qt::Alignment text;
-} // namespace shared_button_alignment
+        explicit StyleProp();
+};
 
-namespace shared_policy {
-extern const QSizePolicy buttons;
-}
+struct ButtonProp {
+        const Qt::Alignment          text_alignment;
+        const QSize                  icon_size;
+        const Qt::Alignment          icon_alignment;
+
+        explicit ButtonProp();
+};
+
+struct LayoutProp {
+        const QSizePolicy button_policy;
+
+        explicit LayoutProp(QSizePolicy button_policy);
+};
+
+/* Actual Layout Manager */
+struct LayoutManager {
+        static MainWindowProp main_window_prop;
+        static StyleProp      style_prop;
+        static ButtonProp     button_prop;
+        static LayoutProp     layout_prop;
+
+        explicit LayoutManager();
+};
 
 #endif // SHARED_LAYOUT_H

@@ -16,7 +16,7 @@
    along with this program.  If not, see <https://www.gnu.org/licenses/>. */
 
 #include "CentralWidget.h"
-#include "../../Config/SharedKeybindings.h" // TODO Inherited keybindings
+#include "../../Config/PowerKeybindings.h"
 #include "../../Config/PowerLayout.h"
 
 #include <QApplication>
@@ -31,10 +31,10 @@
 //	to the buttons themselves
 //	They should be streamlined if possible
 
-CentralWidget::CentralWidget(QWidget* parent) : QWidget(parent) {
-        last_key    = std::pair<QKeyEvent*, PowerButton*>(nullptr, nullptr);
-        main_layout = new QHBoxLayout(this);
-        button_list = button::list(this, main_layout);
+CentralWidget::CentralWidget(QWidget* parent) :
+        QWidget(parent), main_layout(new QHBoxLayout(this)) {
+        last_key    = std::pair<QKeyEvent*, PowerButton*>(nullptr, nullptr); // TODO Clean this up
+        button_list = layout.layout_prop.buttonListSingleton(this, main_layout, true);
 }
 
 void CentralWidget::keyPressEvent(QKeyEvent* event) {
@@ -46,34 +46,36 @@ void CentralWidget::keyPressEvent(QKeyEvent* event) {
         };
 
         // update button style
-        updatePowerButton(event, style::selected, [&](unsigned i) { ; });
+        updatePowerButton(event, layout.style_prop.selected, [&](unsigned i) { ; });
 
         if (event->key() == keybindings.quit->key() && last_key.first
             && inPowerRange(last_key.first)) { // ESC pressed with focus, unselect last key
-                updatePowerButton(last_key.first, style::unselected,
-                                [&](unsigned i) { updateLastKey(event, nullptr); });
-        } else if (event->key() == keybindings.quit->key() && !inPowerRange(event)) { // ESC pressed without focus, quit
+                updatePowerButton(last_key.first, layout.style_prop.unselected,
+                                  [&](unsigned i) { updateLastKey(event, nullptr); });
+        } else if (event->key() == keybindings.quit->key()
+                   && !inPowerRange(event)) { // ESC pressed without focus, quit
                 qInfo() << "ESC pressed, quitting!";
                 QApplication::quit();
         } else if (!last_key.first || event->key() != last_key.first->key()) { // select
                 qInfo() << "event and last_key.first don't match";
                 // select current
-                updatePowerButton(event, style::selected,
-                                  [&](unsigned i) { qInfo() << button_list[i]->text() << "selected!"; });
+                updatePowerButton(event, layout.style_prop.selected, [&](unsigned i) {
+                        qInfo() << button_list[i]->text() << "selected!";
+                });
                 // unselect previous
                 if (!last_key.second) {
                         qWarning() << "INFO! last_key.second is null!";
-                } else {
+                } else if (!inPowerRange(event)) {
                         qInfo() << "INFO! Key not within the range of power keys!";
-                        setPowerButtonStyle(last_key.second, style::unselected);
+                } else {
+                        setPowerButtonStyle(last_key.second, layout.style_prop.unselected, event);
                 }
         } else { // click
                 qInfo() << "event and last_key.first match";
-                updatePowerButton(last_key.first, style::unselected,
-                                  [&](unsigned i) {
-                                          emit button_list[i]->clicked();
-                                          QApplication::quit();
-                                  });
+                updatePowerButton(last_key.first, layout.style_prop.unselected, [&](unsigned i) {
+                        emit button_list[i]->clicked();
+                        QApplication::quit();
+                });
                 qInfo() << "diff key";
         }
 
@@ -93,17 +95,23 @@ void CentralWidget::updateLastKey(QKeyEvent* event, PowerButton* button) {
         last_key.second = button;
 }
 
-void CentralWidget::setPowerButtonStyle(PowerButton* button, const QString& style) {
-        button->setStyleSheet(style);
+void CentralWidget::setPowerButtonStyle(PowerButton* button, const QString style, QKeyEvent* event) {
+        try {
+                button->setStyleSheet(style);
+        } catch (...) {
+                qWarning() << "There's a problem! Button:" << button << "is"
+                           << ((button) ? "true" : "false");
+                qWarning() << "event is" << ((event) ? "true" : "false");
+        }
+
         button->update();
 }
 
-void CentralWidget::updatePowerButton(QKeyEvent* event, const QString& style,
-                                      auto&& action) {
+void CentralWidget::updatePowerButton(QKeyEvent* event, const QString style, auto&& action) {
         for (unsigned i = 0; i != 4; ++i) {
                 if (event->key() == keybindings.power_keys[i]) {
-                        setPowerButtonStyle(button_list[i], style);
-                        action(i); // let lambda access i
+                        setPowerButtonStyle(button_list[i], style, event);
+                        action(i); // call lambda and let it access i
                         return;
                 }
         }
