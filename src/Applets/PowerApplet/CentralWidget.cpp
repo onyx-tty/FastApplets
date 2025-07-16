@@ -53,7 +53,6 @@ PowerButton* findButtonWithAction(const QString&& action) {
                 }
         }
         qFatal("No button associated with action %s, terminating!", action.toStdString().c_str());
-        return nullptr; // never meant to occur
 };
 
 // prevent external linkage via static
@@ -96,9 +95,8 @@ void Action::updatePowerButton() {
 };
 
 CentralWidget::CentralWidget(QWidget* parent, const QApplication& app) :
-        QWidget(parent), main_layout(new QHBoxLayout(this)),
-        last_action(Qt::Key_unknown, nullptr), current_action(Qt::Key_unknown, nullptr),
-        button_list(initButtonList(app, main_layout)) {
+        QWidget(parent), main_layout(new QHBoxLayout(this)), last_action(Qt::Key_unknown, nullptr),
+        current_action(Qt::Key_unknown, nullptr), button_list(initButtonList(app, main_layout)) {
         if (!parent)
                 qFatal() << "Parent is nullptr in" << __func__
                          << "! Shutting down to avoid memory leaks...";
