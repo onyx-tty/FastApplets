@@ -20,6 +20,7 @@ find_package(Qt6 REQUIRED COMPONENTS Widgets Gui)
 
 # Set up libcurl
 find_package(CURL REQUIRED)
+include_directories(weather-applet PRIVATE ${CURL_INCLUDE_DIR})
 
 # Configure TraverseJSON to enable Qt support
 set(TRAVERSEJSON_ENABLE_QT ON CACHE BOOL "Enable Qt in TraverseJSON")
@@ -95,9 +96,6 @@ else()
                 ${CODEBASE}
         )
 endif()
-
-# Include libcurl in our project
-include_directories(weather-applet PRIVATE ${CURL_INCLUDE_DIR})
 
 # Linked libraries
 target_link_libraries(weather-applet PRIVATE
