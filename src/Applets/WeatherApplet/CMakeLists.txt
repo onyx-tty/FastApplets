@@ -2,6 +2,8 @@ cmake_minimum_required(VERSION 3.16)
 
 project(weather-applet VERSION 0.1 LANGUAGES CXX)
 
+option(BUILD_SHARED_LIBS "Build using shared libraries" ON)
+
 # Enable Qt support for QObject MOC and resource files
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
