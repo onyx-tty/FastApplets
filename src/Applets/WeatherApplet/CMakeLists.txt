@@ -8,13 +8,14 @@ option(BUILD_SHARED_LIBS "Build using shared libraries" ON)
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
 
+# Configure CMake further
 set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 # TODO Build type checking to disable sanitizer for release versions
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fsanitize=address -fno-omit-frame-pointer -g")
 set(CMAKE_LINKER_FLAGS "${CMAKE_LINKER_FLAGS} -fsanitize=address")
 
-# Set up Qt environment
+# Set up the Qt environment
 set(QT_VERSION_MAJOR 6)
 find_package(Qt6 REQUIRED COMPONENTS Widgets)
 # TODO Qt5 fallback support
@@ -23,9 +24,8 @@ find_package(Qt6 REQUIRED COMPONENTS Widgets)
 # Configure TraverseJSON to enable Qt support
 set(TRAVERSEJSON_ENABLE_QT ON CACHE BOOL "Enable Qt in TraverseJSON")
 
-# TODO Rework to utilize ${PROJECT_ROOT_DIR}, which will require better CMakeLists management, including modularization
 # TODO Use FetchContent to skip git submodule and additional work for the user
-# Add submodules
+# Submodules
 add_subdirectory(
         ../../../modules/TraverseJSON
         ../../../build/TraverseJSON-build
@@ -76,6 +76,7 @@ target_link_libraries(weather-applet PRIVATE
         WeatherApplet::API
         WeatherApplet::Utils)
 
+# Installation
 include(GNUInstallDirs)
 install(TARGETS weather-applet
         BUNDLE DESTINATION .
