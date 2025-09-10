@@ -19,68 +19,57 @@ find_package(Qt6 REQUIRED COMPONENTS Widgets DBus)
 # TODO Qt5 fallback support
 #find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Widgets DBus)
 
-set(INCLUDED_HEADERS
-        ../../MainWindow.h
-        ../../Config/SharedLayout.h
-        ../../Config/SharedKeybindings.h
-        ../../Widgets/Button.h
-)
+# Core
+add_subdirectory(
+        ../..
+        ../../../build/Core-build)
 
-set(INCLUDED_SOURCES
-        ../../MainWindow.cpp
-        ../../Config/SharedLayout.cpp
-        ../../Config/SharedKeybindings.cpp
-        ../../Widgets/Button.cpp
-)
-
-set(PROJECT_HEADERS
-        PowerMainWindow.h
-        CentralWidget.h
-        ../../Config/PowerLayout.h
-        ../../Config/PowerKeybindings.h
-        Widgets/PowerButton.h
-        DBus/PowerActionManager.h
-)
-
-set(PROJECT_SOURCES
-        main.cpp
+# Internal structure
+add_library(power_main_window
         PowerMainWindow.cpp
-        CentralWidget.cpp
-        ../../Config/PowerLayout.cpp
-        ../../Config/PowerKeybindings.cpp
-        Widgets/PowerButton.cpp
-        DBus/PowerActionManager.cpp
-)
+        CentralWidget.cpp)
+add_library(PowerApplet::MainWindow ALIAS power_main_window)
+target_include_directories(power_main_window PRIVATE ${CMAKE_CURRENT_LIST_DIR})
+target_link_libraries(power_main_window PRIVATE
+        Core::MainWindow
+        PowerConfig)
 
-set(PROJECT_RESOURCES
-        Data/Icons.qrc
-)
+add_library(power_dbus
+        DBus/PowerActionManager.cpp)
+add_library(PowerApplet::DBus ALIAS power_dbus)
+target_include_directories(power_dbus PRIVATE ${CMAKE_CURRENT_LIST_DIR}/DBus)
+target_link_libraries(power_dbus PUBLIC Qt${QT_VERSION_MAJOR}::DBus)
 
-set(CODEBASE
-        ${INCLUDED_HEADERS}
-        ${INCLUDED_SOURCES}
-        ${PROJECT_HEADERS}
-        ${PROJECT_SOURCES}
-        ${PROJECT_RESOURCES}
-)
+add_library(power_widgets
+        Widgets/PowerButton.cpp)
+add_library(PowerApplet::Widgets ALIAS power_widgets)
+target_include_directories(power_widgets PRIVATE ${CMAKE_CURRENT_LIST_DIR}/Widgets)
+target_link_libraries(power_widgets PRIVATE
+        Core::Widgets
+        PowerApplet::DBus) # We call power actions on button press, it's needed
 
+add_library(power_resources
+        Data/Icons.qrc)
+add_library(PowerApplet::Resources ALIAS power_resources)
+target_include_directories(power_resources PRIVATE ${CMAKE_CURRENT_LIST_DIR}/Data)
+
+# Maintain support for both Qt6 and >=Qt5 to support a future expansion
 if(QT_VERSION_MAJOR GREATER_EQUAL 6)
         qt_add_executable(power-applet
                 MANUAL_FINALIZATION
-                ${CODEBASE}
-        )
+                main.cpp)
 else()
         add_executable(power-applet
-                ${CODEBASE}
-        )
+                main.cpp)
 endif()
 
 # Linked libraries
 target_link_libraries(power-applet PRIVATE
-        Qt${QT_VERSION_MAJOR}::Widgets
-        Qt${QT_VERSION_MAJOR}::Gui
-        Qt${QT_VERSION_MAJOR}::DBus
-)
+        Core::AllLibs
+        PowerApplet::MainWindow
+        PowerApplet::Widgets
+        PowerApplet::DBus
+        PowerApplet::Resources)
 
 include(GNUInstallDirs)
 install(TARGETS power-applet
