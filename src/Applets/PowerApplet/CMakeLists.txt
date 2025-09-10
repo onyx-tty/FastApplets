@@ -4,17 +4,19 @@ project(power-applet VERSION 0.10.1 LANGUAGES CXX)
 
 option(BUILD_SHARED_LIBS "Build using shared libraries" ON)
 
+# Enable Qt support for QObject MOC and resource files
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
 
+# Configure CMake further
 set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 # TODO Build type checking to disable sanitizer for release versions
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fsanitize=address -fno-omit-frame-pointer -g")
 set(CMAKE_LINKER_FLAGS "${CMAKE_LINKER_FLAGS} -fsanitize=address")
 
+# Set up the Qt environment
 set(QT_VERSION_MAJOR 6)
-
 find_package(Qt6 REQUIRED COMPONENTS Widgets DBus)
 # TODO Qt5 fallback support
 #find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Widgets DBus)
@@ -71,6 +73,7 @@ target_link_libraries(power-applet PRIVATE
         PowerApplet::DBus
         PowerApplet::Resources)
 
+# Installation
 include(GNUInstallDirs)
 install(TARGETS power-applet
         BUNDLE DESTINATION .
