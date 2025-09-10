@@ -20,10 +20,6 @@ find_package(Qt6 REQUIRED COMPONENTS Widgets)
 # TODO Qt5 fallback support
 # find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Widgets)
 
-# Set up libcurl
-find_package(CURL REQUIRED)
-include_directories(weather-applet PRIVATE ${CURL_INCLUDE_DIR})
-
 # Configure TraverseJSON to enable Qt support
 set(TRAVERSEJSON_ENABLE_QT ON CACHE BOOL "Enable Qt in TraverseJSON")
 
@@ -35,77 +31,50 @@ add_subdirectory(
         ../../../build/TraverseJSON-build
 )
 
-set(INCLUDED_HEADERS
-        ../../MainWindow.h
-        ../../Widgets/Button.h
-        ../../Config/SharedLayout.h
-        ../../Config/SharedKeybindings.h
-        ../../Config/WeatherLayout.h
-        ../../API/Curl.h
-        ../../Utils/Time.h
-        ../../Utils/TimeConstants.h
-)
+# Core
+add_subdirectory(
+        ../..
+        ../../../build/Core-build)
 
-set(INCLUDED_SOURCES
-        ../../MainWindow.cpp
-        ../../Widgets/Button.cpp
-        ../../Config/SharedLayout.cpp
-        ../../Config/SharedKeybindings.cpp
-        ../../Config/WeatherLayout.cpp
-        ../../API/Curl.cpp
-        ../../Utils/Time.cpp
-)
-
-set(PROJECT_HEADERS
-        WeatherMainWindow.h
-        CentralWidget.h
-        API/OpenWeatherAPI.h
-        API/WeatherData.h
-        API/WeatherParser.h
-        Utils/PresentTimeManager.h
-)
-
-set(PROJECT_SOURCES
-        main.cpp
+# Internal structure
+add_library(weather_main_window
         WeatherMainWindow.cpp
-        CentralWidget.cpp
+        CentralWidget.cpp)
+add_library(WeatherApplet::MainWindow ALIAS weather_main_window)
+target_include_directories(weather_main_window PRIVATE ${CMAKE_CURRENT_LIST_DIR})
+target_link_libraries(weather_main_window PRIVATE Core::MainWindow)
+
+add_library(weather_api
         API/OpenWeatherAPI.cpp
         API/WeatherData.cpp
-        API/WeatherParser.cpp
-        Utils/PresentTimeManager.cpp
-)
+        API/WeatherParser.cpp)
+add_library(WeatherApplet::API ALIAS weather_api)
+target_include_directories(weather_api PRIVATE ${CMAKE_CURRENT_LIST_DIR}/API)
+target_link_libraries(weather_api PRIVATE TraverseJSON)
+target_link_libraries(weather_api PUBLIC Qt${QT_VERSION_MAJOR}::Widgets)
 
-set(PROJECT_RESOURCES
+add_library(weather_utils
+        Utils/PresentTimeManager.cpp)
+add_library(WeatherApplet::Utils ALIAS weather_utils)
+target_include_directories(weather_utils PRIVATE ${CMAKE_CURRENT_LIST_DIR}/Utils)
+target_link_libraries(weather_utils PRIVATE WeatherConfig)
 
-)
-
-set(CODEBASE
-        ${INCLUDED_HEADERS}
-        ${INCLUDED_SOURCES}
-        ${PROJECT_HEADERS}
-        ${PROJECT_SOURCES}
-        ${PROJECT_RESOURCES}
-)
-
-# Maintain support for both Qt6 and >=Qt5 for future expansion
+# Maintain support for both Qt6 and >=Qt5 to support a future expansion
 if(QT_VERSION_MAJOR GREATER_EQUAL 6)
         qt_add_executable(weather-applet
                 MANUAL_FINALIZATION
-                ${CODEBASE}
-        )
+                main.cpp)
 else()
         add_executable(weather-applet
-                ${CODEBASE}
-        )
+                main.cpp)
 endif()
 
 # Linked libraries
 target_link_libraries(weather-applet PRIVATE
-        Qt${QT_VERSION_MAJOR}::Widgets
-        Qt${QT_VERSION_MAJOR}::Gui
-        ${CURL_LIBRARIES}
-        TraverseJSON
-)
+        Core::AllLibs
+        WeatherApplet::MainWindow
+        WeatherApplet::API
+        WeatherApplet::Utils)
 
 include(GNUInstallDirs)
 install(TARGETS weather-applet
