@@ -16,9 +16,9 @@ set(CMAKE_LINKER_FLAGS "${CMAKE_LINKER_FLAGS} -fsanitize=address")
 
 # Set up Qt environment
 set(QT_VERSION_MAJOR 6)
-find_package(Qt6 REQUIRED COMPONENTS Widgets Gui)
+find_package(Qt6 REQUIRED COMPONENTS Widgets)
 # TODO Qt5 fallback support
-# find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Widgets Gui)
+# find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Widgets)
 
 # Set up libcurl
 find_package(CURL REQUIRED)
