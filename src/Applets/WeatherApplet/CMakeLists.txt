@@ -28,8 +28,7 @@ set(TRAVERSEJSON_ENABLE_QT ON CACHE BOOL "Enable Qt in TraverseJSON")
 # Submodules
 add_subdirectory(
         ../../../modules/TraverseJSON
-        ../../../build/TraverseJSON-build
-)
+        ../../../build/TraverseJSON-build)
 
 # Core
 add_subdirectory(
@@ -81,8 +80,7 @@ include(GNUInstallDirs)
 install(TARGETS weather-applet
         BUNDLE DESTINATION .
         LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
-        RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
-)
+        RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})
 
 if(QT_VERSION_MAJOR EQUAL 6)
         qt_finalize_executable(weather-applet)
