@@ -16,9 +16,9 @@ set(CMAKE_LINKER_FLAGS "${CMAKE_LINKER_FLAGS} -fsanitize=address")
 
 set(QT_VERSION_MAJOR 6)
 
-find_package(Qt6 REQUIRED COMPONENTS Widgets Gui DBus)
+find_package(Qt6 REQUIRED COMPONENTS Widgets DBus)
 # TODO Qt5 fallback support
-#find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Widgets Gui DBus)
+#find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Widgets DBus)
 
 set(INCLUDED_HEADERS
         ../../MainWindow.h
