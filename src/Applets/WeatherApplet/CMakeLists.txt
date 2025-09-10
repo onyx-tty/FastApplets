@@ -24,16 +24,16 @@ find_package(Qt6 REQUIRED COMPONENTS Widgets)
 # Configure TraverseJSON to enable Qt support
 set(TRAVERSEJSON_ENABLE_QT ON CACHE BOOL "Enable Qt in TraverseJSON")
 
+# Core
+add_subdirectory(
+        ../..
+        ../../../build/Core-build)
+
 # TODO Use FetchContent to skip git submodule and additional work for the user
 # Submodules
 add_subdirectory(
         ../../../modules/TraverseJSON
         ../../../build/TraverseJSON-build)
-
-# Core
-add_subdirectory(
-        ../..
-        ../../../build/Core-build)
 
 # Internal structure
 add_library(weather_main_window
