@@ -17,7 +17,7 @@
 
 #pragma once
 
-#include "../../MainWindow.h"
+#include "../../../Core/UI/MainWindow.h"
 #include "CentralWidget.h"
 
 class PowerMainWindow final : public MainWindow {

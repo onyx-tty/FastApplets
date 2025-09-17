@@ -16,7 +16,7 @@
    along with this program.  If not, see <https://www.gnu.org/licenses/>. */
 
 #include "PowerLayout.h"
-#include "../Applets/PowerApplet/Widgets/PowerButton.h"
+#include "../Applets/PowerApplet/UI/Widgets/PowerButton.h"
 
 #include <QApplication>
 #include <QSizePolicy>
@@ -34,10 +34,10 @@ using global = LayoutManager;
 // prevent external linkage via static
 static std::array<QIcon, 4> initButtonIcons() {
         Q_INIT_RESOURCE(Icons);
-        std::array<QIcon, 4> button_icons{QIcon(":/Icons/shutdown.svg"),
-                                          QIcon(":/Icons/reboot.svg"),
-                                          QIcon(":/Icons/suspend.svg"),
-                                          QIcon(":/Icons/hibernate.svg")};
+        std::array<QIcon, 4> button_icons{QIcon(":/Icons/Power/shutdown.svg"),
+                                          QIcon(":/Icons/Power/reboot.svg"),
+                                          QIcon(":/Icons/Power/suspend.svg"),
+                                          QIcon(":/Icons/Power/hibernate.svg")};
         return std::move(button_icons);
 }
 

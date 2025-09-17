@@ -1,8 +1,0 @@
-<RCC>
-    <qresource prefix="/">
-        <file>Icons/hibernate.svg</file>
-        <file>Icons/reboot.svg</file>
-        <file>Icons/shutdown.svg</file>
-        <file>Icons/suspend.svg</file>
-    </qresource>
-</RCC>

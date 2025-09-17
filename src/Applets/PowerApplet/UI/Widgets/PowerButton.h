@@ -15,12 +15,18 @@
    You should have received a copy of the GNU General Public License
    along with this program.  If not, see <https://www.gnu.org/licenses/>. */
 
-#include "MainWindow.h"
-#include "Config/SharedLayout.h"
+#pragma once
 
-MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent) {
-        resize(LayoutManager::main_window_prop.size);
-        setWindowTitle(LayoutManager::main_window_prop.title);
-}
+#include "../../../../Core/UI/Widgets/Button.h"
 
-MainWindow::~MainWindow() = default;
+class PowerButton final : public Button {
+        Q_OBJECT
+        // TODO Construct and store full dbus action path for safety and flexibility
+        const QString dbus_action;
+
+public:
+        PowerButton(QBoxLayout* const layout, const QIcon icon, const QString text,
+                    const QString dbus_action);
+
+        const QString& getDBusAction();
+};

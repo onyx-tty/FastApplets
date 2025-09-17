@@ -18,7 +18,7 @@
 #pragma once
 
 #include "SharedLayout.h"
-#include "../Applets/PowerApplet/Widgets/PowerButton.h"
+#include "../Applets/PowerApplet/UI/Widgets/PowerButton.h"
 
 #include <QIcon>
 #include <QSize>

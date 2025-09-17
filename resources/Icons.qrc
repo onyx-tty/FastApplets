@@ -1,0 +1,8 @@
+<RCC>
+    <qresource prefix="/">
+        <file>Icons/Power/hibernate.svg</file>
+        <file>Icons/Power/reboot.svg</file>
+        <file>Icons/Power/shutdown.svg</file>
+        <file>Icons/Power/suspend.svg</file>
+    </qresource>
+</RCC>
