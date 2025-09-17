@@ -2,86 +2,53 @@ cmake_minimum_required(VERSION 3.16)
 
 project(weather-applet VERSION 0.1 LANGUAGES CXX)
 
-option(BUILD_SHARED_LIBS "Build using shared libraries" ON)
-
-# Enable Qt support for QObject MOC and resource files
-set(CMAKE_AUTOMOC ON)
-set(CMAKE_AUTORCC ON)
-
-# Configure CMake further
-set(CMAKE_CXX_STANDARD 23)
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
-# TODO Build type checking to disable sanitizer for release versions
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fsanitize=address -fno-omit-frame-pointer -g")
-set(CMAKE_LINKER_FLAGS "${CMAKE_LINKER_FLAGS} -fsanitize=address")
-
 # Set up the Qt environment
 set(QT_VERSION_MAJOR 6)
-find_package(Qt6 REQUIRED COMPONENTS Widgets)
+find_package(Qt6 REQUIRED COMPONENTS Widgets Gui)
 # TODO Qt5 fallback support
-# find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Widgets)
+# find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Widgets Gui)
 
 # Configure TraverseJSON to enable Qt support
 set(TRAVERSEJSON_ENABLE_QT ON CACHE BOOL "Enable Qt in TraverseJSON")
 
-# Core
-add_subdirectory(
-        ../..
-        ../../../build/Core-build)
-
-# TODO Use FetchContent to skip git submodule and additional work for the user
-# Submodules
-add_subdirectory(
-        ../../../modules/TraverseJSON
-        ../../../build/TraverseJSON-build)
-
 # Internal structure
-add_library(weather_main_window
-        WeatherMainWindow.cpp
-        CentralWidget.cpp)
-add_library(WeatherApplet::MainWindow ALIAS weather_main_window)
-target_include_directories(weather_main_window PRIVATE ${CMAKE_CURRENT_LIST_DIR})
-target_link_libraries(weather_main_window PRIVATE Core::MainWindow)
+add_library(weather_data
+        Data/WeatherData.cpp)
+add_library(WeatherApplet::Data ALIAS weather_data)
+target_include_directories(weather_data PRIVATE ${CMAKE_CURRENT_LIST_DIR}/Data)
+target_link_libraries(weather_data PUBLIC
+        Qt${QT_VERSION_MAJOR}::Widgets
+        Qt${QT_VERSION_MAJOR}::Gui)
 
-add_library(weather_api
-        API/OpenWeatherAPI.cpp
-        API/WeatherData.cpp
-        API/WeatherParser.cpp)
-add_library(WeatherApplet::API ALIAS weather_api)
-target_include_directories(weather_api PRIVATE ${CMAKE_CURRENT_LIST_DIR}/API)
-target_link_libraries(weather_api PRIVATE TraverseJSON)
-target_link_libraries(weather_api PUBLIC Qt${QT_VERSION_MAJOR}::Widgets)
+add_library(weather_ui
+        UI/WeatherMainWindow.cpp
+        UI/CentralWidget.cpp)
+add_library(WeatherApplet::UI ALIAS weather_ui)
+target_include_directories(weather_ui PRIVATE ${CMAKE_CURRENT_LIST_DIR}/UI)
+target_link_libraries(weather_ui PRIVATE
+        WeatherApplet::Data
+        Core::UI
+        Config::WeatherApplet)
 
-add_library(weather_utils
-        Utils/PresentTimeManager.cpp)
-add_library(WeatherApplet::Utils ALIAS weather_utils)
-target_include_directories(weather_utils PRIVATE ${CMAKE_CURRENT_LIST_DIR}/Utils)
-target_link_libraries(weather_utils PRIVATE WeatherConfig)
+add_library(weather_parsers
+        Parsers/OpenWeatherParser.cpp)
+add_library(WeatherApplet::Parsers ALIAS weather_parsers)
+target_include_directories(weather_parsers PRIVATE ${CMAKE_CURRENT_LIST_DIR}/Parsers)
+target_link_libraries(weather_parsers PRIVATE
+        Config::WeatherApplet
+        time
+        TraverseJSON)
+target_link_libraries(weather_parsers PRIVATE Qt${QT_VERSION_MAJOR}::Widgets)
 
-# Maintain support for both Qt6 and >=Qt5 to support a future expansion
-if(QT_VERSION_MAJOR GREATER_EQUAL 6)
-        qt_add_executable(weather-applet
-                MANUAL_FINALIZATION
-                main.cpp)
-else()
-        add_executable(weather-applet
-                main.cpp)
-endif()
+add_library(weather_networking
+        Networking/OpenWeatherClient.cpp)
+add_library(WeatherApplet::Networking ALIAS weather_networking)
+target_include_directories(weather_networking PRIVATE ${CMAKE_CURRENT_LIST_DIR}/Networking)
+target_link_libraries(weather_networking PRIVATE curl)
 
-# Linked libraries
-target_link_libraries(weather-applet PRIVATE
-        Core::AllLibs
-        WeatherApplet::MainWindow
-        WeatherApplet::API
-        WeatherApplet::Utils)
-
-# Installation
-include(GNUInstallDirs)
-install(TARGETS weather-applet
-        BUNDLE DESTINATION .
-        LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
-        RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})
-
-if(QT_VERSION_MAJOR EQUAL 6)
-        qt_finalize_executable(weather-applet)
-endif()
+add_library(weather_time
+        Time/ForecastBlocManager.cpp)
+add_library(WeatherApplet::Time ALIAS weather_time)
+target_include_directories(weather_time PRIVATE ${CMAKE_CURRENT_LIST_DIR}/Time)
+target_link_libraries(weather_time PRIVATE Config::WeatherApplet)
+target_link_libraries(weather_time PUBLIC Qt${QT_VERSION_MAJOR}::Gui)

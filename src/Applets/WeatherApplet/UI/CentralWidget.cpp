@@ -17,8 +17,8 @@
 
 #include "CentralWidget.h"
 #include "../../Config/WeatherLayout.h"
-#include "Utils/PresentTimeManager.h"
-#include "API/WeatherParser.h"
+#include "../Time/ForecastBlocManager.h"
+#include "../Parsers/OpenWeatherParser.h"
 
 #include <QDebug>
 #include <QLabel>
@@ -129,9 +129,9 @@ QVBoxLayout* CurrentWeekLayout::getLayout() {
                 // TODO Replace certain elements with WeatherData::fillDayNames
                 constexpr auto cell_alignment     = QBoxLayout::LeftToRight;
                 const auto     begin              = WeatherData::hours.cbegin(), end = WeatherData::hours.cend();
-                const auto&    blocs_per_day      = PresentTimeManager::getBlocsPerDay(),
-                               first_day_blocs    = PresentTimeManager::getFirstDayBlocs().value_or(0),
-                               last_day_blocs     = PresentTimeManager::getLastDayBlocs();
+                const auto&    blocs_per_day      = ForecastBlocManager::getBlocsPerDay(),
+                               first_day_blocs    = ForecastBlocManager::getFirstDayBlocs().value_or(0),
+                               last_day_blocs     = ForecastBlocManager::getLastDayBlocs();
                 using Range                       = std::array<const float*, 2>;
                 const auto formatTemperatureRange = [](const Range& temperature_range) -> const QString {
                         return QString::number(*temperature_range[0]) + "-"
@@ -184,7 +184,7 @@ QVBoxLayout* CurrentWeekLayout::layout = nullptr;
 CentralWidget::CentralWidget(QWidget* parent, const QApplication& app) :
         QWidget(parent), main_layout(new QHBoxLayout(this)) {
         WeatherLayoutManager::setup(app); // We give WeatherLayoutManager access to runtime
-        WeatherParser::updateWeatherData(app);
+        OpenWeatherParser::updateWeatherData(app);
 
         // Split main layout
         auto* left_layout  = new QVBoxLayout;

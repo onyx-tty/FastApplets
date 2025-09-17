@@ -15,22 +15,22 @@
    You should have received a copy of the GNU General Public License
    along with this program.  If not, see <https://www.gnu.org/licenses/>. */
 
-#include "PresentTimeManager.h"
-#include "../../../Utils/Time.h"
-#include "../../../Utils/TimeConstants.h"
-#include "../API/WeatherData.h"
+#include "ForecastBlocManager.h"
+#include "../../../Time/Time.h"
+#include "../../../Time/TimeConstants.h"
+#include "../Data/WeatherData.h"
 
 #include <QDebug>
 
-time_t             PresentTimeManager::current_midnight;
-time_t             PresentTimeManager::next_midnight;
-int                PresentTimeManager::hour_spacing;
-int                PresentTimeManager::blocs_per_day;
-std::optional<int> PresentTimeManager::first_day_blocs;
-int                PresentTimeManager::last_day_blocs;
+time_t             ForecastBlocManager::current_midnight;
+time_t             ForecastBlocManager::next_midnight;
+int                ForecastBlocManager::hour_spacing;
+int                ForecastBlocManager::blocs_per_day;
+std::optional<int> ForecastBlocManager::first_day_blocs;
+int                ForecastBlocManager::last_day_blocs;
 
 // TODO Continue
-void PresentTimeManager::refresh() {
+void ForecastBlocManager::refresh() {
         const auto begin = WeatherData::hours.cbegin(), end = WeatherData::hours.cend();
         hour_spacing     = findHourSpacing((begin + 1)->time, begin->time);
         current_midnight = findMidnight();
@@ -59,17 +59,17 @@ void PresentTimeManager::refresh() {
         last_day_blocs = blocs_per_day - first_day_blocs.value();
 }
 
-const int& PresentTimeManager::getBlocsPerDay() {
+const int& ForecastBlocManager::getBlocsPerDay() {
         if (current_midnight != findMidnight()) refresh();
         return blocs_per_day;
 }
 
-const std::optional<int>& PresentTimeManager::getFirstDayBlocs() {
+const std::optional<int>& ForecastBlocManager::getFirstDayBlocs() {
         if (current_midnight != findMidnight()) refresh();
         return first_day_blocs;
 }
 
-const int& PresentTimeManager::getLastDayBlocs() {
+const int& ForecastBlocManager::getLastDayBlocs() {
         if (current_midnight != findMidnight()) refresh();
         return last_day_blocs;
 }

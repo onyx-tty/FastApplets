@@ -15,15 +15,12 @@
    You should have received a copy of the GNU General Public License
    along with this program.  If not, see <https://www.gnu.org/licenses/>. */
 
-#pragma once
+#include "MainWindow.h"
+#include "../Config/SharedLayout.h"
 
-#include <QWidget>
+MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent) {
+        resize(LayoutManager::main_window_prop.size);
+        setWindowTitle(LayoutManager::main_window_prop.title);
+}
 
-#include <nlohmann/json.hpp>
-
-class OpenWeatherAPI final {
-public:
-        explicit OpenWeatherAPI() = delete;
-
-        static nlohmann::json fetchWeatherReport(const QApplication& app);
-};
+MainWindow::~MainWindow() = default;

@@ -17,7 +17,7 @@
 
 #pragma once
 
-#include "../Applets/WeatherApplet/API/WeatherData.h"
+#include "../Applets/WeatherApplet/Data/WeatherData.h"
 #include "SharedLayout.h"
 
 #include <QSize>

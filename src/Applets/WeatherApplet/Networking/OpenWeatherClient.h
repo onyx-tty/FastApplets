@@ -17,16 +17,13 @@
 
 #pragma once
 
-#include "../../MainWindow.h"
-#include "CentralWidget.h"
+#include <QWidget>
 
-class WeatherMainWindow : public MainWindow {
-        Q_OBJECT
+#include <nlohmann/json.hpp>
 
+class OpenWeatherClient final {
 public:
-        WeatherMainWindow(const QApplication& app, QWidget* parent = nullptr);
-        ~WeatherMainWindow();
+        explicit OpenWeatherClient() = delete;
 
-private:
-        CentralWidget* central_widget;
+        static nlohmann::json fetchWeatherReport(const QApplication& app);
 };

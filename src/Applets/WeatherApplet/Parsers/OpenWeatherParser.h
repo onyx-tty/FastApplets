@@ -17,25 +17,19 @@
 
 #pragma once
 
-#include <ctime>
-#include <optional>
+#include <QApplication>
+#include <QWidget>
 
-// TODO Determine if std::optional is needed (if we need to differentiate "no input" from 0)
-class PresentTimeManager {
+#include <nlohmann/json.hpp>
+#include <string>
+
+class OpenWeatherParser final {
 public:
-        static const int&                getBlocsPerDay();
-        static const std::optional<int>& getFirstDayBlocs();
-        static const int&                getLastDayBlocs();
+        explicit OpenWeatherParser() = delete;
 
-        static void refresh();
+        static void updateWeatherData(const QApplication& app);
 
 private:
-        static time_t             current_midnight;
-        static time_t             next_midnight;
-        static int                hour_spacing; // TODO Ideally should be const
-        static int                blocs_per_day;
-        static std::optional<int> first_day_blocs;
-        static int                last_day_blocs;
-
-        PresentTimeManager() = delete;
+        static void processWeatherItem(const std::string& key, const nlohmann::json& value,
+                                       const std::string& path, int& index);
 };

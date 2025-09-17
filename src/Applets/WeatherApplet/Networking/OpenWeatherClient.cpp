@@ -15,12 +15,23 @@
    You should have received a copy of the GNU General Public License
    along with this program.  If not, see <https://www.gnu.org/licenses/>. */
 
-#include "MainWindow.h"
-#include "Config/SharedLayout.h"
+#include "OpenWeatherClient.h"
+#include "../../../Networking/Curl.h"
+#include "../../../Config/WeatherLayout.h"
 
-MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent) {
-        resize(LayoutManager::main_window_prop.size);
-        setWindowTitle(LayoutManager::main_window_prop.title);
+#include <QApplication>
+#include <QDebug>
+#include <QDir>
+#include <QFileInfo>
+
+#include <string>
+
+using nlohmann::json;
+
+json OpenWeatherClient::fetchWeatherReport(const QApplication& app) {
+        // Build target API call URL from API key and target city expressed as code
+        static std::string api_call_url = WeatherLayoutManager::env_prop.getAPICallURL(app);
+
+        // Return our weather report
+        return json::parse(Curl::download(api_call_url));
 }
-
-MainWindow::~MainWindow() = default;

@@ -15,13 +15,13 @@
    You should have received a copy of the GNU General Public License
    along with this program.  If not, see <https://www.gnu.org/licenses/>. */
 
-#include "WeatherParser.h"
+#include "OpenWeatherParser.h"
 #include "../../../../modules/TraverseJSON/include/TraverseJSON.h"
 #include "../../../Config/WeatherLayout.h"
-#include "../../../Utils/Time.h"
-#include "../../../Utils/TimeConstants.h"
-#include "OpenWeatherAPI.h"
-#include "WeatherData.h"
+#include "../../../Time/Time.h"
+#include "../../../Time/TimeConstants.h"
+#include "../Networking/OpenWeatherClient.h"
+#include "../Data/WeatherData.h"
 
 #include <QApplication>
 #include <QDebug>
@@ -37,10 +37,10 @@ using json = nlohmann::json;
 using callback  = std::function<void(const std::string&, const json&, std::string, int)>;
 using predicate = std::function<bool(int)>;
 
-void WeatherParser::updateWeatherData(const QApplication& app) {
+void OpenWeatherParser::updateWeatherData(const QApplication& app) {
         std::string root_key, path;
         // fetch data from OpenWeather's API call
-        const json& response   = OpenWeatherAPI::fetchWeatherReport(app);
+        const json& response   = OpenWeatherClient::fetchWeatherReport(app);
         int         index      = 0;
         // extract and assign each node encountered in our fetched response
         auto        handleNode = [](const std::string& key, const json& data, std::string path,
@@ -84,7 +84,7 @@ void WeatherParser::updateWeatherData(const QApplication& app) {
 }
 
 // TODO This could be refactored with "chunk.at()" in mind
-void WeatherParser::processWeatherItem(const std::string& key, const json& value,
+void OpenWeatherParser::processWeatherItem(const std::string& key, const json& value,
                                        const std::string& path, int& index) {
         qDebug() << "Parsing object" << key << ":" << value.dump() << "! Index is" << index;
 
