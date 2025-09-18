@@ -38,14 +38,11 @@ WeatherParser::WeatherParser(QWidget* parent, const QApplication& app) :
         open_weather(parent, app) {}
 
 void WeatherParser::updateWeatherData() {
-        qDebug() << "--------------------------";
-        qDebug() << "Starting" << __func__ << "!";
         // fetch data from OpenWeather's API call
         open_weather.callAPI();
         const json& response = open_weather.getResponse();
 
         // extract and assign weather data from our fetched response
-        qDebug() << "Recursion begins in" << __func__;
         int index = 0;
         traverseJson(
                 "", response, "",
@@ -64,7 +61,6 @@ void WeatherParser::updateWeatherData() {
 
         // debug
         WeatherData::printData();
-        qDebug() << "hour spacing:" << hour_spacing;
 
         // blocs calculated as index
         const int blocs_per_day =
@@ -72,7 +68,7 @@ void WeatherParser::updateWeatherData() {
         const auto first_day_blocs = findWeatherBlocsFitCount(next_midnight, iter_begin->time,
                                                               hour_spacing);
         if (first_day_blocs.value_or(0) > blocs_per_day) {
-                qFatal("First day blocs %i is higher than blocs per day %i! Not allowed! CWL",
+                qFatal("First day blocs %i is higher than blocs per day %i! Not allowed!",
                        first_day_blocs.value(), blocs_per_day);
         }
 
@@ -80,7 +76,7 @@ void WeatherParser::updateWeatherData() {
         WeatherData::fillDayNames(blocs_per_day, first_day_blocs);
 
         // print daily weather info for debug purposes
-        qDebug() << "Printing daily weather info in" << __func__;
+        qDebug() << "Daily weather info from" << __func__ << ":";
         for (const auto& hour : WeatherData::hours) hour.printData();
 }
 
@@ -93,7 +89,7 @@ void WeatherParser::traverseJson(
         auto tryStringToIntConversion = [](const std::string& input_string,
                                            int&               output_number) -> bool {
                 try {
-                        qDebug() << "Trying to convert key" << input_string << "...";
+                        qDebug() << "Trying to convert" << input_string << "to int...";
                         output_number = std::stoi(input_string);
                         if (!std::is_integral<decltype(output_number)>::value) {
                                 throw std::invalid_argument(
@@ -135,7 +131,8 @@ void WeatherParser::processWeatherItem(const std::string& key, const json& value
         qDebug() << "Parsing object" << key << ":" << value.dump() << "! Index is" << index;
 
         if (index < 0 || index >= WeatherData::hours.size()) {
-                qFatal("Index out of range: %i", index);
+                qFatal("WeatherData index %i out of range in %s, size is only %zu, quitting!",
+                       index, __func__, WeatherData::hours.size());
         }
 
         if (key == "dt") {
@@ -178,6 +175,6 @@ void WeatherParser::processWeatherItem(const std::string& key, const json& value
                                             .getData();
                 }
         } else {
-                qWarning() << "Unexpected key" << key;
+                qDebug() << "Parsed irrelevant key:" << key;
         }
 }

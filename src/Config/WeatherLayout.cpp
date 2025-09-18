@@ -128,22 +128,21 @@ const std::string& WeatherEnvProp::getOpenWeatherKey(const QApplication& app) {
         if (!api_key_initialized) {
                 std::ifstream file(global::getEnvProp().getDotenvFilepath().toStdString(),
                                    std::ifstream::in);
-                qInfo() << "Attempting to start the loop in" << __func__;
                 for (std::string line; std::getline(file, line);) {
                         std::smatch results;
-                        qInfo() << "Line:" << line;
+                        qDebug() << "Line:" << line;
 
                         // if we find our API key, trigger this
                         if (std::regex_search(line, results, std::regex(item.second))) {
                                 item.second = results.str(0);
-                                qInfo() << "Found: " << item.second;
+                                qDebug() << "OpenWeather API key found!";
                                 file.close();
                                 api_key_initialized = true;
                                 return item.second;
                         }
                 }
                 // else if API key wasn't found in the previous loop
-                qCritical() << "Critical! API key not found!";
+                qCritical() << "OpenWeather API key not found!";
                 QApplication::quit();
         }
 

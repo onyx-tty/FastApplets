@@ -69,8 +69,8 @@ public:
 
         QHBoxLayout* getMainLayout();
 private:
-        QHBoxLayout*               main_layout;
-        WeatherParser              weather_parser;
+        QHBoxLayout*  main_layout;
+        WeatherParser weather_parser;
 };
 
 #endif // CENTRAL_WIDGET_H

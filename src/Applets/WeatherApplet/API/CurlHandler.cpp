@@ -26,13 +26,13 @@ size_t CurlHandler::writeCallback(char* ptr, size_t chunk_element_size,
 
         std::string* data_buffer = static_cast<std::string*>(user_data);
         data_buffer->append(ptr, total_chunk_size);
-        qInfo() << "Downloading" << total_chunk_size << "... Total of" << data_buffer->size();
+        qDebug() << "Downloading" << total_chunk_size << "... Total of" << data_buffer->size();
         return total_chunk_size;
 }
 
 void CurlHandler::initOptions() {
         curl_global_init(CURL_GLOBAL_DEFAULT);
-        qInfo() << "Curl initialized!";
+        qDebug() << "Curl initialized!";
 
         // TODO Dotenv appid accessed
         setOpt(CURLOPT_WRITEDATA, &response_buffer);
@@ -84,8 +84,8 @@ void CurlHandler::setOpt(CURLoption&& option, auto&& value) {
                 CURLcode result = curl_easy_setopt(curl, option, value);
                 if (result != CURLE_OK) qFatal("failure at: %s", curl_easy_strerror(result));
         } else if (!curl) {
-                qFatal("curl is null!");
+                qFatal("curl is null in %s", __func__);
         } else if (!value) {
-                qFatal("value is null!");
+                qFatal("value given to curl is null in %s", __func__);
         }
 }

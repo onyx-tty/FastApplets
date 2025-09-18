@@ -31,21 +31,21 @@ int                PresentTimeManager::last_day_blocs;
 
 // TODO Continue
 void PresentTimeManager::refresh() {
-        current_midnight      = findMidnight();
-        next_midnight         = current_midnight + DAY;
-        qInfo() << WeatherData::hours.size();
-        qInfo() << "Hour spacing:" << hour_spacing;
         const auto begin = WeatherData::hours.cbegin(), end = WeatherData::hours.cend();
         hour_spacing     = findHourSpacing((begin + 1)->time, begin->time);
+        current_midnight = findMidnight();
+        next_midnight    = current_midnight + DAY;
+        qDebug() << "WeatherData::hours size:" << WeatherData::hours.size() << "in" << __func__;
+        qDebug() << "Hour spacing:" << hour_spacing << "in" << __func__;
         if (WeatherData::hours.empty() || WeatherData::hours.size() < 2) {
-                qFatal("WeatherData::hours doesn't contain enough data! %zu",
-                       WeatherData::hours.size());
+                qFatal("WeatherData::hours doesn't contain enough data! %zu %s",
+                       WeatherData::hours.size(), __func__);
         }
         // Because we start counting from 1 not 0
         if ((WeatherData::hours.size() - 1) % hour_spacing != 0) {
-                qFatal("Hour spacing between each weather block is uneven! %zu %zu",
-                       WeatherData::hours.size(), (WeatherData::hours.size() % hour_spacing));
-                qFatal("This is not allowed!");
+                qFatal("Hour spacing between each weather block is uneven! %zu %zu %s",
+                       WeatherData::hours.size(), (WeatherData::hours.size() % hour_spacing),
+                       __func__);
         }
         blocs_per_day = findWeatherBlocsFitCount(next_midnight, current_midnight, hour_spacing)
                                 .value_or(0);
@@ -53,8 +53,8 @@ void PresentTimeManager::refresh() {
                                   .value_or(0);
         // if no value is returned, assume that 0 has been received, otherwise accept the returned value
         if (first_day_blocs > blocs_per_day) {
-                qFatal("First day blocs %i is higher than blocs per day %i! Not allowed! CWL",
-                       first_day_blocs.value(), blocs_per_day);
+                qFatal("First day blocs %i is higher than blocs per day %i! Not allowed! %s",
+                       first_day_blocs.value(), blocs_per_day, __func__);
         }
         last_day_blocs = blocs_per_day - first_day_blocs.value();
 }
