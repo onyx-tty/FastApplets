@@ -1,3 +1,6 @@
 [submodule "modules/TraverseJSON"]
 	path = modules/TraverseJSON
 	url = https://github.com/kamp1on/TraverseJSON.git
+[submodule "modules/CurlOOP"]
+	path = modules/CurlOOP
+	url = https://github.com/kamp1on/CurlOOP.git

@@ -41,13 +41,6 @@ add_subdirectory(
         src/Core
         build/Core-build)
 
-#+ Networking
-if(BUILD_WEATHERAPPLET)
-        add_subdirectory(
-                src/Networking
-                build/Networking-build)
-endif()
-
 #+ Time
 if(BUILD_WEATHERAPPLET)
         add_subdirectory(
@@ -69,6 +62,11 @@ if(BUILD_WEATHERAPPLET)
         add_subdirectory(
                 modules/TraverseJSON
                 build/TraverseJSON-build)
+
+#+ Networking
+        add_subdirectory(
+                modules/CurlOOP
+                build/CurlOOP-build)
 endif()
 
 # Maintain support for both Qt6 and >=Qt5 to support a future expansion

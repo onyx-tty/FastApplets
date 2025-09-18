@@ -17,7 +17,7 @@
 
 #pragma once
 
-#include <QWidget>
+#include <QApplication>
 
 #include <nlohmann/json.hpp>
 

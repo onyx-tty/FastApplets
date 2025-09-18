@@ -34,7 +34,7 @@ add_library(weather_networking
         Networking/OpenWeatherClient.cpp)
 add_library(WeatherApplet::Networking ALIAS weather_networking)
 target_include_directories(weather_networking PRIVATE ${CMAKE_CURRENT_LIST_DIR}/Networking)
-target_link_libraries(weather_networking PRIVATE curl)
+target_link_libraries(weather_networking PRIVATE CurlOOP)
 
 add_library(weather_time
         Time/ForecastBlocManager.cpp)
