@@ -2,8 +2,6 @@ cmake_minimum_required(VERSION 3.16)
 
 project(weather-applet VERSION 0.1 LANGUAGES CXX)
 
-# Set up the Qt environment
-set(QT_VERSION_MAJOR 6)
 find_package(Qt6 REQUIRED COMPONENTS Widgets Gui)
 # TODO Qt5 fallback support
 # find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Widgets Gui)

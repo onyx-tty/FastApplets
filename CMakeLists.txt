@@ -23,10 +23,10 @@ set(TRAVERSEJSON_ENABLE_QT ON CACHE BOOL "Enable Qt in TraverseJSON" FORCE)
 # Find packages
 find_package(Qt6 REQUIRED COMPONENTS Widgets)
 
-# Set up the Qt environment
-set(QT_VERSION_MAJOR 6)
 
 # TODO Build type checking to disable the sanitizer for release versions
+# Set up the Qt environment
+set(QT_VERSION_MAJOR 6 CACHE STRING "Build using this version of Qt")
 
 # Shared Directories
 #+ Config
