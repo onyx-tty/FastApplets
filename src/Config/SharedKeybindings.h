@@ -23,10 +23,16 @@
 
 #include <unordered_set>
 
-struct KeybindingManager {
-        std::unordered_set<int> quit;
+using keybindings = std::unordered_set<int>;
 
-        explicit KeybindingManager();
+void printKeybindingKey(const int& key);
+
+struct KeybindingManager {
+        static const keybindings quit;
+
+        explicit KeybindingManager() = delete;
+
+        static void printKeybindings();
 };
 
 #endif // SHARED_KEYBINDINGS_H

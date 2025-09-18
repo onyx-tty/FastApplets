@@ -18,7 +18,6 @@
 #ifndef CENTRAL_WIDGET_H
 #define CENTRAL_WIDGET_H
 
-#include "../../Config/DefaultKeybindings.h"
 #include "API/WeatherParser.h"
 
 #include <QApplication>
@@ -70,7 +69,6 @@ public:
 
 private:
         QHBoxLayout*               main_layout;
-        const KeybindingManager    keybindings;
         WeatherParser              weather_parser;
 };
 
