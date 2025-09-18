@@ -19,14 +19,12 @@
 #define CENTRAL_WIDGET_H
 
 #include "Widgets/PowerButton.h"
-#include "../../Config/PowerLayout.h"
 #include "../../Config/PowerKeybindings.h"
 
 #include <QHBoxLayout>
 #include <QWidget>
 
 #include <array>
-#include <utility>
 
 struct Action {
         int          key;

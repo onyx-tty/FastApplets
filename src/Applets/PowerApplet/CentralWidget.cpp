@@ -16,14 +16,12 @@
    along with this program.  If not, see <https://www.gnu.org/licenses/>. */
 
 #include "CentralWidget.h"
-#include "../../Config/PowerKeybindings.h"
 #include "../../Config/PowerLayout.h"
 
 #include <QApplication>
 #include <QDebug>
 #include <QFocusEvent>
 
-#include <array>
 // prevent external linkage via static
 static const std::array<PowerButton*, 4>* initButtonList(const QApplication& app, QBoxLayout* main_layout) {
         // We give PowerLayoutManager access to runtime and central widget's main layout

@@ -20,8 +20,6 @@
 #include <QDebug>
 #include <QDir>
 #include <QFileInfo>
-#include <QIcon>
-#include <QPalette>
 #include <QSize>
 #include <QSizePolicy>
 #include <QString>
