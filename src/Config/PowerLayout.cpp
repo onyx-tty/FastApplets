@@ -28,11 +28,6 @@
 
 using lm = LayoutManager;
 
-QSizePolicy setButtonPolicy() {
-        QSizePolicy button_policy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-        return button_policy;
-}
-
 std::array<QIcon, 4> setButtonIcons() {
         Q_INIT_RESOURCE(Icons);
         std::array<QIcon, 4> button_icons{QIcon(":/Icons/shutdown.svg"),
@@ -41,14 +36,9 @@ std::array<QIcon, 4> setButtonIcons() {
         return button_icons;
 }
 
-std::array<QString, 4> setButtonText() {
-        std::array<QString, 4> button_text{"Shutdown", "Reboot", "Suspend", "Hibernate"};
-        return button_text;
-}
-
 PowerLayoutProp::PowerLayoutProp() :
-        LayoutProp(setButtonPolicy()), button_icons(setButtonIcons()),
-        button_text(setButtonText()) {};
+        LayoutProp(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding)), button_icons(setButtonIcons()),
+        button_text({"Shutdown", "Reboot", "Suspend", "Hibernate"}) {};
 
 PowerLayoutManager::PowerLayoutManager() {};
 

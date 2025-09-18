@@ -23,31 +23,6 @@
 #include <QString>
 
 /* Customize here */
-QSize setMainWindowSize() {
-        return QSize(960, 220);
-}
-
-QString setMainWindowTitle() {
-        return QString("test_window");
-}
-
-QString setStyleSelected() {
-        return QString(
-                "text-align: center top; background-color: lightblue; border: 2px solid blue;");
-}
-
-QString setStyleUnselected() {
-        return QString("text-align: center top;");
-}
-
-Qt::Alignment setButtonTextAlignment() {
-        return Qt::Alignment(Qt::AlignHCenter | Qt::AlignTop);
-}
-
-Qt::Alignment setButtonIconAlignment() {
-        return Qt::Alignment(Qt::AlignHCenter | Qt::AlignCenter);
-}
-
 QSize setButtonIconSize() {
         return QSize(64, 64);
 }
@@ -56,14 +31,16 @@ QSizePolicy setButtonSizePolicy() {
         return QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 }
 
-MainWindowProp::MainWindowProp() : size(setMainWindowSize()), title(setMainWindowTitle()) {};
+MainWindowProp::MainWindowProp() : size(QSize(960, 220)), title("test_window") {};
 
-StyleProp::StyleProp() : selected(setStyleSelected()), unselected(setStyleUnselected()) {};
+StyleProp::StyleProp() :
+        selected("text-align: center top; background-color: lightblue; border: 2px solid blue;"),
+        unselected("text-align: center top;") {};
 
 // TODO Text size
 ButtonProp::ButtonProp() :
-        text_alignment(setButtonTextAlignment()), icon_size(setButtonIconSize()),
-        icon_alignment(setButtonIconAlignment()) {};
+        text_alignment(Qt::Alignment(Qt::AlignHCenter | Qt::AlignTop)), icon_size(QSize(64, 64)),
+        icon_alignment(Qt::AlignHCenter | Qt::AlignCenter) {};
 
 LayoutProp::LayoutProp(QSizePolicy button_policy) : button_policy(button_policy) {};
 
