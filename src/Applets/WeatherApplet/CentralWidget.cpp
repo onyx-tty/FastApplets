@@ -197,3 +197,7 @@ CentralWidget::CentralWidget(QWidget* parent, const QApplication& app) :
         left_layout->addLayout(current_day_layout.getLayout());
         left_layout->addLayout(current_week_layout.getLayout());
 };
+
+QHBoxLayout* CentralWidget::getMainLayout() {
+        return main_layout;
+}

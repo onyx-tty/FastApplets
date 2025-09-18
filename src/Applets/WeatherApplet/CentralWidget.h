@@ -67,6 +67,7 @@ class CentralWidget final : public QWidget {
 public:
         explicit CentralWidget(QWidget* parent, const QApplication& app);
 
+        QHBoxLayout* getMainLayout();
 private:
         QHBoxLayout*               main_layout;
         WeatherParser              weather_parser;
