@@ -153,9 +153,8 @@ void WeatherData::fillDayNames(const int&                      blocs_per_day,
                        first_day_blocs.value(), blocs_per_day);
                 QApplication::quit();
         }
-        int        last_day_blocs = blocs_per_day - first_day_blocs.value_or(0);
-        const auto begin          = hours.begin();
-        const auto end            = hours.end();
+        const int  last_day_blocs = blocs_per_day - first_day_blocs.value_or(0);
+        const auto begin = hours.begin(), end = hours.end();
         std::pair<HourlyWeatherData*, HourlyWeatherData*>
                       bloc_border{begin, (begin + first_day_blocs.value_or(0))};
         const QString error_message = "In" + QString(__func__)

@@ -55,14 +55,12 @@ void WeatherParser::updateWeatherData() {
                 index);
 
         // time units in seconds
-        constexpr time_t hour = 60 * 60;
-        constexpr time_t day  = hour * 24;
+        constexpr time_t hour = 60 * 60, day = hour * 24;
 
         // time
         const auto   iter_begin = WeatherData::hours.cbegin(), iter_end = WeatherData::hours.cend();
         const int    hour_spacing     = findHourSpacing((iter_begin + 1)->time, iter_begin->time);
-        const time_t current_midnight = findMidnight();
-        const time_t next_midnight    = current_midnight + day;
+        const time_t current_midnight = findMidnight(), next_midnight = current_midnight + day;
 
         // debug
         WeatherData::printData();
