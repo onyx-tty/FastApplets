@@ -56,7 +56,7 @@ void CentralWidget::keyPressEvent(QKeyEvent* event) {
                         || keybindings.hibernate.contains(key));
         };
 
-        auto findButtonWithAction = [&](QString&& action) -> PowerButton* {
+        auto findButtonWithAction = [&](const QString&& action) -> PowerButton* {
                 // TODO Too nested, clean up
                 std::unordered_set<QString> acceptable_strings = {"PowerOff", "Reboot", "Suspend",
                                                                   "Hibernate"};
@@ -65,8 +65,11 @@ void CentralWidget::keyPressEvent(QKeyEvent* event) {
                         qFatal("Incorrect action passed! %s", action.toStdString().c_str());
                 }
 
-                for (auto button : button_list) {
-                        //qDebug() << "Processing action" << button->getDBusAction();
+                if (!button_list)
+                        qFatal("button_list is nullptr in %s, object destroyed prematurely!",
+                               __func__);
+                for (auto button : *button_list) {
+                        //qDebug() << "Processing action" << button->getAction();
                         if (!button) qFatal("Some power buttons are null, terminating!");
                         if (button->getDBusAction() == action) {
                                 qDebug() << "Button found in findButtonWithAction! Action is"
