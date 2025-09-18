@@ -17,11 +17,13 @@
 
 #include "SharedLayout.h"
 
+#include <QDebug>
+#include <QDir>
+#include <QFileInfo>
 #include <QIcon>
 #include <QSize>
 #include <QSizePolicy>
 #include <QString>
-
 
 /* These are global settings shared by applets. Modify below to adjust their application style. */
 
