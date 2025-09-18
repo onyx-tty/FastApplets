@@ -154,21 +154,14 @@ CurrentWeekLayout::CurrentWeekLayout() : layout(new QVBoxLayout) {
                 } else if (first_day_blocs != blocs_per_day) {
                         bloc_border.first  = bloc_border.second + 1;
                         bloc_border.second = bloc_border.first + last_day_blocs;
-                        if (bloc_border.second == iter_end) {
-                                qDebug() << "bloc_border.second is iter_end (one past the list)";
-                        }
-                        if (bloc_border.second == nullptr) {
-                                qCritical() << "bloc_border.second is null! that's dangerous!";
-                        }
-                        temperature_range = findTemperatureRange(bloc_border.first,
-                                                                 bloc_border.second);
+                        temperature_range  = findTemperatureRange(bloc_border.first,
+                                                                  bloc_border.second);
                         layout->addLayout(
                                 CellFactory::createCell(cell_alignment, QImage(),
                                                         formatTemperatureRange(temperature_range),
                                                         {bloc_border.first->day}));
                 }
         }
-        qDebug() << "DONE!";
 }
 
 void CurrentWeekLayout::refreshCells() {
