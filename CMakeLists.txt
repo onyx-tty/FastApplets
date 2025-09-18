@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.16)
 
-set(WEATHERAPPLET_SOURCE_DIR src/Applets/WeatherApplet)
+set(WEATHERAPPLET_SOURCE_DIR ${CMAKE_CURRENT_LIST_DIR}/src/Applets/WeatherApplet CACHE PATH "Path to WeatherApplet's source code")
 
 option(BUILD_WEATHERAPPLET "Include WeatherApplet in the building process" ON)
 
