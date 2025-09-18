@@ -31,7 +31,7 @@ PowerActionManager& PowerActionManager::getInstance() {
 
 QDBusMessage PowerActionManager::sendPowerAction(const QString& method) const {
         if (!proxy.isValid()) {
-                qFatal("Proxy is invalid!\n");
+                qFatal("D-Bus proxy is invalid!");
                 return QDBusMessage();
         }
 
