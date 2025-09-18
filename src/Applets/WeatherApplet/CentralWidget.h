@@ -19,7 +19,6 @@
 #define CENTRAL_WIDGET_H
 
 #include "../../Config/DefaultKeybindings.h"
-#include "../../Config/WeatherLayout.h"
 #include "API/WeatherParser.h"
 
 #include <QApplication>

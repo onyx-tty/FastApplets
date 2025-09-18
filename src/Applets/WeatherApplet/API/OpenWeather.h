@@ -18,7 +18,6 @@
 #ifndef OPEN_WEATHER_H
 #define OPEN_WEATHER_H
 
-#include "../../../Config/WeatherLayout.h"
 #include "CurlHandler.h"
 
 #include <QWidget>
