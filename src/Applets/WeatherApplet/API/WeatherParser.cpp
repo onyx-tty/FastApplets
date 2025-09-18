@@ -16,6 +16,7 @@
    along with this program.  If not, see <https://www.gnu.org/licenses/>. */
 
 #include "WeatherParser.h"
+#include "../../../Config/WeatherLayout.h"
 #include "../../../Utils/Time.h"
 #include "WeatherData.h"
 

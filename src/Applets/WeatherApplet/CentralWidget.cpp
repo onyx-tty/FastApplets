@@ -17,6 +17,7 @@
 
 #include "CentralWidget.h"
 #include "Utils/PresentTime.h"
+#include "../../Config/WeatherLayout.h"
 
 #include <QDebug>
 #include <QLabel>
