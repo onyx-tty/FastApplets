@@ -1,41 +1,38 @@
 #+TITLE: Pretty Applets TODO
 
-* Applets [0/5]
-** PROJ Power menu applet
-** PROJ Weather applet
+* Applets
+** PROJ PowerApplet [1/2]
+*** DONE Keybindings
+*** TODO Compatibility with non-Systemd Linux inits
+*** TODO DBus client class for PowerActionManager to utiliz
+
+** PROJ WeatherApplet [4/6]
+*** DONE Curl
+*** DONE JSON
+*** DONE Data structure
+*** DONE UI skeleton
+*** TODO UI layout
+*** TODO Proper GUI
+
 ** TODO System management applet with status checking and toggle functionality
+
 ** TODO Security menu applet with toggle functionality
+
 ** TODO Highly configurable list of programs/shell commands
 
-* Base [4/13]
+* Base [3/13]
 ** DONE LICENSE
 ** TODO README.md
-** DONE Error handling in all relevant places
-** DONE Icon inclusion in the executable
+** TODO TODO.md
+** DONE Icon embedment in the executable
 ** TODO Fallback icons
-** TODO Debug functions
-** TODO Customizable
+** TODO Debug mode
+** TODO Customizable:
 *** [X] Window dimensions
 *** [X] Icons
-*** [ ] Layouts
-*** [ ] Styles
-** TODO Caching
-** TODO Daemonization
-** TODO Flags
 ** TODO TOML configuration
-** DONE Update the copyright to 2025
-** TODO Separate files for constants and type aliases
-
-* PowerApplet [3/4]
-** DONE Proper keybindings
-** DONE Incorporate ButtonList inside CentralWidget
-** DONE Initial optimization
-** TODO Compatibility with other Linux inits
-
-* WeatherApplet [4/6]
-** DONE Curl
-** DONE JSON
-** DONE Data structure
-** DONE UI skeleton
-** TODO UI layout
-** TODO Proper GUI
+** TODO Files with repeating constants and type aliases
+** DONE Centralized CMake structure
+** TODO Enforced static compilation of private libraries
+** TODO Cleaner build directory
+** TODO Better management of project build types
