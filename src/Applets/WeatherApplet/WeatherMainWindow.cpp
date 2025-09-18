@@ -18,7 +18,7 @@
 #include "WeatherMainWindow.h"
 #include "../../Config/WeatherLayout.h"
 
-WeatherMainWindow::WeatherMainWindow(const QApplication& app, QWidget* const parent) :
+WeatherMainWindow::WeatherMainWindow(const QApplication& app, QWidget* parent) :
         MainWindow(parent), central_widget(new CentralWidget(this, app)) {
         resize(WeatherLayoutManager::main_window_prop.size);
         setCentralWidget(central_widget);

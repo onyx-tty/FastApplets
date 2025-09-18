@@ -35,7 +35,7 @@ const std::string OpenWeatherAPI::getUserURL() {
         return std::move(url);
 }
 
-OpenWeatherAPI::OpenWeatherAPI(QWidget* const parent, const QApplication& app) :
+OpenWeatherAPI::OpenWeatherAPI(QWidget* parent, const QApplication& app) :
         parent(parent), app(app) {}
 
 OpenWeatherAPI::~OpenWeatherAPI() {}
