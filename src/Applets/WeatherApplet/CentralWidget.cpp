@@ -24,9 +24,11 @@
 
 template<typename Iterator>
 std::array<const float*, 2> findTemperatureRange(const Iterator begin, const Iterator end) {
-                qCritical() << "Encountered null iterator in" << __func__ << ", quitting!";
-                QApplication::quit();
         if (begin == end) {
+                qCritical() << "Given empty iterator range in" << __func__
+                            << "! Accuracy cannot be guaranteed!";
+                // TODO std::optional used to properly handle lacking data
+                return {0, 0};
         }
         std::array<const float*, 2> range{&begin->temperature, &begin->temperature};
         for (auto it = begin; it != end; ++it) {
