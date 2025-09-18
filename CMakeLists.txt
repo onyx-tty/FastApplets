@@ -23,6 +23,9 @@ set(TRAVERSEJSON_ENABLE_QT ON CACHE BOOL "Enable Qt in TraverseJSON" FORCE)
 # Find packages
 find_package(Qt6 REQUIRED COMPONENTS Widgets)
 
+if(BUILD_WEATHERAPPLET)
+        find_package(CURL REQUIRED)
+endif()
 
 # TODO Build type checking to disable the sanitizer for release versions
 # Set up the Qt environment

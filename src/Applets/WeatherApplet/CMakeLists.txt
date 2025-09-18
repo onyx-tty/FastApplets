@@ -2,21 +2,13 @@ cmake_minimum_required(VERSION 3.16)
 
 project(weather-applet VERSION 0.1 LANGUAGES CXX)
 
-find_package(Qt6 REQUIRED COMPONENTS Widgets Gui)
-# TODO Qt5 fallback support
-# find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Widgets Gui)
-
-# Configure TraverseJSON to enable Qt support
-set(TRAVERSEJSON_ENABLE_QT ON CACHE BOOL "Enable Qt in TraverseJSON")
-
 # Internal structure
 add_library(weather_data
         Data/WeatherData.cpp)
 add_library(WeatherApplet::Data ALIAS weather_data)
 target_include_directories(weather_data PRIVATE ${CMAKE_CURRENT_LIST_DIR}/Data)
 target_link_libraries(weather_data PUBLIC
-        Qt${QT_VERSION_MAJOR}::Widgets
-        Qt${QT_VERSION_MAJOR}::Gui)
+        Qt${QT_VERSION_MAJOR}::Widgets)
 
 add_library(weather_ui
         UI/WeatherMainWindow.cpp
@@ -49,4 +41,3 @@ add_library(weather_time
 add_library(WeatherApplet::Time ALIAS weather_time)
 target_include_directories(weather_time PRIVATE ${CMAKE_CURRENT_LIST_DIR}/Time)
 target_link_libraries(weather_time PRIVATE Config::WeatherApplet)
-target_link_libraries(weather_time PUBLIC Qt${QT_VERSION_MAJOR}::Gui)
