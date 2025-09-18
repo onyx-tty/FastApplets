@@ -20,6 +20,7 @@
 
 #include <QGridLayout>
 #include <QLabel>
+#include <QDebug>
 
 using lm = LayoutManager;
 
