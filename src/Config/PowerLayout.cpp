@@ -31,7 +31,8 @@ using global = LayoutManager;
 /* For modified defaults, refer to DefaultLayout.cpp */
 
 /* Button attributes unique to this layout */
-std::array<QIcon, 4> initButtonIcons() {
+// prevent external linkage via static
+static std::array<QIcon, 4> initButtonIcons() {
         Q_INIT_RESOURCE(Icons);
         std::array<QIcon, 4> button_icons{QIcon(":/Icons/shutdown.svg"),
                                           QIcon(":/Icons/reboot.svg"),
@@ -40,7 +41,8 @@ std::array<QIcon, 4> initButtonIcons() {
         return std::move(button_icons);
 }
 
-std::array<QString, 4> initButtonText() {
+// prevent external linkage via static
+static std::array<QString, 4> initButtonText() {
         std::array<QString, 4> button_text = {"Shutdown", "Reboot", "Suspend", "Hibernate"};
         return std::move(button_text);
 }
