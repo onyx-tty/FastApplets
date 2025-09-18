@@ -34,10 +34,6 @@ Button::Button(QWidget*     parent, // TODO Default icon
         setSizePolicy(lm::layout_prop.button_policy);
         debugAlignIcon(button_text);
         main_layout->addWidget(this);
-        QObject::connect(this, &QObject::destroyed, this,
-                         [](QObject* obj) { qInfo() << "Button destroyed:" << obj; });
-        QObject::connect(this, &QObject::destroyed, this,
-                         [](QObject* obj) { qInfo() << "debug_text (QLabel) destroyed:" << obj; });
 }
 
 Button::~Button() = default;
