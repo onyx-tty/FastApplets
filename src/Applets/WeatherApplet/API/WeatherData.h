@@ -45,7 +45,7 @@ struct WeatherCondition final {
 
 struct HourlyWeatherData final {
         QString                 day;
-        std::time_t             time;
+        time_t                  time;
         QString                 city_name;
         const WeatherCondition* weather;
         float                   temperature;

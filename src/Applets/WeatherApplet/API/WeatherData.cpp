@@ -157,31 +157,30 @@ void WeatherData::fillDayNames(const int&                      blocs_per_day,
         const auto begin          = hours.begin();
         const auto end            = hours.end();
         std::pair<HourlyWeatherData*, HourlyWeatherData*>
-                bloc_border{begin, (begin + first_day_blocs.value_or(0))};
-        QString error_message = "In" + QString(__func__)
-                              + "current_day iterator has been reached prematurely"
-                              + "This implies faulty code in that function, repairs needed!";
-        std::array<QString, 6> day{"Today", "Tomorrow", "Day 3", "Day 4", "Day 5", "Day 6"};
-        auto                   current_day = day.cbegin();
-        auto                   setDayName  = [&current_day](HourlyWeatherData& hour) {
-                static int cnt      = 0;
-                auto*      hour_ptr = &hour;
-                if (!hour_ptr) {
-                        qCritical() << "hour is null! Quitting...";
-                        QApplication::quit();
-                } else qDebug() << hour_ptr->time;
+                      bloc_border{begin, (begin + first_day_blocs.value_or(0))};
+        const QString error_message = "In" + QString(__func__)
+                                    + "current_day iterator has been reached prematurely"
+                                    + "This implies faulty code in that function, repairs needed!";
+        const std::array<QString, 6> day{"Today", "Tomorrow", "Day 3", "Day 4", "Day 5", "Day 6"};
+        auto                         current_day = day.cbegin();
+        const auto                   setDayName  = [&current_day](HourlyWeatherData* hour) {
+                static int cnt = 0;
+                if (!hour) {
+                        qFatal() << "HourlyWeatherData object given in" << __func__
+                                 << "is null! Quitting...";
+                } else qDebug() << hour->time;
                 if (!current_day) {
-                        qCritical() << cnt << "current_day out of scope! Quitting...";
-                        QApplication::quit();
-                } else qDebug() << cnt << "Current day is" << *current_day;
-                hour_ptr->day = *current_day;
+                        qFatal() << "current_day no." << cnt << "in" << __func__
+                                 << "out of scope! Quitting...";
+                } else qDebug() << "Current day no." << cnt << "is" << *current_day;
+                hour->day = *current_day;
                 cnt++;
         };
 
         // First day
         if (current_day != day.end()) {
                 qDebug() << "First for_each group call of setDayName will now proceed!";
-                std::for_each(bloc_border.first, bloc_border.second, setDayName);
+                std::for_each(&bloc_border.first, &bloc_border.second, setDayName);
                 current_day++;
                 bloc_border.first  += first_day_blocs.value_or(0);
                 bloc_border.second += blocs_per_day;
@@ -191,7 +190,7 @@ void WeatherData::fillDayNames(const int&                      blocs_per_day,
              bloc_border.first += blocs_per_day, bloc_border.second += blocs_per_day) {
                 if (current_day < day.end()) {
                         qDebug() << "Second for_each group call of setDayName will now proceed!";
-                        std::for_each(bloc_border.first, bloc_border.second, setDayName);
+                        std::for_each(&bloc_border.first, &bloc_border.second, setDayName);
                 } else {
                         qFatal("%s", error_message.toStdString().c_str());
                         QApplication::quit();
@@ -203,7 +202,7 @@ void WeatherData::fillDayNames(const int&                      blocs_per_day,
         bloc_border.second = end;
         if (bloc_border.first != end) {
                 qDebug() << "Third for_each group call of setDayName will now proceed!";
-                std::for_each(bloc_border.first, bloc_border.second, setDayName);
+                std::for_each(&bloc_border.first, &bloc_border.second, setDayName);
                 current_day++;
         } else {
                 qFatal("%s", error_message.toStdString().c_str());
