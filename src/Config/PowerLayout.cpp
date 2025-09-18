@@ -24,20 +24,34 @@
 
 #include <array>
 
-/* Modify to adjust application style */
+using global = LayoutManager;
 
-using lm = LayoutManager;
+/* These are settings exclusive to the PowerApplet. Modify below to adjust application style. */
+// To overwrite defaults, replace parts preceded by the global namespace.
 
 std::array<QIcon, 4> setButtonIcons() {
         Q_INIT_RESOURCE(Icons);
         std::array<QIcon, 4> button_icons{QIcon(":/Icons/shutdown.svg"),
-                                          QIcon(":/Icons/reboot.svg"), QIcon(":/Icons/suspend.svg"),
+                                          QIcon(":/Icons/reboot.svg"),
+                                          QIcon(":/Icons/suspend.svg"),
                                           QIcon(":/Icons/hibernate.svg")};
         return button_icons;
 }
 
+PowerMainWindowProp::PowerMainWindowProp() :
+        size(global::main_window_prop.size), title(global::main_window_prop.title) {};
+
+PowerStyleProp::PowerStyleProp() :
+        selected(global::style_prop.selected), unselected(global::style_prop.unselected) {};
+
+// TODO Text size
+PowerButtonProp::PowerButtonProp() :
+        text_alignment(global::button_prop.text_alignment),
+        icon_size(global::button_prop.icon_size),
+        icon_alignment(global::button_prop.icon_alignment) {};
+
 PowerLayoutProp::PowerLayoutProp() :
-        LayoutProp(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding)), button_icons(setButtonIcons()),
+        button_policy(global::layout_prop.button_policy), button_icons(setButtonIcons()),
         button_text({"Shutdown", "Reboot", "Suspend", "Hibernate"}) {};
 
 PowerLayoutManager::PowerLayoutManager() {};

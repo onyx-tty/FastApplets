@@ -22,14 +22,8 @@
 #include <QSizePolicy>
 #include <QString>
 
-/* Customize here */
-QSize setButtonIconSize() {
-        return QSize(64, 64);
-}
 
-QSizePolicy setButtonSizePolicy() {
-        return QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-}
+/* These are global settings shared by applets. Modify below to adjust their application style. */
 
 MainWindowProp::MainWindowProp() : size(QSize(960, 220)), title("test_window") {};
 
@@ -42,11 +36,11 @@ ButtonProp::ButtonProp() :
         text_alignment(Qt::Alignment(Qt::AlignHCenter | Qt::AlignTop)), icon_size(QSize(64, 64)),
         icon_alignment(Qt::AlignHCenter | Qt::AlignCenter) {};
 
-LayoutProp::LayoutProp(QSizePolicy button_policy) : button_policy(button_policy) {};
+LayoutProp::LayoutProp() : button_policy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding)) {};
 
 LayoutManager::LayoutManager() {};
 
 MainWindowProp LayoutManager::main_window_prop;
 StyleProp      LayoutManager::style_prop;
 ButtonProp     LayoutManager::button_prop;
-LayoutProp     LayoutManager::layout_prop(setButtonSizePolicy());
+LayoutProp     LayoutManager::layout_prop;

@@ -27,17 +27,37 @@
 #include <QSizePolicy>
 #include <QString>
 
-// TODO Make consistent with SharedLayout
-// TODO Decide whether separate init functions even enhance readability
+struct PowerMainWindowProp : public MainWindowProp {
+        const QSize   size;
+        const QString title;
+
+        explicit PowerMainWindowProp();
+};
+
+struct PowerStyleProp : public StyleProp {
+        const QString selected;
+        const QString unselected;
+
+        explicit PowerStyleProp();
+};
+
+struct PowerButtonProp : public ButtonProp {
+        const Qt::Alignment text_alignment;
+        const QSize         icon_size;
+        const Qt::Alignment icon_alignment;
+
+        explicit PowerButtonProp();
+};
 
 struct PowerLayoutProp : public LayoutProp {
+        const QSizePolicy            button_policy;
         const std::array<QIcon, 4>   button_icons;
         const std::array<QString, 4> button_text;
 
         explicit PowerLayoutProp();
 
-        std::array<PowerButton *, 4> &buttonListSingleton(QWidget *parent, QHBoxLayout *layout,
-                                                          bool &&is_instantiated);
+        std::array<PowerButton*, 4>& buttonListSingleton(QWidget* parent, QHBoxLayout* layout,
+                                                         bool&& is_instantiated);
 };
 
 /* Actual Layout Manager */

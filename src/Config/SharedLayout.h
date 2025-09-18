@@ -49,7 +49,7 @@ struct ButtonProp {
 struct LayoutProp {
         const QSizePolicy button_policy;
 
-        explicit LayoutProp(QSizePolicy button_policy);
+        explicit LayoutProp();
 };
 
 /* Actual Layout Manager */
