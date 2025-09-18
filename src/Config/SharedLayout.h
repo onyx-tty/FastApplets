@@ -23,7 +23,7 @@
 #include <QSize>
 #include <QSizePolicy>
 
-class PowerButton; // external
+class PowerButton; // forward declaration
 
 struct MainWindowProp {
         const QSize   size;
@@ -39,6 +39,7 @@ struct StyleProp {
 };
 
 struct ButtonProp {
+        // TODO Text size
         const Qt::Alignment text_alignment;
         const QSize         icon_size;
         const Qt::Alignment icon_alignment;
