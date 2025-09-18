@@ -82,11 +82,10 @@ const std::string CurlHandler::popResponse() {
 void CurlHandler::setOpt(CURLoption&& option, auto&& value) {
         if (curl && value) {
                 CURLcode result = curl_easy_setopt(curl, option, value);
-                if (result != CURLE_OK) fprintf(stderr, "failure at: %s\n", curl_easy_strerror(result));
+                if (result != CURLE_OK) qFatal("failure at: %s", curl_easy_strerror(result));
         } else if (!curl) {
                 qFatal("curl is null!");
         } else if (!value) {
                 qFatal("value is null!");
         }
-        QApplication::quit();
 }
