@@ -41,7 +41,7 @@ private:
         QDBusConnection connection;
         QDBusInterface  proxy;
 
-        explicit PowerActionManager(QObject* const parent = nullptr);
+        explicit PowerActionManager();
 
         QDBusMessage responseHandler(const QDBusMessage response) const;
 };

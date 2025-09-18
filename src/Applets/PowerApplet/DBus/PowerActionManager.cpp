@@ -49,9 +49,9 @@ QDBusMessage PowerActionManager::sendPowerAction(const QString& method) const {
 }
 
 /* private */
-PowerActionManager::PowerActionManager(QObject* const parent) :
+PowerActionManager::PowerActionManager() :
         connection(QDBusConnection::connectToBus(QDBusConnection::SystemBus, target::name)),
-        proxy(target::name, target::path, target::interface, connection, parent) {}
+        proxy(target::name, target::path, target::interface, connection, nullptr) {}
 
 QDBusMessage PowerActionManager::responseHandler(const QDBusMessage response) const {
         if (response.type() == QDBusMessage::ErrorMessage) {
