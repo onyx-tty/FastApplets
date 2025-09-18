@@ -30,7 +30,7 @@ struct Action {
         int          key;
         PowerButton* button;
 
-        Action(int key, PowerButton* button);
+        Action(int key = Qt::Key_unknown, PowerButton* button = nullptr);
 
         void clear();
 };
