@@ -2,10 +2,6 @@ cmake_minimum_required(VERSION 3.16)
 
 project(power-applet VERSION 0.11.0 LANGUAGES CXX)
 
-find_package(Qt6 REQUIRED COMPONENTS Widgets DBus)
-# TODO Qt5 fallback support
-#find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Widgets DBus)
-
 # Internal structure
 add_library(power_dbus
         DBus/PowerActionManager.cpp)

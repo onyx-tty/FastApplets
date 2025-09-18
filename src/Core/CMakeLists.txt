@@ -2,20 +2,6 @@ cmake_minimum_required(VERSION 3.16)
 
 project(core VERSION 0.1.0 LANGUAGES CXX)
 
-# Set up the Qt environment
-set(QT_VERSION_MAJOR 6)
-find_package(Qt6 REQUIRED COMPONENTS Widgets)
-# TODO Qt5 fallback support
-# find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Widgets Gui)
-
-# External dependencies
-find_package(CURL REQUIRED)
-find_package(tomlplusplus REQUIRED)
-
-# Enable Qt support for QObject MOC and resource files
-set(CMAKE_AUTOMOC ON)
-set(CMAKE_AUTORCC ON)
-
 # Internal structure
 add_library(core_ui
         UI/MainWindow.cpp
