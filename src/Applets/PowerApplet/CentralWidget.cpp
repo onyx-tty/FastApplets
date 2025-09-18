@@ -108,7 +108,8 @@ void CentralWidget::keyPressEvent(QKeyEvent* event) {
         current_action.key = event->key();
 
         if (keybindings.quit.contains(current_action.key)) { // Quit key pressed
-                if (last_action.button && last_action.button->isFocused()) { // Last button focused, Quit key unselects it
+                if (last_action.button
+                    && last_action.button->isFocused()) { // Last button focused, Quit key unselects it
                         last_action.button->setFocus(false);
                 } else {
                         qDebug() << "Quit key pressed, quitting!";
