@@ -24,10 +24,10 @@ if(BUILD_POWERAPPLET)
         find_package(Qt6 REQUIRED COMPONENTS DBus)
 endif()
 
-# Set up the Qt environment
-set(QT_VERSION_MAJOR 6)
 
 # TODO Build type checking to disable the sanitizer for release versions
+# Set up the Qt environment
+set(QT_VERSION_MAJOR 6 CACHE STRING "Build using this version of Qt")
 
 # Shared Directories
 #+ Resources

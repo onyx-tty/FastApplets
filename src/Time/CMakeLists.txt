@@ -2,8 +2,6 @@ cmake_minimum_required(VERSION 3.16)
 
 find_package(Qt6 REQUIRED COMPONENTS Core Widgets)
 
-set(QT_VERSION_MAJOR 6)
-
 add_library(time
         Time.cpp
         TimeConstants.h)
