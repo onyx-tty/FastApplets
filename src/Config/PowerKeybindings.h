@@ -20,15 +20,15 @@
 
 #include "SharedKeybindings.h"
 
-#include <unordered_set>
-
 struct PowerKeybindingManager : public KeybindingManager {
-        std::unordered_set<int> shutdown;
-        std::unordered_set<int> reboot;
-        std::unordered_set<int> suspend;
-        std::unordered_set<int> hibernate;
+        static const keybindings shutdown;
+        static const keybindings reboot;
+        static const keybindings suspend;
+        static const keybindings hibernate;
 
-        explicit PowerKeybindingManager();
+        explicit PowerKeybindingManager() = delete;
+
+        static void printKeybindings();
 };
 
 #endif // POWER_KEYBINDINGS_H

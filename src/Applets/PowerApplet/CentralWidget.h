@@ -19,20 +19,25 @@
 #define CENTRAL_WIDGET_H
 
 #include "Widgets/PowerButton.h"
-#include "../../Config/PowerKeybindings.h"
 
 #include <QHBoxLayout>
 #include <QWidget>
 
 #include <array>
 
+// TODO Rework Action, get key or button through a getter
+//	and automatically apply updatePowerButton to each use of
+//	getButton(), maybe even create a special method that
+//	expects the key to be found
 struct Action {
         int          key;
         PowerButton* button;
 
         Action(int key = Qt::Key_unknown, PowerButton* button = nullptr);
 
-        void clear();
+        void reset();
+        // Find out if key is a part of any keybindings and adjust
+        void updatePowerButton();
 };
 
 class CentralWidget final : public QWidget {
@@ -54,7 +59,6 @@ private:
         Action                             last_action;
         Action                             current_action;
         const std::array<PowerButton*, 4>* button_list;
-        const PowerKeybindingManager       keybindings;
 
         // TODO Optimize
         void updateActions();

@@ -17,4 +17,13 @@
 
 #include "SharedKeybindings.h"
 
-KeybindingManager::KeybindingManager() : quit{Qt::Key_Escape, Qt::Key_Q} {}
+void printKeybindingKey(const int& key) { // used as function pointer to std::for_each
+        qDebug().noquote() << " " << key << " ";
+}
+
+const keybindings KeybindingManager::quit{Qt::Key_Escape, Qt::Key_Q};
+
+void KeybindingManager::printKeybindings() {
+        qDebug() << "Quit keybindings:\n";
+        std::for_each(quit.cbegin(), quit.cend(), printKeybindingKey);
+}

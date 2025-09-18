@@ -17,6 +17,19 @@
 
 #include "PowerKeybindings.h"
 
-PowerKeybindingManager::PowerKeybindingManager() :
-        KeybindingManager(), shutdown({Qt::Key_1}), reboot({Qt::Key_2}), suspend({Qt::Key_3}),
-        hibernate({Qt::Key_4}) {}
+const keybindings PowerKeybindingManager::shutdown({Qt::Key_1});
+const keybindings PowerKeybindingManager::reboot({Qt::Key_2});
+const keybindings PowerKeybindingManager::suspend({Qt::Key_3});
+const keybindings PowerKeybindingManager::hibernate({Qt::Key_4});
+
+void PowerKeybindingManager::printKeybindings() {
+        KeybindingManager::printKeybindings();
+        qDebug() << "Shutdown keybindings:\n";
+        std::for_each(shutdown.cbegin(), shutdown.cend(), printKeybindingKey);
+        qDebug() << "Reboot keybindings:\n";
+        std::for_each(reboot.cbegin(), reboot.cend(), printKeybindingKey);
+        qDebug() << "Suspend keybindings:\n";
+        std::for_each(suspend.cbegin(), suspend.cend(), printKeybindingKey);
+        qDebug() << "Hibernate keybindings:\n";
+        std::for_each(hibernate.cbegin(), hibernate.cend(), printKeybindingKey);
+}
