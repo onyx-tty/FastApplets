@@ -8,30 +8,34 @@
 ** TODO Security menu applet with toggle functionality
 ** TODO Highly configurable list of programs/shell commands
 
-* Base [2/11]
-*Phase 1*
+* Base [3/12]
 ** DONE LICENSE
 ** TODO README.md
-** TODO Error handling in all relevant places
+** DONE Error handling in all relevant places
 ** DONE Icon inclusion in the executable
 ** TODO Fallback icons
 ** TODO Debug functions
-*Phase 2*
 ** TODO Customizable:
 *** [X] Window dimensions
 *** [X] Icons
 *** [ ] Layouts
 *** [ ] Styles
 ** TODO Caching
-*Future*
 ** TODO Daemonization
 ** TODO Flags
 ** TODO TOML configuration
+** DONE Update the copyright to 2025
 
-* PowerApplet [2/4]
-*Phase 1*
+* PowerApplet [3/4]
 ** DONE Proper keybindings
-** TODO Initial optimization
 ** DONE Incorporate ButtonList inside CentralWidget
-*Future*
+** DONE Initial optimization
 ** TODO Compatibility with other Linux inits
+
+* WeatherApplet [4/6]
+** DONE Curl
+** DONE JSON
+** DONE Data structure
+** DONE UI skeleton
+** TODO UI layout
+** TODO GUI elements
