@@ -77,7 +77,7 @@ std::array<PowerButton*, 4>& PowerLayoutProp::buttonListSingleton(QWidget*     p
         return button_list;
 }
 
-MainWindowProp  PowerLayoutManager::main_window_prop;
-StyleProp       PowerLayoutManager::style_prop;
-ButtonProp      PowerLayoutManager::button_prop;
-PowerLayoutProp PowerLayoutManager::layout_prop;
+PowerMainWindowProp PowerLayoutManager::main_window_prop;
+PowerStyleProp      PowerLayoutManager::style_prop;
+PowerButtonProp     PowerLayoutManager::button_prop;
+PowerLayoutProp     PowerLayoutManager::layout_prop;

@@ -62,10 +62,10 @@ struct PowerLayoutProp : public LayoutProp {
 
 /* Actual Layout Manager */
 struct PowerLayoutManager : public LayoutManager {
-        static MainWindowProp  main_window_prop;
-        static StyleProp       style_prop;
-        static ButtonProp      button_prop;
-        static PowerLayoutProp layout_prop;
+        static PowerMainWindowProp main_window_prop;
+        static PowerStyleProp      style_prop;
+        static PowerButtonProp     button_prop;
+        static PowerLayoutProp     layout_prop;
 
         explicit PowerLayoutManager();
 };
