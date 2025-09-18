@@ -34,7 +34,9 @@ using lm = LayoutManager;
 // but customizing the icon, icon size and the alignment of that button
 // TODO Default icon
 Button::Button(QBoxLayout* const layout, const QIcon& icon, const QString& text) :
-        QPushButton(layout->widget()), is_focused(false) {
+        QPushButton(layout ? layout->widget() : nullptr), is_focused(false) {
+        if (!layout) qFatal() << "Button constructor received a null layout! Bad code!";
+
         setIcon(icon);
         setIconSize(lm::button_prop.icon_size);
         setSizePolicy(lm::layout_prop.button_policy);
