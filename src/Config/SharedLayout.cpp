@@ -62,8 +62,6 @@ ButtonProp::ButtonProp(const Qt::Alignment text_alignment, const QSize icon_size
                        const Qt::Alignment icon_alignment) :
         text_alignment(text_alignment), icon_size(icon_size), icon_alignment(icon_alignment) {};
 
-        // if we've already found it previously
-        if (!project_root.isEmpty()) { return project_root; }
 /* LayoutProp */
 LayoutProp::LayoutProp(const QSizePolicy button_policy) : button_policy(button_policy) {};
 
