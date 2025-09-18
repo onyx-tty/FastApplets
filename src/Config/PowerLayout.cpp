@@ -103,8 +103,8 @@ void PowerLayoutProp::initButtonList(QBoxLayout* layout) {
 }
 
 const std::array<PowerButton*, 4>* PowerLayoutProp::getButtonList() const {
-        if (button_list) return button_list;
-        else qFatal("Button list not initialized yet, access denied!");
+        if (!button_list) qFatal("Button list not initialized yet, access denied!");
+        return button_list;
 }
 
 bool PowerLayoutProp::isSetUp() {
