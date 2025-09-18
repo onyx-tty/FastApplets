@@ -22,10 +22,9 @@
 
 #include <algorithm>
 
-const std::array<HourlyWeatherData, HOURLY_WEATHER_DATA_HOURS> debugInitHours() {
-        // TODO Reusable debug function printing out the invoking function's name
-        qDebug() << "Starting" << __func__;
-        auto hour = HourlyWeatherData();
+// prevent external linkage via static
+static std::array<HourlyWeatherData, HOURLY_WEATHER_DATA_HOURS> debugInitHours() {
+        const auto hour = HourlyWeatherData();
 
         // TODO I can already tell this isn't a good idea
         return std::array<HourlyWeatherData, HOURLY_WEATHER_DATA_HOURS>{

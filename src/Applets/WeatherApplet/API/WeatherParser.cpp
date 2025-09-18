@@ -85,9 +85,7 @@ void WeatherParser::updateWeatherData() {
 
         // print daily weather info for debug purposes
         qDebug() << "Printing daily weather info in" << __func__;
-        for (auto& hour : WeatherData::hours) hour.printData();
-
-        QApplication::quit(); // TODO For now, all we need is info display!
+        for (const auto& hour : WeatherData::hours) hour.printData();
 }
 
 // TODO Too nested, refactor and optimize
@@ -175,7 +173,7 @@ void WeatherParser::processWeatherItem(const std::string& key, const json& value
                 WeatherData::hours[index].wind_speed = value;
         } else if (key == "id") {
                 // TODO WeatherCondition reference instead of a separate weather_id int
-                int weather_id = value.template get<int>();
+                const int weather_id = value.template get<int>();
                 if (WeatherLayoutManager::layout_prop.weather_list.find(weather_id)
                     != WeatherLayoutManager::layout_prop.weather_list.end()) {
                         WeatherData::hours[index].weather = &WeatherLayoutManager::layout_prop

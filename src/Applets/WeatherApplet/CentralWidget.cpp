@@ -24,9 +24,9 @@
 
 template<typename Iterator>
 std::array<const float*, 2> findTemperatureRange(const Iterator begin, const Iterator end) {
-        if (!begin) {
                 qCritical() << "Encountered null iterator in" << __func__ << ", quitting!";
                 QApplication::quit();
+        if (begin == end) {
         }
         std::array<const float*, 2> range{&begin->temperature, &begin->temperature};
         for (auto it = begin; it != end; ++it) {
@@ -37,10 +37,10 @@ std::array<const float*, 2> findTemperatureRange(const Iterator begin, const Ite
         return std::move(range);
 }
 
-QBoxLayout* CellFactory::createCell(QBoxLayout::Direction layout_direction, const QImage& icon_img,
-                                    std::optional<const QString> value_text,
-                                    const std::vector<QString>   text_list) {
-        bool        has_value      = value_text.has_value();
+QBoxLayout* CellFactory::createCell(const QBoxLayout::Direction layout_direction,
+                                    const QImage& icon_img, std::optional<const QString> value_text,
+                                    const std::vector<QString> text_list) {
+        const bool  has_value      = value_text.has_value();
         // add new cell, split into three sides
         QBoxLayout* cell           = new QBoxLayout(layout_direction);
         QBoxLayout* cell_icon_side = new QBoxLayout(layout_direction);
@@ -75,8 +75,8 @@ QBoxLayout* CellFactory::createCell(QBoxLayout::Direction layout_direction, cons
 }
 
 CurrentDayLayout::CurrentDayLayout() : layout(new QVBoxLayout) {
-        auto alignment = QBoxLayout::LeftToRight;
-        auto now       = WeatherData::hours.cbegin();
+        const auto alignment = QBoxLayout::LeftToRight;
+        auto       now       = WeatherData::hours.cbegin();
 
         // weather
         layout->addLayout(CellFactory::createCell(alignment, now->weather->day_icon, {},
@@ -114,14 +114,14 @@ QVBoxLayout* CurrentDayLayout::getLayout() {
 
 CurrentWeekLayout::CurrentWeekLayout() : layout(new QVBoxLayout) {
         // TODO Replace certain elements with WeatherData::fillDayNames
-        constexpr auto cell_alignment  = QBoxLayout::TopToBottom;
-        const auto     iter_begin      = WeatherData::hours.cbegin();
-        const auto     iter_end        = WeatherData::hours.cend();
-        const auto&    blocs_per_day   = PresentTimeManager::getBlocsPerDay();
-        const auto&    first_day_blocs = PresentTimeManager::getFirstDayBlocs().value_or(0);
-        const auto&    last_day_blocs  = PresentTimeManager::getLastDayBlocs();
-        using Range                    = std::array<const float*, 2>;
-        auto formatTemperatureRange    = [](const Range& temperature_range) -> const QString {
+        constexpr auto cell_alignment     = QBoxLayout::TopToBottom;
+        const auto     iter_begin         = WeatherData::hours.cbegin();
+        const auto     iter_end           = WeatherData::hours.cend();
+        const auto&    blocs_per_day      = PresentTimeManager::getBlocsPerDay();
+        const auto&    first_day_blocs    = PresentTimeManager::getFirstDayBlocs().value_or(0);
+        const auto&    last_day_blocs     = PresentTimeManager::getLastDayBlocs();
+        using Range                       = std::array<const float*, 2>;
+        const auto formatTemperatureRange = [](const Range& temperature_range) -> const QString {
                 return QString::number(*temperature_range[0]) + "-"
                      + QString::number(*temperature_range[1]);
         };
