@@ -40,14 +40,12 @@ void PresentTimeManager::refresh() {
         if (WeatherData::hours.empty() || WeatherData::hours.size() < 2) {
                 qFatal("WeatherData::hours doesn't contain enough data! %zu",
                        WeatherData::hours.size());
-                QApplication::quit();
         }
         // Because we start counting from 1 not 0
         if ((WeatherData::hours.size() - 1) % hour_spacing != 0) {
                 qFatal("Hour spacing between each weather block is uneven! %zu %zu",
                        WeatherData::hours.size(), (WeatherData::hours.size() % hour_spacing));
                 qFatal("This is not allowed!");
-                QApplication::quit();
         }
         blocs_per_day = findWeatherBlocsFitCount(next_midnight, current_midnight, hour_spacing)
                                 .value_or(0);
@@ -57,7 +55,6 @@ void PresentTimeManager::refresh() {
         if (first_day_blocs > blocs_per_day) {
                 qFatal("First day blocs %i is higher than blocs per day %i! Not allowed! CWL",
                        first_day_blocs.value(), blocs_per_day);
-                QApplication::quit();
         }
         last_day_blocs = blocs_per_day - first_day_blocs.value();
 }

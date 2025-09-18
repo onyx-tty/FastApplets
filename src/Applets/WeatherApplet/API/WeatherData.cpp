@@ -151,7 +151,6 @@ void WeatherData::fillDayNames(const int&                      blocs_per_day,
         if (first_day_blocs.value_or(0) > blocs_per_day) {
                 qFatal("First day blocs %i is higher than blocs per day %i! Not allowed! WD",
                        first_day_blocs.value(), blocs_per_day);
-                QApplication::quit();
         }
         const int  last_day_blocs = blocs_per_day - first_day_blocs.value_or(0);
         const auto begin = hours.begin(), end = hours.end();
@@ -192,7 +191,6 @@ void WeatherData::fillDayNames(const int&                      blocs_per_day,
                         std::for_each(&bloc_border.first, &bloc_border.second, setDayName);
                 } else {
                         qFatal("%s", error_message.toStdString().c_str());
-                        QApplication::quit();
                 }
                 current_day++;
         }
@@ -205,6 +203,5 @@ void WeatherData::fillDayNames(const int&                      blocs_per_day,
                 current_day++;
         } else {
                 qFatal("%s", error_message.toStdString().c_str());
-                QApplication::quit();
         }
 }

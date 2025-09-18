@@ -74,7 +74,6 @@ void WeatherParser::updateWeatherData() {
         if (first_day_blocs.value_or(0) > blocs_per_day) {
                 qFatal("First day blocs %i is higher than blocs per day %i! Not allowed! CWL",
                        first_day_blocs.value(), blocs_per_day);
-                QApplication::quit();
         }
 
         // identify day names of each hour
@@ -137,7 +136,6 @@ void WeatherParser::processWeatherItem(const std::string& key, const json& value
 
         if (index < 0 || index >= WeatherData::hours.size()) {
                 qFatal("Index out of range: %i", index);
-                return;
         }
 
         if (key == "dt") {
