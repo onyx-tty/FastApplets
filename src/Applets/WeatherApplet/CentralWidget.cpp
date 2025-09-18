@@ -117,11 +117,10 @@ QVBoxLayout* CurrentDayLayout::getLayout() {
 CurrentWeekLayout::CurrentWeekLayout() : layout(new QVBoxLayout) {
         // TODO Replace certain elements with WeatherData::fillDayNames
         constexpr auto cell_alignment     = QBoxLayout::TopToBottom;
-        const auto     iter_begin         = WeatherData::hours.cbegin();
-        const auto     iter_end           = WeatherData::hours.cend();
         const auto&    blocs_per_day      = PresentTimeManager::getBlocsPerDay();
         const auto&    first_day_blocs    = PresentTimeManager::getFirstDayBlocs().value_or(0);
         const auto&    last_day_blocs     = PresentTimeManager::getLastDayBlocs();
+        const auto     begin              = WeatherData::hours.cbegin(), end = WeatherData::hours.cend();
         using Range                       = std::array<const float*, 2>;
         const auto formatTemperatureRange = [](const Range& temperature_range) -> const QString {
                 return QString::number(*temperature_range[0]) + "-"
@@ -131,7 +130,7 @@ CurrentWeekLayout::CurrentWeekLayout() : layout(new QVBoxLayout) {
         // First, we set up the range of blocs to be iterated over for the first day
         // Next, we create a cell for that potentially incomplete day
         std::pair<const HourlyWeatherData*, const HourlyWeatherData*>
-                bloc_border{iter_begin, (iter_begin + first_day_blocs)};
+                bloc_border{begin, (begin + first_day_blocs)};
         Range   temperature_range = findTemperatureRange(bloc_border.first, bloc_border.second);
         layout->addLayout(CellFactory::createCell(cell_alignment, QImage(),
                                                   formatTemperatureRange(temperature_range),
@@ -143,7 +142,7 @@ CurrentWeekLayout::CurrentWeekLayout() : layout(new QVBoxLayout) {
 
         // Then we iterate over the blocs in-between the first and last days
         // creating cells along the way
-        for (; bloc_border.second + blocs_per_day < iter_end;
+        for (; bloc_border.second + blocs_per_day < end;
              bloc_border.first += blocs_per_day, bloc_border.second += blocs_per_day) {
                 temperature_range = findTemperatureRange(bloc_border.first, bloc_border.second);
                 layout->addLayout(CellFactory::createCell(cell_alignment, QImage(),
@@ -151,7 +150,7 @@ CurrentWeekLayout::CurrentWeekLayout() : layout(new QVBoxLayout) {
                                                           {bloc_border.first->day}));
 
                 // Keep iterating until adding blocs_per_day makes us go beyond iter_end
-                if (bloc_border.second + blocs_per_day < iter_end) {
+                if (bloc_border.second + blocs_per_day < end) {
                         continue;
                 } else if (first_day_blocs != blocs_per_day) {
                         bloc_border.first  = bloc_border.second + 1;

@@ -31,13 +31,12 @@ int                PresentTimeManager::last_day_blocs;
 
 // TODO Continue
 void PresentTimeManager::refresh() {
-        const auto iter_begin = WeatherData::hours.cbegin();
-        const auto iter_end   = WeatherData::hours.cend();
-        hour_spacing          = findHourSpacing((iter_begin + 1)->time, iter_begin->time);
         current_midnight      = findMidnight();
         next_midnight         = current_midnight + DAY;
         qInfo() << WeatherData::hours.size();
         qInfo() << "Hour spacing:" << hour_spacing;
+        const auto begin = WeatherData::hours.cbegin(), end = WeatherData::hours.cend();
+        hour_spacing     = findHourSpacing((begin + 1)->time, begin->time);
         if (WeatherData::hours.empty() || WeatherData::hours.size() < 2) {
                 qFatal("WeatherData::hours doesn't contain enough data! %zu",
                        WeatherData::hours.size());
@@ -52,7 +51,7 @@ void PresentTimeManager::refresh() {
         }
         blocs_per_day = findWeatherBlocsFitCount(next_midnight, current_midnight, hour_spacing)
                                 .value_or(0);
-        first_day_blocs = findWeatherBlocsFitCount(next_midnight, iter_begin->time, hour_spacing)
+        first_day_blocs = findWeatherBlocsFitCount(next_midnight, begin->time, hour_spacing)
                                   .value_or(0);
         // if no value is returned, assume that 0 has been received, otherwise accept the returned value
         if (first_day_blocs > blocs_per_day) {
