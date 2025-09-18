@@ -27,7 +27,6 @@ if(BUILD_WEATHERAPPLET)
         find_package(CURL REQUIRED)
 endif()
 
-# TODO Build type checking to disable the sanitizer for release versions
 # Set up the Qt environment
 set(QT_VERSION_MAJOR 6 CACHE STRING "Build using this version of Qt")
 
@@ -87,6 +86,7 @@ else()
 endif()
 
 # Linked libraries
+# TODO Build type checking to disable the sanitizer for release versions
 if(BUILD_WEATHERAPPLET)
         target_link_libraries(weather-applet PRIVATE
                 Core::AllLibs
@@ -110,6 +110,7 @@ if(BUILD_WEATHERAPPLET)
                 RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})
 endif()
 
+# Finalization
 if(QT_VERSION_MAJOR EQUAL 6)
         if(BUILD_WEATHERAPPLET)
                 qt_finalize_executable(weather-applet)
