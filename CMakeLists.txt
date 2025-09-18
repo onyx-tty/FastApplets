@@ -3,6 +3,7 @@ cmake_minimum_required(VERSION 3.16)
 # Source code directories
 set(POWERAPPLET_SOURCE_DIR ${CMAKE_CURRENT_LIST_DIR}/src/Applets/PowerApplet CACHE PATH "Path to PowerApplet's source code")
 
+# Applets to be built
 option(BUILD_POWERAPPLET "Include PowerApplet in the building process" ON)
 
 # Configure CMake
@@ -20,12 +21,12 @@ option(BUILD_SHARED_LIBS "Build using shared libraries" ON)
 
 # Find packages
 find_package(Qt6 REQUIRED COMPONENTS Widgets)
+
 if(BUILD_POWERAPPLET)
         find_package(Qt6 REQUIRED COMPONENTS DBus)
 endif()
 
 
-# TODO Build type checking to disable the sanitizer for release versions
 # Set up the Qt environment
 set(QT_VERSION_MAJOR 6 CACHE STRING "Build using this version of Qt")
 
@@ -73,7 +74,8 @@ else()
         endif()
 endif()
 
-# Linked libraries
+# TODO Build type checking to disable the sanitizer for release versions
+# Linked libraries and options
 if(BUILD_POWERAPPLET)
         target_link_libraries(power-applet PRIVATE
                 Core::AllLibs
