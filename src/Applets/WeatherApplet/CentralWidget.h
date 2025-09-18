@@ -67,13 +67,10 @@ class CentralWidget final : public QWidget {
         Q_OBJECT
 
 public:
-        explicit CentralWidget(QWidget* parent, QApplication* app);
-
-        const WeatherLayoutManager& getLayout();
+        explicit CentralWidget(QWidget* parent, const QApplication& app);
 
 private:
         QHBoxLayout*               main_layout;
-        const WeatherLayoutManager layout;
         const KeybindingManager    keybindings;
         WeatherParser              weather_parser;
 };

@@ -25,48 +25,26 @@
 
 using global = LayoutManager;
 
-WeatherMainWindowProp::WeatherMainWindowProp() :
-        size(global::main_window_prop.size), title(global::main_window_prop.title) {};
+/* These are settings exclusive to the WeatherApplet. Modify below to adjust application style. */
+/* To overwrite defaults, replace parts preceded by the global namespace. */
+/* For modified defaults, refer to DefaultLayout.cpp */
 
-WeatherEnvProp::WeatherEnvProp(const QApplication* app) : EnvProp(app) {};
+/* LayoutManager */
+const WeatherMainWindowProp WeatherLayoutManager::main_window_prop(global::main_window_prop.size,
+                                                                   global::main_window_prop.title);
+const WeatherStyleProp      WeatherLayoutManager::style_prop(global::style_prop.button_stylesheet);
+const WeatherLayoutProp     WeatherLayoutManager::layout_prop(global::layout_prop.button_policy);
 
-const WeatherEnvProp& WeatherLayoutManager::getEnvProp(const QApplication* app) {
-        return static_cast<WeatherEnvProp&>(LayoutManager::getEnvProp(app));
-}
+/* WeatherMainWindowProp */
+WeatherMainWindowProp::WeatherMainWindowProp(const QSize size, const QString title) :
+        MainWindowProp(size, title), size(size), title(title) {};
+/* WeatherStyleProp */
+WeatherStyleProp::WeatherStyleProp(const QString button_stylesheet) :
+        StyleProp(button_stylesheet), button_stylesheet(button_stylesheet) {};
 
-std::string& WeatherEnvProp::getOpenWeatherKey() const { // TODO Too nested, clean this up
-        // Expect to find a 32-character long alphanumeric key followed by '='
-        static std::pair<std::string, std::string> item{"^OPENWEATHER_API_KEY\\s*=\\s*", "\\w{32}"};
-        static bool                                api_key_initialized = false;
-
-        if (!api_key_initialized) {
-                std::ifstream file(dotenv_filepath.toStdString(), std::ifstream::in);
-                qInfo() << "Attempting to start the loop in" << __func__;
-                for (std::string line; std::getline(file, line);) {
-                        std::smatch results;
-                        qInfo() << "Line:" << line;
-
-                        // if we find our API key, trigger this
-                        if (std::regex_search(line, results, std::regex(item.second))) {
-                                item.second = results.str(0);
-                                qInfo() << "Found: " << item.second;
-                                file.close();
-                                api_key_initialized = true;
-                                return item.second;
-                        }
-                }
-                // else if API key wasn't found in the previous loop
-                qCritical() << "Critical! API key not found!";
-                QApplication::quit();
-        }
-
-        return item.second;
-}
-
-WeatherStyleProp::WeatherStyleProp() :
-        selected(global::style_prop.selected), unselected(global::style_prop.unselected) {};
-
-WeatherLayoutProp::WeatherLayoutProp() {}
+/* WeatherLayoutProp */
+WeatherLayoutProp::WeatherLayoutProp(const QSizePolicy button_policy) :
+        LayoutProp(button_policy) {};
 
 const std::unordered_map<int, WeatherCondition> WeatherLayoutProp::weather_list{
         {200, WeatherCondition("Thunderstorm", "thunderstorm with light rain", QImage(), QImage())},
@@ -134,81 +112,40 @@ const std::unordered_map<int, WeatherCondition> WeatherLayoutProp::weather_list{
         {804, WeatherCondition("Clouds", "overcast clouds: 85-100%", QImage(), QImage())},
         {9999, WeatherCondition("NULL", "NULL", QImage(), QImage())}};
 
-/*
-const std::array<WeatherCellGrid*, 2> WeatherLayoutProp::initCellGrid(QWidget*     parent,
-                                                                      QHBoxLayout* layout,
-                                                                      WeatherData& weather_data) {
-        using std::array;
-        using std::make_tuple;
-        using std::to_string;
-        using std::vector;
+/* WeatherEnvProp */
+WeatherEnvProp::WeatherEnvProp() {};
 
-        if (!parent || !layout) {
-                qFatal() << "Invalid parent and/or layout in" << __func__ << "!\n";
-                QApplication::quit();
-        }
-
-        auto& hours = weather_data.hours;
-        auto* now   = hours.begin();
-
-        // TODO Unsafe and inflexible, requires a rework
-        WeatherCellGrid* today_cells = new WeatherCellGrid{
-                {"current_weather", {QPixmap(), {now->weather->name, now->weather->detailed_name}}},
-                {"current_temperature",
-                 {QPixmap(),
-                  {"Temperature", QString::number(now->temperature), "Feels like",
-                   QString::number(now->temperature_feels_like)}}},
-                {"city_name", {QPixmap(), {}
+const WeatherEnvProp& WeatherLayoutManager::getEnvProp() {
+        return env_prop;
 }
-}
-, {"current_wind_speed", {QPixmap(), {"Wind", QString::number(now->wind_speed)}}},
-        {"current_humidity", {QPixmap(), {"Humidity", QString::number(now->humidity)}}},
-        {"current_rainfall", {QPixmap(), {"Rain", QString::number(now->rain)}}}, {
-        "current_pressure", {
-                QPixmap(), {
-                        "Pressure", QString::number(now->atmospheric_pressure)
+
+// TODO Too nested, clean this up
+const std::string& WeatherEnvProp::getOpenWeatherKey(const QApplication& app) {
+        // Expect to find a 32-character long alphanumeric key followed by '='
+        static std::pair<std::string, std::string> item{"^OPENWEATHER_API_KEY\\s*=\\s*", "\\w{32}"};
+        static bool                                api_key_initialized = false;
+
+        if (!api_key_initialized) {
+                std::ifstream file(global::getEnvProp().getDotenvFilepath().toStdString(),
+                                   std::ifstream::in);
+                qInfo() << "Attempting to start the loop in" << __func__;
+                for (std::string line; std::getline(file, line);) {
+                        std::smatch results;
+                        qInfo() << "Line:" << line;
+
+                        // if we find our API key, trigger this
+                        if (std::regex_search(line, results, std::regex(item.second))) {
+                                item.second = results.str(0);
+                                qInfo() << "Found: " << item.second;
+                                file.close();
+                                api_key_initialized = true;
+                                return item.second;
+                        }
                 }
-        }
-}
-}
-;
-
-// TODO Calculate daily min-max temperatures, the current state is just a placeholder
-auto weekDay = [](decltype(now) hour, QString day_name) -> vector<QString> {
-        return vector<QString>{std::move(day_name), QString::number(hour->temperature_max),
-                               QString::number(hour->temperature_min)};
-};
-
-// TODO Find day of the week from the UNIX timestamp
-constexpr int    hours_in_day = 8;
-WeatherCellGrid* weekly_cells =
-        new WeatherCellGrid{{"day1", {QPixmap(), weekDay((now + (hours_in_day * 0)), "Today")}},
-                            {"day2", {QPixmap(), weekDay((now + (hours_in_day * 1)), "Tomorrow")}},
-                            {"day3", {QPixmap(), weekDay((now + (hours_in_day * 2)), "Day 3")}},
-                            {"day4", {QPixmap(), weekDay((now + (hours_in_day * 3)), "Day 4")}},
-                            {"day5", {QPixmap(), weekDay((now + (hours_in_day * 4)), "Day 5")}}};
-
-        WeatherCellGrid* detail_cells = new WeatherCellGrid{
-
-        };
-
-return {std::move(today_cells), std::move(weekly_cells)};
-}
-
-const std::array<WeatherCellGrid*, 2>& WeatherLayoutProp::getCellGrid() {
-        // If any of the weather cells is nullptr, crash
-        if (std::any_of(weather_cell_grid.cbegin(), weather_cell_grid.cend(),
-                        [](WeatherCellGrid* cell) -> bool { return !cell; })) {
-                qFatal() << "Weather cell grid not initialized properly in" << __func__ << "!\n";
+                // else if API key wasn't found in the previous loop
+                qCritical() << "Critical! API key not found!";
                 QApplication::quit();
         }
 
-        return weather_cell_grid;
+        return item.second;
 }
-*/
-
-WeatherLayoutManager::WeatherLayoutManager() {};
-
-WeatherMainWindowProp WeatherLayoutManager::main_window_prop;
-WeatherStyleProp      WeatherLayoutManager::style_prop;
-WeatherLayoutProp     WeatherLayoutManager::layout_prop;

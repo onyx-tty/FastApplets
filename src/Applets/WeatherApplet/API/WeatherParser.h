@@ -32,10 +32,8 @@ std::array<HourlyWeatherData, HOURLY_WEATHER_DATA_HOURS> debugInitHours();
 
 class WeatherParser final {
 public:
-        explicit WeatherParser(QWidget* const parent, const QApplication* app,
-                               const WeatherEnvProp& env_prop);
+        explicit WeatherParser(QWidget* const parent, const QApplication& app);
 
-        WeatherData& getWeatherData();
         void         updateWeatherData();
 
 private:

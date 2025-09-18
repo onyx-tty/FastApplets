@@ -188,9 +188,9 @@ QVBoxLayout* CurrentWeekLayout::getLayout() {
         return layout;
 }
 
-CentralWidget::CentralWidget(QWidget* parent, QApplication* app) :
-        QWidget(parent), main_layout(new QHBoxLayout(this)),
-        weather_parser(this, app, layout.getEnvProp(app)) {
+CentralWidget::CentralWidget(QWidget* parent, const QApplication& app) :
+        QWidget(parent), main_layout(new QHBoxLayout(this)), weather_parser(this, app) {
+        WeatherLayoutManager::setup(app); // We give WeatherLayoutManager access to runtime
         weather_parser.updateWeatherData();
         // Split main layout
         auto* left_layout  = new QVBoxLayout;
@@ -203,7 +203,3 @@ CentralWidget::CentralWidget(QWidget* parent, QApplication* app) :
         left_layout->addLayout(current_day_layout.getLayout());
         left_layout->addLayout(current_week_layout.getLayout());
 };
-
-const WeatherLayoutManager& CentralWidget::getLayout() {
-        return layout;
-}

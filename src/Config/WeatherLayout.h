@@ -31,37 +31,42 @@ struct WeatherMainWindowProp : public MainWindowProp {
         const QSize   size;
         const QString title;
 
-        explicit WeatherMainWindowProp();
+        explicit WeatherMainWindowProp(const QSize size, const QString title);
 };
 
 struct WeatherStyleProp : public StyleProp {
-        const QString selected;
-        const QString unselected;
+        const QString button_stylesheet;
 
-        explicit WeatherStyleProp();
+        explicit WeatherStyleProp(const QString button_stylesheet);
 };
 
 struct WeatherEnvProp : public EnvProp {
         // TODO Rewrite to include other weather APIs
-        std::string& getOpenWeatherKey() const;
+        static const std::string& getOpenWeatherKey(const QApplication& app);
 
-        explicit WeatherEnvProp(const QApplication* app);
+        explicit WeatherEnvProp();
 };
 
 struct WeatherLayoutProp : public LayoutProp {
         static const std::unordered_map<int, WeatherCondition> weather_list;
 
-        explicit WeatherLayoutProp();
+        explicit WeatherLayoutProp(const QSizePolicy button_policy);
 };
 
+// TODO Optimize to avoid repeating identical props
 struct WeatherLayoutManager : public LayoutManager {
-        static WeatherMainWindowProp main_window_prop;
-        static WeatherStyleProp      style_prop;
-        static WeatherLayoutProp     layout_prop;
+private:
+        static inline WeatherEnvProp env_prop;
 
-        static const WeatherEnvProp& getEnvProp(const QApplication* app);
+public:
+        static const WeatherMainWindowProp main_window_prop;
+        static const WeatherStyleProp      style_prop;
+        // TODO WeatherButtonProp
+        static const WeatherLayoutProp     layout_prop;
 
-        explicit WeatherLayoutManager();
+        explicit WeatherLayoutManager() = delete;
+
+        static const WeatherEnvProp& getEnvProp();
 };
 
 #endif // WEATHER_LAYOUT_H

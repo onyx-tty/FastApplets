@@ -30,12 +30,12 @@
 const std::string OpenWeatherAPI::getUserURL() {
         // TODO New layout file
         const std::string url = "http://api.openweathermap.org/data/2.5/forecast?id=524901&appid="
-                              + WeatherLayoutManager::getEnvProp(app).getOpenWeatherKey();
+                              + WeatherLayoutManager::getEnvProp().getOpenWeatherKey(app);
         return std::move(url);
 }
 
-OpenWeatherAPI::OpenWeatherAPI(QWidget* const parent, const QApplication* app,
-                               const WeatherEnvProp& env_prop) : parent(parent), app(app) {}
+OpenWeatherAPI::OpenWeatherAPI(QWidget* const parent, const QApplication& app) :
+        parent(parent), app(app) {}
 
 OpenWeatherAPI::~OpenWeatherAPI() {}
 
@@ -56,7 +56,7 @@ const json& OpenWeatherAPI::getResponse() const {
         return api_response;
 }
 
-const QApplication* OpenWeatherAPI::getApp() const {
+const QApplication& OpenWeatherAPI::getApp() const {
         return app;
 }
 

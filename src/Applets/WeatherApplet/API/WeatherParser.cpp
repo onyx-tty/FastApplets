@@ -33,9 +33,8 @@
 
 using json = nlohmann::json;
 
-WeatherParser::WeatherParser(QWidget* parent, const QApplication* app,
-                             const WeatherEnvProp& env_prop) :
-        open_weather(parent, app, env_prop) {}
+WeatherParser::WeatherParser(QWidget* parent, const QApplication& app) :
+        open_weather(parent, app) {}
 
 void WeatherParser::updateWeatherData() {
         qDebug() << "--------------------------";
@@ -176,12 +175,13 @@ void WeatherParser::processWeatherItem(const std::string& key, const json& value
         } else if (key == "id") {
                 // TODO WeatherCondition reference instead of a separate weather_id int
                 int weather_id = value.template get<int>();
-                if (WeatherLayoutProp::weather_list.find(weather_id)
-                    != WeatherLayoutProp::weather_list.end()) {
-                        WeatherData::hours[index].weather = &WeatherLayoutProp::weather_list.at(
-                                weather_id);
+                if (WeatherLayoutManager::layout_prop.weather_list.find(weather_id)
+                    != WeatherLayoutManager::layout_prop.weather_list.end()) {
+                        WeatherData::hours[index].weather = &WeatherLayoutManager::layout_prop
+                                                                     .weather_list.at(weather_id);
                         qDebug() << "And its weather_id is" << weather_id << "corresponding to"
-                                 << WeatherLayoutProp::weather_list.at(weather_id).getData();
+                                 << WeatherLayoutManager::layout_prop.weather_list.at(weather_id)
+                                            .getData();
                 }
         } else {
                 qWarning() << "Unexpected key" << key;
