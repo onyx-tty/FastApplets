@@ -26,7 +26,8 @@
 
 /* These are global settings shared by applets. */
 /* Modify below to adjust their application style. */
-QString              project_root_marker = "README.md";
+// prevent external linkage via static
+static const QString project_root_marker = "README.md";
 /* LayoutManager */
 const MainWindowProp LayoutManager::main_window_prop(QSize(960, 220), "test_window");
 const StyleProp      LayoutManager::style_prop("text-align: center top;");
