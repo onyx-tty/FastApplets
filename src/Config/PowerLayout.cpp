@@ -77,12 +77,15 @@ PowerLayoutProp::PowerLayoutProp(const QSizePolicy            button_policy,
                                  const std::array<QString, 4> button_text) :
         LayoutProp(button_policy), button_policy(button_policy), button_icons(button_icons),
         button_text(button_text) {};
+
+void PowerLayoutProp::initButtonList(QBoxLayout* layout) {
+        if (!layout) {
+                qFatal() << "Invalid layout in" << __func__ << "!\n";
                 QApplication::quit();
         }
         if (button_list) {
                 qWarning() << "Button list is already initialized but there was an attempt to"
                            << "initialize it once more. Attempted changes have been discarded.";
-                return;
         }
 
         // extracting button icons and text from given instance to reduce verbosity
