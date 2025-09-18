@@ -56,6 +56,7 @@ private:
         const std::array<PowerButton*, 4>* button_list;
         const PowerKeybindingManager       keybindings;
 
+        // TODO Optimize
         void updateActions();
         void resetActions();
 };

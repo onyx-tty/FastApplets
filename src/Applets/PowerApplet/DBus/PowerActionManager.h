@@ -28,8 +28,8 @@ extern const QString path;
 extern const QString interface;
 } // namespace target
 
-class PowerActionManager final { // Singleton design
-
+// TODO Static class
+class PowerActionManager final {
 public:
         PowerActionManager(const PowerActionManager&)                   = delete;
         PowerActionManager&        operator=(const PowerActionManager&) = delete;
