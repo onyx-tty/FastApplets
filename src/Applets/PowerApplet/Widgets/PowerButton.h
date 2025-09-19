@@ -22,11 +22,12 @@
 
 class PowerButton final : public Button {
         Q_OBJECT
+        // TODO Construct and store full dbus action path for safety and flexibility
         const QString dbus_action;
 
 public:
-        PowerButton(QWidget* parent, QHBoxLayout* main_layout, const QIcon button_icon,
-                    const QString button_text, const QString dbus_action);
+        PowerButton(QBoxLayout* const layout, const QIcon icon, const QString text,
+                    const QString dbus_action);
 
         const QString& getDBusAction();
 };

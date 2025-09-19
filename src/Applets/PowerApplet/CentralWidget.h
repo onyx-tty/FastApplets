@@ -41,7 +41,7 @@ class CentralWidget final : public QWidget {
         Q_OBJECT
 
 public:
-        QHBoxLayout* main_layout;
+        QBoxLayout* main_layout;
 
         explicit CentralWidget(QWidget* parent, const QApplication& app);
 
@@ -53,10 +53,10 @@ public:
         void clickButton(QKeyEvent* event);
 
 private:
-        Action                      last_action;
-        Action                      current_action;
-        PowerKeybindingManager      keybindings;
+        Action                             last_action;
+        Action                             current_action;
         const std::array<PowerButton*, 4>* button_list;
+        const PowerKeybindingManager       keybindings;
 
         void updateActions();
         void resetActions();
