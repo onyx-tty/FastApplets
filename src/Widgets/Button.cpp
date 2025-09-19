@@ -32,15 +32,15 @@ using lm = LayoutManager;
 /* Initializes a button of choice with uniform design */
 // Inheriting constructor defaults from from QPushButton,
 // but customizing the icon, icon size and the alignment of that button
-Button::Button(QWidget*     parent, // TODO Default icon
-               QHBoxLayout* main_layout, const QIcon& button_icon, const QString& button_text) :
-        QPushButton(parent), is_focused(false) {
-        setIcon(button_icon);
+// TODO Default icon
+Button::Button(QBoxLayout* const layout, const QIcon& icon, const QString& text) :
+        QPushButton(layout->widget()), is_focused(false) {
+        setIcon(icon);
         setIconSize(lm::button_prop.icon_size);
         setSizePolicy(lm::layout_prop.button_policy);
         setAutoDefault(false);
-        debugAlignIcon(button_text);
-        main_layout->addWidget(this);
+        debugAlignIcon(text);
+        layout->addWidget(this);
 }
 
 Button::~Button() = default;

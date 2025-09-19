@@ -31,9 +31,9 @@ protected:
         bool    is_focused;
         QLabel* debug_text;
 
-        explicit Button(QWidget* parent, QHBoxLayout* const main_layout,
-                        const QIcon&   button_icon, // TODO default icon
-                        const QString& button_text);
+        explicit Button(QBoxLayout* const layout,
+                        const QIcon&      icon, // TODO default icon
+                        const QString&    text);
         virtual ~Button() = 0;
 
         /* Modified reimplementation of paintEvent that allows for manual setting of focus */
