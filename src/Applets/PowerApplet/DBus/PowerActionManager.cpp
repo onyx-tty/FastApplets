@@ -45,7 +45,7 @@ QDBusMessage PowerActionManager::sendPowerAction(const QString& method) const {
 
         QDBusPendingReply<QVariantMap> response = connection.asyncCall(method_call);
         response.waitForFinished();
-        return responseHandler(response.reply());
+        return responseHandler(std::move(response.reply()));
 }
 
 /* private */
@@ -61,5 +61,5 @@ QDBusMessage PowerActionManager::responseHandler(const QDBusMessage response) co
                 qInfo() << response << Qt::endl;
         }
 
-        return response;
+        return std::move(response);
 }

@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.16)
 
-project(power-applet VERSION 0.10.0 LANGUAGES CXX)
+project(power-applet VERSION 0.10.1 LANGUAGES CXX)
 
 set(CMAKE_AUTOUIC ON)
 set(CMAKE_AUTOMOC ON)
