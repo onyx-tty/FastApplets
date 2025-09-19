@@ -55,9 +55,9 @@ struct LayoutProp {
 };
 
 struct EnvProp {
-        const QString project_root_marker;
-        const QString dotenv_filepath;
-        bool          is_initialized;
+        const QString       project_root_marker;
+        const QString       dotenv_filepath;
+        bool                is_initialized;
         const QApplication* app;
 
         // TODO Error handling for incorrect project root

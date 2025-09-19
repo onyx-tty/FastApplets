@@ -21,10 +21,10 @@
 #include <QDir>
 #include <QFileInfo>
 #include <QIcon>
+#include <QPalette>
 #include <QSize>
 #include <QSizePolicy>
 #include <QString>
-#include <QPalette>
 
 /* These are global settings shared by applets. Modify below to adjust their application style. */
 
@@ -45,9 +45,8 @@ LayoutProp::LayoutProp() :
 const QString& EnvProp::getProjectRoot() const {
         static QString project_root;
 
-        if (!project_root.isEmpty()) {
-                return project_root;
-        }
+        // if we've already found it previously
+        if (!project_root.isEmpty()) { return project_root; }
 
         QStringList search_paths = {app->applicationDirPath(), QDir::currentPath()};
         for (const QString& start_directory : search_paths) {
@@ -76,7 +75,8 @@ const bool& EnvProp::isInitialized() const {
 }
 
 EnvProp::EnvProp(const QApplication* app) :
-        project_root_marker("README.md"), is_initialized(true), app(app), dotenv_filepath(resolveDotenvFilepath()) {};
+        project_root_marker("README.md"), is_initialized(true), app(app),
+        dotenv_filepath(resolveDotenvFilepath()) {};
 
 QString EnvProp::resolveDotenvFilepath() {
         return std::move(getProjectRoot() + "/src/Config/.env");

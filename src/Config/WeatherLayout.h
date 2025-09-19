@@ -20,16 +20,16 @@
 
 #include "SharedLayout.h"
 
+#include <QHBoxLayout>
 #include <QPixmap>
 #include <QString>
-#include <QHBoxLayout>
 #include <QVBoxLayout>
 
-#include <vector>
 #include <unordered_map>
 #include <utility>
+#include <vector>
 
-using WeatherIconMap = std::unordered_map<QString, QPixmap>;
+using WeatherIconMap  = std::unordered_map<QString, QPixmap>;
 using WeatherCellGrid = std::unordered_map<QString, std::pair<QPixmap, std::vector<QString>>>;
 
 struct WeatherMainWindowProp : public MainWindowProp {

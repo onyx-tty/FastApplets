@@ -121,10 +121,11 @@ void WeatherParser::recursiveJsonIteration(const std::pair<const std::string&, c
                                 }
                         }
                 }
-        } else if (response.second.is_string() || response.second.is_number() || response.second.is_boolean()) {
+        } else if (response.second.is_string() || response.second.is_number()
+                   || response.second.is_boolean()) {
                 qInfo() << "PARSE! VARIABLE";
-                qInfo() << "Given variable" << response.second.dump()
-                        << "belonging to" << response.first;
+                qInfo() << "Given variable" << response.second.dump() << "belonging to"
+                        << response.first;
                 parseItem(response.second, index_buffer);
         } else {
                 qInfo() << "FAIL! Unpredictable & uniterable?";
