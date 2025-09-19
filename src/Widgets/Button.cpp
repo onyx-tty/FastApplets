@@ -33,7 +33,7 @@ using lm = LayoutManager;
 // Inheriting constructor defaults from from QPushButton,
 // but customizing the icon, icon size and the alignment of that button
 Button::Button(QWidget*     parent, // TODO Default icon
-               QHBoxLayout* main_layout, const QIcon button_icon, const QString button_text) :
+               QHBoxLayout* main_layout, const QIcon& button_icon, const QString& button_text) :
         QPushButton(parent), is_focused(false) {
         setIcon(button_icon);
         setIconSize(lm::button_prop.icon_size);
@@ -65,7 +65,7 @@ void Button::paintEvent(QPaintEvent*) {
         style()->drawControl(QStyle::CE_PushButton, &option, &painter, this);
 }
 
-bool Button::event(QEvent* event) {
+bool Button::event(QEvent* const event) {
         switch (event->type()) { // Ignore mouse hover, forward anything else
         case QEvent::HoverMove:
         case QEvent::HoverEnter:
@@ -74,7 +74,7 @@ bool Button::event(QEvent* event) {
         }
 }
 
-void Button::debugAlignIcon(QString label_text) {
+void Button::debugAlignIcon(const QString& label_text) {
         setLayout(new QGridLayout);
         setStyleSheet(QString(lm::style_prop.unselected));
         debug_text = new QLabel(label_text, this); // label that acts as a button text replacement
@@ -84,12 +84,12 @@ void Button::debugAlignIcon(QString label_text) {
         qInfo() << "debug_text successfully initialized with text:" << label_text;
 }
 
-void Button::setFocus(bool is_focused) {
+void Button::setFocus(const bool is_focused) {
         this->is_focused = is_focused;
         update();
 }
 
-const bool Button::isFocused() {
+const bool Button::isFocused() const {
         return is_focused;
 }
 

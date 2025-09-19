@@ -25,10 +25,10 @@ class PowerMainWindow final : public MainWindow {
         Q_OBJECT
 
 public:
-        PowerMainWindow(QWidget* parent = nullptr);
+        PowerMainWindow(QWidget* const parent = nullptr);
 
 private:
-        CentralWidget* central_widget;
+        CentralWidget* const central_widget;
 };
 
 #endif // POWER_MAIN_WINDOW_H

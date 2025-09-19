@@ -49,11 +49,11 @@ QDBusMessage PowerActionManager::sendPowerAction(const QString& method) const {
 }
 
 /* private */
-PowerActionManager::PowerActionManager(QObject* parent) :
+PowerActionManager::PowerActionManager(QObject* const parent) :
         connection(QDBusConnection::connectToBus(QDBusConnection::SystemBus, target::name)),
         proxy(target::name, target::path, target::interface, connection, parent) {}
 
-QDBusMessage PowerActionManager::responseHandler(QDBusMessage response) const {
+QDBusMessage PowerActionManager::responseHandler(const QDBusMessage response) const {
         if (response.type() == QDBusMessage::ErrorMessage) {
                 qCritical() << "Error sending action. Response: " << response.errorMessage()
                             << Qt::endl;

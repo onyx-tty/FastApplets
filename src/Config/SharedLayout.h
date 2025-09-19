@@ -55,16 +55,19 @@ struct LayoutProp {
 };
 
 struct EnvProp {
-        std::string   project_root_marker;
-        std::string   dotenv_filepath;
+        const QString project_root_marker;
+        const QString dotenv_filepath;
         bool          is_initialized;
-        QApplication* app;
+        const QApplication* app;
 
-        QString& getProjectRoot(QApplication& app, const QString& marker = "README.md");
-        void     initDotenvFilepath(QApplication& app, const QString& marker = "README.md");
-        bool&    isInitialized();
+        // TODO Error handling for incorrect project root
+        const QString& getProjectRoot() const;
+        const bool&    isInitialized() const;
 
-        explicit EnvProp(QApplication* app);
+        explicit EnvProp(const QApplication* app);
+
+private:
+        QString resolveDotenvFilepath();
 };
 
 /* Actual Layout Manager */
@@ -74,7 +77,7 @@ struct LayoutManager {
         static ButtonProp     button_prop;
         static LayoutProp     layout_prop;
 
-        static EnvProp& getEnvProp(QApplication* app);
+        static EnvProp& getEnvProp(const QApplication* app);
 
         explicit LayoutManager();
 };
