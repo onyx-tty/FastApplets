@@ -33,7 +33,7 @@
 
 using json = nlohmann::json;
 
-std::array<HourlyWeatherData, 8> initHours() {
+std::array<HourlyWeatherData, 8> debugInitHours() {
         qInfo() << "Starting" << __func__;
         static auto weather = WeatherCondition("blank", "blank", QImage(), QImage());
         static auto hour    = HourlyWeatherData(0, *&weather, 0, 0, 0, 0, 0, 0, 0);
@@ -42,9 +42,9 @@ std::array<HourlyWeatherData, 8> initHours() {
                                                 *&hour, *&hour, *&hour, *&hour};
 }
 
-        open_weather(parent, app, env_prop), weather_data(initHours()) {}
 WeatherParser::WeatherParser(QWidget* parent, const QApplication* app,
                              const WeatherEnvProp& env_prop) :
+        open_weather(parent, app, env_prop), weather_data(debugInitHours()) {}
 
 void WeatherParser::updateWeatherData() {
         qInfo() << "Starting" << __func__;
