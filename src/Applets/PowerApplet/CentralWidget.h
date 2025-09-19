@@ -53,16 +53,14 @@ public:
         void clickButton(QKeyEvent* event);
 
 private:
-        std::pair<QKeyEvent*, PowerButton*> last_key;
-        std::array<PowerButton*, 4>         button_list;
-        PowerLayoutManager                  layout;
-        PowerKeybindingManager              keybindings;
+        Action                      last_action;
+        Action                      current_action;
+        std::array<PowerButton*, 4> button_list;
+        PowerLayoutManager          layout;
+        PowerKeybindingManager      keybindings;
 
-        void updateLastKey(QKeyEvent* event, PowerButton* button);
-        void setPowerButtonStyle(PowerButton* button, const QString style, QKeyEvent* event);
-        // receive lambda as a parameter 'action'
-        void updatePowerButton(QKeyEvent* event, const QString style,
-                               auto&& action);
+        void updateActions();
+        void resetActions();
 };
 
 #endif // CENTRAL_WIDGET_H

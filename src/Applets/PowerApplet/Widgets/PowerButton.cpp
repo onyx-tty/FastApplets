@@ -20,7 +20,11 @@
 
 PowerButton::PowerButton(QWidget* parent, QHBoxLayout* main_layout, const QIcon button_icon,
                          const QString button_text, const QString action) :
-        Button(parent, main_layout, button_icon, button_text) {
+        Button(parent, main_layout, button_icon, button_text), action(action) {
         connect(this, &PowerButton::clicked,
                 [action]() { PowerActionManager::getInstance().sendPowerAction(action); });
+}
+
+const QString& PowerButton::getAction() {
+        return action;
 }

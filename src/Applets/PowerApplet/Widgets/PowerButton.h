@@ -22,10 +22,13 @@
 
 class PowerButton final : public Button {
         Q_OBJECT
+        const QString action;
 
 public:
         PowerButton(QWidget* parent, QHBoxLayout* main_layout, const QIcon button_icon,
                     const QString button_text, const QString action);
+
+        const QString& getAction();
 };
 
 #endif // POWER_BUTTON_H

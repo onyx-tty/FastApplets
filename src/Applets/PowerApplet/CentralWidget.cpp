@@ -28,81 +28,128 @@
 Action::Action(int key, PowerButton* button) : key(key), button(button) {}
 
 CentralWidget::CentralWidget(QWidget* parent) :
-        QWidget(parent), main_layout(new QHBoxLayout(this)) {
-        last_key    = std::pair<QKeyEvent*, PowerButton*>(nullptr, nullptr); // TODO Clean this up
+        QWidget(parent), main_layout(new QHBoxLayout(this)), last_action(Qt::Key_unknown, nullptr),
+        current_action(Qt::Key_unknown, nullptr) {
         layout.layout_prop.initButtonList(this, main_layout, layout.layout_prop);
         button_list = layout.layout_prop.getButtonList();
 }
 
 void CentralWidget::keyPressEvent(QKeyEvent* event) {
-        qInfo() << "INFO! keyPressEvent registered!";
+        // TODO Optimize this method, it contains a lot of unnecessary checks
 
-        auto inPowerRange = [](QKeyEvent* event) {
-                int diff = Qt::Key_4 - event->key();
-                return diff >= 0 && diff <= 4;
+        auto debugPrintKeybindings = [&]() {
+                std::unordered_set<int> test_set;
+                test_set.insert(keybindings.shutdown.cbegin(), keybindings.shutdown.cend());
+                test_set.insert(keybindings.reboot.cbegin(), keybindings.reboot.cend());
+                test_set.insert(keybindings.suspend.cbegin(), keybindings.suspend.cend());
+                test_set.insert(keybindings.hibernate.cbegin(), keybindings.hibernate.cend());
+                for (auto& item : test_set) qDebug() << "test set:" << item;
         };
 
-        // update button style
-        updatePowerButton(event, layout.style_prop.selected, [&](int i) { ; });
+        auto isPowerKey = [&](int key) -> bool {
+                return (keybindings.shutdown.contains(key) || keybindings.reboot.contains(key)
+                        || keybindings.suspend.contains(key)
+                        || keybindings.hibernate.contains(key));
+        };
 
-        if (event->key() == keybindings.quit->key() && last_key.first
-            && inPowerRange(last_key.first)) { // ESC pressed with focus, unselect last key
-                updatePowerButton(last_key.first, layout.style_prop.unselected,
-                                  [&](int i) { updateLastKey(event, nullptr); });
-        } else if (event->key() == keybindings.quit->key()
-                   && !inPowerRange(event)) { // ESC pressed without focus, quit
-                qInfo() << "ESC pressed, quitting!";
-                QApplication::quit();
-        } else if (!last_key.first || event->key() != last_key.first->key()) { // select
-                qInfo() << "event and last_key.first don't match";
-                // select current
-                updatePowerButton(event, layout.style_prop.selected, [&](int i) {
-                        qInfo() << button_list[i]->text() << "selected!";
-                });
-                // unselect previous
-                if (!last_key.second) {
-                        qWarning() << "INFO! last_key.second is null!";
-                } else if (!inPowerRange(event)) {
-                        qInfo() << "INFO! Key not within the range of power keys!";
-                } else {
-                        setPowerButtonStyle(last_key.second, layout.style_prop.unselected, event);
+        auto findButtonWithAction = [&](QString&& action) -> PowerButton* {
+                // TODO Too nested, clean up
+                std::unordered_set<QString> acceptable_strings = {"PowerOff", "Reboot", "Suspend",
+                                                                  "Hibernate"};
+
+                if (!acceptable_strings.contains(action)) {
+                        qFatal("Incorrect action passed! %s", action.toStdString().c_str());
                 }
-        } else { // click
-                qInfo() << "event and last_key.first match";
-                updatePowerButton(last_key.first, layout.style_prop.unselected, [&](int i) {
-                        emit button_list[i]->clicked();
+
+                for (auto button : button_list) {
+                        //qDebug() << "Processing action" << button->getAction();
+                        if (!button) qFatal("Some power buttons are null, terminating!");
+                        if (button->getAction() == action) {
+                                qDebug() << "Button found in findButtonWithAction! Action is"
+                                         << action << "and button's text() is" << button->text();
+                                return button;
+                        }
+                }
+                qFatal("No button associated with action %s, terminating!",
+                       action.toStdString().c_str());
+                return nullptr; // never meant to occur
+        };
+        auto initPowerButton = [&](Action& action) {
+                // TODO Too nested, clean up
+                if (action.key == Qt::Key_unknown) qFatal("Key missing in Action!");
+
+                if (isPowerKey(action.key)) {
+                        if (keybindings.shutdown.contains(action.key)) {
+                                action.button = findButtonWithAction("PowerOff");
+                        } else if (keybindings.reboot.contains(action.key)) {
+                                action.button = findButtonWithAction("Reboot");
+                        } else if (keybindings.suspend.contains(action.key)) {
+                                action.button = findButtonWithAction("Suspend");
+                        } else if (keybindings.hibernate.contains(action.key)) {
+                                action.button = findButtonWithAction("Hibernate");
+                        }
+
+                        if (!action.button) qFatal("Button nullptr in initButton, terminating!");
+                        else if (action.button)
+                                qDebug() << "Button initialized correctly, text:"
+                                         << action.button->text();
+                } else {
+                        qFatal() << "Passed button is not a power button, bad code!";
+                }
+        };
+
+        qInfo() << "----------------------------------------";
+        qInfo() << "INFO! keyPressEvent registered!";
+        current_action.key = event->key();
+
+        if (keybindings.quit.contains(current_action.key)) { // Quit key pressed
+                if (last_action.button && last_action.button->isFocused()) { // Last button focused, Quit key unselects it
+                        last_action.button->setFocus(false);
+                } else {
+                        qDebug() << "Quit key pressed, quitting!";
                         QApplication::quit();
-                });
-                qInfo() << "diff key";
+                }
+        } else if ((current_action.key != last_action.key)
+                   && isPowerKey(current_action.key)) { // new selection
+                qDebug() << "current key and last key don't match";
+                initPowerButton(current_action);
+                // select current button
+                qDebug() << current_action.button->text() << "selected!";
+                current_action.button->setFocus(true);
+                // unselect last button if valid, otherwise ignore because it doesn't exist anyway
+                if (last_action.button) last_action.button->setFocus(false);
+                else qDebug() << "last key is null!";
+        } else if ((current_action.key == last_action.key)
+                   && isPowerKey(current_action.key)) { // click recognized, both keys match
+                // TODO Display errors returned by power action
+                qDebug() << "current and previous keys match";
+                initPowerButton(current_action);
+                // animate click, proceed with power action
+                qDebug() << current_action.button->text() << "clicked!";
+                current_action.button->animateClick(); // includes emitting click
+                current_action.button->setFocus(false);
+                resetActions();
+                return;
         }
 
+        // Print current key combination
         qInfo() << "Current key combination:"
-                << (last_key.first ? QString::number(last_key.first->key()) : "NULL")
-                << QString::number(event->key());
-
-        for (int i = 0; i != 4; ++i) { // only update when the button has already been processed
-                if (event->key() == keybindings.power_keys[i]) updateLastKey(event, button_list[i]);
-        }
+                << (last_action.key != Qt::Key_unknown ? QString::number(last_action.key) : "NULL")
+                << QString::number(current_action.key);
+        updateActions();
 }
 
 // TODO Consider QPointer
-void CentralWidget::updateLastKey(QKeyEvent* event, PowerButton* button) {
-        if (last_key.first) { delete last_key.first; }
-        last_key.first = event->clone();
-        last_key.second = button;
+void CentralWidget::updateActions() {
+        last_action.key       = current_action.key;
+        last_action.button    = current_action.button;
+        current_action.key    = Qt::Key_unknown;
+        current_action.button = nullptr;
 }
 
-void CentralWidget::setPowerButtonStyle(PowerButton* button, const QString style, QKeyEvent* event) {
-        button->setStyleSheet(style);
-        button->update();
-}
-
-void CentralWidget::updatePowerButton(QKeyEvent* event, const QString style, auto&& action) {
-        for (int i = 0; i != 4; ++i) {
-                if (event->key() == keybindings.power_keys[i]) {
-                        setPowerButtonStyle(button_list[i], style, event);
-                        action(i); // call lambda and let it access i
-                        return;
-                }
-        }
+void CentralWidget::resetActions() {
+        last_action.key       = Qt::Key_unknown;
+        last_action.button    = nullptr;
+        current_action.key    = Qt::Key_unknown;
+        current_action.button = nullptr;
 }

@@ -17,6 +17,6 @@
 
 #include "PowerKeybindings.h"
 
-PowerKeybindingManager::PowerKeybindingManager() : KeybindingManager() {
-        power_keys = {Qt::Key_1, Qt::Key_2, Qt::Key_3, Qt::Key_4};
-}
+PowerKeybindingManager::PowerKeybindingManager() :
+        KeybindingManager(), shutdown({Qt::Key_1}), reboot({Qt::Key_2}), suspend({Qt::Key_3}),
+        hibernate({Qt::Key_4}) {}

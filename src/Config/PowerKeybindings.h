@@ -20,8 +20,13 @@
 
 #include "SharedKeybindings.h"
 
+#include <unordered_set>
+
 struct PowerKeybindingManager : public KeybindingManager {
-        std::array<unsigned, 4> power_keys;
+        std::unordered_set<int> shutdown;
+        std::unordered_set<int> reboot;
+        std::unordered_set<int> suspend;
+        std::unordered_set<int> hibernate;
 
         explicit PowerKeybindingManager();
 };
