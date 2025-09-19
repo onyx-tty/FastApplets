@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.16)
 
 project(weather-applet VERSION 0.1 LANGUAGES CXX)
 
-set(CMAKE_AUTOUIC ON)
+# Enable Qt support for QObject MOC and resource files
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
 
@@ -12,11 +12,13 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fsanitize=address -fno-omit-frame-pointer -g")
 set(CMAKE_LINKER_FLAGS "${CMAKE_LINKER_FLAGS} -fsanitize=address")
 
+# Set up Qt environment
 set(QT_VERSION_MAJOR 6)
-
-find_package(Qt6 REQUIRED COMPONENTS Widgets DBus Gui)
+find_package(Qt6 REQUIRED COMPONENTS Widgets Gui)
 # TODO Qt5 fallback support
-#find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Widgets DBus Gui)
+# find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Widgets Gui)
+
+# Set up libcurl
 find_package(CURL REQUIRED)
 
 # Configure TraverseJSON to enable Qt support
@@ -81,6 +83,7 @@ set(CODEBASE
         ${PROJECT_RESOURCES}
 )
 
+# Maintain support for both Qt6 and >=Qt5 for future expansion
 if(QT_VERSION_MAJOR GREATER_EQUAL 6)
         qt_add_executable(weather-applet
                 MANUAL_FINALIZATION
