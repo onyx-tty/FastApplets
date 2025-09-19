@@ -62,9 +62,9 @@ void CentralWidget::keyPressEvent(QKeyEvent* event) {
                 }
 
                 for (auto button : button_list) {
-                        //qDebug() << "Processing action" << button->getAction();
+                        //qDebug() << "Processing action" << button->getDBusAction();
                         if (!button) qFatal("Some power buttons are null, terminating!");
-                        if (button->getAction() == action) {
+                        if (button->getDBusAction() == action) {
                                 qDebug() << "Button found in findButtonWithAction! Action is"
                                          << action << "and button's text() is" << button->text();
                                 return button;

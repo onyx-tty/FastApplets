@@ -19,12 +19,12 @@
 #include "../DBus/PowerActionManager.h"
 
 PowerButton::PowerButton(QWidget* parent, QHBoxLayout* main_layout, const QIcon button_icon,
-                         const QString button_text, const QString action) :
-        Button(parent, main_layout, button_icon, button_text), action(action) {
+                         const QString button_text, const QString dbus_action) :
+        Button(parent, main_layout, button_icon, button_text), dbus_action(dbus_action) {
         connect(this, &PowerButton::clicked,
-                [action]() { PowerActionManager::getInstance().sendPowerAction(action); });
+                [dbus_action]() { PowerActionManager::getInstance().sendPowerAction(dbus_action); });
 }
 
-const QString& PowerButton::getAction() {
-        return action;
+const QString& PowerButton::getDBusAction() {
+        return dbus_action;
 }
