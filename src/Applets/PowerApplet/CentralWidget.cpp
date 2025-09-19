@@ -25,11 +25,7 @@
 
 #include <array>
 
-// TODO std::pair may not be necessary here and could potentially just be
-//	overcomplicating the code
-// TODO It might be possible to delegate some mechanisms here
-//	to the buttons themselves
-//	They should be streamlined if possible
+Action::Action(int key, PowerButton* button) : key(key), button(button) {}
 
 CentralWidget::CentralWidget(QWidget* parent) :
         QWidget(parent), main_layout(new QHBoxLayout(this)) {

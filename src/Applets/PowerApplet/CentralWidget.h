@@ -28,6 +28,15 @@
 #include <array>
 #include <utility>
 
+struct Action {
+        int          key;
+        PowerButton* button;
+
+        Action(int key, PowerButton* button);
+
+        void clear();
+};
+
 class CentralWidget final : public QWidget {
         Q_OBJECT
 
