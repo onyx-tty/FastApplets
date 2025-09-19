@@ -33,15 +33,13 @@ struct PowerMainWindowProp : public MainWindowProp {
         const QSize   size;
         const QString title;
 
-        explicit PowerMainWindowProp();
+        explicit PowerMainWindowProp(const QSize size, const QString title);
 };
 
 struct PowerStyleProp : public StyleProp {
-        const QString  selected;
-        const QString  unselected;
-        const QString& universal;
+        const QString button_stylesheet;
 
-        explicit PowerStyleProp();
+        explicit PowerStyleProp(const QString button_stylesheet);
 };
 
 struct PowerButtonProp : public ButtonProp {
@@ -49,34 +47,45 @@ struct PowerButtonProp : public ButtonProp {
         const QSize         icon_size;
         const Qt::Alignment icon_alignment;
 
-        explicit PowerButtonProp();
+        explicit PowerButtonProp(const Qt::Alignment text_alignment, const QSize icon_size,
+                                 const Qt::Alignment icon_alignment);
 };
 
 struct PowerLayoutProp : public LayoutProp {
+private:
+        // TODO Disable memory deallocation for initialized buttons without also making them
+        //	completely immutable (const)
+        std::array<PowerButton*, 4>* button_list;
+
+public:
         const QSizePolicy            button_policy;
         const std::array<QIcon, 4>   button_icons;
         const std::array<QString, 4> button_text;
 
-        explicit PowerLayoutProp();
+        explicit PowerLayoutProp(const QSizePolicy            button_policy,
+                                 const std::array<QIcon, 4>   button_icons,
+                                 const std::array<QString, 4> button_text);
 
-        static void initButtonList(QWidget* parent, QHBoxLayout* layout, PowerLayoutProp& instance);
-        static std::array<PowerButton*, 4>& getButtonList();
-
-private:
-        // TODO Disable memory deallocation for initialized buttons without also making them
-        //	completely immutable (const)
-        //	Unfortunately smart pointers won't work here, perhaps reference wrappers would?
-        static std::array<PowerButton*, 4>* button_list;
+        void                               initButtonList(QBoxLayout* layout);
+        const std::array<PowerButton*, 4>* getButtonList() const;
+        bool                               isSetUp();
 };
 
-/* Actual Layout Manager */
+// TODO Optimize to avoid inheritance of default props
 struct PowerLayoutManager : public LayoutManager {
-        static PowerMainWindowProp main_window_prop;
-        static PowerStyleProp      style_prop;
-        static PowerButtonProp     button_prop;
-        static PowerLayoutProp     layout_prop;
+private:
+        static PowerLayoutProp layout_prop;
 
-        explicit PowerLayoutManager();
+public:
+        static const PowerMainWindowProp main_window_prop;
+        static const PowerStyleProp      style_prop;
+        static const PowerButtonProp     button_prop;
+
+        explicit PowerLayoutManager() = delete;
+
+        static const PowerLayoutProp& getLayoutProp();
+        static void                   setup(const QApplication& app, QBoxLayout* layout);
+        static bool                   isSetUp();
 };
 
 #endif // POWER_LAYOUT_H

@@ -24,15 +24,19 @@
 #include <QFocusEvent>
 
 #include <array>
+// prevent external linkage via static
+static const std::array<PowerButton*, 4>* initButtonList(const QApplication& app, QBoxLayout* main_layout) {
+        // We give PowerLayoutManager access to runtime and central widget's main layout
+        // to be able to relatively locate .env and create a list of buttons within our layout
+        PowerLayoutManager::setup(app, main_layout);
+        return PowerLayoutManager::getLayoutProp().getButtonList();
+}
 
 Action::Action(int key, PowerButton* button) : key(key), button(button) {}
 
-CentralWidget::CentralWidget(QWidget* parent) :
+CentralWidget::CentralWidget(QWidget* parent, const QApplication& app) :
         QWidget(parent), main_layout(new QHBoxLayout(this)), last_action(Qt::Key_unknown, nullptr),
-        current_action(Qt::Key_unknown, nullptr) {
-        layout.layout_prop.initButtonList(this, main_layout, layout.layout_prop);
-        button_list = layout.layout_prop.getButtonList();
-}
+        current_action(Qt::Key_unknown, nullptr), button_list(initButtonList(app, main_layout)) {}
 
 void CentralWidget::keyPressEvent(QKeyEvent* event) {
         // TODO Optimize this method, it contains a lot of unnecessary checks

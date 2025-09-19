@@ -76,7 +76,7 @@ bool Button::event(QEvent* const event) {
 
 void Button::debugAlignIcon(const QString& label_text) {
         setLayout(new QGridLayout);
-        setStyleSheet(QString(lm::style_prop.unselected));
+        setStyleSheet(QString(lm::style_prop.button_stylesheet));
         debug_text = new QLabel(label_text, this); // label that acts as a button text replacement
         debug_text->setAlignment(lm::button_prop.text_alignment);
         debug_text->setAttribute(Qt::WA_TransparentForMouseEvents, true);

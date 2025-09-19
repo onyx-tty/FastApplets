@@ -27,42 +27,56 @@
 using global = LayoutManager;
 
 /* These are settings exclusive to the PowerApplet. Modify below to adjust application style. */
-// To overwrite defaults, replace parts preceded by the global namespace.
+/* To overwrite defaults, replace parts preceded by the global namespace. */
+/* For modified defaults, refer to DefaultLayout.cpp */
 
-std::array<QIcon, 4> setButtonIcons() {
+/* Button attributes unique to this layout */
+std::array<QIcon, 4> initButtonIcons() {
         Q_INIT_RESOURCE(Icons);
         std::array<QIcon, 4> button_icons{QIcon(":/Icons/shutdown.svg"),
                                           QIcon(":/Icons/reboot.svg"),
                                           QIcon(":/Icons/suspend.svg"),
                                           QIcon(":/Icons/hibernate.svg")};
-        return button_icons;
+        return std::move(button_icons);
 }
 
-PowerMainWindowProp::PowerMainWindowProp() :
-        size(global::main_window_prop.size), title(global::main_window_prop.title) {};
+std::array<QString, 4> initButtonText() {
+        std::array<QString, 4> button_text = {"Shutdown", "Reboot", "Suspend", "Hibernate"};
+        return std::move(button_text);
+}
 
-PowerStyleProp::PowerStyleProp() :
-        selected(global::style_prop.selected), unselected(global::style_prop.unselected),
-        universal(unselected) {};
+/* PowerLayoutManager */
+const PowerMainWindowProp PowerLayoutManager::main_window_prop(global::main_window_prop.size,
+                                                               global::main_window_prop.title);
+const PowerStyleProp      PowerLayoutManager::style_prop(global::style_prop.button_stylesheet);
+const PowerButtonProp     PowerLayoutManager::button_prop(global::button_prop.text_alignment,
+                                                          global::button_prop.icon_size,
+                                                          global::button_prop.icon_alignment);
+PowerLayoutProp           PowerLayoutManager::layout_prop(global::layout_prop.button_policy,
+                                                          initButtonIcons(), initButtonText());
+/* END CONFIG */
 
+/* PowerMainWindowProp */
+PowerMainWindowProp::PowerMainWindowProp(const QSize size, const QString title) :
+        MainWindowProp(size, title), size(size), title(title) {};
+
+/* PowerStyleProp */
+PowerStyleProp::PowerStyleProp(const QString button_stylesheet) :
+        StyleProp(button_stylesheet), button_stylesheet(button_stylesheet) {};
+
+/* PowerButtonProp */
 // TODO Text size
-PowerButtonProp::PowerButtonProp() :
-        text_alignment(global::button_prop.text_alignment),
-        icon_size(global::button_prop.icon_size),
-        icon_alignment(global::button_prop.icon_alignment) {};
+PowerButtonProp::PowerButtonProp(const Qt::Alignment text_alignment, const QSize icon_size,
+                                 const Qt::Alignment icon_alignment) :
+        ButtonProp(text_alignment, icon_size, icon_alignment), text_alignment(text_alignment),
+        icon_size(icon_size), icon_alignment(icon_alignment) {};
 
-PowerLayoutProp::PowerLayoutProp() :
-        button_policy(global::layout_prop.button_policy), button_icons(setButtonIcons()),
-        button_text({"Shutdown", "Reboot", "Suspend", "Hibernate"}) {
-        button_list = nullptr;
-};
-
-PowerLayoutManager::PowerLayoutManager() {};
-
-void PowerLayoutProp::initButtonList(QWidget* parent, QHBoxLayout* layout,
-                                     PowerLayoutProp& instance) {
-        if (!parent || !layout) {
-                qFatal() << "Invalid parent and/or layout in" << __func__ << "!\n";
+/* PowerLayoutProp */
+PowerLayoutProp::PowerLayoutProp(const QSizePolicy            button_policy,
+                                 const std::array<QIcon, 4>   button_icons,
+                                 const std::array<QString, 4> button_text) :
+        LayoutProp(button_policy), button_policy(button_policy), button_icons(button_icons),
+        button_text(button_text) {};
                 QApplication::quit();
         }
         if (button_list) {
@@ -72,27 +86,35 @@ void PowerLayoutProp::initButtonList(QWidget* parent, QHBoxLayout* layout,
         }
 
         // extracting button icons and text from given instance to reduce verbosity
-        auto&                              button_icons = instance.button_icons;
-        auto&                              button_text  = instance.button_text;
         static std::array<PowerButton*, 4> isolated_button_list{
-                new PowerButton(parent, layout, button_icons[0], button_text[0], "PowerOff"),
-                new PowerButton(parent, layout, button_icons[1], button_text[1], "Reboot"),
-                new PowerButton(parent, layout, button_icons[2], button_text[2], "Suspend"),
-                new PowerButton(parent, layout, button_icons[3], button_text[3], "Hibernate"),
+                new PowerButton(layout, button_icons[0], button_text[0], "PowerOff"),
+                new PowerButton(layout, button_icons[1], button_text[1], "Reboot"),
+                new PowerButton(layout, button_icons[2], button_text[2], "Suspend"),
+                new PowerButton(layout, button_icons[3], button_text[3], "Hibernate"),
         };
 
         button_list = &isolated_button_list;
 
 }
 
-std::array<PowerButton*, 4>& PowerLayoutProp::getButtonList() {
-        if (button_list) return *button_list;
+const std::array<PowerButton*, 4>* PowerLayoutProp::getButtonList() const {
+        if (button_list) return button_list;
         else qFatal("Button list not initialized yet, access denied!");
 }
 
-std::array<PowerButton*, 4>* PowerLayoutProp::button_list;
+bool PowerLayoutProp::isSetUp() {
+        return button_list;
+}
 
-PowerMainWindowProp PowerLayoutManager::main_window_prop;
-PowerStyleProp      PowerLayoutManager::style_prop;
-PowerButtonProp     PowerLayoutManager::button_prop;
-PowerLayoutProp     PowerLayoutManager::layout_prop;
+const PowerLayoutProp& PowerLayoutManager::getLayoutProp() {
+        return layout_prop;
+}
+
+void PowerLayoutManager::setup(const QApplication& app, QBoxLayout* layout) {
+        LayoutManager::setup(app);
+        layout_prop.initButtonList(layout);
+}
+
+bool PowerLayoutManager::isSetUp() {
+        return LayoutManager::isSetUp() && layout_prop.isSetUp();
+}
