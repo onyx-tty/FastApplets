@@ -21,8 +21,10 @@
 #include <QApplication>
 #include <QKeyEvent>
 
+#include <unordered_set>
+
 struct KeybindingManager {
-        QKeyEvent* quit;
+        std::unordered_set<int> quit;
 
         explicit KeybindingManager();
 };
