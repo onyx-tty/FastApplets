@@ -57,7 +57,7 @@ const QString& EnvProp::getProjectRoot() const {
                         if (QFileInfo::exists((directory.filePath(project_root_marker)))) {
                                 qInfo() << "Match!";
                                 project_root = directory.absolutePath();
-                                return project_root;
+                                break;
                         } else {
                                 directory.cdUp();
                         }
@@ -66,8 +66,10 @@ const QString& EnvProp::getProjectRoot() const {
         // if not found
         if (project_root.isEmpty()) {
                 qFatal("Fatal! Project root directory not located in locateProjectRoot()!");
-                return project_root; // will never occur because of termination
+                QApplication::quit();
         }
+
+        return project_root;
 }
 
 const bool& EnvProp::isInitialized() const {
