@@ -33,8 +33,9 @@ struct MainWindowProp {
 };
 
 struct StyleProp {
-        const QString selected;
-        const QString unselected;
+        const QString  selected;
+        const QString  unselected;
+        const QString& universal;
 
         explicit StyleProp();
 };
