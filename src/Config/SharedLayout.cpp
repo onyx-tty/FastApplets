@@ -26,36 +26,60 @@
 #include <QSizePolicy>
 #include <QString>
 
-/* These are global settings shared by applets. Modify below to adjust their application style. */
+/* These are global settings shared by applets. */
+/* Modify below to adjust their application style. */
+QString              project_root_marker = "README.md";
+/* LayoutManager */
+const MainWindowProp LayoutManager::main_window_prop(QSize(960, 220), "test_window");
+const StyleProp      LayoutManager::style_prop("text-align: center top;");
+const ButtonProp     LayoutManager::button_prop(Qt::Alignment(Qt::AlignHCenter | Qt::AlignTop),
+                                                QSize(64, 64),
+                                                Qt::Alignment(Qt::AlignHCenter | Qt::AlignCenter));
+const LayoutProp     LayoutManager::layout_prop(QSizePolicy(QSizePolicy::Expanding,
+                                                            QSizePolicy::Expanding));
+/* END CONFIG */
+const EnvProp&       LayoutManager::getEnvProp() {
+        return env_prop;
+}
 
-MainWindowProp::MainWindowProp() : size(QSize(960, 220)), title("test_window") {};
+void LayoutManager::setup(const QApplication& app) {
+        env_prop = getEnvProp();
+        env_prop.initProjectEnvironment(app, project_root_marker);
+}
 
-StyleProp::StyleProp() :
-        selected("text-align: center top; background-color: lightblue; border: 2px solid blue;"),
-        unselected("text-align: center top;"), universal(unselected) {};
+bool LayoutManager::isSetUp() {
+        return getEnvProp().isSetUp();
+}
 
-// TODO Text size
-ButtonProp::ButtonProp() :
-        text_alignment(Qt::Alignment(Qt::AlignHCenter | Qt::AlignTop)), icon_size(QSize(64, 64)),
-        icon_alignment(Qt::AlignHCenter | Qt::AlignCenter) {};
+/* MainWindowProp */
+MainWindowProp::MainWindowProp(const QSize size, const QString title) : size(size), title(title) {};
 
-LayoutProp::LayoutProp() :
-        button_policy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding)) {};
+/* StyleProp */
+StyleProp::StyleProp(const QString button_stylesheet) : button_stylesheet(button_stylesheet) {};
 
-const QString& EnvProp::getProjectRoot() const {
-        static QString project_root;
+/* ButtonProp */
+ButtonProp::ButtonProp(const Qt::Alignment text_alignment, const QSize icon_size,
+                       const Qt::Alignment icon_alignment) :
+        text_alignment(text_alignment), icon_size(icon_size), icon_alignment(icon_alignment) {};
 
         // if we've already found it previously
         if (!project_root.isEmpty()) { return project_root; }
+/* LayoutProp */
+LayoutProp::LayoutProp(const QSizePolicy button_policy) : button_policy(button_policy) {};
 
-        QStringList search_paths = {app->applicationDirPath(), QDir::currentPath()};
+/* EnvProp */
+EnvProp::EnvProp() {};
+
+void EnvProp::initProjectEnvironment(const QApplication& app, const QString project_root_marker) {
+        QStringList search_paths = {app.applicationDirPath(), QDir::currentPath()};
+        qDebug() << "Determining project root...";
         for (const QString& start_directory : search_paths) {
-                qInfo() << "Searching paths...";
+                qDebug() << "Searching paths...";
                 QDir directory(start_directory);
                 while (!directory.isRoot()) {
-                        qInfo() << "Current directory:" << directory.filesystemAbsolutePath();
+                        qDebug() << "Current directory:" << directory.filesystemAbsolutePath();
                         if (QFileInfo::exists((directory.filePath(project_root_marker)))) {
-                                qInfo() << "Match!";
+                                qDebug() << "Match for" << project_root_marker << "!";
                                 project_root = directory.absolutePath();
                                 break;
                         } else {
@@ -63,35 +87,24 @@ const QString& EnvProp::getProjectRoot() const {
                         }
                 }
         }
-        // if not found
-        if (project_root.isEmpty()) {
-                qFatal("Fatal! Project root directory not located in locateProjectRoot()!");
+        dotenv_filepath = project_root + "/src/Config/.env";
+
+        // if not set up correctly
+        if (!isSetUp()) {
+                qFatal("Failed to determine project root! Impossible to proceed reliably!");
+                QApplication::quit();
+        }
+}
+
+const QString& EnvProp::getDotenvFilepath() const {
+        if (!isSetUp()) {
+                qFatal("Failed to locate project root! The program wasn't set up correctly!");
                 QApplication::quit();
         }
 
-        return project_root;
+        return dotenv_filepath;
 }
 
-const bool& EnvProp::isInitialized() const {
-        return is_initialized;
-}
-
-EnvProp::EnvProp(const QApplication* app) :
-        project_root_marker("README.md"), is_initialized(true), app(app),
-        dotenv_filepath(resolveDotenvFilepath()) {};
-
-QString EnvProp::resolveDotenvFilepath() {
-        return std::move(getProjectRoot() + "/src/Config/.env");
-}
-
-LayoutManager::LayoutManager() {};
-
-MainWindowProp LayoutManager::main_window_prop;
-StyleProp      LayoutManager::style_prop;
-ButtonProp     LayoutManager::button_prop;
-LayoutProp     LayoutManager::layout_prop;
-EnvProp&       LayoutManager::getEnvProp(const QApplication* app) {
-        static EnvProp env_prop(app);
-
-        return env_prop;
+bool EnvProp::isSetUp() const {
+        return (!project_root.isEmpty() || !dotenv_filepath.isEmpty());
 }

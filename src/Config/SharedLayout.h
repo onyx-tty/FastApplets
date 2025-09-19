@@ -29,15 +29,13 @@ struct MainWindowProp {
         const QSize   size;
         const QString title;
 
-        explicit MainWindowProp();
+        explicit MainWindowProp(const QSize size, const QString title);
 };
 
 struct StyleProp {
-        const QString  selected;
-        const QString  unselected;
-        const QString& universal;
+        const QString button_stylesheet;
 
-        explicit StyleProp();
+        explicit StyleProp(const QString button_stylesheet);
 };
 
 struct ButtonProp {
@@ -45,41 +43,47 @@ struct ButtonProp {
         const QSize         icon_size;
         const Qt::Alignment icon_alignment;
 
-        explicit ButtonProp();
+        explicit ButtonProp(const Qt::Alignment text_alignment, const QSize icon_size,
+                            const Qt::Alignment icon_alignment);
 };
 
 struct LayoutProp {
         const QSizePolicy button_policy;
 
-        explicit LayoutProp();
+        explicit LayoutProp(const QSizePolicy button_policy);
 };
 
 struct EnvProp {
-        const QString       project_root_marker;
-        const QString       dotenv_filepath;
-        bool                is_initialized;
-        const QApplication* app;
+protected:
+        QString project_root;
+        QString dotenv_filepath;
+
+public:
+        explicit EnvProp();
 
         // TODO Error handling for incorrect project root
-        const QString& getProjectRoot() const;
-        const bool&    isInitialized() const;
-
-        explicit EnvProp(const QApplication* app);
-
-private:
-        QString resolveDotenvFilepath();
+        void initProjectEnvironment(const QApplication& app, const QString project_root_marker);
+        const QString& getDotenvFilepath() const;
+        bool           isSetUp() const;
 };
 
 /* Actual Layout Manager */
+// TODO Polymorphism for further customization
 struct LayoutManager {
-        static MainWindowProp main_window_prop;
-        static StyleProp      style_prop;
-        static ButtonProp     button_prop;
-        static LayoutProp     layout_prop;
+private:
+        static inline EnvProp env_prop;
 
-        static EnvProp& getEnvProp(const QApplication* app);
+public:
+        static const MainWindowProp main_window_prop;
+        static const StyleProp      style_prop;
+        static const ButtonProp     button_prop;
+        static const LayoutProp     layout_prop;
 
-        explicit LayoutManager();
+        explicit LayoutManager() = delete;
+
+        static const EnvProp& getEnvProp();
+        static void           setup(const QApplication& app);
+        static bool           isSetUp();
 };
 
 #endif // SHARED_LAYOUT_H
