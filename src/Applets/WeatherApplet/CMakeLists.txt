@@ -95,7 +95,8 @@ else()
         )
 endif()
 
-include_directories(${CURL_INCLUDE_DIR})
+# Include libcurl in our project
+include_directories(weather-applet PRIVATE ${CURL_INCLUDE_DIR})
 
 # Linked libraries
 target_link_libraries(weather-applet PRIVATE
