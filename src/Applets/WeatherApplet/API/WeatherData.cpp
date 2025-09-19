@@ -19,9 +19,10 @@
 
 #include <QDebug>
 
-        name(name), detailed_name(name), day_icon(day_icon), night_icon(night_icon) {
 WeatherCondition::WeatherCondition(std::string name, std::string detailed_name,
                                    const QImage& day_icon, const QImage& night_icon) :
+        name(std::move(name)), detailed_name(std::move(detailed_name)), day_icon(day_icon),
+        night_icon(night_icon) {
         qInfo() << "WeatherCondition registered:" << name << detailed_name << day_icon
                 << night_icon;
 }
