@@ -84,10 +84,6 @@ void Button::debugAlignIcon(QString label_text) {
         qInfo() << "debug_text successfully initialized with text:" << label_text;
 }
 
-QString Button::text() const { // Returns text from the label, not the button itself
-        return debug_text->text();
-}
-
 void Button::setFocus(bool is_focused) {
         this->is_focused = is_focused;
         update();
@@ -95,4 +91,8 @@ void Button::setFocus(bool is_focused) {
 
 const bool Button::isFocused() {
         return is_focused;
+}
+
+const QString Button::text() const { // Amendment to return text from the label, not the button itself
+        return debug_text->text();
 }
