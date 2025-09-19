@@ -28,15 +28,13 @@ WeatherMainWindowProp::WeatherMainWindowProp() :
 WeatherStyleProp::WeatherStyleProp() :
         selected(global::style_prop.selected), unselected(global::style_prop.unselected) {};
 
-std::string& WeatherEnvProp::getOpenWeatherKey(
-        const QString& marker) { // TODO Too nested, clean this up
+std::string& WeatherEnvProp::getOpenWeatherKey() const { // TODO Too nested, clean this up
         // Expect to find a 32-character long alphanumeric key followed by '='
         static std::pair<std::string, std::string> item{"^OPENWEATHER_API_KEY\\s*=\\s*", "\\w{32}"};
         static bool                                api_key_initialized = false;
-        if (dotenv_filepath.empty()) { initDotenvFilepath(*app, marker); }
 
         if (!api_key_initialized) {
-                std::ifstream file(dotenv_filepath, std::ifstream::in);
+                std::ifstream file(dotenv_filepath.toStdString(), std::ifstream::in);
                 qInfo() << "Attempting to start the loop in" << __func__;
                 for (std::string line; std::getline(file, line);) {
                         std::smatch results;
@@ -59,7 +57,7 @@ std::string& WeatherEnvProp::getOpenWeatherKey(
         return item.second;
 }
 
-WeatherEnvProp::WeatherEnvProp(QApplication* app) : EnvProp(app) {};
+WeatherEnvProp::WeatherEnvProp(const QApplication* app) : EnvProp(app) {};
 
 /*
 std::array<WeatherCellGrid*, 3> WeatherLayoutProp::cellGridSingleton(QWidget*     parent,
@@ -97,9 +95,9 @@ std::array<WeatherCellGrid*, 3> WeatherLayoutProp::cellGridSingleton(QWidget*   
 }
 */
 
-WeatherEnvProp& WeatherLayoutManager::getEnvProp(QApplication* app) {
+const WeatherEnvProp& WeatherLayoutManager::getEnvProp(const QApplication* app) {
         return static_cast<WeatherEnvProp&>(LayoutManager::getEnvProp(app));
 }
 
 WeatherLayoutManager::WeatherLayoutManager() {};
-WeatherLayoutManager::WeatherLayoutManager(QApplication* app) {};
+WeatherLayoutManager::WeatherLayoutManager(const QApplication* app) {};

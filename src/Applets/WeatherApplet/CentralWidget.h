@@ -45,9 +45,9 @@ private:
         QVBoxLayout* time_passage_layout;
         /*-------------------------------------*/
 
-        WeatherLayoutManager layout;
-        KeybindingManager    keybindings;
-        WeatherParser        weather_parser;
+        const WeatherLayoutManager layout;
+        const KeybindingManager    keybindings;
+        WeatherParser              weather_parser;
 };
 
 #endif // CENTRAL_WIDGET_H

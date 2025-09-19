@@ -27,16 +27,15 @@
 #include <string>
 
 // TODO Runtime input of API keys
-std::string OpenWeatherAPI::getUserURL() {
+const std::string OpenWeatherAPI::getUserURL() {
         // TODO New layout file
         std::string url = "http://api.openweathermap.org/data/2.5/forecast?id=524901&appid="
                         + WeatherLayoutManager::getEnvProp(app).getOpenWeatherKey();
         return url;
 }
 
-OpenWeatherAPI::OpenWeatherAPI(QWidget* parent, QApplication* app, WeatherEnvProp& env_prop) :
-        parent(parent), app(app) {
-}
+OpenWeatherAPI::OpenWeatherAPI(QWidget* const parent, const QApplication* app,
+                               const WeatherEnvProp& env_prop) : parent(parent), app(app) {}
 
 OpenWeatherAPI::~OpenWeatherAPI() {}
 

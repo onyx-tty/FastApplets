@@ -48,18 +48,19 @@ struct WeatherStyleProp : public StyleProp {
 
 struct WeatherEnvProp : public EnvProp {
         // TODO Rewrite to include other weather APIs
-        std::string& getOpenWeatherKey(const QString& marker = "README.md");
+        std::string& getOpenWeatherKey() const;
 
-        explicit WeatherEnvProp(QApplication* app);
+        explicit WeatherEnvProp(const QApplication* app);
 };
 
 struct WeatherLayoutProp : public LayoutProp {
         const WeatherIconMap weather_icons;
 
         explicit WeatherLayoutProp();
-
+        /*
         std::array<WeatherCellGrid*, 3> cellGridSingleton(QWidget* parent, QHBoxLayout* layout,
                                                           bool&& is_instantiated);
+*/
 };
 
 struct WeatherLayoutManager : public LayoutManager {
@@ -67,10 +68,10 @@ struct WeatherLayoutManager : public LayoutManager {
         static WeatherStyleProp      style_prop;
         static WeatherLayoutProp     layout_prop;
 
-        static WeatherEnvProp& getEnvProp(QApplication* app);
+        static const WeatherEnvProp& getEnvProp(const QApplication* app);
 
         explicit WeatherLayoutManager();
-        explicit WeatherLayoutManager(QApplication* app);
+        explicit WeatherLayoutManager(const QApplication* app);
 };
 
 #endif // WEATHER_LAYOUT_H

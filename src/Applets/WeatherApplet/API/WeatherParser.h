@@ -31,7 +31,8 @@
 
 class WeatherParser final {
 public:
-        explicit WeatherParser(QWidget* parent, QApplication* app, WeatherEnvProp& env_prop);
+        explicit WeatherParser(QWidget* const parent, const QApplication* app,
+                               const WeatherEnvProp& env_prop);
 
         void updateWeatherData();
 
@@ -40,10 +41,10 @@ private:
         /* Other APIs */
         DailyWeatherData weather_data;
 
-        void     recursiveJsonIteration(std::pair<const std::string&, const json&> response,
-                                        std::function<void(const json&, int)> parseItem);
-        void     extractHourlyWeather(const json& chunk, int i);
-        unsigned findClosestHour(); // TODO move elsewhere
+        void      recursiveJsonIteration(const std::pair<const std::string&, const json&> response,
+                                         const std::function<void(const json&, int)>      parseItem);
+        void      extractHourlyWeather(const json& chunk, const int i);
+        const int findClosestHour() const; // TODO move elsewhere
 };
 
 #endif // WEATHER_PARSER_H

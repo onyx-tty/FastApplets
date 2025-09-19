@@ -31,27 +31,27 @@ struct WeatherCondition final {
         QImage      day_icon;
         QImage      night_icon;
 
-        WeatherCondition(std::string name, std::string detailed_name, QImage day_icon,
-                         QImage night_icon);
+        WeatherCondition(std::string name, std::string detailed_name, const QImage& day_icon,
+                         const QImage& night_icon);
         WeatherCondition(const WeatherCondition& other);
         WeatherCondition& operator=(const WeatherCondition& other);
         WeatherCondition(WeatherCondition&& other);
         WeatherCondition& operator=(WeatherCondition&& other);
 
-        QString getWeatherConditionInfo();
+        QString getWeatherConditionInfo() const;
 };
 
 struct HourlyWeatherData final {
-        std::time_t                                           time;
-        WeatherCondition&                                     weather;
-        float                                                 temperature;
-        float                                                 temperature_min;
-        float                                                 temperature_max;
-        unsigned                                              atmospheric_pressure;
-        unsigned                                              rain;
-        unsigned                                              humidity;
-        unsigned                                              wind_speed;
-        const static std::unordered_map<unsigned, WeatherCondition> weathers;
+        std::time_t                                                        time;
+        WeatherCondition&                                                  weather;
+        float                                                              temperature;
+        float                                                              temperature_min;
+        float                                                              temperature_max;
+        int                                                                atmospheric_pressure;
+        int                                                                rain;
+        int                                                                humidity;
+        int                                                                wind_speed;
+        static const std::unordered_map<int, const WeatherCondition> weathers;
 
         // TODO Alias for all the repeating arguments
         HourlyWeatherData(decltype(time) time, decltype(weather) weather,
@@ -73,7 +73,7 @@ struct HourlyWeatherData final {
                             decltype(atmospheric_pressure) atmospheric_pressure,
                             decltype(rain) rain, decltype(humidity) humidity,
                             decltype(wind_speed) wind_speed);
-        void printHourlyWeatherInfo();
+        void printHourlyWeatherInfo() const;
 };
 
 struct DailyWeatherData final {
@@ -84,9 +84,9 @@ struct DailyWeatherData final {
         void setWeatherData(decltype(hours), decltype(min_temperature), decltype(max_temperature));
         void setTemperatureRange();
 
-        DailyWeatherData(std::array<HourlyWeatherData, 8> hours);
+        DailyWeatherData(const std::array<HourlyWeatherData, 8> hours);
 
-        void printDailyWeatherInfo();
+        void printDailyWeatherInfo() const;
 };
 
 #endif // WEATHER_DATA_H

@@ -19,9 +19,9 @@
 
 #include <QDebug>
 
-WeatherCondition::WeatherCondition(std::string name, std::string detailed_name, QImage day_icon,
-                                   QImage night_icon) :
         name(name), detailed_name(name), day_icon(day_icon), night_icon(night_icon) {
+WeatherCondition::WeatherCondition(std::string name, std::string detailed_name,
+                                   const QImage& day_icon, const QImage& night_icon) :
         qInfo() << "WeatherCondition registered:" << name << detailed_name << day_icon
                 << night_icon;
 }
@@ -54,7 +54,7 @@ WeatherCondition& WeatherCondition::operator=(WeatherCondition&& other) {
         return *this;
 }
 
-QString WeatherCondition::getWeatherConditionInfo() {
+QString WeatherCondition::getWeatherConditionInfo() const {
         qDebug() << "Name:" << name << "Detailed name:" << detailed_name;
         std::string temporary = "{" + name + " " + detailed_name + "}";
         return QString::fromStdString(std::move(temporary));
@@ -131,11 +131,11 @@ void HourlyWeatherData::setWeatherData(decltype(time) time, decltype(weather) we
         this->wind_speed           = wind_speed;
 }
 
-void HourlyWeatherData::printHourlyWeatherInfo() {
+void HourlyWeatherData::printHourlyWeatherInfo() const {
         qInfo() << "Time:" << time << "Weather:" /*<< weather.getWeatherConditionInfo() */
                 << "Temperature:" << temperature << "Min:" << temperature_min
-                << "Max:" << temperature_max << "Pressure:" << atmospheric_pressure << "Rain:" << rain << "Humidity:" << humidity
-                << "Wind speed:" << wind_speed;
+                << "Max:" << temperature_max << "Pressure:" << atmospheric_pressure
+                << "Rain:" << rain << "Humidity:" << humidity << "Wind speed:" << wind_speed;
 }
 
 void DailyWeatherData::setTemperatureRange() {
@@ -155,15 +155,15 @@ void DailyWeatherData::setTemperatureRange() {
 
 DailyWeatherData::DailyWeatherData(std::array<HourlyWeatherData, 8> hours) : hours(hours) {}
 
-void DailyWeatherData::printDailyWeatherInfo() {
+void DailyWeatherData::printDailyWeatherInfo() const {
         // TODO What day is it even!?
         qInfo() << "Daily data: " << "min_temperature:" << min_temperature
                 << "max_temperature:" << max_temperature;
-        for (auto& hour : hours) { hour.printHourlyWeatherInfo(); }
+        for (const auto& hour : hours) { hour.printHourlyWeatherInfo(); }
         qInfo() << "\n";
 }
 
-const std::unordered_map<unsigned, WeatherCondition> HourlyWeatherData::weathers{
+const std::unordered_map<int, const WeatherCondition> HourlyWeatherData::weathers{
         {200, WeatherCondition("Thunderstorm", "thunderstorm with light rain", QImage(), QImage())},
         {201, WeatherCondition("Thunderstorm", "thunderstorm with rain", QImage(), QImage())},
         {202, WeatherCondition("Thunderstorm", "thunderstorm with heavy rain", QImage(), QImage())},

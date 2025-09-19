@@ -42,20 +42,20 @@ ButtonProp::ButtonProp() :
 LayoutProp::LayoutProp() :
         button_policy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding)) {};
 
-QString& EnvProp::getProjectRoot(QApplication& app, const QString& marker) {
+const QString& EnvProp::getProjectRoot() const {
         static QString project_root;
 
         if (!project_root.isEmpty()) {
                 return project_root;
         }
 
-        QStringList search_paths = {app.applicationDirPath(), QDir::currentPath()};
+        QStringList search_paths = {app->applicationDirPath(), QDir::currentPath()};
         for (const QString& start_directory : search_paths) {
                 qInfo() << "Searching paths...";
                 QDir directory(start_directory);
                 while (!directory.isRoot()) {
                         qInfo() << "Current directory:" << directory.filesystemAbsolutePath();
-                        if (QFileInfo::exists((directory.filePath(marker)))) {
+                        if (QFileInfo::exists((directory.filePath(project_root_marker)))) {
                                 qInfo() << "Match!";
                                 project_root = directory.absolutePath();
                                 return project_root;
@@ -71,16 +71,16 @@ QString& EnvProp::getProjectRoot(QApplication& app, const QString& marker) {
         }
 }
 
-void EnvProp::initDotenvFilepath(QApplication& app, const QString& marker) {
-        dotenv_filepath = getProjectRoot(app, marker).toStdString() + "/src/Config/.env";
-}
-
-bool& EnvProp::isInitialized() {
+const bool& EnvProp::isInitialized() const {
         return is_initialized;
 }
 
-EnvProp::EnvProp(QApplication* app) :
-        project_root_marker("README.md"), is_initialized(true), app(app) {};
+EnvProp::EnvProp(const QApplication* app) :
+        project_root_marker("README.md"), is_initialized(true), app(app), dotenv_filepath(resolveDotenvFilepath()) {};
+
+QString EnvProp::resolveDotenvFilepath() {
+        return std::move(getProjectRoot() + "/src/Config/.env");
+}
 
 LayoutManager::LayoutManager() {};
 
@@ -88,7 +88,7 @@ MainWindowProp LayoutManager::main_window_prop;
 StyleProp      LayoutManager::style_prop;
 ButtonProp     LayoutManager::button_prop;
 LayoutProp     LayoutManager::layout_prop;
-EnvProp&       LayoutManager::getEnvProp(QApplication* app) {
+EnvProp&       LayoutManager::getEnvProp(const QApplication* app) {
         static EnvProp env_prop(app);
 
         return env_prop;

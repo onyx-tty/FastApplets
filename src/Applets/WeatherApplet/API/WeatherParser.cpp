@@ -42,8 +42,9 @@ std::array<HourlyWeatherData, 8> initHours() {
                                                 *&hour, *&hour, *&hour, *&hour};
 }
 
-WeatherParser::WeatherParser(QWidget* parent, QApplication* app, WeatherEnvProp& env_prop) :
         open_weather(parent, app, env_prop), weather_data(initHours()) {}
+WeatherParser::WeatherParser(QWidget* parent, const QApplication* app,
+                             const WeatherEnvProp& env_prop) :
 
 void WeatherParser::updateWeatherData() {
         qInfo() << "Starting" << __func__;
@@ -66,13 +67,12 @@ void WeatherParser::updateWeatherData() {
 }
 
 // TODO Too nested, refactor and optimize
-void WeatherParser::recursiveJsonIteration(std::pair<const std::string&, const json&> response,
-                                           std::function<void(const json&, int)>      parseItem) {
+void WeatherParser::recursiveJsonIteration(const std::pair<const std::string&, const json&> response,
+                                           const std::function<void(const json&, int)> parseItem) {
         using std::pair;
         static int index_buffer;
 
         qInfo() << "---------------------------------------------------------------------";
-
         qInfo() << "Starting recursion in " << __func__ << "!"
                 << "index_buffer = " << index_buffer;
 
@@ -137,7 +137,7 @@ void WeatherParser::recursiveJsonIteration(std::pair<const std::string&, const j
 }
 
 // TODO This could be refactored with "chunk.at()" in mind
-void WeatherParser::extractHourlyWeather(const json& chunk, int i) {
+void WeatherParser::extractHourlyWeather(const json& chunk, const int i) {
         qInfo() << "Parsing object " << chunk.dump() << "!";
         for (auto& [key, value] : chunk.items()) {
                 if (key == "dt") {
@@ -169,11 +169,13 @@ void WeatherParser::extractHourlyWeather(const json& chunk, int i) {
                                 weather_data.hours[i].weather = weather_data.hours[i].weathers.at(
                                         value);
                         }
+                } else {
+                        qDebug() << "Unexpected key: " << key;
                 }
         }
 }
 
-unsigned WeatherParser::findClosestHour() {
+const int WeatherParser::findClosestHour() const {
         using namespace std::chrono;
         const auto now_unprocessed = system_clock::to_time_t(system_clock::now());
         const auto now             = *localtime(&now_unprocessed);
@@ -181,9 +183,9 @@ unsigned WeatherParser::findClosestHour() {
                 int second = first + 3;
                 if (first <= now.tm_hour && now.tm_hour < second) {
                         // We convert hours to minutes before performing an operation
-                        int      current_minute = (now.tm_hour * 60) + now.tm_min;
-                        unsigned diff1          = std::abs(current_minute - (first * 60));
-                        unsigned diff2          = std::abs(current_minute - (second * 60));
+                        int current_minute = (now.tm_hour * 60) + now.tm_min;
+                        int diff1          = std::abs(current_minute - (first * 60));
+                        int diff2          = std::abs(current_minute - (second * 60));
                         return std::min(diff1, diff2);
                 } else continue;
         }
