@@ -24,6 +24,7 @@
 #include <QSize>
 #include <QSizePolicy>
 #include <QString>
+#include <QPalette>
 
 /* These are global settings shared by applets. Modify below to adjust their application style. */
 
@@ -31,7 +32,7 @@ MainWindowProp::MainWindowProp() : size(QSize(960, 220)), title("test_window") {
 
 StyleProp::StyleProp() :
         selected("text-align: center top; background-color: lightblue; border: 2px solid blue;"),
-        unselected("text-align: center top;") {};
+        unselected("text-align: center top;"), universal(unselected) {};
 
 // TODO Text size
 ButtonProp::ButtonProp() :
@@ -44,7 +45,7 @@ LayoutProp::LayoutProp() :
 QString& EnvProp::getProjectRoot(QApplication& app, const QString& marker) {
         static QString project_root;
 
-        if (!project_root.isEmpty()) { // TODO This is too nested, clean it up
+        if (!project_root.isEmpty()) {
                 return project_root;
         }
 

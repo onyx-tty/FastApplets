@@ -27,6 +27,8 @@
 #include <QSizePolicy>
 #include <QString>
 
+#include <array>
+
 struct PowerMainWindowProp : public MainWindowProp {
         const QSize   size;
         const QString title;
@@ -35,8 +37,9 @@ struct PowerMainWindowProp : public MainWindowProp {
 };
 
 struct PowerStyleProp : public StyleProp {
-        const QString selected;
-        const QString unselected;
+        const QString  selected;
+        const QString  unselected;
+        const QString& universal;
 
         explicit PowerStyleProp();
 };
@@ -56,8 +59,14 @@ struct PowerLayoutProp : public LayoutProp {
 
         explicit PowerLayoutProp();
 
-        std::array<PowerButton*, 4>& buttonListSingleton(QWidget* parent, QHBoxLayout* layout,
-                                                         bool&& is_instantiated);
+        static void initButtonList(QWidget* parent, QHBoxLayout* layout, PowerLayoutProp& instance);
+        static std::array<PowerButton*, 4>& getButtonList();
+
+private:
+        // TODO Disable memory deallocation for initialized buttons without also making them
+        //	completely immutable (const)
+        //	Unfortunately smart pointers won't work here, perhaps reference wrappers would?
+        static std::array<PowerButton*, 4>* button_list;
 };
 
 /* Actual Layout Manager */

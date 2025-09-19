@@ -34,7 +34,8 @@
 CentralWidget::CentralWidget(QWidget* parent) :
         QWidget(parent), main_layout(new QHBoxLayout(this)) {
         last_key    = std::pair<QKeyEvent*, PowerButton*>(nullptr, nullptr); // TODO Clean this up
-        button_list = layout.layout_prop.buttonListSingleton(this, main_layout, true);
+        layout.layout_prop.initButtonList(this, main_layout, layout.layout_prop);
+        button_list = layout.layout_prop.getButtonList();
 }
 
 void CentralWidget::keyPressEvent(QKeyEvent* event) {

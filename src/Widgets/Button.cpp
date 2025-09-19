@@ -18,9 +18,14 @@
 #include "Button.h"
 #include "../Config/SharedLayout.h"
 
+#include <QColor>
+#include <QDebug>
 #include <QGridLayout>
 #include <QLabel>
-#include <QDebug>
+#include <QPainter>
+#include <QPalette>
+#include <QStyleOptionButton>
+#include <QStylePainter>
 
 using lm = LayoutManager;
 
@@ -29,15 +34,45 @@ using lm = LayoutManager;
 // but customizing the icon, icon size and the alignment of that button
 Button::Button(QWidget*     parent, // TODO Default icon
                QHBoxLayout* main_layout, const QIcon button_icon, const QString button_text) :
-        QPushButton(parent) {
+        QPushButton(parent), is_focused(false) {
         setIcon(button_icon);
         setIconSize(lm::button_prop.icon_size);
         setSizePolicy(lm::layout_prop.button_policy);
+        setAutoDefault(false);
         debugAlignIcon(button_text);
         main_layout->addWidget(this);
 }
 
 Button::~Button() = default;
+
+void Button::paintEvent(QPaintEvent*) {
+        QStyleOptionButton option;
+        initStyleOption(&option);
+
+        // Disable Qt's hover effect
+        option.state &= ~QStyle::State_MouseOver;
+
+        // Smart apply the focus state
+        if (is_focused) {
+                option.state |= QStyle::State_HasFocus;
+                option.state |= QStyle::State_Sunken;
+        } else {
+                option.state &= ~QStyle::State_HasFocus;
+                option.state &= ~QStyle::State_Sunken;
+        }
+
+        QStylePainter painter(this);
+        style()->drawControl(QStyle::CE_PushButton, &option, &painter, this);
+}
+
+bool Button::event(QEvent* event) {
+        switch (event->type()) { // Ignore mouse hover, forward anything else
+        case QEvent::HoverMove:
+        case QEvent::HoverEnter:
+        case QEvent::HoverLeave: return false;
+        default:                 return QPushButton::event(event);
+        }
+}
 
 void Button::debugAlignIcon(QString label_text) {
         setLayout(new QGridLayout);
@@ -51,4 +86,13 @@ void Button::debugAlignIcon(QString label_text) {
 
 QString Button::text() const { // Returns text from the label, not the button itself
         return debug_text->text();
+}
+
+void Button::setFocus(bool is_focused) {
+        this->is_focused = is_focused;
+        update();
+}
+
+const bool Button::isFocused() {
+        return is_focused;
 }

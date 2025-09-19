@@ -42,7 +42,8 @@ PowerMainWindowProp::PowerMainWindowProp() :
         size(global::main_window_prop.size), title(global::main_window_prop.title) {};
 
 PowerStyleProp::PowerStyleProp() :
-        selected(global::style_prop.selected), unselected(global::style_prop.unselected) {};
+        selected(global::style_prop.selected), unselected(global::style_prop.unselected),
+        universal(unselected) {};
 
 // TODO Text size
 PowerButtonProp::PowerButtonProp() :
@@ -52,30 +53,44 @@ PowerButtonProp::PowerButtonProp() :
 
 PowerLayoutProp::PowerLayoutProp() :
         button_policy(global::layout_prop.button_policy), button_icons(setButtonIcons()),
-        button_text({"Shutdown", "Reboot", "Suspend", "Hibernate"}) {};
+        button_text({"Shutdown", "Reboot", "Suspend", "Hibernate"}) {
+        button_list = nullptr;
+};
 
 PowerLayoutManager::PowerLayoutManager() {};
 
-std::array<PowerButton*, 4>& PowerLayoutProp::buttonListSingleton(QWidget*     parent,
-                                                                  QHBoxLayout* layout,
-                                                                  bool&&       is_instantiated) {
+void PowerLayoutProp::initButtonList(QWidget* parent, QHBoxLayout* layout,
+                                     PowerLayoutProp& instance) {
         if (!parent || !layout) {
                 qFatal() << "Invalid parent and/or layout in" << __func__ << "!\n";
                 QApplication::quit();
         }
-        if (!is_instantiated) {
-                qCritical() << "Singleton not initialized properly in" << __func__ << "!\n";
-                QApplication::quit();
+        if (button_list) {
+                qWarning() << "Button list is already initialized but there was an attempt to"
+                           << "initialize it once more. Attempted changes have been discarded.";
+                return;
         }
 
-        static std::array<PowerButton*, 4> button_list{
+        // extracting button icons and text from given instance to reduce verbosity
+        auto&                              button_icons = instance.button_icons;
+        auto&                              button_text  = instance.button_text;
+        static std::array<PowerButton*, 4> isolated_button_list{
                 new PowerButton(parent, layout, button_icons[0], button_text[0], "PowerOff"),
                 new PowerButton(parent, layout, button_icons[1], button_text[1], "Reboot"),
                 new PowerButton(parent, layout, button_icons[2], button_text[2], "Suspend"),
-                new PowerButton(parent, layout, button_icons[3], button_text[3], "Hibernate")};
+                new PowerButton(parent, layout, button_icons[3], button_text[3], "Hibernate"),
+        };
 
-        return button_list;
+        button_list = &isolated_button_list;
+
 }
+
+std::array<PowerButton*, 4>& PowerLayoutProp::getButtonList() {
+        if (button_list) return *button_list;
+        else qFatal("Button list not initialized yet, access denied!");
+}
+
+std::array<PowerButton*, 4>* PowerLayoutProp::button_list;
 
 PowerMainWindowProp PowerLayoutManager::main_window_prop;
 PowerStyleProp      PowerLayoutManager::style_prop;
