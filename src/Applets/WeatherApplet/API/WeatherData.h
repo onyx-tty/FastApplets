@@ -38,55 +38,42 @@ struct WeatherCondition final {
         WeatherCondition(WeatherCondition&& other);
         WeatherCondition& operator=(WeatherCondition&& other);
 
-        QString getWeatherConditionInfo() const;
+        QString getData() const;
 };
 
 struct HourlyWeatherData final {
-        std::time_t                                                        time;
-        WeatherCondition&                                                  weather;
-        float                                                              temperature;
-        float                                                              temperature_min;
-        float                                                              temperature_max;
-        int                                                                atmospheric_pressure;
-        int                                                                rain;
-        int                                                                humidity;
-        int                                                                wind_speed;
-        static const std::unordered_map<int, const WeatherCondition> weathers;
+        std::time_t             time;
+        const WeatherCondition* weather;
+        float                   temperature;
+        float                   temperature_min;
+        float                   temperature_max;
+        int                     atmospheric_pressure;
+        int                     rain;
+        int                     humidity;
+        int                     wind_speed;
 
         // TODO Alias for all the repeating arguments
-        HourlyWeatherData(decltype(time) time, decltype(weather) weather,
-                          decltype(temperature)          temperature,
-                          decltype(temperature_min)      temperature_min,
-                          decltype(temperature_max)      temperature_max,
-                          decltype(atmospheric_pressure) atmospheric_pressure, decltype(rain) rain,
-                          decltype(humidity) humidity, decltype(wind_speed) wind_speed);
+        HourlyWeatherData(const WeatherCondition& default_weather);
 
         HourlyWeatherData(const HourlyWeatherData& other);
         HourlyWeatherData& operator=(const HourlyWeatherData& other);
         HourlyWeatherData(HourlyWeatherData&& other);
         HourlyWeatherData& operator=(HourlyWeatherData&& other);
 
-        void setWeatherData(decltype(time) time, decltype(weather) weather,
-                            decltype(temperature)          temperature,
-                            decltype(temperature_min)      temperature_min,
-                            decltype(temperature_max)      temperature_max,
-                            decltype(atmospheric_pressure) atmospheric_pressure,
-                            decltype(rain) rain, decltype(humidity) humidity,
-                            decltype(wind_speed) wind_speed);
-        void printHourlyWeatherInfo() const;
+        void printData() const;
 };
 
-struct DailyWeatherData final {
-        std::array<HourlyWeatherData, 8> hours;
-        float                            min_temperature;
-        float                            max_temperature;
+class WeatherData final {
+private:
+        std::array<HourlyWeatherData, 39> hours;
 
-        void setWeatherData(decltype(hours), decltype(min_temperature), decltype(max_temperature));
-        void setTemperatureRange();
+public:
+        static const std::unordered_map<int, WeatherCondition> weathers;
 
-        DailyWeatherData(const std::array<HourlyWeatherData, 8> hours);
+        WeatherData(const std::array<HourlyWeatherData, 39> hours);
 
-        void printDailyWeatherInfo() const;
+        std::array<HourlyWeatherData, 39>& getHours();
+        void                               printData() const;
 };
 
 #endif // WEATHER_DATA_H

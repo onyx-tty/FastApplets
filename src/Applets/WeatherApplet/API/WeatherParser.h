@@ -25,9 +25,8 @@
 #include <QWidget>
 
 #include <string>
-#include <utility>
 
-// TODO Determining API of choice
+// TODO Determining the API of choice
 
 class WeatherParser final {
 public:
@@ -37,14 +36,17 @@ public:
         void updateWeatherData();
 
 private:
-        OpenWeatherAPI   open_weather;
-        /* Other APIs */
-        DailyWeatherData weather_data;
+        /* Core */
+        WeatherData    weather_data;
+        /* APIs */
+        OpenWeatherAPI open_weather;
 
-        void      recursiveJsonIteration(const std::pair<const std::string&, const json&> response,
-                                         const std::function<void(const json&, int)>      parseItem);
-        void      extractHourlyWeather(const json& chunk, const int i);
-        const int findClosestHour() const; // TODO move elsewhere
+        void traverseJson(
+                const std::string& prime_key, const json& prime_value, std::string path,
+                const std::function<void(const std::string&, const json&, std::string, int)>& handler,
+                int& index);
+        void processWeatherItem(const std::string& key, const json& value, const std::string& path,
+                                int& index);
 };
 
 #endif // WEATHER_PARSER_H

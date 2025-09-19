@@ -55,22 +55,15 @@ WeatherCondition& WeatherCondition::operator=(WeatherCondition&& other) {
         return *this;
 }
 
-QString WeatherCondition::getWeatherConditionInfo() const {
-        qDebug() << "Name:" << name << "Detailed name:" << detailed_name;
+QString WeatherCondition::getData() const {
         std::string temporary = "{" + name + " " + detailed_name + "}";
         return QString::fromStdString(std::move(temporary));
 }
 
-HourlyWeatherData::HourlyWeatherData(decltype(time) time, decltype(weather) weather,
-                                     decltype(temperature)          temperature,
-                                     decltype(temperature_min)      temperature_min,
-                                     decltype(temperature_max)      temperature_max,
-                                     decltype(atmospheric_pressure) atmospheric_pressure,
-                                     decltype(rain) rain, decltype(humidity) humidity,
-                                     decltype(wind_speed) wind_speed) :
-        time(time), weather(weather), temperature(temperature), temperature_min(temperature_min),
-        temperature_max(temperature_max), atmospheric_pressure(atmospheric_pressure), rain(rain),
-        humidity(humidity), wind_speed(wind_speed) {}
+HourlyWeatherData::HourlyWeatherData(const WeatherCondition& default_weather) :
+        time(0), weather(&default_weather), temperature(-9999.f), temperature_min(-9999.f),
+        temperature_max(-9999.f), atmospheric_pressure(-9999), rain(-9999), humidity(-9999),
+        wind_speed(-9999) {}
 
 HourlyWeatherData::HourlyWeatherData(const HourlyWeatherData& other) :
         time(other.time), weather(other.weather), temperature(other.temperature),
@@ -114,57 +107,24 @@ HourlyWeatherData& HourlyWeatherData::operator=(HourlyWeatherData&& other) {
         return *this;
 }
 
-void HourlyWeatherData::setWeatherData(decltype(time) time, decltype(weather) weather,
-                                       decltype(temperature)          temperature,
-                                       decltype(temperature_min)      temperature_min,
-                                       decltype(temperature_max)      temperature_max,
-                                       decltype(atmospheric_pressure) atmospheric_pressure,
-                                       decltype(rain) rain, decltype(humidity) humidity,
-                                       decltype(wind_speed) wind_speed) {
-        this->time                 = time;
-        this->weather              = weather;
-        this->temperature          = temperature;
-        this->temperature_min      = temperature_min;
-        this->temperature_max      = temperature_max;
-        this->atmospheric_pressure = atmospheric_pressure;
-        this->rain                 = rain;
-        this->humidity             = humidity;
-        this->wind_speed           = wind_speed;
-}
-
-void HourlyWeatherData::printHourlyWeatherInfo() const {
-        qInfo() << "Time:" << time << "Weather:" /*<< weather.getWeatherConditionInfo() */
+void HourlyWeatherData::printData() const {
+        qInfo() << "Time:" << time << "Weather:" << weather->getData()
                 << "Temperature:" << temperature << "Min:" << temperature_min
                 << "Max:" << temperature_max << "Pressure:" << atmospheric_pressure
                 << "Rain:" << rain << "Humidity:" << humidity << "Wind speed:" << wind_speed;
 }
 
-void DailyWeatherData::setTemperatureRange() {
-        if (hours.empty()) return;
+WeatherData::WeatherData(const std::array<HourlyWeatherData, 39> hours) : hours(hours) {}
 
-        auto* min = &hours[0].temperature_min;
-        auto* max = &hours[0].temperature_max;
-
-        for (int i = 1; i < hours.size(); ++i) {
-                if (*min > hours[i].temperature_min) min = &hours[i].temperature_min;
-                if (*max < hours[i].temperature_max) max = &hours[i].temperature_max;
-        }
-
-        min_temperature = *min;
-        max_temperature = *max;
+std::array<HourlyWeatherData, 39>& WeatherData::getHours() {
+        return hours;
 }
 
-DailyWeatherData::DailyWeatherData(std::array<HourlyWeatherData, 8> hours) : hours(hours) {}
-
-void DailyWeatherData::printDailyWeatherInfo() const {
-        // TODO What day is it even!?
-        qInfo() << "Daily data: " << "min_temperature:" << min_temperature
-                << "max_temperature:" << max_temperature;
-        for (const auto& hour : hours) { hour.printHourlyWeatherInfo(); }
-        qInfo() << "\n";
+void WeatherData::printData() const {
+        for (auto& hour : hours) hour.printData();
 }
 
-const std::unordered_map<int, const WeatherCondition> HourlyWeatherData::weathers{
+const std::unordered_map<int, WeatherCondition> WeatherData::weathers{
         {200, WeatherCondition("Thunderstorm", "thunderstorm with light rain", QImage(), QImage())},
         {201, WeatherCondition("Thunderstorm", "thunderstorm with rain", QImage(), QImage())},
         {202, WeatherCondition("Thunderstorm", "thunderstorm with heavy rain", QImage(), QImage())},
@@ -227,4 +187,5 @@ const std::unordered_map<int, const WeatherCondition> HourlyWeatherData::weather
         {801, WeatherCondition("Clouds", "few clouds: 11-25%", QImage(), QImage())},
         {802, WeatherCondition("Clouds", "scattered clouds: 25-50%", QImage(), QImage())},
         {803, WeatherCondition("Clouds", "broken clouds: 51-84%", QImage(), QImage())},
-        {804, WeatherCondition("Clouds", "overcast clouds: 85-100%", QImage(), QImage())}};
+        {804, WeatherCondition("Clouds", "overcast clouds: 85-100%", QImage(), QImage())},
+        {9999, WeatherCondition("NULL", "NULL", QImage(), QImage())}};
