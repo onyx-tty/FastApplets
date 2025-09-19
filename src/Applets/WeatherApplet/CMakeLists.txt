@@ -26,6 +26,7 @@ set(INCLUDED_HEADERS
         ../../Config/SharedLayout.h
         ../../Config/SharedKeybindings.h
         ../../Config/WeatherLayout.h
+        ../../Utils/Time.h
 )
 
 set(INCLUDED_SOURCES
@@ -34,6 +35,7 @@ set(INCLUDED_SOURCES
         ../../Config/SharedLayout.cpp
         ../../Config/SharedKeybindings.cpp
         ../../Config/WeatherLayout.cpp
+        ../../Utils/Time.cpp
 )
 
 set(PROJECT_HEADERS
