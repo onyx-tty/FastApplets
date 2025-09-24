@@ -60,7 +60,7 @@ private:
 class CentralWidget final : public QWidget {
         Q_OBJECT
 public:
-        explicit CentralWidget(QWidget* parent, const QApplication& app);
+        explicit CentralWidget(QWidget* parent);
 
         QHBoxLayout* getMainLayout();
 

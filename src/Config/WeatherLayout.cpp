@@ -47,16 +47,16 @@ WeatherStyleProp::WeatherStyleProp(const QString button_stylesheet) :
         StyleProp(button_stylesheet), button_stylesheet(button_stylesheet) {};
 
 /* WeatherEnvProp */
-WeatherEnvProp::WeatherEnvProp() {};
+WeatherEnvProp::WeatherEnvProp(QString project_root_marker) : EnvProp(project_root_marker) {};
 
 // TODO Too nested, clean this up
-std::string WeatherEnvProp::getOpenWeatherKey(const QApplication& app) {
+std::string WeatherEnvProp::getOpenWeatherKey() {
         // Expect to find a 32-character long alphanumeric key after '='
         static std::pair<std::string, std::string> item{"^OPENWEATHER_API_KEY\\s*=\\s*", "\\w{32}"};
         static bool                                api_key_initialized = false;
 
         if (!api_key_initialized) {
-                std::ifstream file(global::getEnvProp().getDotenvFilepath().toStdString(),
+                std::ifstream file(global::env_prop.getDotenvFilepath().toStdString(),
                                    std::ifstream::in);
                 for (std::string line; std::getline(file, line);) {
                         std::smatch results;
@@ -79,10 +79,10 @@ std::string WeatherEnvProp::getOpenWeatherKey(const QApplication& app) {
         return item.second;
 }
 
-std::string WeatherEnvProp::getAPICallURL(const QApplication& app) {
+std::string WeatherEnvProp::getAPICallURL() {
         // id 756135 - Warsaw
         return std::string("http://api.openweathermap.org/data/2.5/forecast?id=756135&appid="
-                           + getOpenWeatherKey(app));
+                           + getOpenWeatherKey());
 }
 
 /* WeatherLayoutProp */

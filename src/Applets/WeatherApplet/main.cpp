@@ -23,7 +23,7 @@
 int main(int argc, char *argv[]) {
         // Init
         QApplication app(argc, argv);
-        WeatherMainWindow applet(app); // QMainWindow -> MainWindow -> WeatherMainWindow
+        WeatherMainWindow applet; // QMainWindow -> MainWindow -> WeatherMainWindow
 
         // Debug
         qInfo() << "Applet resolution:" << applet.size() << Qt::endl;

@@ -40,10 +40,10 @@ struct WeatherStyleProp : public StyleProp {
 };
 
 struct WeatherEnvProp : public EnvProp {
-        explicit WeatherEnvProp();
+        explicit WeatherEnvProp(QString project_root_marker);
 
-        static std::string getOpenWeatherKey(const QApplication& app);
-        static std::string getAPICallURL(const QApplication& app); // uses getOpenWeatherKey
+        static std::string getOpenWeatherKey();
+        static std::string getAPICallURL(); // uses getOpenWeatherKey
 };
 
 struct WeatherLayoutProp : public LayoutProp {
@@ -59,7 +59,7 @@ public:
         static const WeatherMainWindowProp main_window_prop;
         static const WeatherStyleProp      style_prop;
         // TODO WeatherButtonProp
-        static inline const WeatherEnvProp env_prop{};
+        static const WeatherEnvProp        env_prop;
         static const WeatherLayoutProp     layout_prop;
 
         explicit WeatherLayoutManager() = delete;

@@ -27,7 +27,7 @@ class OpenWeatherParser final {
 public:
         explicit OpenWeatherParser() = delete;
 
-        static void updateWeatherData(const QApplication& app);
+        static void updateWeatherData();
 
 private:
         static void processWeatherItem(const std::string& key, const nlohmann::json& value,

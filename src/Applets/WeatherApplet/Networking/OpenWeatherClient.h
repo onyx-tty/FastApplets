@@ -25,5 +25,5 @@ class OpenWeatherClient final {
 public:
         explicit OpenWeatherClient() = delete;
 
-        static nlohmann::json fetchWeatherReport(const QApplication& app);
+        static nlohmann::json fetchWeatherReport();
 };

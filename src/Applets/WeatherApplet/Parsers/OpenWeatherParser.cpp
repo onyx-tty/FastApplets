@@ -37,10 +37,10 @@ using json = nlohmann::json;
 using callback  = std::function<void(const std::string&, const json&, std::string, int)>;
 using predicate = std::function<bool(int)>;
 
-void OpenWeatherParser::updateWeatherData(const QApplication& app) {
+void OpenWeatherParser::updateWeatherData() {
         std::string root_key, path;
         // fetch data from OpenWeather's API call
-        const json& response   = OpenWeatherClient::fetchWeatherReport(app);
+        const json& response   = OpenWeatherClient::fetchWeatherReport();
         int         index      = 0;
         // extract and assign each node encountered in our fetched response
         auto        handleNode = [](const std::string& key, const json& data, std::string path,

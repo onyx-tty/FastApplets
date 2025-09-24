@@ -181,10 +181,9 @@ QVBoxLayout* CurrentWeekLayout::getLayout() {
 
 QVBoxLayout* CurrentWeekLayout::layout = nullptr;
 
-CentralWidget::CentralWidget(QWidget* parent, const QApplication& app) :
+CentralWidget::CentralWidget(QWidget* parent) :
         QWidget(parent), main_layout(new QHBoxLayout(this)) {
-        WeatherLayoutManager::setup(app); // We give WeatherLayoutManager access to runtime
-        OpenWeatherParser::updateWeatherData(app);
+        OpenWeatherParser::updateWeatherData();
 
         // Split main layout
         auto* left_layout  = new QVBoxLayout;

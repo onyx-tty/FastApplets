@@ -59,28 +59,22 @@ protected:
         QString dotenv_filepath;
 
 public:
-        EnvProp() = default;
-
-        // TODO Error handling for incorrect project root
-        void initProjectEnvironment(const QApplication& app, const QString project_root_marker);
+        explicit EnvProp(QString project_root_marker);
+        const QString& getProjectRoot() const;
         const QString& getDotenvFilepath() const;
         bool           isSetUp() const;
 };
 
 /* Actual Layout Manager */
 struct LayoutManager {
-private:
-        static inline EnvProp env_prop;
-
 public:
         static const MainWindowProp main_window_prop;
         static const StyleProp      style_prop;
         static const ButtonProp     button_prop;
         static const LayoutProp     layout_prop;
+        static const EnvProp        env_prop;
 
         explicit LayoutManager() = delete;
 
-        static const EnvProp& getEnvProp();
-        static void           setup(const QApplication& app);
-        static bool           isSetUp();
+        static bool isSetUp();
 };

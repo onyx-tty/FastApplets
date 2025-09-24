@@ -37,18 +37,7 @@ const ButtonProp     LayoutManager::button_prop(Qt::Alignment(Qt::AlignHCenter |
 const LayoutProp     LayoutManager::layout_prop(QSizePolicy(QSizePolicy::Expanding,
                                                             QSizePolicy::Expanding));
 /* END CONFIG */
-const EnvProp&       LayoutManager::getEnvProp() {
-        return env_prop;
-}
-
-void LayoutManager::setup(const QApplication& app) {
-        env_prop = getEnvProp();
-        env_prop.initProjectEnvironment(app, project_root_marker);
-}
-
-bool LayoutManager::isSetUp() {
-        return getEnvProp().isSetUp();
-}
+const EnvProp        LayoutManager::env_prop(project_root_marker);
 
 /* MainWindowProp */
 MainWindowProp::MainWindowProp(const QSize size, const QString title) : size(size), title(title) {};
@@ -65,8 +54,8 @@ ButtonProp::ButtonProp(const Qt::Alignment text_alignment, const QSize icon_size
 LayoutProp::LayoutProp(const QSizePolicy button_policy) : button_policy(button_policy) {};
 
 /* EnvProp */
-void EnvProp::initProjectEnvironment(const QApplication& app, const QString project_root_marker) {
-        QStringList search_paths = {app.applicationDirPath(), QDir::currentPath()};
+EnvProp::EnvProp(QString project_root_marker) {
+        QStringList search_paths = {QApplication::applicationDirPath(), QDir::currentPath()};
         qDebug() << "Determining project root...";
         for (const QString& start_directory : search_paths) {
                 qDebug() << "Searching paths...";
@@ -82,13 +71,16 @@ void EnvProp::initProjectEnvironment(const QApplication& app, const QString proj
                         }
                 }
         }
-        dotenv_filepath = project_root + "/src/Config/.env";
 
-        // if not set up correctly
+        dotenv_filepath = project_root + "/src/Config/.env";
+}
+
+const QString& EnvProp::getProjectRoot() const {
         if (!isSetUp()) {
-                qFatal("Failed to determine project root! Impossible to proceed reliably!");
-                QApplication::quit();
+                qFatal("Failed to locate project root! Impossible to proceed!");
         }
+
+        return project_root;
 }
 
 const QString& EnvProp::getDotenvFilepath() const {
@@ -102,4 +94,8 @@ const QString& EnvProp::getDotenvFilepath() const {
 
 bool EnvProp::isSetUp() const {
         return (!project_root.isEmpty() || !dotenv_filepath.isEmpty());
+}
+
+bool LayoutManager::isSetUp() {
+        return env_prop.isSetUp();
 }
