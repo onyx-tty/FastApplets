@@ -115,8 +115,7 @@ const PowerLayoutProp& PowerLayoutManager::getLayoutProp() {
         return layout_prop;
 }
 
-void PowerLayoutManager::setup(const QApplication& app, QBoxLayout* layout) {
-        LayoutManager::setup(app);
+void PowerLayoutManager::setup(QBoxLayout* layout) {
         layout_prop.initButtonList(layout);
 }
 

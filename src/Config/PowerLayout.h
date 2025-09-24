@@ -82,6 +82,6 @@ public:
         explicit PowerLayoutManager() = delete;
 
         static const PowerLayoutProp& getLayoutProp();
-        static void                   setup(const QApplication& app, QBoxLayout* layout);
+        static void                   setup(QBoxLayout* layout);
         static bool                   isSetUp();
 };

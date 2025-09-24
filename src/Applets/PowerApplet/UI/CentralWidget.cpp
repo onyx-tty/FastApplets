@@ -61,7 +61,7 @@ static const std::array<PowerButton*, 4>* initButtonList(const QApplication& app
         if (!main_layout) qFatal() << "Button list given null in" << __func__ << "shutting down!";
         // We give PowerLayoutManager access to runtime and central widget's main layout
         // to be able to relatively locate .env and create a list of buttons within our layout
-        PowerLayoutManager::setup(app, main_layout);
+        PowerLayoutManager::setup(main_layout);
         return PowerLayoutManager::getLayoutProp().getButtonList();
 }
 
