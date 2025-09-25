@@ -33,12 +33,12 @@ const keybindings PowerKeybindingManager::hibernate({Qt::Key_4});
 
 void PowerKeybindingManager::printKeybindings() {
         KeybindingManager::printKeybindings();
-        qDebug() << "Shutdown keybindings:\n";
+        qDebug() << "Shutdown keybindings:";
         std::for_each(shutdown.cbegin(), shutdown.cend(), printKeybindingKey);
-        qDebug() << "Reboot keybindings:\n";
+        qDebug() << "Reboot keybindings:";
         std::for_each(reboot.cbegin(), reboot.cend(), printKeybindingKey);
-        qDebug() << "Suspend keybindings:\n";
+        qDebug() << "Suspend keybindings:";
         std::for_each(suspend.cbegin(), suspend.cend(), printKeybindingKey);
-        qDebug() << "Hibernate keybindings:\n";
+        qDebug() << "Hibernate keybindings:";
         std::for_each(hibernate.cbegin(), hibernate.cend(), printKeybindingKey);
 }

@@ -27,6 +27,6 @@ static void printKeybindingKey(int key) { // used as function pointer to std::fo
 const keybindings KeybindingManager::quit{Qt::Key_Escape, Qt::Key_Q};
 
 void KeybindingManager::printKeybindings() {
-        qDebug() << "Quit keybindings:\n";
+        qDebug() << "Quit keybindings:";
         std::for_each(quit.cbegin(), quit.cend(), printKeybindingKey);
 }
