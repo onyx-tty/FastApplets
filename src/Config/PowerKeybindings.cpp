@@ -20,6 +20,12 @@
 #include <QDebug>
 #include <qnamespace.h>
 
+#include <algorithm>
+
+static void printKeybindingKey(int key) {
+        qDebug() << key;
+}
+
 const keybindings PowerKeybindingManager::shutdown({Qt::Key_1});
 const keybindings PowerKeybindingManager::reboot({Qt::Key_2});
 const keybindings PowerKeybindingManager::suspend({Qt::Key_3});

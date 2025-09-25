@@ -21,8 +21,6 @@
 
 using keybindings = std::unordered_set<int>;
 
-void printKeybindingKey(const int& key);
-
 struct KeybindingManager {
         static const keybindings quit;
 
