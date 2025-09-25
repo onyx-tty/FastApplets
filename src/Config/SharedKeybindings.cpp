@@ -20,8 +20,8 @@
 #include <QDebug>
 #include <qnamespace.h>
 
-static void printKeybindingKey(const int& key) { // used as function pointer to std::for_each
-        qDebug().noquote() << " " << key << " ";
+static void printKeybindingKey(int key) { // used as function pointer to std::for_each
+        qDebug() << key;
 }
 
 const keybindings KeybindingManager::quit{Qt::Key_Escape, Qt::Key_Q};
