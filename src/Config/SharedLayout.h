@@ -17,10 +17,9 @@
 
 #pragma once
 
-#include <QApplication>
-#include <QIcon>
 #include <QSize>
 #include <QSizePolicy>
+#include <QString>
 
 class PowerButton; // forward declaration
 
@@ -28,13 +27,13 @@ struct MainWindowProp {
         const QSize   size;
         const QString title;
 
-        explicit MainWindowProp(const QSize size, const QString title);
+        explicit MainWindowProp(QSize size, QString title);
 };
 
 struct StyleProp {
         const QString button_stylesheet;
 
-        explicit StyleProp(const QString button_stylesheet);
+        explicit StyleProp(QString button_stylesheet);
 };
 
 struct ButtonProp {
@@ -43,14 +42,14 @@ struct ButtonProp {
         const QSize         icon_size;
         const Qt::Alignment icon_alignment;
 
-        explicit ButtonProp(const Qt::Alignment text_alignment, const QSize icon_size,
-                            const Qt::Alignment icon_alignment);
+        explicit ButtonProp(Qt::Alignment text_alignment, QSize icon_size,
+                            Qt::Alignment icon_alignment);
 };
 
 struct LayoutProp {
         const QSizePolicy button_policy;
 
-        explicit LayoutProp(const QSizePolicy button_policy);
+        explicit LayoutProp(QSizePolicy button_policy);
 };
 
 struct EnvProp {

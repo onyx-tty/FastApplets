@@ -18,6 +18,7 @@
 #pragma once
 
 #include <QBoxLayout>
+#include <QEvent>
 #include <QIcon>
 #include <QLabel>
 #include <QPushButton>

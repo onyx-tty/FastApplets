@@ -17,12 +17,10 @@
 
 #include "SharedLayout.h"
 
+#include <QApplication>
 #include <QDebug>
 #include <QDir>
 #include <QFileInfo>
-#include <QSize>
-#include <QSizePolicy>
-#include <QString>
 
 /* These are global settings shared by applets. */
 /* Modify below to adjust their application style. */
@@ -40,18 +38,18 @@ const LayoutProp     LayoutManager::layout_prop(QSizePolicy(QSizePolicy::Expandi
 const EnvProp        LayoutManager::env_prop(project_root_marker);
 
 /* MainWindowProp */
-MainWindowProp::MainWindowProp(const QSize size, const QString title) : size(size), title(title) {};
+MainWindowProp::MainWindowProp(QSize size, QString title) : size(size), title(title) {};
 
 /* StyleProp */
-StyleProp::StyleProp(const QString button_stylesheet) : button_stylesheet(button_stylesheet) {};
+StyleProp::StyleProp(QString button_stylesheet) : button_stylesheet(button_stylesheet) {};
 
 /* ButtonProp */
-ButtonProp::ButtonProp(const Qt::Alignment text_alignment, const QSize icon_size,
-                       const Qt::Alignment icon_alignment) :
+ButtonProp::ButtonProp(Qt::Alignment text_alignment, QSize icon_size,
+                       Qt::Alignment icon_alignment) :
         text_alignment(text_alignment), icon_size(icon_size), icon_alignment(icon_alignment) {};
 
 /* LayoutProp */
-LayoutProp::LayoutProp(const QSizePolicy button_policy) : button_policy(button_policy) {};
+LayoutProp::LayoutProp(QSizePolicy button_policy) : button_policy(button_policy) {};
 
 /* EnvProp */
 EnvProp::EnvProp(QString project_root_marker) {

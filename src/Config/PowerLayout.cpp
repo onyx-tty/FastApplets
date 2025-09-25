@@ -19,16 +19,12 @@
 #include "../Applets/PowerApplet/UI/Widgets/PowerButton.h"
 
 #include <QApplication>
-#include <QSizePolicy>
-#include <QString>
-
-#include <array>
 
 using global = LayoutManager;
 
 /* These are settings exclusive to the PowerApplet. Modify below to adjust application style. */
 /* To overwrite defaults, replace parts preceded by the global namespace. */
-/* For modified defaults, refer to DefaultLayout.cpp */
+/* For modified defaults, refer to SharedLayout.cpp */
 
 /* Button attributes unique to this layout */
 // prevent external linkage via static
@@ -59,31 +55,30 @@ PowerLayoutProp           PowerLayoutManager::layout_prop(global::layout_prop.bu
 /* END CONFIG */
 
 /* PowerMainWindowProp */
-PowerMainWindowProp::PowerMainWindowProp(const QSize size, const QString title) :
+PowerMainWindowProp::PowerMainWindowProp(QSize size, QString title) :
         MainWindowProp(size, title), size(size), title(title) {};
 
 /* PowerStyleProp */
-PowerStyleProp::PowerStyleProp(const QString button_stylesheet) :
+PowerStyleProp::PowerStyleProp(QString button_stylesheet) :
         StyleProp(button_stylesheet), button_stylesheet(button_stylesheet) {};
 
 /* PowerButtonProp */
 // TODO Text size
-PowerButtonProp::PowerButtonProp(const Qt::Alignment text_alignment, const QSize icon_size,
-                                 const Qt::Alignment icon_alignment) :
+PowerButtonProp::PowerButtonProp(Qt::Alignment text_alignment, QSize icon_size,
+                                 Qt::Alignment icon_alignment) :
         ButtonProp(text_alignment, icon_size, icon_alignment), text_alignment(text_alignment),
         icon_size(icon_size), icon_alignment(icon_alignment) {};
 
 /* PowerLayoutProp */
-PowerLayoutProp::PowerLayoutProp(const QSizePolicy            button_policy,
-                                 const std::array<QIcon, 4>   button_icons,
-                                 const std::array<QString, 4> button_text) :
+PowerLayoutProp::PowerLayoutProp(QSizePolicy            button_policy,
+                                 std::array<QIcon, 4>   button_icons,
+                                 std::array<QString, 4> button_text) :
         LayoutProp(button_policy), button_policy(button_policy), button_icons(button_icons),
         button_text(button_text) {};
 
 void PowerLayoutProp::initButtonList(QBoxLayout* layout) {
         if (!layout) {
                 qFatal() << "Invalid layout in" << __func__ << "!\n";
-                QApplication::quit();
         }
         if (button_list) {
                 qWarning() << "Button list is already initialized but there was an attempt to"
