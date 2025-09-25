@@ -17,6 +17,9 @@
 
 #include "PowerActionManager.h"
 
+#include <QDBusConnection>
+#include <QDBusConnectionInterface>
+#include <QDBusInterface>
 #include <QDBusPendingReply>
 #include <QDebug>
 #include <QList>
