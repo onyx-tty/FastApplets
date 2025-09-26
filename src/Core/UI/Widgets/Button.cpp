@@ -79,7 +79,7 @@ void Button::debugAlignIcon(const QString& label_text) {
         debug_text->setAlignment(lm::button_prop.text_alignment);
         debug_text->setAttribute(Qt::WA_TransparentForMouseEvents, true);
         layout()->addWidget(debug_text);
-        qInfo() << "debug_text successfully initialized with text:" << label_text;
+        qDebug() << "debug_text successfully initialized with text:" << label_text;
 }
 
 void Button::setFocus(bool is_focused) {
