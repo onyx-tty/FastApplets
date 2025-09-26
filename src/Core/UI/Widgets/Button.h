@@ -21,6 +21,7 @@
 #include <QEvent>
 #include <QIcon>
 #include <QLabel>
+#include <QPaintEvent>
 #include <QPushButton>
 #include <QString>
 

@@ -20,7 +20,6 @@
 
 #include <QDebug>
 #include <QGridLayout>
-#include <QLabel>
 #include <QStyleOptionButton>
 #include <QStylePainter>
 
