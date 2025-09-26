@@ -31,21 +31,21 @@ protected:
         bool    is_focused;
         QLabel* debug_text;
 
-        explicit Button(QBoxLayout* const layout,
-                        const QIcon&      icon, // TODO default icon
-                        const QString&    text);
+        explicit Button(QBoxLayout*    layout,
+                        const QIcon&   icon, // TODO default icon
+                        const QString& text);
         virtual ~Button() = 0;
 
         /* Modified reimplementation of paintEvent that allows for manual setting of focus */
         void paintEvent(QPaintEvent*) override;
         /* Modified reimplementation that turns off the distracting mouse hover effect */
-        bool event(QEvent* const event) override;
+        bool event(QEvent* event) override;
         /* Workaround which aligns buttons to a desired position,
            and keeps the text realigned and separate via a proxy label */
         void debugAlignIcon(const QString& label_text);
 
 public:
-        void                  setFocus(bool is_focused);
-        const bool            isFocused() const;
-        virtual const QString text() const; /* Returns text from the label, not the button itself */
+        void            setFocus(bool is_focused);
+        bool            isFocused() const;
+        virtual QString text() const; /* Returns text from the label, not the button itself */
 };

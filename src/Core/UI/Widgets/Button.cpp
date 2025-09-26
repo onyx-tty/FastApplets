@@ -30,7 +30,7 @@ using lm = LayoutManager;
 // Inheriting constructor defaults from from QPushButton,
 // but customizing the icon, icon size and the alignment of that button
 // TODO Default icon
-Button::Button(QBoxLayout* const layout, const QIcon& icon, const QString& text) :
+Button::Button(QBoxLayout* layout, const QIcon& icon, const QString& text) :
         QPushButton(layout ? layout->widget() : nullptr), is_focused(false) {
         if (!layout) qFatal() << "Button constructor received a null layout! Bad code!";
 
@@ -64,7 +64,7 @@ void Button::paintEvent(QPaintEvent*) {
         style()->drawControl(QStyle::CE_PushButton, &option, &painter, this);
 }
 
-bool Button::event(QEvent* const event) {
+bool Button::event(QEvent* event) {
         switch (event->type()) { // Ignore mouse hover, forward anything else
         case QEvent::HoverMove:
         case QEvent::HoverEnter:
@@ -83,15 +83,15 @@ void Button::debugAlignIcon(const QString& label_text) {
         qInfo() << "debug_text successfully initialized with text:" << label_text;
 }
 
-void Button::setFocus(const bool is_focused) {
+void Button::setFocus(bool is_focused) {
         this->is_focused = is_focused;
         update();
 }
 
-const bool Button::isFocused() const {
+bool Button::isFocused() const {
         return is_focused;
 }
 
-const QString Button::text() const { // Amendment to return text from the label, not the button itself
+QString Button::text() const { // Amendment to return text from the label, not the button itself
         return debug_text->text();
 }
