@@ -21,10 +21,9 @@
 #include <ctime>
 #include <optional>
 
-time_t findCurrentUnixTime();
-time_t findMidnight();
-time_t findMidnight(const std::chrono::time_point<std::chrono::system_clock> timedate);
-int    findHourSpacing(const time_t later, const time_t earlier);
-std::optional<const int> findWeatherBlocsFitCount(const time_t later, const time_t earlier,
-                                                  const int hour_spacing);
-time_t                   findCloserHour(const time_t hour1, const time_t hour2); 
+time_t             findCurrentUnixTime();
+time_t             findMidnight();
+time_t             findMidnight(std::chrono::time_point<std::chrono::system_clock> timedate);
+int                findHourSpacing(time_t later, time_t earlier);
+std::optional<int> findWeatherBlocsFitCount(time_t later, time_t earlier, int hour_spacing);
+time_t             findCloserHour(time_t hour1, time_t hour2);

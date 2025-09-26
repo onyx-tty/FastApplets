@@ -51,20 +51,20 @@ time_t findMidnight() {
 
 // Used to dynamically predict the total numbers of indexes dedicated for each day
 // i.e. if each index is spaced by 3 hours then we can expect 8 indexes/data blocs per day
-int findHourSpacing(const time_t later, const time_t earlier) {
+int findHourSpacing(time_t later, time_t earlier) {
         if (later < earlier) {
                 qCritical() << "Passed argument for \"later\" smaller than \"earlier\" in"
                             << __func__;
                 QApplication::quit();
         }
-        const int   time_difference = later - earlier;
+        const int    time_difference = later - earlier;
         const ldiv_t hour_spacing    = std::ldiv(time_difference, epoch_duration::hour);
 
         if (hour_spacing.rem != 0) {
-                QString res = QString::number(hour_spacing.quot) + "r"
-                            + QString::number(hour_spacing.rem);
+                QString rest = QString::number(hour_spacing.quot) + "r"
+                             + QString::number(hour_spacing.rem);
                 qWarning() << __func__ << "detected that hours aren't spaced evenly!"
-                           << time_difference << "/" << epoch_duration::hour << "=" << std::move(res);
+                           << time_difference << "/" << epoch_duration::hour << "=" << rest;
         }
 
         return hour_spacing.quot;
@@ -77,8 +77,7 @@ int findHourSpacing(const time_t later, const time_t earlier) {
 // APIs are expected to pull data that is distributed evenly, meaning that there should be
 // specific hour spacing.
 // TODO Perhaps there is a safer way to ensure that our data cannot be tampered with along the way
-std::optional<const int> findWeatherBlocsFitCount(const time_t later, const time_t earlier,
-                                                  const int hour_spacing) {
+std::optional<int> findWeatherBlocsFitCount(time_t later, time_t earlier, int hour_spacing) {
         qDebug() << __func__ << "has received" << later << "as later and" << earlier
                  << "as earlier, spacing is" << hour_spacing;
         if (later < earlier) {
@@ -100,12 +99,12 @@ std::optional<const int> findWeatherBlocsFitCount(const time_t later, const time
         // find how many weather blocs can fit in the remaining time
         const div_t indexes = std::div((int) (time_elapsed / hour), (int) (weather_bloc / hour));
         if (indexes.rem != 0) { // if remainder found
-                QString res = QString::number(indexes.quot) + "r" + QString::number(indexes.rem);
+                QString rest = QString::number(indexes.quot) + "r" + QString::number(indexes.rem);
                 qCritical() << __func__
                             << "detected that hours cannot be calculated spaced without loss!"
                             << "Timestamp corruption!" << time_elapsed << "/" << "(" << hour << "*"
                             << hour_spacing << ")"
-                            << "=" << std::move(res);
+                            << "=" << rest;
                 QApplication::quit();
         }
 
@@ -113,7 +112,7 @@ std::optional<const int> findWeatherBlocsFitCount(const time_t later, const time
         return (indexes.quot != 0) ? std::optional(indexes.quot) : std::nullopt;
 }
 
-time_t findCloserHour(const time_t hour1, const time_t hour2) {
+time_t findCloserHour(time_t hour1, time_t hour2) {
         const time_t now   = findCurrentUnixTime();
         const time_t diff1 = std::abs(hour1 - now);
         const time_t diff2 = std::abs(hour2 - now);
