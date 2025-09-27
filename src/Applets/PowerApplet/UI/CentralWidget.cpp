@@ -24,13 +24,12 @@
 
 using Keybinding = PowerKeybindingManager;
 
-// prevent external linkage via static
 static bool isPowerKey(int key) {
         return (Keybinding::shutdown.contains(key) || Keybinding::reboot.contains(key)
                 || Keybinding::suspend.contains(key) || Keybinding::hibernate.contains(key));
 };
 
-PowerButton* findButtonWithAction(const QString&& action) {
+static PowerButton* findButtonWithAction(const QString&& action) {
         // TODO Too nested, clean up
         std::unordered_set<QString> acceptable_strings = {"PowerOff", "Reboot", "Suspend",
                                                           "Hibernate"};
