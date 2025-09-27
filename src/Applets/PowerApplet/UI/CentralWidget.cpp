@@ -105,8 +105,8 @@ void CentralWidget::keyPressEvent(QKeyEvent* event) {
                 qWarning() << "Warning, received null keypress event in" << __func__;
                 return;
         }
-        qInfo() << "----------------------------------------";
-        qInfo() << "INFO! keyPressEvent registered!";
+        qDebug() << "----------------------------------------";
+        qDebug() << "keyPressEvent registered!";
         current_action.key = event->key();
 
         if (Keybinding::quit.contains(current_action.key)) { // Quit key pressed
@@ -141,9 +141,9 @@ void CentralWidget::keyPressEvent(QKeyEvent* event) {
         }
 
         // Print current key combination
-        qInfo() << "Current key combination:"
-                << (last_action.key != Qt::Key_unknown ? QString::number(last_action.key) : "NULL")
-                << QString::number(current_action.key);
+        qDebug() << "Current key combination:"
+                 << (last_action.key != Qt::Key_unknown ? QString::number(last_action.key) : "NULL")
+                 << QString::number(current_action.key);
         updateActions();
 }
 
