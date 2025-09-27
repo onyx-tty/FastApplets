@@ -20,6 +20,13 @@
 #include <QDBusMessage>
 #include <QString>
 
+// org.freedesktop.login1 — The D-Bus interface of systemd-logind
+struct DBusTarget {
+        static constexpr const char* name      = "org.freedesktop.login1";
+        static constexpr const char* path      = "/org/freedesktop/login1";
+        static constexpr const char* interface = "org.freedesktop.login1.Manager";
+};
+
 class PowerActionManager final {
 public:
         static QDBusMessage sendPowerAction(const QString& method);

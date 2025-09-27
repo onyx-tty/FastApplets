@@ -26,23 +26,16 @@
 #include <QVariant>
 #include <QVariantMap>
 
-// org.freedesktop.login1 — The D-Bus interface of systemd-logind
-namespace dbus_target {
-static const char* name      = "org.freedesktop.login1";
-static const char* path      = "/org/freedesktop/login1";
-static const char* interface = "org.freedesktop.login1.Manager";
-} // namespace dbus_target
-
 // TODO Check for validity of power action
 QDBusMessage PowerActionManager::sendPowerAction(const QString& method) {
         const auto connection = QDBusConnection::connectToBus(QDBusConnection::SystemBus,
-                                                              dbus_target::name);
-        const auto proxy      = QDBusInterface(dbus_target::name, dbus_target::path,
-                                               dbus_target::interface, connection, nullptr);
+                                                              DBusTarget::name);
+        const auto proxy = QDBusInterface(DBusTarget::name, DBusTarget::path, DBusTarget::interface,
+                                          connection, nullptr);
         if (!proxy.isValid()) { qFatal("D-Bus proxy is invalid!"); }
 
-        auto            call = QDBusMessage::createMethodCall(dbus_target::name, dbus_target::path,
-                                                              dbus_target::interface, method);
+        auto            call = QDBusMessage::createMethodCall(DBusTarget::name, DBusTarget::path,
+                                                              DBusTarget::interface, method);
         QList<QVariant> arguments;
         arguments << QVariant::fromValue(true);
         call.setArguments(arguments);
