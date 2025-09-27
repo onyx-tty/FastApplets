@@ -20,6 +20,8 @@
 #include "../../../Core/UI/MainWindow.h"
 #include "CentralWidget.h"
 
+#include <QWidget>
+
 class PowerMainWindow final : public MainWindow {
         Q_OBJECT
 
