@@ -18,8 +18,7 @@
 #include "PowerButton.h"
 #include "../DBus/PowerActionManager.h"
 
-PowerButton::PowerButton(QBoxLayout* const layout, const QIcon icon, const QString text,
-                         const QString dbus_action) :
+PowerButton::PowerButton(QBoxLayout* layout, QIcon icon, QString text, QString dbus_action) :
         Button(layout, icon, text), dbus_action(dbus_action) {
         connect(this, &PowerButton::clicked,
                 [&dbus_action]() { PowerActionManager::sendPowerAction(dbus_action); });

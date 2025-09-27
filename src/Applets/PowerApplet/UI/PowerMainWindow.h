@@ -24,7 +24,7 @@ class PowerMainWindow final : public MainWindow {
         Q_OBJECT
 
 public:
-        CentralWidget* const central_widget;
+        CentralWidget* central_widget;
 
         PowerMainWindow(const QApplication& app, QWidget* const parent = nullptr);
 };
