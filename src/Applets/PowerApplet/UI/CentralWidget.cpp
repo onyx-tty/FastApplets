@@ -55,9 +55,7 @@ PowerButton* findButtonWithAction(const QString&& action) {
         qFatal("No button associated with action %s, terminating!", action.toStdString().c_str());
 };
 
-// prevent external linkage via static
-static const std::array<PowerButton*, 4>* initButtonList(const QApplication& app,
-                                                         QBoxLayout*         main_layout) {
+static const std::array<PowerButton*, 4>* initButtonList(QBoxLayout* main_layout) {
         if (!main_layout) qFatal() << "Button list given null in" << __func__ << "shutting down!";
         // We give PowerLayoutManager access to runtime and central widget's main layout
         // to be able to relatively locate .env and create a list of buttons within our layout
@@ -94,9 +92,9 @@ void Action::updatePowerButton() {
         }
 };
 
-CentralWidget::CentralWidget(QWidget* parent, const QApplication& app) :
+CentralWidget::CentralWidget(QWidget* parent) :
         QWidget(parent), main_layout(new QHBoxLayout(this)), last_action(Qt::Key_unknown, nullptr),
-        current_action(Qt::Key_unknown, nullptr), button_list(initButtonList(app, main_layout)) {
+        current_action(Qt::Key_unknown, nullptr), button_list(initButtonList(main_layout)) {
         if (!parent)
                 qFatal() << "Parent is nullptr in" << __func__
                          << "! Shutting down to avoid memory leaks...";

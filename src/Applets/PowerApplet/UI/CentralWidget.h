@@ -46,7 +46,7 @@ class CentralWidget final : public QWidget {
 public:
         QBoxLayout* main_layout;
 
-        explicit CentralWidget(QWidget* parent, const QApplication& app);
+        explicit CentralWidget(QWidget* parent);
 
         void keyPressEvent(QKeyEvent* event) override;
         void lastKeyUpdateEvent(QKeyEvent* event);

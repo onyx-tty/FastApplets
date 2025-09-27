@@ -23,7 +23,7 @@
 int main(int argc, char* argv[]) {
         // Init
         QApplication    app(argc, argv);
-        PowerMainWindow applet(app); // QMainWindow -> MainWindow -> PowerMainWindow
+        PowerMainWindow applet; // QMainWindow -> MainWindow -> PowerMainWindow
 
         // Debug
         qInfo() << "Applet resolution:" << applet.size() << Qt::endl;
