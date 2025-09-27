@@ -49,10 +49,10 @@ QDBusMessage PowerActionManager::sendPowerAction(const QString& method) {
 
         QDBusPendingReply<QVariantMap> response = connection.asyncCall(call);
         response.waitForFinished();
-        return responseHandler(std::move(response.reply()));
+        return handleResponse(std::move(response.reply()));
 }
 
-QDBusMessage PowerActionManager::responseHandler(QDBusMessage response) {
+QDBusMessage PowerActionManager::handleResponse(QDBusMessage response) {
         if (response.type() == QDBusMessage::ErrorMessage) {
                 qCritical() << "Error sending action. Response: " << response.errorMessage();
         } else {

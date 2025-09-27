@@ -27,5 +27,5 @@ public:
 private:
         explicit PowerActionManager() = delete;
 
-        static QDBusMessage responseHandler(QDBusMessage response);
+        static QDBusMessage handleResponse(QDBusMessage response);
 };
