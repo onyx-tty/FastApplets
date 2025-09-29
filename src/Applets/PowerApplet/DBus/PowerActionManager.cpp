@@ -16,41 +16,34 @@
    along with this program.  If not, see <https://www.gnu.org/licenses/>. */
 
 #include "PowerActionManager.h"
+#include "../../../DBus/DBusRequester.h"
+#include "../../../DBus/DBusTarget.h"
 
 #include <QDBusConnection>
 #include <QDBusConnectionInterface>
 #include <QDBusInterface>
-#include <QDBusPendingReply>
 #include <QDebug>
 #include <QList>
 #include <QVariant>
-#include <QVariantMap>
 
 // TODO Check for validity of power action
-QDBusMessage PowerActionManager::sendPowerAction(const QString& method) {
-        const auto connection = QDBusConnection::connectToBus(QDBusConnection::SystemBus,
-                                                              DBusTarget::name);
-        const auto proxy = QDBusInterface(DBusTarget::name, DBusTarget::path, DBusTarget::interface,
-                                          connection, nullptr);
-        if (!proxy.isValid()) { qFatal("D-Bus proxy is invalid!"); }
+// org.freedesktop.login1 — The D-Bus interface of systemd-logind
+void PowerActionManager::sendPowerAction(const QString& method) {
+        constexpr const char* name = "org.freedesktop.login1";
+        constexpr const char* path = "/org/freedesktop/login1";
+        constexpr const char* interface = "org.freedesktop.login1.Manager";
+        constexpr auto systemd_logind = DBusTarget{name, path, interface};
 
-        auto            call = QDBusMessage::createMethodCall(DBusTarget::name, DBusTarget::path,
-                                                              DBusTarget::interface, method);
-        QList<QVariant> arguments;
-        arguments << QVariant::fromValue(true);
-        call.setArguments(arguments);
-
-        QDBusPendingReply<QVariantMap> response = connection.asyncCall(call);
-        response.waitForFinished();
-        return handleResponse(std::move(response.reply()));
+        DBusRequester::call(systemd_logind, method);
+        printReply(DBusRequester::getReply());
 }
 
-QDBusMessage PowerActionManager::handleResponse(QDBusMessage response) {
-        if (response.type() == QDBusMessage::ErrorMessage) {
-                qCritical() << "Error sending action. Response: " << response.errorMessage();
-        } else {
-                qInfo() << response;
-        }
+void PowerActionManager::printReply(const QDBusPendingReply<QVariantMap>& reply) {
+        DBusRequester::waitForFinished();
 
-        return std::move(response);
+        if (reply.reply().type() == QDBusMessage::ErrorMessage) {
+                qCritical() << "Error sending action. Response: " << reply.reply().errorMessage();
+        } else {
+                qInfo() << "Success sending power action!";
+        }
 }

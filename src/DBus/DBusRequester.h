@@ -17,17 +17,21 @@
 
 #pragma once
 
+#include "DBusTarget.h"
+
 #include <QDBusMessage>
 #include <QDBusPendingReply>
 #include <QString>
 #include <QVariantMap>
 
-class PowerActionManager final {
-public:
-        static void sendPowerAction(const QString& method);
-
+class DBusRequester final {
 private:
-        explicit PowerActionManager() = delete;
+        static QDBusPendingReply<QVariantMap> pending_reply;
 
-        static void printReply(const QDBusPendingReply<QVariantMap>& response);
+        DBusRequester() = delete;
+
+public:
+        static void call(const DBusTarget& target, QString method);
+        static void waitForFinished();
+        static const QDBusPendingReply<QVariantMap>& getReply();
 };

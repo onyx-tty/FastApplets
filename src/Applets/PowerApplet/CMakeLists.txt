@@ -1,13 +1,15 @@
 cmake_minimum_required(VERSION 3.16)
 
-project(power-applet VERSION 0.14.0 LANGUAGES CXX)
+project(power-applet VERSION 0.15.0 LANGUAGES CXX)
 
 # Internal structure
 add_library(power_dbus
         DBus/PowerActionManager.cpp)
 add_library(PowerApplet::DBus ALIAS power_dbus)
 target_include_directories(power_dbus PRIVATE ${CMAKE_CURRENT_LIST_DIR}/DBus)
-target_link_libraries(power_dbus PUBLIC Qt${QT_VERSION_MAJOR}::DBus)
+target_link_libraries(power_dbus PUBLIC
+        Qt${QT_VERSION_MAJOR}::DBus
+        DBus)
 
 add_library(power_ui
         UI/PowerMainWindow.cpp

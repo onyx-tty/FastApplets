@@ -17,17 +17,8 @@
 
 #pragma once
 
-#include <QDBusMessage>
-#include <QDBusPendingReply>
-#include <QString>
-#include <QVariantMap>
-
-class PowerActionManager final {
-public:
-        static void sendPowerAction(const QString& method);
-
-private:
-        explicit PowerActionManager() = delete;
-
-        static void printReply(const QDBusPendingReply<QVariantMap>& response);
+struct DBusTarget {
+        const char* name;
+        const char* path;
+        const char* interface;
 };

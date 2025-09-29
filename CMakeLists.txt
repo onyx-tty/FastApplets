@@ -46,6 +46,11 @@ add_subdirectory(
         src/Core
         build/Core-build)
 
+#+ DBus
+add_subdirectory(
+        src/DBus
+        build/DBus-build)
+
 #+ Time
 #add_subdirectory(
 #        src/Time
@@ -78,6 +83,7 @@ endif()
 # Linked libraries and options
 if(BUILD_POWERAPPLET)
         target_link_libraries(power-applet PRIVATE
+                DBus
                 Core::AllLibs
                 PowerApplet::UI
                 PowerApplet::DBus)
