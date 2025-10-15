@@ -1,10 +1,11 @@
 #+TITLE: Pretty Applets TODO
 
 * Applets
-** PROJ PowerApplet [1/2]
+** PROJ PowerApplet [2/4]
 *** DONE Keybindings
-*** TODO Compatibility with non-Systemd Linux inits
-*** TODO DBus client class for PowerActionManager to utiliz
+*** DONE DBus client class for PowerActionManager
+*** TODO Shell command mode as an alternative to DBus mode
+*** TODO Configurable DBus target
 
 ** PROJ WeatherApplet [4/6]
 *** DONE Curl
@@ -20,9 +21,13 @@
 
 ** TODO Highly configurable list of programs/shell commands
 
-* Base [3/13]
+* Base [4/13]
 ** DONE LICENSE
 ** TODO README.md
+*** [ ] Basics
+*** [ ] Requirement instructions
+*** [ ] Build instructions
+*** [ ] Usage instructions
 ** TODO TODO.md
 ** DONE Icon embedment in the executable
 ** TODO Fallback icons
@@ -30,9 +35,9 @@
 ** TODO Customizable:
 *** [X] Window dimensions
 *** [X] Icons
-** TODO TOML configuration
-** TODO Files with repeating constants and type aliases
+** DONE TOML configuration
+** TODO Headers with repeating constants and type aliases
 ** DONE Centralized CMake structure
 ** TODO Enforced static compilation of private libraries
 ** TODO Cleaner build directory
-** TODO Better management of project build types
+** TODO CMake build types
