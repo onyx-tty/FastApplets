@@ -54,6 +54,11 @@ add_subdirectory(
         src/DBus
         build/DBus-build)
 
+#+ Environment
+add_subdirectory(
+        src/Environment
+        Environment-build)
+
 #+ Time
 #add_subdirectory(
 #        src/Time
