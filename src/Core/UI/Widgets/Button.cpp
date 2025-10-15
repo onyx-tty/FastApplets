@@ -16,14 +16,14 @@
    along with this program.  If not, see <https://www.gnu.org/licenses/>. */
 
 #include "Button.h"
-#include "../Config/SharedLayout.h"
+#include "../../Config/Config.h"
 
 #include <QDebug>
 #include <QGridLayout>
 #include <QStyleOptionButton>
 #include <QStylePainter>
 
-using lm = LayoutManager;
+QString stylesheet = "text-align: center top;";
 
 /* Initializes a button of choice with uniform design */
 // Inheriting constructor defaults from from QPushButton,
@@ -31,11 +31,11 @@ using lm = LayoutManager;
 // TODO Default icon
 Button::Button(QBoxLayout* layout, const QIcon& icon, const QString& text) :
         QPushButton(layout ? layout->widget() : nullptr), is_focused(false) {
-        if (!layout) qFatal() << "Button constructor received a null layout! Bad code!";
+        if (!layout) { qFatal() << "Button constructor received a null layout! Bad code!"; }
 
         setIcon(icon);
-        setIconSize(lm::button_prop.icon_size);
-        setSizePolicy(lm::layout_prop.button_policy);
+        setIconSize(Config::PrimaryButtonProperties::getIconSize());
+        setSizePolicy(Config::PrimaryButtonProperties::getPolicy());
         setAutoDefault(false);
         debugAlignIcon(text);
         layout->addWidget(this);
@@ -74,9 +74,9 @@ bool Button::event(QEvent* event) {
 
 void Button::debugAlignIcon(const QString& label_text) {
         setLayout(new QGridLayout);
-        setStyleSheet(QString(lm::style_prop.button_stylesheet));
+        setStyleSheet(stylesheet);
         debug_text = new QLabel(label_text, this); // label that acts as a button text replacement
-        debug_text->setAlignment(lm::button_prop.text_alignment);
+        debug_text->setAlignment(Config::PrimaryButtonProperties::getTextAlignment());
         debug_text->setAttribute(Qt::WA_TransparentForMouseEvents, true);
         layout()->addWidget(debug_text);
         qDebug() << "debug_text successfully initialized with text:" << label_text;

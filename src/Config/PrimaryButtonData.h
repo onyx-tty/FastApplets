@@ -17,14 +17,9 @@
 
 #pragma once
 
-#include <unordered_set>
+#include <QString>
 
-using keybindings = std::unordered_set<int>;
-
-struct KeybindingManager {
-        static const keybindings quit;
-
-        explicit KeybindingManager() = delete;
-
-        static void printKeybindings();
+struct PrimaryButtonData final {
+        QString identifier;
+        QString text;
 };

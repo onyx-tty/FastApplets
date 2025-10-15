@@ -15,6 +15,7 @@
    You should have received a copy of the GNU General Public License
    along with this program.  If not, see <https://www.gnu.org/licenses/>. */
 
+#include "../../Config/TomlConfigParser.h"
 #include "UI/PowerMainWindow.h"
 
 #include <QApplication>
@@ -22,7 +23,9 @@
 
 int main(int argc, char* argv[]) {
         // Init
-        QApplication    app(argc, argv);
+        QApplication app(argc, argv);
+        TomlConfigParser::getInstance().parseConfig();
+
         PowerMainWindow applet; // QMainWindow -> MainWindow -> PowerMainWindow
 
         // Debug

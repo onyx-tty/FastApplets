@@ -16,10 +16,10 @@
    along with this program.  If not, see <https://www.gnu.org/licenses/>. */
 
 #include "PowerMainWindow.h"
-#include "../../Config/PowerLayout.h"
+#include "../../Config/Config.h"
 
 PowerMainWindow::PowerMainWindow(QWidget* parent) :
         MainWindow(parent), central_widget(new CentralWidget(this)) {
-        resize(PowerLayoutManager::main_window_prop.size);
+        resize(Config::WindowProperties::getSize());
         setCentralWidget(central_widget);
 }

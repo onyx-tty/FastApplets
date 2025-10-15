@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.16)
 
-project(core VERSION 0.1.1 LANGUAGES CXX)
+project(core VERSION 0.2.0 LANGUAGES CXX)
 
 # Internal structure
 add_library(core_ui
@@ -9,7 +9,7 @@ add_library(core_ui
 add_library(Core::UI ALIAS core_ui)
 target_include_directories(core_ui PUBLIC ${CMAKE_CURRENT_LIST_DIR}/UI)
 target_link_libraries(core_ui PUBLIC
-        Config::Shared
+        Config
         Qt${QT_VERSION_MAJOR}::Widgets)
 
 add_library(core_all_libs INTERFACE)

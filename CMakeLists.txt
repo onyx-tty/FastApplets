@@ -82,8 +82,7 @@ if(QT_VERSION_MAJOR GREATER_EQUAL 6)
 else()
         if (BUILD_POWERAPPLET)
                 add_executable(power-applet
-                        ${POWERAPPLET_SOURCE_DIR}/main.cpp
-                        ${POWERAPPLET_RESOURCES})
+                        ${POWERAPPLET_SOURCE_DIR}/main.cpp)
         endif()
 endif()
 

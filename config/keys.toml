@@ -1,0 +1,8 @@
+[global]
+quit = ["Escape", "Q"]
+
+[power_applet]
+primary_button1 = ["1"]
+primary_button2 = ["2"]
+primary_button3 = ["3"]
+primary_button4 = ["4"]

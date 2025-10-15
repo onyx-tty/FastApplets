@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.16)
 
-project(power-applet VERSION 0.15.0 LANGUAGES CXX)
+project(power-applet VERSION 0.16.0 LANGUAGES CXX)
 
 # Internal structure
 add_library(power_dbus
@@ -12,12 +12,13 @@ target_link_libraries(power_dbus PUBLIC
         DBus)
 
 add_library(power_ui
+        ${POWERAPPLET_RESOURCES}
         UI/PowerMainWindow.cpp
         UI/CentralWidget.cpp
         UI/Widgets/PowerButton.cpp)
 add_library(PowerApplet::UI ALIAS power_ui)
 target_include_directories(power_ui PRIVATE ${CMAKE_CURRENT_LIST_DIR}/UI)
 target_link_libraries(power_ui PRIVATE
+        Config
         Core::UI
-        PowerApplet::DBus # We call power actions on button press, so we need the DBus module
-        Config::PowerApplet)
+        PowerApplet::DBus) # Power actions on button press, so DBus module is needed

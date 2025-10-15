@@ -24,7 +24,9 @@
 #include <QKeyEvent>
 #include <QWidget>
 
-#include <array>
+#include <vector>
+
+PowerButton* findButtonWithAction(std::vector<PowerButton*> buttons, const QString& action);
 
 // TODO Rework Action, get key or button through a getter
 //	and automatically apply updatePowerButton to each use of
@@ -38,7 +40,9 @@ struct Action {
 
         void reset();
         // Find out if key is a part of any keybindings and adjust
-        void updatePowerButton();
+        void updatePowerButton(std::vector<PowerButton*> buttons);
+
+        friend PowerButton* findButtonWithAction(std::vector<PowerButton *> buttons, const QString &action);
 };
 
 class CentralWidget final : public QWidget {
@@ -57,11 +61,13 @@ public:
         void clickButton(QKeyEvent* event);
 
 private:
-        Action                             last_action;
-        Action                             current_action;
-        const std::array<PowerButton*, 4>* button_list;
+        Action                          last_action;
+        Action                          current_action;
+        const std::vector<PowerButton*> button_list;
 
         // TODO Optimize
         void updateActions();
         void resetActions();
+
+        friend PowerButton* findButtonWithAction(std::vector<PowerButton *> buttons, const QString &action);
 };

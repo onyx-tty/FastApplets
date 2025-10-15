@@ -1,0 +1,31 @@
+[global]
+[global.window]
+size = [960, 220]
+title = "test_window"
+[global.primary_button]
+text_alignment = "top"
+icon_alignment = "center"
+icon_size = [64, 64]
+policy = "expanding"
+
+[power_applet]
+#[power_applet.window]
+#size = [960, 220]
+#title = "test_window"
+#[power_applet.primary_button]
+#text_alignment = "top"
+#icon_alignment = "center"
+#icon_size = [64, 64]
+#policy = "expanding"
+[power_applet.layout]
+primary_buttons = [ ["shutdown", "Shutdown"], ["reboot", "Reboot"], ["suspend", "Suspend"], ["hibernate", "Hibernate"] ]
+
+#[weather_applet]
+#[weather_applet.window]
+#size = [960, 220]
+#title = "test_window"
+#[weather_applet.primary_button]
+#text_alignment = "top"
+#icon_alignment = "center"
+#icon_size = [64, 64]
+#policy = "expanding"
