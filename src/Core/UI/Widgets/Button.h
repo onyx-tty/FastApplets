@@ -25,11 +25,15 @@
 #include <QPushButton>
 #include <QString>
 
+
+// TODO Restore mouse click effect
 class Button : public QPushButton {
         Q_OBJECT
 
 protected:
+        // TODO Potentially not needed
         bool    is_focused;
+        // TODO Rename debug_ext
         QLabel* debug_text;
 
         explicit Button(QBoxLayout*    layout,
@@ -37,16 +41,17 @@ protected:
                         const QString& text);
         virtual ~Button() = 0;
 
-        /* Modified re-implementation of paintEvent that allows for manual setting of focus */
+        // Modified re-implementation of paintEvent that allows for manual setting of focus
         void paintEvent(QPaintEvent*) override;
-        /* Modified re-implementation that turns off the distracting mouse hover effect */
+        // Modified re-implementation that turns off the distracting mouse hover effect
+        // TODO Mouse hover on/off depending on the config setting
         bool event(QEvent* event) override;
-        /* Workaround which aligns buttons to a desired position,
-           and keeps the text realigned and separate via a proxy label */
+        // Workaround which aligns buttons to a desired position,
+        // and keeps the text realigned and separate via a proxy label
         void debugAlignIcon(const QString& label_text);
 
 public:
         void            setFocus(bool is_focused);
         bool            isFocused() const;
-        virtual QString text() const; /* Returns text from the label, not the button itself */
+        virtual QString text() const; // Returns text from the label, not the button itself
 };
