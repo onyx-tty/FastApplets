@@ -24,11 +24,11 @@ option(BUILD_SHARED_LIBS "Build using shared libraries" ON)
 
 # Find packages
 find_package(Qt6 REQUIRED COMPONENTS Widgets)
+find_package(tomlplusplus REQUIRED)
 
 if(BUILD_POWERAPPLET)
         find_package(Qt6 REQUIRED COMPONENTS DBus)
 endif()
-
 
 # Set up the Qt environment
 set(QT_VERSION_MAJOR 6 CACHE STRING "Build using this version of Qt")
@@ -92,6 +92,7 @@ endif()
 if(BUILD_POWERAPPLET)
         target_link_libraries(power-applet PRIVATE
                 DBus
+                Config
                 Core::AllLibs
                 PowerApplet::UI
                 PowerApplet::DBus)

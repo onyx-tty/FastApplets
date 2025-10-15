@@ -20,3 +20,15 @@ if(BUILD_POWERAPPLET)
         target_include_directories(config_power_applet PUBLIC ${CMAKE_CURRENT_LIST_DIR})
         target_link_libraries(config_power_applet PUBLIC Config::Shared)
 endif()
+
+add_library(config
+        Config.cpp
+        Keys.cpp
+        PrimaryButtonData.h
+        TomlConfigParser.cpp)
+add_library(Config ALIAS config)
+target_include_directories(config PUBLIC ${CMAKE_CURRENT_LIST_DIR})
+target_link_libraries(config PUBLIC
+        Environment
+        tomlplusplus::tomlplusplus
+        Qt${QT_VERSION_MAJOR}::Widgets)
