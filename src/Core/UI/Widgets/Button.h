@@ -37,9 +37,9 @@ protected:
                         const QString& text);
         virtual ~Button() = 0;
 
-        /* Modified reimplementation of paintEvent that allows for manual setting of focus */
+        /* Modified re-implementation of paintEvent that allows for manual setting of focus */
         void paintEvent(QPaintEvent*) override;
-        /* Modified reimplementation that turns off the distracting mouse hover effect */
+        /* Modified re-implementation that turns off the distracting mouse hover effect */
         bool event(QEvent* event) override;
         /* Workaround which aligns buttons to a desired position,
            and keeps the text realigned and separate via a proxy label */
