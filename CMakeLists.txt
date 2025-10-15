@@ -16,6 +16,9 @@ set(CMAKE_AUTOMOC ON)
 # Enable Qt support for Qt's resource files
 set(CMAKE_AUTORCC ON)
 
+# Export compile_commands.json
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+
 # Build shared by default
 option(BUILD_SHARED_LIBS "Build using shared libraries" ON)
 
