@@ -37,22 +37,22 @@ set(QT_VERSION_MAJOR 6 CACHE STRING "Build using this version of Qt")
 #+ Resources
 add_subdirectory(
         resources
-        build/Resources-build)
+        Resources-build)
 
 #+ Config
 add_subdirectory(
         src/Config
-        build/Config-build)
+        Config-build)
 
 #+ Core
 add_subdirectory(
         src/Core
-        build/Core-build)
+        Core-build)
 
 #+ DBus
 add_subdirectory(
         src/DBus
-        build/DBus-build)
+        DBus-build)
 
 #+ Environment
 add_subdirectory(
@@ -62,14 +62,14 @@ add_subdirectory(
 #+ Time
 #add_subdirectory(
 #        src/Time
-#        build/Time-build)
+#        Time-build)
 
 # Applets
 #+ PowerApplet
 if(BUILD_POWERAPPLET)
         add_subdirectory(
                 src/Applets/PowerApplet
-                build/PowerApplet-build)
+                PowerApplet-build)
 endif()
 
 # Maintain support for both Qt6 and >=Qt5 to support a future expansion
