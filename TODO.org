@@ -21,7 +21,7 @@
 
 ** TODO Highly configurable list of programs/shell commands
 
-* Base [4/13]
+* Base [4/15]
 ** DONE LICENSE
 ** TODO README.md
 *** [ ] Basics
@@ -41,3 +41,5 @@
 ** TODO Enforced static compilation of private libraries
 ** TODO Cleaner build directory
 ** TODO CMake build types
+** TODO Standardized window class and title
+** TODO Config reliant on environmental variables adhering to XDG Base Directory Specification
