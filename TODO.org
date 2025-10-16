@@ -1,45 +1,58 @@
 #+TITLE: Pretty Applets TODO
+#+OPTIONS: todo:t
+#+OPTIONS: toc:1
+#+OPTIONS: H:1
+#+OPTIONS: num:1
+#+OPTIONS: \n:t
 
-* Applets
-** PROJ PowerApplet [2/4]
-*** DONE Keybindings
-*** DONE DBus client class for PowerActionManager
-*** TODO Shell command mode as an alternative to DBus mode
-*** TODO Configurable DBus target
+* PROJ PowerApplet [2/4]
+** [X] Keybindings
+** [X] DBus client class for PowerActionManager
+** [ ] Shell command mode as an alternative to DBus mode
+** [ ] Configurable DBus target
 
-** PROJ WeatherApplet [4/6]
-*** DONE Curl
-*** DONE JSON
-*** DONE Data structure
-*** DONE UI skeleton
-*** TODO UI layout
-*** TODO Proper GUI
+#+BEGIN_EXPORT markdown
+<br>
+#+END_EXPORT
+* PROJ WeatherApplet [4/6]
+** [X] Curl
+** [X] JSON
+** [X] Data structure
+** [X] UI skeleton
+** [ ] UI layout
+** [ ] Proper GUI
+#+BEGIN_EXPORT markdown
+<br>
+#+END_EXPORT
+* TODO LauncherApplet
+#+BEGIN_EXPORT markdown
+<br>
+#+END_EXPORT
+* TODO SystemApplet
+#+BEGIN_EXPORT markdown
+<br>
+#+END_EXPORT
+* TODO SecurityApplet
 
-** TODO System management applet with status checking and toggle functionality
-
-** TODO Security menu applet with toggle functionality
-
-** TODO Highly configurable list of programs/shell commands
-
-* Base [4/15]
-** DONE LICENSE
-** TODO README.md
+#+BEGIN_EXPORT markdown
+<br>
+#+END_EXPORT
+* Base [5/14]
+** [X] LICENSE
+** [ ] README.md
 *** [ ] Basics
 *** [ ] Requirement instructions
 *** [ ] Build instructions
 *** [ ] Usage instructions
-** TODO TODO.md
-** DONE Icon embedment in the executable
-** TODO Fallback icons
-** TODO Debug mode
-** TODO Customizable:
-*** [X] Window dimensions
-*** [X] Icons
-** DONE TOML configuration
-** TODO Headers with repeating constants and type aliases
-** DONE Centralized CMake structure
-** TODO Enforced static compilation of private libraries
-** TODO Cleaner build directory
-** TODO CMake build types
-** TODO Standardized window class and title
-** TODO Config reliant on environmental variables adhering to XDG Base Directory Specification
+** [X] TODO.md
+** [X] Icon embedment in the executable
+** [ ] Fallback icons
+** [ ] Debug mode
+** [X] TOML configuration
+** [ ] Headers with repeating constants and type aliases
+** [X] Centralized CMake structure
+** [ ] Enforced static compilation of private libraries
+** [ ] Cleaner build directories
+** [ ] CMake build types
+** [ ] Standardized window class and title
+** [ ] Config reliant on environmental variables adhering to the XDG Base Directory Specification
