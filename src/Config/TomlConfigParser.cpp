@@ -125,6 +125,7 @@ void TomlConfigParser::parseConfig() {
         const auto text_alignment_raw =
                 config_table["global"]["primary_button"]["text_alignment"].as_string()->get();
 
+        // TODO Top results in top-left alignment, determine why
         if (text_alignment_raw == "top") {
                 Config::PrimaryButtonProperties::text_alignment = Qt::AlignTop;
         } else if (text_alignment_raw == "center") {
