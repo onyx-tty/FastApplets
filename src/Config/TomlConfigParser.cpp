@@ -198,6 +198,26 @@ void TomlConfigParser::parseConfig() {
         const auto translateKeybindings =
                 [&keybindingTextToHex](const toml::node_view<const toml::node>& source,
                                        keybindings&                             target) {
+                if (!source || !source.is_array()) {
+                        QString keybindings_str = "";
+                        for (const auto& key : target) {
+                                if (!keybindings_str.isEmpty()) {
+                                        keybindings_str += ",";
+                                } 
+
+                                keybindings_str += QString::number(key);
+                        }
+                        
+                        if (!source) {
+                                qCritical() << __func__ << ": Empty source for keybindings:"
+                                            << keybindings_str;
+                        } else if (!source.is_array()) {
+                                qCritical() << __func__ << ": Non-array source for keybindings:"
+                                            << keybindings_str;
+                        }
+
+                        return; // Drop these keybindings if source doesn't exist
+                }
                 const auto keys_raw = source.as_array();
 
                 target.reserve(keys_raw->size());
