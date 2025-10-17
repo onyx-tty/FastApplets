@@ -227,6 +227,10 @@ void TomlConfigParser::parseConfig() {
 
         // Quit
         translateKeybindings(keys_table["global"]["quit"], Keys::GlobalKeys::quit_keys);
+        translateKeybindings(keys_table["power_applet"]["quit"], Keys::PowerAppletKeys::quit_keys);
+        if(Keys::PowerAppletKeys::quit_keys.empty()) {
+                Keys::PowerAppletKeys::quit_keys = Keys::GlobalKeys::quit_keys;
+        }
 
         // Primary button control keys - PowerApplet
         translateKeybindings(keys_table["power_applet"]["primary_button1"],

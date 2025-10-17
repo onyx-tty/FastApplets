@@ -2,6 +2,7 @@
 quit = ["Escape", "Q"]
 
 [power_applet]
+#quit = ["Escape", "Q"]
 primary_button1 = ["1"]
 primary_button2 = ["2"]
 primary_button3 = ["3"]

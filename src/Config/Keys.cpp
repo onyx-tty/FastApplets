@@ -21,6 +21,10 @@ const keybindings& Keys::GlobalKeys::getQuitKeys(){
         return Keys::GlobalKeys::quit_keys;
 }
 
+const keybindings& Keys::PowerAppletKeys::getQuitKeys() {
+        return Keys::PowerAppletKeys::quit_keys;
+}
+
 const keybindings& Keys::PowerAppletKeys::getPrimaryButton1Keys() {
         return Keys::PowerAppletKeys::primary_button1_keys;
 }
