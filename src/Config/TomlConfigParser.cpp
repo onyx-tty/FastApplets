@@ -28,18 +28,25 @@
 
 #include <algorithm>
 #include <cctype>
+#include <functional>
 #include <iterator>
 #include <qnamespace.h>
 #include <string>
 #include <string_view>
 #include <toml++/impl/value.hpp>
 #include <toml++/toml.hpp>
+#include <unordered_map>
 
 using std::back_inserter;
+using std::function;
 using std::inserter;
 using std::string;
 using std::string_view;
 using std::transform;
+using std::unordered_map;
+
+template<typename EnumType>
+using EnumMap = unordered_map<string, EnumType>;
 
 static void tolower(string& str) {
         for (char& ch : str) { ch = std::tolower(static_cast<unsigned char>(ch)); }
@@ -52,6 +59,88 @@ static string tolower(const string& str) {
 
         return new_str;
 }
+
+const unordered_map<string, Qt::Alignment> alignment_map = {{"top", Qt::AlignTop},
+                                                            {"center", Qt::AlignCenter},
+                                                            {"bottom", Qt::AlignBottom},
+                                                            {"left", Qt::AlignLeft},
+                                                            {"right", Qt::AlignRight}};
+
+const unordered_map<string, QSizePolicy> size_policy_map =
+        {{"expanding", {QSizePolicy::Expanding, QSizePolicy::Expanding}},
+         {"fixed", {QSizePolicy::Fixed, QSizePolicy::Fixed}}};
+
+namespace error_message {
+namespace alignment {
+void textAlignmentError() {
+        qWarning() << "Wrong setting in config.toml for: text_alignment"
+                   << "Available values: top, center, bottom, left, right"
+                   << "Default: top";
+}
+
+void iconAlignmentError() {
+        qWarning() << "Wrong setting in config.toml for: icon_alignment"
+                   << "Available values: top, center, bottom, left, right"
+                   << "Default: center";
+}
+} // namespace alignment
+namespace size_policy {
+void primaryButtonError() {
+        qWarning() << "Wrong setting in config.toml for: policy"
+                   << "Available values: expanding, fixed"
+                   << "Default: expanding";
+}
+} // namespace size_policy
+} // namespace error_message
+
+// Find value and return default_value if not found
+template<typename EnumType>
+static EnumType getEnumFromMap(const EnumMap<EnumType>& mapping, const string& key,
+                               const EnumType& default_value, function<void()> errorMessage) {
+        const auto it = mapping.find(key);
+        if (it == mapping.end()) {
+                errorMessage();
+                return default_value;
+        }
+
+        return it->second;
+}
+
+// Interpret keybinding text as a corresponding hexadecimal value for the Qt::Key enum
+static const auto textToHexInterpreter = [](const auto& node) {
+        QKeySequence    sequence(QString::fromStdString(node.as_string()->get()));
+        QKeyCombination combination(sequence[0]);
+
+        return combination.key();
+};
+
+// Use textToHexInterpreter on a TOML node to set-up keybindings for target
+static void interpretTextAsKeybindings(const toml::node_view<const toml::node>& source,
+                                       keybindings&                             target) {
+        if (!source || !source.is_array()) {
+                QString keybindings_str = "";
+                for (const auto& key : target) {
+                        if (!keybindings_str.isEmpty()) { keybindings_str += ","; }
+
+                        keybindings_str += QString::number(key);
+                }
+
+                if (!source) {
+                        qCritical()
+                                << __func__ << ": Empty source for keybindings:" << keybindings_str;
+                } else if (!source.is_array()) {
+                        qCritical() << __func__
+                                    << ": Non-array source for keybindings:" << keybindings_str;
+                }
+
+                return; // Drop these keybindings if source doesn't exist
+        }
+        const auto keys_raw = source.as_array();
+
+        target.reserve(keys_raw->size());
+        transform(keys_raw->begin(), keys_raw->end(), inserter(target, target.begin()),
+                  textToHexInterpreter);
+};
 
 // Defer fetching project root until runtime, as RootResolver::getInstance().getProjectRoot() calls
 // QApplication. Evaluating the variable at compile time would lead to a failure.
@@ -96,6 +185,7 @@ TomlConfigParser& TomlConfigParser::getInstance() {
         return toml_config_parser;
 }
 
+// TODO Map for config_table and keys_table
 void TomlConfigParser::parseConfig() {
         /* Window properties */
         // Window size
@@ -124,45 +214,21 @@ void TomlConfigParser::parseConfig() {
         // Text alignment
         const auto text_alignment_raw =
                 config_table["global"]["primary_button"]["text_alignment"].as_string()->get();
+        Qt::Alignment default_alignment = Qt::AlignTop;
 
         // TODO Top results in top-left alignment, determine why
-        if (text_alignment_raw == "top") {
-                Config::PrimaryButtonProperties::text_alignment = Qt::AlignTop;
-        } else if (text_alignment_raw == "center") {
-                Config::PrimaryButtonProperties::text_alignment = Qt::AlignCenter;
-        } else if (text_alignment_raw == "bottom") {
-                Config::PrimaryButtonProperties::text_alignment = Qt::AlignBottom;
-        } else if (text_alignment_raw == "left") {
-                Config::PrimaryButtonProperties::text_alignment = Qt::AlignLeft;
-        } else if (text_alignment_raw == "right") {
-                Config::PrimaryButtonProperties::text_alignment = Qt::AlignBottom;
-        } else {
-                qWarning() << "Wrong setting in config.toml for: text_alignment"
-                           << "Available values: top, center, bottom, left, right"
-                           << "Default: top";
-                Config::PrimaryButtonProperties::text_alignment = Qt::AlignTop; // default to top
-        }
+        Config::PrimaryButtonProperties::text_alignment =
+                getEnumFromMap(alignment_map, text_alignment_raw, default_alignment,
+                               error_message::alignment::textAlignmentError);
 
         // Icon alignment
         const auto icon_alignment_raw =
                 config_table["global"]["primary_button"]["icon_alignment"].as_string()->get();
+        default_alignment = Qt::AlignCenter;
 
-        if (icon_alignment_raw == "top") {
-                Config::PrimaryButtonProperties::icon_alignment = Qt::AlignTop;
-        } else if (icon_alignment_raw == "center") {
-                Config::PrimaryButtonProperties::icon_alignment = Qt::AlignCenter;
-        } else if (icon_alignment_raw == "bottom") {
-                Config::PrimaryButtonProperties::icon_alignment = Qt::AlignBottom;
-        } else if (icon_alignment_raw == "left") {
-                Config::PrimaryButtonProperties::icon_alignment = Qt::AlignLeft;
-        } else if (icon_alignment_raw == "right") {
-                Config::PrimaryButtonProperties::icon_alignment = Qt::AlignBottom;
-        } else {
-                qWarning() << "Wrong setting in config.toml for: icon_alignment"
-                           << "Available values: top, center, bottom, left, right"
-                           << "Default: top";
-                Config::PrimaryButtonProperties::icon_alignment = Qt::AlignCenter;
-        }
+        Config::PrimaryButtonProperties::icon_alignment =
+                getEnumFromMap(alignment_map, icon_alignment_raw, default_alignment,
+                               error_message::alignment::textAlignmentError);
 
         // Icon size
         const auto icon_size_raw = config_table["global"]["primary_button"]["icon_size"].as_array();
@@ -172,73 +238,27 @@ void TomlConfigParser::parseConfig() {
 
         // Policy
         const auto policy_raw = config_table["global"]["primary_button"]["policy"].as_string()->get();
-        if (tolower(policy_raw) == "expanding") {
-                Config::PrimaryButtonProperties::policy = QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-        } else if (tolower(policy_raw) == "fixed") {
-                Config::PrimaryButtonProperties::policy = QSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
-        } else {
-                qWarning() << "Wrong setting in config.toml for: policy"
-                           << "Available values: expanding, fixed"
-                           << "Default: expanding";
-                Config::PrimaryButtonProperties::policy = QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-        }
+        const QSizePolicy default_policy = QSizePolicy(QSizePolicy::Expanding,
+                                                       QSizePolicy::Expanding);
+        Config::PrimaryButtonProperties::policy =
+                getEnumFromMap(size_policy_map, tolower(policy_raw), default_policy,
+                               error_message::size_policy::primaryButtonError);
 
         /* Keys */
-        // Turn a node containing strings representing a keybinding, i.e. Q, E, M, Escape
-        // into a corresponding hex number representing a Qt::Key enum value.
-        const auto keybindingTextToHex = [](const auto& node) -> int {
-                QKeySequence    sequence(QString::fromStdString(node.as_string()->get()));
-                QKeyCombination combination(sequence[0]);
-
-                return combination.key();
-        };
-
-        // Automate processing nodes and filling target 'keybindings' variables with data
-        // obtained from keybindingTextToHex
-        const auto translateKeybindings =
-                [&keybindingTextToHex](const toml::node_view<const toml::node>& source,
-                                       keybindings&                             target) {
-                if (!source || !source.is_array()) {
-                        QString keybindings_str = "";
-                        for (const auto& key : target) {
-                                if (!keybindings_str.isEmpty()) {
-                                        keybindings_str += ",";
-                                } 
-
-                                keybindings_str += QString::number(key);
-                        }
-                        
-                        if (!source) {
-                                qCritical() << __func__ << ": Empty source for keybindings:"
-                                            << keybindings_str;
-                        } else if (!source.is_array()) {
-                                qCritical() << __func__ << ": Non-array source for keybindings:"
-                                            << keybindings_str;
-                        }
-
-                        return; // Drop these keybindings if source doesn't exist
-                }
-                const auto keys_raw = source.as_array();
-
-                target.reserve(keys_raw->size());
-                transform(keys_raw->begin(), keys_raw->end(), inserter(target, target.begin()),
-                          keybindingTextToHex);
-                };
-
         // Quit
-        translateKeybindings(keys_table["global"]["quit"], Keys::GlobalKeys::quit_keys);
-        translateKeybindings(keys_table["power_applet"]["quit"], Keys::PowerAppletKeys::quit_keys);
-        if(Keys::PowerAppletKeys::quit_keys.empty()) {
+        interpretTextAsKeybindings(keys_table["global"]["quit"], Keys::GlobalKeys::quit_keys);
+        interpretTextAsKeybindings(keys_table["power_applet"]["quit"], Keys::PowerAppletKeys::quit_keys);
+        if (Keys::PowerAppletKeys::quit_keys.empty()) { // TODO std::variant<Keybindings, Keybindings&>
                 Keys::PowerAppletKeys::quit_keys = Keys::GlobalKeys::quit_keys;
         }
 
         // Primary button control keys - PowerApplet
-        translateKeybindings(keys_table["power_applet"]["primary_button1"],
+        interpretTextAsKeybindings(keys_table["power_applet"]["primary_button1"],
                              Keys::PowerAppletKeys::primary_button1_keys);
-        translateKeybindings(keys_table["power_applet"]["primary_button2"],
+        interpretTextAsKeybindings(keys_table["power_applet"]["primary_button2"],
                              Keys::PowerAppletKeys::primary_button2_keys);
-        translateKeybindings(keys_table["power_applet"]["primary_button3"],
+        interpretTextAsKeybindings(keys_table["power_applet"]["primary_button3"],
                              Keys::PowerAppletKeys::primary_button3_keys);
-        translateKeybindings(keys_table["power_applet"]["primary_button4"],
+        interpretTextAsKeybindings(keys_table["power_applet"]["primary_button4"],
                              Keys::PowerAppletKeys::primary_button4_keys);
 }
