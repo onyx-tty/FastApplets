@@ -16,7 +16,7 @@
    along with this program.  If not, see <https://www.gnu.org/licenses/>. */
 
 #include "PowerButton.h"
-#include "../DBus/PowerActionManager.h"
+#include "../../DBus/PowerActionManager.h"
 
 PowerButton::PowerButton(QBoxLayout* layout, QIcon icon, QString text, QString dbus_action) :
         Button(layout, icon, text), dbus_action(dbus_action) {
