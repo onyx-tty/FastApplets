@@ -17,6 +17,8 @@
 
 #include "Keys.h"
 
+using std::array;
+
 const keybindings& Keys::GlobalKeys::getQuitKeys(){ 
         return Keys::GlobalKeys::quit_keys;
 }
@@ -25,18 +27,6 @@ const keybindings& Keys::PowerAppletKeys::getQuitKeys() {
         return Keys::PowerAppletKeys::quit_keys;
 }
 
-const keybindings& Keys::PowerAppletKeys::getPrimaryButton1Keys() {
-        return Keys::PowerAppletKeys::primary_button1_keys;
-}
-
-const keybindings& Keys::PowerAppletKeys::getPrimaryButton2Keys() {
-        return Keys::PowerAppletKeys::primary_button2_keys;
-}
-
-const keybindings& Keys::PowerAppletKeys::getPrimaryButton3Keys() {
-        return Keys::PowerAppletKeys::primary_button3_keys;
-}
-
-const keybindings& Keys::PowerAppletKeys::getPrimaryButton4Keys() {
-        return Keys::PowerAppletKeys::primary_button4_keys;
+const array<keybindings, 4>& Keys::PowerAppletKeys::getPrimaryButtonKeys() {
+        return Keys::PowerAppletKeys::primary_button_keys;
 }

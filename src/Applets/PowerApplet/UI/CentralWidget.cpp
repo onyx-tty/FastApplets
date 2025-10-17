@@ -86,10 +86,11 @@ static std::vector<PowerButton*> initButtonList(QBoxLayout* main_layout) {
 }
 
 static bool isPowerKey(int key) {
-        return (PowerKeys::getPrimaryButton1Keys().contains(key)
-                || PowerKeys::getPrimaryButton2Keys().contains(key)
-                || PowerKeys::getPrimaryButton3Keys().contains(key)
-                || PowerKeys::getPrimaryButton4Keys().contains(key));
+        for (const auto& button_keys : PowerKeys::getPrimaryButtonKeys()) {
+                if (button_keys.contains(key)) { return true; }
+        }
+
+        return false;
 };
 
 PowerButton* findButtonWithAction(std::vector<PowerButton*> buttons, const QString& action) {
@@ -126,25 +127,26 @@ void Action::updatePowerButton(std::vector<PowerButton*> buttons) {
         if (key == Qt::Key_unknown) { qFatal("Key missing in Action!"); }
 
         if (isPowerKey(key)) {
-                if (PowerKeys::getPrimaryButton1Keys().contains(key)) {
+                const auto& button_keys = PowerKeys::getPrimaryButtonKeys();
+                if (button_keys[0].contains(key)) {
                         button = findButtonWithAction(buttons, "PowerOff");
-                } else if (PowerKeys::getPrimaryButton2Keys().contains(key)) {
+                } else if (button_keys[1].contains(key)) {
                         button = findButtonWithAction(buttons, "Reboot");
-                } else if (PowerKeys::getPrimaryButton3Keys().contains(key)) {
+                } else if (button_keys[2].contains(key)) {
                         button = findButtonWithAction(buttons, "Suspend");
-                } else if (PowerKeys::getPrimaryButton4Keys().contains(key)) {
+                } else if (button_keys[3].contains(key)) {
                         button = findButtonWithAction(buttons, "Hibernate");
-                }
-
-                if (!button) {
-                        qFatal("Button nullptr in initButton, terminating!");
                 } else {
-                        qDebug() << "Button initialized correctly, text:" << button->text();
+                        qFatal() << "Passed key is not a power key!";
                 }
-        } else {
-                qFatal() << "Passed key is not a power key!";
         }
-};
+
+        if (!button) {
+                qFatal("Button nullptr in initButton, terminating!");
+        } else {
+                qDebug() << "Button initialized correctly, text:" << button->text();
+        }
+}
 
 CentralWidget::CentralWidget(QWidget* parent) :
         QWidget(parent), main_layout(new QHBoxLayout(this)), last_action(Qt::Key_unknown, nullptr),

@@ -17,6 +17,7 @@
 
 #pragma once
 
+#include <array>
 #include <unordered_set>
 
 class TomlConfigParser;
@@ -40,16 +41,10 @@ public:
                 friend class TomlConfigParser;
                 
                 inline static keybindings quit_keys;
-                inline static keybindings primary_button1_keys;
-                inline static keybindings primary_button2_keys;
-                inline static keybindings primary_button3_keys;
-                inline static keybindings primary_button4_keys;
+                inline static std::array<keybindings, 4> primary_button_keys;
 
         public:
                 static const keybindings& getQuitKeys();
-                static const keybindings& getPrimaryButton1Keys();
-                static const keybindings& getPrimaryButton2Keys();
-                static const keybindings& getPrimaryButton3Keys();
-                static const keybindings& getPrimaryButton4Keys();
+                static const std::array<keybindings, 4>& getPrimaryButtonKeys();
         };
 };

@@ -42,6 +42,7 @@ using std::function;
 using std::inserter;
 using std::string;
 using std::string_view;
+using std::to_string;
 using std::transform;
 using std::unordered_map;
 
@@ -247,18 +248,16 @@ void TomlConfigParser::parseConfig() {
         /* Keys */
         // Quit
         interpretTextAsKeybindings(keys_table["global"]["quit"], Keys::GlobalKeys::quit_keys);
-        interpretTextAsKeybindings(keys_table["power_applet"]["quit"], Keys::PowerAppletKeys::quit_keys);
+        interpretTextAsKeybindings(keys_table["power_applet"]["quit"],
+                                   Keys::PowerAppletKeys::quit_keys);
         if (Keys::PowerAppletKeys::quit_keys.empty()) { // TODO std::variant<Keybindings, Keybindings&>
                 Keys::PowerAppletKeys::quit_keys = Keys::GlobalKeys::quit_keys;
         }
 
         // Primary button control keys - PowerApplet
-        interpretTextAsKeybindings(keys_table["power_applet"]["primary_button1"],
-                             Keys::PowerAppletKeys::primary_button1_keys);
-        interpretTextAsKeybindings(keys_table["power_applet"]["primary_button2"],
-                             Keys::PowerAppletKeys::primary_button2_keys);
-        interpretTextAsKeybindings(keys_table["power_applet"]["primary_button3"],
-                             Keys::PowerAppletKeys::primary_button3_keys);
-        interpretTextAsKeybindings(keys_table["power_applet"]["primary_button4"],
-                             Keys::PowerAppletKeys::primary_button4_keys);
+        for (size_t i = 0; i != Keys::PowerAppletKeys::primary_button_keys.size(); ++i) {
+                string button_name = "primary_button" + to_string(i + 1);
+                interpretTextAsKeybindings(keys_table["power_applet"][button_name],
+                                           Keys::PowerAppletKeys::primary_button_keys[i]);
+        }
 }
