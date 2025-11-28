@@ -104,7 +104,6 @@ include(GNUInstallDirs)
 
 if(BUILD_POWERAPPLET)
         install(TARGETS power-applet
-                BUNDLE DESTINATION .
                 LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
                 RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})
 endif()
