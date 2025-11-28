@@ -16,32 +16,34 @@
    along with this program.  If not, see <https://www.gnu.org/licenses/>. */
 
 #include "TomlConfigParser.h"
-#include "../Environment/RootResolver.h"
 #include "Config.h"
 #include "Keys.h"
 
 #include <QDebug>
+#include <QFileInfo>
 #include <QKeyCombination>
 #include <QKeySequence>
 #include <QSize>
 #include <QSizePolicy>
+#include <QString>
+#include <QtEnvironmentVariables>
 
 #include <algorithm>
+#include <array>
 #include <cctype>
+#include <cstdlib>
 #include <functional>
 #include <iterator>
 #include <qnamespace.h>
 #include <string>
-#include <string_view>
 #include <toml++/impl/value.hpp>
 #include <toml++/toml.hpp>
 #include <unordered_map>
 
+using std::array;
 using std::back_inserter;
-using std::function;
 using std::inserter;
 using std::string;
-using std::string_view;
 using std::to_string;
 using std::transform;
 using std::unordered_map;
@@ -96,8 +98,9 @@ void primaryButtonError() {
 
 // Find value and return default_value if not found
 template<typename EnumType>
+// TODO Replace std::function with regular function pointer
 static EnumType getEnumFromMap(const EnumMap<EnumType>& mapping, const string& key,
-                               const EnumType& default_value, function<void()> errorMessage) {
+                               const EnumType& default_value, std::function<void()> errorMessage) {
         const auto it = mapping.find(key);
         if (it == mapping.end()) {
                 errorMessage();
@@ -143,27 +146,50 @@ static void interpretTextAsKeybindings(const toml::node_view<const toml::node>& 
                   textToHexInterpreter);
 };
 
-// Defer fetching project root until runtime, as RootResolver::getInstance().getProjectRoot() calls
-// QApplication. Evaluating the variable at compile time would lead to a failure.
-static string& projectRoot() {
-        static string project_root = RootResolver::getInstance().getProjectRoot().toStdString();
+// Values needed to find configs
+namespace {
 
-        return project_root;
+constexpr int            config_dir_paths_cnt  = 2;
+constexpr int            config_file_names_cnt = 2;
+static array<QString, 2> config_dir_paths      = {qEnvironmentVariable("XDG_CONFIG_HOME")
+                                                          + "/PrettyApplets/",
+                                                  qEnvironmentVariable("XDG_DATA_HOME")
+                                                          + "/PrettyApplets/"};
+static array<QString, config_file_names_cnt> config_file_names = {"config.toml", "keys.toml"};
+
+} // namespace
+
+// Look for configs in $XDG_CONFIG_HOME and $XDG_DATA_HOME 
+static array<string, config_file_names_cnt> locateConfigFiles() {
+        array<string, config_file_names_cnt> files{}; // Only enough slots for each file
+
+        QString file_path;
+        // Loop through expected config files
+        for (size_t file_i = 0; file_i != config_file_names_cnt; ++file_i) {
+                bool found = false;
+                // Loop through expected directories
+                for (size_t dir_i = 0; !found && dir_i != config_dir_paths_cnt; ++dir_i) {
+                        file_path = config_dir_paths[dir_i] + config_file_names[file_i];
+                        // If file found, save filepath, stop the loop for that file
+                        if (QFileInfo::exists(file_path )) {
+                                files[file_i] = file_path.toStdString();
+                                found         = true;
+                                break;
+                        }
+                }
+
+                // No valid file_path found for the current file, terminate
+                // TODO Generate default toml file on failure
+                if (!found) {
+                        qFatal("%s: %s not found!", __func__,
+                               config_file_names[file_i].toStdString().c_str());
+                }
+        }
+
+        return files;
 }
 
-static string configLocation() {
-        string config_location = projectRoot() + "/config/config.toml";
-
-        return config_location;
-}
-
-static string keysLocation() {
-        string keys_location = projectRoot() + "/config/keys.toml";
-
-        return keys_location;
-}
-
-static toml::table createTable(string_view file_path) {
+static toml::table createTable(string file_path) {
         toml::table file_table;
 
         qDebug() << __func__ << ":" << file_path;
@@ -178,8 +204,12 @@ static toml::table createTable(string_view file_path) {
         return file_table;
 }
 
+namespace {
+static auto config_files = locateConfigFiles();
+}
+
 TomlConfigParser::TomlConfigParser() :
-        config_table(createTable(configLocation())), keys_table(createTable(keysLocation())) {}
+        config_table(createTable(config_files[0])), keys_table(createTable(config_files[1])) {}
 
 TomlConfigParser& TomlConfigParser::getInstance() {
         static TomlConfigParser toml_config_parser;
