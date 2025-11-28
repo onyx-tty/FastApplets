@@ -37,7 +37,7 @@
 #+BEGIN_EXPORT markdown
 <br>
 #+END_EXPORT
-* Base [5/14]
+* Base [6/18]
 ** [X] LICENSE
 ** [ ] README.md
 *** [ ] Basics
@@ -47,7 +47,7 @@
 ** [X] TODO.md
 ** [X] Icon embedment in the executable
 ** [ ] Fallback icons
-** [ ] Debug mode
+** [ ] Build profiling
 ** [X] TOML configuration
 ** [ ] Headers with repeating constants and type aliases
 ** [X] Centralized CMake structure
@@ -55,4 +55,8 @@
 ** [ ] Cleaner build directories
 ** [ ] CMake build types
 ** [ ] Standardized window class and title
-** [ ] Config reliant on environmental variables adhering to the XDG Base Directory Specification
+** [X] Config reliant on environmental variables, adhering to the XDG Base Directory Specification
+** [ ] Generate config on runtime if missing
+** [ ] Fallback config
+** [ ] Unit testing
+** [ ] Extract utility functions to the new CppUtils repo

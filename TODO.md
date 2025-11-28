@@ -38,7 +38,7 @@
 
 <br>
 
-# Base \[5/14\]
+# Base \[6/18\]
 
 1.  \[X\] LICENSE
 
@@ -58,7 +58,7 @@
 
 5.  \[ \] Fallback icons
 
-6.  \[ \] Debug mode
+6.  \[ \] Build profiling
 
 7.  \[X\] TOML configuration
 
@@ -74,5 +74,13 @@
 
 13. \[ \] Standardized window class and title
 
-14. \[ \] Config reliant on environmental variables adhering to the XDG
+14. \[X\] Config reliant on environmental variables, adhering to the XDG
     Base Directory Specification
+
+15. \[ \] Generate config on runtime if missing
+
+16. \[ \] Fallback config
+
+17. \[ \] Unit testing
+
+18. \[ \] Extract utility functions to the new CppUtils repo
