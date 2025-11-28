@@ -63,15 +63,19 @@ static string tolower(const string& str) {
         return new_str;
 }
 
-const unordered_map<string, Qt::Alignment> alignment_map = {{"top", Qt::AlignTop},
+namespace {
+
+static const unordered_map<string, Qt::Alignment> alignment_map = {{"top", Qt::AlignTop},
                                                             {"center", Qt::AlignCenter},
                                                             {"bottom", Qt::AlignBottom},
                                                             {"left", Qt::AlignLeft},
                                                             {"right", Qt::AlignRight}};
 
-const unordered_map<string, QSizePolicy> size_policy_map =
+static const unordered_map<string, QSizePolicy> size_policy_map =
         {{"expanding", {QSizePolicy::Expanding, QSizePolicy::Expanding}},
          {"fixed", {QSizePolicy::Fixed, QSizePolicy::Fixed}}};
+
+} // namespace
 
 namespace error_message {
 namespace alignment {
