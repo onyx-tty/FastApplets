@@ -38,7 +38,7 @@ struct Action {
 
         void reset();
         // Find out if key is a part of any keybindings and adjust
-        void updatePowerButton(std::vector<PowerButton*> buttons);
+        void updatePowerButton(const std::vector<PowerButton*>& buttons);
 };
 
 class CentralWidget final : public QWidget {

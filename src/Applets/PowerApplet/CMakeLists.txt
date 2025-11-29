@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.16)
 
-project(power-applet VERSION 0.17.0 LANGUAGES CXX)
+project(power-applet VERSION 0.17.1 LANGUAGES CXX)
 
 # Internal structure
 add_library(power_dbus

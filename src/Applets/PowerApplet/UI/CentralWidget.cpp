@@ -85,7 +85,7 @@ static std::vector<PowerButton*> initButtonList(QBoxLayout* main_layout) {
         }
 }
 
-static bool isPowerKey(int key) {
+static bool isPowerKey(int& key) {
         for (const auto& button_keys : PowerKeys::getPrimaryButtonKeys()) {
                 if (button_keys.contains(key)) { return true; }
         }
@@ -100,7 +100,7 @@ void Action::reset() {
         button = nullptr;
 }
 
-void Action::updatePowerButton(std::vector<PowerButton*> buttons) {
+void Action::updatePowerButton(const vector<PowerButton*>& buttons) {
         const auto& button_properties = Config::WindowLayoutProperties::getPrimaryPowerButtons();
 
         if (button_properties.size() != buttons.size()) {
