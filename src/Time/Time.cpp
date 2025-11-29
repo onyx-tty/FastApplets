@@ -24,6 +24,7 @@
 #include <cstdlib>
 
 using namespace std::chrono;
+using std::optional, std::nullopt;
 
 time_t findCurrentUnixTime() {
         auto       now              = system_clock::now();
@@ -77,7 +78,7 @@ int findHourSpacing(time_t later, time_t earlier) {
 // APIs are expected to pull data that is distributed evenly, meaning that there should be
 // specific hour spacing.
 // TODO Perhaps there is a safer way to ensure that our data cannot be tampered with along the way
-std::optional<int> findWeatherBlocsFitCount(time_t later, time_t earlier, int hour_spacing) {
+optional<int> findWeatherBlocsFitCount(time_t later, time_t earlier, int hour_spacing) {
         qDebug() << __func__ << "has received" << later << "as later and" << earlier
                  << "as earlier, spacing is" << hour_spacing;
         if (later < earlier) {
@@ -109,7 +110,7 @@ std::optional<int> findWeatherBlocsFitCount(time_t later, time_t earlier, int ho
         }
 
         qDebug() << "When parsed, we receive" << indexes.quot;
-        return (indexes.quot != 0) ? std::optional(indexes.quot) : std::nullopt;
+        return (indexes.quot != 0) ? optional(indexes.quot) : nullopt;
 }
 
 time_t findCloserHour(time_t hour1, time_t hour2) {

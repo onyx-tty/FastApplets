@@ -29,19 +29,19 @@ using std::string, std::vector, std::array, std::unordered_map;
 using GlobalKeys = Keys::GlobalKeys;
 using PowerKeys  = Keys::PowerAppletKeys;
 
-static std::array<QIcon, 4> initButtonIcons() {
+static array<QIcon, 4> initButtonIcons() {
         Q_INIT_RESOURCE(Icons);
-        std::array<QIcon, 4> button_icons{QIcon(":/Icons/Power/shutdown.svg"),
+        array<QIcon, 4> button_icons{QIcon(":/Icons/Power/shutdown.svg"),
                                           QIcon(":/Icons/Power/reboot.svg"),
                                           QIcon(":/Icons/Power/suspend.svg"),
                                           QIcon(":/Icons/Power/hibernate.svg")};
         return button_icons;
 }
 
-static std::vector<PowerButton*> initButtonList(QBoxLayout* main_layout) {
+static vector<PowerButton*> initButtonList(QBoxLayout* main_layout) {
         const auto& primary_buttons_data = Config::WindowLayoutProperties::getPrimaryPowerButtons();
         const auto  primary_buttons_icons = initButtonIcons();
-        std::vector<PowerButton*> primary_buttons;
+        vector<PowerButton*> primary_buttons;
         transform(primary_buttons_data.begin(), primary_buttons_data.end(),
                   back_inserter(primary_buttons),
                   [&main_layout, &primary_buttons_icons,
