@@ -43,10 +43,12 @@
 using std::array;
 using std::back_inserter;
 using std::inserter;
+using std::sort;
 using std::string;
 using std::to_string;
 using std::transform;
 using std::unordered_map;
+using std::vector;
 
 template<typename EnumType>
 using EnumMap = unordered_map<string, EnumType>;
@@ -66,10 +68,10 @@ static string tolower(const string& str) {
 namespace {
 
 static const unordered_map<string, Qt::Alignment> alignment_map = {{"top", Qt::AlignTop},
-                                                            {"center", Qt::AlignCenter},
-                                                            {"bottom", Qt::AlignBottom},
-                                                            {"left", Qt::AlignLeft},
-                                                            {"right", Qt::AlignRight}};
+                                                                   {"center", Qt::AlignCenter},
+                                                                   {"bottom", Qt::AlignBottom},
+                                                                   {"left", Qt::AlignLeft},
+                                                                   {"right", Qt::AlignRight}};
 
 static const unordered_map<string, QSizePolicy> size_policy_map =
         {{"expanding", {QSizePolicy::Expanding, QSizePolicy::Expanding}},
@@ -163,7 +165,7 @@ static array<QString, config_file_names_cnt> config_file_names = {"config.toml",
 
 } // namespace
 
-// Look for configs in $XDG_CONFIG_HOME and $XDG_DATA_HOME 
+// Look for configs in $XDG_CONFIG_HOME and $XDG_DATA_HOME
 static array<string, config_file_names_cnt> locateConfigFiles() {
         array<string, config_file_names_cnt> files{}; // Only enough slots for each file
 
@@ -175,7 +177,7 @@ static array<string, config_file_names_cnt> locateConfigFiles() {
                 for (size_t dir_i = 0; !found && dir_i != config_dir_paths_cnt; ++dir_i) {
                         file_path = config_dir_paths[dir_i] + config_file_names[file_i];
                         // If file found, save filepath, stop the loop for that file
-                        if (QFileInfo::exists(file_path )) {
+                        if (QFileInfo::exists(file_path)) {
                                 files[file_i] = file_path.toStdString();
                                 found         = true;
                                 break;
@@ -234,16 +236,34 @@ void TomlConfigParser::parseConfig() {
 
         /* Window layout properties */
         // Primary power buttons
-        const auto primary_power_buttons = config_table["power_applet"]["layout"]["primary_buttons"]
-                                                   .as_array();
-        transform(primary_power_buttons->begin(), primary_power_buttons->end(),
-                  back_inserter(Config::WindowLayoutProperties::primary_power_buttons),
-                  [](const toml::node& node) -> PrimaryButtonData {
-                          const auto node_arr = node.as_array();
-                          // {identifier, text}
-                          return {QString::fromStdString(node_arr->get(0)->as_string()->get()),
-                                  QString::fromStdString(node_arr->get(1)->as_string()->get())};
+        const auto primary_power_buttons_ct =
+                config_table["power_applet"]["layout"]["primary_buttons"].as_array();
+        vector<PrimaryButtonData> primary_power_buttons{};
+        transform(primary_power_buttons_ct->begin(), primary_power_buttons_ct->end(),
+                  back_inserter(primary_power_buttons),
+                  [](const toml::node& button_node) -> PrimaryButtonData {
+                          const auto button_node_table = button_node.as_table();
+                          bool       enabled = (*button_node_table)["enabled"].value_or(true);
+
+                          if (enabled) {
+                                  return {QString::fromStdString(
+                                                  (*button_node_table)["id"].as_string()->get()),
+                                          QString::fromStdString(
+                                                  (*button_node_table)["label"].as_string()->get()),
+                                          (*button_node_table)["order"].as_integer()->get()};
+                          } else {
+                                  qDebug() << (*button_node_table)["id"].as_string()->get()
+                                           << ": DISABLED";
+                          }
                   });
+
+        // TODO Handle multiple order integers of the same value
+        sort(primary_power_buttons.begin(), primary_power_buttons.end(),
+             [](const PrimaryButtonData& a, const PrimaryButtonData& b) -> bool {
+                     return a.order < b.order;
+             });
+
+        Config::WindowLayoutProperties::primary_power_buttons = std::move(primary_power_buttons);
 
         /* Button properties */
         // Text alignment

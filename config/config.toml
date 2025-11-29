@@ -18,7 +18,30 @@ policy = "expanding"
 #icon_size = [64, 64]
 #policy = "expanding"
 [power_applet.layout]
-primary_buttons = [ ["shutdown", "Shutdown"], ["reboot", "Reboot"], ["suspend", "Suspend"], ["hibernate", "Hibernate"] ]
+[[power_applet.layout.primary_buttons]]
+id = "shutdown"
+label = "Shutdown"
+order = 1
+enabled = true
+
+[[power_applet.layout.primary_buttons]]
+id = "reboot"
+label = "Reboot"
+order = 2
+enabled = true
+
+[[power_applet.layout.primary_buttons]]
+id = "suspend"
+label = "Suspend"
+order = 3
+enabled = true
+
+[[power_applet.layout.primary_buttons]]
+id = "hibernate"
+label = "Hibernate"
+order = 4
+enabled = true
+
 
 #[weather_applet]
 #[weather_applet.window]
