@@ -1,5 +1,7 @@
 cmake_minimum_required(VERSION 3.16)
 
+project(PrettyApplets)
+
 # Source code directories
 set(POWERAPPLET_SOURCE_DIR ${CMAKE_CURRENT_LIST_DIR}/src/Applets/PowerApplet CACHE PATH "Path to PowerApplet's source code")
 
