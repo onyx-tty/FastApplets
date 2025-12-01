@@ -16,6 +16,7 @@
    along with this program.  If not, see <https://www.gnu.org/licenses/>. */
 
 #include "TomlConfigParser.h"
+#include "../../modules/CppUtils/include/String.h"
 #include "Config.h"
 #include "Keys.h"
 
@@ -49,21 +50,10 @@ using std::to_string;
 using std::transform;
 using std::unordered_map;
 using std::vector;
+using string_utils::toLowerCopy;
 
 template<typename EnumType>
 using EnumMap = unordered_map<string, EnumType>;
-
-static void tolower(string& str) {
-        for (char& ch : str) { ch = std::tolower(static_cast<unsigned char>(ch)); }
-}
-
-static string tolower(const string& str) {
-        string new_str = str;
-
-        tolower(new_str);
-
-        return new_str;
-}
 
 namespace {
 
@@ -265,7 +255,7 @@ void TomlConfigParser::parseConfig() {
         const QSizePolicy default_policy = QSizePolicy(QSizePolicy::Expanding,
                                                        QSizePolicy::Expanding);
         Config::PrimaryButtonProperties::policy =
-                getEnumFromMap(size_policy_map, tolower(policy_raw), default_policy,
+                getEnumFromMap(size_policy_map, toLowerCopy(policy_raw), default_policy,
                                error_message::size_policy::primaryButtonError);
 
         /* Window layout properties */

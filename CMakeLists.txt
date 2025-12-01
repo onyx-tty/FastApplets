@@ -33,6 +33,13 @@ endif()
 # Set up the Qt environment
 set(QT_VERSION_MAJOR 6 CACHE STRING "Build using this version of Qt")
 
+# Modules
+if(BUILD_POWERAPPLET)
+        add_subdirectory(
+                modules/CppUtils
+                CppUtils-build)
+endif()
+
 # Shared Directories
 #+ Resources
 add_subdirectory(

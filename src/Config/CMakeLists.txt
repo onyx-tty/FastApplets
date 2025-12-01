@@ -11,6 +11,7 @@ add_library(config
 add_library(Config ALIAS config)
 target_include_directories(config PUBLIC ${CMAKE_CURRENT_LIST_DIR})
 target_link_libraries(config PUBLIC
+        CppUtils
         Environment
         tomlplusplus::tomlplusplus
         Qt${QT_VERSION_MAJOR}::Widgets)
