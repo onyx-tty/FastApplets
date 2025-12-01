@@ -1,3 +1,5 @@
+project(dbus VERSION 0.1.0 LANGUAGES CXX)
+
 add_library(dbus
         DBusRequester.cpp
         DBusTarget.h)

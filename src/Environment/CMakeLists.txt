@@ -1,3 +1,5 @@
+project(environment VERSION 0.1.0 LANGUAGES CXX)
+
 add_library(environment
         RootResolver.cpp)
 add_library(Environment ALIAS environment)
