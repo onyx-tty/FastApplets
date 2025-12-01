@@ -234,37 +234,6 @@ void TomlConfigParser::parseConfig() {
         Config::WindowProperties::title = QString::fromStdString(
                 config_table["global"]["window"]["title"].as_string()->get());
 
-        /* Window layout properties */
-        // Primary power buttons
-        const auto primary_power_buttons_ct =
-                config_table["power_applet"]["layout"]["primary_buttons"].as_array();
-        vector<PrimaryButtonData> primary_power_buttons{};
-        transform(primary_power_buttons_ct->begin(), primary_power_buttons_ct->end(),
-                  back_inserter(primary_power_buttons),
-                  [](const toml::node& button_node) -> PrimaryButtonData {
-                          const auto button_node_table = button_node.as_table();
-                          bool       enabled = (*button_node_table)["enabled"].value_or(true);
-
-                          if (enabled) {
-                                  return {QString::fromStdString(
-                                                  (*button_node_table)["id"].as_string()->get()),
-                                          QString::fromStdString(
-                                                  (*button_node_table)["label"].as_string()->get()),
-                                          (*button_node_table)["order"].as_integer()->get()};
-                          } else {
-                                  qDebug() << (*button_node_table)["id"].as_string()->get()
-                                           << ": DISABLED";
-                          }
-                  });
-
-        // TODO Handle multiple order integers of the same value
-        sort(primary_power_buttons.begin(), primary_power_buttons.end(),
-             [](const PrimaryButtonData& a, const PrimaryButtonData& b) -> bool {
-                     return a.order < b.order;
-             });
-
-        Config::WindowLayoutProperties::primary_power_buttons = std::move(primary_power_buttons);
-
         /* Button properties */
         // Text alignment
         const auto text_alignment_raw =
@@ -298,6 +267,37 @@ void TomlConfigParser::parseConfig() {
         Config::PrimaryButtonProperties::policy =
                 getEnumFromMap(size_policy_map, tolower(policy_raw), default_policy,
                                error_message::size_policy::primaryButtonError);
+
+        /* Window layout properties */
+        // Primary power buttons
+        const auto primary_power_buttons_ct =
+                config_table["power_applet"]["layout"]["primary_buttons"].as_array();
+        vector<PrimaryButtonData> primary_power_buttons{};
+        transform(primary_power_buttons_ct->begin(), primary_power_buttons_ct->end(),
+                  back_inserter(primary_power_buttons),
+                  [](const toml::node& button_node) -> PrimaryButtonData {
+                          const auto button_node_table = button_node.as_table();
+                          bool       enabled = (*button_node_table)["enabled"].value_or(true);
+
+                          if (enabled) {
+                                  return {QString::fromStdString(
+                                                  (*button_node_table)["id"].as_string()->get()),
+                                          QString::fromStdString(
+                                                  (*button_node_table)["label"].as_string()->get()),
+                                          (*button_node_table)["order"].as_integer()->get()};
+                          } else {
+                                  qDebug() << (*button_node_table)["id"].as_string()->get()
+                                           << ": DISABLED";
+                          }
+                  });
+
+        // TODO Handle multiple order integers of the same value
+        sort(primary_power_buttons.begin(), primary_power_buttons.end(),
+             [](const PrimaryButtonData& a, const PrimaryButtonData& b) -> bool {
+                     return a.order < b.order;
+             });
+
+        Config::WindowLayoutProperties::primary_power_buttons = std::move(primary_power_buttons);
 
         /* Keys */
         // Quit
