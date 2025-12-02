@@ -212,9 +212,7 @@ TomlConfigParser& TomlConfigParser::getInstance() {
         return toml_config_parser;
 }
 
-// TODO Map for config_table and keys_table
-void TomlConfigParser::parseConfig() {
-        /* Window properties */
+void TomlConfigParser::parseWindowProperties() {
         // Window size
         const auto window_size_raw     = config_table["global"]["window"]["size"].as_array();
         Config::WindowProperties::size = QSize(window_size_raw->get(0)->as_integer()->get(),
@@ -223,8 +221,9 @@ void TomlConfigParser::parseConfig() {
         // Window title
         Config::WindowProperties::title = QString::fromStdString(
                 config_table["global"]["window"]["title"].as_string()->get());
+}
 
-        /* Button properties */
+void TomlConfigParser::parseButtonProperties() {
         // Text alignment
         const auto text_alignment_raw =
                 config_table["global"]["primary_button"]["text_alignment"].as_string()->get();
@@ -257,8 +256,9 @@ void TomlConfigParser::parseConfig() {
         Config::PrimaryButtonProperties::policy =
                 getEnumFromMap(size_policy_map, toLowerCopy(policy_raw), default_policy,
                                error_message::size_policy::primaryButtonError);
+}
 
-        /* Window layout properties */
+void TomlConfigParser::parseLayoutProperties() {
         // Primary power buttons
         const auto primary_power_buttons_ct =
                 config_table["power_applet"]["layout"]["primary_buttons"].as_array();
@@ -288,8 +288,9 @@ void TomlConfigParser::parseConfig() {
              });
 
         Config::WindowLayoutProperties::primary_power_buttons = std::move(primary_power_buttons);
+}
 
-        /* Keys */
+void TomlConfigParser::parseKeys() {
         // Quit
         interpretTextAsKeybindings(keys_table["global"]["quit"], Keys::GlobalKeys::quit_keys);
         interpretTextAsKeybindings(keys_table["power_applet"]["quit"],
@@ -304,4 +305,19 @@ void TomlConfigParser::parseConfig() {
                 interpretTextAsKeybindings(keys_table["power_applet"][button_name],
                                            Keys::PowerAppletKeys::primary_button_keys[i]);
         }
+}
+
+// TODO Map for config_table and keys_table
+void TomlConfigParser::parseConfig() {
+        /* Window properties */
+        parseWindowProperties();
+
+        /* Button properties */
+        parseButtonProperties();
+
+        /* Window layout properties */
+        parseLayoutProperties();
+
+        /* Keys */
+        parseKeys();
 }

@@ -26,6 +26,11 @@ private:
 
         TomlConfigParser();
 
+        void parseWindowProperties();
+        void parseButtonProperties();
+        void parseLayoutProperties();
+        void parseKeys();
+
 public:
         TomlConfigParser(const TomlConfigParser&) = delete;
         TomlConfigParser(TomlConfigParser&&) = delete;
