@@ -1,4 +1,4 @@
-#+TITLE: Pretty Applets TODO
+#+TITLE: FastApplets TODO
 #+OPTIONS: todo:t
 #+OPTIONS: toc:1
 #+OPTIONS: H:1

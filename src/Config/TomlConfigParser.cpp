@@ -1,4 +1,4 @@
-/* Pretty Applets
+/* FastApplets
 
    Copyright (C) 2025 Łukasz Wrodarczyk
 
@@ -148,9 +148,9 @@ namespace {
 constexpr int            config_dir_paths_cnt  = 2;
 constexpr int            config_file_names_cnt = 2;
 static array<QString, 2> config_dir_paths      = {qEnvironmentVariable("XDG_CONFIG_HOME")
-                                                          + "/PrettyApplets/",
+                                                          + "/FastApplets/",
                                                   qEnvironmentVariable("XDG_DATA_HOME")
-                                                          + "/PrettyApplets/"};
+                                                          + "/FastApplets/"};
 static array<QString, config_file_names_cnt> config_file_names = {"config.toml", "keys.toml"};
 
 } // namespace
