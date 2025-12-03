@@ -48,6 +48,12 @@ add_subdirectory(
         resources
         Resources-build)
 
+#+ Core
+add_subdirectory(
+        src/Core
+        Core-build
+)
+
 #+ Config
 add_subdirectory(
         src/Config
@@ -99,8 +105,9 @@ endif()
 # Linked libraries and options
 if(BUILD_POWERAPPLET)
         target_link_libraries(power-applet PRIVATE
-                DBus
+                Core
                 Config
+                DBus
                 UI
                 PowerApplet::UI
                 PowerApplet::DBus)
