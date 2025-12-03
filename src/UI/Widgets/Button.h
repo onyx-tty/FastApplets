@@ -25,7 +25,6 @@
 #include <QPushButton>
 #include <QString>
 
-
 // TODO Restore mouse click effect
 class Button : public QPushButton {
         Q_OBJECT

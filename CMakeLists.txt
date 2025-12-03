@@ -53,10 +53,10 @@ add_subdirectory(
         src/Config
         Config-build)
 
-#+ Core
+#+ UI
 add_subdirectory(
-        src/Core
-        Core-build)
+        src/UI
+        UI-build)
 
 #+ DBus
 add_subdirectory(
@@ -101,7 +101,7 @@ if(BUILD_POWERAPPLET)
         target_link_libraries(power-applet PRIVATE
                 DBus
                 Config
-                Core::AllLibs
+                UI
                 PowerApplet::UI
                 PowerApplet::DBus)
         target_compile_options(power-applet PRIVATE -fsanitize=address -fno-omit-frame-pointer -g)

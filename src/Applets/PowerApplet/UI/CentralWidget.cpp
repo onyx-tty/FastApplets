@@ -16,8 +16,8 @@
    along with this program.  If not, see <https://www.gnu.org/licenses/>. */
 
 #include "CentralWidget.h"
-#include "../../Config/Config.h"
-#include "../../Config/Keys.h"
+#include "../Config/Config.h"
+#include "../Config/Keys.h"
 
 #include <QApplication>
 #include <QDebug>

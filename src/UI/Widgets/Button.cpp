@@ -16,7 +16,7 @@
    along with this program.  If not, see <https://www.gnu.org/licenses/>. */
 
 #include "Button.h"
-#include "../../Config/Config.h"
+#include "../Config/Config.h"
 
 #include <QDebug>
 #include <QGridLayout>

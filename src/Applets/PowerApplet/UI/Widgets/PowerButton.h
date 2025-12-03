@@ -17,7 +17,7 @@
 
 #pragma once
 
-#include "../../../../Core/UI/Widgets/Button.h"
+#include "../../../../UI/Widgets/Button.h"
 
 class PowerButton final : public Button {
         Q_OBJECT

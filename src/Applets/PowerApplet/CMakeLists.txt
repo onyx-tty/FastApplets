@@ -20,5 +20,5 @@ add_library(PowerApplet::UI ALIAS power_ui)
 target_include_directories(power_ui PRIVATE ${CMAKE_CURRENT_LIST_DIR}/UI)
 target_link_libraries(power_ui PRIVATE
         Config
-        Core::UI
+        UI
         PowerApplet::DBus) # Power actions on button press, so DBus module is needed
