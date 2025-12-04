@@ -24,13 +24,13 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 # Build shared by default
 option(BUILD_SHARED_LIBS "Build using shared libraries" ON)
 
-# Shared requirements
-find_package(Qt6 REQUIRED COMPONENTS Widgets)
-
 # Set up the Qt environment
 set(QT_VERSION_MAJOR 6 CACHE STRING "Build using this version of Qt")
 
-# Modules
+# Shared requirements
+find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets)
+
+# External modules
 if(BUILD_POWERAPPLET)
         add_subdirectory(
                 modules/CppUtils
@@ -82,18 +82,11 @@ if(BUILD_POWERAPPLET)
                 PowerApplet-build)
 endif()
 
-# Maintain support for both Qt6 and >=Qt5 to support a future expansion
-if(QT_VERSION_MAJOR GREATER_EQUAL 6)
-        if (BUILD_POWERAPPLET)
-                qt_add_executable(PowerApplet
-                        MANUAL_FINALIZATION
-                        ${POWERAPPLET_SOURCE_DIR}/main.cpp)
-        endif()
-else()
-        if (BUILD_POWERAPPLET)
-                add_executable(PowerApplet
-                        ${POWERAPPLET_SOURCE_DIR}/main.cpp)
-        endif()
+# Executables
+if (BUILD_POWERAPPLET)
+        qt_add_executable(PowerApplet
+                MANUAL_FINALIZATION
+                ${POWERAPPLET_SOURCE_DIR}/main.cpp)
 endif()
 
 # TODO Build type checking to disable the sanitizer for release versions
@@ -114,8 +107,7 @@ if(BUILD_POWERAPPLET)
                 RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})
 endif()
 
-if(QT_VERSION_MAJOR EQUAL 6)
-        if(BUILD_POWERAPPLET)
-                qt_finalize_executable(PowerApplet)
-        endif()
+# Finalization
+if(BUILD_POWERAPPLET)
+        qt_finalize_executable(PowerApplet)
 endif()
