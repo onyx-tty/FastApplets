@@ -90,13 +90,13 @@ endif()
 # Maintain support for both Qt6 and >=Qt5 to support a future expansion
 if(QT_VERSION_MAJOR GREATER_EQUAL 6)
         if (BUILD_POWERAPPLET)
-                qt_add_executable(power-applet
+                qt_add_executable(PowerApplet
                         MANUAL_FINALIZATION
                         ${POWERAPPLET_SOURCE_DIR}/main.cpp)
         endif()
 else()
         if (BUILD_POWERAPPLET)
-                add_executable(power-applet
+                add_executable(PowerApplet
                         ${POWERAPPLET_SOURCE_DIR}/main.cpp)
         endif()
 endif()
@@ -104,28 +104,28 @@ endif()
 # TODO Build type checking to disable the sanitizer for release versions
 # Linked libraries and options
 if(BUILD_POWERAPPLET)
-        target_link_libraries(power-applet PRIVATE
+        target_link_libraries(PowerApplet PRIVATE
                 Core
                 Config
                 DBus
                 UI
                 PowerApplet::UI
                 PowerApplet::DBus)
-        target_compile_options(power-applet PRIVATE -fsanitize=address -fno-omit-frame-pointer -g)
-        target_link_options(power-applet PRIVATE -fsanitize=address)
+        target_compile_options(PowerApplet PRIVATE -fsanitize=address -fno-omit-frame-pointer -g)
+        target_link_options(PowerApplet PRIVATE -fsanitize=address)
 endif()
 
 # Installation
 include(GNUInstallDirs)
 
 if(BUILD_POWERAPPLET)
-        install(TARGETS power-applet
+        install(TARGETS PowerApplet
                 LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
                 RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})
 endif()
 
 if(QT_VERSION_MAJOR EQUAL 6)
         if(BUILD_POWERAPPLET)
-                qt_finalize_executable(power-applet)
+                qt_finalize_executable(PowerApplet)
         endif()
 endif()
