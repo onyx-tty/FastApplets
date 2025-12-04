@@ -1,5 +1,8 @@
 project(dbus VERSION 0.1.0 LANGUAGES CXX)
 
+# Requirements
+find_package(Qt6 REQUIRED COMPONENTS DBus)
+
 add_library(dbus
         DBusRequester.cpp
         DBusTarget.h)

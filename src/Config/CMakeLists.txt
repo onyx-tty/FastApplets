@@ -5,6 +5,9 @@ project(config VERSION 0.2.1 LANGUAGES CXX)
 # Enable support for Qt's resource files
 set(CMAKE_AUTORCC ON)
 
+# Requirements
+find_package(tomlplusplus REQUIRED)
+
 add_library(config
         Config.cpp
         Keys.cpp

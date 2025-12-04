@@ -24,13 +24,8 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 # Build shared by default
 option(BUILD_SHARED_LIBS "Build using shared libraries" ON)
 
-# Find packages
+# Shared requirements
 find_package(Qt6 REQUIRED COMPONENTS Widgets)
-find_package(tomlplusplus REQUIRED)
-
-if(BUILD_POWERAPPLET)
-        find_package(Qt6 REQUIRED COMPONENTS DBus)
-endif()
 
 # Set up the Qt environment
 set(QT_VERSION_MAJOR 6 CACHE STRING "Build using this version of Qt")
