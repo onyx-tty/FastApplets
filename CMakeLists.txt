@@ -37,45 +37,37 @@ if(BUILD_POWERAPPLET)
                 CppUtils-build)
 endif()
 
-# Shared directories
-#+ Resources
+# Internal modules
 add_subdirectory(
         resources
         Resources-build)
 
-#+ Core
 add_subdirectory(
         src/Core
         Core-build
 )
 
-#+ Config
 add_subdirectory(
         src/Config
         Config-build)
 
-#+ UI
 add_subdirectory(
         src/UI
         UI-build)
 
-#+ DBus
 add_subdirectory(
         src/DBus
         DBus-build)
 
-#+ Environment
 add_subdirectory(
         src/Environment
         Environment-build)
 
-#+ Time
 #add_subdirectory(
 #        src/Time
 #        Time-build)
 
 # Applets
-#+ PowerApplet
 if(BUILD_POWERAPPLET)
         add_subdirectory(
                 src/Applets/PowerApplet
@@ -90,7 +82,7 @@ if (BUILD_POWERAPPLET)
 endif()
 
 # TODO Build type checking to disable the sanitizer for release versions
-# Linked libraries and options
+# Target linking and configuration
 if(BUILD_POWERAPPLET)
         target_link_libraries(PowerApplet PRIVATE
                 PowerApplet::Deps)
