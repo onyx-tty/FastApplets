@@ -22,3 +22,14 @@ target_link_libraries(power_ui PRIVATE
         Config
         UI
         PowerApplet::DBus) # Power actions on button press, so DBus module is needed
+
+# Internal dependencies
+add_library(power_deps)
+add_library(PowerApplet::Deps ALIAS power_deps)
+target_link_libraries(power_deps INTERFACE
+                Core
+                Config
+                DBus
+                UI
+                PowerApplet::UI
+                PowerApplet::DBus)

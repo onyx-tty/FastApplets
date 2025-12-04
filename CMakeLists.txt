@@ -42,7 +42,7 @@ if(BUILD_POWERAPPLET)
                 CppUtils-build)
 endif()
 
-# Shared Directories
+# Shared directories
 #+ Resources
 add_subdirectory(
         resources
@@ -105,12 +105,7 @@ endif()
 # Linked libraries and options
 if(BUILD_POWERAPPLET)
         target_link_libraries(PowerApplet PRIVATE
-                Core
-                Config
-                DBus
-                UI
-                PowerApplet::UI
-                PowerApplet::DBus)
+                PowerApplet::Deps)
         target_compile_options(PowerApplet PRIVATE -fsanitize=address -fno-omit-frame-pointer -g)
         target_link_options(PowerApplet PRIVATE -fsanitize=address)
 endif()
