@@ -6,7 +6,9 @@ project(PowerApplet VERSION 0.17.2 LANGUAGES CXX)
 add_library(power_dbus
         DBus/PowerActionManager.cpp)
 add_library(PowerApplet::DBus ALIAS power_dbus)
-target_include_directories(power_dbus PRIVATE ${CMAKE_CURRENT_LIST_DIR}/DBus)
+target_include_directories(power_dbus PRIVATE
+        ${CMAKE_CURRENT_LIST_DIR}
+        ${GLOBAL_INCLUDES})
 target_link_libraries(power_dbus PUBLIC
         Qt${QT_VERSION_MAJOR}::DBus
         DBus)
@@ -17,7 +19,9 @@ add_library(power_ui
         UI/PowerCentralWidget.cpp
         UI/Widgets/PowerButton.cpp)
 add_library(PowerApplet::UI ALIAS power_ui)
-target_include_directories(power_ui PRIVATE ${CMAKE_CURRENT_LIST_DIR}/UI)
+target_include_directories(power_ui PRIVATE
+        ${CMAKE_CURRENT_LIST_DIR}
+        ${GLOBAL_INCLUDES})
 target_link_libraries(power_ui PRIVATE
         Config
         UI

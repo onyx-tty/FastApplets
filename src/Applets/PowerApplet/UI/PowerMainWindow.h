@@ -17,7 +17,7 @@
 
 #pragma once
 
-#include "../../../UI/MainWindow.h"
+#include "UI/MainWindow.h"
 #include "PowerCentralWidget.h"
 
 #include <QWidget>

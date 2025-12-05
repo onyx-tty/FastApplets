@@ -16,8 +16,8 @@
    along with this program.  If not, see <https://www.gnu.org/licenses/>. */
 
 #include "PowerActionManager.h"
-#include "../../../DBus/DBusRequester.h"
-#include "../../../DBus/DBusTarget.h"
+#include "DBus/DBusRequester.h"
+#include "DBus/DBusTarget.h"
 
 #include <QDBusConnection>
 #include <QDBusConnectionInterface>
