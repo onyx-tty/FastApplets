@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.16)
 
-project(PowerApplet VERSION 0.17.1 LANGUAGES CXX)
+project(PowerApplet VERSION 0.17.2 LANGUAGES CXX)
 
 # Internal structure
 add_library(power_dbus
@@ -14,7 +14,7 @@ target_link_libraries(power_dbus PUBLIC
 add_library(power_ui
         ${POWERAPPLET_RESOURCES}
         UI/PowerMainWindow.cpp
-        UI/CentralWidget.cpp
+        UI/PowerCentralWidget.cpp
         UI/Widgets/PowerButton.cpp)
 add_library(PowerApplet::UI ALIAS power_ui)
 target_include_directories(power_ui PRIVATE ${CMAKE_CURRENT_LIST_DIR}/UI)

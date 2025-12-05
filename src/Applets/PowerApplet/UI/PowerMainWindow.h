@@ -18,7 +18,7 @@
 #pragma once
 
 #include "../../../UI/MainWindow.h"
-#include "CentralWidget.h"
+#include "PowerCentralWidget.h"
 
 #include <QWidget>
 
@@ -26,7 +26,7 @@ class PowerMainWindow final : public MainWindow {
         Q_OBJECT
 
 public:
-        CentralWidget* central_widget;
+        PowerCentralWidget* central_widget;
 
         PowerMainWindow(QWidget* parent = nullptr);
 };

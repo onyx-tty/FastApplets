@@ -41,13 +41,13 @@ struct Action {
         void updatePowerButton(const std::vector<PowerButton*>& buttons);
 };
 
-class CentralWidget final : public QWidget {
+class PowerCentralWidget final : public QWidget {
         Q_OBJECT
 
 public:
         QBoxLayout* main_layout;
 
-        explicit CentralWidget(QWidget* parent);
+        explicit PowerCentralWidget(QWidget* parent);
 
         void keyPressEvent(QKeyEvent* event) override;
         void lastKeyUpdateEvent(QKeyEvent* event);

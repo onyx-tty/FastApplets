@@ -15,7 +15,7 @@
    You should have received a copy of the GNU General Public License
    along with this program.  If not, see <https://www.gnu.org/licenses/>. */
 
-#include "CentralWidget.h"
+#include "PowerCentralWidget.h"
 #include "../Config/Config.h"
 #include "../Config/Keys.h"
 
@@ -131,16 +131,16 @@ void Action::updatePowerButton(const vector<PowerButton*>& buttons) {
         qFatal("%s: button not found!", __func__);
 }
 
-CentralWidget::CentralWidget(QWidget* parent) :
+PowerCentralWidget::PowerCentralWidget(QWidget* parent) :
         QWidget(parent), main_layout(new QHBoxLayout(this)), last_action(Qt::Key_unknown, nullptr),
         current_action(Qt::Key_unknown, nullptr), button_list(initButtonList(main_layout)) {
         if (!parent) {
-                qFatal() << "Parent of CentralWidget is null in" << __func__
+                qFatal() << "Parent of PowerCentralWidget is null in" << __func__
                          << "! Shutting down to avoid memory leaks...";
         }
 }
 
-void CentralWidget::keyPressEvent(QKeyEvent* event) {
+void PowerCentralWidget::keyPressEvent(QKeyEvent* event) {
         if (!event) {
                 qWarning() << "Warning, received null keypress event in" << __func__;
                 return;
@@ -193,12 +193,12 @@ void CentralWidget::keyPressEvent(QKeyEvent* event) {
         updateActions();
 }
 
-void CentralWidget::updateActions() {
+void PowerCentralWidget::updateActions() {
         last_action    = std::move(current_action);
         current_action = Action(Qt::Key_unknown, nullptr);
 }
 
-void CentralWidget::resetActions() {
+void PowerCentralWidget::resetActions() {
         last_action.reset();
         current_action.reset();
 }

@@ -19,7 +19,7 @@
 #include "../../../Config/Config.h"
 
 PowerMainWindow::PowerMainWindow(QWidget* parent) :
-        MainWindow(parent), central_widget(new CentralWidget(this)) {
+        MainWindow(parent), central_widget(new PowerCentralWidget(this)) {
         resize(Config::WindowProperties::getSize());
         setCentralWidget(central_widget);
 }
