@@ -16,7 +16,7 @@
    along with this program.  If not, see <https://www.gnu.org/licenses/>. */
 
 #include "TomlConfigParser.h"
-#include "../../modules/CppUtils/include/String.h"
+#include "CppUtils/include/String.h"
 #include "Config.h"
 #include "Keys.h"
 

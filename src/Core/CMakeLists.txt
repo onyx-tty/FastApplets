@@ -3,7 +3,9 @@ project(core VERSION 0.1.0 LANGUAGES CXX)
 add_library(log_utils
         Log.cpp)
 add_library(LogUtils ALIAS log_utils)
-target_include_directories(log_utils PUBLIC ${CMAKE_CURRENT_LIST_DIR})
+target_include_directories(log_utils PRIVATE
+        ${CMAKE_CURRENT_LIST_DIR}
+        ${GLOBAL_INCLUDES})
 target_link_libraries(log_utils PUBLIC
         Qt${QT_VERSION_MAJOR}::Core)
 

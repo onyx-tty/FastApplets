@@ -14,7 +14,9 @@ add_library(config
         PrimaryButtonData.h
         TomlConfigParser.cpp)
 add_library(Config ALIAS config)
-target_include_directories(config PUBLIC ${CMAKE_CURRENT_LIST_DIR})
+target_include_directories(config PRIVATE
+        ${CMAKE_CURRENT_LIST_DIR}
+        ${GLOBAL_INCLUDES})
 target_link_libraries(config PUBLIC
         CppUtils
         Environment

@@ -16,7 +16,7 @@
    along with this program.  If not, see <https://www.gnu.org/licenses/>. */
 
 #include "MainWindow.h"
-#include "../Config/Config.h"
+#include "Config/Config.h"
 
 MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent) {
         resize(Config::WindowProperties::getSize());

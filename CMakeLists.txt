@@ -27,6 +27,12 @@ option(BUILD_SHARED_LIBS "Build using shared libraries" ON)
 # Set up the Qt environment
 set(QT_VERSION_MAJOR 6 CACHE STRING "Build using this version of Qt")
 
+# TODO Create a CMakeLists.txt file in src/ that does it there
+# Specify the src/ directory as a global include for submodules
+set(GLOBAL_INCLUDES
+        ${CMAKE_CURRENT_LIST_DIR}/src
+        ${CMAKE_CURRENT_LIST_DIR}/modules)
+
 # Shared requirements
 find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets)
 
@@ -84,6 +90,8 @@ endif()
 # TODO Build type checking to disable the sanitizer for release versions
 # Target linking and configuration
 if(BUILD_POWERAPPLET)
+        target_include_directories(PowerApplet PRIVATE
+                ${GLOBAL_INCLUDES})
         target_link_libraries(PowerApplet PRIVATE
                 PowerApplet::Deps)
         target_compile_options(PowerApplet PRIVATE -fsanitize=address -fno-omit-frame-pointer -g)
