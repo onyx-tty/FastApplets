@@ -5,6 +5,7 @@ project(time VERSION 0.1.0 LANGUAGES CXX)
 add_library(time
         Time.cpp
         TimeConstants.h)
+add_library(Time ALIAS time)
 target_include_directories(time PRIVATE
         ${CMAKE_CURRENT_LIST_DIR}
         ${GLOBAL_INCUDES})
