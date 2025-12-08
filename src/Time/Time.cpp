@@ -118,5 +118,5 @@ time_t findCloserHour(time_t hour1, time_t hour2) {
         const time_t diff1 = std::abs(hour1 - now);
         const time_t diff2 = std::abs(hour2 - now);
 
-        return (diff1 > diff2) ? hour1 : hour2;
+        return (diff1 <= diff2) ? hour1 : hour2;
 }
