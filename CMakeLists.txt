@@ -72,9 +72,9 @@ add_subdirectory(
         src/Environment
         Environment-build)
 
-#add_subdirectory(
-#        src/Time
-#        Time-build)
+add_subdirectory(
+        src/Time
+        Time-build)
 
 # Applets
 if(BUILD_POWERAPPLET)
