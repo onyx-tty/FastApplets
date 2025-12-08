@@ -24,6 +24,9 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 # Build shared by default
 option(BUILD_SHARED_LIBS "Build using shared libraries" ON)
 
+# Build unit tests
+option(BUILD_TESTS "Build unit tests" ON)
+
 # Set up the Qt environment
 set(QT_VERSION_MAJOR 6 CACHE STRING "Build using this version of Qt")
 
@@ -96,6 +99,12 @@ if(BUILD_POWERAPPLET)
                 PowerApplet::Deps)
         target_compile_options(PowerApplet PRIVATE -fsanitize=address -fno-omit-frame-pointer -g)
         target_link_options(PowerApplet PRIVATE -fsanitize=address)
+endif()
+
+# Tests
+if(BUILD_TESTS)
+        enable_testing()
+        add_subdirectory(tests)
 endif()
 
 # Installation
