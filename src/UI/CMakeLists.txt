@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.16)
 
-project(ui VERSION 0.2.0 LANGUAGES CXX)
+project(ui VERSION 0.2.1 LANGUAGES CXX)
 
 # Internal structure
 add_library(ui

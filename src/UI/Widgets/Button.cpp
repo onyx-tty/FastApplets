@@ -23,7 +23,9 @@
 #include <QStyleOptionButton>
 #include <QStylePainter>
 
+namespace {
 QString stylesheet = "text-align: center top;";
+} // namespace
 
 /* Initializes a button of choice with uniform design */
 // Inheriting constructor defaults from from QPushButton,
