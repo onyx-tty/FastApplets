@@ -93,14 +93,14 @@ static bool isPowerKey(int& key) {
         return false;
 };
 
-Action::Action(int key, PowerButton* button) : key(key), button(button) {}
+KeyAction::KeyAction(int key, PowerButton* button) : key(key), button(button) {}
 
-void Action::reset() {
+void KeyAction::reset() {
         key    = Qt::Key_unknown;
         button = nullptr;
 }
 
-void Action::updatePowerButton(const vector<PowerButton*>& buttons) {
+void KeyAction::updatePowerButton(const vector<PowerButton*>& buttons) {
         const auto& button_properties = Config::WindowLayoutProperties::getPrimaryPowerButtons();
 
         if (button_properties.size() != buttons.size()) {
@@ -195,7 +195,7 @@ void PowerCentralWidget::keyPressEvent(QKeyEvent* event) {
 
 void PowerCentralWidget::updateActions() {
         last_action    = std::move(current_action);
-        current_action = Action(Qt::Key_unknown, nullptr);
+        current_action = KeyAction(Qt::Key_unknown, nullptr);
 }
 
 void PowerCentralWidget::resetActions() {

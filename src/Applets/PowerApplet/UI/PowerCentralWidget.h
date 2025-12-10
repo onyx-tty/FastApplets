@@ -30,11 +30,11 @@
 //	and automatically apply updatePowerButton to each use of
 //	getButton(), maybe even create a special method that
 //	expects the key to be found
-struct Action {
+struct KeyAction {
         int          key;
         PowerButton* button;
 
-        Action(int key = Qt::Key_unknown, PowerButton* button = nullptr);
+        KeyAction(int key = Qt::Key_unknown, PowerButton* button = nullptr);
 
         void reset();
         // Find out if key is a part of any keybindings and adjust
@@ -57,8 +57,8 @@ public:
         void clickButton(QKeyEvent* event);
 
 private:
-        Action                          last_action;
-        Action                          current_action;
+        KeyAction                       last_action;
+        KeyAction                       current_action;
         const std::vector<PowerButton*> button_list;
 
         // TODO Optimize
