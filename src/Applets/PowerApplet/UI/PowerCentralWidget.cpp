@@ -85,7 +85,7 @@ static vector<PowerButton*> initButtonList(QBoxLayout* main_layout) {
         }
 }
 
-static bool isPowerKey(int& key) {
+static bool isPowerKey(int key) {
         for (const auto& button_keys : PowerKeys::getPrimaryButtonKeys()) {
                 if (button_keys.contains(key)) { return true; }
         }
