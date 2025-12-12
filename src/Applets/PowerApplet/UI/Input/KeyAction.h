@@ -52,6 +52,5 @@ public:
         // Find out if key is a part of any keybindings and adjust
         int                getKey() const;
         const PowerButton* getButton() const;
-        void               updatePowerButton(int new_key, const std::vector<PowerButton*>& buttons);
         void               reset();
 };

@@ -103,10 +103,6 @@ PowerButton* KeyAction::debugGetButtonNonConst() {
         return button;
 }
 
-void KeyAction::updatePowerButton(int new_key, const ButtonList& buttons) {
-        button = findPowerButton(new_key, buttons);
-}
-
 void KeyAction::reset() {
         key    = Qt::Key_unknown;
         button = nullptr;
