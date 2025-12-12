@@ -26,6 +26,8 @@
 
 using std::vector, std::unordered_map;
 
+using ButtonList = vector<PowerButton*>;
+
 namespace {
 static const unordered_map<int, int> power_key_map{{Qt::Key_1, 1},
                                                    {Qt::Key_2, 2},
@@ -77,7 +79,7 @@ PowerButton* KeyAction::debugGetButtonNonConst() {
         return button;
 }
 
-void KeyAction::updatePowerButton(const vector<PowerButton*>& buttons) {
+void KeyAction::updatePowerButton(const ButtonList& buttons) {
         const auto& button_properties = Config::WindowLayoutProperties::getPrimaryPowerButtons();
 
         if (button_properties.size() != buttons.size()) {
