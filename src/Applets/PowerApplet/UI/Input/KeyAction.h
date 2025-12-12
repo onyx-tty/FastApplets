@@ -25,6 +25,8 @@
 
 class PowerCentralWidget;
 
+PowerButton* findPowerButton(int key_to_find, const std::vector<PowerButton*>& buttons);
+
 class KeyAction {
 private:
         // TODO Remove friendship for safety, only required for animateClick and setFocus, needs a rework!
@@ -38,6 +40,7 @@ private:
 public:
         // Create empty
         KeyAction();
+        // TODO Remove, only exists to temporarily permit decoupled key and button
         KeyAction(int key, PowerButton* button);
         KeyAction(const KeyAction& other);
         KeyAction(KeyAction&& other);
@@ -47,6 +50,6 @@ public:
         // Find out if key is a part of any keybindings and adjust
         int                getKey() const;
         const PowerButton* getButton() const;
-        void               updatePowerButton(const std::vector<PowerButton*>& buttons);
+        void               updatePowerButton(int new_key, const std::vector<PowerButton*>& buttons);
         void               reset();
 };
