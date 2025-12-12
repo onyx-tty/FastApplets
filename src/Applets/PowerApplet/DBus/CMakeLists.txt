@@ -7,3 +7,4 @@ target_include_directories(power_dbus PRIVATE
 target_link_libraries(power_dbus PUBLIC
         Qt${QT_VERSION_MAJOR}::DBus
         DBus)
+

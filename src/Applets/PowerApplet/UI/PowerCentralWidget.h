@@ -17,6 +17,7 @@
 
 #pragma once
 
+#include "Input/KeyAction.h"
 #include "Widgets/PowerButton.h"
 
 #include <qnamespace.h>
@@ -25,21 +26,6 @@
 #include <QWidget>
 
 #include <vector>
-
-// TODO Rework Action, get key or button through a getter
-//	and automatically apply updatePowerButton to each use of
-//	getButton(), maybe even create a special method that
-//	expects the key to be found
-struct KeyAction {
-        int          key;
-        PowerButton* button;
-
-        KeyAction(int key = Qt::Key_unknown, PowerButton* button = nullptr);
-
-        void reset();
-        // Find out if key is a part of any keybindings and adjust
-        void updatePowerButton(const std::vector<PowerButton*>& buttons);
-};
 
 class PowerCentralWidget final : public QWidget {
         Q_OBJECT

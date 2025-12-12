@@ -18,11 +18,11 @@
 #include "PowerCentralWidget.h"
 #include "Config/Config.h"
 #include "Config/Keys.h"
+#include "UI/Input/KeyAction.h"
 
 #include <QApplication>
 #include <QDebug>
 
-#include <unordered_map>
 #include <vector>
 
 using std::string, std::vector, std::array, std::unordered_map;
@@ -32,9 +32,9 @@ using PowerKeys  = Keys::PowerAppletKeys;
 static array<QIcon, 4> initButtonIcons() {
         Q_INIT_RESOURCE(Icons);
         array<QIcon, 4> button_icons{QIcon(":/Icons/Power/shutdown.svg"),
-                                          QIcon(":/Icons/Power/reboot.svg"),
-                                          QIcon(":/Icons/Power/suspend.svg"),
-                                          QIcon(":/Icons/Power/hibernate.svg")};
+                                     QIcon(":/Icons/Power/reboot.svg"),
+                                     QIcon(":/Icons/Power/suspend.svg"),
+                                     QIcon(":/Icons/Power/hibernate.svg")};
         return button_icons;
 }
 
@@ -93,44 +93,6 @@ static bool isPowerKey(int& key) {
         return false;
 };
 
-KeyAction::KeyAction(int key, PowerButton* button) : key(key), button(button) {}
-
-void KeyAction::reset() {
-        key    = Qt::Key_unknown;
-        button = nullptr;
-}
-
-void KeyAction::updatePowerButton(const vector<PowerButton*>& buttons) {
-        const auto& button_properties = Config::WindowLayoutProperties::getPrimaryPowerButtons();
-
-        if (button_properties.size() != buttons.size()) {
-                qFatal("%s: button_properties (%s) larger than buttons (%s)!", __func__,
-                       QString::number(button_properties.size()).toStdString().c_str(),
-                       QString::number(buttons.size()).toStdString().c_str());
-        }
-
-        static const auto power_key_interpreter = [](int key) -> int {
-                static const unordered_map<int, int> power_key_map{
-                        {Qt::Key_1, 1},
-                        {Qt::Key_2, 2},
-                        {Qt::Key_3, 3},
-                        {Qt::Key_4, 4}
-                };
-
-                return power_key_map.at(key);
-        };
-
-        for (size_t i = 0; i != buttons.size(); ++i) {
-                if (power_key_interpreter(key) == button_properties[i].order) {
-                        button = buttons[i];
-                        qDebug() << "Button" << i << "updated to: " << button->getDBusAction();
-                        return;
-                }
-        }
-
-        qFatal("%s: button not found!", __func__);
-}
-
 PowerCentralWidget::PowerCentralWidget(QWidget* parent) :
         QWidget(parent), main_layout(new QHBoxLayout(this)), last_action(Qt::Key_unknown, nullptr),
         current_action(Qt::Key_unknown, nullptr), button_list(initButtonList(main_layout)) {
@@ -150,7 +112,9 @@ void PowerCentralWidget::keyPressEvent(QKeyEvent* event) {
         qDebug() << "keyPressEvent registered!";
         current_action.key = event->key();
 
-        const auto current_action_updater = [this]() { current_action.updatePowerButton(button_list); };
+        const auto current_action_updater = [this]() {
+                current_action.updatePowerButton(button_list);
+        };
 
         if (PowerKeys::getQuitKeys().contains(current_action.key)) { // Quit key pressed
                 if (last_action.button
