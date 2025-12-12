@@ -26,46 +26,9 @@
 
 using std::vector, std::unordered_map;
 
-void KeyAction::reset() {
-        key    = Qt::Key_unknown;
-        button = nullptr;
-}
-
-void KeyAction::updatePowerButton(const vector<PowerButton*>& buttons) {
-        const auto& button_properties = Config::WindowLayoutProperties::getPrimaryPowerButtons();
-
-        if (button_properties.size() != buttons.size()) {
-                qFatal("%s: button_properties (%s) larger than buttons (%s)!", __func__,
-                       QString::number(button_properties.size()).toStdString().c_str(),
-                       QString::number(buttons.size()).toStdString().c_str());
-        }
-
-        static const auto power_key_interpreter = [](int key) -> int {
-                static const unordered_map<int, int> power_key_map{
-                        {Qt::Key_1, 1},
-                        {Qt::Key_2, 2},
-                        {Qt::Key_3, 3},
-                        {Qt::Key_4, 4}
-                };
-
-                return power_key_map.at(key);
-        };
-
-        for (size_t i = 0; i != buttons.size(); ++i) {
-                if (power_key_interpreter(key) == button_properties[i].order) {
-                        button = buttons[i];
-                        qDebug() << "Button" << i << "updated to: " << button->getDBusAction();
-                        return;
-                }
-        }
-
-        qFatal("%s: button not found!", __func__);
-}
-
 KeyAction::KeyAction() : key(Qt::Key_unknown), button(nullptr) {}
 
 KeyAction::KeyAction(int key, PowerButton* button) : key(key), button(button) {}
-
 
 KeyAction::KeyAction(const KeyAction& other) {
         key    = other.key;
@@ -105,4 +68,40 @@ const PowerButton* KeyAction::getButton() const {
 
 PowerButton* KeyAction::debugGetButtonNonConst() {
         return button;
+}
+
+void KeyAction::updatePowerButton(const vector<PowerButton*>& buttons) {
+        const auto& button_properties = Config::WindowLayoutProperties::getPrimaryPowerButtons();
+
+        if (button_properties.size() != buttons.size()) {
+                qFatal("%s: button_properties (%s) larger than buttons (%s)!", __func__,
+                       QString::number(button_properties.size()).toStdString().c_str(),
+                       QString::number(buttons.size()).toStdString().c_str());
+        }
+
+        static const auto power_key_interpreter = [](int key) -> int {
+                static const unordered_map<int, int> power_key_map{
+                        {Qt::Key_1, 1},
+                        {Qt::Key_2, 2},
+                        {Qt::Key_3, 3},
+                        {Qt::Key_4, 4}
+                };
+
+                return power_key_map.at(key);
+        };
+
+        for (size_t i = 0; i != buttons.size(); ++i) {
+                if (power_key_interpreter(key) == button_properties[i].order) {
+                        button = buttons[i];
+                        qDebug() << "Button" << i << "updated to: " << button->getDBusAction();
+                        return;
+                }
+        }
+
+        qFatal("%s: button not found!", __func__);
+}
+
+void KeyAction::reset() {
+        key    = Qt::Key_unknown;
+        button = nullptr;
 }

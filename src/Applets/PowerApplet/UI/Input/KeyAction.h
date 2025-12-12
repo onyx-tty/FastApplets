@@ -45,8 +45,8 @@ public:
         KeyAction& operator=(KeyAction&& other);
 
         // Find out if key is a part of any keybindings and adjust
-        void updatePowerButton(const std::vector<PowerButton*>& buttons);
         int                getKey() const;
         const PowerButton* getButton() const;
+        void               updatePowerButton(const std::vector<PowerButton*>& buttons);
         void               reset();
 };
