@@ -25,7 +25,7 @@
 
 #include <vector>
 
-using std::string, std::vector, std::array, std::unordered_map;
+using std::string, std::vector, std::array;
 using GlobalKeys = Keys::GlobalKeys;
 using PowerKeys  = Keys::PowerAppletKeys;
 
@@ -110,50 +110,50 @@ void PowerCentralWidget::keyPressEvent(QKeyEvent* event) {
 
         qDebug() << "----------------------------------------";
         qDebug() << "keyPressEvent registered!";
-        current_action.key = event->key();
+        current_action = KeyAction(event->key(), nullptr);
 
         const auto current_action_updater = [this]() {
                 current_action.updatePowerButton(button_list);
         };
 
-        if (PowerKeys::getQuitKeys().contains(current_action.key)) { // Quit key pressed
-                if (last_action.button
-                    && last_action.button->isFocused()) { // Last button focused, Quit key unselects it
-                        last_action.button->setFocus(false);
+        if (PowerKeys::getQuitKeys().contains(current_action.getKey())) { // Quit key pressed
+                if (last_action.getButton()
+                    && last_action.getButton()->isFocused()) { // Last button focused, Quit key unselects it
+                        last_action.debugGetButtonNonConst()->setFocus(false);
                 } else {
                         qDebug() << "Quit key pressed, quitting!";
                         QApplication::quit();
                 }
-        } else if ((current_action.key != last_action.key)
-                   && isPowerKey(current_action.key)) { // new selection
+        } else if ((current_action.getKey() != last_action.getKey())
+                   && isPowerKey(current_action.getKey())) { // new selection
                 qDebug() << "current key and last key don't match";
                 current_action_updater();
                 // select current button
-                qDebug() << current_action.button->text() << "selected!";
-                current_action.button->setFocus(true);
+                qDebug() << current_action.getButton()->text() << "selected!";
+                current_action.debugGetButtonNonConst()->setFocus(true);
                 // unselect last button if valid, otherwise ignore because it doesn't exist anyway
-                if (last_action.button) {
-                        last_action.button->setFocus(false);
+                if (last_action.getButton()) {
+                        last_action.debugGetButtonNonConst()->setFocus(false);
                 } else {
                         qDebug() << "last key is null!";
                 }
-        } else if ((current_action.key == last_action.key)
-                   && isPowerKey(current_action.key)) { // click recognized, both keys match
+        } else if ((current_action.getKey() == last_action.getKey())
+                   && isPowerKey(current_action.getKey())) { // click recognized, both keys match
                 // TODO Display errors returned by power action
                 qDebug() << "current and previous keys match";
                 current_action_updater();
                 // animate click, proceed with power action
-                qDebug() << current_action.button->text() << "clicked!";
-                current_action.button->animateClick(); // includes emitting click
-                current_action.button->setFocus(false);
+                qDebug() << current_action.getButton()->text() << "clicked!";
+                current_action.debugGetButtonNonConst()->animateClick(); // includes emitting click
+                current_action.debugGetButtonNonConst()->setFocus(false);
                 resetActions();
                 return;
         }
 
         // Print current key combination
         qDebug() << "Current key combination:"
-                 << (last_action.key != Qt::Key_unknown ? QString::number(last_action.key) : "NULL")
-                 << QString::number(current_action.key);
+                 << (last_action.getKey() != Qt::Key_unknown ? QString::number(last_action.getKey()) : "NULL")
+                 << QString::number(current_action.getKey());
         updateActions();
 }
 

@@ -23,18 +23,26 @@
 
 #include <vector>
 
-// TODO Rework Action, get key or button through a getter
-//	and automatically apply updatePowerButton to each use of
-//	getButton(), maybe even create a special method that
-//	expects the key to be found
-struct KeyAction {
+class PowerCentralWidget;
+
+class KeyAction {
+private:
+        // TODO Remove friendship for safety, only required for animateClick and setFocus, needs a rework!
+        friend PowerCentralWidget;
+
         int          key;
         PowerButton* button;
 
+        PowerButton* debugGetButtonNonConst();
+
+public:
+        // Create empty
         KeyAction();
         KeyAction(int key, PowerButton* button);
 
-        void reset();
         // Find out if key is a part of any keybindings and adjust
         void updatePowerButton(const std::vector<PowerButton*>& buttons);
+        int                getKey() const;
+        const PowerButton* getButton() const;
+        void               reset();
 };

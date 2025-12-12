@@ -26,10 +26,6 @@
 
 using std::vector, std::unordered_map;
 
-KeyAction::KeyAction() : key(Qt::Key_unknown), button(nullptr) {}
-
-KeyAction::KeyAction(int key, PowerButton* button) : key(key), button(button) {}
-
 void KeyAction::reset() {
         key    = Qt::Key_unknown;
         button = nullptr;
@@ -64,4 +60,20 @@ void KeyAction::updatePowerButton(const vector<PowerButton*>& buttons) {
         }
 
         qFatal("%s: button not found!", __func__);
+}
+
+KeyAction::KeyAction() : key(Qt::Key_unknown), button(nullptr) {}
+
+KeyAction::KeyAction(int key, PowerButton* button) : key(key), button(button) {}
+
+int KeyAction::getKey() const {
+        return key;
+}
+
+const PowerButton* KeyAction::getButton() const {
+        return button;
+}
+
+PowerButton* KeyAction::debugGetButtonNonConst() {
+        return button;
 }
