@@ -26,6 +26,13 @@
 
 using std::vector, std::unordered_map;
 
+namespace {
+static const unordered_map<int, int> power_key_map{{Qt::Key_1, 1},
+                                                   {Qt::Key_2, 2},
+                                                   {Qt::Key_3, 3},
+                                                   {Qt::Key_4, 4}};
+}
+
 KeyAction::KeyAction() : key(Qt::Key_unknown), button(nullptr) {}
 
 KeyAction::KeyAction(int key, PowerButton* button) : key(key), button(button) {}
@@ -79,19 +86,8 @@ void KeyAction::updatePowerButton(const vector<PowerButton*>& buttons) {
                        QString::number(buttons.size()).toStdString().c_str());
         }
 
-        static const auto power_key_interpreter = [](int key) -> int {
-                static const unordered_map<int, int> power_key_map{
-                        {Qt::Key_1, 1},
-                        {Qt::Key_2, 2},
-                        {Qt::Key_3, 3},
-                        {Qt::Key_4, 4}
-                };
-
-                return power_key_map.at(key);
-        };
-
         for (size_t i = 0; i != buttons.size(); ++i) {
-                if (power_key_interpreter(key) == button_properties[i].order) {
+                if (power_key_map.at(key) == button_properties[i].order) {
                         button = buttons[i];
                         qDebug() << "Button" << i << "updated to: " << button->getDBusAction();
                         return;
