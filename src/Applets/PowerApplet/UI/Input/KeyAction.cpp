@@ -26,6 +26,8 @@
 
 using std::vector, std::unordered_map;
 
+KeyAction::KeyAction() : key(Qt::Key_unknown), button(nullptr) {}
+
 KeyAction::KeyAction(int key, PowerButton* button) : key(key), button(button) {}
 
 void KeyAction::reset() {

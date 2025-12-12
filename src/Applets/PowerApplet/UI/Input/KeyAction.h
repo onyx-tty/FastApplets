@@ -31,7 +31,8 @@ struct KeyAction {
         int          key;
         PowerButton* button;
 
-        KeyAction(int key = Qt::Key_unknown, PowerButton* button = nullptr);
+        KeyAction();
+        KeyAction(int key, PowerButton* button);
 
         void reset();
         // Find out if key is a part of any keybindings and adjust
