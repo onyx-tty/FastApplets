@@ -42,6 +42,8 @@ public:
         KeyAction();
         // TODO Remove, only exists to temporarily permit decoupled key and button
         KeyAction(int key, PowerButton* button);
+        // Fully initialize and automatically find the right button
+        KeyAction(const std::vector<PowerButton*>& buttons, int key);
         KeyAction(const KeyAction& other);
         KeyAction(KeyAction&& other);
         KeyAction& operator=(const KeyAction& other);

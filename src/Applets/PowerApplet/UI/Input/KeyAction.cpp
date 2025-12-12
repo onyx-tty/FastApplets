@@ -58,6 +58,11 @@ KeyAction::KeyAction() : key(Qt::Key_unknown), button(nullptr) {}
 
 KeyAction::KeyAction(int key, PowerButton* button) : key(key), button(button) {}
 
+// TODO Eliminate passing of buttons by accessing PowerCentralWidget's button_list
+KeyAction::KeyAction(const ButtonList& buttons, int key) : key(key) {
+        button = findPowerButton(key, buttons);
+}
+
 KeyAction::KeyAction(const KeyAction& other) {
         key    = other.key;
         button = other.button;
