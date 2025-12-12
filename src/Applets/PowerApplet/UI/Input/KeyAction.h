@@ -39,6 +39,10 @@ public:
         // Create empty
         KeyAction();
         KeyAction(int key, PowerButton* button);
+        KeyAction(const KeyAction& other);
+        KeyAction(KeyAction&& other);
+        KeyAction& operator=(const KeyAction& other);
+        KeyAction& operator=(KeyAction&& other);
 
         // Find out if key is a part of any keybindings and adjust
         void updatePowerButton(const std::vector<PowerButton*>& buttons);

@@ -66,6 +66,35 @@ KeyAction::KeyAction() : key(Qt::Key_unknown), button(nullptr) {}
 
 KeyAction::KeyAction(int key, PowerButton* button) : key(key), button(button) {}
 
+
+KeyAction::KeyAction(const KeyAction& other) {
+        key    = other.key;
+        button = other.button;
+}
+
+KeyAction::KeyAction(KeyAction&& other) {
+        key    = other.key;
+        button = other.button;
+}
+
+KeyAction& KeyAction::operator=(const KeyAction& other) {
+        if (this != &other) {
+                key    = other.key;
+                button = other.button;
+        }
+
+        return *this;
+}
+
+KeyAction& KeyAction::operator=(KeyAction&& other) {
+        if (this != &other) {
+                key    = other.key;
+                button = other.button;
+        }
+
+        return *this;
+}
+
 int KeyAction::getKey() const {
         return key;
 }
