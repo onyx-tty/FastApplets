@@ -113,7 +113,7 @@ void PowerCentralWidget::keyPressEvent(QKeyEvent* event) {
         current_action = KeyAction(event->key(), nullptr);
 
         const auto current_action_updater = [this, &event]() {
-                current_action.updatePowerButton(event->key(), button_list);
+                current_action = KeyAction(button_list, event->key());
         };
 
         if (PowerKeys::getQuitKeys().contains(current_action.getKey())) { // Quit key pressed
