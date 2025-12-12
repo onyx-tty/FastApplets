@@ -24,7 +24,7 @@
 
 #include <unordered_map>
 
-using std::vector, std::unordered_map;
+using std::unordered_map, std::vector;
 
 using ButtonList = vector<PowerButton*>;
 
