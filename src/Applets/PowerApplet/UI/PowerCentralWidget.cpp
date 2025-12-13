@@ -94,12 +94,16 @@ static bool isPowerKey(int key) {
 };
 
 PowerCentralWidget::PowerCentralWidget(QWidget* parent) :
-        QWidget(parent), main_layout(new QHBoxLayout(this)), last_action(Qt::Key_unknown, nullptr),
-        current_action(Qt::Key_unknown, nullptr), button_list(initButtonList(main_layout)) {
+        QWidget(parent), main_layout(new QHBoxLayout(this)),
+        button_list(initButtonList(main_layout)) {
         if (!parent) {
                 qFatal() << "Parent of PowerCentralWidget is null in" << __func__
                          << "! Shutting down to avoid memory leaks...";
         }
+}
+
+namespace {
+enum key_sequence_index { previous = 0, current = 1 };
 }
 
 void PowerCentralWidget::keyPressEvent(QKeyEvent* event) {
@@ -110,59 +114,76 @@ void PowerCentralWidget::keyPressEvent(QKeyEvent* event) {
 
         qDebug() << "----------------------------------------";
         qDebug() << "keyPressEvent registered!";
-        current_action = KeyAction(event->key(), nullptr);
 
-        const auto current_action_updater = [this, &event]() {
-                current_action = KeyAction(button_list, event->key());
-        };
+        // TODO Refactor to universally call updateActions without out the out-of-range error requiring updateActionsUnsafe
+        // New key press event, push the previous one to the back
+        //updateActions(event->key());
+        // workaround:
+        if (isPowerKey(event->key())) {
+                updateActions(event->key());
+        } else {
+                updateActionsUnsafe(event->key(), nullptr);
+        }
 
-        if (PowerKeys::getQuitKeys().contains(current_action.getKey())) { // Quit key pressed
-                if (last_action.getButton()
-                    && last_action.getButton()->isFocused()) { // Last button focused, Quit key unselects it
-                        last_action.debugGetButtonNonConst()->setFocus(false);
+        // if quit pressed
+        if (PowerKeys::getQuitKeys().contains(key_action_sequence[current].getKey())) {
+                // button focus active, quit key = unselect
+                if (key_action_sequence[previous].getButton()
+                    && key_action_sequence[previous].getButton()->isFocused()) {
+                        key_action_sequence[previous].debugGetButtonNonConst()->setFocus(false);
+                        // no selection active, quit key = terminate application
                 } else {
                         qDebug() << "Quit key pressed, quitting!";
                         QApplication::quit();
                 }
-        } else if ((current_action.getKey() != last_action.getKey())
-                   && isPowerKey(current_action.getKey())) { // new selection
+                // mismatched sequence, remove focus, select another button if key matches
+        } else if ((key_action_sequence[current].getKey() != key_action_sequence[previous].getKey())
+                   && isPowerKey(key_action_sequence[current].getKey())) { // new selection
                 qDebug() << "current key and last key don't match";
-                current_action_updater();
                 // select current button
-                qDebug() << current_action.getButton()->text() << "selected!";
-                current_action.debugGetButtonNonConst()->setFocus(true);
+                qDebug() << key_action_sequence[current].getButton()->text() << "selected!";
+                key_action_sequence[current].debugGetButtonNonConst()->setFocus(true);
                 // unselect last button if valid, otherwise ignore because it doesn't exist anyway
-                if (last_action.getButton()) {
-                        last_action.debugGetButtonNonConst()->setFocus(false);
+                if (key_action_sequence[previous].getButton()) {
+                        key_action_sequence[previous].debugGetButtonNonConst()->setFocus(false);
                 } else {
                         qDebug() << "last key is null!";
                 }
-        } else if ((current_action.getKey() == last_action.getKey())
-                   && isPowerKey(current_action.getKey())) { // click recognized, both keys match
+                // recurring sequence, activate button
+        } else if ((key_action_sequence[current].getKey() == key_action_sequence[previous].getKey())
+                   && isPowerKey(key_action_sequence[current]
+                                         .getKey())) { // click recognized, both keys match
                 // TODO Display errors returned by power action
                 qDebug() << "current and previous keys match";
-                current_action_updater();
                 // animate click, proceed with power action
-                qDebug() << current_action.getButton()->text() << "clicked!";
-                current_action.debugGetButtonNonConst()->animateClick(); // includes emitting click
-                current_action.debugGetButtonNonConst()->setFocus(false);
+                qDebug() << key_action_sequence[current].getButton()->text() << "clicked!";
+                key_action_sequence[current]
+                        .debugGetButtonNonConst()
+                        ->animateClick(); // includes emitting click
+                key_action_sequence[current].debugGetButtonNonConst()->setFocus(false);
                 resetActions();
                 return;
         }
 
         // Print current key combination
         qDebug() << "Current key combination:"
-                 << (last_action.getKey() != Qt::Key_unknown ? QString::number(last_action.getKey()) : "NULL")
-                 << QString::number(current_action.getKey());
-        updateActions();
+                 << (key_action_sequence[previous].getKey() != Qt::Key_unknown
+                             ? QString::number(key_action_sequence[previous].getKey())
+                             : "NULL")
+                 << QString::number(key_action_sequence[current].getKey());
 }
 
-void PowerCentralWidget::updateActions() {
-        last_action    = std::move(current_action);
-        current_action = KeyAction(Qt::Key_unknown, nullptr);
+void PowerCentralWidget::updateActions(int new_key) {
+        key_action_sequence[previous] = std::move(key_action_sequence[current]);
+        key_action_sequence[current]  = KeyAction(button_list, new_key);
+}
+
+void PowerCentralWidget::updateActionsUnsafe(int key, PowerButton* button) {
+        key_action_sequence[previous] = std::move(key_action_sequence[current]);
+        key_action_sequence[current]  = KeyAction(key, button);
 }
 
 void PowerCentralWidget::resetActions() {
-        last_action.reset();
-        current_action.reset();
+        key_action_sequence[previous].reset();
+        key_action_sequence[current].reset();
 }

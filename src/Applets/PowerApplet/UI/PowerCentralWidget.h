@@ -43,11 +43,11 @@ public:
         void clickButton(QKeyEvent* event);
 
 private:
-        KeyAction                       last_action;
-        KeyAction                       current_action;
+        std::array<KeyAction, 2>        key_action_sequence;
         const std::vector<PowerButton*> button_list;
 
-        // TODO Optimize
-        void updateActions();
+        void updateActions(int new_key);
+        // TODO Remove this non-PowerButton variant
+        void updateActionsUnsafe(int key, PowerButton* button);
         void resetActions();
 };
