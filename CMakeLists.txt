@@ -97,8 +97,10 @@ if(BUILD_POWERAPPLET)
                 ${GLOBAL_INCLUDES})
         target_link_libraries(PowerApplet PRIVATE
                 PowerApplet::Deps)
-        target_compile_options(PowerApplet PRIVATE -fsanitize=address -fno-omit-frame-pointer -g)
-        target_link_options(PowerApplet PRIVATE -fsanitize=address)
+        if(ENABLE_ASAN)
+                target_compile_options(PowerApplet PRIVATE -fsanitize=address -fno-omit-frame-pointer -g)
+                target_link_options(PowerApplet PRIVATE -fsanitize=address)
+        endif()
 endif()
 
 # Tests
