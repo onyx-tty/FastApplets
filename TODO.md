@@ -38,7 +38,7 @@
 
 <br>
 
-# Base \[6/18\]
+# Base \[8/17\]
 
 1.  \[X\] LICENSE
 
@@ -58,29 +58,33 @@
 
 5.  \[ \] Fallback icons
 
-6.  \[ \] Build profiling
+6.  \[X\] CMake presets
 
 7.  \[X\] TOML configuration
 
-8.  \[ \] Headers with repeating constants and type aliases
+8.  \[X\] Centralized CMake structure
 
-9.  \[X\] Centralized CMake structure
+9.  \[ \] Enforced static compilation of private libraries
 
-10. \[ \] Enforced static compilation of private libraries
+10. \[X\] Cleaner build directories
 
-11. \[ \] Cleaner build directories
+11. \[ \] Standardized window class and title
 
-12. \[ \] CMake build types
-
-13. \[ \] Standardized window class and title
-
-14. \[X\] Config reliant on environmental variables, adhering to the XDG
+12. \[X\] Config reliant on environmental variables, adhering to the XDG
     Base Directory Specification
 
-15. \[ \] Generate config on runtime if missing
+13. \[ \] Generate config on runtime if missing
 
-16. \[ \] Fallback config
+14. \[ \] Fallback config
 
-17. \[ \] Unit testing
+15. \[-\] Testing
 
-18. \[ \] Extract utility functions to the new CppUtils repo
+    1.  \[-\] GTest
+
+    2.  \[ \] GMock
+
+    3.  \[ \] GBenchmark
+
+16. \[ \] Extract utility functions to the new CppUtils repo
+
+17. \[ \] Utilize the logging wrappers
