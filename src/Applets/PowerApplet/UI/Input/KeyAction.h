@@ -43,13 +43,13 @@ public:
         // TODO Remove, only exists to temporarily permit decoupled key and button
         KeyAction(int key, PowerButton* button);
         // Fully initialize and automatically find the right button
+        // TODO Eliminate passing of buttons by accessing PowerCentralWidget's button_list
         KeyAction(const std::vector<PowerButton*>& buttons, int key);
         KeyAction(const KeyAction& other);
         KeyAction(KeyAction&& other);
         KeyAction& operator=(const KeyAction& other);
         KeyAction& operator=(KeyAction&& other);
 
-        // Find out if key is a part of any keybindings and adjust
         int                getKey() const;
         const PowerButton* getButton() const;
         void               reset();
