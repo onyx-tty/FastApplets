@@ -1,0 +1,36 @@
+{
+        "version": 3,
+        "configurePresets": [
+                {
+                        "name": "Debug",
+                        "displayName": "",
+                        "description": "",
+                        "generator": "Ninja",
+                        "binaryDir": "build/Debug",
+                        "cacheVariables": {
+                                "CMAKE_BUILD_TYPE": "Debug",
+                                "ENABLE_ASAN": "ON"
+                        }
+                },
+                {
+                        "name": "Release",
+                        "displayName": "",
+                        "description": "",
+                        "generator": "Ninja",
+                        "binaryDir": "build/Release",
+                        "cacheVariables": {
+                                "CMAKE_BUILD_TYPE": "Release"
+                        }
+                },
+                {
+                        "name": "RelWithDebInfo",
+                        "displayName": "",
+                        "description": "",
+                        "generator": "Ninja",
+                        "binaryDir": "build/RelDebWithInfo",
+                        "cacheVariables": {
+                                "CMAKE_BUILD_TYPE": "RelWithDebInfo"
+                        }
+                }
+        ]
+}
