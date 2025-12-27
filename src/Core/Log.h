@@ -38,6 +38,7 @@ inline void QFATAL(const Args&... args);
 
 inline QDebug QCRITICAL();
 
+inline QDebug QWARNING();
 
 inline QDebug QDEBUG();
 

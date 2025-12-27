@@ -52,6 +52,10 @@ inline QDebug QCRITICAL() {
         return qCritical().nospace() << __func__ << ": ";
 }
 
+inline QDebug QWARNING() {
+        return qWarning().nospace() << __func__ << ": ";
+}
+
 inline QDebug QDEBUG() {
         return qDebug().nospace() << __func__ << ": ";
 }
