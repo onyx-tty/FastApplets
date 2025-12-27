@@ -19,6 +19,19 @@
 
 #include <QDebug>
 
+namespace log_internals {
+
+template<typename T>
+QString toQString(const T& value);
+
+// Concatenate all arguments into one string
+inline QString concatArgs();
+
+template<typename MainStr, typename... RestStr>
+inline QString concatArgs(const MainStr& main_string, const RestStr&... rest_strings);
+
+} // namespace log_internals
+
 // Logging formatters
 template<typename... Args>
 inline void QFATAL(const Args&... args);

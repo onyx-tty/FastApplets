@@ -19,22 +19,46 @@
 
 #include "Log.h"
 
+// Handle all possible conversions to QString
+template<typename T>
+QString log_internals::toQString(const T& value) {
+        if constexpr (std::is_arithmetic_v<T>) {
+                return QString::number(value);
+        } else if constexpr (std::is_same_v<T, std::string>) {
+                return QString::fromStdString(value.c_str());
+        } else if constexpr (std::is_convertible_v<T, QString>) {
+                return QString(value);
+        } else {
+                static_assert(!sizeof(T*), "Type not supported for toQString!");
+        }
+}
+
+inline QString log_internals::concatArgs() {
+        return "";
+}
+
+// Concatenate all arguments into one string
+template<typename MainStr, typename... RestStr>
+inline QString log_internals::concatArgs(const MainStr& main_string, const RestStr&... rest_strings) {
+        return log_internals::toQString(main_string) + " " + log_internals::concatArgs(rest_strings...);
+}
+
 template<typename... Args>
 inline void QFATAL(const Args&... args) {
-        qFatal("%s: %s", __func__, concatArgs(args...));
+        qFatal("%s: %s", __func__, log_internals::concatArgs(args...));
 }
 
 template<typename... Args>
 inline void QCRITICAL(const Args&... args) {
-        qCritical().nospace() << __func__ << ": " << concatArgs(args...);
+        qCritical().nospace() << __func__ << ": " << log_internals::concatArgs(args...);
 }
 
 template<typename... Args>
 inline void QDEBUG(const Args&... args) {
-        qDebug().nospace() << __func__ << ": " << concatArgs(args...);
+        qDebug().nospace() << __func__ << ": " << log_internals::concatArgs(args...);
 }
 
 template<typename... Args>
 inline void QINFO(const Args&... args) {
-        qInfo().nospace() << __func__ << ": " << concatArgs(args...);
+        qInfo().nospace() << __func__ << ": " << log_internals::concatArgs(args...);
 }
