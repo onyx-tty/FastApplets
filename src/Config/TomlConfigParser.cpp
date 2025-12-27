@@ -16,11 +16,11 @@
    along with this program.  If not, see <https://www.gnu.org/licenses/>. */
 
 #include "TomlConfigParser.h"
-#include "CppUtils/include/String.h"
 #include "Config.h"
+#include "Core/Log.h"
+#include "CppUtils/include/String.h"
 #include "Keys.h"
 
-#include <QDebug>
 #include <QFileInfo>
 #include <QKeyCombination>
 #include <QKeySequence>
@@ -72,20 +72,20 @@ static const unordered_map<string, QSizePolicy> size_policy_map =
 namespace error_message {
 namespace alignment {
 void textAlignmentError() {
-        qWarning() << "Wrong setting in config.toml for: text_alignment"
+        QWARNING() << "Wrong setting in config.toml for: text_alignment"
                    << "Available values: top, center, bottom, left, right"
                    << "Default: top";
 }
 
 void iconAlignmentError() {
-        qWarning() << "Wrong setting in config.toml for: icon_alignment"
+        QWARNING() << "Wrong setting in config.toml for: icon_alignment"
                    << "Available values: top, center, bottom, left, right"
                    << "Default: center";
 }
 } // namespace alignment
 namespace size_policy {
 void primaryButtonError() {
-        qWarning() << "Wrong setting in config.toml for: policy"
+        QWARNING() << "Wrong setting in config.toml for: policy"
                    << "Available values: expanding, fixed"
                    << "Default: expanding";
 }
@@ -126,11 +126,9 @@ static void interpretTextAsKeybindings(const toml::node_view<const toml::node>& 
                 }
 
                 if (!source) {
-                        qCritical()
-                                << __func__ << ": Empty source for keybindings:" << keybindings_str;
+                        QCRITICAL() << "Empty source for keybindings:" << keybindings_str;
                 } else if (!source.is_array()) {
-                        qCritical() << __func__
-                                    << ": Non-array source for keybindings:" << keybindings_str;
+                        QCRITICAL() << ": Non-array source for keybindings:" << keybindings_str;
                 }
 
                 return; // Drop these keybindings if source doesn't exist
@@ -177,8 +175,7 @@ static array<string, config_file_names_cnt> locateConfigFiles() {
                 // No valid file_path found for the current file, terminate
                 // TODO Generate default toml file on failure
                 if (!found) {
-                        qFatal("%s: %s not found!", __func__,
-                               config_file_names[file_i].toStdString().c_str());
+                        QFATAL("%s not found!", config_file_names[file_i].toStdString().c_str());
                 }
         }
 
@@ -188,12 +185,12 @@ static array<string, config_file_names_cnt> locateConfigFiles() {
 static toml::table createTable(string file_path) {
         toml::table file_table;
 
-        qDebug() << __func__ << ":" << file_path;
+        QDEBUG() << file_path;
 
         try {
                 file_table = toml::parse_file(file_path);
         } catch (const toml::parse_error& error) {
-                qFatal("Parsing of %s failed: %s", string(file_path).c_str(),
+                QFATAL("Parsing of %s failed: %s", string(file_path).c_str(),
                        string(error.description()).c_str());
         }
 
@@ -213,25 +210,24 @@ TomlConfigParser& TomlConfigParser::getInstance() {
 }
 
 // TODO Defaults on failed parsing to avoid crashes
-// TODO Create macros for qFatal, qDebug, qInfo, and qCritical that include __func__
 // TODO Print the type the element is and shouldn't be
 // TODO Apply toLowerCopy where applicable
 void TomlConfigParser::parseWindowProperties() {
         const auto window = config_table["global"]["window"].as_table();
-        if (!window) { qFatal("%s: global.window needs to be a table!", __func__); }
+        if (!window) { QFATAL("global.window needs to be a table!"); }
 
         // Window size
         const auto size = (*window)["size"].as_array();
         if (!size) {
-                qFatal("%s: global.window.size needs to be an array!", __func__);
+                QFATAL("global.window.size needs to be an array!");
         } else {
                 constexpr size_t       arr_length = 2;
                 array<int, arr_length> for_qsize{};
 
                 // TODO Handle insufficient size
                 if (arr_length > size->size()) {
-                        qFatal("%s: in config.toml, global.window.size requires %zu integers!",
-                               __func__, arr_length);
+                        QFATAL("in config.toml, global.window.size requires %zu integers!",
+                               arr_length);
                 }
 
                 for (size_t i = 0; i != std::min(size->size(), arr_length); ++i) {
@@ -239,8 +235,8 @@ void TomlConfigParser::parseWindowProperties() {
 
                         if (!index) {
                                 // TODO Attempt conversion
-                                qFatal("%s: in config.toml, global.window.size[%zu] is not an integer!",
-                                       __func__, i);
+                                QFATAL("in config.toml, global.window.size[%zu] is not an integer!",
+                                       i);
                         }
 
                         for_qsize[i] = index->get();
@@ -251,24 +247,19 @@ void TomlConfigParser::parseWindowProperties() {
 
         // Window title
         const auto title = (*window)["title"].as_string();
-        if (!title) {
-                qFatal("%s: in config.toml, global.window.title is not a string!", __func__);
-        }
+        if (!title) { QFATAL("in config.toml, global.window.title is not a string!"); }
 
         Config::WindowProperties::title = QString::fromStdString(title->get());
 }
 
 void TomlConfigParser::parseButtonProperties() {
         const auto button = config_table["global"]["primary_button"].as_table();
-        if (!button) {
-                qFatal("%s: in config.toml, global.primary_button is not a table!", __func__);
-        }
+        if (!button) { QFATAL("in config.toml, global.primary_button is not a table!"); }
 
         // Text alignment
         const auto text_alignment = (*button)["text_alignment"].as_string();
         if (!text_alignment) {
-                qFatal("%s: in config.toml, global.primary_button.text_alignment is not a string!",
-                       __func__);
+                QFATAL("in config.toml, global.primary_button.text_alignment is not a string!");
         } else {
                 Qt::Alignment default_alignment = Qt::AlignTop;
 
@@ -281,8 +272,7 @@ void TomlConfigParser::parseButtonProperties() {
         // Icon alignment
         const auto icon_alignment = (*button)["icon_alignment"].as_string();
         if (!icon_alignment) {
-                qFatal("%s: in config.toml, global.primary_button.icon_alignment is not a string!",
-                       __func__);
+                QFATAL("in config.toml, global.primary_button.icon_alignment is not a string!");
         } else {
                 Qt::Alignment default_alignment = Qt::AlignCenter;
 
@@ -294,23 +284,22 @@ void TomlConfigParser::parseButtonProperties() {
         // Icon size
         const auto icon_size = (*button)["icon_size"].as_array();
         if (!icon_size) {
-                qFatal("%s: in config.toml, global.primary_button.icon_size is not an array!",
-                       __func__);
+                QFATAL("in config.toml, global.primary_button.icon_size is not an array!");
         } else {
                 constexpr size_t       arr_length = 2;
                 array<int, arr_length> for_qsize{};
 
                 // TODO Handle insufficient size
                 if (arr_length > icon_size->size()) {
-                        qFatal("%s: in config.toml, global.primary_button.icon_size requires %zu integers!",
-                               __func__, arr_length);
+                        QFATAL("in config.toml, global.primary_button.icon_size requires %zu integers!",
+                               arr_length);
                 }
 
                 for (size_t i = 0; i != std::min(icon_size->size(), arr_length); ++i) {
                         const auto index = icon_size->get(i)->as_integer();
                         if (!index) {
-                                qFatal("%s: in config.toml, global.primary_button.icon_size[%zu] is not an integer!",
-                                       __func__, i);
+                                QFATAL("in config.toml, global.primary_button.icon_size[%zu] is not an integer!",
+                                       i);
                         }
 
                         for_qsize[i] = index->get();
@@ -322,8 +311,7 @@ void TomlConfigParser::parseButtonProperties() {
         // Policy
         const auto policy = (*button)["policy"].as_string();
         if (!policy) {
-                qFatal("%s: in config.toml, global.primary_button.policy is not a string!",
-                       __func__);
+                QFATAL("in config.toml, global.primary_button.policy is not a string!");
         } else {
                 const QSizePolicy default_policy = QSizePolicy(QSizePolicy::Expanding,
                                                                QSizePolicy::Expanding);
@@ -335,26 +323,21 @@ void TomlConfigParser::parseButtonProperties() {
 
 void TomlConfigParser::parseLayoutProperties() {
         const auto layout = config_table["power_applet"]["layout"].as_table();
-        if (!layout) {
-                qFatal("%s: in config.toml, power_applet.layout is not a table!", __func__);
-        }
+        if (!layout) { QFATAL("in config.toml, power_applet.layout is not a table!"); }
 
         // Primary power buttons
         const auto primary_buttons = (*layout)["primary_buttons"].as_array();
         if (!primary_buttons) {
-                qFatal("%s: in config.toml, power_applet.layout.primary_buttons is not a table!",
-                       __func__);
+                QFATAL("in config.toml, power_applet.layout.primary_buttons is not a table!");
         }
 
         vector<PrimaryButtonData> power_buttons{};
-
-        const char* func_str = __func__;
 
         // TODO Extract the parser here
         // TODO Returns in all paths
         transform(
                 primary_buttons->begin(), primary_buttons->end(), back_inserter(power_buttons),
-                [&primary_buttons, func_str](const toml::node& node) -> PrimaryButtonData {
+                [&primary_buttons](const toml::node& node) -> PrimaryButtonData {
                         // Find position of node in primary_buttons
                         const auto it = std::find_if(primary_buttons->begin(),
                                                      primary_buttons->end(),
@@ -368,21 +351,21 @@ void TomlConfigParser::parseLayoutProperties() {
 
                         const auto button = node.as_table();
                         if (!button) {
-                                qFatal("%s: in config.toml, power_applet.layout.primary_buttons[%zu] is not a table!",
-                                       func_str, index);
+                                QFATAL("in config.toml, power_applet.layout.primary_buttons[%zu] is not a table!",
+                                       index);
                         }
 
                         const auto enabled_opt = (*button)["enabled"].as_boolean();
                         if (!enabled_opt) {
-                                qFatal("%s: in config.toml, power_applet.layout.primary_buttons[%zu].enabled is not a boolean!",
-                                       __func__, index);
+                                QFATAL("in config.toml, power_applet.layout.primary_buttons[%zu].enabled is not a boolean!",
+                                       index);
                         } else {
                                 bool enabled = enabled_opt->value_or(true);
                                 if (enabled) {
                                         const auto id = (*button)["id"].as_string();
                                         if (!id) {
-                                                qFatal("%s: in config.toml, power_applet.layout.primary_buttons[%zu].id is not a string!",
-                                                       __func__, index);
+                                                QFATAL("in config.toml, power_applet.layout.primary_buttons[%zu].id is not a string!",
+                                                       index);
                                         } else {
                                                 button_data.identifier = QString::fromStdString(
                                                         id->get());
@@ -390,8 +373,8 @@ void TomlConfigParser::parseLayoutProperties() {
 
                                         const auto label = (*button)["label"].as_string();
                                         if (!label) {
-                                                qFatal("%s: in config.toml, power_applet.layout.primary_buttons[%zu].label is not a string!",
-                                                       __func__, index);
+                                                QFATAL("in config.toml, power_applet.layout.primary_buttons[%zu].label is not a string!",
+                                                       index);
                                         } else {
                                                 button_data.text = QString::fromStdString(
                                                         label->get());
@@ -399,8 +382,8 @@ void TomlConfigParser::parseLayoutProperties() {
 
                                         const auto order = (*button)["order"].as_integer();
                                         if (!order) {
-                                                qFatal("%s: in config.toml, power_applet.layout.primary_buttons[%zu].order is not an integer!",
-                                                       __func__, index);
+                                                QFATAL("in config.toml, power_applet.layout.primary_buttons[%zu].order is not an integer!",
+                                                       index);
                                         } else {
                                                 button_data.order = order->get();
                                         }
@@ -409,11 +392,11 @@ void TomlConfigParser::parseLayoutProperties() {
                                 } else {
                                         const auto id = (*button)["id"].as_string();
                                         if (!id) {
-                                                qFatal("%s: in config.toml, power_applet.layout.primary_buttons[%zu].id is not a string!",
-                                                       __func__, index);
+                                                QFATAL("in config.toml, power_applet.layout.primary_buttons[%zu].id is not a string!",
+                                                       index);
                                         }
 
-                                        qDebug() << (*button)["id"].as_string()->get()
+                                        QDEBUG() << (*button)["id"].as_string()->get()
                                                  << ": DISABLED";
                                 }
                         }
@@ -449,10 +432,10 @@ void TomlConfigParser::parseKeys() {
 void TomlConfigParser::parseConfig() {
         // Check the validity of global and power_applet
         const auto global = config_table["global"].as_table();
-        if (!global) { qFatal("%s: in config.toml, global is not a table!", __func__); }
+        if (!global) { QFATAL("in config.toml, global is not a table!"); }
 
         const auto power_applet = config_table["power_applet"].as_table();
-        if (!power_applet) { qFatal("%s: in config.toml, power_applet is not a table!", __func__); }
+        if (!power_applet) { QFATAL("in config.toml, power_applet is not a table!"); }
 
         /* Window properties */
         parseWindowProperties();

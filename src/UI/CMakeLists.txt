@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.16)
 
-project(ui VERSION 0.2.1 LANGUAGES CXX)
+project(ui VERSION 0.2.2 LANGUAGES CXX)
 
 # Internal structure
 add_library(ui
@@ -10,6 +10,8 @@ add_library(UI ALIAS ui)
 target_include_directories(ui PRIVATE
         ${CMAKE_CURRENT_LIST_DIR}
         ${GLOBAL_INCLUDES})
+# TODO Separate PUBLICLY and PRIVATELY linked libraries
 target_link_libraries(ui PUBLIC
         Config
+        LogUtils
         Qt${QT_VERSION_MAJOR}::Widgets)

@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.16)
 
-project(config VERSION 0.2.1 LANGUAGES CXX)
+project(config VERSION 0.2.2 LANGUAGES CXX)
 
 # Enable support for Qt's resource files
 set(CMAKE_AUTORCC ON)
@@ -17,8 +17,10 @@ add_library(Config ALIAS config)
 target_include_directories(config PRIVATE
         ${CMAKE_CURRENT_LIST_DIR}
         ${GLOBAL_INCLUDES})
+# TODO Separate PUBLICLY and PRIVATELY linked libraries
 target_link_libraries(config PUBLIC
         CppUtils
         Environment
+        LogUtils
         tomlplusplus::tomlplusplus
         Qt${QT_VERSION_MAJOR}::Widgets)

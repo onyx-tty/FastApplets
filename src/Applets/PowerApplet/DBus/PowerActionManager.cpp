@@ -15,14 +15,14 @@
    You should have received a copy of the GNU General Public License
    along with this program.  If not, see <https://www.gnu.org/licenses/>. */
 
-#include "PowerActionManager.h"
+#include "Core/Log.h"
 #include "DBus/DBusRequester.h"
 #include "DBus/DBusTarget.h"
+#include "PowerActionManager.h"
 
 #include <QDBusConnection>
 #include <QDBusConnectionInterface>
 #include <QDBusInterface>
-#include <QDebug>
 #include <QList>
 #include <QVariant>
 
@@ -34,7 +34,7 @@ void PowerActionManager::sendPowerAction(const QString& method) {
         constexpr const char* interface = "org.freedesktop.login1.Manager";
         constexpr auto systemd_logind = DBusTarget{name, path, interface};
 
-        qDebug() << "Sending signal" << method << "to" << interface;
+        QDEBUG() << "Sending signal" << method << "to" << interface;
         DBusRequester::call(systemd_logind, method);
         printReply(DBusRequester::getReply());
 }
@@ -43,8 +43,8 @@ void PowerActionManager::printReply(const QDBusPendingReply<QVariantMap>& reply)
         DBusRequester::waitForFinished();
 
         if (reply.reply().type() == QDBusMessage::ErrorMessage) {
-                qCritical() << "Error sending action. Response: " << reply.reply().errorMessage();
+                QCRITICAL() << "Error sending action. Response: " << reply.reply().errorMessage();
         } else {
-                qInfo() << "Success sending power action!";
+                QINFO() << "Success sending power action!";
         }
 }

@@ -16,10 +16,10 @@
    along with this program.  If not, see <https://www.gnu.org/licenses/>. */
 
 #include "Config/TomlConfigParser.h"
+#include "Core/Log.h"
 #include "UI/PowerMainWindow.h"
 
 #include <QApplication>
-#include <QDebug>
 
 int main(int argc, char* argv[]) {
         // Init
@@ -29,8 +29,8 @@ int main(int argc, char* argv[]) {
         PowerMainWindow applet; // QMainWindow -> MainWindow -> PowerMainWindow
 
         // Debug
-        qInfo() << "Applet resolution:" << applet.size() << Qt::endl;
-        qDebug() << "Qt Version:" << qVersion();
+        QINFO() << "Applet resolution:" << applet.size() << Qt::endl;
+        QDEBUG() << "Qt Version:" << qVersion();
 
         // Run
         applet.show();

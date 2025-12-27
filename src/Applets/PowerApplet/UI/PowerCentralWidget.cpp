@@ -18,10 +18,10 @@
 #include "PowerCentralWidget.h"
 #include "Config/Config.h"
 #include "Config/Keys.h"
+#include "Core/Log.h"
 #include "UI/Input/KeyAction.h"
 
 #include <QApplication>
-#include <QDebug>
 
 #include <vector>
 
@@ -46,31 +46,31 @@ static vector<PowerButton*> initButtonList(QBoxLayout* main_layout) {
                   back_inserter(primary_buttons),
                   [&main_layout, &primary_buttons_icons,
                    &primary_buttons_data](const auto& data) -> PowerButton* {
-                          qDebug() << "New data:" << data.identifier << ":" << data.text;
+                          QDEBUG() << "New data:" << data.identifier << ":" << data.text;
 
                           if (data.identifier.toLower() == "poweroff"
                               || data.identifier.toLower() == "shutdown") {
                                   QString method = "PowerOff";
-                                  qDebug() << "Created PowerOff!";
+                                  QDEBUG() << "Created PowerOff!";
                                   return new PowerButton(main_layout, primary_buttons_icons[0],
                                                          data.text, method);
                           } else if (data.identifier.toLower() == "reboot") {
                                   QString method = "Reboot";
-                                  qDebug() << "Created Reboot!";
+                                  QDEBUG() << "Created Reboot!";
                                   return new PowerButton(main_layout, primary_buttons_icons[1],
                                                          data.text, method);
                           } else if (data.identifier.toLower() == "suspend") {
                                   QString method = "Suspend";
-                                  qDebug() << "Created Suspend!";
+                                  QDEBUG() << "Created Suspend!";
                                   return new PowerButton(main_layout, primary_buttons_icons[2],
                                                          data.text, method);
                           } else if (data.identifier.toLower() == "hibernate") {
                                   QString method = "Hibernate";
-                                  qDebug() << "Created Hibernate!";
+                                  QDEBUG() << "Created Hibernate!";
                                   return new PowerButton(main_layout, primary_buttons_icons[3],
                                                          data.text, method);
                           } else {
-                                  qCritical()
+                                  QCRITICAL()
                                           << "Unknown button identifier detected!"
                                           << "Potential error on the line defining primary buttons!";
                           }
@@ -79,7 +79,7 @@ static vector<PowerButton*> initButtonList(QBoxLayout* main_layout) {
         if (!primary_buttons.empty()) {
                 return primary_buttons;
         } else {
-                qCritical() << "Empty button list!"
+                QCRITICAL() << "Empty button list!"
                             << "Check config for strings in 'primary_buttons'!"
                             << "Must not be empty!"; // TODO Defaults
         }
@@ -97,8 +97,7 @@ PowerCentralWidget::PowerCentralWidget(QWidget* parent) :
         QWidget(parent), main_layout(new QHBoxLayout(this)),
         button_list(initButtonList(main_layout)) {
         if (!parent) {
-                qFatal() << "Parent of PowerCentralWidget is null in" << __func__
-                         << "! Shutting down to avoid memory leaks...";
+                QFATAL("Parent of PowerCentralWidget is null! Shutting down to avoid memory leaks...");
         }
 }
 
@@ -108,12 +107,12 @@ enum key_sequence_index { previous = 0, current = 1 };
 
 void PowerCentralWidget::keyPressEvent(QKeyEvent* event) {
         if (!event) {
-                qWarning() << "Warning, received null keypress event in" << __func__;
+                QWARNING() << "Warning, received null keypress event";
                 return;
         }
 
-        qDebug() << "----------------------------------------";
-        qDebug() << "keyPressEvent registered!";
+        QDEBUG() << "----------------------------------------";
+        QDEBUG() << "keyPressEvent registered!";
 
         // TODO Refactor to universally call updateActions without out the out-of-range error requiring updateActionsUnsafe
         // New key press event, push the previous one to the back
@@ -133,30 +132,30 @@ void PowerCentralWidget::keyPressEvent(QKeyEvent* event) {
                         key_action_sequence[previous].debugGetButtonNonConst()->setFocus(false);
                         // no selection active, quit key = terminate application
                 } else {
-                        qDebug() << "Quit key pressed, quitting!";
+                        QDEBUG() << "Quit key pressed, quitting!";
                         QApplication::quit();
                 }
                 // mismatched sequence, remove focus, select another button if key matches
         } else if ((key_action_sequence[current].getKey() != key_action_sequence[previous].getKey())
                    && isPowerKey(key_action_sequence[current].getKey())) { // new selection
-                qDebug() << "current key and last key don't match";
+                QDEBUG() << "current key and last key don't match";
                 // select current button
-                qDebug() << key_action_sequence[current].getButton()->text() << "selected!";
+                QDEBUG() << key_action_sequence[current].getButton()->text() << "selected!";
                 key_action_sequence[current].debugGetButtonNonConst()->setFocus(true);
                 // unselect last button if valid, otherwise ignore because it doesn't exist anyway
                 if (key_action_sequence[previous].getButton()) {
                         key_action_sequence[previous].debugGetButtonNonConst()->setFocus(false);
                 } else {
-                        qDebug() << "last key is null!";
+                        QDEBUG() << "last key is null!";
                 }
                 // recurring sequence, activate button
         } else if ((key_action_sequence[current].getKey() == key_action_sequence[previous].getKey())
                    && isPowerKey(key_action_sequence[current]
                                          .getKey())) { // click recognized, both keys match
                 // TODO Display errors returned by power action
-                qDebug() << "current and previous keys match";
+                QDEBUG() << "current and previous keys match";
                 // animate click, proceed with power action
-                qDebug() << key_action_sequence[current].getButton()->text() << "clicked!";
+                QDEBUG() << key_action_sequence[current].getButton()->text() << "clicked!";
                 key_action_sequence[current]
                         .debugGetButtonNonConst()
                         ->animateClick(); // includes emitting click
@@ -166,7 +165,7 @@ void PowerCentralWidget::keyPressEvent(QKeyEvent* event) {
         }
 
         // Print current key combination
-        qDebug() << "Current key combination:"
+        QDEBUG() << "Current key combination:"
                  << (key_action_sequence[previous].getKey() != Qt::Key_unknown
                              ? QString::number(key_action_sequence[previous].getKey())
                              : "NULL")

@@ -15,12 +15,12 @@
    You should have received a copy of the GNU General Public License
    along with this program.  If not, see <https://www.gnu.org/licenses/>. */
 
+#include "Core/Log.h"
 #include "DBusRequester.h"
 
 #include <QDBusConnection>
 #include <QDBusConnectionInterface>
 #include <QDBusInterface>
-#include <QDebug>
 #include <QList>
 #include <QVariant>
 
@@ -31,7 +31,7 @@ void DBusRequester::call(const DBusTarget& target, QString method) {
                                                               target.name);
         const auto proxy = QDBusInterface(target.name, target.path, target.interface, connection,
                                           nullptr);
-        if (!proxy.isValid()) qFatal("D-Bus proxy is invalid!");
+        if (!proxy.isValid()) QFATAL("D-Bus proxy is invalid!");
 
         auto call = QDBusMessage::createMethodCall(target.name, target.path, target.interface,
                                                    method);

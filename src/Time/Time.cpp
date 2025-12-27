@@ -15,11 +15,11 @@
    You should have received a copy of the GNU General Public License
    along with this program.  If not, see <https://www.gnu.org/licenses/>. */
 
+#include "Core/Log.h"
 #include "Time.h"
 #include "TimeConstants.h"
 
 #include <QApplication>
-#include <QDebug>
 
 #include <cstdlib>
 
@@ -54,8 +54,7 @@ time_t findMidnight() {
 // i.e. if each index is spaced by 3 hours then we can expect 8 indexes/data blocs per day
 int findHourSpacing(time_t later, time_t earlier) {
         if (later < earlier) {
-                qCritical() << "Passed argument for \"later\" smaller than \"earlier\" in"
-                            << __func__;
+                QCRITICAL() << "Passed argument for \"later\" smaller than \"earlier\"";
                 QApplication::quit();
         }
         const int    time_difference = later - earlier;
@@ -64,7 +63,7 @@ int findHourSpacing(time_t later, time_t earlier) {
         if (hour_spacing.rem != 0) {
                 QString rest = QString::number(hour_spacing.quot) + "r"
                              + QString::number(hour_spacing.rem);
-                qWarning() << __func__ << "detected that hours aren't spaced evenly!"
+                QWARNING() << "detected that hours aren't spaced evenly!"
                            << time_difference << "/" << epoch_duration::hour << "=" << rest;
         }
 
@@ -79,11 +78,10 @@ int findHourSpacing(time_t later, time_t earlier) {
 // specific hour spacing.
 // TODO Perhaps there is a safer way to ensure that our data cannot be tampered with along the way
 optional<int> findWeatherBlocsFitCount(time_t later, time_t earlier, int hour_spacing) {
-        qDebug() << __func__ << "has received" << later << "as later and" << earlier
+        QDEBUG() << "has received" << later << "as later and" << earlier
                  << "as earlier, spacing is" << hour_spacing;
         if (later < earlier) {
-                qCritical() << "Passed argument for \"later\" smaller than \"earlier\" in"
-                            << __func__;
+                QCRITICAL() << "Passed argument for \"later\" smaller than \"earlier\"";
                 QApplication::quit();
         }
         // times in seconds
@@ -93,7 +91,7 @@ optional<int> findWeatherBlocsFitCount(time_t later, time_t earlier, int hour_sp
 
         const time_t time_elapsed = later - earlier;
         if (time_elapsed > day) {
-                qFatal("Difference longer than one day! %s", __func__);
+                QFATAL("Difference longer than one day!");
                 QApplication::quit();
         }
 
@@ -101,15 +99,14 @@ optional<int> findWeatherBlocsFitCount(time_t later, time_t earlier, int hour_sp
         const div_t indexes = std::div((int) (time_elapsed / hour), (int) (weather_bloc / hour));
         if (indexes.rem != 0) { // if remainder found
                 QString rest = QString::number(indexes.quot) + "r" + QString::number(indexes.rem);
-                qCritical() << __func__
-                            << "detected that hours cannot be calculated spaced without loss!"
+                QCRITICAL() << "detected that hours cannot be calculated spaced without loss!"
                             << "Timestamp corruption!" << time_elapsed << "/" << "(" << hour << "*"
                             << hour_spacing << ")"
                             << "=" << rest;
                 QApplication::quit();
         }
 
-        qDebug() << "When parsed, we receive" << indexes.quot;
+        QDEBUG() << "When parsed, we receive" << indexes.quot;
         return (indexes.quot != 0) ? optional(indexes.quot) : nullopt;
 }
 

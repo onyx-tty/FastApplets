@@ -17,8 +17,8 @@
 
 #include "KeyAction.h"
 #include "Config/Config.h"
+#include "Core/Log.h"
 
-#include <QDebug>
 #include <qnamespace.h>
 #include <QString>
 
@@ -39,7 +39,7 @@ PowerButton* findPowerButton(int key_to_find, const ButtonList& buttons) {
         const auto& button_properties = Config::WindowLayoutProperties::getPrimaryPowerButtons();
 
         if (button_properties.size() != buttons.size()) {
-                qFatal("%s: button_properties (%s) larger than buttons (%s)!", __func__,
+                QFATAL("button_properties (%s) larger than buttons (%s)!",
                        QString::number(button_properties.size()).toStdString().c_str(),
                        QString::number(buttons.size()).toStdString().c_str());
         }
@@ -47,11 +47,11 @@ PowerButton* findPowerButton(int key_to_find, const ButtonList& buttons) {
         for (size_t i = 0; i != buttons.size(); ++i) {
                 if (power_key_map.at(key_to_find) == button_properties[i].order) {
                         return buttons[i];
-                        qDebug() << "Button" << i << "updated to:" << buttons[i]->getDBusAction();
+                        QDEBUG() << "Button" << i << "updated to:" << buttons[i]->getDBusAction();
                 }
         }
 
-        qFatal("%s: button corresponding to %i not found!", __func__, key_to_find);
+        QFATAL("button corresponding to %i not found!", key_to_find);
 }
 
 KeyAction::KeyAction() : key(Qt::Key_unknown), button(nullptr) {}

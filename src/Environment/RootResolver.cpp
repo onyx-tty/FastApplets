@@ -15,26 +15,26 @@
    You should have received a copy of the GNU General Public License
    along with this program.  If not, see <https://www.gnu.org/licenses/>. */
 
+#include "Core/Log.h"
 #include "RootResolver.h"
 
 #include <QApplication>
-#include <QDebug>
 #include <QDir>
 #include <QStringList>
 
 RootResolver::RootResolver(const QString& project_root_marker) {
         if (!QApplication::instance()) {
-                qDebug() << __func__ << ": QApplication not instantiated yet!";
+                QDEBUG() << "QApplication not instantiated yet!";
         }
         QStringList search_paths = {QApplication::applicationDirPath(), QDir::currentPath()};
-        qDebug() << "Determining project root...";
+        QDEBUG() << "Determining project root...";
         for (const QString& start_directory : search_paths) {
-                qDebug() << "Searching paths...";
+                QDEBUG() << "Searching paths...";
                 QDir directory(start_directory);
                 while (!directory.isRoot()) {
-                        qDebug() << "Current directory:" << directory.filesystemAbsolutePath();
+                        QDEBUG() << "Current directory:" << directory.filesystemAbsolutePath();
                         if (QFileInfo::exists((directory.filePath(project_root_marker)))) {
-                                qDebug() << "Match for" << project_root_marker << "!";
+                                QDEBUG() << "Match for" << project_root_marker << "!";
                                 project_root = directory.absolutePath();
                                 break;
                         } else {

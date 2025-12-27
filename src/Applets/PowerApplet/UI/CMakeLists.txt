@@ -10,6 +10,7 @@ target_include_directories(power_ui PRIVATE
         ${GLOBAL_INCLUDES})
 target_link_libraries(power_ui PRIVATE
         Config
+        LogUtils
         UI
         PowerApplet::DBus) # Power actions on button press, so DBus module is needed
 

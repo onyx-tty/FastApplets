@@ -16,9 +16,9 @@
    along with this program.  If not, see <https://www.gnu.org/licenses/>. */
 
 #include "Button.h"
+#include "Core/Log.h"
 #include "Config/Config.h"
 
-#include <QDebug>
 #include <QGridLayout>
 #include <QStyleOptionButton>
 #include <QStylePainter>
@@ -33,7 +33,7 @@ QString stylesheet = "text-align: center top;";
 // TODO Default icon
 Button::Button(QBoxLayout* layout, const QIcon& icon, const QString& text) :
         QPushButton(layout ? layout->widget() : nullptr), is_focused(false) {
-        if (!layout) { qFatal() << "Button constructor received a null layout! Bad code!"; }
+        if (!layout) { QFATAL("Button constructor received a null layout! Bad code!"); }
 
         setIcon(icon);
         setIconSize(Config::PrimaryButtonProperties::getIconSize());
@@ -81,7 +81,7 @@ void Button::debugAlignIcon(const QString& label_text) {
         debug_text->setAlignment(Config::PrimaryButtonProperties::getTextAlignment());
         debug_text->setAttribute(Qt::WA_TransparentForMouseEvents, true);
         layout()->addWidget(debug_text);
-        qDebug() << "debug_text successfully initialized with text:" << label_text;
+        QDEBUG() << "debug_text successfully initialized with text:" << label_text;
 }
 
 void Button::setFocus(bool is_focused) {
