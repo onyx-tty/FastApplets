@@ -53,8 +53,7 @@ add_subdirectory(
 
 add_subdirectory(
         src/Core
-        Core-build
-)
+        Core-build)
 
 add_subdirectory(
         src/Config
