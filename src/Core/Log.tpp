@@ -48,17 +48,14 @@ inline void QFATAL(const Args&... args) {
         qFatal("%s: %s", __func__, log_internals::concatArgs(args...));
 }
 
-template<typename... Args>
-inline void QCRITICAL(const Args&... args) {
-        qCritical().nospace() << __func__ << ": " << log_internals::concatArgs(args...);
+inline QDebug QCRITICAL() {
+        return qCritical().nospace() << __func__ << ": ";
 }
 
-template<typename... Args>
-inline void QDEBUG(const Args&... args) {
-        qDebug().nospace() << __func__ << ": " << log_internals::concatArgs(args...);
+inline QDebug QDEBUG() {
+        return qDebug().nospace() << __func__ << ": ";
 }
 
-template<typename... Args>
-inline void QINFO(const Args&... args) {
-        qInfo().nospace() << __func__ << ": " << log_internals::concatArgs(args...);
+inline QDebug QINFO() {
+        return qInfo().nospace() << __func__ << ": ";
 }

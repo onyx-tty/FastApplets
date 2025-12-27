@@ -36,13 +36,11 @@ inline QString concatArgs(const MainStr& main_string, const RestStr&... rest_str
 template<typename... Args>
 inline void QFATAL(const Args&... args);
 
-template<typename... Args>
-inline void QCRITICAL(const Args&... args);
+inline QDebug QCRITICAL();
 
-template<typename... Args>
-inline void QDEBUG(const Args&... args);
 
-template<typename... Args>
-inline void QINFO(const Args&... args);
+inline QDebug QDEBUG();
+
+inline QDebug QINFO();
 
 #include "Log.tpp"
