@@ -1,4 +1,4 @@
-project(core VERSION 0.2.1 LANGUAGES CXX)
+project(core VERSION 0.2.2 LANGUAGES CXX)
 
 add_library(log_utils
         Log.tpp)

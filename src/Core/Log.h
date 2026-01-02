@@ -18,6 +18,7 @@
 #pragma once
 
 #include <QDebug>
+#include <QString>
 
 namespace log_internals {
 
@@ -33,15 +34,20 @@ inline QString concatArgs(const MainStr& main_string, const RestStr&... rest_str
 } // namespace log_internals
 
 // Logging formatters
-template<typename... Args>
-inline void QFATAL(const Args&... args);
+#define QFATAL(...) do { \
+        qFatal("%s: %s", __func__, log_internals::concatArgs(__VA_ARGS__)); \
+} while(0)
 
-inline QDebug QCRITICAL();
+#define QCRITICAL() \
+        qCritical().nospace() << __func__ << ": "
 
-inline QDebug QWARNING();
+#define QWARNING() \
+        qWarning().nospace() << __func__ << ": "
 
-inline QDebug QDEBUG();
+#define QDEBUG() \
+        qDebug().nospace() << __func__ << ": "
 
-inline QDebug QINFO();
+#define QINFO() \
+        qInfo().nospace() << __func__ << ": "
 
 #include "Log.tpp"

@@ -42,24 +42,3 @@ template<typename MainStr, typename... RestStr>
 inline QString log_internals::concatArgs(const MainStr& main_string, const RestStr&... rest_strings) {
         return log_internals::toQString(main_string) + " " + log_internals::concatArgs(rest_strings...);
 }
-
-template<typename... Args>
-inline void QFATAL(const Args&... args) {
-        qFatal("%s: %s", __func__, log_internals::concatArgs(args...));
-}
-
-inline QDebug QCRITICAL() {
-        return qCritical().nospace() << __func__ << ": ";
-}
-
-inline QDebug QWARNING() {
-        return qWarning().nospace() << __func__ << ": ";
-}
-
-inline QDebug QDEBUG() {
-        return qDebug().nospace() << __func__ << ": ";
-}
-
-inline QDebug QINFO() {
-        return qInfo().nospace() << __func__ << ": ";
-}
