@@ -52,15 +52,15 @@ inline QString concatArgs(const MainStr& main_string, const RestStr&... rest_str
 
 // Logging formatters - nospace version
 #define QCRITICAL_NS() \
-        qCritical().nospace() << __func__ << ": "
+        qCritical().nospace() << __func__ << " : "
 
 #define QWARNING_NS() \
-        qWarning().nospace() << __func__ << ": "
+        qWarning().nospace() << __func__ << " : "
 
 #define QDEBUG_NS() \
-        qDebug().nospace() << __func__ << ": "
+        qDebug().nospace() << __func__ << " : "
 
 #define QINFO_NS() \
-        qInfo().nospace() << __func__ << ": "
+        qInfo().nospace() << __func__ << " : "
 
 #include "Log.tpp"
