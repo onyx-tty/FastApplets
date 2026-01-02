@@ -21,6 +21,7 @@
 
 #include <QSize>
 #include <QSizePolicy>
+#include <QString>
 
 #include <vector>
 
