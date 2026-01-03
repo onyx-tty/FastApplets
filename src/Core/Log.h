@@ -36,20 +36,20 @@ inline QString concatArgs(const MainStr& main_string, const RestStr&... rest_str
 // Logging formatters
 #define QFATAL(...) do { \
         const QString msg = log_internals::concatArgs(__VA_ARGS__); \
-        qFatal("%s: %s", __func__, qPrintable(msg)); \
+        qFatal("%s : %s", __func__, qPrintable(msg)); \
 } while(0)
 
 #define QCRITICAL() \
-        qCritical() << __func__ << ": "
+        qCritical() << __func__ << ":"
 
 #define QWARNING() \
-        qWarning() << __func__ << ": "
+        qWarning() << __func__ << ":"
 
 #define QDEBUG() \
-        qDebug() << __func__ << ": "
+        qDebug() << __func__ << ":"
 
 #define QINFO() \
-        qInfo() << __func__ << ": "
+        qInfo() << __func__ << ":"
 
 // Logging formatters - nospace version
 #define QCRITICAL_NS() \
