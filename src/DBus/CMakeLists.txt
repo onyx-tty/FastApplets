@@ -1,8 +1,7 @@
 project(dbus VERSION 0.1.1 LANGUAGES CXX)
 
 # Requirements
-# TODO Use QT_VERSION_MAJOR
-find_package(Qt6 REQUIRED COMPONENTS DBus)
+find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS DBus)
 
 add_library(dbus
         DBusRequester.cpp
