@@ -31,7 +31,6 @@
 
 #include <algorithm>
 #include <array>
-#include <cctype>
 #include <cstdlib>
 #include <functional>
 #include <iterator>
@@ -42,7 +41,7 @@
 #include <unordered_map>
 
 using std::array;
-using std::back_inserter;
+using std::for_each;
 using std::inserter;
 using std::sort;
 using std::string;
@@ -334,10 +333,10 @@ void TomlConfigParser::parseLayoutProperties() {
         vector<PrimaryButtonData> power_buttons{};
 
         // TODO Extract the parser here
-        // TODO Returns in all paths
-        transform(
-                primary_buttons->begin(), primary_buttons->end(), back_inserter(power_buttons),
-                [&primary_buttons](const toml::node& node) -> PrimaryButtonData {
+        // TODO Split and simplify
+        for_each(
+                primary_buttons->begin(), primary_buttons->end(),
+                [&primary_buttons, &power_buttons](const toml::node& node) {
                         // Find position of node in primary_buttons
                         const auto it = std::find_if(primary_buttons->begin(),
                                                      primary_buttons->end(),
@@ -388,7 +387,7 @@ void TomlConfigParser::parseLayoutProperties() {
                                                 button_data.order = order->get();
                                         }
 
-                                        return std::move(button_data);
+                                        power_buttons.push_back(std::move(button_data));
                                 } else {
                                         const auto id = (*button)["id"].as_string();
                                         if (!id) {
