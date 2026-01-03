@@ -99,6 +99,10 @@ if(BUILD_POWERAPPLET)
                 target_compile_options(PowerApplet PRIVATE -fsanitize=address -fno-omit-frame-pointer -g)
                 target_link_options(PowerApplet PRIVATE -fsanitize=address)
         endif()
+
+        if(LOG_DEBUG) # print debug-level logs
+                target_compile_definitions(PowerApplet PUBLIC LOG_DEBUG)
+        endif()
 endif()
 
 # Tests
