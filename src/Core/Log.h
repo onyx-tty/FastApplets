@@ -34,6 +34,7 @@ inline QString concatArgs(const MainStr& main_string, const RestStr&... rest_str
 } // namespace log_internals
 
 // TODO Log not only function names but also potential classes they belong to and perhaps even file names
+// TODO Create versions with formatting
 // Logging formatters
 #define QFATAL(...) do { \
         const QString msg = log_internals::concatArgs(__VA_ARGS__); \
@@ -44,7 +45,7 @@ inline QString concatArgs(const MainStr& main_string, const RestStr&... rest_str
         qCritical() << "[CRITICAL]" << __func__ << ":"
 
 #define QWARNING() \
-        qWarning() << "[WARNING] " << __func__ << ":"
+        qWarning() << "[WARNING]  " << __func__ << ":"
 
 // TODO Optimize, this still instantiates a QDebug object
 #ifdef LOG_DEBUG
@@ -63,7 +64,7 @@ inline QString concatArgs(const MainStr& main_string, const RestStr&... rest_str
         qCritical().nospace() << "[CRITICAL]" << __func__ << " : "
 
 #define QWARNING_NS() \
-        qWarning().nospace() << "[WARNING] " << __func__ << " : "
+        qWarning().nospace() << "[WARNING]  " << __func__ << " : "
 
 #define QDEBUG_NS() \
         qDebug().nospace() << "[DEBUG]   " << __func__ << " : "
