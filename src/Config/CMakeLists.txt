@@ -17,10 +17,10 @@ add_library(Config ALIAS config)
 target_include_directories(config PRIVATE
         ${CMAKE_CURRENT_LIST_DIR}
         ${GLOBAL_INCLUDES})
-# TODO Separate PUBLICLY and PRIVATELY linked libraries
-target_link_libraries(config PUBLIC
+target_link_libraries(config PRIVATE
         CppUtils
         Environment
-        LogUtils
+        LogUtils)
+target_link_libraries(config PUBLIC
         tomlplusplus::tomlplusplus
         Qt${QT_VERSION_MAJOR}::Widgets)
