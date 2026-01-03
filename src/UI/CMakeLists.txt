@@ -10,8 +10,8 @@ add_library(UI ALIAS ui)
 target_include_directories(ui PRIVATE
         ${CMAKE_CURRENT_LIST_DIR}
         ${GLOBAL_INCLUDES})
-# TODO Separate PUBLICLY and PRIVATELY linked libraries
-target_link_libraries(ui PUBLIC
+target_link_libraries(ui PRIVATE
         Config
-        LogUtils
+        LogUtils)
+target_link_libraries(ui PUBLIC
         Qt${QT_VERSION_MAJOR}::Widgets)
