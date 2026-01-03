@@ -89,7 +89,6 @@ if (BUILD_POWERAPPLET)
                 ${POWERAPPLET_SOURCE_DIR}/main.cpp)
 endif()
 
-# TODO Build type checking to disable the sanitizer for release versions
 # Target linking and configuration
 if(BUILD_POWERAPPLET)
         target_include_directories(PowerApplet PRIVATE
