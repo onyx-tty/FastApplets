@@ -38,7 +38,7 @@
 
 <br>
 
-# Base \[8/17\]
+# Base \[9/19\]
 
 1.  \[X\] LICENSE
 
@@ -73,18 +73,22 @@
 12. \[X\] Config reliant on environmental variables, adhering to the XDG
     Base Directory Specification
 
-13. \[ \] Generate config on runtime if missing
+13. \[ \] Handle type mismatches in config
 
-14. \[ \] Fallback config
+14. \[ \] Handle incorrect values in config
 
-15. \[-\] Testing
+15. \[ \] Generate config on runtime if missing
 
-    1.  \[-\] GTest
+16. \[ \] Fallback config
+
+17. \[ \] Testing
+
+    1.  \[ \] GTest
 
     2.  \[ \] GMock
 
     3.  \[ \] GBenchmark
 
-16. \[ \] Extract utility functions to the new CppUtils repo
+18. \[ \] Extract utility functions to the new CppUtils repo
 
-17. \[ \] Utilize the logging wrappers
+19. \[X\] Utilize the logging wrappers

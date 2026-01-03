@@ -37,7 +37,7 @@
 #+BEGIN_EXPORT markdown
 <br>
 #+END_EXPORT
-* Base [8/17]
+* Base [9/19]
 ** [X] LICENSE
 ** [ ] README.md
 *** [ ] Basics
@@ -54,11 +54,13 @@
 ** [X] Cleaner build directories
 ** [ ] Standardized window class and title
 ** [X] Config reliant on environmental variables, adhering to the XDG Base Directory Specification
+** [ ] Handle type mismatches in config
+** [ ] Handle incorrect values in config
 ** [ ] Generate config on runtime if missing
 ** [ ] Fallback config
-** [-] Testing
-*** [-] GTest
+** [ ] Testing
+*** [ ] GTest
 *** [ ] GMock
 *** [ ] GBenchmark
 ** [ ] Extract utility functions to the new CppUtils repo
-** [ ] Utilize the logging wrappers
+** [X] Utilize the logging wrappers
