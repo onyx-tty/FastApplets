@@ -9,7 +9,8 @@
                         "binaryDir": "build/Debug",
                         "cacheVariables": {
                                 "CMAKE_BUILD_TYPE": "Debug",
-                                "ENABLE_ASAN": "ON"
+                                "ENABLE_ASAN": "ON",
+                                "LOG_DEBUG": "ON"
                         }
                 },
                 {

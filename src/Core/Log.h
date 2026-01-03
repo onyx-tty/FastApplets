@@ -33,6 +33,7 @@ inline QString concatArgs(const MainStr& main_string, const RestStr&... rest_str
 
 } // namespace log_internals
 
+// TODO Log not only function names but also potential classes they belong to and perhaps even file names
 // Logging formatters
 #define QFATAL(...) do { \
         const QString msg = log_internals::concatArgs(__VA_ARGS__); \
@@ -45,8 +46,14 @@ inline QString concatArgs(const MainStr& main_string, const RestStr&... rest_str
 #define QWARNING() \
         qWarning() << "[WARNING] " << __func__ << ":"
 
-#define QDEBUG() \
-        qDebug() << "[DEBUG]   " << __func__ << ":"
+// TODO Optimize, this still instantiates a QDebug object
+#ifdef LOG_DEBUG
+        #define QDEBUG() \
+                qDebug() << "[DEBUG]   " << __func__ << ":"
+#else // Swallow anything streamed to it and ignore semicolons
+        #define QDEBUG() \
+                if (false) qDebug()
+#endif
 
 #define QINFO() \
         qInfo() << "[INFO]    " << __func__ << ":"
