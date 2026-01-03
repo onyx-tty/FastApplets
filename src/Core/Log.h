@@ -36,32 +36,32 @@ inline QString concatArgs(const MainStr& main_string, const RestStr&... rest_str
 // Logging formatters
 #define QFATAL(...) do { \
         const QString msg = log_internals::concatArgs(__VA_ARGS__); \
-        qFatal("%s : %s", __func__, qPrintable(msg)); \
+        qFatal("[FATAL] %s : %s", __func__, qPrintable(msg)); \
 } while(0)
 
 #define QCRITICAL() \
-        qCritical() << __func__ << ":"
+        qCritical() << "[CRITICAL]" << __func__ << ":"
 
 #define QWARNING() \
-        qWarning() << __func__ << ":"
+        qWarning() << "[WARNING]" << __func__ << ":"
 
 #define QDEBUG() \
-        qDebug() << __func__ << ":"
+        qDebug() << "[DEBUG]" << __func__ << ":"
 
 #define QINFO() \
-        qInfo() << __func__ << ":"
+        qInfo() << "[INFO]" << __func__ << ":"
 
 // Logging formatters - nospace version
 #define QCRITICAL_NS() \
-        qCritical().nospace() << __func__ << " : "
+        qCritical().nospace() << "[CRITICAL]" << __func__ << " : "
 
 #define QWARNING_NS() \
-        qWarning().nospace() << __func__ << " : "
+        qWarning().nospace() << "[WARNING]" << __func__ << " : "
 
 #define QDEBUG_NS() \
-        qDebug().nospace() << __func__ << " : "
+        qDebug().nospace() << "[DEBUG]" << __func__ << " : "
 
 #define QINFO_NS() \
-        qInfo().nospace() << __func__ << " : "
+        qInfo().nospace() << "[INFO]" << __func__ << " : "
 
 #include "Log.tpp"
