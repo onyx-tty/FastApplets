@@ -233,12 +233,18 @@ void TomlConfigParser::parseWindowProperties() {
                         const auto index = size->get(i)->as_integer();
 
                         if (!index) {
-                                // TODO Attempt conversion
-                                QFATAL("in config.toml, global.window.size[%zu] is not an integer!",
-                                       i);
-                        }
+                                const auto str_index = size->get(i)->as_string();
 
-                        for_qsize[i] = index->get();
+                                QWARNING_NS() << "in config.toml, global.window.size[" << i << "] is not an integer! Converting to integer from string...";
+                                if (!str_index) {
+                                        QFATAL("FAILED CONVERSION!");
+                                } else {
+                                        for_qsize[i] = std::stoi(str_index->get());
+                                        QINFO() << "Successful conversion!";
+                                }
+                        } else {
+                                for_qsize[i] = index->get();
+                        }
                 }
 
                 Config::WindowProperties::size = QSize(for_qsize[0], for_qsize[1]);
