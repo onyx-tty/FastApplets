@@ -35,7 +35,8 @@ inline QString concatArgs(const MainStr& main_string, const RestStr&... rest_str
 
 // Logging formatters
 #define QFATAL(...) do { \
-        qFatal("%s: %s", __func__, log_internals::concatArgs(__VA_ARGS__)); \
+        const QString msg = log_internals::concatArgs(__VA_ARGS__); \
+        qFatal("%s: %s", __func__, qPrintable(msg)); \
 } while(0)
 
 #define QCRITICAL() \
