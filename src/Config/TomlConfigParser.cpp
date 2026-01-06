@@ -49,19 +49,20 @@ using std::to_string;
 using std::transform;
 using std::unordered_map;
 using std::vector;
+using enum_utils::EnumMap;
 using enum_utils::getEnumFromMap;
 using string_utils::toLowerCopy;
 
 namespace {
 
-static const unordered_map<string, Qt::Alignment> alignment_map =
+static const EnumMap<Qt::Alignment> alignment_map =
         {{"top", Qt::AlignTop | Qt::AlignHCenter},
          {"center", Qt::AlignCenter},
          {"bottom", Qt::AlignBottom | Qt::AlignHCenter},
          {"left", Qt::AlignVCenter | Qt::AlignLeft},
          {"right", Qt::AlignVCenter | Qt::AlignRight}};
 
-static const unordered_map<string, QSizePolicy> size_policy_map =
+static const EnumMap<QSizePolicy> size_policy_map =
         {{"expanding", {QSizePolicy::Expanding, QSizePolicy::Expanding}},
          {"fixed", {QSizePolicy::Fixed, QSizePolicy::Fixed}}};
 
