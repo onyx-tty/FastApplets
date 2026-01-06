@@ -18,6 +18,7 @@
 #include "TomlConfigParser.h"
 #include "Config.h"
 #include "Core/Log.h"
+#include "CppUtils/include/Enum.h"
 #include "CppUtils/include/String.h"
 #include "Keys.h"
 
@@ -48,10 +49,8 @@ using std::to_string;
 using std::transform;
 using std::unordered_map;
 using std::vector;
+using enum_utils::getEnumFromMap;
 using string_utils::toLowerCopy;
-
-template<typename EnumType>
-using EnumMap = unordered_map<string, EnumType>;
 
 namespace {
 
@@ -70,14 +69,14 @@ namespace error_message {
 namespace alignment {
 // TODO Simply store QString instead of serving as a functor
 // clang-format off
-QString text_alignment_error =
+string text_alignment_error =
         "Wrong setting in config.toml for: text_alignment\n"
         "Available values: top, center, bottom, left, right\n"
         "Default: top";
 // clang-format on
 
 // clang-format off
-QString icon_alignment_error =
+string icon_alignment_error =
         "Wrong setting in config.toml for: icon_alignment"
         "Available values: top, center, bottom, left, right"
         "Default: center";
@@ -86,7 +85,7 @@ QString icon_alignment_error =
 } // namespace alignment
 namespace size_policy {
 // clang-format off
-QString primary_button_error =
+string primary_button_error =
         "Wrong setting in config.toml for: policy"
         "Available values: expanding, fixed"
         "Default: expanding";
@@ -96,19 +95,7 @@ QString primary_button_error =
 
 } // namespace
 
-// Find value and return default_value if not found
-template<typename EnumType>
-static EnumType getEnumFromMap(const EnumMap<EnumType>& mapping, const string& key,
-                               const EnumType& default_value, QString error_message) {
-        const auto it = mapping.find(key);
-        if (it == mapping.end()) {
-                QWARNING() << error_message;
-                return default_value;
-        }
-
-        return it->second;
-}
-
+// TODO Extract
 // Interpret keybinding text as a corresponding hexadecimal value for the Qt::Key enum
 static const auto textToHexInterpreter = [](const auto& node) {
         QKeySequence    sequence(QString::fromStdString(node.as_string()->get()));
@@ -117,6 +104,7 @@ static const auto textToHexInterpreter = [](const auto& node) {
         return combination.key();
 };
 
+// TODO Extract
 // Use textToHexInterpreter on a TOML node to set-up keybindings for target
 static void interpretTextAsKeybindings(const toml::node_view<const toml::node>& source,
                                        keybindings&                             target) {
@@ -156,6 +144,7 @@ static array<QString, config_file_names_cnt> config_file_names = {"config.toml",
 
 } // namespace
 
+// TODO Split
 // Look for configs in $XDG_CONFIG_HOME and $XDG_DATA_HOME
 static array<string, config_file_names_cnt> locateConfigFiles() {
         array<string, config_file_names_cnt> files{}; // Only enough slots for each file
@@ -185,6 +174,7 @@ static array<string, config_file_names_cnt> locateConfigFiles() {
         return files;
 }
 
+// TODO Extract
 static toml::table createTable(string file_path) {
         toml::table file_table;
 
