@@ -66,8 +66,6 @@ static const unordered_map<string, QSizePolicy> size_policy_map =
         {{"expanding", {QSizePolicy::Expanding, QSizePolicy::Expanding}},
          {"fixed", {QSizePolicy::Fixed, QSizePolicy::Fixed}}};
 
-} // namespace
-
 namespace error_message {
 namespace alignment {
 // TODO Simply store QString instead of serving as a functor
@@ -95,6 +93,8 @@ QString primary_button_error =
 // clang-format on
 } // namespace size_policy
 } // namespace error_message
+
+} // namespace
 
 // Find value and return default_value if not found
 template<typename EnumType>
