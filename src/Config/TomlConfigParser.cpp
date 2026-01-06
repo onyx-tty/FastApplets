@@ -56,12 +56,11 @@ using EnumMap = unordered_map<string, EnumType>;
 
 namespace {
 
-// TODO Qt::AlignTop aligns to top-left, and Qt::AlignBottom to bottom-left, fix this
-static const unordered_map<string, Qt::Alignment> alignment_map = {{"top", Qt::AlignTop},
+static const unordered_map<string, Qt::Alignment> alignment_map = {{"top", Qt::AlignTop | Qt::AlignHCenter},
                                                                    {"center", Qt::AlignCenter},
-                                                                   {"bottom", Qt::AlignBottom},
-                                                                   {"left", Qt::AlignLeft},
-                                                                   {"right", Qt::AlignRight}};
+                                                                   {"bottom", Qt::AlignBottom | Qt::AlignHCenter},
+                                                                   {"left", Qt::AlignVCenter | Qt::AlignLeft},
+                                                                   {"right", Qt::AlignVCenter | Qt::AlignRight}};
 
 static const unordered_map<string, QSizePolicy> size_policy_map =
         {{"expanding", {QSizePolicy::Expanding, QSizePolicy::Expanding}},
@@ -199,8 +198,10 @@ static toml::table createTable(string file_path) {
 }
 
 namespace {
+
 static auto config_files = locateConfigFiles();
-}
+
+} // namespace
 
 TomlConfigParser::TomlConfigParser() :
         config_table(createTable(config_files[0])), keys_table(createTable(config_files[1])) {}
@@ -277,9 +278,8 @@ void TomlConfigParser::parseButtonProperties() {
                 // TODO Defaults
                 QFATAL("in config.toml, global.primary_button.text_alignment is not a string!");
         } else {
-                Qt::Alignment default_alignment = Qt::AlignTop;
+                Qt::Alignment default_alignment = alignment_map.at("top");
 
-                // TODO Top results in top-left alignment, determine why
                 Config::PrimaryButtonProperties::text_alignment =
                         getEnumFromMap(alignment_map, text_alignment->get(), default_alignment,
                                        error_message::alignment::textAlignmentError);
@@ -292,7 +292,7 @@ void TomlConfigParser::parseButtonProperties() {
                 // TODO Defaults
                 QFATAL("in config.toml, global.primary_button.icon_alignment is not a string!");
         } else {
-                Qt::Alignment default_alignment = Qt::AlignTop;
+                Qt::Alignment default_alignment = alignment_map.at("top");
 
                 Config::PrimaryButtonProperties::icon_alignment =
                         getEnumFromMap(alignment_map, icon_alignment->get(), default_alignment,
