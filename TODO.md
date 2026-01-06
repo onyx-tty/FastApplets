@@ -92,3 +92,11 @@
 18. \[ \] Extract utility functions to the new CppUtils repo
 
 19. \[X\] Utilize the logging wrappers
+
+20. \[ \] Encapsulate non-trivial global variables in source files
+
+    Avoid placing non-trivial objects at namespace scope because it
+    triggers dynamic initialization at program startup,  
+    which can lead to Undefined Behavior if other globals or TUs depend
+    on them.  
+    Lazy initialize or construct on first use.
