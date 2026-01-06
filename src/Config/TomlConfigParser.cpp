@@ -292,7 +292,7 @@ void TomlConfigParser::parseButtonProperties() {
                 // TODO Defaults
                 QFATAL("in config.toml, global.primary_button.icon_alignment is not a string!");
         } else {
-                Qt::Alignment default_alignment = Qt::AlignCenter;
+                Qt::Alignment default_alignment = Qt::AlignTop;
 
                 Config::PrimaryButtonProperties::icon_alignment =
                         getEnumFromMap(alignment_map, icon_alignment->get(), default_alignment,
