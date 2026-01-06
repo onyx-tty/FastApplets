@@ -32,7 +32,6 @@
 #include <algorithm>
 #include <array>
 #include <cstdlib>
-#include <functional>
 #include <iterator>
 #include <qnamespace.h>
 #include <string>
@@ -56,11 +55,12 @@ using EnumMap = unordered_map<string, EnumType>;
 
 namespace {
 
-static const unordered_map<string, Qt::Alignment> alignment_map = {{"top", Qt::AlignTop | Qt::AlignHCenter},
-                                                                   {"center", Qt::AlignCenter},
-                                                                   {"bottom", Qt::AlignBottom | Qt::AlignHCenter},
-                                                                   {"left", Qt::AlignVCenter | Qt::AlignLeft},
-                                                                   {"right", Qt::AlignVCenter | Qt::AlignRight}};
+static const unordered_map<string, Qt::Alignment> alignment_map =
+        {{"top", Qt::AlignTop | Qt::AlignHCenter},
+         {"center", Qt::AlignCenter},
+         {"bottom", Qt::AlignBottom | Qt::AlignHCenter},
+         {"left", Qt::AlignVCenter | Qt::AlignLeft},
+         {"right", Qt::AlignVCenter | Qt::AlignRight}};
 
 static const unordered_map<string, QSizePolicy> size_policy_map =
         {{"expanding", {QSizePolicy::Expanding, QSizePolicy::Expanding}},
@@ -71,35 +71,38 @@ static const unordered_map<string, QSizePolicy> size_policy_map =
 namespace error_message {
 namespace alignment {
 // TODO Simply store QString instead of serving as a functor
-void textAlignmentError() {
-        QWARNING() << "Wrong setting in config.toml for: text_alignment"
-                   << "Available values: top, center, bottom, left, right"
-                   << "Default: top";
-}
+// clang-format off
+QString text_alignment_error =
+        "Wrong setting in config.toml for: text_alignment\n"
+        "Available values: top, center, bottom, left, right\n"
+        "Default: top";
+// clang-format on
 
-void iconAlignmentError() {
-        QWARNING() << "Wrong setting in config.toml for: icon_alignment"
-                   << "Available values: top, center, bottom, left, right"
-                   << "Default: center";
-}
+// clang-format off
+QString icon_alignment_error =
+        "Wrong setting in config.toml for: icon_alignment"
+        "Available values: top, center, bottom, left, right"
+        "Default: center";
+// clang-format on
+
 } // namespace alignment
 namespace size_policy {
-void primaryButtonError() {
-        QWARNING() << "Wrong setting in config.toml for: policy"
-                   << "Available values: expanding, fixed"
-                   << "Default: expanding";
-}
+// clang-format off
+QString primary_button_error =
+        "Wrong setting in config.toml for: policy"
+        "Available values: expanding, fixed"
+        "Default: expanding";
+// clang-format on
 } // namespace size_policy
 } // namespace error_message
 
 // Find value and return default_value if not found
 template<typename EnumType>
-// TODO Replace std::function with regular function pointer
 static EnumType getEnumFromMap(const EnumMap<EnumType>& mapping, const string& key,
-                               const EnumType& default_value, std::function<void()> errorMessage) {
+                               const EnumType& default_value, QString error_message) {
         const auto it = mapping.find(key);
         if (it == mapping.end()) {
-                errorMessage();
+                QWARNING() << error_message;
                 return default_value;
         }
 
@@ -282,7 +285,7 @@ void TomlConfigParser::parseButtonProperties() {
 
                 Config::PrimaryButtonProperties::text_alignment =
                         getEnumFromMap(alignment_map, text_alignment->get(), default_alignment,
-                                       error_message::alignment::textAlignmentError);
+                                       error_message::alignment::text_alignment_error);
         }
 
         // Icon alignment
@@ -296,7 +299,7 @@ void TomlConfigParser::parseButtonProperties() {
 
                 Config::PrimaryButtonProperties::icon_alignment =
                         getEnumFromMap(alignment_map, icon_alignment->get(), default_alignment,
-                                       error_message::alignment::iconAlignmentError);
+                                       error_message::alignment::icon_alignment_error);
         }
 
         // Icon size
@@ -341,7 +344,7 @@ void TomlConfigParser::parseButtonProperties() {
                                                                QSizePolicy::Expanding);
                 Config::PrimaryButtonProperties::policy =
                         getEnumFromMap(size_policy_map, toLowerCopy(policy->get()), default_policy,
-                                       error_message::size_policy::primaryButtonError);
+                                       error_message::size_policy::primary_button_error);
         }
 }
 
