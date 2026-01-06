@@ -296,7 +296,7 @@ void TomlConfigParser::parseButtonProperties() {
 
                 Config::PrimaryButtonProperties::icon_alignment =
                         getEnumFromMap(alignment_map, icon_alignment->get(), default_alignment,
-                                       error_message::alignment::textAlignmentError);
+                                       error_message::alignment::iconAlignmentError);
         }
 
         // Icon size
