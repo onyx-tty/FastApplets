@@ -1,7 +1,7 @@
-project(core VERSION 0.3.1 LANGUAGES CXX)
+project(core VERSION 0.4.0 LANGUAGES CXX)
 
 add_library(log_utils
-        Log.tpp)
+        Log.h)
 add_library(LogUtils ALIAS log_utils)
 target_include_directories(log_utils PRIVATE
         ${CMAKE_CURRENT_LIST_DIR}
