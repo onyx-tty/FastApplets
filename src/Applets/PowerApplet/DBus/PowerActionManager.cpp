@@ -40,8 +40,6 @@ void PowerActionManager::sendPowerAction(const QString& method) {
 }
 
 void PowerActionManager::printReply(const QDBusPendingReply<QVariantMap>& reply) {
-        DBusRequester::waitForFinished();
-
         if (reply.reply().type() == QDBusMessage::ErrorMessage) {
                 QCRITICAL() << "Error sending action. Response: " << reply.reply().errorMessage();
         } else {
