@@ -26,7 +26,7 @@
 
 QDBusPendingReply<QVariantMap> DBusRequester::pending_reply;
 
-void DBusRequester::call(const DBusTarget& target, QString method) {
+void DBusRequester::call(const DBusTarget& target, const QString& method) {
         static const auto connection = QDBusConnection::connectToBus(QDBusConnection::SystemBus,
                                                                      target.name);
         static const auto proxy      = QDBusInterface(target.name, target.path, target.interface,
