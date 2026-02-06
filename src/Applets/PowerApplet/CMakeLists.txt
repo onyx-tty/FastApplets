@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.16)
 
-project(PowerApplet VERSION 0.19.1 LANGUAGES CXX)
+project(PowerApplet VERSION 0.19.2 LANGUAGES CXX)
 
 add_subdirectory(DBus)
 add_subdirectory(UI)
