@@ -48,5 +48,6 @@ void DBusRequester::waitForFinished() {
 }
 
 const QDBusPendingReply<QVariantMap>& DBusRequester::getReply() {
+        waitForFinished();
         return pending_reply;
 }
