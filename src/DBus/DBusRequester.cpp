@@ -15,8 +15,8 @@
    You should have received a copy of the GNU General Public License
    along with this program.  If not, see <https://www.gnu.org/licenses/>. */
 
-#include "Core/Log.h"
 #include "DBusRequester.h"
+#include "Core/Log.h"
 
 #include <QDBusConnection>
 #include <QDBusConnectionInterface>
@@ -27,11 +27,11 @@
 QDBusPendingReply<QVariantMap> DBusRequester::pending_reply;
 
 void DBusRequester::call(const DBusTarget& target, QString method) {
-        const auto connection = QDBusConnection::connectToBus(QDBusConnection::SystemBus,
-                                                              target.name);
-        const auto proxy = QDBusInterface(target.name, target.path, target.interface, connection,
-                                          nullptr);
-        if (!proxy.isValid()) QFATAL("D-Bus proxy is invalid!");
+        static const auto connection = QDBusConnection::connectToBus(QDBusConnection::SystemBus,
+                                                                     target.name);
+        static const auto proxy      = QDBusInterface(target.name, target.path, target.interface,
+                                                      connection, nullptr);
+        if (!proxy.isValid()) { QFATAL("D-Bus proxy is invalid!"); }
 
         auto call = QDBusMessage::createMethodCall(target.name, target.path, target.interface,
                                                    method);
