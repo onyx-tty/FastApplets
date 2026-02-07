@@ -37,7 +37,7 @@
 #+BEGIN_EXPORT markdown
 <br>
 #+END_EXPORT
-* Base [9/19]
+* Base [10/23]
 ** [X] LICENSE
 ** [ ] README.md
 *** [ ] Basics
@@ -46,6 +46,8 @@
 *** [ ] Usage instructions
 ** [X] TODO.md
 ** [X] Icon embedment in the executable
+** [ ] Default icons fetched from current icon theme
+** [ ] Custom icons
 ** [ ] Fallback icons
 ** [X] CMake presets
 ** [X] TOML configuration
@@ -54,10 +56,11 @@
 ** [X] Cleaner build directories
 ** [ ] Standardized window class and title
 ** [X] Config reliant on environment variables, adhering to the XDG Base Directory Specification
-** [ ] Handle type mismatches in config
+** [X] Handle type mismatches in config
 ** [ ] Handle incorrect values in config
-** [ ] Generate config on runtime if missing
 ** [ ] Fallback config
+** [ ] Generate config on runtime if missing
+** [ ] Split and break-up large functions
 ** [ ] Testing
 *** [ ] GTest
 *** [ ] GMock
@@ -68,3 +71,6 @@
 Avoid placing non-trivial objects at namespace scope because it triggers dynamic initialization at program startup,
 which can lead to Undefined Behavior if other globals or TUs depend on them.
 Lazy initialize or construct on first use.
+
+#  LocalWords:  md SecurityApplet SystemApplet LauncherApplet JSON XDG GMock
+#  LocalWords:  WeatherApplet PowerActionManager GBenchmark PowerApplet
