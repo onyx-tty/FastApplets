@@ -68,7 +68,6 @@ static const EnumMap<QSizePolicy> size_policy_map =
 
 namespace error_message {
 namespace alignment {
-// TODO Simply store QString instead of serving as a functor
 // clang-format off
 string text_alignment_error =
         "Wrong setting in config.toml for: text_alignment\n"
@@ -106,6 +105,7 @@ static const auto textToHexInterpreter = [](const auto& node) {
 };
 
 // TODO Extract
+// TODO Split
 // Use textToHexInterpreter on a TOML node to set-up keybindings for target
 static void interpretTextAsKeybindings(const toml::node_view<const toml::node>& source,
                                        keybindings&                             target) {
@@ -166,7 +166,7 @@ static array<string, config_file_names_cnt> locateConfigFiles() {
                 }
 
                 // No valid file_path found for the current file, terminate
-                // TODO Generate default toml file on failure
+                // TODO Generate default TOML file on failure
                 if (!found) {
                         QFATAL("%s not found!", config_file_names[file_i].toStdString().c_str());
                 }
