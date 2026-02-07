@@ -53,7 +53,7 @@
 ** [ ] Enforced static compilation of private libraries
 ** [X] Cleaner build directories
 ** [ ] Standardized window class and title
-** [X] Config reliant on environmental variables, adhering to the XDG Base Directory Specification
+** [X] Config reliant on environment variables, adhering to the XDG Base Directory Specification
 ** [ ] Handle type mismatches in config
 ** [ ] Handle incorrect values in config
 ** [ ] Generate config on runtime if missing

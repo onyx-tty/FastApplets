@@ -70,7 +70,7 @@
 
 11. \[ \] Standardized window class and title
 
-12. \[X\] Config reliant on environmental variables, adhering to the XDG
+12. \[X\] Config reliant on environment variables, adhering to the XDG
     Base Directory Specification
 
 13. \[ \] Handle type mismatches in config
