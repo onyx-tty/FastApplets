@@ -19,7 +19,6 @@ target_include_directories(config PRIVATE
         ${GLOBAL_INCLUDES})
 target_link_libraries(config PRIVATE
         CppUtils
-        Environment
         LogUtils)
 target_link_libraries(config PUBLIC
         tomlplusplus::tomlplusplus
