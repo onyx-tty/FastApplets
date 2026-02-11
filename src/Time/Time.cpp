@@ -50,66 +50,6 @@ time_t findMidnight() {
         return midnight_unix_timestamp;
 }
 
-// Used to dynamically predict the total numbers of indexes dedicated for each day
-// i.e. if each index is spaced by 3 hours then we can expect 8 indexes/data blocs per day
-int findHourSpacing(time_t later, time_t earlier) {
-        if (later < earlier) {
-                QCRITICAL() << "Passed argument for \"later\" smaller than \"earlier\"";
-                QApplication::quit();
-        }
-        const int    time_difference = later - earlier;
-        const ldiv_t hour_spacing    = std::ldiv(time_difference, epoch_duration::hour);
-
-        if (hour_spacing.rem != 0) {
-                QString rest = QString::number(hour_spacing.quot) + "r"
-                             + QString::number(hour_spacing.rem);
-                QWARNING() << "detected that hours aren't spaced evenly!"
-                           << time_difference << "/" << epoch_duration::hour << "=" << rest;
-        }
-
-        return hour_spacing.quot;
-}
-
-// Used to predict how many weather blocs, or to be precise, spaced weather data elements can fit
-// in a specified time range. If appropriate data is received, it should be processed smoothly.
-// The quotient of remaining day time and hour spacing must be a whole number, otherwise it is
-// implied that the timestamps have been tampered with or incorrectly passed.
-// APIs are expected to pull data that is distributed evenly, meaning that there should be
-// specific hour spacing.
-// TODO Perhaps there is a safer way to ensure that our data cannot be tampered with along the way
-optional<int> findWeatherBlocsFitCount(time_t later, time_t earlier, int hour_spacing) {
-        QDEBUG() << "has received" << later << "as later and" << earlier
-                 << "as earlier, spacing is" << hour_spacing;
-        if (later < earlier) {
-                QCRITICAL() << "Passed argument for \"later\" smaller than \"earlier\"";
-                QApplication::quit();
-        }
-        // times in seconds
-        constexpr time_t hour         = 60 * 60;
-        constexpr time_t day          = hour * 24;
-        const time_t     weather_bloc = hour * hour_spacing;
-
-        const time_t time_elapsed = later - earlier;
-        if (time_elapsed > day) {
-                QFATAL("Difference longer than one day!");
-                QApplication::quit();
-        }
-
-        // find how many weather blocs can fit in the remaining time
-        const div_t indexes = std::div((int) (time_elapsed / hour), (int) (weather_bloc / hour));
-        if (indexes.rem != 0) { // if remainder found
-                QString rest = QString::number(indexes.quot) + "r" + QString::number(indexes.rem);
-                QCRITICAL() << "detected that hours cannot be calculated spaced without loss!"
-                            << "Timestamp corruption!" << time_elapsed << "/" << "(" << hour << "*"
-                            << hour_spacing << ")"
-                            << "=" << rest;
-                QApplication::quit();
-        }
-
-        QDEBUG() << "When parsed, we receive" << indexes.quot;
-        return (indexes.quot != 0) ? optional(indexes.quot) : nullopt;
-}
-
 time_t findCloserHour(time_t hour1, time_t hour2) {
         const time_t now   = findCurrentUnixTime();
         const time_t diff1 = std::abs(hour1 - now);

@@ -68,10 +68,6 @@ TEST(FindMidnightTest, TwoCallsReturnSameValueWithinSameDay) {
 // t1 = findMidnight(), t2 = findMidnight() + epoch_duration::day
 // requires params
 
-// TODO Simplify or break down findHourSpacing to make it readable and testable
-
-// TODO Simplify or break down findWeatherBlocsFitCount to make it readable and testable
-
 TEST(FindCloserHourTest, Hour1IsCloser) {
         const time_t hour1 = time(nullptr);
         const time_t hour2 = 555;
@@ -92,7 +88,6 @@ TEST(TimeInteractionTest, CurrentUnixTimeAndMidnightAreSameDay) {
         time_t t1 = findCurrentUnixTime();
         time_t t2 = findMidnight();
 
-        // TODO Multithreading
         if (dayDiffers(t1, t2)) {
                 t1 = findCurrentUnixTime();
                 t2 = findMidnight();
