@@ -25,6 +25,7 @@
 #include <QKeyEvent>
 #include <QWidget>
 
+#include <array>
 #include <vector>
 
 class PowerCentralWidget final : public QWidget {

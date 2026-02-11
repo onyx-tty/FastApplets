@@ -23,8 +23,6 @@
 
 #include <QApplication>
 
-#include <vector>
-
 using std::string, std::vector, std::array;
 using GlobalKeys = Keys::GlobalKeys;
 using PowerKeys  = Keys::PowerAppletKeys;
