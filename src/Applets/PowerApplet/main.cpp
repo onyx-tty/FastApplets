@@ -20,6 +20,7 @@
 #include "UI/PowerMainWindow.h"
 
 #include <QApplication>
+#include <QDebug>
 
 int main(int argc, char* argv[]) {
         // Init
@@ -31,7 +32,7 @@ int main(int argc, char* argv[]) {
         // Debug
         QINFO() << "Applet resolution:" << applet.size();
         QDEBUG() << "Qt Version:" << qVersion();
-        QINFO() << Qt::endl;
+        qInfo() << " "; 
 
         // Run
         applet.show();
