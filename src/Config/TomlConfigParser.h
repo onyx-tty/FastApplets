@@ -21,22 +21,16 @@
 
 class TomlConfigParser final {
 private:
-        const toml::table config_table;
-        const toml::table keys_table;
+        static const toml::table config_table;
+        static const toml::table keys_table;
 
-        TomlConfigParser();
+        TomlConfigParser() = delete;
 
-        void parseWindowProperties();
-        void parseButtonProperties();
-        void parseLayoutProperties();
-        void parseKeys();
+        static void parseWindowProperties();
+        static void parseButtonProperties();
+        static void parseLayoutProperties();
+        static void parseKeys();
 
 public:
-        TomlConfigParser(const TomlConfigParser&) = delete;
-        TomlConfigParser(TomlConfigParser&&) = delete;
-        TomlConfigParser& operator=(const TomlConfigParser&) = delete;
-        TomlConfigParser& operator=(TomlConfigParser&&) = delete;
-
-        static TomlConfigParser& getInstance();
-        void parseConfig();
+        static void parseConfig();
 };

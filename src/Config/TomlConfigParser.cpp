@@ -22,6 +22,7 @@
 #include "CppUtils/include/String.h"
 #include "Keys.h"
 
+#include <QApplication>
 #include <QFileInfo>
 #include <QKeyCombination>
 #include <QKeySequence>
@@ -197,13 +198,8 @@ static auto config_files = locateConfigFiles();
 
 } // namespace
 
-TomlConfigParser::TomlConfigParser() :
-        config_table(createTable(config_files[0])), keys_table(createTable(config_files[1])) {}
-
-TomlConfigParser& TomlConfigParser::getInstance() {
-        static TomlConfigParser toml_config_parser;
-        return toml_config_parser;
-}
+const toml::table TomlConfigParser::config_table = createTable(config_files[0]);
+const toml::table TomlConfigParser::keys_table = createTable(config_files[1]);
 
 // TODO Detect mismatched types, log them. Example: "expected int but got string"
 // TODO Apply toLowerCopy where applicable
@@ -460,7 +456,13 @@ void TomlConfigParser::parseKeys() {
 }
 
 // TODO Split between a parser for Config.toml and Keys.toml
+// TODO Handle as an exception
 void TomlConfigParser::parseConfig() {
+        // Confirm that a QApplication instance exists
+        if (!QApplication::instanceExists()) {
+                QFATAL("QApplication has not been instantiated yet!");
+        }
+
         // Check the validity of global and power_applet
         const auto global = config_table["global"].as_table();
         // TODO Defaults
