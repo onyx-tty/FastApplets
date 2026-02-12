@@ -41,6 +41,8 @@
 #include <toml++/toml.hpp>
 #include <unordered_map>
 
+using enum_utils::EnumMap;
+using enum_utils::getEnumFromMap;
 using std::array;
 using std::for_each;
 using std::inserter;
@@ -50,18 +52,15 @@ using std::to_string;
 using std::transform;
 using std::unordered_map;
 using std::vector;
-using enum_utils::EnumMap;
-using enum_utils::getEnumFromMap;
 using string_utils::toLowerCopy;
 
 namespace {
 
-static const EnumMap<Qt::Alignment> alignment_map =
-        {{"top", Qt::AlignTop | Qt::AlignHCenter},
-         {"center", Qt::AlignCenter},
-         {"bottom", Qt::AlignBottom | Qt::AlignHCenter},
-         {"left", Qt::AlignVCenter | Qt::AlignLeft},
-         {"right", Qt::AlignVCenter | Qt::AlignRight}};
+static const EnumMap<Qt::Alignment> alignment_map = {{"top", Qt::AlignTop | Qt::AlignHCenter},
+                                                     {"center", Qt::AlignCenter},
+                                                     {"bottom", Qt::AlignBottom | Qt::AlignHCenter},
+                                                     {"left", Qt::AlignVCenter | Qt::AlignLeft},
+                                                     {"right", Qt::AlignVCenter | Qt::AlignRight}};
 
 static const EnumMap<QSizePolicy> size_policy_map =
         {{"expanding", {QSizePolicy::Expanding, QSizePolicy::Expanding}},
@@ -198,12 +197,19 @@ static auto config_files = locateConfigFiles();
 
 } // namespace
 
-const toml::table TomlConfigParser::config_table = createTable(config_files[0]);
-const toml::table TomlConfigParser::keys_table = createTable(config_files[1]);
+const toml::table& createConfig() {
+        static toml::table config = createTable(config_files[0]);
+        return config;
+}
+
+const toml::table& createKeys() {
+        static toml::table keys = createTable(config_files[1]);
+        return keys;
+}
 
 // TODO Detect mismatched types, log them. Example: "expected int but got string"
 // TODO Apply toLowerCopy where applicable
-void TomlConfigParser::parseWindowProperties() {
+void TomlConfigParser::parseWindowProperties(const toml::table& config_table) {
         // TODO Defaults
         const auto window = config_table["global"]["window"].as_table();
         if (!window) { QFATAL("global.window needs to be a table!"); }
@@ -258,7 +264,7 @@ void TomlConfigParser::parseWindowProperties() {
         Config::WindowProperties::title = QString::fromStdString(title->get());
 }
 
-void TomlConfigParser::parseButtonProperties() {
+void TomlConfigParser::parseButtonProperties(const toml::table& config_table) {
         const auto button = config_table["global"]["primary_button"].as_table();
         if (!button) { QFATAL("in config.toml, global.primary_button is not a table!"); }
 
@@ -335,7 +341,7 @@ void TomlConfigParser::parseButtonProperties() {
         }
 }
 
-void TomlConfigParser::parseLayoutProperties() {
+void TomlConfigParser::parseLayoutProperties(const toml::table& config_table) {
         const auto layout = config_table["power_applet"]["layout"].as_table();
         // TODO Defaults
         if (!layout) { QFATAL("in config.toml, power_applet.layout is not a table!"); }
@@ -437,7 +443,7 @@ void TomlConfigParser::parseLayoutProperties() {
         Config::WindowLayoutProperties::primary_power_buttons = std::move(power_buttons);
 }
 
-void TomlConfigParser::parseKeys() {
+void TomlConfigParser::parseKeys(const toml::table& keys_table) {
         // interpretTextAsKeybindings already checks for validity
         interpretTextAsKeybindings(keys_table["global"]["quit"], Keys::GlobalKeys::quit_keys);
         interpretTextAsKeybindings(keys_table["power_applet"]["quit"],
@@ -457,7 +463,7 @@ void TomlConfigParser::parseKeys() {
 
 // TODO Split between a parser for Config.toml and Keys.toml
 // TODO Handle as an exception
-void TomlConfigParser::parseConfig() {
+void TomlConfigParser::parseConfig(const toml::table& config_table, const toml::table& keys_table) {
         // Confirm that a QApplication instance exists
         if (!QApplication::instanceExists()) {
                 QFATAL("QApplication has not been instantiated yet!");
@@ -473,14 +479,14 @@ void TomlConfigParser::parseConfig() {
         if (!power_applet) { QFATAL("in config.toml, power_applet is not a table!"); }
 
         /* Window properties */
-        parseWindowProperties();
+        parseWindowProperties(config_table);
 
         /* Button properties */
-        parseButtonProperties();
+        parseButtonProperties(config_table);
 
         /* Window layout properties */
-        parseLayoutProperties();
+        parseLayoutProperties(config_table);
 
         /* Keys */
-        parseKeys();
+        parseKeys(keys_table);
 }

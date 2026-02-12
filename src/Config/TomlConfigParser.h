@@ -19,18 +19,18 @@
 
 #include <toml++/toml.hpp>
 
+const toml::table& createConfig();
+const toml::table& createKeys();
+
 class TomlConfigParser final {
 private:
-        static const toml::table config_table;
-        static const toml::table keys_table;
-
         TomlConfigParser() = delete;
 
-        static void parseWindowProperties();
-        static void parseButtonProperties();
-        static void parseLayoutProperties();
-        static void parseKeys();
+        static void parseWindowProperties(const toml::table& config_table);
+        static void parseButtonProperties(const toml::table& config_table);
+        static void parseLayoutProperties(const toml::table& config_table);
+        static void parseKeys(const toml::table& keys_table);
 
 public:
-        static void parseConfig();
+        static void parseConfig(const toml::table& config_table, const toml::table& keys_table);
 };
