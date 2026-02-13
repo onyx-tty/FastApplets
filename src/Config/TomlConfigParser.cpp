@@ -443,27 +443,9 @@ void TomlConfigParser::parseLayoutProperties(const toml::table& config_table) {
         Config::WindowLayoutProperties::primary_power_buttons = std::move(power_buttons);
 }
 
-void TomlConfigParser::parseKeys(const toml::table& keys_table) {
-        // interpretTextAsKeybindings already checks for validity
-        interpretTextAsKeybindings(keys_table["global"]["quit"], Keys::GlobalKeys::quit_keys);
-        interpretTextAsKeybindings(keys_table["power_applet"]["quit"],
-                                   Keys::PowerAppletKeys::quit_keys);
-
-        if (Keys::PowerAppletKeys::quit_keys.empty()) { // TODO std::variant<Keybindings, Keybindings&>
-                Keys::PowerAppletKeys::quit_keys = Keys::GlobalKeys::quit_keys;
-        }
-
-        // Primary button control keys - PowerApplet
-        for (size_t i = 0; i != Keys::PowerAppletKeys::primary_button_keys.size(); ++i) {
-                string button_name = "primary_button" + to_string(i + 1);
-                interpretTextAsKeybindings(keys_table["power_applet"][button_name],
-                                           Keys::PowerAppletKeys::primary_button_keys[i]);
-        }
-}
-
 // TODO Split between a parser for Config.toml and Keys.toml
 // TODO Handle as an exception
-void TomlConfigParser::parseConfig(const toml::table& config_table, const toml::table& keys_table) {
+void TomlConfigParser::parseConfig(const toml::table& config_table) {
         // Confirm that a QApplication instance exists
         if (!QApplication::instanceExists()) {
                 QFATAL("QApplication has not been instantiated yet!");
@@ -486,7 +468,28 @@ void TomlConfigParser::parseConfig(const toml::table& config_table, const toml::
 
         /* Window layout properties */
         parseLayoutProperties(config_table);
+}
 
-        /* Keys */
-        parseKeys(keys_table);
+void TomlConfigParser::parseKeys(const toml::table& keys_table) {
+        // Confirm that a QApplication instance exists
+        if (!QApplication::instanceExists()) {
+                QFATAL("QApplication has not been instantiated yet!");
+        }
+
+        // interpretTextAsKeybindings already checks for validity
+        interpretTextAsKeybindings(keys_table["global"]["quit"], Keys::GlobalKeys::quit_keys);
+        interpretTextAsKeybindings(keys_table["power_applet"]["quit"],
+                                   Keys::PowerAppletKeys::quit_keys);
+
+        if (Keys::PowerAppletKeys::getQuitKeys()
+                    .empty()) { // TODO std::variant<Keybindings, Keybindings&>
+                Keys::PowerAppletKeys::quit_keys = Keys::GlobalKeys::quit_keys;
+        }
+
+        // Primary button control keys - PowerApplet
+        for (size_t i = 0; i != Keys::PowerAppletKeys::getPrimaryButtonKeys().size(); ++i) {
+                string button_name = "primary_button" + to_string(i + 1);
+                interpretTextAsKeybindings(keys_table["power_applet"][button_name],
+                                           Keys::PowerAppletKeys::primary_button_keys[i]);
+        }
 }

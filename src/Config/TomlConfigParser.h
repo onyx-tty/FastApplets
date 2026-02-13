@@ -29,8 +29,8 @@ private:
         static void parseWindowProperties(const toml::table& config_table);
         static void parseButtonProperties(const toml::table& config_table);
         static void parseLayoutProperties(const toml::table& config_table);
-        static void parseKeys(const toml::table& keys_table);
 
 public:
-        static void parseConfig(const toml::table& config_table, const toml::table& keys_table);
+        static void parseConfig(const toml::table& config_table);
+        static void parseKeys(const toml::table& keys_table);
 };
