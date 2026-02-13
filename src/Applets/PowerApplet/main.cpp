@@ -25,7 +25,8 @@
 int main(int argc, char* argv[]) {
         // Init
         QApplication app(argc, argv);
-        TomlConfigParser::parseConfig(createConfig(), createKeys());
+        TomlConfigParser::parseConfig(createConfig());
+        TomlConfigParser::parseKeys(createKeys());
 
         PowerMainWindow applet; // QMainWindow -> MainWindow -> PowerMainWindow
 
