@@ -25,13 +25,13 @@
 
 #include <vector>
 
-class TomlConfigParser;
+class ConfigMapper;
 
 class Config final {
 public:
         class WindowProperties final {
         private:
-                friend class TomlConfigParser;
+                friend class ConfigMapper;
                 
                 inline static QSize   size;
                 inline static QString title;
@@ -43,7 +43,7 @@ public:
 
         class WindowLayoutProperties final {
         private:
-                friend class TomlConfigParser;
+                friend class ConfigMapper;
 
                 inline static std::vector<PrimaryButtonData> primary_power_buttons;
                 
@@ -53,7 +53,7 @@ public:
 
         class PrimaryButtonProperties final {
         private:
-                friend class TomlConfigParser;
+                friend class ConfigMapper;
 
                 inline static Qt::Alignment text_alignment;
                 inline static Qt::Alignment icon_alignment;

@@ -15,7 +15,7 @@
    You should have received a copy of the GNU General Public License
    along with this program.  If not, see <https://www.gnu.org/licenses/>. */
 
-#include "TomlConfigParser.h"
+#include "ConfigMapper.h"
 #include "Config.h"
 #include "Core/Log.h"
 #include "CppUtils/include/Enum.h"
@@ -209,7 +209,7 @@ const toml::table& createKeys() {
 
 // TODO Detect mismatched types, log them. Example: "expected int but got string"
 // TODO Apply toLowerCopy where applicable
-void TomlConfigParser::parseWindowProperties(const toml::table& config_table) {
+void ConfigMapper::parseWindowProperties(const toml::table& config_table) {
         // TODO Defaults
         const auto window = config_table["global"]["window"].as_table();
         if (!window) { QFATAL("global.window needs to be a table!"); }
@@ -264,7 +264,7 @@ void TomlConfigParser::parseWindowProperties(const toml::table& config_table) {
         Config::WindowProperties::title = QString::fromStdString(title->get());
 }
 
-void TomlConfigParser::parseButtonProperties(const toml::table& config_table) {
+void ConfigMapper::parseButtonProperties(const toml::table& config_table) {
         const auto button = config_table["global"]["primary_button"].as_table();
         if (!button) { QFATAL("in config.toml, global.primary_button is not a table!"); }
 
@@ -341,7 +341,7 @@ void TomlConfigParser::parseButtonProperties(const toml::table& config_table) {
         }
 }
 
-void TomlConfigParser::parseLayoutProperties(const toml::table& config_table) {
+void ConfigMapper::parseLayoutProperties(const toml::table& config_table) {
         const auto layout = config_table["power_applet"]["layout"].as_table();
         // TODO Defaults
         if (!layout) { QFATAL("in config.toml, power_applet.layout is not a table!"); }
@@ -445,7 +445,7 @@ void TomlConfigParser::parseLayoutProperties(const toml::table& config_table) {
 
 // TODO Split between a parser for Config.toml and Keys.toml
 // TODO Handle as an exception
-void TomlConfigParser::parseConfig(const toml::table& config_table) {
+void ConfigMapper::parseConfig(const toml::table& config_table) {
         // Confirm that a QApplication instance exists
         if (!QApplication::instanceExists()) {
                 QFATAL("QApplication has not been instantiated yet!");
@@ -470,7 +470,7 @@ void TomlConfigParser::parseConfig(const toml::table& config_table) {
         parseLayoutProperties(config_table);
 }
 
-void TomlConfigParser::parseKeys(const toml::table& keys_table) {
+void ConfigMapper::parseKeys(const toml::table& keys_table) {
         // Confirm that a QApplication instance exists
         if (!QApplication::instanceExists()) {
                 QFATAL("QApplication has not been instantiated yet!");

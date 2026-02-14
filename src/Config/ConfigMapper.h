@@ -15,6 +15,22 @@
    You should have received a copy of the GNU General Public License
    along with this program.  If not, see <https://www.gnu.org/licenses/>. */
 
-#include "ConfigMapper.h"
+#pragma once
 
-using TomlConfigParser = ConfigMapper;
+#include <toml++/toml.hpp>
+
+const toml::table& createConfig();
+const toml::table& createKeys();
+
+class ConfigMapper final {
+private:
+        ConfigMapper() = delete;
+
+        static void parseWindowProperties(const toml::table& config_table);
+        static void parseButtonProperties(const toml::table& config_table);
+        static void parseLayoutProperties(const toml::table& config_table);
+
+public:
+        static void parseConfig(const toml::table& config_table);
+        static void parseKeys(const toml::table& keys_table);
+};

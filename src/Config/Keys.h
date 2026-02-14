@@ -20,7 +20,7 @@
 #include <array>
 #include <unordered_set>
 
-class TomlConfigParser;
+class ConfigMapper;
 
 using keybindings = std::unordered_set<int>;
 
@@ -28,7 +28,7 @@ class Keys final {
 public:
         class GlobalKeys final {
         private:
-                friend class TomlConfigParser;
+                friend class ConfigMapper;
                 
                 inline static keybindings quit_keys;
         
@@ -38,7 +38,7 @@ public:
 
         class PowerAppletKeys final {
         private:
-                friend class TomlConfigParser;
+                friend class ConfigMapper;
                 
                 inline static keybindings quit_keys;
                 inline static std::array<keybindings, 4> primary_button_keys;
