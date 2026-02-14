@@ -15,7 +15,7 @@
    You should have received a copy of the GNU General Public License
    along with this program.  If not, see <https://www.gnu.org/licenses/>. */
 
-#include "Config/TomlConfigParser.h"
+#include "Config/ConfigMapper.h"
 #include "Core/Log.h"
 #include "UI/PowerMainWindow.h"
 
@@ -25,15 +25,15 @@
 int main(int argc, char* argv[]) {
         // Init
         QApplication app(argc, argv);
-        TomlConfigParser::parseConfig(createConfig());
-        TomlConfigParser::parseKeys(createKeys());
+        ConfigMapper::parseConfig(createConfig());
+        ConfigMapper::parseKeys(createKeys());
 
         PowerMainWindow applet; // QMainWindow -> MainWindow -> PowerMainWindow
 
         // Debug
         QINFO() << "Applet resolution:" << applet.size();
         QDEBUG() << "Qt Version:" << qVersion();
-        qInfo() << " "; 
+        qInfo() << " ";
 
         // Run
         applet.show();
