@@ -17,6 +17,7 @@
 
 #include "ConfigMapper.h"
 #include "Config.h"
+#include "ConfigLocator.h"
 #include "Core/Log.h"
 #include "CppUtils/include/Enum.h"
 #include "CppUtils/include/String.h"
@@ -131,49 +132,6 @@ static void interpretTextAsKeybindings(const toml::node_view<const toml::node>& 
         transform(keys_raw->begin(), keys_raw->end(), inserter(target, target.begin()),
                   textToHexInterpreter);
 };
-
-// Values needed to find configs
-namespace {
-
-constexpr int            config_dir_paths_cnt  = 2;
-constexpr int            config_file_names_cnt = 2;
-static array<QString, 2> config_dir_paths      = {qEnvironmentVariable("XDG_CONFIG_HOME")
-                                                          + "/FastApplets/",
-                                                  qEnvironmentVariable("XDG_DATA_HOME")
-                                                          + "/FastApplets/"};
-static array<QString, config_file_names_cnt> config_file_names = {"config.toml", "keys.toml"};
-
-} // namespace
-
-// TODO Split
-// Look for configs in $XDG_CONFIG_HOME and $XDG_DATA_HOME
-static array<string, config_file_names_cnt> locateConfigFiles() {
-        array<string, config_file_names_cnt> files{}; // Only enough slots for each file
-
-        QString file_path;
-        // Loop through expected config files
-        for (size_t file_i = 0; file_i != config_file_names_cnt; ++file_i) {
-                bool found = false;
-                // Loop through expected directories
-                for (size_t dir_i = 0; !found && dir_i != config_dir_paths_cnt; ++dir_i) {
-                        file_path = config_dir_paths[dir_i] + config_file_names[file_i];
-                        // If file found, save filepath, stop the loop for that file
-                        if (QFileInfo::exists(file_path)) {
-                                files[file_i] = file_path.toStdString();
-                                found         = true;
-                                break;
-                        }
-                }
-
-                // No valid file_path found for the current file, terminate
-                // TODO Generate default TOML file on failure
-                if (!found) {
-                        QFATAL("%s not found!", config_file_names[file_i].toStdString().c_str());
-                }
-        }
-
-        return files;
-}
 
 // TODO Extract
 static toml::table createTable(string file_path) {
