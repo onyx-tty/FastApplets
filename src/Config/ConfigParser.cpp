@@ -21,55 +21,6 @@
 #include "CppUtils/include/Enum.h"
 #include "Keys.h"
 
-using enum_utils::EnumMap;
-
-const EnumMap<Qt::Alignment> alignment_map = {{"top", Qt::AlignTop | Qt::AlignHCenter},
-                                              {"center", Qt::AlignCenter},
-                                              {"bottom", Qt::AlignBottom | Qt::AlignHCenter},
-                                              {"left", Qt::AlignVCenter | Qt::AlignLeft},
-                                              {"right", Qt::AlignVCenter | Qt::AlignRight}};
-
-const EnumMap<QSizePolicy> size_policy_map = {{"expanding",
-                                               {QSizePolicy::Expanding, QSizePolicy::Expanding}},
-                                              {"fixed", {QSizePolicy::Fixed, QSizePolicy::Fixed}}};
-
-// TODO Extract
-// TODO Split
-// Use textToHexInterpreter on a TOML node to set-up keybindings for target
-void interpretTextAsKeybindings(const toml::node_view<const toml::node>& source,
-                                keybindings&                             target) {
-        if (!source || !source.is_array()) {
-                QString keybindings_str = "";
-                for (const auto& key : target) {
-                        if (!keybindings_str.isEmpty()) { keybindings_str += ","; }
-
-                        keybindings_str += QString::number(key);
-                }
-
-                if (!source) {
-                        QCRITICAL() << "Empty source for keybindings:" << keybindings_str;
-                } else if (!source.is_array()) {
-                        QCRITICAL() << ": Non-array source for keybindings:" << keybindings_str;
-                }
-
-                return; // Drop these keybindings if source doesn't exist
-        }
-        const auto keys_raw = source.as_array();
-
-        // TODO Extract into TOML utilities
-        // Interpret keybinding text as a corresponding hexadecimal value for the Qt::Key enum
-        const auto textToHexInterpreter = [](const auto& node) {
-                QKeySequence    sequence(QString::fromStdString(node.as_string()->get()));
-                QKeyCombination combination(sequence[0]);
-
-                return combination.key();
-        };
-
-        target.reserve(keys_raw->size());
-        transform(keys_raw->begin(), keys_raw->end(), inserter(target, target.begin()),
-                  textToHexInterpreter);
-};
-
 // TODO Extract
 toml::table createTable(string file_path) {
         toml::table file_table;

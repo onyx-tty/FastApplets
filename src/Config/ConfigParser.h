@@ -18,8 +18,6 @@
 #pragma once
 
 #include "ConfigLocator.h"
-#include "CppUtils/include/Enum.h"
-#include "Keys.h"
 
 #include <qnamespace.h>
 #include <toml++/toml.hpp>
@@ -27,12 +25,6 @@
 #include <QKeySequence>
 #include <QSizePolicy>
 #include <QString>
-
-extern const enum_utils::EnumMap<Qt::Alignment> alignment_map;
-extern const enum_utils::EnumMap<QSizePolicy>   size_policy_map;
-
-void interpretTextAsKeybindings(const toml::node_view<const toml::node>& source,
-                                keybindings&                             target);
 
 toml::table createTable(std::string file_path);
 
