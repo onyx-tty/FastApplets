@@ -34,7 +34,7 @@ extern const enum_utils::EnumMap<QSizePolicy>   size_policy_map;
 void interpretTextAsKeybindings(const toml::node_view<const toml::node>& source,
                                 keybindings&                             target);
 
-toml::table createTable(string file_path);
+toml::table createTable(std::string file_path);
 
 extern std::array<std::string, config_file_names_cnt> config_files;
 
