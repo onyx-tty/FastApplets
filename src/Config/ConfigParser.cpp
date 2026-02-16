@@ -77,7 +77,7 @@ toml::table createTable(string file_path) {
         return file_table;
 }
 
-std::array<std::string, config_file_names_cnt> config_files = locateConfigFiles();
+std::array<std::string, config_file_names_cnt> config_files = ConfigLocator::locateConfigFiles();
 
 const toml::table& createConfig() {
         static toml::table config = createTable(config_files[0]);
