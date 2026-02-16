@@ -17,67 +17,46 @@
 
 #include "ConfigMapper.h"
 #include "Config.h"
-#include "ConfigLocator.h"
+#include "ConfigParser.h"
 #include "Core/Log.h"
 #include "CppUtils/include/Enum.h"
 #include "CppUtils/include/String.h"
 #include "Keys.h"
 
-#include <QApplication>
-#include <QFileInfo>
-#include <QKeyCombination>
-#include <QKeySequence>
-#include <QSize>
-#include <QSizePolicy>
-#include <QString>
-#include <QtEnvironmentVariables>
-
 #include <algorithm>
 #include <array>
 #include <cstdlib>
-#include <iterator>
 #include <qnamespace.h>
 #include <string>
 #include <toml++/impl/value.hpp>
 #include <toml++/toml.hpp>
-#include <unordered_map>
+#include <QApplication>
+#include <QSize>
+#include <QSizePolicy>
+#include <QString>
 
-using enum_utils::EnumMap;
 using enum_utils::getEnumFromMap;
 using std::array;
 using std::for_each;
-using std::inserter;
 using std::sort;
 using std::string;
 using std::to_string;
-using std::transform;
-using std::unordered_map;
 using std::vector;
 using string_utils::toLowerCopy;
 
 namespace {
 
-static const EnumMap<Qt::Alignment> alignment_map = {{"top", Qt::AlignTop | Qt::AlignHCenter},
-                                                     {"center", Qt::AlignCenter},
-                                                     {"bottom", Qt::AlignBottom | Qt::AlignHCenter},
-                                                     {"left", Qt::AlignVCenter | Qt::AlignLeft},
-                                                     {"right", Qt::AlignVCenter | Qt::AlignRight}};
-
-static const EnumMap<QSizePolicy> size_policy_map =
-        {{"expanding", {QSizePolicy::Expanding, QSizePolicy::Expanding}},
-         {"fixed", {QSizePolicy::Fixed, QSizePolicy::Fixed}}};
-
 namespace error_message {
 namespace alignment {
 // clang-format off
-string text_alignment_error =
+std::string text_alignment_error =
         "Wrong setting in config.toml for: text_alignment\n"
         "Available values: top, center, bottom, left, right\n"
         "Default: top";
 // clang-format on
 
 // clang-format off
-string icon_alignment_error =
+std::string icon_alignment_error =
         "Wrong setting in config.toml for: icon_alignment"
         "Available values: top, center, bottom, left, right"
         "Default: center";
@@ -95,75 +74,6 @@ string primary_button_error =
 } // namespace error_message
 
 } // namespace
-
-// TODO Extract
-// Interpret keybinding text as a corresponding hexadecimal value for the Qt::Key enum
-static const auto textToHexInterpreter = [](const auto& node) {
-        QKeySequence    sequence(QString::fromStdString(node.as_string()->get()));
-        QKeyCombination combination(sequence[0]);
-
-        return combination.key();
-};
-
-// TODO Extract
-// TODO Split
-// Use textToHexInterpreter on a TOML node to set-up keybindings for target
-static void interpretTextAsKeybindings(const toml::node_view<const toml::node>& source,
-                                       keybindings&                             target) {
-        if (!source || !source.is_array()) {
-                QString keybindings_str = "";
-                for (const auto& key : target) {
-                        if (!keybindings_str.isEmpty()) { keybindings_str += ","; }
-
-                        keybindings_str += QString::number(key);
-                }
-
-                if (!source) {
-                        QCRITICAL() << "Empty source for keybindings:" << keybindings_str;
-                } else if (!source.is_array()) {
-                        QCRITICAL() << ": Non-array source for keybindings:" << keybindings_str;
-                }
-
-                return; // Drop these keybindings if source doesn't exist
-        }
-        const auto keys_raw = source.as_array();
-
-        target.reserve(keys_raw->size());
-        transform(keys_raw->begin(), keys_raw->end(), inserter(target, target.begin()),
-                  textToHexInterpreter);
-};
-
-// TODO Extract
-static toml::table createTable(string file_path) {
-        toml::table file_table;
-
-        QDEBUG() << file_path;
-
-        try {
-                file_table = toml::parse_file(file_path);
-        } catch (const toml::parse_error& error) {
-                QFATAL("Parsing of %s failed: %s", string(file_path).c_str(),
-                       string(error.description()).c_str());
-        }
-
-        return file_table;
-}
-
-namespace {
-
-static auto config_files = locateConfigFiles();
-
-} // namespace
-
-const toml::table& createConfig() {
-        static toml::table config = createTable(config_files[0]);
-        return config;
-}
-
-const toml::table& createKeys() {
-        static toml::table keys = createTable(config_files[1]);
-        return keys;
-}
 
 // TODO Detect mismatched types, log them. Example: "expected int but got string"
 // TODO Apply toLowerCopy where applicable

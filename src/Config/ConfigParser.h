@@ -1,0 +1,51 @@
+/* FastApplets
+
+   Copyright (C) 2026 Łukasz Wrodarczyk
+
+   This program is free software: you can redistribute it and/or modify
+   it under the terms of the GNU General Public License as published by
+   the Free Software Foundation, either version 3 of the License, or
+   (at your option) any later version.
+
+   This program is distributed in the hope that it will be useful,
+   but WITHOUT ANY WARRANTY; without even the implied warranty of
+   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   GNU General Public License for more details.
+
+   You should have received a copy of the GNU General Public License
+   along with this program.  If not, see <https://www.gnu.org/licenses/>. */
+
+#pragma once
+
+#include "ConfigLocator.h"
+#include "CppUtils/include/Enum.h"
+#include "Keys.h"
+
+#include <qnamespace.h>
+#include <toml++/toml.hpp>
+#include <QKeyCombination>
+#include <QKeySequence>
+#include <QSizePolicy>
+#include <QString>
+
+extern const enum_utils::EnumMap<Qt::Alignment> alignment_map;
+extern const enum_utils::EnumMap<QSizePolicy>   size_policy_map;
+
+// TODO Extract
+// Interpret keybinding text as a corresponding hexadecimal value for the Qt::Key enum
+const auto textToHexInterpreter = [](const auto& node) {
+        QKeySequence    sequence(QString::fromStdString(node.as_string()->get()));
+        QKeyCombination combination(sequence[0]);
+
+        return combination.key();
+};
+
+void interpretTextAsKeybindings(const toml::node_view<const toml::node>& source,
+                                keybindings&                             target);
+
+toml::table createTable(string file_path);
+
+extern std::array<std::string, config_file_names_cnt> config_files;
+
+const toml::table& createConfig();
+const toml::table& createKeys();

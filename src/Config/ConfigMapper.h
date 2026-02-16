@@ -19,9 +19,6 @@
 
 #include <toml++/toml.hpp>
 
-const toml::table& createConfig();
-const toml::table& createKeys();
-
 class ConfigMapper final {
 private:
         ConfigMapper() = delete;

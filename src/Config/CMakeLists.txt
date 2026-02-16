@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.16)
 
-project(config VERSION 0.6.3 LANGUAGES CXX)
+project(config VERSION 0.7.0 LANGUAGES CXX)
 
 # Enable support for Qt's resource files
 set(CMAKE_AUTORCC ON)
@@ -13,6 +13,7 @@ add_library(config
         Keys.cpp
         PrimaryButtonData.h
         ConfigLocator.cpp
+        ConfigParser.cpp
         ConfigMapper.cpp
         DefaultTomlConfig.cpp)
 add_library(Config ALIAS config)
