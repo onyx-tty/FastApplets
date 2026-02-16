@@ -20,15 +20,21 @@
 #include "ConfigLocator.h"
 
 #include <qnamespace.h>
+#include <string>
 #include <toml++/toml.hpp>
 #include <QKeyCombination>
 #include <QKeySequence>
 #include <QSizePolicy>
 #include <QString>
 
-toml::table createTable(std::string file_path);
+class ConfigParser final {
+private:
+        static toml::table createTable(std::string file_path);
 
-extern std::array<std::string, config_file_names_cnt> config_files;
+        static std::array<std::string, config_file_names_cnt> config_files;
 
-const toml::table& createConfig();
-const toml::table& createKeys();
+public:
+        ConfigParser() = delete;
+        static const toml::table& createConfig();
+        static const toml::table& createKeys();
+};

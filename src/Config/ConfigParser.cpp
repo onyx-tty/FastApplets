@@ -19,10 +19,9 @@
 #include "ConfigLocator.h"
 #include "Core/Log.h"
 #include "CppUtils/include/Enum.h"
-#include "Keys.h"
 
 // TODO Extract
-toml::table createTable(string file_path) {
+toml::table ConfigParser::createTable(string file_path) {
         toml::table file_table;
 
         QDEBUG() << file_path;
@@ -37,14 +36,15 @@ toml::table createTable(string file_path) {
         return file_table;
 }
 
-std::array<std::string, config_file_names_cnt> config_files = ConfigLocator::locateConfigFiles();
+std::array<std::string, config_file_names_cnt> ConfigParser::config_files =
+        ConfigLocator::locateConfigFiles();
 
-const toml::table& createConfig() {
+const toml::table& ConfigParser::createConfig() {
         static toml::table config = createTable(config_files[0]);
         return config;
 }
 
-const toml::table& createKeys() {
+const toml::table& ConfigParser::createKeys() {
         static toml::table keys = createTable(config_files[1]);
         return keys;
 }
