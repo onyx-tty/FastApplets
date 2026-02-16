@@ -56,6 +56,15 @@ void interpretTextAsKeybindings(const toml::node_view<const toml::node>& source,
         }
         const auto keys_raw = source.as_array();
 
+        // TODO Extract into TOML utilities
+        // Interpret keybinding text as a corresponding hexadecimal value for the Qt::Key enum
+        const auto textToHexInterpreter = [](const auto& node) {
+                QKeySequence    sequence(QString::fromStdString(node.as_string()->get()));
+                QKeyCombination combination(sequence[0]);
+
+                return combination.key();
+        };
+
         target.reserve(keys_raw->size());
         transform(keys_raw->begin(), keys_raw->end(), inserter(target, target.begin()),
                   textToHexInterpreter);
