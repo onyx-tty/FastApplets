@@ -27,7 +27,6 @@
 // Values needed to find configs
 namespace {
 
-constexpr int                 config_dir_paths_cnt = 2;
 static std::array<QString, 2> config_dir_paths     = {qEnvironmentVariable("XDG_CONFIG_HOME")
                                                               + "/FastApplets/",
                                                       qEnvironmentVariable("XDG_DATA_HOME")

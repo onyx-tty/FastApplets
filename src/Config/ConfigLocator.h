@@ -21,5 +21,6 @@
 #include <string>
 
 constexpr int config_file_names_cnt = 2;
+constexpr int config_dir_paths_cnt  = 2;
 
 std::array<std::string, config_file_names_cnt> locateConfigFiles();
