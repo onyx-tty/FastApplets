@@ -125,7 +125,7 @@ void interpretTextAsKeybindings(const toml::node_view<const toml::node>& source,
 
 // TODO Detect mismatched types, log them. Example: "expected int but got string"
 // TODO Apply toLowerCopy where applicable
-void ConfigMapper::parseWindowProperties(const toml::table& config_table) {
+void ConfigMapper::mapWindowProperties(const toml::table& config_table) {
         // TODO Defaults
         const auto window = config_table["global"]["window"].as_table();
         if (!window) { QFATAL("global.window needs to be a table!"); }
@@ -180,7 +180,7 @@ void ConfigMapper::parseWindowProperties(const toml::table& config_table) {
         Config::WindowProperties::title = QString::fromStdString(title->get());
 }
 
-void ConfigMapper::parseButtonProperties(const toml::table& config_table) {
+void ConfigMapper::mapButtonProperties(const toml::table& config_table) {
         const auto button = config_table["global"]["primary_button"].as_table();
         if (!button) { QFATAL("in config.toml, global.primary_button is not a table!"); }
 
@@ -257,7 +257,7 @@ void ConfigMapper::parseButtonProperties(const toml::table& config_table) {
         }
 }
 
-void ConfigMapper::parseLayoutProperties(const toml::table& config_table) {
+void ConfigMapper::mapLayoutProperties(const toml::table& config_table) {
         const auto layout = config_table["power_applet"]["layout"].as_table();
         // TODO Defaults
         if (!layout) { QFATAL("in config.toml, power_applet.layout is not a table!"); }
@@ -361,7 +361,7 @@ void ConfigMapper::parseLayoutProperties(const toml::table& config_table) {
 
 // TODO Split between a parser for Config.toml and Keys.toml
 // TODO Handle as an exception
-void ConfigMapper::parseConfig(const toml::table& config_table) {
+void ConfigMapper::mapToConfig(const toml::table& config_table) {
         // Confirm that a QApplication instance exists
         if (!QApplication::instanceExists()) {
                 QFATAL("QApplication has not been instantiated yet!");
@@ -377,16 +377,16 @@ void ConfigMapper::parseConfig(const toml::table& config_table) {
         if (!power_applet) { QFATAL("in config.toml, power_applet is not a table!"); }
 
         /* Window properties */
-        parseWindowProperties(config_table);
+        mapWindowProperties(config_table);
 
         /* Button properties */
-        parseButtonProperties(config_table);
+        mapButtonProperties(config_table);
 
         /* Window layout properties */
-        parseLayoutProperties(config_table);
+        mapLayoutProperties(config_table);
 }
 
-void ConfigMapper::parseKeys(const toml::table& keys_table) {
+void ConfigMapper::mapToKeys(const toml::table& keys_table) {
         // Confirm that a QApplication instance exists
         if (!QApplication::instanceExists()) {
                 QFATAL("QApplication has not been instantiated yet!");

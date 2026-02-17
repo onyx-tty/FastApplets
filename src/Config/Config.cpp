@@ -49,3 +49,4 @@ const QSize& Config::PrimaryButtonProperties::getIconSize() {
 const QSizePolicy& Config::PrimaryButtonProperties::getPolicy() {
         return Config::PrimaryButtonProperties::policy;
 }
+

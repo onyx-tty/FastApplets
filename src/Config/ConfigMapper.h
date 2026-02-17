@@ -23,11 +23,11 @@ class ConfigMapper final {
 private:
         ConfigMapper() = delete;
 
-        static void parseWindowProperties(const toml::table& config_table);
-        static void parseButtonProperties(const toml::table& config_table);
-        static void parseLayoutProperties(const toml::table& config_table);
+        static void mapWindowProperties(const toml::table& config_table);
+        static void mapButtonProperties(const toml::table& config_table);
+        static void mapLayoutProperties(const toml::table& config_table);
 
 public:
-        static void parseConfig(const toml::table& config_table);
-        static void parseKeys(const toml::table& keys_table);
+        static void mapToConfig(const toml::table& config_table);
+        static void mapToKeys(const toml::table& keys_table);
 };
