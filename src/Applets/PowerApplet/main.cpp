@@ -16,6 +16,7 @@
    along with this program.  If not, see <https://www.gnu.org/licenses/>. */
 
 #include "Config/ConfigMapper.h"
+#include "Config/ConfigParser.h"
 #include "Core/Log.h"
 #include "UI/PowerMainWindow.h"
 
