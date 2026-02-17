@@ -26,8 +26,8 @@
 int main(int argc, char* argv[]) {
         // Init
         QApplication app(argc, argv);
-        ConfigMapper::parseConfig(createConfig());
-        ConfigMapper::parseKeys(createKeys());
+        ConfigMapper::parseConfig(ConfigParser::createConfig());
+        ConfigMapper::parseKeys(ConfigParser::createKeys());
 
         PowerMainWindow applet; // QMainWindow -> MainWindow -> PowerMainWindow
 
