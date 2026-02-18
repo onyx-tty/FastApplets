@@ -37,12 +37,6 @@
 
 using enum_utils::EnumMap;
 using enum_utils::getEnumFromMap;
-using std::array;
-using std::for_each;
-using std::sort;
-using std::string;
-using std::to_string;
-using std::vector;
 using string_utils::toLowerCopy;
 
 namespace {
@@ -138,8 +132,8 @@ void ConfigMapper::mapWindowProperties(const toml::table& config_table, Config& 
                 // TODO Defaults
                 QFATAL("global.window.size needs to be an array!");
         } else {
-                constexpr size_t       arr_length = 2;
-                array<int, arr_length> for_qsize{};
+                constexpr size_t            arr_length = 2;
+                std::array<int, arr_length> for_qsize{};
 
                 // TODO Default missing values, pass the rest
                 if (arr_length > size->size()) {
@@ -218,8 +212,8 @@ void ConfigMapper::mapButtonProperties(const toml::table& config_table, Config& 
                 // TODO Defaults
                 QFATAL("in config.toml, global.primary_button.icon_size is not an array!");
         } else {
-                constexpr size_t       arr_length = 2;
-                array<int, arr_length> for_qsize{};
+                constexpr size_t            arr_length = 2;
+                std::array<int, arr_length> for_qsize{};
 
                 if (arr_length > icon_size->size()) {
                         // TODO If icon_size[0] exists and is int, apply to both. If not, try to convert. If fails, default.
@@ -269,11 +263,11 @@ void ConfigMapper::mapLayoutProperties(const toml::table& config_table, Config& 
                 QFATAL("in config.toml, power_applet.layout.primary_buttons is not a table!");
         }
 
-        vector<PrimaryButtonData> power_buttons{};
+        std::vector<PrimaryButtonData> power_buttons{};
 
         // TODO Extract the parser here
         // TODO Split and simplify
-        for_each(
+        std::for_each(
                 primary_buttons->begin(), primary_buttons->end(),
                 [&primary_buttons, &power_buttons](const toml::node& node) {
                         // Find position of node in primary_buttons
@@ -404,7 +398,7 @@ void ConfigMapper::mapToKeys(const toml::table& keys_table, Keys& keys) {
 
         // Primary button control keys - PowerApplet
         for (size_t i = 0; i != keys.power_applet_keys.getPrimaryButtonKeys().size(); ++i) {
-                string button_name = "primary_button" + to_string(i + 1);
+                string button_name = "primary_button" + std::to_string(i + 1);
                 interpretTextAsKeybindings(keys_table["power_applet"][button_name],
                                            keys.power_applet_keys.primary_button_keys[i]);
         }

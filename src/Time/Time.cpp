@@ -15,33 +15,30 @@
    You should have received a copy of the GNU General Public License
    along with this program.  If not, see <https://www.gnu.org/licenses/>. */
 
-#include "Core/Log.h"
 #include "Time.h"
-#include "TimeConstants.h"
+#include "Core/Log.h"
 
 #include <QApplication>
 
 #include <cstdlib>
 
-using namespace std::chrono;
-using std::optional, std::nullopt;
-
 time_t findCurrentUnixTime() {
-        auto       now              = system_clock::now();
-        const auto current_raw_time = system_clock::to_time_t(now);
-        const auto current_time     = *gmtime(&current_raw_time);
-        const time_t current_unix_timestamp = duration_cast<seconds>(now.time_since_epoch()).count();
+        auto         now              = std::chrono::system_clock::now();
+        const auto   current_raw_time = std::chrono::system_clock::to_time_t(now);
+        const auto   current_time     = *gmtime(&current_raw_time);
+        const time_t current_unix_timestamp =
+                duration_cast<std::chrono::seconds>(now.time_since_epoch()).count();
 
         return current_unix_timestamp;
 }
 
 time_t findMidnight() {
         // TODO Optimize
-        const auto   current_clock_time = system_clock::now();
-        const auto   current_raw_time   = system_clock::to_time_t(current_clock_time);
+        const auto   current_clock_time = std::chrono::system_clock::now();
+        const auto   current_raw_time   = std::chrono::system_clock::to_time_t(current_clock_time);
         const auto   current_localtime  = *gmtime(&current_raw_time);
         const time_t current_unix_timestamp =
-                duration_cast<seconds>(current_clock_time.time_since_epoch()).count();
+                duration_cast<std::chrono::seconds>(current_clock_time.time_since_epoch()).count();
         const time_t midnight_unix_timestamp = current_unix_timestamp
                                              - (current_localtime.tm_hour * 60 * 60)
                                              - (current_localtime.tm_min * 60)

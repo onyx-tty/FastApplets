@@ -21,8 +21,6 @@
 
 #include <toml++/toml.hpp>
 
-using std::vector;
-
 /* Window Properties*/
 Config::WindowProperties::WindowProperties(QSize size, QString title) : size(size), title(title) {}
 
@@ -39,7 +37,7 @@ Config::WindowLayoutProperties::WindowLayoutProperties(
         std::vector<PrimaryButtonData> primary_power_buttons) :
         primary_power_buttons(primary_power_buttons) {}
 
-const vector<PrimaryButtonData>& Config::WindowLayoutProperties::getPrimaryPowerButtons() const {
+const std::vector<PrimaryButtonData>& Config::WindowLayoutProperties::getPrimaryPowerButtons() const {
         return primary_power_buttons;
 }
 
