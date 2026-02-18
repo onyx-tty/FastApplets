@@ -16,8 +16,8 @@
    along with this program.  If not, see <https://www.gnu.org/licenses/>. */
 
 #include "Button.h"
-#include "Core/Log.h"
 #include "Config/Config.h"
+#include "Core/Log.h"
 
 #include <QGridLayout>
 #include <QStyleOptionButton>
