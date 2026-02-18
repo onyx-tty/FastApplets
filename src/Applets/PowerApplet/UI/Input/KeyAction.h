@@ -20,7 +20,6 @@
 #include "Applets/PowerApplet/UI/Widgets/PowerButton.h"
 
 #include <qnamespace.h>
-
 #include <vector>
 
 class PowerCentralWidget;
