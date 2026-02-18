@@ -23,3 +23,7 @@ PowerMainWindow::PowerMainWindow(QWidget* parent) :
         resize(Config::getConfig().getWindowProperties().getSize());
         setCentralWidget(central_widget);
 }
+
+const PowerCentralWidget* PowerMainWindow::getCentralWidget() const {
+        return central_widget;
+}

@@ -35,13 +35,13 @@ static array<QIcon, 4> initButtonIcons() {
 }
 
 // TODO Split and simplify this
-static vector<PowerButton*> initButtonList(QBoxLayout* main_layout) {
+vector<PowerButton*> PowerCentralWidget::initButtonList(QBoxLayout* main_layout) {
         const auto& primary_buttons_data =
                 Config::getConfig().getWindowLayoutProperties().getPrimaryPowerButtons();
         const auto           primary_buttons_icons = initButtonIcons();
         vector<PowerButton*> primary_buttons;
         for_each(primary_buttons_data.begin(), primary_buttons_data.end(),
-                 [&primary_buttons, &main_layout, &primary_buttons_icons,
+                 [this, &main_layout, &primary_buttons, &primary_buttons_icons,
                   &primary_buttons_data](const auto& data) {
                          QDEBUG() << "New data:" << data.identifier << ":" << data.text;
 
@@ -99,6 +99,10 @@ PowerCentralWidget::PowerCentralWidget(QWidget* parent) :
         if (!parent) {
                 QFATAL("Parent of PowerCentralWidget is null! Shutting down to avoid memory leaks...");
         }
+}
+
+const QBoxLayout* PowerCentralWidget::getMainLayout() const {
+        return main_layout;
 }
 
 namespace {

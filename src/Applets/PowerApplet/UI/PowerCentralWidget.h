@@ -32,23 +32,23 @@ class PowerCentralWidget final : public QWidget {
         Q_OBJECT
 
 public:
-        QBoxLayout* main_layout;
-
         explicit PowerCentralWidget(QWidget* parent);
-
-        void keyPressEvent(QKeyEvent* event) override;
-        void lastKeyUpdateEvent(QKeyEvent* event);
-        void keyPressEvent(QKeyEvent* event, PowerButton* button);
-        void selectButton(QKeyEvent* event, PowerButton* button,
-                          std::array<int, 4>& acceptable_keys);
-        void clickButton(QKeyEvent* event);
+        const QBoxLayout* getMainLayout() const;
+        void              keyPressEvent(QKeyEvent* event) override;
+        void              lastKeyUpdateEvent(QKeyEvent* event);
+        void              keyPressEvent(QKeyEvent* event, PowerButton* button);
+        void              selectButton(QKeyEvent* event, PowerButton* button,
+                                       std::array<int, 4>& acceptable_keys);
+        void              clickButton(QKeyEvent* event);
 
 private:
+        void                      updateActions(int new_key);
+        // TODO Remove this non-PowerButton variant
+        void                      updateActionsUnsafe(int key, PowerButton* button);
+        void                      resetActions();
+        std::vector<PowerButton*> initButtonList(QBoxLayout* main_layout);
+
+        QBoxLayout*                     main_layout;
         std::array<KeyAction, 2>        key_action_sequence;
         const std::vector<PowerButton*> button_list;
-
-        void updateActions(int new_key);
-        // TODO Remove this non-PowerButton variant
-        void updateActionsUnsafe(int key, PowerButton* button);
-        void resetActions();
 };

@@ -23,10 +23,12 @@
 #include <QWidget>
 
 class PowerMainWindow final : public MainWindow {
+private:
         Q_OBJECT
 
-public:
         PowerCentralWidget* central_widget;
 
+public:
         PowerMainWindow(QWidget* parent = nullptr);
+        const PowerCentralWidget* getCentralWidget() const;
 };
