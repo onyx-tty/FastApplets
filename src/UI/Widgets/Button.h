@@ -50,7 +50,7 @@ protected:
         void debugAlignIcon(const QString& label_text);
 
 public:
-        void            setFocus(bool is_focused);
-        bool            isFocused() const;
-        virtual QString text() const; // Returns text from the label, not the button itself
+        void    setFocus(bool is_focused);
+        bool    isFocused() const;
+        QString text() const; // Returns text from the label, not the button itself
 };
