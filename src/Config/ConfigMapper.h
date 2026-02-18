@@ -17,8 +17,8 @@
 
 #pragma once
 
-#include "Config.h"
-#include "Keys.h"
+class Config;
+class Keys;
 
 #include <toml++/toml.hpp>
 
