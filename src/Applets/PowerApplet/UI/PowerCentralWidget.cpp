@@ -23,11 +23,9 @@
 
 #include <QApplication>
 
-using std::string, std::vector, std::array;
-
-static array<QIcon, 4> createButtonIcons() {
+static std::array<QIcon, 4> createButtonIcons() {
         Q_INIT_RESOURCE(Icons);
-        array<QIcon, 4> button_icons{QIcon(":/Icons/Power/shutdown.svg"),
+        std::array<QIcon, 4> button_icons{QIcon(":/Icons/Power/shutdown.svg"),
                                      QIcon(":/Icons/Power/reboot.svg"),
                                      QIcon(":/Icons/Power/suspend.svg"),
                                      QIcon(":/Icons/Power/hibernate.svg")};
@@ -35,11 +33,11 @@ static array<QIcon, 4> createButtonIcons() {
 }
 
 // TODO Split and simplify this
-vector<PowerButton*> PowerCentralWidget::createButtonList(QBoxLayout* main_layout) {
+std::vector<PowerButton*> PowerCentralWidget::createButtonList(QBoxLayout* main_layout) {
         const auto& primary_buttons_data =
                 Config::getConfig().getWindowLayoutProperties().getPrimaryPowerButtons();
         const auto           primary_buttons_icons = createButtonIcons();
-        vector<PowerButton*> primary_buttons;
+        std::vector<PowerButton*> primary_buttons;
         for_each(primary_buttons_data.begin(), primary_buttons_data.end(),
                  [this, &main_layout, &primary_buttons, &primary_buttons_icons,
                   &primary_buttons_data](const auto& data) {

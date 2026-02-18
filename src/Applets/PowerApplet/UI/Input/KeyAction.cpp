@@ -24,19 +24,18 @@
 
 #include <unordered_map>
 
-using std::unordered_map, std::vector;
-
-using ButtonList = vector<PowerButton*>;
+using ButtonList = std::vector<PowerButton*>;
 
 namespace {
-static const unordered_map<int, int> power_key_map{{Qt::Key_1, 1},
-                                                   {Qt::Key_2, 2},
-                                                   {Qt::Key_3, 3},
-                                                   {Qt::Key_4, 4}};
+static const std::unordered_map<int, int> power_key_map{{Qt::Key_1, 1},
+                                                        {Qt::Key_2, 2},
+                                                        {Qt::Key_3, 3},
+                                                        {Qt::Key_4, 4}};
 }
 
 PowerButton* findPowerButton(int key_to_find, const ButtonList& buttons) {
-        const auto& button_properties = Config::getConfig().getWindowLayoutProperties().getPrimaryPowerButtons();
+        const auto& button_properties =
+                Config::getConfig().getWindowLayoutProperties().getPrimaryPowerButtons();
 
         if (button_properties.size() != buttons.size()) {
                 QFATAL("button_properties (%s) larger than buttons (%s)!",
