@@ -27,10 +27,10 @@
 // Values needed to find configs
 namespace {
 
-static std::array<QString, 2> config_dir_paths     = {qEnvironmentVariable("XDG_CONFIG_HOME")
-                                                              + "/FastApplets/",
-                                                      qEnvironmentVariable("XDG_DATA_HOME")
-                                                              + "/FastApplets/"};
+static std::array<QString, 2> config_dir_paths = {qEnvironmentVariable("XDG_CONFIG_HOME")
+                                                          + "/FastApplets/",
+                                                  qEnvironmentVariable("XDG_DATA_HOME")
+                                                          + "/FastApplets/"};
 static std::array<QString, config_file_names_cnt> config_file_names = {"config.toml", "keys.toml"};
 
 } // namespace

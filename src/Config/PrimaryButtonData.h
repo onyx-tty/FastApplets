@@ -22,5 +22,5 @@
 struct PrimaryButtonData final {
         QString identifier;
         QString text;
-        long order;
+        long    order;
 };

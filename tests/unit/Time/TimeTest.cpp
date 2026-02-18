@@ -18,8 +18,8 @@
 #include "Time/Time.h"
 #include "Time/TimeConstants.h"
 
-#include <gtest/gtest.h>
 #include <cmath>
+#include <gtest/gtest.h>
 
 // Check if each was taken before and after midnight respectively
 // If yes, the unit test may have been ran during midnight
@@ -52,9 +52,9 @@ TEST(FindMidnightTest, IsNotNegative) {
 
 TEST(FindMidnightTest, TwoCallsReturnSameValueWithinSameDay) {
         const time_t start = findCurrentUnixTime();
-        time_t t1 = findMidnight();
-        time_t t2 = findMidnight();
-        const time_t end = findCurrentUnixTime();
+        time_t       t1    = findMidnight();
+        time_t       t2    = findMidnight();
+        const time_t end   = findCurrentUnixTime();
 
         if (dayDiffers(start, end)) {
                 t1 = findMidnight();
@@ -69,16 +69,16 @@ TEST(FindMidnightTest, TwoCallsReturnSameValueWithinSameDay) {
 // requires params
 
 TEST(FindCloserHourTest, Hour1IsCloser) {
-        const time_t hour1 = time(nullptr);
-        const time_t hour2 = 555;
+        const time_t hour1  = time(nullptr);
+        const time_t hour2  = 555;
         const time_t closer = findCloserHour(hour1, hour2);
 
         EXPECT_EQ(closer, hour1);
 }
 
 TEST(FindCloserHourTest, Hour2IsCloser) {
-        const time_t hour1 = 555;
-        const time_t hour2 = time(nullptr);
+        const time_t hour1  = 555;
+        const time_t hour2  = time(nullptr);
         const time_t closer = findCloserHour(hour1, hour2);
 
         EXPECT_EQ(closer, hour2);
