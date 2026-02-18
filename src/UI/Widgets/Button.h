@@ -29,17 +29,7 @@
 class Button : public QPushButton {
         Q_OBJECT
 
-protected:
-        // TODO Potentially not needed
-        bool    is_focused;
-        // TODO Rename debug_ext
-        QLabel* debug_text;
-
-        explicit Button(QBoxLayout*    layout,
-                        const QIcon&   icon, // TODO default icon
-                        const QString& text);
-        virtual ~Button() = 0;
-
+private:
         // Modified re-implementation of paintEvent that allows for manual setting of focus
         void paintEvent(QPaintEvent*) override;
         // Modified re-implementation that turns off the distracting mouse hover effect
@@ -48,6 +38,17 @@ protected:
         // Workaround which aligns buttons to a desired position,
         // and keeps the text realigned and separate via a proxy label
         void debugAlignIcon(const QString& label_text);
+
+        // TODO Potentially not needed
+        bool    is_focused;
+        // TODO Rename debug_text
+        QLabel* debug_text;
+
+protected:
+        explicit Button(QBoxLayout*    layout,
+                        const QIcon&   icon, // TODO default icon
+                        const QString& text);
+        virtual ~Button() = 0;
 
 public:
         void    setFocus(bool is_focused);

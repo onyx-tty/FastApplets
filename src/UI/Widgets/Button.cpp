@@ -27,24 +27,6 @@ namespace {
 QString stylesheet = "text-align: center top;";
 } // namespace
 
-/* Initializes a button of choice with uniform design */
-// Inheriting constructor defaults from from QPushButton,
-// but customizing the icon, icon size and the alignment of that button
-// TODO Default icon
-Button::Button(QBoxLayout* layout, const QIcon& icon, const QString& text) :
-        QPushButton(layout ? layout->widget() : nullptr), is_focused(false) {
-        if (!layout) { QFATAL("Button constructor received a null layout! Bad code!"); }
-
-        setIcon(icon);
-        setIconSize(Config::getConfig().getPrimaryButtonProperties().getIconSize());
-        setSizePolicy(Config::getConfig().getPrimaryButtonProperties().getPolicy());
-        setAutoDefault(false);
-        debugAlignIcon(text);
-        layout->addWidget(this);
-}
-
-Button::~Button() = default;
-
 void Button::paintEvent(QPaintEvent*) {
         QStyleOptionButton option;
         initStyleOption(&option);
@@ -83,6 +65,24 @@ void Button::debugAlignIcon(const QString& label_text) {
         layout()->addWidget(debug_text);
         QDEBUG() << "debug_text successfully initialized with text:" << label_text;
 }
+
+/* Initializes a button of choice with uniform design */
+// Inheriting constructor defaults from from QPushButton,
+// but customizing the icon, icon size and the alignment of that button
+// TODO Default icon
+Button::Button(QBoxLayout* layout, const QIcon& icon, const QString& text) :
+        QPushButton(layout ? layout->widget() : nullptr), is_focused(false) {
+        if (!layout) { QFATAL("Button constructor received a null layout! Bad code!"); }
+
+        setIcon(icon);
+        setIconSize(Config::getConfig().getPrimaryButtonProperties().getIconSize());
+        setSizePolicy(Config::getConfig().getPrimaryButtonProperties().getPolicy());
+        setAutoDefault(false);
+        debugAlignIcon(text);
+        layout->addWidget(this);
+}
+
+Button::~Button() = default;
 
 void Button::setFocus(bool is_focused) {
         this->is_focused = is_focused;
