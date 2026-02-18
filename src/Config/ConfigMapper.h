@@ -17,17 +17,20 @@
 
 #pragma once
 
+#include "Config.h"
+#include "Keys.h"
+
 #include <toml++/toml.hpp>
 
 class ConfigMapper final {
 private:
         ConfigMapper() = delete;
 
-        static void mapWindowProperties(const toml::table& config_table);
-        static void mapButtonProperties(const toml::table& config_table);
-        static void mapLayoutProperties(const toml::table& config_table);
+        static void mapWindowProperties(const toml::table& config_table, Config& config);
+        static void mapButtonProperties(const toml::table& config_table, Config& config);
+        static void mapLayoutProperties(const toml::table& config_table, Config& config);
 
 public:
-        static void mapToConfig(const toml::table& config_table);
-        static void mapToKeys(const toml::table& keys_table);
+        static void mapToConfig(const toml::table& config_table, Config& config);
+        static void mapToKeys(const toml::table& keys_table, Keys& keys);
 };

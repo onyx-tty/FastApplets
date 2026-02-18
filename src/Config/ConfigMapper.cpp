@@ -123,7 +123,7 @@ void interpretTextAsKeybindings(const toml::node_view<const toml::node>& source,
 
 // TODO Detect mismatched types, log them. Example: "expected int but got string"
 // TODO Apply toLowerCopy where applicable
-void ConfigMapper::mapWindowProperties(const toml::table& config_table) {
+void ConfigMapper::mapWindowProperties(const toml::table& config_table, Config& config) {
         // TODO Defaults
         const auto window = config_table["global"]["window"].as_table();
         if (!window) { QFATAL("global.window needs to be a table!"); }
@@ -166,7 +166,7 @@ void ConfigMapper::mapWindowProperties(const toml::table& config_table) {
                         }
                 }
 
-                Config::getConfig().window_properties.size = QSize(for_qsize[0], for_qsize[1]);
+                config.window_properties.size = QSize(for_qsize[0], for_qsize[1]);
         }
 
         // Window title
@@ -175,10 +175,10 @@ void ConfigMapper::mapWindowProperties(const toml::table& config_table) {
         const auto title = (*window)["title"].as_string();
         if (!title) { QFATAL("in config.toml, global.window.title is not a string!"); }
 
-        Config::getConfig().window_properties.title = QString::fromStdString(title->get());
+        config.window_properties.title = QString::fromStdString(title->get());
 }
 
-void ConfigMapper::mapButtonProperties(const toml::table& config_table) {
+void ConfigMapper::mapButtonProperties(const toml::table& config_table, Config& config) {
         const auto button = config_table["global"]["primary_button"].as_table();
         if (!button) { QFATAL("in config.toml, global.primary_button is not a table!"); }
 
@@ -190,7 +190,7 @@ void ConfigMapper::mapButtonProperties(const toml::table& config_table) {
         } else {
                 Qt::Alignment default_alignment = alignment_map.at("top");
 
-                Config::getConfig().primary_button_properties.text_alignment =
+                config.primary_button_properties.text_alignment =
                         getEnumFromMap(alignment_map, text_alignment->get(), default_alignment,
                                        error_message::alignment::text_alignment_error);
         }
@@ -204,7 +204,7 @@ void ConfigMapper::mapButtonProperties(const toml::table& config_table) {
         } else {
                 Qt::Alignment default_alignment = alignment_map.at("top");
 
-                Config::getConfig().primary_button_properties.icon_alignment =
+                config.primary_button_properties.icon_alignment =
                         getEnumFromMap(alignment_map, icon_alignment->get(), default_alignment,
                                        error_message::alignment::icon_alignment_error);
         }
@@ -238,8 +238,7 @@ void ConfigMapper::mapButtonProperties(const toml::table& config_table) {
                         for_qsize[i] = index->get();
                 }
 
-                Config::getConfig().primary_button_properties.icon_size = QSize(for_qsize[0],
-                                                                                for_qsize[1]);
+                config.primary_button_properties.icon_size = QSize(for_qsize[0], for_qsize[1]);
         }
 
         // Policy
@@ -250,13 +249,13 @@ void ConfigMapper::mapButtonProperties(const toml::table& config_table) {
         } else {
                 const QSizePolicy default_policy = QSizePolicy(QSizePolicy::Expanding,
                                                                QSizePolicy::Expanding);
-                Config::getConfig().primary_button_properties.policy =
+                config.primary_button_properties.policy =
                         getEnumFromMap(size_policy_map, toLowerCopy(policy->get()), default_policy,
                                        error_message::size_policy::primary_button_error);
         }
 }
 
-void ConfigMapper::mapLayoutProperties(const toml::table& config_table) {
+void ConfigMapper::mapLayoutProperties(const toml::table& config_table, Config& config) {
         const auto layout = config_table["power_applet"]["layout"].as_table();
         // TODO Defaults
         if (!layout) { QFATAL("in config.toml, power_applet.layout is not a table!"); }
@@ -355,13 +354,12 @@ void ConfigMapper::mapLayoutProperties(const toml::table& config_table) {
                      return a.order < b.order;
              });
 
-        Config::getConfig().window_layout_properties.primary_power_buttons = std::move(
-                power_buttons);
+        config.window_layout_properties.primary_power_buttons = std::move(power_buttons);
 }
 
 // TODO Split between a parser for Config.toml and Keys.toml
 // TODO Handle as an exception
-void ConfigMapper::mapToConfig(const toml::table& config_table) {
+void ConfigMapper::mapToConfig(const toml::table& config_table, Config& config) {
         // Confirm that a QApplication instance exists
         if (!QApplication::instanceExists()) {
                 QFATAL("QApplication has not been instantiated yet!");
@@ -377,39 +375,35 @@ void ConfigMapper::mapToConfig(const toml::table& config_table) {
         if (!power_applet) { QFATAL("in config.toml, power_applet is not a table!"); }
 
         /* Window properties */
-        mapWindowProperties(config_table);
+        mapWindowProperties(config_table, config);
 
         /* Button properties */
-        mapButtonProperties(config_table);
+        mapButtonProperties(config_table, config);
 
         /* Window layout properties */
-        mapLayoutProperties(config_table);
+        mapLayoutProperties(config_table, config);
 }
 
-void ConfigMapper::mapToKeys(const toml::table& keys_table) {
+void ConfigMapper::mapToKeys(const toml::table& keys_table, Keys& keys) {
         // Confirm that a QApplication instance exists
         if (!QApplication::instanceExists()) {
                 QFATAL("QApplication has not been instantiated yet!");
         }
 
         // interpretTextAsKeybindings already checks for validity
-        interpretTextAsKeybindings(keys_table["global"]["quit"],
-                                   Keys::getKeys().global_keys.quit_keys);
+        interpretTextAsKeybindings(keys_table["global"]["quit"], keys.global_keys.quit_keys);
         interpretTextAsKeybindings(keys_table["power_applet"]["quit"],
-                                   Keys::getKeys().power_applet_keys.quit_keys);
+                                   keys.power_applet_keys.quit_keys);
 
-        if (Keys::getKeys()
-                    .power_applet_keys.quit_keys
+        if (keys.power_applet_keys.getQuitKeys()
                     .empty()) { // TODO std::variant<Keybindings, Keybindings&>
-                Keys::getKeys().power_applet_keys.quit_keys =
-                        Keys::getKeys().getGlobalKeys().getQuitKeys();
+                keys.power_applet_keys.quit_keys = keys.global_keys.quit_keys;
         }
 
         // Primary button control keys - PowerApplet
-        for (size_t i = 0; i != Keys::getKeys().getPowerAppletKeys().getPrimaryButtonKeys().size();
-             ++i) {
+        for (size_t i = 0; i != keys.power_applet_keys.getPrimaryButtonKeys().size(); ++i) {
                 string button_name = "primary_button" + to_string(i + 1);
                 interpretTextAsKeybindings(keys_table["power_applet"][button_name],
-                                           Keys::getKeys().power_applet_keys.primary_button_keys[i]);
+                                           keys.power_applet_keys.primary_button_keys[i]);
         }
 }
