@@ -16,6 +16,8 @@
    along with this program.  If not, see <https://www.gnu.org/licenses/>. */
 
 #include "Keys.h"
+#include "Config/ConfigMapper.h"
+#include "Config/ConfigParser.h"
 
 using std::array;
 
@@ -42,6 +44,13 @@ Keys::Keys(Keys::GlobalKeys global_keys, Keys::PowerAppletKeys power_applet_keys
 
 Keys& Keys::getKeys() {
         static Keys keys{};
+        static bool parsed = false;
+
+        if (!parsed) {
+                ConfigMapper::mapToKeys(ConfigParser::createKeys(), keys);
+                parsed = true;
+        }
+
         return keys;
 }
 

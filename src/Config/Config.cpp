@@ -16,6 +16,8 @@
    along with this program.  If not, see <https://www.gnu.org/licenses/>. */
 
 #include "Config.h"
+#include "ConfigMapper.h"
+#include "ConfigParser.h"
 
 #include <toml++/toml.hpp>
 
@@ -74,6 +76,13 @@ Config::Config(Config::WindowProperties        window_properties,
 
 Config& Config::getConfig() {
         static Config config{};
+        static bool   parsed = false;
+
+        if (!parsed) {
+                ConfigMapper::mapToConfig(ConfigParser::createConfig(), config);
+                parsed = true;
+        }
+
         return config;
 }
 
@@ -88,4 +97,3 @@ const Config::WindowLayoutProperties& Config::getWindowLayoutProperties() const 
 const Config::PrimaryButtonProperties& Config::getPrimaryButtonProperties() const {
         return primary_button_properties;
 }
-
