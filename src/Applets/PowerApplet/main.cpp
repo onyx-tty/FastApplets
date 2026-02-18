@@ -15,8 +15,6 @@
    You should have received a copy of the GNU General Public License
    along with this program.  If not, see <https://www.gnu.org/licenses/>. */
 
-#include "Config/ConfigMapper.h"
-#include "Config/ConfigParser.h"
 #include "Core/Log.h"
 #include "UI/PowerMainWindow.h"
 
@@ -26,8 +24,6 @@
 int main(int argc, char* argv[]) {
         // Init
         QApplication app(argc, argv);
-        ConfigMapper::mapToConfig(ConfigParser::createConfig());
-        ConfigMapper::mapToKeys(ConfigParser::createKeys());
 
         PowerMainWindow applet; // QMainWindow -> MainWindow -> PowerMainWindow
 

@@ -24,8 +24,6 @@
 #include <QApplication>
 
 using std::string, std::vector, std::array;
-using GlobalKeys = Keys::GlobalKeys;
-using PowerKeys  = Keys::PowerAppletKeys;
 
 static array<QIcon, 4> initButtonIcons() {
         Q_INIT_RESOURCE(Icons);
@@ -38,8 +36,9 @@ static array<QIcon, 4> initButtonIcons() {
 
 // TODO Split and simplify this
 static vector<PowerButton*> initButtonList(QBoxLayout* main_layout) {
-        const auto& primary_buttons_data = Config::WindowLayoutProperties::getPrimaryPowerButtons();
-        const auto  primary_buttons_icons = initButtonIcons();
+        const auto& primary_buttons_data =
+                Config::getConfig().getWindowLayoutProperties().getPrimaryPowerButtons();
+        const auto           primary_buttons_icons = initButtonIcons();
         vector<PowerButton*> primary_buttons;
         for_each(primary_buttons_data.begin(), primary_buttons_data.end(),
                  [&primary_buttons, &main_layout, &primary_buttons_icons,
@@ -87,7 +86,7 @@ static vector<PowerButton*> initButtonList(QBoxLayout* main_layout) {
 }
 
 static bool isPowerKey(int key) {
-        for (const auto& button_keys : PowerKeys::getPrimaryButtonKeys()) {
+        for (const auto& button_keys : Keys::getKeys().getPowerAppletKeys().getPrimaryButtonKeys()) {
                 if (button_keys.contains(key)) { return true; }
         }
 
@@ -126,7 +125,8 @@ void PowerCentralWidget::keyPressEvent(QKeyEvent* event) {
         }
 
         // if quit pressed
-        if (PowerKeys::getQuitKeys().contains(key_action_sequence[current].getKey())) {
+        if (Keys::getKeys().getPowerAppletKeys().getQuitKeys().contains(
+                    key_action_sequence[current].getKey())) {
                 // button focus active, quit key = unselect
                 if (key_action_sequence[previous].getButton()
                     && key_action_sequence[previous].getButton()->isFocused()) {

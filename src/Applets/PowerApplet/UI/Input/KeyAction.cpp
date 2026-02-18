@@ -36,7 +36,7 @@ static const unordered_map<int, int> power_key_map{{Qt::Key_1, 1},
 }
 
 PowerButton* findPowerButton(int key_to_find, const ButtonList& buttons) {
-        const auto& button_properties = Config::WindowLayoutProperties::getPrimaryPowerButtons();
+        const auto& button_properties = Config::getConfig().getWindowLayoutProperties().getPrimaryPowerButtons();
 
         if (button_properties.size() != buttons.size()) {
                 QFATAL("button_properties (%s) larger than buttons (%s)!",

@@ -32,45 +32,64 @@ public:
         class WindowProperties final {
         private:
                 friend class ConfigMapper;
-                
-                inline static QSize   size;
-                inline static QString title;
+
+                QSize   size;
+                QString title;
 
         public:
-                static const QSize&   getSize();
-                static const QString& getTitle();
+                WindowProperties(QSize size = {}, QString title = {});
+                const QSize&   getSize() const;
+                const QString& getTitle() const;
         };
 
         class WindowLayoutProperties final {
         private:
                 friend class ConfigMapper;
 
-                inline static std::vector<PrimaryButtonData> primary_power_buttons;
-                
+                std::vector<PrimaryButtonData> primary_power_buttons;
+
         public:
-                static const std::vector<PrimaryButtonData>& getPrimaryPowerButtons();
+                WindowLayoutProperties(std::vector<PrimaryButtonData> primary_power_buttons = {});
+                const std::vector<PrimaryButtonData>& getPrimaryPowerButtons() const;
         };
 
         class PrimaryButtonProperties final {
         private:
                 friend class ConfigMapper;
 
-                inline static Qt::Alignment text_alignment;
-                inline static Qt::Alignment icon_alignment;
-                inline static QSize         icon_size;
-                inline static QSizePolicy   policy;
+                Qt::Alignment text_alignment;
+                Qt::Alignment icon_alignment;
+                QSize         icon_size;
+                QSizePolicy   policy;
 
         public:
-                static const Qt::Alignment& getTextAlignment();
-                static const Qt::Alignment& getIconAlignment();
-                static const QSize&         getIconSize();
-                static const QSizePolicy&   getPolicy();
+                PrimaryButtonProperties(Qt::Alignment text_alignment = {},
+                                        Qt::Alignment icon_alignment = {}, QSize icon_size = {},
+                                        QSizePolicy policy = {});
+                const Qt::Alignment& getTextAlignment() const;
+                const Qt::Alignment& getIconAlignment() const;
+                const QSize&         getIconSize() const;
+                const QSizePolicy&   getPolicy() const;
         };
 
+        Config(Config::WindowProperties        window_properties         = {},
+               Config::WindowLayoutProperties  window_layout_properties  = {},
+               Config::PrimaryButtonProperties primary_button_properties = {});
+        // TODO Make this const to avoid overwrites
+        static Config&                 getConfig();
+        const WindowProperties&        getWindowProperties() const;
+        const WindowLayoutProperties&  getWindowLayoutProperties() const;
+        const PrimaryButtonProperties& getPrimaryButtonProperties() const;
+
 private:
-        Config()                         = delete;
         Config(const Config&)            = delete;
         Config(Config&&)                 = delete;
         Config& operator=(const Config&) = delete;
         Config& operator=(Config&&)      = delete;
+
+        friend class ConfigMapper;
+
+        WindowProperties        window_properties;
+        WindowLayoutProperties  window_layout_properties;
+        PrimaryButtonProperties primary_button_properties;
 };
