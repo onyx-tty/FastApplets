@@ -20,9 +20,8 @@
 #include "Core/Log.h"
 
 #include <qnamespace.h>
-#include <QString>
-
 #include <unordered_map>
+#include <QString>
 
 using ButtonList = std::vector<PowerButton*>;
 

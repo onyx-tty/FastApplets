@@ -21,9 +21,9 @@
 
 namespace epoch_duration {
 constexpr time_t minute = 60;
-constexpr time_t hour = minute * 60;
-constexpr time_t day = hour * 24;
-constexpr time_t week = day * 7;
+constexpr time_t hour   = minute * 60;
+constexpr time_t day    = hour * 24;
+constexpr time_t week   = day * 7;
 
 // Months and more are omitted due to variable lengths (e.g. leap years, month lengths)
-}
+} // namespace epoch_duration

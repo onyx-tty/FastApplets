@@ -18,9 +18,8 @@
 #include "Time.h"
 #include "Core/Log.h"
 
-#include <QApplication>
-
 #include <cstdlib>
+#include <QApplication>
 
 time_t findCurrentUnixTime() {
         auto         now              = std::chrono::system_clock::now();

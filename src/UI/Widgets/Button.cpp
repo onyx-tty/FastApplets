@@ -16,8 +16,8 @@
    along with this program.  If not, see <https://www.gnu.org/licenses/>. */
 
 #include "Button.h"
-#include "Core/Log.h"
 #include "Config/Config.h"
+#include "Core/Log.h"
 
 #include <QGridLayout>
 #include <QStyleOptionButton>
@@ -60,7 +60,8 @@ void Button::debugAlignIcon(const QString& label_text) {
         setLayout(new QGridLayout);
         setStyleSheet(stylesheet);
         debug_text = new QLabel(label_text, this); // label that acts as a button text replacement
-        debug_text->setAlignment(Config::getConfig().getPrimaryButtonProperties().getTextAlignment());
+        debug_text->setAlignment(
+                Config::getConfig().getPrimaryButtonProperties().getTextAlignment());
         debug_text->setAttribute(Qt::WA_TransparentForMouseEvents, true);
         layout()->addWidget(debug_text);
         QDEBUG() << "debug_text successfully initialized with text:" << label_text;

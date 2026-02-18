@@ -19,11 +19,10 @@
 
 #include "PrimaryButtonData.h"
 
+#include <vector>
 #include <QSize>
 #include <QSizePolicy>
 #include <QString>
-
-#include <vector>
 
 class ConfigMapper;
 

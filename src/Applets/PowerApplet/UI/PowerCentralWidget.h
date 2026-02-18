@@ -20,13 +20,12 @@
 #include "Input/KeyAction.h"
 #include "Widgets/PowerButton.h"
 
+#include <array>
 #include <qnamespace.h>
+#include <vector>
 #include <QBoxLayout>
 #include <QKeyEvent>
 #include <QWidget>
-
-#include <array>
-#include <vector>
 
 class PowerCentralWidget final : public QWidget {
         Q_OBJECT
