@@ -19,14 +19,35 @@
 
 using std::array;
 
-const keybindings& Keys::GlobalKeys::getQuitKeys(){ 
-        return Keys::GlobalKeys::quit_keys;
+Keys::GlobalKeys::GlobalKeys(keybindings quit_keys) : quit_keys(quit_keys) {}
+
+const keybindings& Keys::GlobalKeys::getQuitKeys() const {
+        return quit_keys;
 }
 
-const keybindings& Keys::PowerAppletKeys::getQuitKeys() {
-        return Keys::PowerAppletKeys::quit_keys;
+Keys::PowerAppletKeys::PowerAppletKeys(keybindings           quit_keys,
+                                       array<keybindings, 4> primary_button_keys) :
+        quit_keys(quit_keys), primary_button_keys(primary_button_keys) {}
+
+const keybindings& Keys::PowerAppletKeys::getQuitKeys() const {
+        return quit_keys;
 }
 
-const array<keybindings, 4>& Keys::PowerAppletKeys::getPrimaryButtonKeys() {
-        return Keys::PowerAppletKeys::primary_button_keys;
+const array<keybindings, 4>& Keys::PowerAppletKeys::getPrimaryButtonKeys() const {
+        return primary_button_keys;
+}
+
+Keys::Keys(Keys::GlobalKeys global_keys, Keys::PowerAppletKeys power_applet_keys) :
+        global_keys(std::move(global_keys)), power_applet_keys(std::move(power_applet_keys)) {}
+
+Keys& Keys::getKeys() {
+        static Keys keys{};
+        return keys;
+}
+
+const Keys::GlobalKeys& Keys::getGlobalKeys() const {
+        return global_keys;
+}
+const Keys::PowerAppletKeys& Keys::getPowerAppletKeys() const {
+        return power_applet_keys;
 }

@@ -17,36 +17,75 @@
 
 #include "Config.h"
 
+#include <toml++/toml.hpp>
+
 using std::vector;
 
 /* Window Properties*/
-const QString& Config::WindowProperties::getTitle() {
-        return Config::WindowProperties::title;
+Config::WindowProperties::WindowProperties(QSize size, QString title) : size(size), title(title) {}
+
+const QString& Config::WindowProperties::getTitle() const {
+        return title;
 }
 
-const QSize& Config::WindowProperties::getSize() {
-        return Config::WindowProperties::size;
+const QSize& Config::WindowProperties::getSize() const {
+        return size;
 }
 
 /* Window Layout Properties */
-const vector<PrimaryButtonData>& Config::WindowLayoutProperties::getPrimaryPowerButtons() {
-        return Config::WindowLayoutProperties::primary_power_buttons;
+Config::WindowLayoutProperties::WindowLayoutProperties(
+        std::vector<PrimaryButtonData> primary_power_buttons) :
+        primary_power_buttons(primary_power_buttons) {}
+
+const vector<PrimaryButtonData>& Config::WindowLayoutProperties::getPrimaryPowerButtons() const {
+        return primary_power_buttons;
 }
 
 /* Primary Button Properties */
-const Qt::Alignment& Config::PrimaryButtonProperties::getTextAlignment() {
-        return Config::PrimaryButtonProperties::text_alignment;
+Config::PrimaryButtonProperties::PrimaryButtonProperties(Qt::Alignment text_alignment,
+                                                         Qt::Alignment icon_alignment,
+                                                         QSize icon_size, QSizePolicy policy) :
+        text_alignment(text_alignment), icon_alignment(icon_alignment), icon_size(icon_size),
+        policy(policy) {}
+
+const Qt::Alignment& Config::PrimaryButtonProperties::getTextAlignment() const {
+        return text_alignment;
 }
 
-const Qt::Alignment& Config::PrimaryButtonProperties::getIconAlignment() {
-        return Config::PrimaryButtonProperties::icon_alignment;
+const Qt::Alignment& Config::PrimaryButtonProperties::getIconAlignment() const {
+        return icon_alignment;
 }
 
-const QSize& Config::PrimaryButtonProperties::getIconSize() {
-        return Config::PrimaryButtonProperties::icon_size;
+const QSize& Config::PrimaryButtonProperties::getIconSize() const {
+        return icon_size;
 }
 
-const QSizePolicy& Config::PrimaryButtonProperties::getPolicy() {
-        return Config::PrimaryButtonProperties::policy;
+const QSizePolicy& Config::PrimaryButtonProperties::getPolicy() const {
+        return policy;
+}
+
+/* Config */
+Config::Config(Config::WindowProperties        window_properties,
+               Config::WindowLayoutProperties  window_layout_properties,
+               Config::PrimaryButtonProperties primary_button_properties) :
+        window_properties(std::move(window_properties)),
+        window_layout_properties(std::move(window_layout_properties)),
+        primary_button_properties(std::move(primary_button_properties)) {}
+
+Config& Config::getConfig() {
+        static Config config{};
+        return config;
+}
+
+const Config::WindowProperties& Config::getWindowProperties() const {
+        return window_properties;
+}
+
+const Config::WindowLayoutProperties& Config::getWindowLayoutProperties() const {
+        return window_layout_properties;
+}
+
+const Config::PrimaryButtonProperties& Config::getPrimaryButtonProperties() const {
+        return primary_button_properties;
 }
 

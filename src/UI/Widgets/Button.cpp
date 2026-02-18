@@ -36,8 +36,8 @@ Button::Button(QBoxLayout* layout, const QIcon& icon, const QString& text) :
         if (!layout) { QFATAL("Button constructor received a null layout! Bad code!"); }
 
         setIcon(icon);
-        setIconSize(Config::PrimaryButtonProperties::getIconSize());
-        setSizePolicy(Config::PrimaryButtonProperties::getPolicy());
+        setIconSize(Config::getConfig().getPrimaryButtonProperties().getIconSize());
+        setSizePolicy(Config::getConfig().getPrimaryButtonProperties().getPolicy());
         setAutoDefault(false);
         debugAlignIcon(text);
         layout->addWidget(this);
@@ -78,7 +78,7 @@ void Button::debugAlignIcon(const QString& label_text) {
         setLayout(new QGridLayout);
         setStyleSheet(stylesheet);
         debug_text = new QLabel(label_text, this); // label that acts as a button text replacement
-        debug_text->setAlignment(Config::PrimaryButtonProperties::getTextAlignment());
+        debug_text->setAlignment(Config::getConfig().getPrimaryButtonProperties().getTextAlignment());
         debug_text->setAttribute(Qt::WA_TransparentForMouseEvents, true);
         layout()->addWidget(debug_text);
         QDEBUG() << "debug_text successfully initialized with text:" << label_text;

@@ -19,8 +19,8 @@
 #include "Config/Config.h"
 
 MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent) {
-        resize(Config::WindowProperties::getSize());
-        setWindowTitle(Config::WindowProperties::getTitle());
+        resize(Config::getConfig().getWindowProperties().getSize());
+        setWindowTitle(Config::getConfig().getWindowProperties().getTitle());
 }
 
 MainWindow::~MainWindow() = default;

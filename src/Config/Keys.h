@@ -29,22 +29,42 @@ public:
         class GlobalKeys final {
         private:
                 friend class ConfigMapper;
-                
-                inline static keybindings quit_keys;
-        
+
+                keybindings quit_keys;
+
         public:
-                static const keybindings& getQuitKeys();
+                GlobalKeys(keybindings quit_keys = {});
+                const keybindings& getQuitKeys() const;
         };
 
         class PowerAppletKeys final {
         private:
                 friend class ConfigMapper;
-                
-                inline static keybindings quit_keys;
-                inline static std::array<keybindings, 4> primary_button_keys;
+
+                keybindings                quit_keys;
+                std::array<keybindings, 4> primary_button_keys;
 
         public:
-                static const keybindings& getQuitKeys();
-                static const std::array<keybindings, 4>& getPrimaryButtonKeys();
+                PowerAppletKeys(keybindings                quit_keys           = {},
+                                std::array<keybindings, 4> primary_button_keys = {});
+                const keybindings&                getQuitKeys() const;
+                const std::array<keybindings, 4>& getPrimaryButtonKeys() const;
         };
+
+        Keys(Keys::GlobalKeys global_keys = {}, Keys::PowerAppletKeys power_applet_keys = {});
+        // TODO Make this const to avoid overwrites
+        static Keys&           getKeys();
+        const GlobalKeys&      getGlobalKeys() const;
+        const PowerAppletKeys& getPowerAppletKeys() const;
+
+private:
+        Keys(const Keys&)            = delete;
+        Keys(Keys&&)                 = delete;
+        Keys& operator=(const Keys&) = delete;
+        Keys& operator=(Keys&&)      = delete;
+
+        friend class ConfigMapper;
+
+        GlobalKeys      global_keys;
+        PowerAppletKeys power_applet_keys;
 };
