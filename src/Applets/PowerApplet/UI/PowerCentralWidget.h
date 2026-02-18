@@ -46,7 +46,7 @@ private:
         // TODO Remove this non-PowerButton variant
         void                      updateActionsUnsafe(int key, PowerButton* button);
         void                      resetActions();
-        std::vector<PowerButton*> initButtonList(QBoxLayout* main_layout);
+        std::vector<PowerButton*> createButtonList(QBoxLayout* main_layout);
 
         QBoxLayout*                     main_layout;
         std::array<KeyAction, 2>        key_action_sequence;

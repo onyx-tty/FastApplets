@@ -25,7 +25,7 @@
 
 using std::string, std::vector, std::array;
 
-static array<QIcon, 4> initButtonIcons() {
+static array<QIcon, 4> createButtonIcons() {
         Q_INIT_RESOURCE(Icons);
         array<QIcon, 4> button_icons{QIcon(":/Icons/Power/shutdown.svg"),
                                      QIcon(":/Icons/Power/reboot.svg"),
@@ -35,10 +35,10 @@ static array<QIcon, 4> initButtonIcons() {
 }
 
 // TODO Split and simplify this
-vector<PowerButton*> PowerCentralWidget::initButtonList(QBoxLayout* main_layout) {
+vector<PowerButton*> PowerCentralWidget::createButtonList(QBoxLayout* main_layout) {
         const auto& primary_buttons_data =
                 Config::getConfig().getWindowLayoutProperties().getPrimaryPowerButtons();
-        const auto           primary_buttons_icons = initButtonIcons();
+        const auto           primary_buttons_icons = createButtonIcons();
         vector<PowerButton*> primary_buttons;
         for_each(primary_buttons_data.begin(), primary_buttons_data.end(),
                  [this, &main_layout, &primary_buttons, &primary_buttons_icons,
@@ -95,7 +95,7 @@ static bool isPowerKey(int key) {
 
 PowerCentralWidget::PowerCentralWidget(QWidget* parent) :
         QWidget(parent), main_layout(new QHBoxLayout(this)),
-        button_list(initButtonList(main_layout)) {
+        button_list(createButtonList(main_layout)) {
         if (!parent) {
                 QFATAL("Parent of PowerCentralWidget is null! Shutting down to avoid memory leaks...");
         }
