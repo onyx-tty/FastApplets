@@ -19,23 +19,21 @@
 #include "Config/ConfigMapper.h"
 #include "Config/ConfigParser.h"
 
-using std::array;
-
 Keys::GlobalKeys::GlobalKeys(keybindings quit_keys) : quit_keys(quit_keys) {}
 
 const keybindings& Keys::GlobalKeys::getQuitKeys() const {
         return quit_keys;
 }
 
-Keys::PowerAppletKeys::PowerAppletKeys(keybindings           quit_keys,
-                                       array<keybindings, 4> primary_button_keys) :
+Keys::PowerAppletKeys::PowerAppletKeys(keybindings                quit_keys,
+                                       std::array<keybindings, 4> primary_button_keys) :
         quit_keys(quit_keys), primary_button_keys(primary_button_keys) {}
 
 const keybindings& Keys::PowerAppletKeys::getQuitKeys() const {
         return quit_keys;
 }
 
-const array<keybindings, 4>& Keys::PowerAppletKeys::getPrimaryButtonKeys() const {
+const std::array<keybindings, 4>& Keys::PowerAppletKeys::getPrimaryButtonKeys() const {
         return primary_button_keys;
 }
 
