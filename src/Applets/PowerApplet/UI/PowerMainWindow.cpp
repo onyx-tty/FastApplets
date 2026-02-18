@@ -20,6 +20,6 @@
 
 PowerMainWindow::PowerMainWindow(QWidget* parent) :
         MainWindow(parent), central_widget(new PowerCentralWidget(this)) {
-        resize(Config::WindowProperties::getSize());
+        resize(Config::getConfig().getWindowProperties().getSize());
         setCentralWidget(central_widget);
 }
