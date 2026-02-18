@@ -15,68 +15,59 @@
    You should have received a copy of the GNU General Public License
    along with this program.  If not, see <https://www.gnu.org/licenses/>. */
 
-#include "TomlConfigParser.h"
+#include "ConfigMapper.h"
 #include "Config.h"
+#include "ConfigParser.h"
 #include "Core/Log.h"
 #include "CppUtils/include/Enum.h"
 #include "CppUtils/include/String.h"
 #include "Keys.h"
 
-#include <QApplication>
-#include <QFileInfo>
-#include <QKeyCombination>
-#include <QKeySequence>
-#include <QSize>
-#include <QSizePolicy>
-#include <QString>
-#include <QtEnvironmentVariables>
-
 #include <algorithm>
 #include <array>
 #include <cstdlib>
-#include <iterator>
 #include <qnamespace.h>
 #include <string>
 #include <toml++/impl/value.hpp>
 #include <toml++/toml.hpp>
-#include <unordered_map>
+#include <QApplication>
+#include <QSize>
+#include <QSizePolicy>
+#include <QString>
 
 using enum_utils::EnumMap;
 using enum_utils::getEnumFromMap;
 using std::array;
 using std::for_each;
-using std::inserter;
 using std::sort;
 using std::string;
 using std::to_string;
-using std::transform;
-using std::unordered_map;
 using std::vector;
 using string_utils::toLowerCopy;
 
 namespace {
 
-static const EnumMap<Qt::Alignment> alignment_map = {{"top", Qt::AlignTop | Qt::AlignHCenter},
-                                                     {"center", Qt::AlignCenter},
-                                                     {"bottom", Qt::AlignBottom | Qt::AlignHCenter},
-                                                     {"left", Qt::AlignVCenter | Qt::AlignLeft},
-                                                     {"right", Qt::AlignVCenter | Qt::AlignRight}};
+const EnumMap<Qt::Alignment> alignment_map = {{"top", Qt::AlignTop | Qt::AlignHCenter},
+                                              {"center", Qt::AlignCenter},
+                                              {"bottom", Qt::AlignBottom | Qt::AlignHCenter},
+                                              {"left", Qt::AlignVCenter | Qt::AlignLeft},
+                                              {"right", Qt::AlignVCenter | Qt::AlignRight}};
 
-static const EnumMap<QSizePolicy> size_policy_map =
-        {{"expanding", {QSizePolicy::Expanding, QSizePolicy::Expanding}},
-         {"fixed", {QSizePolicy::Fixed, QSizePolicy::Fixed}}};
+const EnumMap<QSizePolicy> size_policy_map = {{"expanding",
+                                               {QSizePolicy::Expanding, QSizePolicy::Expanding}},
+                                              {"fixed", {QSizePolicy::Fixed, QSizePolicy::Fixed}}};
 
 namespace error_message {
 namespace alignment {
 // clang-format off
-string text_alignment_error =
+std::string text_alignment_error =
         "Wrong setting in config.toml for: text_alignment\n"
         "Available values: top, center, bottom, left, right\n"
         "Default: top";
 // clang-format on
 
 // clang-format off
-string icon_alignment_error =
+std::string icon_alignment_error =
         "Wrong setting in config.toml for: icon_alignment"
         "Available values: top, center, bottom, left, right"
         "Default: center";
@@ -96,19 +87,10 @@ string primary_button_error =
 } // namespace
 
 // TODO Extract
-// Interpret keybinding text as a corresponding hexadecimal value for the Qt::Key enum
-static const auto textToHexInterpreter = [](const auto& node) {
-        QKeySequence    sequence(QString::fromStdString(node.as_string()->get()));
-        QKeyCombination combination(sequence[0]);
-
-        return combination.key();
-};
-
-// TODO Extract
 // TODO Split
 // Use textToHexInterpreter on a TOML node to set-up keybindings for target
-static void interpretTextAsKeybindings(const toml::node_view<const toml::node>& source,
-                                       keybindings&                             target) {
+void interpretTextAsKeybindings(const toml::node_view<const toml::node>& source,
+                                keybindings&                             target) {
         if (!source || !source.is_array()) {
                 QString keybindings_str = "";
                 for (const auto& key : target) {
@@ -127,89 +109,23 @@ static void interpretTextAsKeybindings(const toml::node_view<const toml::node>& 
         }
         const auto keys_raw = source.as_array();
 
+        // TODO Extract into TOML utilities
+        // Interpret keybinding text as a corresponding hexadecimal value for the Qt::Key enum
+        const auto textToHexInterpreter = [](const auto& node) {
+                QKeySequence    sequence(QString::fromStdString(node.as_string()->get()));
+                QKeyCombination combination(sequence[0]);
+
+                return combination.key();
+        };
+
         target.reserve(keys_raw->size());
         transform(keys_raw->begin(), keys_raw->end(), inserter(target, target.begin()),
                   textToHexInterpreter);
 };
 
-// Values needed to find configs
-namespace {
-
-constexpr int            config_dir_paths_cnt  = 2;
-constexpr int            config_file_names_cnt = 2;
-static array<QString, 2> config_dir_paths      = {qEnvironmentVariable("XDG_CONFIG_HOME")
-                                                          + "/FastApplets/",
-                                                  qEnvironmentVariable("XDG_DATA_HOME")
-                                                          + "/FastApplets/"};
-static array<QString, config_file_names_cnt> config_file_names = {"config.toml", "keys.toml"};
-
-} // namespace
-
-// TODO Split
-// Look for configs in $XDG_CONFIG_HOME and $XDG_DATA_HOME
-static array<string, config_file_names_cnt> locateConfigFiles() {
-        array<string, config_file_names_cnt> files{}; // Only enough slots for each file
-
-        QString file_path;
-        // Loop through expected config files
-        for (size_t file_i = 0; file_i != config_file_names_cnt; ++file_i) {
-                bool found = false;
-                // Loop through expected directories
-                for (size_t dir_i = 0; !found && dir_i != config_dir_paths_cnt; ++dir_i) {
-                        file_path = config_dir_paths[dir_i] + config_file_names[file_i];
-                        // If file found, save filepath, stop the loop for that file
-                        if (QFileInfo::exists(file_path)) {
-                                files[file_i] = file_path.toStdString();
-                                found         = true;
-                                break;
-                        }
-                }
-
-                // No valid file_path found for the current file, terminate
-                // TODO Generate default TOML file on failure
-                if (!found) {
-                        QFATAL("%s not found!", config_file_names[file_i].toStdString().c_str());
-                }
-        }
-
-        return files;
-}
-
-// TODO Extract
-static toml::table createTable(string file_path) {
-        toml::table file_table;
-
-        QDEBUG() << file_path;
-
-        try {
-                file_table = toml::parse_file(file_path);
-        } catch (const toml::parse_error& error) {
-                QFATAL("Parsing of %s failed: %s", string(file_path).c_str(),
-                       string(error.description()).c_str());
-        }
-
-        return file_table;
-}
-
-namespace {
-
-static auto config_files = locateConfigFiles();
-
-} // namespace
-
-const toml::table& createConfig() {
-        static toml::table config = createTable(config_files[0]);
-        return config;
-}
-
-const toml::table& createKeys() {
-        static toml::table keys = createTable(config_files[1]);
-        return keys;
-}
-
 // TODO Detect mismatched types, log them. Example: "expected int but got string"
 // TODO Apply toLowerCopy where applicable
-void TomlConfigParser::parseWindowProperties(const toml::table& config_table) {
+void ConfigMapper::mapWindowProperties(const toml::table& config_table) {
         // TODO Defaults
         const auto window = config_table["global"]["window"].as_table();
         if (!window) { QFATAL("global.window needs to be a table!"); }
@@ -264,7 +180,7 @@ void TomlConfigParser::parseWindowProperties(const toml::table& config_table) {
         Config::WindowProperties::title = QString::fromStdString(title->get());
 }
 
-void TomlConfigParser::parseButtonProperties(const toml::table& config_table) {
+void ConfigMapper::mapButtonProperties(const toml::table& config_table) {
         const auto button = config_table["global"]["primary_button"].as_table();
         if (!button) { QFATAL("in config.toml, global.primary_button is not a table!"); }
 
@@ -341,7 +257,7 @@ void TomlConfigParser::parseButtonProperties(const toml::table& config_table) {
         }
 }
 
-void TomlConfigParser::parseLayoutProperties(const toml::table& config_table) {
+void ConfigMapper::mapLayoutProperties(const toml::table& config_table) {
         const auto layout = config_table["power_applet"]["layout"].as_table();
         // TODO Defaults
         if (!layout) { QFATAL("in config.toml, power_applet.layout is not a table!"); }
@@ -443,27 +359,9 @@ void TomlConfigParser::parseLayoutProperties(const toml::table& config_table) {
         Config::WindowLayoutProperties::primary_power_buttons = std::move(power_buttons);
 }
 
-void TomlConfigParser::parseKeys(const toml::table& keys_table) {
-        // interpretTextAsKeybindings already checks for validity
-        interpretTextAsKeybindings(keys_table["global"]["quit"], Keys::GlobalKeys::quit_keys);
-        interpretTextAsKeybindings(keys_table["power_applet"]["quit"],
-                                   Keys::PowerAppletKeys::quit_keys);
-
-        if (Keys::PowerAppletKeys::quit_keys.empty()) { // TODO std::variant<Keybindings, Keybindings&>
-                Keys::PowerAppletKeys::quit_keys = Keys::GlobalKeys::quit_keys;
-        }
-
-        // Primary button control keys - PowerApplet
-        for (size_t i = 0; i != Keys::PowerAppletKeys::primary_button_keys.size(); ++i) {
-                string button_name = "primary_button" + to_string(i + 1);
-                interpretTextAsKeybindings(keys_table["power_applet"][button_name],
-                                           Keys::PowerAppletKeys::primary_button_keys[i]);
-        }
-}
-
 // TODO Split between a parser for Config.toml and Keys.toml
 // TODO Handle as an exception
-void TomlConfigParser::parseConfig(const toml::table& config_table, const toml::table& keys_table) {
+void ConfigMapper::mapToConfig(const toml::table& config_table) {
         // Confirm that a QApplication instance exists
         if (!QApplication::instanceExists()) {
                 QFATAL("QApplication has not been instantiated yet!");
@@ -479,14 +377,35 @@ void TomlConfigParser::parseConfig(const toml::table& config_table, const toml::
         if (!power_applet) { QFATAL("in config.toml, power_applet is not a table!"); }
 
         /* Window properties */
-        parseWindowProperties(config_table);
+        mapWindowProperties(config_table);
 
         /* Button properties */
-        parseButtonProperties(config_table);
+        mapButtonProperties(config_table);
 
         /* Window layout properties */
-        parseLayoutProperties(config_table);
+        mapLayoutProperties(config_table);
+}
 
-        /* Keys */
-        parseKeys(keys_table);
+void ConfigMapper::mapToKeys(const toml::table& keys_table) {
+        // Confirm that a QApplication instance exists
+        if (!QApplication::instanceExists()) {
+                QFATAL("QApplication has not been instantiated yet!");
+        }
+
+        // interpretTextAsKeybindings already checks for validity
+        interpretTextAsKeybindings(keys_table["global"]["quit"], Keys::GlobalKeys::quit_keys);
+        interpretTextAsKeybindings(keys_table["power_applet"]["quit"],
+                                   Keys::PowerAppletKeys::quit_keys);
+
+        if (Keys::PowerAppletKeys::getQuitKeys()
+                    .empty()) { // TODO std::variant<Keybindings, Keybindings&>
+                Keys::PowerAppletKeys::quit_keys = Keys::GlobalKeys::quit_keys;
+        }
+
+        // Primary button control keys - PowerApplet
+        for (size_t i = 0; i != Keys::PowerAppletKeys::getPrimaryButtonKeys().size(); ++i) {
+                string button_name = "primary_button" + to_string(i + 1);
+                interpretTextAsKeybindings(keys_table["power_applet"][button_name],
+                                           Keys::PowerAppletKeys::primary_button_keys[i]);
+        }
 }

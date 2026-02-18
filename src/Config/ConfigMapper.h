@@ -15,28 +15,19 @@
    You should have received a copy of the GNU General Public License
    along with this program.  If not, see <https://www.gnu.org/licenses/>. */
 
-#include "Config/ConfigMapper.h"
-#include "Config/ConfigParser.h"
-#include "Core/Log.h"
-#include "UI/PowerMainWindow.h"
+#pragma once
 
-#include <QApplication>
-#include <QDebug>
+#include <toml++/toml.hpp>
 
-int main(int argc, char* argv[]) {
-        // Init
-        QApplication app(argc, argv);
-        ConfigMapper::mapToConfig(ConfigParser::createConfig());
-        ConfigMapper::mapToKeys(ConfigParser::createKeys());
+class ConfigMapper final {
+private:
+        ConfigMapper() = delete;
 
-        PowerMainWindow applet; // QMainWindow -> MainWindow -> PowerMainWindow
+        static void mapWindowProperties(const toml::table& config_table);
+        static void mapButtonProperties(const toml::table& config_table);
+        static void mapLayoutProperties(const toml::table& config_table);
 
-        // Debug
-        QINFO() << "Applet resolution:" << applet.size();
-        QDEBUG() << "Qt Version:" << qVersion();
-        qInfo() << " ";
-
-        // Run
-        applet.show();
-        return app.exec();
-}
+public:
+        static void mapToConfig(const toml::table& config_table);
+        static void mapToKeys(const toml::table& keys_table);
+};

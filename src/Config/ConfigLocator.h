@@ -15,28 +15,16 @@
    You should have received a copy of the GNU General Public License
    along with this program.  If not, see <https://www.gnu.org/licenses/>. */
 
-#include "Config/ConfigMapper.h"
-#include "Config/ConfigParser.h"
-#include "Core/Log.h"
-#include "UI/PowerMainWindow.h"
+#pragma once
 
-#include <QApplication>
-#include <QDebug>
+#include <array>
+#include <string>
 
-int main(int argc, char* argv[]) {
-        // Init
-        QApplication app(argc, argv);
-        ConfigMapper::mapToConfig(ConfigParser::createConfig());
-        ConfigMapper::mapToKeys(ConfigParser::createKeys());
+constexpr int config_file_names_cnt = 2;
+constexpr int config_dir_paths_cnt  = 2;
 
-        PowerMainWindow applet; // QMainWindow -> MainWindow -> PowerMainWindow
-
-        // Debug
-        QINFO() << "Applet resolution:" << applet.size();
-        QDEBUG() << "Qt Version:" << qVersion();
-        qInfo() << " ";
-
-        // Run
-        applet.show();
-        return app.exec();
-}
+// TODO Alias for config files
+class ConfigLocator final {
+public:
+        static std::array<std::string, config_file_names_cnt> locateConfigFiles();
+};
