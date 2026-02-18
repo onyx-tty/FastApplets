@@ -26,9 +26,9 @@
 static std::array<QIcon, 4> createButtonIcons() {
         Q_INIT_RESOURCE(Icons);
         std::array<QIcon, 4> button_icons{QIcon(":/Icons/Power/shutdown.svg"),
-                                     QIcon(":/Icons/Power/reboot.svg"),
-                                     QIcon(":/Icons/Power/suspend.svg"),
-                                     QIcon(":/Icons/Power/hibernate.svg")};
+                                          QIcon(":/Icons/Power/reboot.svg"),
+                                          QIcon(":/Icons/Power/suspend.svg"),
+                                          QIcon(":/Icons/Power/hibernate.svg")};
         return button_icons;
 }
 
@@ -36,7 +36,7 @@ static std::array<QIcon, 4> createButtonIcons() {
 std::vector<PowerButton*> PowerCentralWidget::createButtonList(QBoxLayout* main_layout) {
         const auto& primary_buttons_data =
                 Config::getConfig().getWindowLayoutProperties().getPrimaryPowerButtons();
-        const auto           primary_buttons_icons = createButtonIcons();
+        const auto                primary_buttons_icons = createButtonIcons();
         std::vector<PowerButton*> primary_buttons;
         for_each(primary_buttons_data.begin(), primary_buttons_data.end(),
                  [this, &main_layout, &primary_buttons, &primary_buttons_icons,
