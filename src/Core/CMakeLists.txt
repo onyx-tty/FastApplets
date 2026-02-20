@@ -6,7 +6,7 @@ add_library(Core::Log ALIAS Core_Log)
 
 target_include_directories(Core_Log PRIVATE
         ${CMAKE_CURRENT_LIST_DIR}
-        ${GLOBAL_INCLUDES})
+        ${GLOBAL_INCLUSIONS})
 
 target_link_libraries(Core_Log PUBLIC
         Qt${QT_VERSION_MAJOR}::Core)

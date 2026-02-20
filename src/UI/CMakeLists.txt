@@ -9,7 +9,7 @@ add_library(UI
 
 target_include_directories(UI PRIVATE
         ${CMAKE_CURRENT_LIST_DIR}
-        ${GLOBAL_INCLUDES})
+        ${GLOBAL_INCLUSIONS})
 
 target_link_libraries(UI PRIVATE
         Config

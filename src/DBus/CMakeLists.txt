@@ -9,7 +9,7 @@ add_library(DBus
 
 target_include_directories(DBus PRIVATE
         ${CMAKE_CURRENT_LIST_DIR}
-        ${GLOBAL_INCLUDES})
+        ${GLOBAL_INCLUSIONS})
 
 target_link_libraries(DBus PUBLIC
         Qt${QT_VERSION_MAJOR}::Core
