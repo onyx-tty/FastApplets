@@ -1,13 +1,12 @@
 cmake_minimum_required(VERSION 3.16)
 
-project(time VERSION 0.2.0 LANGUAGES CXX)
+project(Time VERSION 0.2.0 LANGUAGES CXX)
 
-add_library(time
+add_library(Time
         Time.cpp
         TimeConstants.h)
-add_library(Time ALIAS time)
-target_include_directories(time PRIVATE
+target_include_directories(Time PRIVATE
         ${CMAKE_CURRENT_LIST_DIR}
         ${GLOBAL_INCLUDES})
-target_link_libraries(time PUBLIC Qt${QT_VERSION_MAJOR}::Widgets)
-target_link_libraries(time PRIVATE LogUtils)
+target_link_libraries(Time PUBLIC Qt${QT_VERSION_MAJOR}::Widgets)
+target_link_libraries(Time PRIVATE Core::Log)

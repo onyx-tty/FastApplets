@@ -1,16 +1,16 @@
-add_library(power_ui
+add_library(PowerApplet_UI
         ${POWERAPPLET_RESOURCES}
         PowerMainWindow.cpp
         PowerCentralWidget.cpp
         Widgets/PowerButton.cpp
         Input/KeyAction.cpp)
-add_library(PowerApplet::UI ALIAS power_ui)
-target_include_directories(power_ui PRIVATE
+add_library(PowerApplet::UI ALIAS PowerApplet_UI)
+target_include_directories(PowerApplet_UI PRIVATE
         ${CMAKE_CURRENT_LIST_DIR}/..
         ${GLOBAL_INCLUDES})
-target_link_libraries(power_ui PRIVATE
+target_link_libraries(PowerApplet_UI PRIVATE
         Config
-        LogUtils
+        Core::Log
         UI
-        PowerApplet::DBus) # Power actions on button press, so DBus module is needed
+        PowerApplet::DBus)
 
