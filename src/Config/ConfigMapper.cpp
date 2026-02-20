@@ -289,82 +289,76 @@ void ConfigMapper::mapLayoutPrimaryButtons(const toml::table& layout, Config& co
 
         // TODO Extract the parser here
         // TODO Split and simplify
-        std::for_each(
-                primary_buttons->begin(), primary_buttons->end(),
-                [&primary_buttons, &power_buttons](const toml::node& node) {
-                        // Find position of node in primary_buttons
-                        // TODO Simplify, find_if I think is redundant
-                        const auto it = std::find_if(primary_buttons->begin(),
-                                                     primary_buttons->end(),
-                                                     [&node](const toml::node& n) -> bool {
-                                                             return &n == &node;
-                                                     });
+        for (auto& button_node : *primary_buttons) {
+                // Find position of node in primary_buttons
+                // TODO Simplify, find_if I think is redundant
+                const auto it = std::find_if(primary_buttons->begin(), primary_buttons->end(),
+                                             [&button_node](const toml::node& n) -> bool {
+                                                     return &n == &button_node;
+                                             });
 
-                        const size_t index = std::distance(primary_buttons->begin(), it);
+                const size_t index = std::distance(primary_buttons->begin(), it);
 
-                        PrimaryButtonData button_data{};
+                PrimaryButtonData button_data{};
 
-                        const auto button = node.as_table();
-                        if (!button) {
-                                // TODO Defaults
-                                QFATAL("in config.toml, power_applet.layout.primary_buttons[%zu] is not a table!",
-                                       index);
-                        }
+                const auto button = button_node.as_table();
+                if (!button) {
+                        // TODO Defaults
+                        QFATAL("in config.toml, power_applet.layout.primary_buttons[%zu] is not a table!",
+                               index);
+                }
 
-                        const auto enabled_opt = (*button)["enabled"].as_boolean();
-                        if (!enabled_opt) {
-                                // TODO Attempt conversion. If fails, default.
-                                // TODO Defaults
-                                QFATAL("in config.toml, power_applet.layout.primary_buttons[%zu].enabled is not a boolean!",
-                                       index);
-                        } else {
-                                bool enabled = enabled_opt->value_or(true);
-                                if (enabled) {
-                                        const auto id = (*button)["id"].as_string();
-                                        if (!id) {
-                                                // TODO Defaults
-                                                QFATAL("in config.toml, power_applet.layout.primary_buttons[%zu].id is not a string!",
-                                                       index);
-                                        } else {
-                                                button_data.identifier = QString::fromStdString(
-                                                        id->get());
-                                        }
-
-                                        const auto label = (*button)["label"].as_string();
-                                        if (!label) {
-                                                // TODO Attempt conversion. If fails, default.
-                                                // TODO Defaults
-                                                QFATAL("in config.toml, power_applet.layout.primary_buttons[%zu].label is not a string!",
-                                                       index);
-                                        } else {
-                                                button_data.text = QString::fromStdString(
-                                                        label->get());
-                                        }
-
-                                        const auto order = (*button)["order"].as_integer();
-                                        if (!order) {
-                                                // TODO If order exists and is not int, try to convert. If fails, default.
-                                                // TODO Defaults
-                                                QFATAL("in config.toml, power_applet.layout.primary_buttons[%zu].order is not an integer!",
-                                                       index);
-                                        } else {
-                                                button_data.order = order->get();
-                                        }
-
-                                        power_buttons.push_back(std::move(button_data));
+                const auto enabled_opt = (*button)["enabled"].as_boolean();
+                if (!enabled_opt) {
+                        // TODO Attempt conversion. If fails, default.
+                        // TODO Defaults
+                        QFATAL("in config.toml, power_applet.layout.primary_buttons[%zu].enabled is not a boolean!",
+                               index);
+                } else {
+                        bool enabled = enabled_opt->value_or(true);
+                        if (enabled) {
+                                const auto id = (*button)["id"].as_string();
+                                if (!id) {
+                                        // TODO Defaults
+                                        QFATAL("in config.toml, power_applet.layout.primary_buttons[%zu].id is not a string!",
+                                               index);
                                 } else {
-                                        const auto id = (*button)["id"].as_string();
-                                        if (!id) { // TODO Duplication, remove
-                                                // TODO Defaults
-                                                QFATAL("in config.toml, power_applet.layout.primary_buttons[%zu].id is not a string!",
-                                                       index);
-                                        }
-
-                                        QDEBUG() << (*button)["id"].as_string()->get()
-                                                 << ": DISABLED";
+                                        button_data.identifier = QString::fromStdString(id->get());
                                 }
+
+                                const auto label = (*button)["label"].as_string();
+                                if (!label) {
+                                        // TODO Attempt conversion. If fails, default.
+                                        // TODO Defaults
+                                        QFATAL("in config.toml, power_applet.layout.primary_buttons[%zu].label is not a string!",
+                                               index);
+                                } else {
+                                        button_data.text = QString::fromStdString(label->get());
+                                }
+
+                                const auto order = (*button)["order"].as_integer();
+                                if (!order) {
+                                        // TODO If order exists and is not int, try to convert. If fails, default.
+                                        // TODO Defaults
+                                        QFATAL("in config.toml, power_applet.layout.primary_buttons[%zu].order is not an integer!",
+                                               index);
+                                } else {
+                                        button_data.order = order->get();
+                                }
+
+                                power_buttons.push_back(std::move(button_data));
+                        } else {
+                                const auto id = (*button)["id"].as_string();
+                                if (!id) { // TODO Duplication, remove
+                                        // TODO Defaults
+                                        QFATAL("in config.toml, power_applet.layout.primary_buttons[%zu].id is not a string!",
+                                               index);
+                                }
+
+                                QDEBUG() << (*button)["id"].as_string()->get() << ": DISABLED";
                         }
-                });
+                }
+        }
 
         // TODO Handle multiple order integers of the same value
         sort(power_buttons.begin(), power_buttons.end(),
@@ -374,7 +368,6 @@ void ConfigMapper::mapLayoutPrimaryButtons(const toml::table& layout, Config& co
 
         config.window_layout_properties.primary_power_buttons = std::move(power_buttons);
 }
-
 
 void ConfigMapper::mapLayoutProperties(const toml::table& config_table, Config& config) {
         const auto layout = config_table["power_applet"]["layout"].as_table();
