@@ -117,17 +117,11 @@ void interpretTextAsKeybindings(const toml::node_view<const toml::node>& source,
                   textToHexInterpreter);
 };
 
-// TODO Detect mismatched types, log them. Example: "expected int but got string"
-// TODO Apply toLowerCopy where applicable
-void ConfigMapper::mapWindowProperties(const toml::table& config_table, Config& config) {
-        // TODO Defaults
-        const auto window = config_table["global"]["window"].as_table();
-        if (!window) { QFATAL("global.window needs to be a table!"); }
-
-        // Window size
+/* Window Properties */
+void ConfigMapper::mapWindowSize(const toml::table& window, Config& config) {
         // TODO size_scale config option to let the size be a % of screen size
         // TODO option to automatically detect and assign monitor size to size and then multiply by size_scale
-        const auto size = (*window)["size"].as_array();
+        const auto size = (window)["size"].as_array();
         if (!size) {
                 // TODO Defaults
                 QFATAL("global.window.size needs to be an array!");
@@ -164,22 +158,34 @@ void ConfigMapper::mapWindowProperties(const toml::table& config_table, Config& 
 
                 config.window_properties.size = QSize(for_qsize[0], for_qsize[1]);
         }
+}
 
-        // Window title
+void ConfigMapper::mapWindowTitle(const toml::table& window, Config& config) {
         // TODO Convert to string
         // TODO Defaults
-        const auto title = (*window)["title"].as_string();
+        const auto title = (window)["title"].as_string();
         if (!title) { QFATAL("in config.toml, global.window.title is not a string!"); }
 
         config.window_properties.title = QString::fromStdString(title->get());
 }
 
-void ConfigMapper::mapButtonProperties(const toml::table& config_table, Config& config) {
-        const auto button = config_table["global"]["primary_button"].as_table();
-        if (!button) { QFATAL("in config.toml, global.primary_button is not a table!"); }
+// TODO Detect mismatched types, log them. Example: "expected int but got string"
+// TODO Apply toLowerCopy where applicable
+void ConfigMapper::mapWindowProperties(const toml::table& config_table, Config& config) {
+        // TODO Defaults
+        const auto window = config_table["global"]["window"].as_table();
+        if (!window) { QFATAL("global.window needs to be a table!"); }
 
-        // Text alignment
-        const auto text_alignment = (*button)["text_alignment"].as_string();
+        // Window size
+        ConfigMapper::mapWindowSize(*window, config);
+
+        // Window title
+        ConfigMapper::mapWindowTitle(*window, config);
+}
+
+/* Button Properties*/
+void ConfigMapper::mapButtonTextAlignment(const toml::table& button, Config& config) {
+        const auto text_alignment = (button)["text_alignment"].as_string();
         if (!text_alignment) {
                 // TODO Defaults
                 QFATAL("in config.toml, global.primary_button.text_alignment is not a string!");
@@ -190,10 +196,10 @@ void ConfigMapper::mapButtonProperties(const toml::table& config_table, Config& 
                         getEnumFromMap(alignment_map, text_alignment->get(), default_alignment,
                                        error_message::alignment::text_alignment_error);
         }
+}
 
-        // Icon alignment
-        // TODO This option doesn't work, fix
-        const auto icon_alignment = (*button)["icon_alignment"].as_string();
+void ConfigMapper::mapButtonIconAlignment(const toml::table& button, Config& config) {
+        const auto icon_alignment = (button)["icon_alignment"].as_string();
         if (!icon_alignment) {
                 // TODO Defaults
                 QFATAL("in config.toml, global.primary_button.icon_alignment is not a string!");
@@ -204,9 +210,10 @@ void ConfigMapper::mapButtonProperties(const toml::table& config_table, Config& 
                         getEnumFromMap(alignment_map, icon_alignment->get(), default_alignment,
                                        error_message::alignment::icon_alignment_error);
         }
+}
 
-        // Icon size
-        const auto icon_size = (*button)["icon_size"].as_array();
+void ConfigMapper::mapButtonIconSize(const toml::table& button, Config& config) {
+        const auto icon_size = (button)["icon_size"].as_array();
         if (!icon_size) {
                 // TODO If icon_size is int, apply to both. If not, try to convert. If fails, default.
                 // TODO Defaults
@@ -236,9 +243,10 @@ void ConfigMapper::mapButtonProperties(const toml::table& config_table, Config& 
 
                 config.primary_button_properties.icon_size = QSize(for_qsize[0], for_qsize[1]);
         }
+}
 
-        // Policy
-        const auto policy = (*button)["policy"].as_string();
+void ConfigMapper::mapButtonPolicy(const toml::table& button, Config& config) {
+        const auto policy = (button)["policy"].as_string();
         if (!policy) {
                 // TODO Defaults
                 QFATAL("in config.toml, global.primary_button.policy is not a string!");
@@ -251,13 +259,27 @@ void ConfigMapper::mapButtonProperties(const toml::table& config_table, Config& 
         }
 }
 
-void ConfigMapper::mapLayoutProperties(const toml::table& config_table, Config& config) {
-        const auto layout = config_table["power_applet"]["layout"].as_table();
-        // TODO Defaults
-        if (!layout) { QFATAL("in config.toml, power_applet.layout is not a table!"); }
+void ConfigMapper::mapButtonProperties(const toml::table& config_table, Config& config) {
+        const auto button = config_table["global"]["primary_button"].as_table();
+        if (!button) { QFATAL("in config.toml, global.primary_button is not a table!"); }
 
-        // Primary power buttons
-        const auto primary_buttons = (*layout)["primary_buttons"].as_array();
+        // Text alignment
+        ConfigMapper::mapButtonTextAlignment(*button, config);
+
+        // Icon alignment
+        // TODO This option doesn't work, fix
+        ConfigMapper::mapButtonIconAlignment(*button, config);
+
+        // Icon size
+        ConfigMapper::mapButtonIconSize(*button, config);
+
+        // Policy
+        ConfigMapper::mapButtonPolicy(*button, config);
+}
+
+/* Layout Properties */
+void ConfigMapper::mapLayoutPrimaryButtons(const toml::table& layout, Config& config) {
+        const auto primary_buttons = (layout)["primary_buttons"].as_array();
         if (!primary_buttons) {
                 // TODO Defaults
                 QFATAL("in config.toml, power_applet.layout.primary_buttons is not a table!");
@@ -353,7 +375,16 @@ void ConfigMapper::mapLayoutProperties(const toml::table& config_table, Config& 
         config.window_layout_properties.primary_power_buttons = std::move(power_buttons);
 }
 
-// TODO Split between a parser for Config.toml and Keys.toml
+
+void ConfigMapper::mapLayoutProperties(const toml::table& config_table, Config& config) {
+        const auto layout = config_table["power_applet"]["layout"].as_table();
+        // TODO Defaults
+        if (!layout) { QFATAL("in config.toml, power_applet.layout is not a table!"); }
+
+        // Primary power buttons
+        ConfigMapper::mapLayoutPrimaryButtons(*layout, config);
+}
+
 // TODO Handle as an exception
 void ConfigMapper::mapToConfig(const toml::table& config_table, Config& config) {
         // Confirm that a QApplication instance exists
