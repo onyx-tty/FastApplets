@@ -16,12 +16,15 @@ add_library(Config
         ConfigParser.cpp
         ConfigMapper.cpp
         DefaultTomlConfig.cpp)
+
 target_include_directories(Config PRIVATE
         ${CMAKE_CURRENT_LIST_DIR}
         ${GLOBAL_INCLUDES})
+
 target_link_libraries(Config PRIVATE
         CppUtils
         Core::Log)
+
 target_link_libraries(Config PUBLIC
         tomlplusplus::tomlplusplus
         Qt${QT_VERSION_MAJOR}::Widgets)

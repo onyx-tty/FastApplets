@@ -44,6 +44,7 @@ if(BUILD_POWERAPPLET)
         if(LOG_DEBUG)
                 set(LOG_DEBUG ON CACHE BOOL "Print debug-level logs" FORCE)
         endif()
+
         add_subdirectory(
                 modules/CppUtils
                 CppUtils-build)
@@ -92,8 +93,10 @@ endif()
 if(BUILD_POWERAPPLET)
         target_include_directories(PowerApplet PRIVATE
                 ${GLOBAL_INCLUDES})
+
         target_link_libraries(PowerApplet PRIVATE
                 PowerApplet::Deps)
+
         if(ENABLE_ASAN)
                 target_compile_options(PowerApplet PRIVATE -fsanitize=address -fno-omit-frame-pointer -g)
                 target_link_options(PowerApplet PRIVATE -fsanitize=address)

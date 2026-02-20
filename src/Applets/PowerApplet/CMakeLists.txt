@@ -8,6 +8,7 @@ add_subdirectory(UI)
 # Internal dependencies
 add_library(PowerApplet_Deps)
 add_library(PowerApplet::Deps ALIAS PowerApplet_Deps)
+
 target_link_libraries(PowerApplet_Deps INTERFACE
         Core
         Config
