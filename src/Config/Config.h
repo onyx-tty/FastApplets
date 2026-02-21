@@ -72,8 +72,8 @@ public:
         };
 
         Config(Config::WindowProperties        window_properties         = {},
-               Config::WindowLayoutProperties  window_layout_properties  = {},
-               Config::PrimaryButtonProperties primary_button_properties = {});
+               Config::PrimaryButtonProperties primary_button_properties = {},
+               Config::WindowLayoutProperties  window_layout_properties  = {});
         // TODO Make this const to avoid overwrites
         static Config&                 getConfig();
         const WindowProperties&        getWindowProperties() const;

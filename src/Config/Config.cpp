@@ -32,15 +32,6 @@ const QSize& Config::WindowProperties::getSize() const {
         return size;
 }
 
-/* Window Layout Properties */
-Config::WindowLayoutProperties::WindowLayoutProperties(
-        std::vector<PrimaryButtonData> primary_power_buttons) :
-        primary_power_buttons(primary_power_buttons) {}
-
-const std::vector<PrimaryButtonData>& Config::WindowLayoutProperties::getPrimaryPowerButtons() const {
-        return primary_power_buttons;
-}
-
 /* Primary Button Properties */
 Config::PrimaryButtonProperties::PrimaryButtonProperties(Qt::Alignment text_alignment,
                                                          Qt::Alignment icon_alignment,
@@ -64,10 +55,19 @@ const QSizePolicy& Config::PrimaryButtonProperties::getPolicy() const {
         return policy;
 }
 
+/* Window Layout Properties */
+Config::WindowLayoutProperties::WindowLayoutProperties(
+        std::vector<PrimaryButtonData> primary_power_buttons) :
+        primary_power_buttons(primary_power_buttons) {}
+
+const std::vector<PrimaryButtonData>& Config::WindowLayoutProperties::getPrimaryPowerButtons() const {
+        return primary_power_buttons;
+}
+
 /* Config */
 Config::Config(Config::WindowProperties        window_properties,
-               Config::WindowLayoutProperties  window_layout_properties,
-               Config::PrimaryButtonProperties primary_button_properties) :
+               Config::PrimaryButtonProperties primary_button_properties,
+               Config::WindowLayoutProperties  window_layout_properties) :
         window_properties(std::move(window_properties)),
         window_layout_properties(std::move(window_layout_properties)),
         primary_button_properties(std::move(primary_button_properties)) {}
