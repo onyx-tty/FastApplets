@@ -19,6 +19,7 @@
 
 class Config;
 class Keys;
+class PrimaryButtonData;
 
 #include <toml++/toml.hpp>
 
@@ -26,11 +27,27 @@ class ConfigMapper final {
 private:
         ConfigMapper() = delete;
 
+        /* Window Properties */
+        static void mapWindowSize(const toml::table& window, Config& config);
+        static void mapWindowTitle(const toml::table& window, Config& config);
         static void mapWindowProperties(const toml::table& config_table, Config& config);
+
+        /* Button Properties */
+        static void mapButtonTextAlignment(const toml::table& button, Config& config);
+        static void mapButtonIconAlignment(const toml::table& button, Config& config);
+        static void mapButtonIconSize(const toml::table& button, Config& config);
+        static void mapButtonPolicy(const toml::table& button, Config& config);
         static void mapButtonProperties(const toml::table& config_table, Config& config);
+
+        /* Layout Properties */
+        static void mapLayoutPrimaryButtonData(const toml::table& button_table,
+                                               PrimaryButtonData& button_data, size_t button_index);
+        static void logButtonDisabled(const toml::table& button_table, size_t button_index);
+        static void mapLayoutPrimaryButtons(const toml::table& layout, Config& config);
         static void mapLayoutProperties(const toml::table& config_table, Config& config);
 
 public:
+        /* Main functions */
         static void mapToConfig(const toml::table& config_table, Config& config);
         static void mapToKeys(const toml::table& keys_table, Keys& keys);
 };
