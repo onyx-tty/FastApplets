@@ -81,11 +81,6 @@ public:
         const PrimaryButtonProperties& getPrimaryButtonProperties() const;
 
 private:
-        Config(const Config&)            = delete;
-        Config(Config&&)                 = delete;
-        Config& operator=(const Config&) = delete;
-        Config& operator=(Config&&)      = delete;
-
         friend class ConfigMapper;
 
         WindowProperties        window_properties;

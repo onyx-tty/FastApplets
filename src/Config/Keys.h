@@ -58,11 +58,6 @@ public:
         const PowerAppletKeys& getPowerAppletKeys() const;
 
 private:
-        Keys(const Keys&)            = delete;
-        Keys(Keys&&)                 = delete;
-        Keys& operator=(const Keys&) = delete;
-        Keys& operator=(Keys&&)      = delete;
-
         friend class ConfigMapper;
 
         GlobalKeys      global_keys;
