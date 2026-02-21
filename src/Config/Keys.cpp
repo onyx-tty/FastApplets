@@ -18,6 +18,7 @@
 #include "Keys.h"
 #include "Config/ConfigMapper.h"
 #include "Config/ConfigParser.h"
+#include <qnamespace.h>
 
 Keys::GlobalKeys::GlobalKeys(keybindings quit_keys) : quit_keys(quit_keys) {}
 
@@ -50,6 +51,23 @@ Keys& Keys::getKeys() {
         }
 
         return keys;
+}
+
+const Keys& Keys::getDefaultKeys() {
+        keybindings      quit_keys           = {Qt::Key_Escape, Qt::Key_Q};
+        Keys::GlobalKeys default_global_keys = {std::move(quit_keys)};
+
+        std::array<keybindings, 4> primary_button_keys       = {keybindings{Qt::Key_1},
+                                                                keybindings{Qt::Key_2},
+                                                                keybindings{Qt::Key_3},
+                                                                keybindings{Qt::Key_4}};
+        Keys::PowerAppletKeys      default_power_applet_keys = {std::move(quit_keys),
+                                                                std::move(primary_button_keys)};
+
+        static Keys default_keys{std::move(default_global_keys),
+                                 std::move(default_power_applet_keys)};
+
+        return default_keys;
 }
 
 const Keys::GlobalKeys& Keys::getGlobalKeys() const {

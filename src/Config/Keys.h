@@ -54,6 +54,7 @@ public:
         Keys(Keys::GlobalKeys global_keys = {}, Keys::PowerAppletKeys power_applet_keys = {});
         // TODO Make this const to avoid overwrites
         static Keys&           getKeys();
+        static const Keys&     getDefaultKeys();
         const GlobalKeys&      getGlobalKeys() const;
         const PowerAppletKeys& getPowerAppletKeys() const;
 

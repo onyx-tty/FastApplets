@@ -39,6 +39,8 @@ using enum_utils::EnumMap;
 using enum_utils::getEnumFromMap;
 using string_utils::toLowerCopy;
 
+// TODO Make function names consistent, i.e. mapButtonProperties -> mapPrimaryButtonProperties
+
 namespace {
 
 const EnumMap<Qt::Alignment> alignment_map = {{"top", Qt::AlignTop | Qt::AlignHCenter},
@@ -121,18 +123,23 @@ void interpretTextAsKeybindings(const toml::node_view<const toml::node>& source,
 void ConfigMapper::mapWindowSize(const toml::table& window, Config& config) {
         // TODO size_scale config option to let the size be a % of screen size
         // TODO option to automatically detect and assign monitor size to size and then multiply by size_scale
-        const auto size = (window)["size"].as_array();
+        const auto  size     = (window)["size"].as_array();
+        const auto& defaults = Config::getDefaultConfig().getWindowProperties().getSize();
+
         if (!size) {
-                // TODO Defaults
-                QFATAL("global.window.size needs to be an array!");
+                QWARNING() << "in config.toml, global.window.size must be an array!"
+                           << "Using defaults...";
+                config.window_properties.size = defaults;
+                return;
         } else {
                 constexpr size_t            arr_length = 2;
                 std::array<int, arr_length> for_qsize{};
 
-                // TODO Default missing values, pass the rest
                 if (arr_length > size->size()) {
-                        QFATAL("in config.toml, global.window.size requires %zu integers!",
-                               arr_length);
+                        QWARNING_NS() << "in config.toml, global.window.size must have["
+                                      << arr_length << "] integers! Using defaults...";
+                        config.window_properties.size = defaults;
+                        return;
                 }
 
                 for (size_t i = 0; i != std::min(size->size(), arr_length); ++i) {
@@ -141,12 +148,13 @@ void ConfigMapper::mapWindowSize(const toml::table& window, Config& config) {
                         if (!index) {
                                 const auto str_index = size->get(i)->as_string();
 
-                                QWARNING_NS()
-                                        << "in config.toml, global.window.size[" << i
-                                        << "] is not an integer! Attempting conversion from string to integer...";
+                                QWARNING_NS() << "in config.toml, global.window.size[" << i
+                                              << "] must be an integer! Attempting conversion from"
+                                              << "string to integer...";
                                 if (!str_index) {
-                                        // TODO Defaults
-                                        QFATAL("FAILED CONVERSION!");
+                                        QWARNING_NS() << "FAILED CONVERSION! Using defaults...";
+                                        config.window_properties.size = defaults;
+                                        return;
                                 } else {
                                         for_qsize[i] = std::stoi(str_index->get());
                                         QINFO() << "Successful conversion!";
@@ -161,10 +169,16 @@ void ConfigMapper::mapWindowSize(const toml::table& window, Config& config) {
 }
 
 void ConfigMapper::mapWindowTitle(const toml::table& window, Config& config) {
+        const auto& defaults = Config::getDefaultConfig().getWindowProperties().getTitle();
+
         // TODO Convert to string
-        // TODO Defaults
         const auto title = (window)["title"].as_string();
-        if (!title) { QFATAL("in config.toml, global.window.title is not a string!"); }
+        if (!title) {
+                QDEBUG() << "in config.toml, global.window.title must be a string!"
+                         << "Using defaults...";
+                config.window_properties.title = defaults;
+                return;
+        }
 
         config.window_properties.title = QString::fromStdString(title->get());
 }
@@ -172,9 +186,14 @@ void ConfigMapper::mapWindowTitle(const toml::table& window, Config& config) {
 // TODO Detect mismatched types, log them. Example: "expected int but got string"
 // TODO Apply toLowerCopy where applicable
 void ConfigMapper::mapWindowProperties(const toml::table& config_table, Config& config) {
-        // TODO Defaults
-        const auto window = config_table["global"]["window"].as_table();
-        if (!window) { QFATAL("global.window needs to be a table!"); }
+        const auto  window   = config_table["global"]["window"].as_table();
+        const auto& defaults = Config::getDefaultConfig().getWindowProperties();
+
+        if (!window) {
+                QWARNING() << "global.window must be a table! Using defaults...";
+                config.window_properties = defaults;
+                return;
+        }
 
         // Window size
         ConfigMapper::mapWindowSize(*window, config);
@@ -185,11 +204,17 @@ void ConfigMapper::mapWindowProperties(const toml::table& config_table, Config& 
 
 /* Button Properties*/
 void ConfigMapper::mapButtonTextAlignment(const toml::table& button, Config& config) {
-        const auto text_alignment = (button)["text_alignment"].as_string();
+        const auto  text_alignment = (button)["text_alignment"].as_string();
+        const auto& defaults =
+                Config::getDefaultConfig().getPrimaryButtonProperties().getTextAlignment();
+
         if (!text_alignment) {
-                // TODO Defaults
-                QFATAL("in config.toml, global.primary_button.text_alignment is not a string!");
+                QWARNING() << "in config.toml, global.primary_button.text_alignment"
+                           << "must be a string! Using defaults...";
+                config.primary_button_properties.text_alignment = defaults;
+                return;
         } else {
+                // TODO Remove
                 Qt::Alignment default_alignment = alignment_map.at("top");
 
                 config.primary_button_properties.text_alignment =
@@ -199,11 +224,17 @@ void ConfigMapper::mapButtonTextAlignment(const toml::table& button, Config& con
 }
 
 void ConfigMapper::mapButtonIconAlignment(const toml::table& button, Config& config) {
-        const auto icon_alignment = (button)["icon_alignment"].as_string();
+        const auto  icon_alignment = (button)["icon_alignment"].as_string();
+        const auto& defaults =
+                Config::getDefaultConfig().getPrimaryButtonProperties().getIconAlignment();
+
         if (!icon_alignment) {
-                // TODO Defaults
-                QFATAL("in config.toml, global.primary_button.icon_alignment is not a string!");
+                QWARNING() << "in config.toml, global.primary_button.icon_alignment"
+                           << "must be a string! Using defaults...";
+                config.primary_button_properties.icon_alignment = defaults;
+                return;
         } else {
+                // TODO Remove
                 Qt::Alignment default_alignment = alignment_map.at("top");
 
                 config.primary_button_properties.icon_alignment =
@@ -214,28 +245,34 @@ void ConfigMapper::mapButtonIconAlignment(const toml::table& button, Config& con
 
 void ConfigMapper::mapButtonIconSize(const toml::table& button, Config& config) {
         const auto icon_size = (button)["icon_size"].as_array();
+        const auto& defaults = Config::getDefaultConfig().getPrimaryButtonProperties().getIconSize();
+
         if (!icon_size) {
                 // TODO If icon_size is int, apply to both. If not, try to convert. If fails, default.
-                // TODO Defaults
-                QFATAL("in config.toml, global.primary_button.icon_size is not an array!");
+                QWARNING() << "in config.toml, global.primary_button.icon_size must be an array!"
+                           << "Using defaults...";
+                config.primary_button_properties.icon_size = defaults;
+                return;
         } else {
                 constexpr size_t            arr_length = 2;
                 std::array<int, arr_length> for_qsize{};
 
                 if (arr_length > icon_size->size()) {
                         // TODO If icon_size[0] exists and is int, apply to both. If not, try to convert. If fails, default.
-                        // TODO Defaults
-                        QFATAL("in config.toml, global.primary_button.icon_size requires %zu integers!",
-                               arr_length);
+                        QWARNING() << "in config.toml, global.primary_button.icon_size must have"
+                                   << arr_length << "integers! Using defaults...";
+                        config.primary_button_properties.icon_size = defaults;
+                        return;
                 }
 
                 for (size_t i = 0; i != std::min(icon_size->size(), arr_length); ++i) {
                         const auto index = icon_size->get(i)->as_integer();
                         if (!index) {
                                 // TODO If icon_size[0] exists and is int, apply to both. If not, try to convert. If fails, default.
-                                // TODO Defaults
-                                QFATAL("in config.toml, global.primary_button.icon_size[%zu] is not an integer!",
-                                       i);
+                                QWARNING_NS() << "in config.toml, global.primary_button.icon_size["
+                                              << i << "] must be an integer! Using defaults...";
+                                config.primary_button_properties.icon_size = defaults;
+                                return;
                         }
 
                         for_qsize[i] = index->get();
@@ -246,11 +283,16 @@ void ConfigMapper::mapButtonIconSize(const toml::table& button, Config& config) 
 }
 
 void ConfigMapper::mapButtonPolicy(const toml::table& button, Config& config) {
-        const auto policy = (button)["policy"].as_string();
+        const auto  policy   = (button)["policy"].as_string();
+        const auto& defaults = Config::getDefaultConfig().getPrimaryButtonProperties().getPolicy();
+
         if (!policy) {
-                // TODO Defaults
-                QFATAL("in config.toml, global.primary_button.policy is not a string!");
+                QWARNING() << "in config.toml, global.primary_button.policy must be a string!"
+                           << "Using defaults...";
+                config.primary_button_properties.policy = defaults;
+
         } else {
+                // TODO Remove
                 const QSizePolicy default_policy = QSizePolicy(QSizePolicy::Expanding,
                                                                QSizePolicy::Expanding);
                 config.primary_button_properties.policy =
@@ -260,8 +302,15 @@ void ConfigMapper::mapButtonPolicy(const toml::table& button, Config& config) {
 }
 
 void ConfigMapper::mapButtonProperties(const toml::table& config_table, Config& config) {
-        const auto button = config_table["global"]["primary_button"].as_table();
-        if (!button) { QFATAL("in config.toml, global.primary_button is not a table!"); }
+        const auto  button   = config_table["global"]["primary_button"].as_table();
+        const auto& defaults = Config::getDefaultConfig().getPrimaryButtonProperties();
+
+        if (!button) {
+                QWARNING() << "in config.toml, global.primary_button must be a table!"
+                           << "Using defaults...";
+                config.primary_button_properties = defaults;
+                return;
+        }
 
         // Text alignment
         ConfigMapper::mapButtonTextAlignment(*button, config);
@@ -280,11 +329,16 @@ void ConfigMapper::mapButtonProperties(const toml::table& config_table, Config& 
 /* Layout Properties */
 void ConfigMapper::mapLayoutPrimaryButtonData(const toml::table& button_table,
                                               PrimaryButtonData& button_data, size_t button_index) {
-        const auto id = (button_table)["id"].as_string();
+        const auto  id       = (button_table)["id"].as_string();
+        const auto& defaults = Config::getDefaultConfig()
+                                       .getWindowLayoutProperties()
+                                       .getPrimaryPowerButtons()[button_index];
+
         if (!id) {
-                // TODO Defaults
-                QFATAL("in config.toml, power_applet.layout.primary_buttons[%zu].id is not a string!",
-                       button_index);
+                QWARNING_NS() << "in config.toml, power_applet.layout.primary_buttons["
+                              << button_index << "].id must be a string! Using defaults...";
+                button_data = defaults;
+                return;
         } else {
                 button_data.identifier = QString::fromStdString(id->get());
         }
@@ -292,9 +346,10 @@ void ConfigMapper::mapLayoutPrimaryButtonData(const toml::table& button_table,
         const auto label = (button_table)["label"].as_string();
         if (!label) {
                 // TODO Attempt conversion. If fails, default.
-                // TODO Defaults
-                QFATAL("in config.toml, power_applet.layout.primary_buttons[%zu].label is not a string!",
-                       button_index);
+                QWARNING_NS() << "in config.toml, power_applet.layout.primary_buttons["
+                              << button_index << "].label must be a string! Using defaults...";
+                button_data = defaults;
+                return;
         } else {
                 button_data.text = QString::fromStdString(label->get());
         }
@@ -302,9 +357,10 @@ void ConfigMapper::mapLayoutPrimaryButtonData(const toml::table& button_table,
         const auto order = (button_table)["order"].as_integer();
         if (!order) {
                 // TODO If order exists and is not int, try to convert. If fails, default.
-                // TODO Defaults
-                QFATAL("in config.toml, power_applet.layout.primary_buttons[%zu].order is not an integer!",
-                       button_index);
+                QWARNING_NS() << "in config.toml, power_applet.layout.primary_buttons["
+                              << button_index << "].order must be an integer! Using defaults...";
+                button_data = defaults;
+                return;
         } else {
                 button_data.order = order->get();
         }
@@ -312,21 +368,31 @@ void ConfigMapper::mapLayoutPrimaryButtonData(const toml::table& button_table,
 
 void ConfigMapper::logButtonDisabled(const toml::table& button_table,
                                      PrimaryButtonData& button_data, size_t button_index) {
-        const auto id = (button_table)["id"].as_string();
+        const auto  id       = (button_table)["id"].as_string();
+        const auto& defaults = Config::getDefaultConfig()
+                                       .getWindowLayoutProperties()
+                                       .getPrimaryPowerButtons()[button_index];
+
         if (!id) { // TODO Duplication, remove
-                // TODO Defaults
-                QFATAL("in config.toml, power_applet.layout.primary_buttons[%zu].id is not a string!",
-                       button_index);
+                QWARNING_NS() << "in config.toml, power_applet.layout.primary_buttons["
+                              << button_index << "].id must be a string! Using defaults...";
+                button_data = defaults;
+                return;
         }
 
         QDEBUG() << (button_table)["id"].as_string()->get() << ": DISABLED";
 }
 
 void ConfigMapper::mapLayoutPrimaryButtons(const toml::table& layout, Config& config) {
-        const auto primary_buttons = (layout)["primary_buttons"].as_array();
+        const auto  primary_buttons = (layout)["primary_buttons"].as_array();
+        const auto& defaults =
+                Config::getDefaultConfig().getWindowLayoutProperties().getPrimaryPowerButtons();
+
         if (!primary_buttons) {
-                // TODO Defaults
-                QFATAL("in config.toml, power_applet.layout.primary_buttons is not a table!");
+                QWARNING() << "in config.toml, power_applet.layout.primary_buttons"
+                           << "must be a table! Using defaults...";
+                config.window_layout_properties.primary_power_buttons = defaults;
+                return;
         }
 
         std::vector<PrimaryButtonData> buttons_found{};
@@ -346,17 +412,19 @@ void ConfigMapper::mapLayoutPrimaryButtons(const toml::table& layout, Config& co
 
                 const auto button = button_node.as_table();
                 if (!button) {
-                        // TODO Defaults
-                        QFATAL("in config.toml, power_applet.layout.primary_buttons[%zu] is not a table!",
-                               index);
+                        QWARNING_NS() << "in config.toml, power_applet.layout.primary_buttons["
+                                      << index << "] must be a table! Using defaults...";
+                        config.window_layout_properties.primary_power_buttons = defaults;
+                        return;
                 }
 
                 const auto enabled_opt = (*button)["enabled"].as_boolean();
                 if (!enabled_opt) {
                         // TODO Attempt conversion. If fails, default.
-                        // TODO Defaults
-                        QFATAL("in config.toml, power_applet.layout.primary_buttons[%zu].enabled is not a boolean!",
-                               index);
+                        QWARNING_NS() << "in config.toml, power_applet.layout.primary_buttons["
+                                      << index << "].enabled must be a boolean! Using defaults...";
+                        config.window_layout_properties.primary_power_buttons = defaults;
+                        return;
                 } else {
                         bool enabled = enabled_opt->value_or(true);
                         if (enabled) {
@@ -379,29 +447,44 @@ void ConfigMapper::mapLayoutPrimaryButtons(const toml::table& layout, Config& co
 }
 
 void ConfigMapper::mapLayoutProperties(const toml::table& config_table, Config& config) {
-        const auto layout = config_table["power_applet"]["layout"].as_table();
-        // TODO Defaults
-        if (!layout) { QFATAL("in config.toml, power_applet.layout is not a table!"); }
+        const auto  layout   = config_table["power_applet"]["layout"].as_table();
+        const auto& defaults = config.getWindowLayoutProperties();
+
+        if (!layout) {
+                QWARNING() << "in config.toml, power_applet.layout must be a table!"
+                           << "Using defaults...";
+                config.window_layout_properties = defaults;
+                return;
+        }
 
         // Primary power buttons
         ConfigMapper::mapLayoutPrimaryButtons(*layout, config);
 }
 
-// TODO Handle as an exception
 void ConfigMapper::mapToConfig(const toml::table& config_table, Config& config) {
         // Confirm that a QApplication instance exists
         if (!QApplication::instanceExists()) {
                 QFATAL("QApplication has not been instantiated yet!");
         }
 
+        const auto& defaults = Config::getDefaultConfig();
+
         // Check the validity of global and power_applet
         const auto global = config_table["global"].as_table();
-        // TODO Defaults
-        if (!global) { QFATAL("in config.toml, global is not a table!"); }
+        if (!global) {
+                QWARNING() << "in config.toml, global must be a table! Using defaults...";
+                config = defaults;
+                return;
+        }
 
+        // NOT IMPLEMENTED YET
+        /*
         const auto power_applet = config_table["power_applet"].as_table();
         // TODO Defaults
-        if (!power_applet) { QFATAL("in config.toml, power_applet is not a table!"); }
+        if (!power_applet) {
+                QFATAL("in config.toml, power_applet must be a table! Using defaults...");
+        }
+        */
 
         /* Window properties */
         mapWindowProperties(config_table, config);
