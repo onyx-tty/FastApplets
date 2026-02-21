@@ -41,7 +41,8 @@ void PowerActionManager::sendPowerAction(const QString& method) {
 
 void PowerActionManager::printReply(const QDBusPendingReply<QVariantMap>& reply) {
         if (reply.reply().type() == QDBusMessage::ErrorMessage) {
-                QCRITICAL() << "Error sending action. Response: " << reply.reply().errorMessage();
+                QCRITICAL() << "Error sending action! Response:" << reply.error().name() << "-"
+                            << reply.error().message();
         } else {
                 QINFO() << "Success sending power action!";
         }

@@ -1,17 +1,19 @@
-project(dbus VERSION 0.1.5 LANGUAGES CXX)
+project(DBus VERSION 0.1.5 LANGUAGES CXX)
 
 # Requirements
 find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS DBus)
 
-add_library(dbus
+add_library(DBus
         DBusRequester.cpp
         DBusTarget.h)
-add_library(DBus ALIAS dbus)
-target_include_directories(dbus PRIVATE
+
+target_include_directories(DBus PRIVATE
         ${CMAKE_CURRENT_LIST_DIR}
-        ${GLOBAL_INCLUDES})
-target_link_libraries(dbus PUBLIC
+        ${GLOBAL_INCLUSIONS})
+
+target_link_libraries(DBus PUBLIC
         Qt${QT_VERSION_MAJOR}::Core
         Qt${QT_VERSION_MAJOR}::DBus)
-target_link_libraries(dbus PRIVATE
-        LogUtils)
+
+target_link_libraries(DBus PRIVATE
+        Core::Log)
