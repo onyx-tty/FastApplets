@@ -310,7 +310,8 @@ void ConfigMapper::mapLayoutPrimaryButtonData(const toml::table& button_table,
         }
 }
 
-void ConfigMapper::logButtonDisabled(const toml::table& button_table, size_t button_index) {
+void ConfigMapper::logButtonDisabled(const toml::table& button_table,
+                                     PrimaryButtonData& button_data, size_t button_index) {
         const auto id = (button_table)["id"].as_string();
         if (!id) { // TODO Duplication, remove
                 // TODO Defaults
@@ -363,7 +364,7 @@ void ConfigMapper::mapLayoutPrimaryButtons(const toml::table& layout, Config& co
 
                                 buttons_found.push_back(std::move(button_data));
                         } else {
-                                logButtonDisabled(*button, index);
+                                logButtonDisabled(*button, button_data, index);
                         }
                 }
         }

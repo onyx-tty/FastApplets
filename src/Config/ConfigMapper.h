@@ -42,7 +42,8 @@ private:
         /* Layout Properties */
         static void mapLayoutPrimaryButtonData(const toml::table& button_table,
                                                PrimaryButtonData& button_data, size_t button_index);
-        static void logButtonDisabled(const toml::table& button_table, size_t button_index);
+        static void logButtonDisabled(const toml::table& button_table,
+                                      PrimaryButtonData& button_data, size_t button_index);
         static void mapLayoutPrimaryButtons(const toml::table& layout, Config& config);
         static void mapLayoutProperties(const toml::table& config_table, Config& config);
 
