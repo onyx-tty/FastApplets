@@ -72,20 +72,16 @@ public:
         };
 
         Config(Config::WindowProperties        window_properties         = {},
-               Config::WindowLayoutProperties  window_layout_properties  = {},
-               Config::PrimaryButtonProperties primary_button_properties = {});
+               Config::PrimaryButtonProperties primary_button_properties = {},
+               Config::WindowLayoutProperties  window_layout_properties  = {});
         // TODO Make this const to avoid overwrites
         static Config&                 getConfig();
+        static const Config&           getDefaultConfig();
         const WindowProperties&        getWindowProperties() const;
         const WindowLayoutProperties&  getWindowLayoutProperties() const;
         const PrimaryButtonProperties& getPrimaryButtonProperties() const;
 
 private:
-        Config(const Config&)            = delete;
-        Config(Config&&)                 = delete;
-        Config& operator=(const Config&) = delete;
-        Config& operator=(Config&&)      = delete;
-
         friend class ConfigMapper;
 
         WindowProperties        window_properties;

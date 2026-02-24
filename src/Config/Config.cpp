@@ -18,6 +18,7 @@
 #include "Config.h"
 #include "ConfigMapper.h"
 #include "ConfigParser.h"
+#include "PrimaryButtonData.h"
 
 #include <toml++/toml.hpp>
 
@@ -30,15 +31,6 @@ const QString& Config::WindowProperties::getTitle() const {
 
 const QSize& Config::WindowProperties::getSize() const {
         return size;
-}
-
-/* Window Layout Properties */
-Config::WindowLayoutProperties::WindowLayoutProperties(
-        std::vector<PrimaryButtonData> primary_power_buttons) :
-        primary_power_buttons(primary_power_buttons) {}
-
-const std::vector<PrimaryButtonData>& Config::WindowLayoutProperties::getPrimaryPowerButtons() const {
-        return primary_power_buttons;
 }
 
 /* Primary Button Properties */
@@ -64,10 +56,19 @@ const QSizePolicy& Config::PrimaryButtonProperties::getPolicy() const {
         return policy;
 }
 
+/* Window Layout Properties */
+Config::WindowLayoutProperties::WindowLayoutProperties(
+        std::vector<PrimaryButtonData> primary_power_buttons) :
+        primary_power_buttons(primary_power_buttons) {}
+
+const std::vector<PrimaryButtonData>& Config::WindowLayoutProperties::getPrimaryPowerButtons() const {
+        return primary_power_buttons;
+}
+
 /* Config */
 Config::Config(Config::WindowProperties        window_properties,
-               Config::WindowLayoutProperties  window_layout_properties,
-               Config::PrimaryButtonProperties primary_button_properties) :
+               Config::PrimaryButtonProperties primary_button_properties,
+               Config::WindowLayoutProperties  window_layout_properties) :
         window_properties(std::move(window_properties)),
         window_layout_properties(std::move(window_layout_properties)),
         primary_button_properties(std::move(primary_button_properties)) {}
@@ -82,6 +83,34 @@ Config& Config::getConfig() {
         }
 
         return config;
+}
+
+const Config& Config::getDefaultConfig() {
+        QSize            size                      = {960, 220};
+        QString          title                     = "test_window";
+        WindowProperties default_window_properties = {std::move(size), std::move(title)};
+
+        Qt::Alignment           text_alignment = {Qt::AlignHCenter, Qt::AlignTop};
+        Qt::Alignment           icon_alignment = {Qt::AlignHCenter, Qt::AlignVCenter};
+        QSize                   icon_size      = {64, 64};
+        QSizePolicy             policy         = {QSizePolicy::Expanding, QSizePolicy::Expanding};
+        PrimaryButtonProperties default_primary_button_properties{std::move(text_alignment),
+                                                                  std::move(icon_alignment),
+                                                                  std::move(icon_size),
+                                                                  std::move(policy)};
+
+        std::vector<PrimaryButtonData> primary_buttons =
+                {PrimaryButtonData{"shutdown", "Shutdown", 1},
+                 PrimaryButtonData{"reboot", "Reboot", 2},
+                 PrimaryButtonData{"suspend", "Suspend", 3},
+                 PrimaryButtonData{"hibernate", "Hibernate", 4}};
+        WindowLayoutProperties default_window_layout_properties = {std::move(primary_buttons)};
+
+        static Config default_config = {std::move(default_window_properties),
+                                        std::move(default_primary_button_properties),
+                                        std::move(default_window_layout_properties)};
+
+        return default_config;
 }
 
 const Config::WindowProperties& Config::getWindowProperties() const {

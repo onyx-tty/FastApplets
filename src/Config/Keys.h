@@ -54,15 +54,11 @@ public:
         Keys(Keys::GlobalKeys global_keys = {}, Keys::PowerAppletKeys power_applet_keys = {});
         // TODO Make this const to avoid overwrites
         static Keys&           getKeys();
+        static const Keys&     getDefaultKeys();
         const GlobalKeys&      getGlobalKeys() const;
         const PowerAppletKeys& getPowerAppletKeys() const;
 
 private:
-        Keys(const Keys&)            = delete;
-        Keys(Keys&&)                 = delete;
-        Keys& operator=(const Keys&) = delete;
-        Keys& operator=(Keys&&)      = delete;
-
         friend class ConfigMapper;
 
         GlobalKeys      global_keys;
