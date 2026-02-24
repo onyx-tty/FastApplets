@@ -72,7 +72,7 @@ std::string icon_alignment_error =
 } // namespace alignment
 namespace size_policy {
 // clang-format off
-string primary_button_error =
+std::string primary_button_error =
         "Wrong setting in config.toml for: policy"
         "Available values: expanding, fixed"
         "Default: expanding";
@@ -522,7 +522,7 @@ void ConfigMapper::mapToKeys(const toml::table& keys_table, Keys& keys) {
 
         // Primary button control keys - PowerApplet
         for (size_t i = 0; i != keys.power_applet_keys.getPrimaryButtonKeys().size(); ++i) {
-                string button_name = "primary_button" + std::to_string(i + 1);
+                std::string button_name = "primary_button" + std::to_string(i + 1);
                 interpretTextAsKeybindings(keys_table["power_applet"][button_name],
                                            keys.power_applet_keys.primary_button_keys[i]);
         }

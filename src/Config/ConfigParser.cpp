@@ -21,7 +21,7 @@
 #include "CppUtils/include/Enum.h"
 
 // TODO Extract
-toml::table ConfigParser::createTable(string file_path) {
+toml::table ConfigParser::createTable(std::string file_path) {
         toml::table file_table;
 
         QDEBUG() << file_path;
@@ -29,7 +29,7 @@ toml::table ConfigParser::createTable(string file_path) {
         try {
                 file_table = toml::parse_file(file_path);
         } catch (const toml::parse_error& error) {
-                QFATAL("Parsing of %s failed: %s", string(file_path).c_str(),
+                QFATAL("Parsing of %s failed: %s", std::string(file_path).c_str(),
                        std::string(error.description()).c_str());
         }
 
