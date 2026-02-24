@@ -6,8 +6,6 @@
 
 3.  \[ \] Shell command mode as an alternative to DBus mode
 
-4.  \[ \] Configurable DBus target
-
     <br>
 
 # PROJ WeatherApplet \[4/6\]
@@ -26,6 +24,10 @@
 
     <br>
 
+# <span class="todo TODO">TODO</span> VolumeApplet
+
+<br>
+
 # <span class="todo TODO">TODO</span> LauncherApplet
 
 <br>
@@ -38,7 +40,7 @@
 
 <br>
 
-# Base \[10/23\]
+# Base \[11/21\]
 
 1.  \[X\] LICENSE
 
@@ -68,7 +70,7 @@
 
 10. \[X\] Centralized CMake structure
 
-11. \[ \] Enforced static compilation of private libraries
+11. \[ \] Static compilation of private libraries
 
 12. \[X\] Cleaner build directories
 
@@ -81,13 +83,9 @@
 
 16. \[ \] Handle incorrect values in config
 
-17. \[ \] Fallback config
+17. \[X\] Fallback config
 
-18. \[ \] Generate config on runtime if missing
-
-19. \[ \] Split and break-up large functions
-
-20. \[ \] Testing
+18. \[ \] Testing
 
     1.  \[ \] GTest
 
@@ -95,14 +93,4 @@
 
     3.  \[ \] GBenchmark
 
-21. \[ \] Extract utility functions to the new CppUtils repo
-
-22. \[X\] Utilize the logging wrappers
-
-23. \[ \] Encapsulate non-trivial global variables in source files
-
-    Avoid placing non-trivial objects at namespace scope because it
-    triggers dynamic initialization at program startup,  
-    which can lead to Undefined Behavior if other globals or TUs depend
-    on them.  
-    Lazy initialize or construct on first use.
+19. \[X\] Utilize the logging wrappers
