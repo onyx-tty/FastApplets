@@ -64,8 +64,8 @@ std::string text_alignment_error =
 
 // clang-format off
 std::string icon_alignment_error =
-        "Wrong setting in config.toml for: icon_alignment"
-        "Available values: top, center, bottom, left, right"
+        "Wrong setting in config.toml for: icon_alignment\n"
+        "Available values: top, center, bottom, left, right\n"
         "Default: center";
 // clang-format on
 
@@ -73,9 +73,9 @@ std::string icon_alignment_error =
 namespace size_policy {
 // clang-format off
 std::string primary_button_error =
-        "Wrong setting in config.toml for: policy"
-        "Available values: expanding, fixed"
-        "Default: expanding";
+        "Wrong setting in config.toml for: policy\n"
+        "Available values: expanding, fixed\n"
+        "Default: expanding\n";
 // clang-format on
 } // namespace size_policy
 } // namespace error_message
