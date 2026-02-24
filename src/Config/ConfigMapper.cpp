@@ -103,7 +103,7 @@ void interpretTextAsKeybindings(const toml::node_view<const toml::node>& source,
 
                 return; // Drop these keybindings if source doesn't exist
         }
-        const auto keys_raw = source.as_array();
+        const auto& keys_raw = source.as_array();
 
         // TODO Extract into TOML utilities
         // Interpret keybinding text as a corresponding hexadecimal value for the Qt::Key enum
@@ -123,7 +123,7 @@ void interpretTextAsKeybindings(const toml::node_view<const toml::node>& source,
 void ConfigMapper::mapWindowSize(const toml::table& window, Config& config) {
         // TODO size_scale config option to let the size be a % of screen size
         // TODO option to automatically detect and assign monitor size to size and then multiply by size_scale
-        const auto  data     = (window)["size"].as_array();
+        const auto& data     = (window)["size"].as_array();
         const auto& defaults = Config::getDefaultConfig().getWindowProperties().getSize();
         auto&       size     = config.window_properties.size;
 
@@ -144,10 +144,10 @@ void ConfigMapper::mapWindowSize(const toml::table& window, Config& config) {
                 }
 
                 for (size_t i = 0; i != std::min(data->size(), arr_length); ++i) {
-                        const auto index = data->get(i)->as_integer();
+                        const auto& index = data->get(i)->as_integer();
 
                         if (!index) {
-                                const auto str_index = data->get(i)->as_string();
+                                const auto& str_index = data->get(i)->as_string();
 
                                 QWARNING_NS() << "in config.toml, global.window.size[" << i
                                               << "] must be an integer! Attempting conversion from"
@@ -170,9 +170,9 @@ void ConfigMapper::mapWindowSize(const toml::table& window, Config& config) {
 }
 
 void ConfigMapper::mapWindowTitle(const toml::table& window, Config& config) {
-        const auto& defaults = Config::getDefaultConfig().getWindowProperties().getTitle();
         // TODO Convert to string
-        const auto  data     = (window)["title"].as_string();
+        const auto& data     = (window)["title"].as_string();
+        const auto& defaults = Config::getDefaultConfig().getWindowProperties().getTitle();
         auto&       title    = config.window_properties.title;
 
         if (!data) {
@@ -188,7 +188,7 @@ void ConfigMapper::mapWindowTitle(const toml::table& window, Config& config) {
 // TODO Detect mismatched types, log them. Example: "expected int but got string"
 // TODO Apply toLowerCopy where applicable
 void ConfigMapper::mapWindowProperties(const toml::table& config_table, Config& config) {
-        const auto  data     = config_table["global"]["window"].as_table();
+        const auto& data     = config_table["global"]["window"].as_table();
         const auto& defaults = Config::getDefaultConfig().getWindowProperties();
         auto&       window   = config.window_properties;
 
@@ -207,7 +207,7 @@ void ConfigMapper::mapWindowProperties(const toml::table& config_table, Config& 
 
 /* Button Properties*/
 void ConfigMapper::mapButtonTextAlignment(const toml::table& button, Config& config) {
-        const auto  data = (button)["text_alignment"].as_string();
+        const auto& data = (button)["text_alignment"].as_string();
         const auto& defaults =
                 Config::getDefaultConfig().getPrimaryButtonProperties().getTextAlignment();
         auto& text_alignment = config.primary_button_properties.text_alignment;
@@ -227,7 +227,7 @@ void ConfigMapper::mapButtonTextAlignment(const toml::table& button, Config& con
 }
 
 void ConfigMapper::mapButtonIconAlignment(const toml::table& button, Config& config) {
-        const auto  data = (button)["icon_alignment"].as_string();
+        const auto& data = (button)["icon_alignment"].as_string();
         const auto& defaults =
                 Config::getDefaultConfig().getPrimaryButtonProperties().getIconAlignment();
         auto& icon_alignment = config.primary_button_properties.icon_alignment;
@@ -247,7 +247,7 @@ void ConfigMapper::mapButtonIconAlignment(const toml::table& button, Config& con
 }
 
 void ConfigMapper::mapButtonIconSize(const toml::table& button, Config& config) {
-        const auto data = (button)["icon_size"].as_array();
+        const auto& data = (button)["icon_size"].as_array();
         const auto& defaults = Config::getDefaultConfig().getPrimaryButtonProperties().getIconSize();
         auto& icon_size = config.primary_button_properties.icon_size;
 
@@ -270,7 +270,8 @@ void ConfigMapper::mapButtonIconSize(const toml::table& button, Config& config) 
                 }
 
                 for (size_t i = 0; i != std::min(data->size(), arr_length); ++i) {
-                        const auto index = data->get(i)->as_integer();
+                        // TODO validate data->get(i) before accessing it as integer
+                        const auto& index = data->get(i)->as_integer();
                         if (!index) {
                                 // TODO If icon_size[0] exists and is int, apply to both. If not, try to convert. If fails, default.
                                 QWARNING_NS() << "in config.toml, global.primary_button.icon_size["
@@ -287,7 +288,7 @@ void ConfigMapper::mapButtonIconSize(const toml::table& button, Config& config) 
 }
 
 void ConfigMapper::mapButtonPolicy(const toml::table& button, Config& config) {
-        const auto  data     = (button)["policy"].as_string();
+        const auto& data     = (button)["policy"].as_string();
         const auto& defaults = Config::getDefaultConfig().getPrimaryButtonProperties().getPolicy();
         auto&       policy   = config.primary_button_properties.policy;
 
@@ -306,7 +307,7 @@ void ConfigMapper::mapButtonPolicy(const toml::table& button, Config& config) {
 }
 
 void ConfigMapper::mapButtonProperties(const toml::table& config_table, Config& config) {
-        const auto  data           = config_table["global"]["primary_button"].as_table();
+        const auto& data           = config_table["global"]["primary_button"].as_table();
         const auto& defaults       = Config::getDefaultConfig().getPrimaryButtonProperties();
         auto&       primary_button = config.primary_button_properties;
 
@@ -334,7 +335,7 @@ void ConfigMapper::mapButtonProperties(const toml::table& config_table, Config& 
 /* Layout Properties */
 void ConfigMapper::mapLayoutPrimaryButtonData(const toml::table& button_table,
                                               PrimaryButtonData& button_data, size_t button_index) {
-        const auto  data     = (button_table)["id"].as_string();
+        const auto& data     = (button_table)["id"].as_string();
         const auto& defaults = Config::getDefaultConfig()
                                        .getWindowLayoutProperties()
                                        .getPrimaryPowerButtons()[button_index];
@@ -348,7 +349,7 @@ void ConfigMapper::mapLayoutPrimaryButtonData(const toml::table& button_table,
                 button_data.identifier = QString::fromStdString(data->get());
         }
 
-        const auto label = (button_table)["label"].as_string();
+        const auto& label = (button_table)["label"].as_string();
         if (!label) {
                 // TODO Attempt conversion. If fails, default.
                 QWARNING_NS() << "in config.toml, power_applet.layout.primary_buttons["
@@ -359,7 +360,7 @@ void ConfigMapper::mapLayoutPrimaryButtonData(const toml::table& button_table,
                 button_data.text = QString::fromStdString(label->get());
         }
 
-        const auto order = (button_table)["order"].as_integer();
+        const auto& order = (button_table)["order"].as_integer();
         if (!order) {
                 // TODO If order exists and is not int, try to convert. If fails, default.
                 QWARNING_NS() << "in config.toml, power_applet.layout.primary_buttons["
@@ -373,7 +374,7 @@ void ConfigMapper::mapLayoutPrimaryButtonData(const toml::table& button_table,
 
 void ConfigMapper::logButtonDisabled(const toml::table& button_table,
                                      PrimaryButtonData& button_data, size_t button_index) {
-        const auto  data     = (button_table)["id"].as_string();
+        const auto& data     = (button_table)["id"].as_string();
         const auto& defaults = Config::getDefaultConfig()
                                        .getWindowLayoutProperties()
                                        .getPrimaryPowerButtons()[button_index];
@@ -389,7 +390,7 @@ void ConfigMapper::logButtonDisabled(const toml::table& button_table,
 }
 
 void ConfigMapper::mapLayoutPrimaryButtons(const toml::table& layout, Config& config) {
-        const auto  data = (layout)["primary_buttons"].as_array();
+        const auto& data = (layout)["primary_buttons"].as_array();
         const auto& defaults =
                 Config::getDefaultConfig().getWindowLayoutProperties().getPrimaryPowerButtons();
         auto& primary_buttons = config.window_layout_properties.primary_power_buttons;
@@ -407,16 +408,16 @@ void ConfigMapper::mapLayoutPrimaryButtons(const toml::table& layout, Config& co
         for (auto& button_node : *data) {
                 // Find position of node in primary_buttons
                 // TODO Simplify, find_if I think is redundant
-                const auto it = std::find_if(data->begin(), data->end(),
-                                             [&button_node](const toml::node& n) -> bool {
-                                                     return &n == &button_node;
-                                             });
+                const auto& it = std::find_if(data->begin(), data->end(),
+                                              [&button_node](const toml::node& n) -> bool {
+                                                      return &n == &button_node;
+                                              });
 
                 const size_t index = std::distance(data->begin(), it);
 
                 PrimaryButtonData button_data{};
 
-                const auto button = button_node.as_table();
+                const auto& button = button_node.as_table();
                 if (!button) {
                         QWARNING_NS() << "in config.toml, power_applet.layout.primary_buttons["
                                       << index << "] must be a table! Using defaults...";
@@ -424,7 +425,7 @@ void ConfigMapper::mapLayoutPrimaryButtons(const toml::table& layout, Config& co
                         return;
                 }
 
-                const auto enabled_opt = (*button)["enabled"].as_boolean();
+                const auto& enabled_opt = (*button)["enabled"].as_boolean();
                 if (!enabled_opt) {
                         // TODO Attempt conversion. If fails, default.
                         QWARNING_NS() << "in config.toml, power_applet.layout.primary_buttons["
@@ -453,7 +454,7 @@ void ConfigMapper::mapLayoutPrimaryButtons(const toml::table& layout, Config& co
 }
 
 void ConfigMapper::mapLayoutProperties(const toml::table& config_table, Config& config) {
-        const auto  data          = config_table["power_applet"]["layout"].as_table();
+        const auto& data          = config_table["power_applet"]["layout"].as_table();
         const auto& defaults      = config.getWindowLayoutProperties();
         auto&       window_layout = config.window_layout_properties;
 
@@ -477,7 +478,7 @@ void ConfigMapper::mapToConfig(const toml::table& config_table, Config& config) 
         const auto& defaults = Config::getDefaultConfig();
 
         // Check the validity of global and power_applet
-        const auto global = config_table["global"].as_table();
+        const auto& global = config_table["global"].as_table();
         if (!global) {
                 QWARNING() << "in config.toml, global must be a table! Using defaults...";
                 config = defaults;
