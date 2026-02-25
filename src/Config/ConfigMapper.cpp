@@ -108,14 +108,12 @@ void interpretTextAsKeybindings(const toml::node_view<const toml::node>& source,
         };
 
         // Handle errors if source is invalid
-        if (!source || !source.is_array()) {
-                if (!source) {
-                        QCRITICAL() << "Source doesn't exist!";
-                } else if (!source.is_array()) {
-                        QCRITICAL() << "Source must be an array!";
-                }
-
-                return; // Drop these keybindings if source doesn't exist
+        if (!source) {
+                QCRITICAL() << "Source doesn't exist!";
+                return;
+        } else if (!source.is_array()) {
+                QCRITICAL() << "Source must be an array!";
+                return;
         }
 
         // Parse each key shortcut string representation into a corresponding keybinding and
