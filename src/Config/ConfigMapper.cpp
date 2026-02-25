@@ -117,10 +117,7 @@ void interpretTextAsKeybindings(const toml::node_view<const toml::node>& source,
                 // Parse each key shortcut string representation into a corresponding keybinding
                 // and insert it at the target
                 target.reserve(keys_raw->size());
-                // TODO target.begin() in the inserter is redundant, 'keybindings' is an unordered_map,
-                //      it has no beginning!
-                std::transform(keys_raw->begin(), keys_raw->end(), inserter(target, target.begin()),
-                               textToHexInterpreter);
+                for (const auto& key : *keys_raw) { target.insert(textToHexInterpreter(key)); }
         } else {
                 QCRITICAL() << "Source must be an array!";
                 return;
