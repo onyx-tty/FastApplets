@@ -87,6 +87,15 @@ std::string primary_button_error =
 // Use textToHexInterpreter on a TOML node to set-up keybindings for target
 void interpretTextAsKeybindings(const toml::node_view<const toml::node>& source,
                                 keybindings&                             target) {
+        // TODO Extract into TOML utilities
+        // Interpret keybinding text as a corresponding hexadecimal value for the Qt::Key enum
+        const auto textToHexInterpreter = [](const auto& node) {
+                QKeySequence    sequence(QString::fromStdString(node.as_string()->get()));
+                QKeyCombination combination(sequence[0]);
+
+                return combination.key();
+        };
+
         if (!source || !source.is_array()) {
                 QString keybindings_str = "";
                 for (const auto& key : target) {
@@ -98,21 +107,12 @@ void interpretTextAsKeybindings(const toml::node_view<const toml::node>& source,
                 if (!source) {
                         QCRITICAL() << "Empty source for keybindings:" << keybindings_str;
                 } else if (!source.is_array()) {
-                        QCRITICAL() << ": Non-array source for keybindings:" << keybindings_str;
+                        QCRITICAL() << "Non-array source for keybindings:" << keybindings_str;
                 }
 
                 return; // Drop these keybindings if source doesn't exist
         }
         const auto& keys_raw = source.as_array();
-
-        // TODO Extract into TOML utilities
-        // Interpret keybinding text as a corresponding hexadecimal value for the Qt::Key enum
-        const auto textToHexInterpreter = [](const auto& node) {
-                QKeySequence    sequence(QString::fromStdString(node.as_string()->get()));
-                QKeyCombination combination(sequence[0]);
-
-                return combination.key();
-        };
 
         target.reserve(keys_raw->size());
         transform(keys_raw->begin(), keys_raw->end(), inserter(target, target.begin()),
@@ -510,7 +510,6 @@ void ConfigMapper::mapToKeys(const toml::table& keys_table, Keys& keys) {
                 QFATAL("QApplication has not been instantiated yet!");
         }
 
-        // interpretTextAsKeybindings already checks for validity
         interpretTextAsKeybindings(keys_table["global"]["quit"], keys.global_keys.quit_keys);
         interpretTextAsKeybindings(keys_table["power_applet"]["quit"],
                                    keys.power_applet_keys.quit_keys);
