@@ -109,24 +109,17 @@ void interpretTextAsKeybindings(const toml::node_view<const toml::node>& source,
 
         // Handle errors if source is invalid
         if (!source || !source.is_array()) {
-                QString keybindings_str = "";
-                for (const auto& key : target) {
-                        if (!keybindings_str.isEmpty()) { keybindings_str += ","; }
-
-                        keybindings_str += QString::number(key);
-                }
-
                 if (!source) {
-                        QCRITICAL() << "Empty source for keybindings:" << keybindings_str;
+                        QCRITICAL() << "Source doesn't exist!";
                 } else if (!source.is_array()) {
-                        QCRITICAL() << "Non-array source for keybindings:" << keybindings_str;
+                        QCRITICAL() << "Source must be an array!";
                 }
 
                 return; // Drop these keybindings if source doesn't exist
         }
 
         // Parse each key shortcut string representation into a corresponding keybinding and
-        // insert it to the target
+        // insert it at the target
         const auto& keys_raw = source.as_array();
 
         target.reserve(keys_raw->size());
@@ -134,7 +127,7 @@ void interpretTextAsKeybindings(const toml::node_view<const toml::node>& source,
         //      it has no beginning!
         std::transform(keys_raw->begin(), keys_raw->end(), inserter(target, target.begin()),
                        textToHexInterpreter);
-};
+}
 
 /* Window Properties */
 void ConfigMapper::mapWindowSize(const toml::table& window, Config& config) {
