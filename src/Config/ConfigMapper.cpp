@@ -515,18 +515,39 @@ void ConfigMapper::mapToKeys(const toml::table& keys_table, Keys& keys) {
                 QFATAL("QApplication has not been instantiated yet!");
         }
 
-        interpretTextAsKeybindings(keys_table["global"]["quit"], keys.global_keys.quit_keys);
-        interpretTextAsKeybindings(keys_table["power_applet"]["quit"],
-                                   keys.power_applet_keys.quit_keys);
+        const auto& global = keys_table["global"].as_table();
+        if (!global) { QFATAL("in keys.toml, global must be a table!"); }
 
-        if (keys.power_applet_keys.getQuitKeys()
-                    .empty()) { // TODO std::variant<Keybindings, Keybindings&>
+        const auto& global_quit = (*global)["quit"].as_array();
+        if (!global_quit) { QFATAL("in keys.toml, global.quit must be an array!"); }
+
+        // Parse global.quit
+        interpretTextAsKeybindings(keys_table["global"]["quit"], keys.global_keys.quit_keys);
+
+        const auto& power_applet = keys_table["power_applet"].as_table();
+        if (!power_applet) { QFATAL("in keys.toml, power_applet must be a table!"); }
+
+        const auto& power_applet_quit = (*power_applet)["quit"].as_array();
+        if (!power_applet_quit) { QFATAL("in keys.toml, power_applet.quit must be an array!"); }
+
+        // If power_applet.quit not empty, interpret, otherwise copy global_keys.quit
+        if (!keys.power_applet_keys.getQuitKeys().empty()) {
+                interpretTextAsKeybindings(keys_table["power_applet"]["quit"],
+                                           keys.power_applet_keys.quit_keys);
+        } else {
                 keys.power_applet_keys.quit_keys = keys.global_keys.quit_keys;
         }
 
-        // Primary button control keys - PowerApplet
+        // Parse power_applet.primary_buttonX
         for (size_t i = 0; i != keys.power_applet_keys.getPrimaryButtonKeys().size(); ++i) {
                 std::string button_name = "primary_button" + std::to_string(i + 1);
+                const auto& button      = (*power_applet)[button_name].as_array();
+
+                if (!button) {
+                        QFATAL("in keys.toml, power_applet.%s must be an array!",
+                               button_name.c_str());
+                }
+
                 interpretTextAsKeybindings(keys_table["power_applet"][button_name],
                                            keys.power_applet_keys.primary_button_keys[i]);
         }
