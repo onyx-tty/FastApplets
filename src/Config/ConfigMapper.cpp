@@ -531,7 +531,7 @@ void ConfigMapper::mapToKeys(const toml::table& keys_table, Keys& keys) {
         if (!power_applet_quit) { QFATAL("in keys.toml, power_applet.quit must be an array!"); }
 
         // If power_applet.quit not empty, interpret, otherwise copy global_keys.quit
-        if (!keys.power_applet_keys.getQuitKeys().empty()) {
+        if (!(*power_applet_quit).empty()) {
                 interpretTextAsKeybindings(keys_table["power_applet"]["quit"],
                                            keys.power_applet_keys.quit_keys);
         } else {
