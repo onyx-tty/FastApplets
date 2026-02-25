@@ -82,13 +82,24 @@ std::string primary_button_error =
 
 } // namespace
 
-// TODO Extract
-// TODO Split
-// Use textToHexInterpreter on a TOML node to set-up keybindings for target
+/* Interpret an array of string representations of a keyboard shortcut at a target location */
+// Apply the internal lambda textToHexInterpreter to each keyboard shortcut string representation
+// Assign the result to the given target
+// TODO Extract into TOML utilities
+// TODO Split into separate functions:
+// TODO 1. Error-handling
+// TODO 2. Returning an array of 'keybindings'
+// TODO 3. Assigning the array of 'keybindings' to the target
 void interpretTextAsKeybindings(const toml::node_view<const toml::node>& source,
                                 keybindings&                             target) {
+        /* Interpret a string representation of a keyboard shortcut to a Qt key code */
+        // Given a node containing a string like "Escape", this lambda:
+        // 1. Extracts the string from the node
+        // 2. Parses it as a QKeySequence, which in this case is recognized as Qt::Key_Escape
+        // 3. Extracts just the key (without modifiers) from the key combination,
+        //    as a hexadecimal value
+        // TODO Error handling, ensure the node is valid, handle possible failed conversions
         // TODO Extract into TOML utilities
-        // Interpret keybinding text as a corresponding hexadecimal value for the Qt::Key enum
         const auto textToHexInterpreter = [](const auto& node) {
                 QKeySequence    sequence(QString::fromStdString(node.as_string()->get()));
                 QKeyCombination combination(sequence[0]);
@@ -96,6 +107,7 @@ void interpretTextAsKeybindings(const toml::node_view<const toml::node>& source,
                 return combination.key();
         };
 
+        // Handle errors if source is invalid
         if (!source || !source.is_array()) {
                 QString keybindings_str = "";
                 for (const auto& key : target) {
@@ -112,11 +124,16 @@ void interpretTextAsKeybindings(const toml::node_view<const toml::node>& source,
 
                 return; // Drop these keybindings if source doesn't exist
         }
+
+        // Parse each key shortcut string representation into a corresponding keybinding and
+        // insert it to the target
         const auto& keys_raw = source.as_array();
 
         target.reserve(keys_raw->size());
-        transform(keys_raw->begin(), keys_raw->end(), inserter(target, target.begin()),
-                  textToHexInterpreter);
+        // TODO target.begin() in the inserter is redundant, 'keybindings' is an unordered_map,
+        //      it has no beginning!
+        std::transform(keys_raw->begin(), keys_raw->end(), inserter(target, target.begin()),
+                       textToHexInterpreter);
 };
 
 /* Window Properties */
