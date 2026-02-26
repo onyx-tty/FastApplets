@@ -509,46 +509,85 @@ void ConfigMapper::mapToConfig(const toml::table& config_table, Config& config) 
         mapLayoutProperties(config_table, config);
 }
 
-void ConfigMapper::mapToKeys(const toml::table& keys_table, Keys& keys) {
-        // Confirm that a QApplication instance exists
-        if (!QApplication::instanceExists()) {
-                QFATAL("QApplication has not been instantiated yet!");
-        }
+void ConfigMapper::mapGlobalQuitKeys(const toml::table& global, Keys& keys) {
+        const auto& data     = (global)["quit"].as_array();
+        auto&       quit     = keys.global_keys.quit_keys;
 
-        const auto& global = keys_table["global"].as_table();
-        if (!global) { QFATAL("in keys.toml, global must be a table!"); }
+        if (!data) { QFATAL("in keys.toml, global.quit must be an array!"); }
 
-        const auto& global_quit = (*global)["quit"].as_array();
-        if (!global_quit) { QFATAL("in keys.toml, global.quit must be an array!"); }
+        interpretTextAsKeybindings(global["quit"], quit);
+}
 
-        // Parse global.quit
-        interpretTextAsKeybindings(keys_table["global"]["quit"], keys.global_keys.quit_keys);
+void ConfigMapper::mapGlobalKeys(const toml::table& keys_table, Keys& keys) {
+        const auto& data     = keys_table["global"].as_table();
+        auto&       global   = keys.global_keys;
 
-        const auto& power_applet = keys_table["power_applet"].as_table();
-        if (!power_applet) { QFATAL("in keys.toml, power_applet must be a table!"); }
+        if (!data) { QFATAL("in keys.toml, global must be a table!"); }
 
-        const auto& power_applet_quit = (*power_applet)["quit"].as_array();
+        /* Quit Keys */
+        mapGlobalQuitKeys(*data, keys);
+}
+
+void ConfigMapper::mapPowerAppletQuitKeys(const toml::table& power_applet, Keys& keys) {
+        const auto& data     = power_applet["quit"].as_array();
+        auto&       quit     = keys.power_applet_keys.quit_keys;
+
+        const auto& power_applet_quit = (power_applet)["quit"].as_array();
         if (!power_applet_quit) { QFATAL("in keys.toml, power_applet.quit must be an array!"); }
 
         // If power_applet.quit not empty, interpret, otherwise copy global_keys.quit
         if (!(*power_applet_quit).empty()) {
-                interpretTextAsKeybindings(keys_table["power_applet"]["quit"],
-                                           keys.power_applet_keys.quit_keys);
+                interpretTextAsKeybindings(power_applet["quit"], quit);
         } else {
                 keys.power_applet_keys.quit_keys = keys.global_keys.quit_keys;
         }
+}
+
+void ConfigMapper::mapPowerAppletPrimaryButtonKeys(const toml::table& power_applet, Keys& keys) {
+        const std::array<const toml::array*, 4> data = {power_applet["primary_button1"].as_array(),
+                                                        power_applet["primary_button2"].as_array(),
+                                                        power_applet["primary_button3"].as_array(),
+                                                        power_applet["primary_button4"].as_array()};
+        auto& buttons = keys.power_applet_keys.primary_button_keys;
 
         // Parse power_applet.primary_buttonX
         for (size_t i = 0; i != keys.power_applet_keys.getPrimaryButtonKeys().size(); ++i) {
                 std::string button_name = "primary_button" + std::to_string(i + 1);
-                const auto& button      = (*power_applet)[button_name].as_array();
+                const auto& button      = data[i];
 
                 if (!button) {
                         QFATAL("in keys.toml, power_applet.%s must be an array!",
                                button_name.c_str());
                 }
 
-                interpretTextAsKeybindings(keys_table["power_applet"][button_name],
-                                           keys.power_applet_keys.primary_button_keys[i]);
+                interpretTextAsKeybindings(power_applet[button_name], buttons[i]);
         }
+}
+
+void ConfigMapper::mapPowerAppletKeys(const toml::table& keys_table, Keys& keys) {
+        const auto& data         = keys_table["power_applet"].as_table();
+        auto&       power_applet = keys.power_applet_keys;
+
+        if (!data) { QFATAL("in keys.toml, power_applet must be a table!"); }
+
+        /* Quit Keys */
+        mapPowerAppletQuitKeys(*data, keys);
+
+        /* Primary Button Keys*/
+        mapPowerAppletPrimaryButtonKeys(*data, keys);
+}
+
+void ConfigMapper::mapToKeys(const toml::table& keys_table, Keys& keys) {
+        // Confirm that a QApplication instance exists
+        if (!QApplication::instanceExists()) {
+                QFATAL("QApplication has not been instantiated yet!");
+        }
+
+        const toml::table& data = keys_table;
+
+        /* Global Keys */
+        mapGlobalKeys(data, keys);
+
+        /* PowerApplet Keys*/
+        mapPowerAppletKeys(data, keys);
 }

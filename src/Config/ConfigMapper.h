@@ -47,6 +47,15 @@ private:
         static void mapLayoutPrimaryButtons(const toml::table& layout, Config& config);
         static void mapLayoutProperties(const toml::table& config_table, Config& config);
 
+        /* Global Keys */
+        static void mapGlobalQuitKeys(const toml::table& global, Keys& keys);
+        static void mapGlobalKeys(const toml::table& keys_table, Keys& keys);
+
+        /* Power Applet Keys*/
+        static void mapPowerAppletQuitKeys(const toml::table& power_applet, Keys& keys);
+        static void mapPowerAppletPrimaryButtonKeys(const toml::table& power_applet, Keys& keys);
+        static void mapPowerAppletKeys(const toml::table& keys_table, Keys& keys);
+
 public:
         /* Main functions */
         static void mapToConfig(const toml::table& config_table, Config& config);
