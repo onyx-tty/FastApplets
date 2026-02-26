@@ -61,7 +61,7 @@ const Keys& Keys::getDefaultKeys() {
                                                                 keybindings{Qt::Key_2},
                                                                 keybindings{Qt::Key_3},
                                                                 keybindings{Qt::Key_4}};
-        Keys::PowerAppletKeys      default_power_applet_keys = {std::move(quit_keys),
+        Keys::PowerAppletKeys      default_power_applet_keys = {default_global_keys.getQuitKeys(),
                                                                 std::move(primary_button_keys)};
 
         static Keys default_keys{std::move(default_global_keys),
