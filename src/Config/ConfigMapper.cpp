@@ -511,18 +511,28 @@ void ConfigMapper::mapToConfig(const toml::table& config_table, Config& config) 
 
 void ConfigMapper::mapGlobalQuitKeys(const toml::table& global, Keys& keys) {
         const auto& data     = (global)["quit"].as_array();
+        const auto& defaults = Keys::getDefaultKeys().getGlobalKeys().getQuitKeys();
         auto&       quit     = keys.global_keys.quit_keys;
 
-        if (!data) { QFATAL("in keys.toml, global.quit must be an array!"); }
+        if (!data) {
+                QWARNING() << "in keys.toml, global.quit must be an array! Using defaults...";
+                quit = defaults;
+                return;
+        }
 
         interpretTextAsKeybindings(global["quit"], quit);
 }
 
 void ConfigMapper::mapGlobalKeys(const toml::table& keys_table, Keys& keys) {
         const auto& data     = keys_table["global"].as_table();
+        const auto& defaults = Keys::getDefaultKeys().getGlobalKeys();
         auto&       global   = keys.global_keys;
 
-        if (!data) { QFATAL("in keys.toml, global must be a table!"); }
+        if (!data) {
+                QWARNING() << "in keys.toml, global must be a table! Using defaults...";
+                global = defaults;
+                return;
+        }
 
         /* Quit Keys */
         mapGlobalQuitKeys(*data, keys);
@@ -530,10 +540,15 @@ void ConfigMapper::mapGlobalKeys(const toml::table& keys_table, Keys& keys) {
 
 void ConfigMapper::mapPowerAppletQuitKeys(const toml::table& power_applet, Keys& keys) {
         const auto& data     = power_applet["quit"].as_array();
+        const auto& defaults = Keys::getDefaultKeys().getPowerAppletKeys().getQuitKeys();
         auto&       quit     = keys.power_applet_keys.quit_keys;
 
         const auto& power_applet_quit = (power_applet)["quit"].as_array();
-        if (!power_applet_quit) { QFATAL("in keys.toml, power_applet.quit must be an array!"); }
+        if (!power_applet_quit) {
+                QWARNING() << "in keys.toml, power_applet.quit must be an array! Using defaults..";
+                quit = defaults;
+                return;
+        }
 
         // If power_applet.quit not empty, interpret, otherwise copy global_keys.quit
         if (!(*power_applet_quit).empty()) {
@@ -548,16 +563,20 @@ void ConfigMapper::mapPowerAppletPrimaryButtonKeys(const toml::table& power_appl
                                                         power_applet["primary_button2"].as_array(),
                                                         power_applet["primary_button3"].as_array(),
                                                         power_applet["primary_button4"].as_array()};
+        const std::array<keybindings, 4>&       defaults =
+                Keys::getDefaultKeys().getPowerAppletKeys().getPrimaryButtonKeys();
         auto& buttons = keys.power_applet_keys.primary_button_keys;
 
         // Parse power_applet.primary_buttonX
-        for (size_t i = 0; i != keys.power_applet_keys.getPrimaryButtonKeys().size(); ++i) {
+        for (size_t i = 0; i != buttons.size(); ++i) {
                 std::string button_name = "primary_button" + std::to_string(i + 1);
                 const auto& button      = data[i];
 
                 if (!button) {
-                        QFATAL("in keys.toml, power_applet.%s must be an array!",
-                               button_name.c_str());
+                        QWARNING_NS() << "in keys.toml, power_applet.primary_button" << i
+                                      << " must be an array! Using defaults...";
+                        buttons[i] = defaults[i];
+                        continue;
                 }
 
                 interpretTextAsKeybindings(power_applet[button_name], buttons[i]);
@@ -566,9 +585,14 @@ void ConfigMapper::mapPowerAppletPrimaryButtonKeys(const toml::table& power_appl
 
 void ConfigMapper::mapPowerAppletKeys(const toml::table& keys_table, Keys& keys) {
         const auto& data         = keys_table["power_applet"].as_table();
+        const auto& defaults     = Keys::getDefaultKeys().getPowerAppletKeys();
         auto&       power_applet = keys.power_applet_keys;
 
-        if (!data) { QFATAL("in keys.toml, power_applet must be a table!"); }
+        if (!data) {
+                QWARNING() << "in keys.toml, power_applet must be a table! Using defaults...";
+                power_applet = defaults;
+                return;
+        }
 
         /* Quit Keys */
         mapPowerAppletQuitKeys(*data, keys);
