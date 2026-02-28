@@ -13,5 +13,6 @@ target_include_directories(PowerApplet_UI PRIVATE
 target_link_libraries(PowerApplet_UI PRIVATE
         Config
         Core::Log
+        Environment
         UI
         PowerApplet::DBus)

@@ -15,18 +15,24 @@
    You should have received a copy of the GNU General Public License
    along with this program.  If not, see <https://www.gnu.org/licenses/>. */
 
-#pragma once
+#include "ShellRunner.h"
 
-#include "UI/Widgets/Button.h"
+#include <cstdlib>
 
-class PowerButton final : public Button {
-        Q_OBJECT
+// TODO Replace std::system to eliminate command injection caused by shell interpretation
 
-private:
-        const QString dbus_action;
+void ShellRunner::runShutdownCommand() {
+        std::system("systemctl poweroff");
+}
 
-public:
-        explicit PowerButton(QBoxLayout* layout, QIcon icon, QString text, QString dbus_action);
+void ShellRunner::runRebootCommand() {
+        std::system("systemctl reboot");
+}
 
-        const QString& getDBusAction();
-};
+void ShellRunner::runSuspendCommand() {
+        std::system("systemctl suspend");
+}
+
+void ShellRunner::runHibernateCommand() {
+        std::system("systemctl hibernate");
+}

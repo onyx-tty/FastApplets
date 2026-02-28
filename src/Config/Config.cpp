@@ -65,13 +65,22 @@ const std::vector<PrimaryButtonData>& Config::WindowLayoutProperties::getPrimary
         return primary_power_buttons;
 }
 
+/* Environment Properties */
+Config::EnvironmentProperties::EnvironmentProperties(bool dbus_mode) : dbus_mode(dbus_mode) {}
+
+const bool& Config::EnvironmentProperties::getDBusMode() const {
+        return dbus_mode;
+}
+
 /* Config */
 Config::Config(Config::WindowProperties        window_properties,
                Config::PrimaryButtonProperties primary_button_properties,
-               Config::WindowLayoutProperties  window_layout_properties) :
+               Config::WindowLayoutProperties  window_layout_properties,
+               Config::EnvironmentProperties   environment_properties) :
         window_properties(std::move(window_properties)),
         window_layout_properties(std::move(window_layout_properties)),
-        primary_button_properties(std::move(primary_button_properties)) {}
+        primary_button_properties(std::move(primary_button_properties)),
+        environment_properties(std::move(environment_properties)) {}
 
 Config& Config::getConfig() {
         static Config config{};
@@ -106,9 +115,13 @@ const Config& Config::getDefaultConfig() {
                  PrimaryButtonData{"hibernate", "Hibernate", 4}};
         WindowLayoutProperties default_window_layout_properties = {std::move(primary_buttons)};
 
+        bool                  dbus_mode = false;
+        EnvironmentProperties default_environment_properties{dbus_mode};
+
         static Config default_config = {std::move(default_window_properties),
                                         std::move(default_primary_button_properties),
-                                        std::move(default_window_layout_properties)};
+                                        std::move(default_window_layout_properties),
+                                        std::move(default_environment_properties)};
 
         return default_config;
 }
@@ -123,4 +136,8 @@ const Config::WindowLayoutProperties& Config::getWindowLayoutProperties() const 
 
 const Config::PrimaryButtonProperties& Config::getPrimaryButtonProperties() const {
         return primary_button_properties;
+}
+
+const Config::EnvironmentProperties& Config::getEnvironmentProperties() const {
+        return environment_properties;
 }

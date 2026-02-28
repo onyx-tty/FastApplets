@@ -9,6 +9,8 @@ icon_size = [64, 64]
 policy = "expanding"
 
 [power_applet]
+[power_applet.environment]
+dbus_mode = false
 #[power_applet.window]
 #size = [960, 220]
 #title = "test_window"
@@ -41,7 +43,6 @@ id = "hibernate"
 label = "Hibernate"
 order = 4
 enabled = true
-
 
 #[weather_applet]
 #[weather_applet.window]

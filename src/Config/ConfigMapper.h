@@ -47,6 +47,10 @@ private:
         static void mapLayoutPrimaryButtons(const toml::table& layout, Config& config);
         static void mapLayoutProperties(const toml::table& config_table, Config& config);
 
+        /* Environment Properties*/
+        static void mapEnvironmentDBusMode(const toml::table& environment, Config& config);
+        static void mapEnvironmentProperties(const toml::table& config_table, Config& config);
+
         /* Global Keys */
         static void mapGlobalQuitKeys(const toml::table& global, Keys& keys);
         static void mapGlobalKeys(const toml::table& keys_table, Keys& keys);

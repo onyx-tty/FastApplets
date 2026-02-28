@@ -17,16 +17,13 @@
 
 #pragma once
 
-#include "UI/Widgets/Button.h"
-
-class PowerButton final : public Button {
-        Q_OBJECT
-
+class ShellRunner final {
 private:
-        const QString dbus_action;
+        ShellRunner() = delete;
 
 public:
-        explicit PowerButton(QBoxLayout* layout, QIcon icon, QString text, QString dbus_action);
-
-        const QString& getDBusAction();
+        static void runShutdownCommand();
+        static void runRebootCommand();
+        static void runSuspendCommand();
+        static void runHibernateCommand();
 };
