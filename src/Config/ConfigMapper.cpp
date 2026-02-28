@@ -455,10 +455,10 @@ void ConfigMapper::mapLayoutPrimaryButtons(const toml::table& layout, Config& co
         }
 
         // TODO Handle multiple order integers of the same value
-        sort(buttons_found.begin(), buttons_found.end(),
-             [](const PrimaryButtonData& a, const PrimaryButtonData& b) -> bool {
-                     return a.order < b.order;
-             });
+        std::sort(buttons_found.begin(), buttons_found.end(),
+                  [](const PrimaryButtonData& a, const PrimaryButtonData& b) -> bool {
+                          return a.order < b.order;
+                  });
 
         primary_buttons = std::move(buttons_found);
 }
