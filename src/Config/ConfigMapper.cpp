@@ -460,6 +460,11 @@ void ConfigMapper::mapLayoutPrimaryButtons(const toml::table& layout, Config& co
                           return a.order < b.order;
                   });
 
+        // Re-map order to a range of 1 to the number of buttons
+        for (size_t i = 0; i != buttons_found.size(); ++i) {
+                buttons_found[i].order = i + 1;
+        }
+
         primary_buttons = std::move(buttons_found);
 }
 
