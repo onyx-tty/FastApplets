@@ -22,7 +22,7 @@
 // TODO Replace std::system to eliminate command injection caused by shell interpretation
 
 void ShellRunner::runShutdownCommand() {
-        std::system("systemctl shutdown");
+        std::system("systemctl poweroff");
 }
 
 void ShellRunner::runRebootCommand() {

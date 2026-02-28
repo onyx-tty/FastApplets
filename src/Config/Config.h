@@ -71,15 +71,28 @@ public:
                 const QSizePolicy&   getPolicy() const;
         };
 
+        class EnvironmentProperties final {
+        private:
+                friend class ConfigMapper;
+
+                bool dbus_mode;
+
+        public:
+                EnvironmentProperties(bool dbus_mode = false);
+                const bool& getDBusMode() const;
+        };
+
         Config(Config::WindowProperties        window_properties         = {},
                Config::PrimaryButtonProperties primary_button_properties = {},
-               Config::WindowLayoutProperties  window_layout_properties  = {});
+               Config::WindowLayoutProperties  window_layout_properties  = {},
+               Config::EnvironmentProperties   environment_properties    = {});
         // TODO Make this const to avoid overwrites
         static Config&                 getConfig();
         static const Config&           getDefaultConfig();
         const WindowProperties&        getWindowProperties() const;
         const WindowLayoutProperties&  getWindowLayoutProperties() const;
         const PrimaryButtonProperties& getPrimaryButtonProperties() const;
+        const EnvironmentProperties&   getEnvironmentProperties() const;
 
 private:
         friend class ConfigMapper;
@@ -87,4 +100,5 @@ private:
         WindowProperties        window_properties;
         WindowLayoutProperties  window_layout_properties;
         PrimaryButtonProperties primary_button_properties;
+        EnvironmentProperties   environment_properties;
 };

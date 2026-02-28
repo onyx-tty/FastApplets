@@ -474,6 +474,37 @@ void ConfigMapper::mapLayoutProperties(const toml::table& config_table, Config& 
         ConfigMapper::mapLayoutPrimaryButtons(*data, config);
 }
 
+void ConfigMapper::mapEnvironmentDBusMode(const toml::table& environment, Config& config) {
+        const auto& data      = (environment)["dbus_mode"].as_boolean();
+        const auto& defaults  = Config::getDefaultConfig().getEnvironmentProperties().getDBusMode();
+        auto&       dbus_mode = config.environment_properties.dbus_mode;
+
+        if (!data) {
+                QWARNING() << "in config.toml, power_applet.environment.dbus_mode"
+                           << "must be a boolean! Using defaults...";
+                dbus_mode = defaults;
+                return;
+        }
+
+        dbus_mode = data;
+}
+
+void ConfigMapper::mapEnvironmentProperties(const toml::table& config_table, Config& config) {
+        const auto& data        = config_table["power_applet"]["environment"].as_table();
+        const auto& defaults    = Config::getDefaultConfig().getEnvironmentProperties();
+        auto&       environment = config.environment_properties;
+
+        if (!data) {
+                QWARNING() << "in config.toml, power_applet.environment must be a table!"
+                           << "Using defaults...";
+                environment = defaults;
+                return;
+        }
+
+        // D-Bus mode
+        ConfigMapper::mapEnvironmentDBusMode(*data, config);
+}
+
 void ConfigMapper::mapToConfig(const toml::table& config_table, Config& config) {
         // Confirm that a QApplication instance exists
         if (!QApplication::instanceExists()) {
@@ -507,6 +538,9 @@ void ConfigMapper::mapToConfig(const toml::table& config_table, Config& config) 
 
         /* Window layout properties */
         mapLayoutProperties(config_table, config);
+
+        /* Environment Properties */
+        mapEnvironmentProperties(config_table, config);
 }
 
 void ConfigMapper::mapGlobalQuitKeys(const toml::table& global, Keys& keys) {
