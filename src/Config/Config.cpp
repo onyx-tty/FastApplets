@@ -114,11 +114,14 @@ const Config& Config::getDefaultConfig() {
                  PrimaryButtonData{"suspend", "Suspend", 3},
                  PrimaryButtonData{"hibernate", "Hibernate", 4}};
         WindowLayoutProperties default_window_layout_properties = {std::move(primary_buttons)};
-        bool                   dbus_mode                        = false;
+
+        bool                  dbus_mode = false;
+        EnvironmentProperties default_environment_properties{dbus_mode};
 
         static Config default_config = {std::move(default_window_properties),
                                         std::move(default_primary_button_properties),
-                                        std::move(default_window_layout_properties), dbus_mode};
+                                        std::move(default_window_layout_properties),
+                                        std::move(default_environment_properties)};
 
         return default_config;
 }
