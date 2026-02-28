@@ -449,6 +449,11 @@ void ConfigMapper::mapLayoutPrimaryButtons(const toml::table& layout, Config& co
                 }
         }
 
+        if (buttons_found.empty()) {
+                QWARNING() << "No enabled buttons found in config.toml!";
+                return;
+        }
+
         // TODO Handle multiple order integers of the same value
         sort(buttons_found.begin(), buttons_found.end(),
              [](const PrimaryButtonData& a, const PrimaryButtonData& b) -> bool {
