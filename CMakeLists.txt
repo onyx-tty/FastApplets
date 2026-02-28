@@ -64,6 +64,10 @@ add_subdirectory(
         Config-build)
 
 add_subdirectory(
+        src/Environment
+        Environment-build)
+
+add_subdirectory(
         src/UI
         UI-build)
 
