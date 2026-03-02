@@ -38,42 +38,43 @@ std::vector<PowerButton*> PowerCentralWidget::createButtonList(QBoxLayout* main_
                 Config::getConfig().getWindowLayoutProperties().getPrimaryPowerButtons();
         const auto                primary_buttons_icons = createButtonIcons();
         std::vector<PowerButton*> primary_buttons;
-        for_each(primary_buttons_data.begin(), primary_buttons_data.end(),
-                 [this, &main_layout, &primary_buttons, &primary_buttons_icons,
-                  &primary_buttons_data](const auto& data) {
-                         QDEBUG() << "New data:" << data.identifier << ":" << data.text;
+        std::for_each(
+                primary_buttons_data.begin(), primary_buttons_data.end(),
+                [this, &main_layout, &primary_buttons, &primary_buttons_icons,
+                 &primary_buttons_data](const auto& data) {
+                        QDEBUG() << "New data:" << data.identifier << ":" << data.text;
 
-                         if (data.identifier.toLower() == "poweroff"
-                             || data.identifier.toLower() == "shutdown") {
-                                 QString method = "PowerOff";
-                                 QDEBUG() << "Created PowerOff!";
-                                 primary_buttons.push_back(new PowerButton(main_layout,
-                                                                           primary_buttons_icons[0],
-                                                                           data.text, method));
-                         } else if (data.identifier.toLower() == "reboot") {
-                                 QString method = "Reboot";
-                                 QDEBUG() << "Created Reboot!";
-                                 primary_buttons.push_back(new PowerButton(main_layout,
-                                                                           primary_buttons_icons[1],
-                                                                           data.text, method));
-                         } else if (data.identifier.toLower() == "suspend") {
-                                 QString method = "Suspend";
-                                 QDEBUG() << "Created Suspend!";
-                                 primary_buttons.push_back(new PowerButton(main_layout,
-                                                                           primary_buttons_icons[2],
-                                                                           data.text, method));
-                         } else if (data.identifier.toLower() == "hibernate") {
-                                 QString method = "Hibernate";
-                                 QDEBUG() << "Created Hibernate!";
-                                 primary_buttons.push_back(new PowerButton(main_layout,
-                                                                           primary_buttons_icons[3],
-                                                                           data.text, method));
-                         } else {
-                                 QCRITICAL()
-                                         << "Unknown button identifier detected!"
-                                         << "Potential error on the line defining primary buttons!";
-                         }
-                 });
+                        if (data.identifier.toLower() == "poweroff"
+                            || data.identifier.toLower() == "shutdown") {
+                                QString method = "PowerOff";
+                                QDEBUG() << "Created PowerOff!";
+                                primary_buttons.push_back(new PowerButton(main_layout,
+                                                                          primary_buttons_icons[0],
+                                                                          data.text, method));
+                        } else if (data.identifier.toLower() == "reboot") {
+                                QString method = "Reboot";
+                                QDEBUG() << "Created Reboot!";
+                                primary_buttons.push_back(new PowerButton(main_layout,
+                                                                          primary_buttons_icons[1],
+                                                                          data.text, method));
+                        } else if (data.identifier.toLower() == "suspend") {
+                                QString method = "Suspend";
+                                QDEBUG() << "Created Suspend!";
+                                primary_buttons.push_back(new PowerButton(main_layout,
+                                                                          primary_buttons_icons[2],
+                                                                          data.text, method));
+                        } else if (data.identifier.toLower() == "hibernate") {
+                                QString method = "Hibernate";
+                                QDEBUG() << "Created Hibernate!";
+                                primary_buttons.push_back(new PowerButton(main_layout,
+                                                                          primary_buttons_icons[3],
+                                                                          data.text, method));
+                        } else {
+                                QCRITICAL()
+                                        << "Unknown button identifier detected!"
+                                        << "Potential error on the line defining primary buttons!";
+                        }
+                });
 
         if (!primary_buttons.empty()) {
                 return primary_buttons;
