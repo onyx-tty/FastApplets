@@ -32,7 +32,7 @@ static const std::unordered_map<int, int> power_key_map{{Qt::Key_1, 1},
                                                         {Qt::Key_4, 4}};
 }
 
-PowerButton* findPowerButton(int key_to_find, const ButtonList& buttons) {
+PowerButton* findPowerButton(int key, const ButtonList& buttons) {
         const auto& button_properties =
                 Config::getConfig().getWindowLayoutProperties().getPrimaryPowerButtons();
 
@@ -43,13 +43,13 @@ PowerButton* findPowerButton(int key_to_find, const ButtonList& buttons) {
         }
 
         for (size_t i = 0; i != buttons.size(); ++i) {
-                if (power_key_map.at(key_to_find) == button_properties[i].order) {
+                if (power_key_map.at(key) == button_properties[i].order) {
                         return buttons[i];
                         QDEBUG() << "Button" << i << "updated to:" << buttons[i]->getDBusAction();
                 }
         }
 
-        QFATAL("button corresponding to %i not found!", key_to_find);
+        QFATAL("button corresponding to %i not found!", key);
 }
 
 KeyAction::KeyAction() : key(Qt::Key_unknown), button(nullptr) {}

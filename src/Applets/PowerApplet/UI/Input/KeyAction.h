@@ -24,7 +24,7 @@
 
 class PowerCentralWidget;
 
-PowerButton* findPowerButton(int key_to_find, const std::vector<PowerButton*>& buttons);
+PowerButton* findPowerButton(int key, const std::vector<PowerButton*>& buttons);
 
 class KeyAction {
 private:
