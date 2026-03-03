@@ -23,11 +23,10 @@
 #include <QVariantMap>
 
 class PowerActionManager final {
-public:
-        static void sendPowerAction(const QString& method);
-
 private:
         explicit PowerActionManager() = delete;
-
         static void printReply(const QDBusPendingReply<QVariantMap>& response);
+
+public:
+        static void sendPowerAction(const QString& method);
 };

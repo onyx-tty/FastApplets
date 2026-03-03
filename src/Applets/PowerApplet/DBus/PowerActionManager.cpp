@@ -26,6 +26,15 @@
 #include <QList>
 #include <QVariant>
 
+void PowerActionManager::printReply(const QDBusPendingReply<QVariantMap>& reply) {
+        if (reply.reply().type() == QDBusMessage::ErrorMessage) {
+                QCRITICAL() << "Error sending action! Response:" << reply.error().name() << "-"
+                            << reply.error().message();
+        } else {
+                QINFO() << "Success sending power action!";
+        }
+}
+
 // TODO Check for validity of power action
 // org.freedesktop.login1 — The D-Bus interface of systemd-logind
 void PowerActionManager::sendPowerAction(const QString& method) {
@@ -37,13 +46,4 @@ void PowerActionManager::sendPowerAction(const QString& method) {
         QDEBUG() << "Sending signal" << method << "to" << interface;
         DBusRequester::call(systemd_logind, method);
         printReply(DBusRequester::getReply());
-}
-
-void PowerActionManager::printReply(const QDBusPendingReply<QVariantMap>& reply) {
-        if (reply.reply().type() == QDBusMessage::ErrorMessage) {
-                QCRITICAL() << "Error sending action! Response:" << reply.error().name() << "-"
-                            << reply.error().message();
-        } else {
-                QINFO() << "Success sending power action!";
-        }
 }

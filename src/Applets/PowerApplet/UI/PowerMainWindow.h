@@ -23,9 +23,9 @@
 #include <QWidget>
 
 class PowerMainWindow final : public MainWindow {
-private:
         Q_OBJECT
 
+private:
         PowerCentralWidget* central_widget;
 
 public:

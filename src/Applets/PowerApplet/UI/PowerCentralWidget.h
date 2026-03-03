@@ -32,17 +32,6 @@ enum class power_button { none = 0, shutdown = 1, reboot = 2, suspend = 3, hiber
 class PowerCentralWidget final : public QWidget {
         Q_OBJECT
 
-public:
-        explicit PowerCentralWidget(QWidget* parent);
-        const QBoxLayout*                getMainLayout() const;
-        const std::vector<PowerButton*>& getButtonList() const;
-        void                             keyPressEvent(QKeyEvent* event) override;
-        void                             lastKeyUpdateEvent(QKeyEvent* event);
-        void                             keyPressEvent(QKeyEvent* event, PowerButton* button);
-        void                             selectButton(QKeyEvent* event, PowerButton* button,
-                                                      std::array<int, 4>& acceptable_keys);
-        void                             clickButton(QKeyEvent* event);
-
 private:
         const keybindings& getKeysFromPowerButton(const PowerButton* power_button);
         PowerButton*       getPowerButtonFromKeys(const keybindings& keys);
@@ -58,4 +47,15 @@ private:
         QBoxLayout*                     main_layout;
         const std::vector<PowerButton*> button_list;
         power_button                    selected_power_button;
+
+public:
+        explicit PowerCentralWidget(QWidget* parent);
+        const QBoxLayout*                getMainLayout() const;
+        const std::vector<PowerButton*>& getButtonList() const;
+        void                             keyPressEvent(QKeyEvent* event) override;
+        void                             lastKeyUpdateEvent(QKeyEvent* event);
+        void                             keyPressEvent(QKeyEvent* event, PowerButton* button);
+        void                             selectButton(QKeyEvent* event, PowerButton* button,
+                                                      std::array<int, 4>& acceptable_keys);
+        void                             clickButton(QKeyEvent* event);
 };
