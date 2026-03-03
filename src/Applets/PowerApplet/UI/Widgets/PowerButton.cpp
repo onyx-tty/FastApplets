@@ -20,8 +20,8 @@
 #include "DBus/PowerActionManager.h"
 #include "Environment/ShellRunner.h"
 
-PowerButton::PowerButton(QBoxLayout* layout, QIcon icon, QString text, QString dbus_action) :
-        Button(layout, icon, text), dbus_action(dbus_action) {
+PowerButton::PowerButton(QBoxLayout* layout, QString identifier, QIcon icon, QString text, QString dbus_action) :
+        Button(layout, icon, text), identifier(identifier), dbus_action(dbus_action) {
         /*
         connect(this, &PowerButton::clicked,
                 [this]() { PowerActionManager::sendPowerAction(this->dbus_action); });
@@ -40,6 +40,10 @@ PowerButton::PowerButton(QBoxLayout* layout, QIcon icon, QString text, QString d
                 QCRITICAL() << "Wrong command! PowerButton" << text
                             << "declared with dbus_action =" << dbus_action;
         }
+}
+
+const QString& PowerButton::getIdentifier() const {
+        return identifier;
 }
 
 const QString& PowerButton::getDBusAction() const {

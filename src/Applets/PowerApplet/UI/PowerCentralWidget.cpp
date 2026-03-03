@@ -49,24 +49,28 @@ std::vector<PowerButton*> PowerCentralWidget::createButtonList(QBoxLayout* main_
                                 QString method = "PowerOff";
                                 QDEBUG() << "Created PowerOff!";
                                 primary_buttons.push_back(new PowerButton(main_layout,
+                                                                          data.identifier.toLower(),
                                                                           primary_buttons_icons[0],
                                                                           data.text, method));
                         } else if (data.identifier.toLower() == "reboot") {
                                 QString method = "Reboot";
                                 QDEBUG() << "Created Reboot!";
                                 primary_buttons.push_back(new PowerButton(main_layout,
+                                                                          data.identifier.toLower(),
                                                                           primary_buttons_icons[1],
                                                                           data.text, method));
                         } else if (data.identifier.toLower() == "suspend") {
                                 QString method = "Suspend";
                                 QDEBUG() << "Created Suspend!";
                                 primary_buttons.push_back(new PowerButton(main_layout,
+                                                                          data.identifier.toLower(),
                                                                           primary_buttons_icons[2],
                                                                           data.text, method));
                         } else if (data.identifier.toLower() == "hibernate") {
                                 QString method = "Hibernate";
                                 QDEBUG() << "Created Hibernate!";
                                 primary_buttons.push_back(new PowerButton(main_layout,
+                                                                          data.identifier.toLower(),
                                                                           primary_buttons_icons[3],
                                                                           data.text, method));
                         } else {

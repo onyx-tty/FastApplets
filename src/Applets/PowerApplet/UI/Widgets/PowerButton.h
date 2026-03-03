@@ -23,10 +23,13 @@ class PowerButton final : public Button {
         Q_OBJECT
 
 private:
+        const QString identifier;
         const QString dbus_action;
 
 public:
-        explicit PowerButton(QBoxLayout* layout, QIcon icon, QString text, QString dbus_action);
+        explicit PowerButton(QBoxLayout* layout, QString identifier, QIcon icon, QString text,
+                             QString dbus_action);
 
+        const QString& getIdentifier() const;
         const QString& getDBusAction() const;
 };
