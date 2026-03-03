@@ -18,6 +18,7 @@
 #pragma once
 
 #include "Input/KeyAction.h"
+#include "Config/Keys.h"
 #include "Widgets/PowerButton.h"
 
 #include <array>
@@ -48,6 +49,15 @@ private:
         // TODO Remove this non-PowerButton variant
         void                      updateActionsUnsafe(int key, PowerButton* button);
         void                      resetActions();
+        const keybindings& getKeysFromPowerButton(const PowerButton* power_button);
+        PowerButton*       getPowerButtonFromKeys(const keybindings& keys);
+        PowerButton*       getPowerButtonFromKey(int key);
+        power_button       getSelectedPowerButtonFromPowerButton(const PowerButton* power_button);
+        PowerButton*       getPowerButtonFromSelectedPowerButton(power_button button);
+        const keybindings& getKeysFromSelectedPowerButton(power_button button);
+        power_button       getSelectedPowerButtonFromKeys(const keybindings& keys);
+        power_button       getSelectedPowerButtonFromKey(int key);
+
         std::vector<PowerButton*> createButtonList(QBoxLayout* main_layout);
 
         QBoxLayout*                     main_layout;

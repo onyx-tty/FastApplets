@@ -21,6 +21,7 @@
 #include "Core/Log.h"
 #include "UI/Input/KeyAction.h"
 
+#include <unordered_map>
 #include <QApplication>
 
 using button_bindings     = std::unordered_map<const PowerButton*, const keybindings*>;
@@ -98,6 +99,104 @@ static bool isPowerKey(int key) {
 
         return false;
 };
+
+const keybindings& PowerCentralWidget::getKeysFromPowerButton(const PowerButton* power_button) {
+        static button_bindings map       = {};
+        bool                   processed = false;
+
+        if (!processed) {
+                const auto& keys = Keys::getKeys().getPowerAppletKeys().getPrimaryButtonKeys();
+
+                // Cache the full keys map
+                for (size_t i = 0; i < button_list.size() && i < keys.size(); ++i) {
+                        map[button_list[i]] = &keys[i];
+                }
+
+                processed = true;
+        }
+
+        return *(map.at(power_button));
+}
+
+PowerButton* PowerCentralWidget::getPowerButtonFromKeys(const keybindings& keys) {
+        static keybinding_bindings map       = {};
+        bool                       processed = false;
+
+        // TODO Simply reuse the map in getKeysFromPowerButton
+        if (!processed) {
+                const auto& keys = Keys::getKeys().getPowerAppletKeys().getPrimaryButtonKeys();
+
+                // Cache the full PowerButton map
+                for (size_t i = 0; i < button_list.size() && i < keys.size(); ++i) {
+                        map[&keys[i]] = button_list[i];
+                }
+
+                processed = true;
+        }
+
+        // TODO Needs a safety check for missing keys - improved isPowerKey
+        return map.at(&keys);
+}
+
+PowerButton* PowerCentralWidget::getPowerButtonFromKey(int key) {
+        static std::unordered_map<int, PowerButton*> map       = {};
+        bool                                         processed = false;
+
+        const auto& keys_arr = Keys::getKeys().getPowerAppletKeys().getPrimaryButtonKeys();
+        if (!processed) {
+                // Cache the full keys map
+                for (const auto& keys : keys_arr) { map[key] = getPowerButtonFromKeys(keys); }
+
+                processed = true;
+        }
+
+        for (const auto& keys : keys_arr) {
+                if (keys.contains(key)) { return getPowerButtonFromKeys(keys); }
+        }
+
+        QFATAL("PowerButton mapped to key %i not found!", key);
+        return nullptr;
+}
+
+power_button PowerCentralWidget::getSelectedPowerButtonFromPowerButton(
+        const PowerButton* power_button_ptr) {
+        static const std::unordered_map<QString, power_button> map =
+                {{"poweroff", power_button::shutdown},
+                 {"shutdown", power_button::shutdown},
+                 {"reboot", power_button::reboot},
+                 {"suspend", power_button::suspend},
+                 {"hibernate", power_button::hibernate}};
+
+        if (!map.contains(power_button_ptr->getIdentifier())) { return power_button::none; }
+
+        return map.at(power_button_ptr->getIdentifier());
+}
+
+PowerButton* PowerCentralWidget::getPowerButtonFromSelectedPowerButton(power_button button) {
+        for (auto* power_button : button_list) {
+                if (getSelectedPowerButtonFromPowerButton(power_button) == button) {
+                        return power_button;
+                }
+        }
+
+        // TODO In CppUtils, qt::qstring_utils::toQString should be able to interpret enums
+        QFATAL("Received unexpected selected_button %i!", static_cast<int>(button));
+}
+
+const keybindings& PowerCentralWidget::getKeysFromSelectedPowerButton(power_button button) {
+        const auto* power_button = getPowerButtonFromSelectedPowerButton(button);
+        return getKeysFromPowerButton(power_button);
+}
+
+power_button PowerCentralWidget::getSelectedPowerButtonFromKeys(const keybindings& keys) {
+        const auto* power_button = getPowerButtonFromKeys(keys);
+        return getSelectedPowerButtonFromPowerButton(power_button);
+}
+
+power_button PowerCentralWidget::getSelectedPowerButtonFromKey(int key) {
+        const auto* power_button = getPowerButtonFromKey(key);
+        return getSelectedPowerButtonFromPowerButton(power_button);
+}
 
 PowerCentralWidget::PowerCentralWidget(QWidget* parent) :
         QWidget(parent), main_layout(new QHBoxLayout(this)),
