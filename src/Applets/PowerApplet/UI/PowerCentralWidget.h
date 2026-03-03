@@ -17,7 +17,6 @@
 
 #pragma once
 
-#include "Input/KeyAction.h"
 #include "Config/Keys.h"
 #include "Widgets/PowerButton.h"
 
@@ -45,10 +44,6 @@ public:
         void                             clickButton(QKeyEvent* event);
 
 private:
-        void                      updateActions(int new_key);
-        // TODO Remove this non-PowerButton variant
-        void                      updateActionsUnsafe(int key, PowerButton* button);
-        void                      resetActions();
         const keybindings& getKeysFromPowerButton(const PowerButton* power_button);
         PowerButton*       getPowerButtonFromKeys(const keybindings& keys);
         PowerButton*       getPowerButtonFromKey(int key);
@@ -61,7 +56,6 @@ private:
         std::vector<PowerButton*> createButtonList(QBoxLayout* main_layout);
 
         QBoxLayout*                     main_layout;
-        std::array<KeyAction, 2>        key_action_sequence;
         const std::vector<PowerButton*> button_list;
         power_button                    selected_power_button;
 };

@@ -2,8 +2,7 @@ add_library(PowerApplet_UI
         ${POWERAPPLET_RESOURCES}
         PowerMainWindow.cpp
         PowerCentralWidget.cpp
-        Widgets/PowerButton.cpp
-        Input/KeyAction.cpp)
+        Widgets/PowerButton.cpp)
 add_library(PowerApplet::UI ALIAS PowerApplet_UI)
 
 target_include_directories(PowerApplet_UI PRIVATE
