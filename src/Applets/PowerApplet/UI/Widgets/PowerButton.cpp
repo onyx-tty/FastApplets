@@ -42,6 +42,6 @@ PowerButton::PowerButton(QBoxLayout* layout, QIcon icon, QString text, QString d
         }
 }
 
-const QString& PowerButton::getDBusAction() {
+const QString& PowerButton::getDBusAction() const {
         return dbus_action;
 }

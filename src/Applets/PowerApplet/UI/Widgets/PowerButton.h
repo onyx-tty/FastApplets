@@ -28,5 +28,5 @@ private:
 public:
         explicit PowerButton(QBoxLayout* layout, QIcon icon, QString text, QString dbus_action);
 
-        const QString& getDBusAction();
+        const QString& getDBusAction() const;
 };
