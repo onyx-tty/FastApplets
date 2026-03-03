@@ -250,24 +250,24 @@ void PowerCentralWidget::keyPressEvent(QKeyEvent* event) {
                         QApplication::quit();
                 }
                 // mismatched sequence, remove focus, select another button if key matches
-        } else if (isPowerKey(current_key)
-                   && previously_selected_power_button != currently_selected_power_button) {
-                // select current button
-                // TODO Obtain button ptr here
-                current_power_button->setFocus(true);
-                // unselect last button if valid, otherwise ignore because it doesn't exist anyway
-                if (previous_power_button) { previous_power_button->setFocus(false); }
-                currently_selected_power_button = getSelectedPowerButtonFromKey(current_key);
-                // recurring sequence, activate button
-        } else if (isPowerKey(current_key)
-                   && (previously_selected_power_button == currently_selected_power_button)) {
-                // TODO Display errors returned by power action
-                // animate click, proceed with power action
-                current_power_button->animateClick(); // includes emitting click
-                previous_power_button->setFocus(false);
-                currently_selected_power_button = power_button::none;
-                previous_power_button           = nullptr;
-                current_key                     = Qt::Key_unknown;
+        } else if (isPowerKey(current_key)) {
+                if (previously_selected_power_button != currently_selected_power_button) {
+                        // select current button
+                        // TODO Obtain button ptr here
+                        current_power_button->setFocus(true);
+                        // unselect last button if valid, otherwise ignore because it doesn't exist anyway
+                        if (previous_power_button) { previous_power_button->setFocus(false); }
+                        currently_selected_power_button = getSelectedPowerButtonFromKey(current_key);
+                        // recurring sequence, activate button
+                } else {
+                        // TODO Display errors returned by power action
+                        // animate click, proceed with power action
+                        current_power_button->animateClick(); // includes emitting click
+                        previous_power_button->setFocus(false);
+                        currently_selected_power_button = power_button::none;
+                        previous_power_button           = nullptr;
+                        current_key                     = Qt::Key_unknown;
+                }
         } else {
                 QDEBUG() << "Unrecognized key pressed!";
                 return;
