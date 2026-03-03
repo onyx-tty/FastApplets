@@ -167,13 +167,6 @@ void PowerCentralWidget::keyPressEvent(QKeyEvent* event) {
                 resetActions();
                 return;
         }
-
-        // Print current key combination
-        QDEBUG() << "Current key combination:"
-                 << (key_action_sequence[previous].getKey() != Qt::Key_unknown
-                             ? QString::number(key_action_sequence[previous].getKey())
-                             : "NULL")
-                 << QString::number(key_action_sequence[current].getKey());
 }
 
 void PowerCentralWidget::updateActions(int new_key) {
