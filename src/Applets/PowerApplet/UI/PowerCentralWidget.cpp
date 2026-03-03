@@ -98,7 +98,7 @@ static bool isPowerKey(int key) {
 
 PowerCentralWidget::PowerCentralWidget(QWidget* parent) :
         QWidget(parent), main_layout(new QHBoxLayout(this)),
-        button_list(createButtonList(main_layout)) {
+        button_list(createButtonList(main_layout)), selected_power_button(power_button::none) {
         if (!parent) {
                 QFATAL("Parent of PowerCentralWidget is null! Shutting down to avoid memory leaks...");
         }

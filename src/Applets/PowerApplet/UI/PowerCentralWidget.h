@@ -27,6 +27,8 @@
 #include <QKeyEvent>
 #include <QWidget>
 
+enum class power_button { none = 0, shutdown = 1, reboot = 2, suspend = 3, hibernate = 4 };
+
 class PowerCentralWidget final : public QWidget {
         Q_OBJECT
 
@@ -50,4 +52,5 @@ private:
         QBoxLayout*                     main_layout;
         std::array<KeyAction, 2>        key_action_sequence;
         const std::vector<PowerButton*> button_list;
+        power_button                    selected_power_button;
 };
