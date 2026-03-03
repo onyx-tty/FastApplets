@@ -34,13 +34,14 @@ class PowerCentralWidget final : public QWidget {
 
 public:
         explicit PowerCentralWidget(QWidget* parent);
-        const QBoxLayout* getMainLayout() const;
-        void              keyPressEvent(QKeyEvent* event) override;
-        void              lastKeyUpdateEvent(QKeyEvent* event);
-        void              keyPressEvent(QKeyEvent* event, PowerButton* button);
-        void              selectButton(QKeyEvent* event, PowerButton* button,
-                                       std::array<int, 4>& acceptable_keys);
-        void              clickButton(QKeyEvent* event);
+        const QBoxLayout*                getMainLayout() const;
+        const std::vector<PowerButton*>& getButtonList() const;
+        void                             keyPressEvent(QKeyEvent* event) override;
+        void                             lastKeyUpdateEvent(QKeyEvent* event);
+        void                             keyPressEvent(QKeyEvent* event, PowerButton* button);
+        void                             selectButton(QKeyEvent* event, PowerButton* button,
+                                                      std::array<int, 4>& acceptable_keys);
+        void                             clickButton(QKeyEvent* event);
 
 private:
         void                      updateActions(int new_key);

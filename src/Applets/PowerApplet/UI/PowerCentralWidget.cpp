@@ -23,6 +23,9 @@
 
 #include <QApplication>
 
+using button_bindings     = std::unordered_map<const PowerButton*, const keybindings*>;
+using keybinding_bindings = std::unordered_map<const keybindings*, PowerButton*>;
+
 static std::array<QIcon, 4> createButtonIcons() {
         Q_INIT_RESOURCE(Icons);
         std::array<QIcon, 4> button_icons{QIcon(":/Icons/Power/shutdown.svg"),
@@ -106,6 +109,10 @@ PowerCentralWidget::PowerCentralWidget(QWidget* parent) :
 
 const QBoxLayout* PowerCentralWidget::getMainLayout() const {
         return main_layout;
+}
+
+const std::vector<PowerButton*>& PowerCentralWidget::getButtonList() const {
+        return button_list;
 }
 
 namespace {
