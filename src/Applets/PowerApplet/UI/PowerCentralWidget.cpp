@@ -26,9 +26,11 @@
 #include <unordered_map>
 #include <QApplication>
 
+// TODO Store a {PowerButton*, keybindings*} map in a more visible place
 using button_bindings     = std::unordered_map<const PowerButton*, const keybindings*>;
 using keybinding_bindings = std::unordered_map<const keybindings*, PowerButton*>;
 
+// TODO Avoid creating icons for uninitialized buttons
 static std::array<QIcon, 4> createButtonIcons() {
         Q_INIT_RESOURCE(Icons);
         std::array<QIcon, 4> button_icons{QIcon(":/Icons/Power/shutdown.svg"),
@@ -38,6 +40,7 @@ static std::array<QIcon, 4> createButtonIcons() {
         return button_icons;
 }
 
+// TODO Extract
 static bool isPowerKey(int key) {
         for (const auto& button_keys : Keys::getKeys().getPowerAppletKeys().getPrimaryButtonKeys()) {
                 if (button_keys.contains(key)) { return true; }
@@ -206,19 +209,20 @@ void PowerCentralWidget::keyPressEvent(QKeyEvent* event) {
 
         // Quit pressed
         if (isQuitKey(event->key())) {
-                // unselect if a button is focused
+                // Unselect if a button is focused
                 if (auto* focused = qobject_cast<PowerButton*>(QApplication::focusWidget())) {
                         focused->clearFocus();
                         this->setFocus();
-                } else { // quit if not
+                } else { // Quit if not
                         QApplication::quit();
                 }
         } else if (current) { // PowerButton pressed
+                // Click if already focused
                 if (current->hasFocus()) {
                         current->animateClick();
                         current->clearFocus();
                         this->setFocus();
-                } else {
+                } else { // Re-focus if not
                         if (auto* focused = qobject_cast<PowerButton*>(
                                     QApplication::focusWidget())) {
                                 focused->clearFocus();
