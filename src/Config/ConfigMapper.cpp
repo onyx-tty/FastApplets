@@ -22,6 +22,7 @@
 #include "CppUtils/include/Enum.h"
 #include "CppUtils/include/String.h"
 #include "Keys.h"
+#include "UI/Enums/ButtonIDs.h"
 
 #include <algorithm>
 #include <array>
@@ -122,6 +123,19 @@ void interpretTextAsKeybindings(const toml::node_view<const toml::node>& source,
                 QCRITICAL() << "Source must be an array!";
                 return;
         }
+}
+
+power_button_id getPowerButtonIDFromString(const QString& string) {
+        const std::unordered_map<QString, power_button_id> map =
+                {{"poweroff", power_button_id::shutdown},
+                 {"shutdown", power_button_id::shutdown},
+                 {"reboot", power_button_id::reboot},
+                 {"suspend", power_button_id::suspend},
+                 {"hibernate", power_button_id::hibernate}};
+
+        if (!map.contains(string)) { return power_button_id::none; }
+
+        return map.at(string);
 }
 
 /* Window Properties */
@@ -351,7 +365,8 @@ void ConfigMapper::mapLayoutPrimaryButtonData(const toml::table& button_table,
                 button_data = defaults;
                 return;
         } else {
-                button_data.identifier = QString::fromStdString(data->get());
+                button_data.identifier = getPowerButtonIDFromString(
+                        QString::fromStdString(toLowerCopy(data->get())));
         }
 
         const auto& label = (button_table)["label"].as_string();
@@ -461,9 +476,7 @@ void ConfigMapper::mapLayoutPrimaryButtons(const toml::table& layout, Config& co
                   });
 
         // Re-map order to a range of 1 to the number of buttons
-        for (size_t i = 0; i != buttons_found.size(); ++i) {
-                buttons_found[i].order = i + 1;
-        }
+        for (size_t i = 0; i != buttons_found.size(); ++i) { buttons_found[i].order = i + 1; }
 
         primary_buttons = std::move(buttons_found);
 }

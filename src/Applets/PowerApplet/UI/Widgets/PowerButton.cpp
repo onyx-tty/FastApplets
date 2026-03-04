@@ -19,8 +19,10 @@
 #include "Core/Log.h"
 #include "DBus/PowerActionManager.h"
 #include "Environment/ShellRunner.h"
+#include "UI/Enums/ButtonIDs.h"
 
-PowerButton::PowerButton(QBoxLayout* layout, QString identifier, QIcon icon, QString text, QString dbus_action) :
+PowerButton::PowerButton(QBoxLayout* layout, power_button_id identifier, QIcon icon, QString text,
+                         QString dbus_action) :
         Button(layout, icon, text), identifier(identifier), dbus_action(dbus_action) {
         /*
         connect(this, &PowerButton::clicked,
@@ -42,7 +44,7 @@ PowerButton::PowerButton(QBoxLayout* layout, QString identifier, QIcon icon, QSt
         }
 }
 
-const QString& PowerButton::getIdentifier() const {
+power_button_id PowerButton::getIdentifier() const {
         return identifier;
 }
 

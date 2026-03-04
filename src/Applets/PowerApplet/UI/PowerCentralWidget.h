@@ -32,15 +32,13 @@ class PowerCentralWidget final : public QWidget {
         Q_OBJECT
 
 private:
-        const keybindings& getKeysFromPowerButton(const PowerButton* power_button);
-        PowerButton*       getPowerButtonFromKeys(const keybindings& keys);
-        PowerButton*       getPowerButtonFromKey(int key);
-        power_button_id    getPowerButtonIDFromPowerButton(const PowerButton* power_button);
-        PowerButton*       getPowerButtonFromPowerButtonID(power_button_id button);
-        const keybindings& getKeysFromPowerButtonID(power_button_id button);
-        power_button_id    getPowerButtonIDFromKeys(const keybindings& keys);
-        power_button_id    getPowerButtonIDFromKey(int key);
-
+        const keybindings&        getKeysFromPowerButton(const PowerButton* power_button);
+        PowerButton*              getPowerButtonFromKeys(const keybindings& keys);
+        PowerButton*              getPowerButtonFromKey(int key);
+        PowerButton*              getPowerButtonFromPowerButtonID(power_button_id button);
+        const keybindings&        getKeysFromPowerButtonID(power_button_id button);
+        power_button_id           getPowerButtonIDFromKeys(const keybindings& keys);
+        power_button_id           getPowerButtonIDFromKey(int key);
         std::vector<PowerButton*> createButtonList(QBoxLayout* main_layout);
 
         QBoxLayout*                     main_layout;

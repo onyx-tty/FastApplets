@@ -19,6 +19,7 @@
 #include "ConfigMapper.h"
 #include "ConfigParser.h"
 #include "PrimaryButtonData.h"
+#include "UI/Enums/ButtonIDs.h"
 
 #include <toml++/toml.hpp>
 
@@ -109,10 +110,10 @@ const Config& Config::getDefaultConfig() {
                                                                   std::move(policy)};
 
         std::vector<PrimaryButtonData> primary_buttons =
-                {PrimaryButtonData{"shutdown", "Shutdown", 1},
-                 PrimaryButtonData{"reboot", "Reboot", 2},
-                 PrimaryButtonData{"suspend", "Suspend", 3},
-                 PrimaryButtonData{"hibernate", "Hibernate", 4}};
+                {PrimaryButtonData{power_button_id::shutdown, "Shutdown", 1},
+                 PrimaryButtonData{power_button_id::reboot, "Reboot", 2},
+                 PrimaryButtonData{power_button_id::suspend, "Suspend", 3},
+                 PrimaryButtonData{power_button_id::hibernate, "Hibernate", 4}};
         WindowLayoutProperties default_window_layout_properties = {std::move(primary_buttons)};
 
         bool                  dbus_mode = false;

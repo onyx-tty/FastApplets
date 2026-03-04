@@ -17,10 +17,12 @@
 
 #pragma once
 
+#include "UI/Enums/ButtonIDs.h"
+
 #include <QString>
 
 struct PrimaryButtonData final {
-        QString identifier;
-        QString text;
-        long    order;
+        power_button_id identifier;
+        QString         text;
+        long            order;
 };

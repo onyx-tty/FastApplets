@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.16)
 
-project(Config VERSION 0.11.4 LANGUAGES CXX)
+project(Config VERSION 0.11.5 LANGUAGES CXX)
 
 # Enable support for Qt's resource files
 set(CMAKE_AUTORCC ON)
@@ -22,7 +22,8 @@ target_include_directories(Config PRIVATE
 
 target_link_libraries(Config PRIVATE
         CppUtils
-        Core::Log)
+        Core::Log
+        UI::Enums)
 
 target_link_libraries(Config PUBLIC
         tomlplusplus::tomlplusplus
