@@ -42,7 +42,6 @@ private:
 
         QBoxLayout*                     main_layout;
         const std::vector<PowerButton*> button_list;
-        power_button_id                 selected_power_button;
 
 public:
         explicit PowerCentralWidget(QWidget* parent);

@@ -22,6 +22,7 @@
 #include "UI/Enums/ButtonIDs.h"
 
 #include <qnamespace.h>
+#include <qobject.h>
 #include <unordered_map>
 #include <QApplication>
 
@@ -105,7 +106,6 @@ PowerButton* PowerCentralWidget::getPowerButtonFromKey(int key) {
                 if (keys.contains(key)) { return getPowerButtonFromKeys(keys); }
         }
 
-        QFATAL("PowerButton mapped to key %i not found!", key);
         return nullptr;
 }
 
@@ -187,12 +187,10 @@ std::vector<PowerButton*> PowerCentralWidget::createButtonList(QBoxLayout* main_
 
 PowerCentralWidget::PowerCentralWidget(QWidget* parent) :
         QWidget(parent), main_layout(new QHBoxLayout(this)),
-        button_list(createButtonList(main_layout)), selected_power_button(power_button_id::none) {
+        button_list(createButtonList(main_layout)) {
         if (!parent) {
                 QFATAL("Parent of PowerCentralWidget is null! Shutting down to avoid memory leaks...");
         }
-
-        selected_power_button = button_list[0]->getIdentifier();
 }
 
 const QBoxLayout* PowerCentralWidget::getMainLayout() const {
@@ -209,68 +207,40 @@ void PowerCentralWidget::keyPressEvent(QKeyEvent* event) {
                 return;
         }
 
-        const auto& findSelectedButton = [this](int key) -> power_button_id {
-                if (isPowerKey(key)) {
-                        return getPowerButtonIDFromKey(key);
-                } else {
-                        return power_button_id::none;
-                }
-        };
+        QDEBUG() << "event captured! key is" << event->key();
 
-        static int          previous_key          = Qt::Key_unknown;
-        int                 current_key           = event->key();
-        static PowerButton* previous_power_button = nullptr;
-        if (isPowerKey(previous_key)) {
-                previous_power_button = getPowerButtonFromKey(previous_key);
-        }
-        const auto   previously_selected_power_button = selected_power_button;
-        PowerButton* current_power_button             = nullptr;
-        if (isPowerKey(current_key)) { current_power_button = getPowerButtonFromKey(current_key); }
-        auto currently_selected_power_button = findSelectedButton(current_key);
+        PowerButton* current = getPowerButtonFromKey(event->key());
 
-        // if quit pressed
-        if (isQuitKey(current_key)) {
+        // Quit pressed
+        if (isQuitKey(event->key())) {
+                QDEBUG() << "Is quit key!";
                 // button focus active, quit key = unselect
-                if (selected_power_button != power_button_id::none) {
-                        // TODO Obtain button ptr, a checked for isFocused may or may not be necessary
-                        if (previously_selected_power_button != power_button_id::none) {
-                                if (previous_power_button) {
-                                        getPowerButtonFromPowerButtonID(
-                                                previously_selected_power_button)
-                                                ->clearFocus();
-                                }
-                                currently_selected_power_button = power_button_id::none;
-                                this->setFocus(Qt::FocusReason::MouseFocusReason);
-                        }
-                        // no selection active, quit key = terminate application
+                if (auto* focused = qobject_cast<PowerButton*>(QApplication::focusWidget())) {
+                        QDEBUG() << "A PowerButton was focused!";
+                        focused->clearFocus();
+                        this->setFocus();
                 } else {
                         QDEBUG() << "Quit key pressed, quitting!";
                         QApplication::quit();
                 }
-                // mismatched sequence, remove focus, select another button if key matches
-        } else if (isPowerKey(current_key)) {
-                if (previously_selected_power_button != currently_selected_power_button) {
-                        // select current button
-                        if (previous_power_button) { previous_power_button->clearFocus(); }
-                        current_power_button->setFocus(Qt::FocusReason::MouseFocusReason);
-                        // unselect last button if valid, otherwise ignore because it doesn't exist anyway
-                        currently_selected_power_button = getPowerButtonIDFromKey(current_key);
-                        // recurring sequence, activate button
+                // PowerButton pressed
+        } else if (current) {
+                QDEBUG() << "Is power button!";
+                if (current->hasFocus()) {
+                        QDEBUG() << "Current is focused!";
+                        current->animateClick();
+                        current->clearFocus();
+                        this->setFocus();
                 } else {
-                        // TODO Display errors returned by power action
-                        // animate click, proceed with power action
-                        current_power_button->animateClick(); // includes emitting click
-                        current_power_button->clearFocus();
-                        this->setFocus(Qt::FocusReason::MouseFocusReason);
-                        currently_selected_power_button = power_button_id::none;
-                        previous_power_button           = nullptr;
-                        current_key                     = Qt::Key_unknown;
+                        QDEBUG() << "Current wasn't focused!";
+                        if (auto* focused = qobject_cast<PowerButton*>(
+                                    QApplication::focusWidget())) {
+                                QDEBUG() << "Something was focused! Clearing";
+                                focused->clearFocus();
+                        }
+                        current->setFocus(Qt::FocusReason::MouseFocusReason);
                 }
         } else {
                 QDEBUG() << "Unrecognized key pressed!";
-                return;
         }
-
-        previous_key          = current_key;
-        selected_power_button = currently_selected_power_button;
 }
