@@ -202,11 +202,6 @@ const std::vector<PowerButton*>& PowerCentralWidget::getButtonList() const {
 }
 
 void PowerCentralWidget::keyPressEvent(QKeyEvent* event) {
-        if (!event) {
-                QCRITICAL() << "Received nullptr event!";
-                return;
-        }
-
         PowerButton* current = getPowerButtonFromKey(event->key());
 
         // Quit pressed
