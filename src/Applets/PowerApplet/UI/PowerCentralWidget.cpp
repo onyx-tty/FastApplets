@@ -21,6 +21,7 @@
 #include "Core/Log.h"
 #include "UI/Enums/ButtonIDs.h"
 
+#include <qnamespace.h>
 #include <unordered_map>
 #include <QApplication>
 
@@ -110,9 +111,7 @@ PowerButton* PowerCentralWidget::getPowerButtonFromKey(int key) {
 
 PowerButton* PowerCentralWidget::getPowerButtonFromPowerButtonID(power_button_id button) {
         for (auto* power_button : button_list) {
-                if (power_button->getIdentifier() == button) {
-                        return power_button;
-                }
+                if (power_button->getIdentifier() == button) { return power_button; }
         }
 
         // TODO In CppUtils, qt::qstring_utils::toQString should be able to interpret enums
@@ -192,6 +191,8 @@ PowerCentralWidget::PowerCentralWidget(QWidget* parent) :
         if (!parent) {
                 QFATAL("Parent of PowerCentralWidget is null! Shutting down to avoid memory leaks...");
         }
+
+        selected_power_button = button_list[0]->getIdentifier();
 }
 
 const QBoxLayout* PowerCentralWidget::getMainLayout() const {
@@ -233,8 +234,13 @@ void PowerCentralWidget::keyPressEvent(QKeyEvent* event) {
                 if (selected_power_button != power_button_id::none) {
                         // TODO Obtain button ptr, a checked for isFocused may or may not be necessary
                         if (previously_selected_power_button != power_button_id::none) {
-                                getPowerButtonFromPowerButtonID(previously_selected_power_button)
-                                        ->setFocus(false);
+                                if (previous_power_button) {
+                                        getPowerButtonFromPowerButtonID(
+                                                previously_selected_power_button)
+                                                ->clearFocus();
+                                }
+                                currently_selected_power_button = power_button_id::none;
+                                this->setFocus(Qt::FocusReason::MouseFocusReason);
                         }
                         // no selection active, quit key = terminate application
                 } else {
@@ -243,11 +249,10 @@ void PowerCentralWidget::keyPressEvent(QKeyEvent* event) {
                 }
                 // mismatched sequence, remove focus, select another button if key matches
         } else if (isPowerKey(current_key)) {
-                if (previous_power_button) { previous_power_button->setFocus(false); }
-
                 if (previously_selected_power_button != currently_selected_power_button) {
                         // select current button
-                        current_power_button->setFocus(true);
+                        if (previous_power_button) { previous_power_button->clearFocus(); }
+                        current_power_button->setFocus(Qt::FocusReason::MouseFocusReason);
                         // unselect last button if valid, otherwise ignore because it doesn't exist anyway
                         currently_selected_power_button = getPowerButtonIDFromKey(current_key);
                         // recurring sequence, activate button
@@ -255,6 +260,8 @@ void PowerCentralWidget::keyPressEvent(QKeyEvent* event) {
                         // TODO Display errors returned by power action
                         // animate click, proceed with power action
                         current_power_button->animateClick(); // includes emitting click
+                        current_power_button->clearFocus();
+                        this->setFocus(Qt::FocusReason::MouseFocusReason);
                         currently_selected_power_button = power_button_id::none;
                         previous_power_button           = nullptr;
                         current_key                     = Qt::Key_unknown;

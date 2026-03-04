@@ -39,8 +39,6 @@ private:
         // and keeps the text realigned and separate via a proxy label
         void debugAlignIcon(const QString& label_text);
 
-        // TODO Potentially not needed
-        bool    is_focused;
         // TODO Rename debug_text
         QLabel* debug_text;
 
@@ -51,7 +49,5 @@ protected:
         virtual ~Button() = 0;
 
 public:
-        void    setFocus(bool is_focused);
-        bool    isFocused() const;
         QString text() const; // Returns text from the label, not the button itself
 };

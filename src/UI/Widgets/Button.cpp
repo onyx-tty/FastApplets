@@ -35,7 +35,7 @@ void Button::paintEvent(QPaintEvent*) {
         option.state &= ~QStyle::State_MouseOver;
 
         // Smart apply the focus state
-        if (is_focused) {
+        if (hasFocus()) {
                 option.state |= QStyle::State_HasFocus;
                 option.state |= QStyle::State_Sunken;
         } else {
@@ -72,7 +72,7 @@ void Button::debugAlignIcon(const QString& label_text) {
 // but customizing the icon, icon size and the alignment of that button
 // TODO Default icon
 Button::Button(QBoxLayout* layout, const QIcon& icon, const QString& text) :
-        QPushButton(layout ? layout->widget() : nullptr), is_focused(false) {
+        QPushButton(layout ? layout->widget() : nullptr) {
         if (!layout) { QFATAL("Button constructor received a null layout! Bad code!"); }
 
         setIcon(icon);
@@ -84,15 +84,6 @@ Button::Button(QBoxLayout* layout, const QIcon& icon, const QString& text) :
 }
 
 Button::~Button() = default;
-
-void Button::setFocus(bool is_focused) {
-        this->is_focused = is_focused;
-        update();
-}
-
-bool Button::isFocused() const {
-        return is_focused;
-}
 
 QString Button::text() const { // Amendment to return text from the label, not the button itself
         return debug_text->text();
