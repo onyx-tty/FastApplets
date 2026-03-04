@@ -207,35 +207,25 @@ void PowerCentralWidget::keyPressEvent(QKeyEvent* event) {
                 return;
         }
 
-        QDEBUG() << "event captured! key is" << event->key();
-
         PowerButton* current = getPowerButtonFromKey(event->key());
 
         // Quit pressed
         if (isQuitKey(event->key())) {
-                QDEBUG() << "Is quit key!";
-                // button focus active, quit key = unselect
+                // unselect if a button is focused
                 if (auto* focused = qobject_cast<PowerButton*>(QApplication::focusWidget())) {
-                        QDEBUG() << "A PowerButton was focused!";
                         focused->clearFocus();
                         this->setFocus();
-                } else {
-                        QDEBUG() << "Quit key pressed, quitting!";
+                } else { // quit if not
                         QApplication::quit();
                 }
-                // PowerButton pressed
-        } else if (current) {
-                QDEBUG() << "Is power button!";
+        } else if (current) { // PowerButton pressed
                 if (current->hasFocus()) {
-                        QDEBUG() << "Current is focused!";
                         current->animateClick();
                         current->clearFocus();
                         this->setFocus();
                 } else {
-                        QDEBUG() << "Current wasn't focused!";
                         if (auto* focused = qobject_cast<PowerButton*>(
                                     QApplication::focusWidget())) {
-                                QDEBUG() << "Something was focused! Clearing";
                                 focused->clearFocus();
                         }
                         current->setFocus(Qt::FocusReason::MouseFocusReason);
