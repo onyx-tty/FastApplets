@@ -107,21 +107,21 @@ PowerButton* PowerCentralWidget::getPowerButtonFromKey(int key) {
         return nullptr;
 }
 
-power_button PowerCentralWidget::getSelectedPowerButtonFromPowerButton(
+power_button_id PowerCentralWidget::getSelectedPowerButtonFromPowerButton(
         const PowerButton* power_button_ptr) {
-        static const std::unordered_map<QString, power_button> map =
-                {{"poweroff", power_button::shutdown},
-                 {"shutdown", power_button::shutdown},
-                 {"reboot", power_button::reboot},
-                 {"suspend", power_button::suspend},
-                 {"hibernate", power_button::hibernate}};
+        static const std::unordered_map<QString, power_button_id> map =
+                {{"poweroff", power_button_id::shutdown},
+                 {"shutdown", power_button_id::shutdown},
+                 {"reboot", power_button_id::reboot},
+                 {"suspend", power_button_id::suspend},
+                 {"hibernate", power_button_id::hibernate}};
 
-        if (!map.contains(power_button_ptr->getIdentifier())) { return power_button::none; }
+        if (!map.contains(power_button_ptr->getIdentifier())) { return power_button_id::none; }
 
         return map.at(power_button_ptr->getIdentifier());
 }
 
-PowerButton* PowerCentralWidget::getPowerButtonFromSelectedPowerButton(power_button button) {
+PowerButton* PowerCentralWidget::getPowerButtonFromSelectedPowerButton(power_button_id button) {
         for (auto* power_button : button_list) {
                 if (getSelectedPowerButtonFromPowerButton(power_button) == button) {
                         return power_button;
@@ -132,17 +132,17 @@ PowerButton* PowerCentralWidget::getPowerButtonFromSelectedPowerButton(power_but
         QFATAL("Received unexpected selected_button %i!", static_cast<int>(button));
 }
 
-const keybindings& PowerCentralWidget::getKeysFromSelectedPowerButton(power_button button) {
+const keybindings& PowerCentralWidget::getKeysFromSelectedPowerButton(power_button_id button) {
         const auto* power_button = getPowerButtonFromSelectedPowerButton(button);
         return getKeysFromPowerButton(power_button);
 }
 
-power_button PowerCentralWidget::getSelectedPowerButtonFromKeys(const keybindings& keys) {
+power_button_id PowerCentralWidget::getSelectedPowerButtonFromKeys(const keybindings& keys) {
         const auto* power_button = getPowerButtonFromKeys(keys);
         return getSelectedPowerButtonFromPowerButton(power_button);
 }
 
-power_button PowerCentralWidget::getSelectedPowerButtonFromKey(int key) {
+power_button_id PowerCentralWidget::getSelectedPowerButtonFromKey(int key) {
         const auto* power_button = getPowerButtonFromKey(key);
         return getSelectedPowerButtonFromPowerButton(power_button);
 }
@@ -201,7 +201,7 @@ std::vector<PowerButton*> PowerCentralWidget::createButtonList(QBoxLayout* main_
 
 PowerCentralWidget::PowerCentralWidget(QWidget* parent) :
         QWidget(parent), main_layout(new QHBoxLayout(this)),
-        button_list(createButtonList(main_layout)), selected_power_button(power_button::none) {
+        button_list(createButtonList(main_layout)), selected_power_button(power_button_id::none) {
         if (!parent) {
                 QFATAL("Parent of PowerCentralWidget is null! Shutting down to avoid memory leaks...");
         }
@@ -221,11 +221,11 @@ void PowerCentralWidget::keyPressEvent(QKeyEvent* event) {
                 return;
         }
 
-        const auto& findSelectedButton = [this](int key) -> power_button {
+        const auto& findSelectedButton = [this](int key) -> power_button_id {
                 if (isPowerKey(key)) {
                         return getSelectedPowerButtonFromKey(key);
                 } else {
-                        return power_button::none;
+                        return power_button_id::none;
                 }
         };
 
@@ -243,9 +243,9 @@ void PowerCentralWidget::keyPressEvent(QKeyEvent* event) {
         // if quit pressed
         if (isQuitKey(current_key)) {
                 // button focus active, quit key = unselect
-                if (selected_power_button != power_button::none) {
+                if (selected_power_button != power_button_id::none) {
                         // TODO Obtain button ptr, a checked for isFocused may or may not be necessary
-                        if (previously_selected_power_button != power_button::none) {
+                        if (previously_selected_power_button != power_button_id::none) {
                                 getPowerButtonFromSelectedPowerButton(
                                         previously_selected_power_button)
                                         ->setFocus(false);
@@ -269,7 +269,7 @@ void PowerCentralWidget::keyPressEvent(QKeyEvent* event) {
                         // TODO Display errors returned by power action
                         // animate click, proceed with power action
                         current_power_button->animateClick(); // includes emitting click
-                        currently_selected_power_button = power_button::none;
+                        currently_selected_power_button = power_button_id::none;
                         previous_power_button           = nullptr;
                         current_key                     = Qt::Key_unknown;
                 }

@@ -27,7 +27,7 @@
 #include <QKeyEvent>
 #include <QWidget>
 
-enum class power_button { none = 0, shutdown = 1, reboot = 2, suspend = 3, hibernate = 4 };
+enum class power_button_id { none = 0, shutdown = 1, reboot = 2, suspend = 3, hibernate = 4 };
 
 class PowerCentralWidget final : public QWidget {
         Q_OBJECT
@@ -36,17 +36,17 @@ private:
         const keybindings& getKeysFromPowerButton(const PowerButton* power_button);
         PowerButton*       getPowerButtonFromKeys(const keybindings& keys);
         PowerButton*       getPowerButtonFromKey(int key);
-        power_button       getSelectedPowerButtonFromPowerButton(const PowerButton* power_button);
-        PowerButton*       getPowerButtonFromSelectedPowerButton(power_button button);
-        const keybindings& getKeysFromSelectedPowerButton(power_button button);
-        power_button       getSelectedPowerButtonFromKeys(const keybindings& keys);
-        power_button       getSelectedPowerButtonFromKey(int key);
+        power_button_id    getSelectedPowerButtonFromPowerButton(const PowerButton* power_button);
+        PowerButton*       getPowerButtonFromSelectedPowerButton(power_button_id button);
+        const keybindings& getKeysFromSelectedPowerButton(power_button_id button);
+        power_button_id    getSelectedPowerButtonFromKeys(const keybindings& keys);
+        power_button_id    getSelectedPowerButtonFromKey(int key);
 
         std::vector<PowerButton*> createButtonList(QBoxLayout* main_layout);
 
         QBoxLayout*                     main_layout;
         const std::vector<PowerButton*> button_list;
-        power_button                    selected_power_button;
+        power_button_id                 selected_power_button;
 
 public:
         explicit PowerCentralWidget(QWidget* parent);
