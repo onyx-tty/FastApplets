@@ -18,21 +18,22 @@
 #include "ShellRunner.h"
 
 #include <cstdlib>
+#include <QProcess>
 
-// TODO Replace std::system to eliminate command injection caused by shell interpretation
+// TODO Replace to eliminate command injection caused by shell interpretation
 
 void ShellRunner::runShutdownCommand() {
-        std::system("systemctl poweroff");
+        QProcess::startDetached("systemctl", {"poweroff"});
 }
 
 void ShellRunner::runRebootCommand() {
-        std::system("systemctl reboot");
+        QProcess::startDetached("systemctl", {"reboot"});
 }
 
 void ShellRunner::runSuspendCommand() {
-        std::system("systemctl suspend");
+        QProcess::startDetached("systemctl", {"suspend"});
 }
 
 void ShellRunner::runHibernateCommand() {
-        std::system("systemctl hibernate");
+        QProcess::startDetached("systemctl", {"hibernate"});
 }
