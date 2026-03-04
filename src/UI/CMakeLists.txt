@@ -1,6 +1,8 @@
 cmake_minimum_required(VERSION 3.16)
 
-project(UI VERSION 0.2.4 LANGUAGES CXX)
+project(UI VERSION 0.2.5 LANGUAGES CXX)
+
+add_subdirectory(Enums)
 
 # Internal structure
 add_library(UI
@@ -13,7 +15,8 @@ target_include_directories(UI PRIVATE
 
 target_link_libraries(UI PRIVATE
         Config
-        Core::Log)
+        Core::Log
+        UI::Enums)
 
 target_link_libraries(UI PUBLIC
         Qt${QT_VERSION_MAJOR}::Widgets)

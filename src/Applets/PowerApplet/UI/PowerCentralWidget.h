@@ -18,6 +18,7 @@
 #pragma once
 
 #include "Config/Keys.h"
+#include "UI/Enums/ButtonIDs.h"
 #include "Widgets/PowerButton.h"
 
 #include <array>
@@ -26,8 +27,6 @@
 #include <QBoxLayout>
 #include <QKeyEvent>
 #include <QWidget>
-
-enum class power_button_id { none = 0, shutdown = 1, reboot = 2, suspend = 3, hibernate = 4 };
 
 class PowerCentralWidget final : public QWidget {
         Q_OBJECT

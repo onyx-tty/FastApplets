@@ -19,6 +19,7 @@
 #include "Config/Config.h"
 #include "Config/Keys.h"
 #include "Core/Log.h"
+#include "UI/Enums/ButtonIDs.h"
 
 #include <unordered_map>
 #include <QApplication>
