@@ -230,7 +230,5 @@ void PowerCentralWidget::keyPressEvent(QKeyEvent* event) {
                         }
                         current->setFocus(Qt::FocusReason::MouseFocusReason);
                 }
-        } else {
-                QDEBUG() << "Unrecognized key pressed!";
         }
 }
