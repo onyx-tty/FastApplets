@@ -41,7 +41,13 @@ static bool isPowerKey(int key) {
         }
 
         return false;
-};
+}
+
+static bool isQuitKey(int key) {
+        const auto& quit_keys = Keys::getKeys().getPowerAppletKeys().getQuitKeys();
+
+        return quit_keys.contains(key);
+}
 
 const keybindings& PowerCentralWidget::getKeysFromPowerButton(const PowerButton* power_button) {
         static button_bindings map       = {};
@@ -235,7 +241,7 @@ void PowerCentralWidget::keyPressEvent(QKeyEvent* event) {
         auto currently_selected_power_button = findSelectedButton(current_key);
 
         // if quit pressed
-        if (Keys::getKeys().getPowerAppletKeys().getQuitKeys().contains(current_key)) {
+        if (isQuitKey(current_key)) {
                 // button focus active, quit key = unselect
                 if (selected_power_button != power_button::none) {
                         // TODO Obtain button ptr, a checked for isFocused may or may not be necessary
