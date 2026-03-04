@@ -107,7 +107,7 @@ PowerButton* PowerCentralWidget::getPowerButtonFromKey(int key) {
         return nullptr;
 }
 
-power_button_id PowerCentralWidget::getSelectedPowerButtonFromPowerButton(
+power_button_id PowerCentralWidget::getPowerButtonIDFromPowerButton(
         const PowerButton* power_button_ptr) {
         static const std::unordered_map<QString, power_button_id> map =
                 {{"poweroff", power_button_id::shutdown},
@@ -121,9 +121,9 @@ power_button_id PowerCentralWidget::getSelectedPowerButtonFromPowerButton(
         return map.at(power_button_ptr->getIdentifier());
 }
 
-PowerButton* PowerCentralWidget::getPowerButtonFromSelectedPowerButton(power_button_id button) {
+PowerButton* PowerCentralWidget::getPowerButtonFromPowerButtonID(power_button_id button) {
         for (auto* power_button : button_list) {
-                if (getSelectedPowerButtonFromPowerButton(power_button) == button) {
+                if (getPowerButtonIDFromPowerButton(power_button) == button) {
                         return power_button;
                 }
         }
@@ -132,19 +132,19 @@ PowerButton* PowerCentralWidget::getPowerButtonFromSelectedPowerButton(power_but
         QFATAL("Received unexpected selected_button %i!", static_cast<int>(button));
 }
 
-const keybindings& PowerCentralWidget::getKeysFromSelectedPowerButton(power_button_id button) {
-        const auto* power_button = getPowerButtonFromSelectedPowerButton(button);
+const keybindings& PowerCentralWidget::getKeysFromPowerButtonID(power_button_id button) {
+        const auto* power_button = getPowerButtonFromPowerButtonID(button);
         return getKeysFromPowerButton(power_button);
 }
 
-power_button_id PowerCentralWidget::getSelectedPowerButtonFromKeys(const keybindings& keys) {
+power_button_id PowerCentralWidget::getPowerButtonIDFromKeys(const keybindings& keys) {
         const auto* power_button = getPowerButtonFromKeys(keys);
-        return getSelectedPowerButtonFromPowerButton(power_button);
+        return getPowerButtonIDFromPowerButton(power_button);
 }
 
-power_button_id PowerCentralWidget::getSelectedPowerButtonFromKey(int key) {
+power_button_id PowerCentralWidget::getPowerButtonIDFromKey(int key) {
         const auto* power_button = getPowerButtonFromKey(key);
-        return getSelectedPowerButtonFromPowerButton(power_button);
+        return getPowerButtonIDFromPowerButton(power_button);
 }
 
 // TODO Split and simplify this
@@ -223,7 +223,7 @@ void PowerCentralWidget::keyPressEvent(QKeyEvent* event) {
 
         const auto& findSelectedButton = [this](int key) -> power_button_id {
                 if (isPowerKey(key)) {
-                        return getSelectedPowerButtonFromKey(key);
+                        return getPowerButtonIDFromKey(key);
                 } else {
                         return power_button_id::none;
                 }
@@ -246,8 +246,7 @@ void PowerCentralWidget::keyPressEvent(QKeyEvent* event) {
                 if (selected_power_button != power_button_id::none) {
                         // TODO Obtain button ptr, a checked for isFocused may or may not be necessary
                         if (previously_selected_power_button != power_button_id::none) {
-                                getPowerButtonFromSelectedPowerButton(
-                                        previously_selected_power_button)
+                                getPowerButtonFromPowerButtonID(previously_selected_power_button)
                                         ->setFocus(false);
                         }
                         // no selection active, quit key = terminate application
@@ -263,7 +262,7 @@ void PowerCentralWidget::keyPressEvent(QKeyEvent* event) {
                         // select current button
                         current_power_button->setFocus(true);
                         // unselect last button if valid, otherwise ignore because it doesn't exist anyway
-                        currently_selected_power_button = getSelectedPowerButtonFromKey(current_key);
+                        currently_selected_power_button = getPowerButtonIDFromKey(current_key);
                         // recurring sequence, activate button
                 } else {
                         // TODO Display errors returned by power action

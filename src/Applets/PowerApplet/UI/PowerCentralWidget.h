@@ -36,11 +36,11 @@ private:
         const keybindings& getKeysFromPowerButton(const PowerButton* power_button);
         PowerButton*       getPowerButtonFromKeys(const keybindings& keys);
         PowerButton*       getPowerButtonFromKey(int key);
-        power_button_id    getSelectedPowerButtonFromPowerButton(const PowerButton* power_button);
-        PowerButton*       getPowerButtonFromSelectedPowerButton(power_button_id button);
-        const keybindings& getKeysFromSelectedPowerButton(power_button_id button);
-        power_button_id    getSelectedPowerButtonFromKeys(const keybindings& keys);
-        power_button_id    getSelectedPowerButtonFromKey(int key);
+        power_button_id    getPowerButtonIDFromPowerButton(const PowerButton* power_button);
+        PowerButton*       getPowerButtonFromPowerButtonID(power_button_id button);
+        const keybindings& getKeysFromPowerButtonID(power_button_id button);
+        power_button_id    getPowerButtonIDFromKeys(const keybindings& keys);
+        power_button_id    getPowerButtonIDFromKey(int key);
 
         std::vector<PowerButton*> createButtonList(QBoxLayout* main_layout);
 
