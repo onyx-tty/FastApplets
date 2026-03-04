@@ -21,7 +21,6 @@
 #include "UI/Enums/ButtonIDs.h"
 #include "Widgets/PowerButton.h"
 
-#include <array>
 #include <qnamespace.h>
 #include <vector>
 #include <QBoxLayout>
@@ -50,9 +49,4 @@ public:
         const QBoxLayout*                getMainLayout() const;
         const std::vector<PowerButton*>& getButtonList() const;
         void                             keyPressEvent(QKeyEvent* event) override;
-        void                             lastKeyUpdateEvent(QKeyEvent* event);
-        void                             keyPressEvent(QKeyEvent* event, PowerButton* button);
-        void                             selectButton(QKeyEvent* event, PowerButton* button,
-                                                      std::array<int, 4>& acceptable_keys);
-        void                             clickButton(QKeyEvent* event);
 };
