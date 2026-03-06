@@ -17,14 +17,10 @@
 
 #pragma once
 
-#include "Environment/ShellCommand.h"
-#include "UI/Enums/ButtonIDs.h"
-
 #include <QString>
+#include <QStringList>
 
-struct PrimaryButtonData final {
-        power_button_id identifier;
-        QString         text;
-        long            order;
-        ShellCommand    command;
+struct ShellCommand final {
+        QString     program;
+        QStringList arguments;
 };

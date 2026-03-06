@@ -110,10 +110,19 @@ const Config& Config::getDefaultConfig() {
                                                                   std::move(policy)};
 
         std::vector<PrimaryButtonData> primary_buttons =
-                {PrimaryButtonData{power_button_id::shutdown, "Shutdown", 1},
-                 PrimaryButtonData{power_button_id::reboot, "Reboot", 2},
-                 PrimaryButtonData{power_button_id::suspend, "Suspend", 3},
-                 PrimaryButtonData{power_button_id::hibernate, "Hibernate", 4}};
+                {PrimaryButtonData{power_button_id::shutdown,
+                                   "Shutdown",
+                                   1,
+                                   {"systemctl", {"shutdown"}}},
+                 PrimaryButtonData{power_button_id::reboot, "Reboot", 2, {"systemctl", {"reboot"}}},
+                 PrimaryButtonData{power_button_id::suspend,
+                                   "Suspend",
+                                   3,
+                                   {"systemctl", {"suspend"}}},
+                 PrimaryButtonData{power_button_id::hibernate,
+                                   "Hibernate",
+                                   4,
+                                   {"systemctl", {"hibernate"}}}};
         WindowLayoutProperties default_window_layout_properties = {std::move(primary_buttons)};
 
         bool                  dbus_mode = false;

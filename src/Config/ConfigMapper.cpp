@@ -390,6 +390,77 @@ void ConfigMapper::mapLayoutPrimaryButtonData(const toml::table& button_table,
         } else {
                 button_data.order = order->get();
         }
+
+        const auto& command = (button_table)["command"].as_array();
+        // command is not a part of default config yet so not included, amend that
+        if (!command) {
+                QWARNING_NS() << "in config.toml, power_applet.layout.primary_buttons["
+                              << button_index << "].command must be an array! Using defaults...";
+                button_data = defaults;
+                return;
+        } else {
+                const auto&  command_arr = *command;
+                ShellCommand shell_command{};
+
+                if (command_arr.size() > 0 && command_arr.size() <= 2) {
+                        const auto& program = command_arr[0].as_string();
+                        if (!program) {
+                                QWARNING_NS()
+                                        << "in config.toml, power_applet.layout.primary_buttons["
+                                        << button_index << "].command[0] must be a string! "
+                                        << "Using defaults...";
+                                button_data = defaults;
+                                return;
+                        } else {
+                                shell_command.program = QString::fromStdString(program->get());
+                        }
+
+                        const auto& args = command_arr[1].as_array();
+                        if (!args) {
+                                QWARNING_NS()
+                                        << "in config.toml, power_applet.layout.primary_buttons["
+                                        << button_index << "].command[1] must be an array! "
+                                        << "Using defaults...";
+                                button_data = defaults;
+                                return;
+                        } else {
+                                const auto& args_arr = *args;
+                                if (args_arr.empty()) {
+                                        QWARNING_NS() << "in config.toml, power_applet.layout"
+                                                      << ".primary_buttons[" << button_index
+                                                      << "].command[1] must not be empty! "
+                                                      << "Using defaults...";
+                                        button_data = defaults;
+                                        return;
+                                }
+                                for (size_t i = 0; i != args_arr.size(); ++i) {
+                                        const auto& arg = args_arr[i].as_string();
+                                        if (!arg) {
+                                                QWARNING_NS() << "in config.toml, power_applet"
+                                                              << ".layout.primary_buttons["
+                                                              << button_index << "].command[1]["
+                                                              << i << "] must be a string! "
+                                                              << "Using defaults...";
+                                                button_data = defaults;
+                                                return;
+                                        } else {
+                                                shell_command.arguments
+                                                        .insert(shell_command.arguments.cend(),
+                                                                QString::fromStdString(arg->get()));
+                                        }
+                                }
+                        }
+
+                        button_data.command = std::move(shell_command);
+                } else {
+                        QWARNING_NS() << "in config.toml, power_applet.layout.primary_buttons["
+                                      << button_index
+                                      << "].command requires 'program' and 'args' elements! "
+                                      << "Using defaults...";
+                        button_data = defaults;
+                        return;
+                }
+        }
 }
 
 void ConfigMapper::logButtonDisabled(const toml::table& button_table,

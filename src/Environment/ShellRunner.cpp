@@ -16,24 +16,24 @@
    along with this program.  If not, see <https://www.gnu.org/licenses/>. */
 
 #include "ShellRunner.h"
+#include "ShellCommand.h"
 
-#include <cstdlib>
 #include <QProcess>
 
 // TODO Replace to eliminate command injection caused by shell interpretation
 
-void ShellRunner::runShutdownCommand() {
-        QProcess::startDetached("systemctl", {"poweroff"});
+void ShellRunner::runShutdownCommand(const ShellCommand& command) {
+        QProcess::startDetached(command.program, command.arguments);
 }
 
-void ShellRunner::runRebootCommand() {
-        QProcess::startDetached("systemctl", {"reboot"});
+void ShellRunner::runRebootCommand(const ShellCommand& command) {
+        QProcess::startDetached(command.program, command.arguments);
 }
 
-void ShellRunner::runSuspendCommand() {
-        QProcess::startDetached("systemctl", {"suspend"});
+void ShellRunner::runSuspendCommand(const ShellCommand& command) {
+        QProcess::startDetached(command.program, command.arguments);
 }
 
-void ShellRunner::runHibernateCommand() {
-        QProcess::startDetached("systemctl", {"hibernate"});
+void ShellRunner::runHibernateCommand(const ShellCommand& command) {
+        QProcess::startDetached(command.program, command.arguments);
 }
