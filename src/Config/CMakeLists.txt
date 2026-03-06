@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.16)
 
-project(Config VERSION 0.11.7 LANGUAGES CXX)
+project(Config VERSION 0.12.1 LANGUAGES CXX)
 
 # Enable support for Qt's resource files
 set(CMAKE_AUTORCC ON)
@@ -8,12 +8,12 @@ set(CMAKE_AUTORCC ON)
 # Requirements
 find_package(tomlplusplus REQUIRED)
 
+add_subdirectory(TOML)
+
 add_library(Config
         Config.cpp
         Keys.cpp
         PrimaryButtonData.h
-        ConfigLocator.cpp
-        ConfigParser.cpp
         ConfigMapper.cpp)
 
 target_include_directories(Config PRIVATE
@@ -21,9 +21,10 @@ target_include_directories(Config PRIVATE
         ${GLOBAL_INCLUSIONS})
 
 target_link_libraries(Config PRIVATE
-        CppUtils
+        Config::TOML
         Core::Log
-        UI::Enums)
+        UI::Enums
+        CppUtils)
 
 target_link_libraries(Config PUBLIC
         tomlplusplus::tomlplusplus

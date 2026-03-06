@@ -17,11 +17,11 @@
 
 #include "ConfigMapper.h"
 #include "Config.h"
-#include "ConfigParser.h"
 #include "Core/Log.h"
 #include "CppUtils/include/Enum.h"
 #include "CppUtils/include/String.h"
 #include "Keys.h"
+#include "TOML/TomlParser.h"
 #include "UI/Enums/ButtonIDs.h"
 
 #include <algorithm>

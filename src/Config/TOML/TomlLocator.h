@@ -17,24 +17,14 @@
 
 #pragma once
 
-#include "ConfigLocator.h"
-
-#include <qnamespace.h>
+#include <array>
 #include <string>
-#include <toml++/toml.hpp>
-#include <QKeyCombination>
-#include <QKeySequence>
-#include <QSizePolicy>
-#include <QString>
 
-class ConfigParser final {
-private:
-        static toml::table createTable(std::string file_path);
+constexpr int toml_file_names_cnt = 2;
+constexpr int toml_dir_paths_cnt  = 2;
 
-        static std::array<std::string, config_file_names_cnt> config_files;
-
+// TODO Alias for config files
+class TomlLocator final {
 public:
-        ConfigParser() = delete;
-        static const toml::table& createConfig();
-        static const toml::table& createKeys();
+        static std::array<std::string, toml_file_names_cnt> locateTomlFiles();
 };

@@ -17,7 +17,7 @@
 
 #include "Keys.h"
 #include "Config/ConfigMapper.h"
-#include "Config/ConfigParser.h"
+#include "Config/TOML/TomlParser.h"
 #include <qnamespace.h>
 
 Keys::GlobalKeys::GlobalKeys(keybindings quit_keys) : quit_keys(quit_keys) {}
@@ -46,7 +46,7 @@ Keys& Keys::getKeys() {
         static bool parsed = false;
 
         if (!parsed) {
-                ConfigMapper::mapToKeys(ConfigParser::createKeys(), keys);
+                ConfigMapper::mapToKeys(TomlParser::createKeys(), keys);
                 parsed = true;
         }
 
