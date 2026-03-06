@@ -36,8 +36,8 @@ toml::table TomlParser::createTable(std::string file_path) {
         return file_table;
 }
 
-std::array<std::string, config_file_names_cnt> TomlParser::config_files =
-        TomlLocator::locateConfigFiles();
+std::array<std::string, toml_file_names_cnt> TomlParser::config_files =
+        TomlLocator::locateTomlFiles();
 
 const toml::table& TomlParser::createConfig() {
         static toml::table config = createTable(config_files[0]);
