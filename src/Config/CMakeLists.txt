@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.16)
 
-project(Config VERSION 0.12.1 LANGUAGES CXX)
+project(Config VERSION 0.13.0 LANGUAGES CXX)
 
 # Enable support for Qt's resource files
 set(CMAKE_AUTORCC ON)
@@ -14,7 +14,8 @@ add_library(Config
         Config.cpp
         Keys.cpp
         PrimaryButtonData.h
-        ConfigMapper.cpp)
+        ConfigMapper.cpp
+        KeyMapper.cpp)
 
 target_include_directories(Config PRIVATE
         ${CMAKE_CURRENT_LIST_DIR}
