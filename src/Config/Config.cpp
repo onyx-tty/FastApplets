@@ -17,8 +17,8 @@
 
 #include "Config.h"
 #include "ConfigMapper.h"
-#include "ConfigParser.h"
 #include "PrimaryButtonData.h"
+#include "TOML/ConfigParser.h"
 #include "UI/Enums/ButtonIDs.h"
 
 #include <toml++/toml.hpp>

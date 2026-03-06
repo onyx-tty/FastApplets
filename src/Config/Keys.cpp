@@ -17,7 +17,7 @@
 
 #include "Keys.h"
 #include "Config/ConfigMapper.h"
-#include "Config/ConfigParser.h"
+#include "Config/TOML/ConfigParser.h"
 #include <qnamespace.h>
 
 Keys::GlobalKeys::GlobalKeys(keybindings quit_keys) : quit_keys(quit_keys) {}
