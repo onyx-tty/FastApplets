@@ -1,10 +1,12 @@
-# PROJ PowerApplet \[2/4\]
+# PROJ PowerApplet \[3/4\]
 
 1.  \[X\] Keybindings
 
 2.  \[X\] DBus client class for PowerActionManager
 
-3.  \[ \] Shell command mode as an alternative to DBus mode
+3.  \[X\] Shell command mode
+
+4.  \[ \] Restore DBus mode
 
     <br>
 
@@ -20,7 +22,7 @@
 
 5.  \[ \] UI layout
 
-6.  \[ \] Proper GUI
+6.  \[ \] Clean UI
 
     <br>
 
@@ -40,52 +42,58 @@
 
 <br>
 
-# Base \[11/21\]
+# Docs \[2/5\]
 
 1.  \[X\] LICENSE
 
 2.  \[ \] README.md
 
-    1.  \[ \] Basics
+    1.  \[X\] Summary
 
-    2.  \[ \] Requirement instructions
+    2.  \[ \] Description
 
-    3.  \[ \] Build instructions
+    3.  \[ \] Getting Started
 
-    4.  \[ \] Usage instructions
+    4.  \[ \] Dependencies
+
+    5.  \[X\] Requirement instructions
+
+    6.  \[ \] Installing
+
+    7.  \[X\] Building
+
+    8.  \[ \] Installation
+
+    9.  \[ \] Help
+
+    10. \[X\] Authors
+
+    11. \[ \] Acknowledgments
 
 3.  \[X\] TODO.md
 
-4.  \[X\] Icon embedment in the executable
+4.  \[ \] CONTRIBUTE.md
 
-5.  \[ \] Default icons fetched from current icon theme
+5.  \[ \] Documentation
 
-6.  \[ \] Custom icons
+    <br>
 
-7.  \[ \] Fallback icons
+# Infrastructure \[5/8\]
 
-8.  \[X\] CMake presets
+1.  \[X\] CMake presets
 
-9.  \[X\] TOML configuration
+2.  \[X\] TOML configuration
 
-10. \[X\] Centralized CMake structure
+3.  \[X\] Centralized CMake structure
 
-11. \[ \] Static compilation of private libraries
+4.  \[ \] Static compilation of private libraries
 
-12. \[X\] Cleaner build directories
+5.  \[X\] Cleaner build directories
 
-13. \[ \] Standardized window class and title
-
-14. \[X\] Config reliant on environment variables, adhering to the XDG
+6.  \[X\] Config reliant on environment variables, adhering to the XDG
     Base Directory Specification
 
-15. \[X\] Handle type mismatches in config
-
-16. \[ \] Handle incorrect values in config
-
-17. \[X\] Fallback config
-
-18. \[ \] Testing
+7.  \[ \] Testing
 
     1.  \[ \] GTest
 
@@ -93,4 +101,28 @@
 
     3.  \[ \] GBenchmark
 
-19. \[X\] Utilize the logging wrappers
+8.  \[ \] CI/CD
+
+    <br>
+
+# Config \[2/4\]
+
+1.  \[ \] Standardized window class and title
+
+2.  \[X\] Config error handling
+
+3.  \[ \] Config value validation
+
+4.  \[X\] Fallback config
+
+    <br>
+
+# Resources \[1/4\]
+
+1.  \[X\] Icon embedment in the executable
+
+2.  \[ \] Fetching of default icons from the current icon theme
+
+3.  \[ \] Custom icons
+
+4.  \[ \] Fallback icons
