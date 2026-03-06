@@ -1,4 +1,4 @@
-project(Environment VERSION 0.1.0 LANGUAGES CXX)
+project(Environment VERSION 0.1.1 LANGUAGES CXX)
 
 add_library(Environment
         ShellCommand.h

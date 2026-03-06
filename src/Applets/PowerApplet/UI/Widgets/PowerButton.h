@@ -17,6 +17,7 @@
 
 #pragma once
 
+#include "Environment/ShellCommand.h"
 #include "UI/Enums/ButtonIDs.h"
 #include "UI/Widgets/Button.h"
 
@@ -29,7 +30,7 @@ private:
 
 public:
         explicit PowerButton(QBoxLayout* layout, power_button_id identifier, QIcon icon,
-                             QString text, QString dbus_action);
+                             QString text, QString dbus_action, ShellCommand command);
         power_button_id getIdentifier() const;
         const QString&  getDBusAction() const;
 };
