@@ -16,7 +16,7 @@
    along with this program.  If not, see <https://www.gnu.org/licenses/>. */
 
 #include "Keys.h"
-#include "Config/KeyMapper.h"
+#include "Config/KeysMapper.h"
 #include "Config/TOML/TomlParser.h"
 #include <qnamespace.h>
 
@@ -46,7 +46,7 @@ Keys& Keys::getKeys() {
         static bool parsed = false;
 
         if (!parsed) {
-                KeyMapper::mapToKeys(TomlParser::createKeys(), keys);
+                KeysMapper::mapToKeys(TomlParser::createKeys(), keys);
                 parsed = true;
         }
 

@@ -15,7 +15,7 @@
    You should have received a copy of the GNU General Public License
    along with this program.  If not, see <https://www.gnu.org/licenses/>. */
 
-#include "KeyMapper.h"
+#include "KeysMapper.h"
 #include "Core/Log.h"
 #include "Keys.h"
 
@@ -69,7 +69,7 @@ void interpretTextAsKeybindings(const toml::node_view<const toml::node>& source,
         }
 }
 
-void KeyMapper::mapGlobalQuitKeys(const toml::table& global, Keys& keys) {
+void KeysMapper::mapGlobalQuitKeys(const toml::table& global, Keys& keys) {
         const auto& data     = (global)["quit"].as_array();
         const auto& defaults = Keys::getDefaultKeys().getGlobalKeys().getQuitKeys();
         auto&       quit     = keys.global_keys.quit_keys;
@@ -83,7 +83,7 @@ void KeyMapper::mapGlobalQuitKeys(const toml::table& global, Keys& keys) {
         interpretTextAsKeybindings(global["quit"], quit);
 }
 
-void KeyMapper::mapGlobalKeys(const toml::table& keys_table, Keys& keys) {
+void KeysMapper::mapGlobalKeys(const toml::table& keys_table, Keys& keys) {
         const auto& data     = keys_table["global"].as_table();
         const auto& defaults = Keys::getDefaultKeys().getGlobalKeys();
         auto&       global   = keys.global_keys;
@@ -98,7 +98,7 @@ void KeyMapper::mapGlobalKeys(const toml::table& keys_table, Keys& keys) {
         mapGlobalQuitKeys(*data, keys);
 }
 
-void KeyMapper::mapPowerAppletQuitKeys(const toml::table& power_applet, Keys& keys) {
+void KeysMapper::mapPowerAppletQuitKeys(const toml::table& power_applet, Keys& keys) {
         const auto& data     = power_applet["quit"].as_array();
         const auto& defaults = Keys::getDefaultKeys().getPowerAppletKeys().getQuitKeys();
         auto&       quit     = keys.power_applet_keys.quit_keys;
@@ -118,7 +118,7 @@ void KeyMapper::mapPowerAppletQuitKeys(const toml::table& power_applet, Keys& ke
         }
 }
 
-void KeyMapper::mapPowerAppletPrimaryButtonKeys(const toml::table& power_applet, Keys& keys) {
+void KeysMapper::mapPowerAppletPrimaryButtonKeys(const toml::table& power_applet, Keys& keys) {
         const std::array<const toml::array*, 4> data = {power_applet["primary_button1"].as_array(),
                                                         power_applet["primary_button2"].as_array(),
                                                         power_applet["primary_button3"].as_array(),
@@ -143,7 +143,7 @@ void KeyMapper::mapPowerAppletPrimaryButtonKeys(const toml::table& power_applet,
         }
 }
 
-void KeyMapper::mapPowerAppletKeys(const toml::table& keys_table, Keys& keys) {
+void KeysMapper::mapPowerAppletKeys(const toml::table& keys_table, Keys& keys) {
         const auto& data         = keys_table["power_applet"].as_table();
         const auto& defaults     = Keys::getDefaultKeys().getPowerAppletKeys();
         auto&       power_applet = keys.power_applet_keys;
@@ -161,7 +161,7 @@ void KeyMapper::mapPowerAppletKeys(const toml::table& keys_table, Keys& keys) {
         mapPowerAppletPrimaryButtonKeys(*data, keys);
 }
 
-void KeyMapper::mapToKeys(const toml::table& keys_table, Keys& keys) {
+void KeysMapper::mapToKeys(const toml::table& keys_table, Keys& keys) {
         // Confirm that a QApplication instance exists
         if (!QApplication::instanceExists()) {
                 QFATAL("QApplication has not been instantiated yet!");
