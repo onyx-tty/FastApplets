@@ -17,7 +17,7 @@
 
 #pragma once
 
-#include "ConfigLocator.h"
+#include "TomlLocator.h"
 
 #include <qnamespace.h>
 #include <string>
@@ -27,14 +27,14 @@
 #include <QSizePolicy>
 #include <QString>
 
-class ConfigParser final {
+class TomlParser final {
 private:
         static toml::table createTable(std::string file_path);
 
         static std::array<std::string, config_file_names_cnt> config_files;
 
 public:
-        ConfigParser() = delete;
+        TomlParser() = delete;
         static const toml::table& createConfig();
         static const toml::table& createKeys();
 };

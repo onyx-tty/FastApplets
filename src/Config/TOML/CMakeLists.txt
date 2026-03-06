@@ -1,6 +1,6 @@
 add_library(Config_TOML
-        ConfigLocator.cpp
-        ConfigParser.cpp)
+        TomlLocator.cpp
+        TomlParser.cpp)
 add_library(Config::TOML ALIAS Config_TOML)
 
 target_include_directories(Config_TOML PRIVATE

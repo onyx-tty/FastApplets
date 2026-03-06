@@ -18,7 +18,7 @@
 #include "Config.h"
 #include "ConfigMapper.h"
 #include "PrimaryButtonData.h"
-#include "TOML/ConfigParser.h"
+#include "TOML/TomlParser.h"
 #include "UI/Enums/ButtonIDs.h"
 
 #include <toml++/toml.hpp>
@@ -88,7 +88,7 @@ Config& Config::getConfig() {
         static bool   parsed = false;
 
         if (!parsed) {
-                ConfigMapper::mapToConfig(ConfigParser::createConfig(), config);
+                ConfigMapper::mapToConfig(TomlParser::createConfig(), config);
                 parsed = true;
         }
 

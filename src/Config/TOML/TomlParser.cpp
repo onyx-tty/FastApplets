@@ -15,13 +15,13 @@
    You should have received a copy of the GNU General Public License
    along with this program.  If not, see <https://www.gnu.org/licenses/>. */
 
-#include "ConfigParser.h"
-#include "ConfigLocator.h"
+#include "TomlParser.h"
 #include "Core/Log.h"
 #include "CppUtils/include/Enum.h"
+#include "TomlLocator.h"
 
 // TODO Extract
-toml::table ConfigParser::createTable(std::string file_path) {
+toml::table TomlParser::createTable(std::string file_path) {
         toml::table file_table;
 
         QDEBUG() << file_path;
@@ -36,15 +36,15 @@ toml::table ConfigParser::createTable(std::string file_path) {
         return file_table;
 }
 
-std::array<std::string, config_file_names_cnt> ConfigParser::config_files =
-        ConfigLocator::locateConfigFiles();
+std::array<std::string, config_file_names_cnt> TomlParser::config_files =
+        TomlLocator::locateConfigFiles();
 
-const toml::table& ConfigParser::createConfig() {
+const toml::table& TomlParser::createConfig() {
         static toml::table config = createTable(config_files[0]);
         return config;
 }
 
-const toml::table& ConfigParser::createKeys() {
+const toml::table& TomlParser::createKeys() {
         static toml::table keys = createTable(config_files[1]);
         return keys;
 }

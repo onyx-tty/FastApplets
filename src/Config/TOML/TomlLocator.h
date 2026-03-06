@@ -24,7 +24,7 @@ constexpr int config_file_names_cnt = 2;
 constexpr int config_dir_paths_cnt  = 2;
 
 // TODO Alias for config files
-class ConfigLocator final {
+class TomlLocator final {
 public:
         static std::array<std::string, config_file_names_cnt> locateConfigFiles();
 };

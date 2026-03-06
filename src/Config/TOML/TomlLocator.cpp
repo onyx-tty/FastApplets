@@ -15,7 +15,7 @@
    You should have received a copy of the GNU General Public License
    along with this program.  If not, see <https://www.gnu.org/licenses/>. */
 
-#include "ConfigLocator.h"
+#include "TomlLocator.h"
 #include "Core/Log.h"
 
 #include <array>
@@ -37,7 +37,7 @@ static std::array<QString, config_file_names_cnt> config_file_names = {"config.t
 
 // TODO Split
 // Look for configs in $XDG_CONFIG_HOME and $XDG_DATA_HOME
-std::array<std::string, config_file_names_cnt> ConfigLocator::locateConfigFiles() {
+std::array<std::string, config_file_names_cnt> TomlLocator::locateConfigFiles() {
         std::array<std::string, config_file_names_cnt> files{}; // Only enough slots for each file
 
         QString file_path;
