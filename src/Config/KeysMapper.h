@@ -21,9 +21,9 @@
 
 class Keys;
 
-class KeyMapper final {
+class KeysMapper final {
 private:
-        KeyMapper() = delete;
+        KeysMapper() = delete;
 
         /* Global Keys */
         static void mapGlobalQuitKeys(const toml::table& global, Keys& keys);

@@ -20,7 +20,7 @@
 #include <array>
 #include <unordered_set>
 
-class KeyMapper;
+class KeysMapper;
 
 using keybindings = std::unordered_set<int>;
 
@@ -28,7 +28,7 @@ class Keys final {
 public:
         class GlobalKeys final {
         private:
-                friend class KeyMapper;
+                friend class KeysMapper;
 
                 keybindings quit_keys;
 
@@ -39,7 +39,7 @@ public:
 
         class PowerAppletKeys final {
         private:
-                friend class KeyMapper;
+                friend class KeysMapper;
 
                 keybindings                quit_keys;
                 std::array<keybindings, 4> primary_button_keys;
@@ -59,7 +59,7 @@ public:
         const PowerAppletKeys& getPowerAppletKeys() const;
 
 private:
-        friend class KeyMapper;
+        friend class KeysMapper;
 
         GlobalKeys      global_keys;
         PowerAppletKeys power_applet_keys;
