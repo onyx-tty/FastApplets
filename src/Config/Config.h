@@ -17,7 +17,7 @@
 
 #pragma once
 
-#include "PrimaryButtonData.h"
+#include "UI/Widgets/PrimaryButtonData.h"
 
 #include <vector>
 #include <QSize>
