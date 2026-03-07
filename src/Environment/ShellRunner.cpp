@@ -22,18 +22,6 @@
 
 // TODO Replace to eliminate command injection caused by shell interpretation
 
-void ShellRunner::runShutdownCommand(const ShellCommand& command) {
-        QProcess::startDetached(command.program, command.arguments);
-}
-
-void ShellRunner::runRebootCommand(const ShellCommand& command) {
-        QProcess::startDetached(command.program, command.arguments);
-}
-
-void ShellRunner::runSuspendCommand(const ShellCommand& command) {
-        QProcess::startDetached(command.program, command.arguments);
-}
-
-void ShellRunner::runHibernateCommand(const ShellCommand& command) {
+void ShellRunner::runCommand(const ShellCommand& command) {
         QProcess::startDetached(command.program, command.arguments);
 }

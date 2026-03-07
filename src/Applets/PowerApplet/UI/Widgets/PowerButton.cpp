@@ -31,16 +31,16 @@ PowerButton::PowerButton(QBoxLayout* layout, power_button_id identifier, QIcon i
         */
         if (dbus_action == "PowerOff") {
                 connect(this, &PowerButton::clicked,
-                        [this, command]() { ShellRunner::runShutdownCommand(command); });
+                        [this, command]() { ShellRunner::runCommand(command); });
         } else if (dbus_action == "Reboot") {
                 connect(this, &PowerButton::clicked,
-                        [this, command]() { ShellRunner::runRebootCommand(command); });
+                        [this, command]() { ShellRunner::runCommand(command); });
         } else if (dbus_action == "Suspend") {
                 connect(this, &PowerButton::clicked,
-                        [this, command]() { ShellRunner::runSuspendCommand(command); });
+                        [this, command]() { ShellRunner::runCommand(command); });
         } else if (dbus_action == "Hibernate") {
                 connect(this, &PowerButton::clicked,
-                        [this, command]() { ShellRunner::runHibernateCommand(command); });
+                        [this, command]() { ShellRunner::runCommand(command); });
         } else {
                 QCRITICAL() << "Wrong command! PowerButton" << text
                             << "declared with dbus_action =" << dbus_action;
