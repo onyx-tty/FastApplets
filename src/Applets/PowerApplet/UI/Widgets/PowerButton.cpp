@@ -41,9 +41,6 @@ PowerButton::PowerButton(QBoxLayout* layout, power_button_id identifier, QIcon i
         } else if (dbus_action == "Hibernate") {
                 connect(this, &PowerButton::clicked,
                         [this, command]() { ShellRunner::runCommand(command); });
-        } else {
-                QCRITICAL() << "Wrong command! PowerButton" << text
-                            << "declared with dbus_action =" << dbus_action;
         }
 }
 
