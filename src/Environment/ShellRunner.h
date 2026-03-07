@@ -24,8 +24,5 @@ private:
         ShellRunner() = delete;
 
 public:
-        static void runShutdownCommand(const ShellCommand& command);
-        static void runRebootCommand(const ShellCommand& command);
-        static void runSuspendCommand(const ShellCommand& command);
-        static void runHibernateCommand(const ShellCommand& command);
+        static void runCommand(const ShellCommand& command);
 };

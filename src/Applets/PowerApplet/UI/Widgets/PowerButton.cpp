@@ -25,26 +25,8 @@
 PowerButton::PowerButton(QBoxLayout* layout, power_button_id identifier, QIcon icon, QString text,
                          QString dbus_action, ShellCommand command) :
         Button(layout, icon, text), identifier(identifier), dbus_action(dbus_action) {
-        /*
         connect(this, &PowerButton::clicked,
-                [this]() { PowerActionManager::sendPowerAction(this->dbus_action); });
-        */
-        if (dbus_action == "PowerOff") {
-                connect(this, &PowerButton::clicked,
-                        [this, command]() { ShellRunner::runShutdownCommand(command); });
-        } else if (dbus_action == "Reboot") {
-                connect(this, &PowerButton::clicked,
-                        [this, command]() { ShellRunner::runRebootCommand(command); });
-        } else if (dbus_action == "Suspend") {
-                connect(this, &PowerButton::clicked,
-                        [this, command]() { ShellRunner::runSuspendCommand(command); });
-        } else if (dbus_action == "Hibernate") {
-                connect(this, &PowerButton::clicked,
-                        [this, command]() { ShellRunner::runHibernateCommand(command); });
-        } else {
-                QCRITICAL() << "Wrong command! PowerButton" << text
-                            << "declared with dbus_action =" << dbus_action;
-        }
+                [this, command]() { ShellRunner::runCommand(command); });
 }
 
 power_button_id PowerButton::getIdentifier() const {
