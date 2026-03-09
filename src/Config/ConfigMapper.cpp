@@ -194,11 +194,14 @@ void ConfigMapper::mapButtonTextAlignment(const toml::table& button, Config& con
                 text_alignment = defaults;
                 return;
         } else {
-                // TODO Remove
-                Qt::Alignment default_alignment = alignment_map.at("top");
+                if (!alignment_map.contains(data->get())) {
+                        QWARNING() << "in config.toml, global.primary_button.text_alignment is"
+                                   << "invalid! Using defaults...";
+                        text_alignment = defaults;
+                        return;
+                }
 
-                text_alignment = getEnumFromMap(alignment_map, data->get(), default_alignment,
-                                                error_message::alignment::text_alignment_error);
+                text_alignment = alignment_map.at(data->get());
         }
 }
 
@@ -214,11 +217,14 @@ void ConfigMapper::mapButtonIconAlignment(const toml::table& button, Config& con
                 icon_alignment = defaults;
                 return;
         } else {
-                // TODO Remove
-                Qt::Alignment default_alignment = alignment_map.at("top");
+                if (!alignment_map.contains(data->get())) {
+                        QWARNING() << "in config.toml, global.primary_button.icon_alignment is"
+                                   << "invalid! Using defaults...";
+                        icon_alignment = defaults;
+                        return;
+                }
 
-                icon_alignment = getEnumFromMap(alignment_map, data->get(), default_alignment,
-                                                error_message::alignment::icon_alignment_error);
+                icon_alignment = alignment_map.at(data->get());
         }
 }
 
@@ -274,11 +280,14 @@ void ConfigMapper::mapButtonPolicy(const toml::table& button, Config& config) {
                 policy = defaults;
 
         } else {
-                // TODO Remove
-                const QSizePolicy default_policy = QSizePolicy(QSizePolicy::Expanding,
-                                                               QSizePolicy::Expanding);
-                policy = getEnumFromMap(size_policy_map, toLowerCopy(data->get()), default_policy,
-                                        error_message::size_policy::primary_button_error);
+                if (!size_policy_map.contains(data->get())) {
+                        QWARNING() << "in config.toml, global.primary_button.button_policy is"
+                                   << "invalid! Using defaults...";
+                        policy = defaults;
+                        return;
+                }
+
+                policy = size_policy_map.at(toLowerCopy(data->get()));
         }
 }
 
