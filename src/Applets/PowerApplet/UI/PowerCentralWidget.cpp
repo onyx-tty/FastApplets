@@ -138,6 +138,20 @@ power_button_id PowerCentralWidget::getPowerButtonIDFromKey(int key) {
         return power_button->getIdentifier();
 }
 
+QString getDBusMethodFromPowerButtonID(power_button_id id) {
+        const std::unordered_map<power_button_id, QString> map =
+                {{power_button_id::shutdown, "PowerOff"},
+                 {power_button_id::reboot, "Reboot"},
+                 {power_button_id::suspend, "Suspend"},
+                 {power_button_id::hibernate, "Hibernate"}};
+
+        if (!map.contains(id)) {
+                QFATAL("Received invalid power_button_id %i!", static_cast<int>(id));
+        }
+
+        return map.at(id);
+}
+
 // TODO Split and simplify this
 std::vector<PowerButton*> PowerCentralWidget::createButtonList(QBoxLayout* main_layout) {
         const auto& primary_buttons_data =
