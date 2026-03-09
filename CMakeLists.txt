@@ -101,18 +101,22 @@ if(BUILD_POWERAPPLET)
         target_link_libraries(PowerApplet PRIVATE
                 PowerApplet::Deps)
 
+        if (ENABLE_ASAN OR ENABLE_LSAN OR ENABLE_UBSAN)
+                target_compile_options(PowerApplet PRIVATE -fno-omit-frame-pointer -g)
+        endif()
+
         if(ENABLE_ASAN)
-                target_compile_options(PowerApplet PRIVATE -fsanitize=address -fno-omit-frame-pointer -g)
+                target_compile_options(PowerApplet PRIVATE -fsanitize=address)
                 target_link_options(PowerApplet PRIVATE -fsanitize=address)
         endif()
 
         if(ENABLE_LSAN)
-                target_compile_options(PowerApplet PRIVATE -fsanitize=leak -fno-omit-frame-pointer -g)
+                target_compile_options(PowerApplet PRIVATE -fsanitize=leak)
                 target_link_options(PowerApplet PRIVATE -fsanitize=leak)
         endif()
 
         if(ENABLE_UBSAN)
-                target_compile_options(PowerApplet PRIVATE -fsanitize=undefined -fno-omit-frame-pointer -g)
+                target_compile_options(PowerApplet PRIVATE -fsanitize=undefined)
                 target_link_options(PowerApplet PRIVATE -fsanitize=undefined)
         endif()
 endif()
