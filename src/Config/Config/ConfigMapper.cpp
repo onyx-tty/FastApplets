@@ -17,10 +17,10 @@
 
 #include "ConfigMapper.h"
 #include "Config.h"
+#include "Config/TOML/TomlParser.h"
 #include "Core/Log.h"
 #include "CppUtils/include/Enum.h"
 #include "CppUtils/include/String.h"
-#include "TOML/TomlParser.h"
 #include "UI/Enums/ButtonIDs.h"
 
 #include <algorithm>
@@ -463,8 +463,8 @@ void ConfigMapper::mapLayoutPrimaryButtonData(const toml::table& button_table,
                                        .getWindowLayoutProperties()
                                        .getPrimaryPowerButtons()[button_index];
 
-        mapLayoutPrimaryButtonIdentifier(button_table["id"], button_data,
-                                         button_data.identifier, button_index);
+        mapLayoutPrimaryButtonIdentifier(button_table["id"], button_data, button_data.identifier,
+                                         button_index);
 
         mapLayoutPrimaryButtonText(button_table["label"], button_data, button_data.text,
                                    button_index);

@@ -22,10 +22,10 @@
 #include <array>
 #include <string>
 #include <toml++/toml.hpp>
-#include <QKeySequence>
-#include <QKeyCombination>
-#include <QString>
 #include <QApplication>
+#include <QKeyCombination>
+#include <QKeySequence>
+#include <QString>
 
 /* Interpret an array of string representations of a keyboard shortcut at a target location */
 // Apply the internal lambda textToHexInterpreter to each keyboard shortcut string representation

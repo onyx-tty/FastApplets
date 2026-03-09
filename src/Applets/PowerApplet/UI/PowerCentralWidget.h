@@ -17,7 +17,7 @@
 
 #pragma once
 
-#include "Config/Keys.h"
+#include "Config/Keys/Keys.h"
 #include "UI/Enums/ButtonIDs.h"
 #include "Widgets/PowerButton.h"
 

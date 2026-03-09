@@ -16,8 +16,8 @@
    along with this program.  If not, see <https://www.gnu.org/licenses/>. */
 
 #include "PowerCentralWidget.h"
-#include "Config/Config.h"
-#include "Config/Keys.h"
+#include "Config/Config/Config.h"
+#include "Config/Keys/Keys.h"
 #include "Core/Log.h"
 #include "UI/Enums/ButtonIDs.h"
 

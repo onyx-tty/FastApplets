@@ -16,7 +16,7 @@
    along with this program.  If not, see <https://www.gnu.org/licenses/>. */
 
 #include "PowerMainWindow.h"
-#include "Config/Config.h"
+#include "Config/Config/Config.h"
 
 PowerMainWindow::PowerMainWindow(QWidget* parent) :
         MainWindow(parent), central_widget(new PowerCentralWidget(this)) {

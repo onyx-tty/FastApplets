@@ -16,8 +16,9 @@
    along with this program.  If not, see <https://www.gnu.org/licenses/>. */
 
 #include "Keys.h"
-#include "Config/KeysMapper.h"
 #include "Config/TOML/TomlParser.h"
+#include "KeysMapper.h"
+
 #include <qnamespace.h>
 
 Keys::GlobalKeys::GlobalKeys(keybindings quit_keys) : quit_keys(quit_keys) {}
