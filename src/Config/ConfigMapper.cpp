@@ -36,7 +36,6 @@
 #include <QString>
 
 using enum_utils::EnumMap;
-using enum_utils::getEnumFromMap;
 using string_utils::toLowerCopy;
 
 // TODO Make function names consistent, i.e. mapButtonProperties -> mapPrimaryButtonProperties
@@ -174,7 +173,7 @@ void ConfigMapper::mapButtonTextAlignment(const toml::table& button, Config& con
                         return;
                 }
 
-                text_alignment = alignment_map.at(data->get());
+                text_alignment = alignment_map.at(toLowerCopy(data->get()));
         }
 }
 
@@ -197,7 +196,7 @@ void ConfigMapper::mapButtonIconAlignment(const toml::table& button, Config& con
                         return;
                 }
 
-                icon_alignment = alignment_map.at(data->get());
+                icon_alignment = alignment_map.at(toLowerCopy(data->get()));
         }
 }
 
