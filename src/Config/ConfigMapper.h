@@ -17,10 +17,15 @@
 
 #pragma once
 
-class Config;
-class PrimaryButtonData;
+#include "UI/Enums/ButtonIDs.h"
 
 #include <toml++/toml.hpp>
+#include <QStringList>
+
+class Config;
+class PrimaryButtonData;
+class QString;
+struct ShellCommand;
 
 class ConfigMapper final {
 private:
@@ -39,6 +44,27 @@ private:
         static void mapButtonProperties(const toml::table& config_table, Config& config);
 
         /* Layout Properties */
+        static void mapLayoutPrimaryButtonIdentifier(const toml::node_view<const toml::node> data,
+                                                     PrimaryButtonData&                      button,
+                                                     power_button_id& identifier,
+                                                     size_t           button_index);
+        static void mapLayoutPrimaryButtonText(const toml::node_view<const toml::node> data,
+                                               PrimaryButtonData& button, QString& text,
+                                               size_t button_index);
+        static void mapLayoutPrimaryButtonOrder(const toml::node_view<const toml::node> data,
+                                                PrimaryButtonData& button, long& order,
+                                                size_t button_index);
+        static void mapLayoutPrimaryButtonCommandProgram(
+                const toml::node_view<const toml::node> data, PrimaryButtonData& button,
+                QString& program, size_t button_index);
+        static void mapLayoutPrimaryButtonCommandArgumentsArgument(
+                const toml::node_view<const toml::node> data, PrimaryButtonData& button,
+                QStringList& arguments, size_t button_index, size_t arg_index);
+        static void mapLayoutPrimaryButtonCommandArguments(
+                const toml::node_view<const toml::node> data, PrimaryButtonData& button,
+                QStringList& arguments, size_t button_index);
+        static void mapLayoutPrimaryButtonCommand(const toml::node_view<const toml::node> data,
+                                                  PrimaryButtonData& button, size_t button_index);
         static void mapLayoutPrimaryButtonData(const toml::table& button_table,
                                                PrimaryButtonData& button_data, size_t button_index);
         static void logButtonDisabled(const toml::table& button_table,

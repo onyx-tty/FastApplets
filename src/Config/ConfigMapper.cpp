@@ -34,6 +34,7 @@
 #include <QSize>
 #include <QSizePolicy>
 #include <QString>
+#include <QStringList>
 
 using enum_utils::EnumMap;
 using string_utils::toLowerCopy;
@@ -290,9 +291,11 @@ void ConfigMapper::mapButtonProperties(const toml::table& config_table, Config& 
 }
 
 /* Layout Properties */
-void ConfigMapper::mapLayoutPrimaryButtonData(const toml::table& button_table,
-                                              PrimaryButtonData& button_data, size_t button_index) {
-        const auto& data     = (button_table)["id"].as_string();
+void ConfigMapper::mapLayoutPrimaryButtonIdentifier(const toml::node_view<const toml::node> node,
+                                                    PrimaryButtonData&                      button,
+                                                    power_button_id& identifier,
+                                                    size_t           button_index) {
+        const auto* data     = node.as_string();
         const auto& defaults = Config::getDefaultConfig()
                                        .getWindowLayoutProperties()
                                        .getPrimaryPowerButtons()[button_index];
@@ -300,105 +303,176 @@ void ConfigMapper::mapLayoutPrimaryButtonData(const toml::table& button_table,
         if (!data) {
                 QWARNING_NS() << "in config.toml, power_applet.layout.primary_buttons["
                               << button_index << "].id must be a string! Using defaults...";
-                button_data = defaults;
+                button = defaults;
                 return;
         } else {
-                button_data.identifier = getPowerButtonIDFromString(
+                identifier = getPowerButtonIDFromString(
                         QString::fromStdString(toLowerCopy(data->get())));
         }
+}
 
-        const auto& label = (button_table)["label"].as_string();
-        if (!label) {
+void ConfigMapper::mapLayoutPrimaryButtonText(const toml::node_view<const toml::node> node,
+                                              PrimaryButtonData& button, QString& text,
+                                              size_t button_index) {
+        const auto* data     = node.as_string();
+        const auto& defaults = Config::getDefaultConfig()
+                                       .getWindowLayoutProperties()
+                                       .getPrimaryPowerButtons()[button_index];
+
+        if (!data) {
                 // TODO Attempt conversion. If fails, default.
                 QWARNING_NS() << "in config.toml, power_applet.layout.primary_buttons["
                               << button_index << "].label must be a string! Using defaults...";
-                button_data = defaults;
+                button = defaults;
                 return;
         } else {
-                button_data.text = QString::fromStdString(label->get());
+                text = QString::fromStdString(data->get());
         }
+}
 
-        const auto& order = (button_table)["order"].as_integer();
-        if (!order) {
+void ConfigMapper::mapLayoutPrimaryButtonOrder(const toml::node_view<const toml::node> node,
+                                               PrimaryButtonData& button, long& order,
+                                               size_t button_index) {
+        const auto* data     = node.as_integer();
+        const auto& defaults = Config::getDefaultConfig()
+                                       .getWindowLayoutProperties()
+                                       .getPrimaryPowerButtons()[button_index];
+
+        if (!data) {
                 // TODO If order exists and is not int, try to convert. If fails, default.
                 QWARNING_NS() << "in config.toml, power_applet.layout.primary_buttons["
                               << button_index << "].order must be an integer! Using defaults...";
-                button_data = defaults;
+                button = defaults;
                 return;
         } else {
-                button_data.order = order->get();
+                order = data->get();
         }
+}
 
-        const auto& command = (button_table)["command"].as_array();
-        // command is not a part of default config yet so not included, amend that
-        if (!command) {
+void ConfigMapper::mapLayoutPrimaryButtonCommandProgram(const toml::node_view<const toml::node> node,
+                                                        PrimaryButtonData& button, QString& program,
+                                                        size_t button_index) {
+        const auto* data     = node.as_string();
+        const auto& defaults = Config::getDefaultConfig()
+                                       .getWindowLayoutProperties()
+                                       .getPrimaryPowerButtons()[button_index];
+
+        if (!data) {
+                QWARNING_NS() << "in config.toml, power_applet.layout.primary_buttons["
+                              << button_index << "].command[0] must be a string! "
+                              << "Using defaults...";
+                button = defaults;
+                return;
+        } else {
+                program = QString::fromStdString(data->get());
+        }
+}
+
+void ConfigMapper::mapLayoutPrimaryButtonCommandArgumentsArgument(
+        const toml::node_view<const toml::node> node, PrimaryButtonData& button,
+        QStringList& arguments, size_t button_index, size_t arg_index) {
+        const auto* data     = node.as_string();
+        const auto& defaults = Config::getDefaultConfig()
+                                       .getWindowLayoutProperties()
+                                       .getPrimaryPowerButtons()[button_index];
+
+        if (!data) {
+                QWARNING_NS() << "in config.toml, power_applet"
+                              << ".layout.primary_buttons[" << button_index << "].command[1]["
+                              << arg_index << "] must be a string! "
+                              << "Using defaults...";
+                button = defaults;
+                return;
+        } else {
+                arguments.insert(arguments.cend(), QString::fromStdString(data->get()));
+        }
+}
+
+void ConfigMapper::mapLayoutPrimaryButtonCommandArguments(
+        const toml::node_view<const toml::node> node, PrimaryButtonData& button,
+        QStringList& arguments, size_t button_index) {
+        const auto* data     = node.as_array();
+        const auto& defaults = Config::getDefaultConfig()
+                                       .getWindowLayoutProperties()
+                                       .getPrimaryPowerButtons()[button_index];
+
+        if (!data) {
+                QWARNING_NS() << "in config.toml, power_applet.layout.primary_buttons["
+                              << button_index << "].command[1] must be an array! "
+                              << "Using defaults...";
+                button = defaults;
+                return;
+        } else {
+                const auto& args = *data;
+                if (args.empty()) {
+                        QWARNING_NS() << "in config.toml, power_applet.layout"
+                                      << ".primary_buttons[" << button_index
+                                      << "].command[1] must not be empty! "
+                                      << "Using defaults...";
+                        button = defaults;
+                        return;
+                }
+                for (size_t i = 0; i != args.size(); ++i) {
+                        mapLayoutPrimaryButtonCommandArgumentsArgument(toml::node_view(args[i]),
+                                                                       button, arguments,
+                                                                       button_index, i);
+                }
+        }
+}
+
+void ConfigMapper::mapLayoutPrimaryButtonCommand(const toml::node_view<const toml::node> node,
+                                                 PrimaryButtonData& button, size_t button_index) {
+        const auto* data     = node.as_array();
+        const auto& defaults = Config::getDefaultConfig()
+                                       .getWindowLayoutProperties()
+                                       .getPrimaryPowerButtons()[button_index];
+
+        ShellCommand shell_command{};
+
+        if (!data) {
                 QWARNING_NS() << "in config.toml, power_applet.layout.primary_buttons["
                               << button_index << "].command must be an array! Using defaults...";
-                button_data = defaults;
+                button = defaults;
                 return;
         } else {
-                const auto&  command_arr = *command;
-                ShellCommand shell_command{};
+                const auto& data_arr = *data;
 
-                if (command_arr.size() > 0 && command_arr.size() <= 2) {
-                        const auto& program = command_arr[0].as_string();
-                        if (!program) {
-                                QWARNING_NS()
-                                        << "in config.toml, power_applet.layout.primary_buttons["
-                                        << button_index << "].command[0] must be a string! "
-                                        << "Using defaults...";
-                                button_data = defaults;
-                                return;
-                        } else {
-                                shell_command.program = QString::fromStdString(program->get());
-                        }
-
-                        const auto& args = command_arr[1].as_array();
-                        if (!args) {
-                                QWARNING_NS()
-                                        << "in config.toml, power_applet.layout.primary_buttons["
-                                        << button_index << "].command[1] must be an array! "
-                                        << "Using defaults...";
-                                button_data = defaults;
-                                return;
-                        } else {
-                                const auto& args_arr = *args;
-                                if (args_arr.empty()) {
-                                        QWARNING_NS() << "in config.toml, power_applet.layout"
-                                                      << ".primary_buttons[" << button_index
-                                                      << "].command[1] must not be empty! "
-                                                      << "Using defaults...";
-                                        button_data = defaults;
-                                        return;
-                                }
-                                for (size_t i = 0; i != args_arr.size(); ++i) {
-                                        const auto& arg = args_arr[i].as_string();
-                                        if (!arg) {
-                                                QWARNING_NS() << "in config.toml, power_applet"
-                                                              << ".layout.primary_buttons["
-                                                              << button_index << "].command[1]["
-                                                              << i << "] must be a string! "
-                                                              << "Using defaults...";
-                                                button_data = defaults;
-                                                return;
-                                        } else {
-                                                shell_command.arguments
-                                                        .insert(shell_command.arguments.cend(),
-                                                                QString::fromStdString(arg->get()));
-                                        }
-                                }
-                        }
-
-                        button_data.command = std::move(shell_command);
-                } else {
+                if (!(data_arr.size() > 0) && !(data_arr.size() <= 2)) {
                         QWARNING_NS() << "in config.toml, power_applet.layout.primary_buttons["
                                       << button_index
                                       << "].command requires 'program' and 'args' elements! "
                                       << "Using defaults...";
-                        button_data = defaults;
+                        button = defaults;
                         return;
+                } else {
+                        mapLayoutPrimaryButtonCommandProgram(toml::node_view(data_arr[0]), button,
+                                                             shell_command.program, button_index);
+
+                        mapLayoutPrimaryButtonCommandArguments(toml::node_view(data_arr[1]), button,
+                                                               shell_command.arguments,
+                                                               button_index);
                 }
         }
+
+        button.command = std::move(shell_command);
+}
+
+void ConfigMapper::mapLayoutPrimaryButtonData(const toml::table& button_table,
+                                              PrimaryButtonData& button_data, size_t button_index) {
+        const auto& defaults = Config::getDefaultConfig()
+                                       .getWindowLayoutProperties()
+                                       .getPrimaryPowerButtons()[button_index];
+
+        mapLayoutPrimaryButtonIdentifier(button_table["id"], button_data,
+                                         button_data.identifier, button_index);
+
+        mapLayoutPrimaryButtonText(button_table["label"], button_data, button_data.text,
+                                   button_index);
+
+        mapLayoutPrimaryButtonOrder(button_table["order"], button_data, button_data.order,
+                                    button_index);
+
+        mapLayoutPrimaryButtonCommand(button_table["command"], button_data, button_index);
 }
 
 void ConfigMapper::logButtonDisabled(const toml::table& button_table,
