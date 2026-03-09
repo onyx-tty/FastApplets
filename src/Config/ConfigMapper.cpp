@@ -53,33 +53,6 @@ const EnumMap<QSizePolicy> size_policy_map = {{"expanding",
                                                {QSizePolicy::Expanding, QSizePolicy::Expanding}},
                                               {"fixed", {QSizePolicy::Fixed, QSizePolicy::Fixed}}};
 
-namespace error_message {
-namespace alignment {
-// clang-format off
-std::string text_alignment_error =
-        "Wrong setting in config.toml for: text_alignment\n"
-        "Available values: top, center, bottom, left, right\n"
-        "Default: top";
-// clang-format on
-
-// clang-format off
-std::string icon_alignment_error =
-        "Wrong setting in config.toml for: icon_alignment\n"
-        "Available values: top, center, bottom, left, right\n"
-        "Default: center";
-// clang-format on
-
-} // namespace alignment
-namespace size_policy {
-// clang-format off
-std::string primary_button_error =
-        "Wrong setting in config.toml for: policy\n"
-        "Available values: expanding, fixed\n"
-        "Default: expanding\n";
-// clang-format on
-} // namespace size_policy
-} // namespace error_message
-
 } // namespace
 
 power_button_id getPowerButtonIDFromString(const QString& string) {
