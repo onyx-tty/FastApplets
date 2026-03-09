@@ -156,7 +156,13 @@ QString getDBusMethodFromPowerButtonID(power_button_id id) {
 std::vector<PowerButton*> PowerCentralWidget::createButtonList(QBoxLayout* main_layout) {
         const auto& primary_buttons_data =
                 Config::getConfig().getWindowLayoutProperties().getPrimaryPowerButtons();
-        const auto                primary_buttons_icons = createButtonIcons();
+        const auto primary_buttons_icons = createButtonIcons();
+
+        if (primary_buttons_icons.size() != primary_buttons_data.size()
+            && primary_buttons_icons.size() != 4) {
+                QFATAL("primary_buttons_icons mismatched, 4 icons expected!");
+        }
+
         std::vector<PowerButton*> primary_buttons;
 
         for (size_t i = 0; i != primary_buttons_data.size(); ++i) {
