@@ -152,7 +152,6 @@ QString getDBusMethodFromPowerButtonID(power_button_id id) {
         return map.at(id);
 }
 
-// TODO Split and simplify this
 std::vector<PowerButton*> PowerCentralWidget::createButtonList(QBoxLayout* main_layout) {
         const auto& primary_buttons_data =
                 Config::getConfig().getWindowLayoutProperties().getPrimaryPowerButtons();
@@ -164,6 +163,7 @@ std::vector<PowerButton*> PowerCentralWidget::createButtonList(QBoxLayout* main_
         }
 
         std::vector<PowerButton*> primary_buttons;
+        primary_buttons.reserve(primary_buttons_data.size());
 
         for (size_t i = 0; i != primary_buttons_data.size(); ++i) {
                 QDEBUG() << "Created" << primary_buttons_data[i].text << "!";
