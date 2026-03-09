@@ -174,12 +174,9 @@ std::vector<PowerButton*> PowerCentralWidget::createButtonList(QBoxLayout* main_
                                         method, primary_buttons_data[i].command));
         }
 
-        if (!primary_buttons.empty()) {
-                return primary_buttons;
-        } else {
-                // TODO Use defaults instead
-                QFATAL("No buttons found in button_list!");
-        }
+        if (primary_buttons.empty()) { QFATAL("No buttons found!"); }
+
+        return primary_buttons;
 }
 
 PowerCentralWidget::PowerCentralWidget(QWidget* parent) :
