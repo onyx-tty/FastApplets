@@ -105,6 +105,16 @@ if(BUILD_POWERAPPLET)
                 target_compile_options(PowerApplet PRIVATE -fsanitize=address -fno-omit-frame-pointer -g)
                 target_link_options(PowerApplet PRIVATE -fsanitize=address)
         endif()
+
+        if(ENABLE_LSAN)
+                target_compile_options(PowerApplet PRIVATE -fsanitize=leak -fno-omit-frame-pointer -g)
+                target_link_options(PowerApplet PRIVATE -fsanitize=leak)
+        endif()
+
+        if(ENABLE_UBSAN)
+                target_compile_options(PowerApplet PRIVATE -fsanitize=undefined -fno-omit-frame-pointer -g)
+                target_link_options(PowerApplet PRIVATE -fsanitize=undefined)
+        endif()
 endif()
 
 # Tests
