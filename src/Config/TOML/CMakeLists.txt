@@ -1,4 +1,5 @@
 add_library(Config_TOML
+        TomlAccessor.tpp
         TomlLocator.cpp
         TomlParser.cpp)
 add_library(Config::TOML ALIAS Config_TOML)
