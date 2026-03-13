@@ -17,14 +17,15 @@
 
 #pragma once
 
+#include "Config.h"
 #include "UI/Enums/ButtonIDs.h"
 
 #include <toml++/toml.hpp>
 #include <QStringList>
 
-class Config;
-class PrimaryButtonData;
 class QString;
+class QSize;
+class QSizePolicy;
 struct ShellCommand;
 
 class ConfigMapper final {
@@ -32,16 +33,25 @@ private:
         ConfigMapper() = delete;
 
         /* Window Properties */
-        static void mapWindowSize(const toml::table& window, Config& config);
-        static void mapWindowTitle(const toml::table& window, Config& config);
-        static void mapWindowProperties(const toml::table& config_table, Config& config);
+        static void mapWindowSize(const toml::node_view<const toml::node>& size_node, QSize& size);
+        static void mapWindowTitle(const toml::node_view<const toml::node>& title_node,
+                                   QString&                                 title);
+        static void mapWindowProperties(const toml::node_view<const toml::node>& window_node,
+                                        Config::WindowProperties&                window);
 
         /* Button Properties */
-        static void mapButtonTextAlignment(const toml::table& button, Config& config);
-        static void mapButtonIconAlignment(const toml::table& button, Config& config);
-        static void mapButtonIconSize(const toml::table& button, Config& config);
-        static void mapButtonPolicy(const toml::table& button, Config& config);
-        static void mapButtonProperties(const toml::table& config_table, Config& config);
+        static void mapButtonTextAlignment(
+                const toml::node_view<const toml::node>& text_alignment_node,
+                Qt::Alignment&                           text_alignment);
+        static void mapButtonIconAlignment(
+                const toml::node_view<const toml::node>& icon_alignment_node,
+                Qt::Alignment&                           icon_alignment);
+        static void mapButtonIconSize(const toml::node_view<const toml::node>& icon_size_node,
+                                      QSize&                                   icon_size);
+        static void mapButtonPolicy(const toml::node_view<const toml::node>& policy_node,
+                                    QSizePolicy&                             policy);
+        static void mapButtonProperties(const toml::node_view<const toml::node>& button_node,
+                                        Config::PrimaryButtonProperties&         button);
 
         /* Layout Properties */
         static void mapLayoutPrimaryButtonIdentifier(const toml::node_view<const toml::node> data,
@@ -52,9 +62,9 @@ private:
                                                PrimaryButtonData& button, QString& text,
                                                size_t button_index);
         static void mapLayoutPrimaryButtonOrder(const toml::node_view<const toml::node> data,
-                                                PrimaryButtonData&                      button,
-                                                std::vector<PrimaryButtonData>&         buttons,
-                                                long& order, size_t button_index);
+                                                PrimaryButtonData& button, long& order,
+                                                std::vector<PrimaryButtonData>& buttons,
+                                                size_t                          button_index);
         static void mapLayoutPrimaryButtonCommandProgram(
                 const toml::node_view<const toml::node> data, PrimaryButtonData& button,
                 QString& program, size_t button_index);
@@ -65,19 +75,26 @@ private:
                 const toml::node_view<const toml::node> data, PrimaryButtonData& button,
                 QStringList& arguments, size_t button_index);
         static void mapLayoutPrimaryButtonCommand(const toml::node_view<const toml::node> data,
-                                                  PrimaryButtonData& button, size_t button_index);
-        static void mapLayoutPrimaryButtonData(const toml::table&              button_table,
-                                               PrimaryButtonData&              button_data,
-                                               std::vector<PrimaryButtonData>& buttons,
-                                               size_t                          button_index);
-        static void logButtonDisabled(const toml::table& button_table,
+                                                  PrimaryButtonData& button, ShellCommand& command,
+                                                  size_t button_index);
+        static void mapLayoutPrimaryButtonData(
+                const toml::node_view<const toml::node>& button_data_node,
+                PrimaryButtonData& button_data, std::vector<PrimaryButtonData>& buttons,
+                size_t button_index);
+        static void logButtonDisabled(const toml::node_view<const toml::node>& id_node,
                                       PrimaryButtonData& button_data, size_t button_index);
-        static void mapLayoutPrimaryButtons(const toml::table& layout, Config& config);
-        static void mapLayoutProperties(const toml::table& config_table, Config& config);
+        static void mapLayoutPrimaryButtons(
+                const toml::node_view<const toml::node>& primary_buttons_node,
+                std::vector<PrimaryButtonData>&          primary_buttons);
+        static void mapLayoutProperties(const toml::node_view<const toml::node>& layout_node,
+                                        Config::WindowLayoutProperties&          layout);
 
         /* Environment Properties*/
-        static void mapEnvironmentDBusMode(const toml::table& environment, Config& config);
-        static void mapEnvironmentProperties(const toml::table& config_table, Config& config);
+        static void mapEnvironmentDBusMode(const toml::node_view<const toml::node>& dbus_mode_node,
+                                           bool                                     dbus_mode);
+        static void mapEnvironmentProperties(
+                const toml::node_view<const toml::node>& environment_node,
+                Config::EnvironmentProperties&           environment);
 
 public:
         static void mapToConfig(const toml::table& config_table, Config& config);
