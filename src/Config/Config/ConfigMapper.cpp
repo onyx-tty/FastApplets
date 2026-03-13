@@ -78,21 +78,21 @@ QSizePolicy getSizePolicy(const std::string key, const EnumMap<QSizePolicy>& map
 }
 
 /* Window Properties */
-void ConfigMapper::mapWindowSize(node_view& size_node, QSize& size) {
+void ConfigMapper::mapWindowSize(node_view size_node, QSize& size) {
         // TODO size_scale config option to let the size be a % of screen size
         // TODO option to automatically detect and assign monitor size to size and then multiply by size_scale
         const auto& defaults = Config::getDefaultConfig().getWindowProperties().getSize();
         size                 = getQSize(size_node, defaults, "in global.window.size");
 }
 
-void ConfigMapper::mapWindowTitle(node_view& title_node, QString& title) {
+void ConfigMapper::mapWindowTitle(node_view title_node, QString& title) {
         const auto& defaults = Config::getDefaultConfig().getWindowProperties().getTitle();
 
         title = QString::fromStdString(getOrDefault<std::string>(title_node, defaults.toStdString(),
                                                                  "in global.window.title"));
 }
 
-void ConfigMapper::mapWindowProperties(node_view& window_node, Config::WindowProperties& window) {
+void ConfigMapper::mapWindowProperties(node_view window_node, Config::WindowProperties& window) {
         const auto* data     = getTable(window_node, "in config.toml, global.window");
         const auto& defaults = Config::getDefaultConfig().getWindowProperties();
 
@@ -106,7 +106,7 @@ void ConfigMapper::mapWindowProperties(node_view& window_node, Config::WindowPro
 }
 
 /* Button Properties*/
-void ConfigMapper::mapButtonTextAlignment(node_view&     text_alignment_node,
+void ConfigMapper::mapButtonTextAlignment(node_view      text_alignment_node,
                                           Qt::Alignment& text_alignment) {
         const auto& key =
                 getOrDefault<std::string>(text_alignment_node, {},
@@ -123,7 +123,7 @@ void ConfigMapper::mapButtonTextAlignment(node_view&     text_alignment_node,
                                       "in config.toml, global.primary_button.text_alignment");
 }
 
-void ConfigMapper::mapButtonIconAlignment(node_view&     icon_alignment_node,
+void ConfigMapper::mapButtonIconAlignment(node_view      icon_alignment_node,
                                           Qt::Alignment& icon_alignment) {
         const auto& key =
                 getOrDefault<std::string>(icon_alignment_node, {},
@@ -140,14 +140,14 @@ void ConfigMapper::mapButtonIconAlignment(node_view&     icon_alignment_node,
                                       "in config.toml, global.primary_button.icon_alignment");
 }
 
-void ConfigMapper::mapButtonIconSize(node_view& icon_size_node, QSize& icon_size) {
+void ConfigMapper::mapButtonIconSize(node_view icon_size_node, QSize& icon_size) {
         const auto& defaults = Config::getDefaultConfig().getPrimaryButtonProperties().getIconSize();
 
         icon_size = getQSize(icon_size_node, defaults,
                              "in config.toml, global.primary_button.icon_size");
 }
 
-void ConfigMapper::mapButtonPolicy(node_view& policy_node, QSizePolicy& policy) {
+void ConfigMapper::mapButtonPolicy(node_view policy_node, QSizePolicy& policy) {
         const auto& key      = getOrDefault<std::string>(policy_node, {},
                                                          "in config.toml, global.primary_button.policy");
         const auto& defaults = Config::getDefaultConfig().getPrimaryButtonProperties().getPolicy();
@@ -156,7 +156,7 @@ void ConfigMapper::mapButtonPolicy(node_view& policy_node, QSizePolicy& policy) 
                                "in config.toml, global.primary_button.policy");
 }
 
-void ConfigMapper::mapButtonProperties(node_view&                       button_node,
+void ConfigMapper::mapButtonProperties(node_view                        button_node,
                                        Config::PrimaryButtonProperties& button) {
         const auto* data     = getTable(button_node, "in config.toml, global.primary_button");
         const auto& defaults = Config::getDefaultConfig().getPrimaryButtonProperties();
@@ -349,7 +349,7 @@ void ConfigMapper::mapLayoutPrimaryButtonCommand(node_view command_node, Primary
                                                command.arguments, button_index);
 }
 
-void ConfigMapper::mapLayoutPrimaryButtonData(node_view&                      button_data_node,
+void ConfigMapper::mapLayoutPrimaryButtonData(node_view                       button_data_node,
                                               PrimaryButtonData&              button_data,
                                               std::vector<PrimaryButtonData>& buttons,
                                               size_t                          button_index) {
@@ -371,7 +371,7 @@ void ConfigMapper::mapLayoutPrimaryButtonData(node_view&                      bu
 }
 
 // TODO Extract logic shared with mapLayoutPrimaryButtonData
-void ConfigMapper::logButtonDisabled(node_view& identifier_node, PrimaryButtonData& button_data,
+void ConfigMapper::logButtonDisabled(node_view identifier_node, PrimaryButtonData& button_data,
                                      size_t button_index) {
         const auto& data     = identifier_node.as_string();
         const auto& defaults = Config::getDefaultConfig()
@@ -388,7 +388,7 @@ void ConfigMapper::logButtonDisabled(node_view& identifier_node, PrimaryButtonDa
         QDEBUG() << identifier_node.as_string()->get() << ": DISABLED";
 }
 
-void ConfigMapper::mapLayoutPrimaryButtons(node_view&                      primary_buttons_node,
+void ConfigMapper::mapLayoutPrimaryButtons(node_view                       primary_buttons_node,
                                            std::vector<PrimaryButtonData>& primary_buttons) {
         const auto data = getTomlArray(primary_buttons_node,
                                        "in config.toml, power_applet.layout.primary_buttons");
@@ -454,7 +454,7 @@ void ConfigMapper::mapLayoutPrimaryButtons(node_view&                      prima
         primary_buttons = std::move(buttons_found);
 }
 
-void ConfigMapper::mapLayoutProperties(node_view&                      layout_node,
+void ConfigMapper::mapLayoutProperties(node_view                       layout_node,
                                        Config::WindowLayoutProperties& layout) {
         const auto& defaults = Config::getDefaultConfig().getWindowLayoutProperties();
 
@@ -471,7 +471,7 @@ void ConfigMapper::mapLayoutProperties(node_view&                      layout_no
                                               layout.primary_power_buttons);
 }
 
-void ConfigMapper::mapEnvironmentDBusMode(node_view& dbus_mode_node, bool dbus_mode) {
+void ConfigMapper::mapEnvironmentDBusMode(node_view dbus_mode_node, bool dbus_mode) {
         const auto& defaults = Config::getDefaultConfig().getEnvironmentProperties().getDBusMode();
 
         const QString error_prefix = "in config.toml, power_applet.environment.dbus_mode";
@@ -479,7 +479,7 @@ void ConfigMapper::mapEnvironmentDBusMode(node_view& dbus_mode_node, bool dbus_m
         dbus_mode = getOrDefault(dbus_mode_node, defaults, std::move(error_prefix));
 }
 
-void ConfigMapper::mapEnvironmentProperties(node_view&                     environment_node,
+void ConfigMapper::mapEnvironmentProperties(node_view                      environment_node,
                                             Config::EnvironmentProperties& environment) {
         const auto& defaults = Config::getDefaultConfig().getEnvironmentProperties();
 

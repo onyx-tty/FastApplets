@@ -34,18 +34,18 @@ private:
         ConfigMapper() = delete;
 
         /* Window Properties */
-        static void mapWindowSize(node_view& size_node, QSize& size);
-        static void mapWindowTitle(node_view& title_node, QString& title);
-        static void mapWindowProperties(node_view& window_node, Config::WindowProperties& window);
+        static void mapWindowSize(node_view size_node, QSize& size);
+        static void mapWindowTitle(node_view title_node, QString& title);
+        static void mapWindowProperties(node_view window_node, Config::WindowProperties& window);
 
         /* Button Properties */
-        static void mapButtonTextAlignment(node_view&     text_alignment_node,
+        static void mapButtonTextAlignment(node_view      text_alignment_node,
                                            Qt::Alignment& text_alignment);
-        static void mapButtonIconAlignment(node_view&     icon_alignment_node,
+        static void mapButtonIconAlignment(node_view      icon_alignment_node,
                                            Qt::Alignment& icon_alignment);
-        static void mapButtonIconSize(node_view& icon_size_node, QSize& icon_size);
-        static void mapButtonPolicy(node_view& policy_node, QSizePolicy& policy);
-        static void mapButtonProperties(node_view&                       button_node,
+        static void mapButtonIconSize(node_view icon_size_node, QSize& icon_size);
+        static void mapButtonPolicy(node_view policy_node, QSizePolicy& policy);
+        static void mapButtonProperties(node_view                        button_node,
                                         Config::PrimaryButtonProperties& button);
 
         /* Layout Properties */
@@ -73,20 +73,20 @@ private:
                                                            size_t             button_index);
         static void mapLayoutPrimaryButtonCommand(node_view command_node, PrimaryButtonData& button,
                                                   ShellCommand& command, size_t button_index);
-        static void mapLayoutPrimaryButtonData(node_view&                      button_data_node,
+        static void mapLayoutPrimaryButtonData(node_view                       button_data_node,
                                                PrimaryButtonData&              button_data,
                                                std::vector<PrimaryButtonData>& buttons,
                                                size_t                          button_index);
-        static void logButtonDisabled(node_view& identifier_node, PrimaryButtonData& button_data,
+        static void logButtonDisabled(node_view identifier_node, PrimaryButtonData& button_data,
                                       size_t button_index);
-        static void mapLayoutPrimaryButtons(node_view&                      buttons_node,
+        static void mapLayoutPrimaryButtons(node_view                       buttons_node,
                                             std::vector<PrimaryButtonData>& buttons);
-        static void mapLayoutProperties(node_view&                      layout_node,
+        static void mapLayoutProperties(node_view                       layout_node,
                                         Config::WindowLayoutProperties& layout);
 
         /* Environment Properties*/
-        static void mapEnvironmentDBusMode(node_view& dbus_mode_node, bool dbus_mode);
-        static void mapEnvironmentProperties(node_view&                     environment_node,
+        static void mapEnvironmentDBusMode(node_view dbus_mode_node, bool dbus_mode);
+        static void mapEnvironmentProperties(node_view                      environment_node,
                                              Config::EnvironmentProperties& environment);
 
 public:

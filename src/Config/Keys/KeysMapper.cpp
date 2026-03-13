@@ -36,7 +36,7 @@
 // TODO 1. Error-handling
 // TODO 2. Returning an array of 'keybindings'
 // TODO 3. Assigning the array of 'keybindings' to the target
-void interpretTextAsKeybindings(node_view& source, keybindings& target) {
+void interpretTextAsKeybindings(node_view source, keybindings& target) {
         /* Interpret a string representation of a keyboard shortcut to a Qt key code */
         // Given a node containing a string like "Escape", this lambda:
         // 1. Extracts the string from the node
