@@ -78,23 +78,21 @@ QSizePolicy getSizePolicy(const std::string key, const EnumMap<QSizePolicy>& map
 }
 
 /* Window Properties */
-void ConfigMapper::mapWindowSize(const toml::node_view<const toml::node>& size_node, QSize& size) {
+void ConfigMapper::mapWindowSize(node_view& size_node, QSize& size) {
         // TODO size_scale config option to let the size be a % of screen size
         // TODO option to automatically detect and assign monitor size to size and then multiply by size_scale
         const auto& defaults = Config::getDefaultConfig().getWindowProperties().getSize();
         size                 = getQSize(size_node, defaults, "in global.window.size");
 }
 
-void ConfigMapper::mapWindowTitle(const toml::node_view<const toml::node>& title_node,
-                                  QString&                                 title) {
+void ConfigMapper::mapWindowTitle(node_view& title_node, QString& title) {
         const auto& defaults = Config::getDefaultConfig().getWindowProperties().getTitle();
 
         title = QString::fromStdString(getOrDefault<std::string>(title_node, defaults.toStdString(),
                                                                  "in global.window.title"));
 }
 
-void ConfigMapper::mapWindowProperties(const toml::node_view<const toml::node>& window_node,
-                                       Config::WindowProperties&                window) {
+void ConfigMapper::mapWindowProperties(node_view& window_node, Config::WindowProperties& window) {
         const auto* data     = getTable(window_node, "in config.toml, global.window");
         const auto& defaults = Config::getDefaultConfig().getWindowProperties();
 
@@ -108,9 +106,8 @@ void ConfigMapper::mapWindowProperties(const toml::node_view<const toml::node>& 
 }
 
 /* Button Properties*/
-void ConfigMapper::mapButtonTextAlignment(
-        const toml::node_view<const toml::node>& text_alignment_node,
-        Qt::Alignment&                           text_alignment) {
+void ConfigMapper::mapButtonTextAlignment(node_view&     text_alignment_node,
+                                          Qt::Alignment& text_alignment) {
         const auto& key =
                 getOrDefault<std::string>(text_alignment_node, {},
                                           "in config.toml, global.primary_button.text_alignment");
@@ -126,9 +123,8 @@ void ConfigMapper::mapButtonTextAlignment(
                                       "in config.toml, global.primary_button.text_alignment");
 }
 
-void ConfigMapper::mapButtonIconAlignment(
-        const toml::node_view<const toml::node>& icon_alignment_node,
-        Qt::Alignment&                           icon_alignment) {
+void ConfigMapper::mapButtonIconAlignment(node_view&     icon_alignment_node,
+                                          Qt::Alignment& icon_alignment) {
         const auto& key =
                 getOrDefault<std::string>(icon_alignment_node, {},
                                           "in config.toml, global.primary_button.icon_alignment");
@@ -144,16 +140,14 @@ void ConfigMapper::mapButtonIconAlignment(
                                       "in config.toml, global.primary_button.icon_alignment");
 }
 
-void ConfigMapper::mapButtonIconSize(const toml::node_view<const toml::node>& icon_size_node,
-                                     QSize&                                   icon_size) {
+void ConfigMapper::mapButtonIconSize(node_view& icon_size_node, QSize& icon_size) {
         const auto& defaults = Config::getDefaultConfig().getPrimaryButtonProperties().getIconSize();
 
         icon_size = getQSize(icon_size_node, defaults,
                              "in config.toml, global.primary_button.icon_size");
 }
 
-void ConfigMapper::mapButtonPolicy(const toml::node_view<const toml::node>& policy_node,
-                                   QSizePolicy&                             policy) {
+void ConfigMapper::mapButtonPolicy(node_view& policy_node, QSizePolicy& policy) {
         const auto& key      = getOrDefault<std::string>(policy_node, {},
                                                          "in config.toml, global.primary_button.policy");
         const auto& defaults = Config::getDefaultConfig().getPrimaryButtonProperties().getPolicy();
@@ -162,8 +156,8 @@ void ConfigMapper::mapButtonPolicy(const toml::node_view<const toml::node>& poli
                                "in config.toml, global.primary_button.policy");
 }
 
-void ConfigMapper::mapButtonProperties(const toml::node_view<const toml::node>& button_node,
-                                       Config::PrimaryButtonProperties&         button) {
+void ConfigMapper::mapButtonProperties(node_view&                       button_node,
+                                       Config::PrimaryButtonProperties& button) {
         const auto* data     = getTable(button_node, "in config.toml, global.primary_button");
         const auto& defaults = Config::getDefaultConfig().getPrimaryButtonProperties();
 
@@ -187,9 +181,10 @@ void ConfigMapper::mapButtonProperties(const toml::node_view<const toml::node>& 
 }
 
 /* Layout Properties */
-void ConfigMapper::mapLayoutPrimaryButtonIdentifier(
-        const toml::node_view<const toml::node> identifier_node, PrimaryButtonData& button,
-        power_button_id& identifier, size_t button_index) {
+void ConfigMapper::mapLayoutPrimaryButtonIdentifier(node_view          identifier_node,
+                                                    PrimaryButtonData& button,
+                                                    power_button_id&   identifier,
+                                                    size_t             button_index) {
         const auto& defaults = Config::getDefaultConfig()
                                        .getWindowLayoutProperties()
                                        .getPrimaryPowerButtons()[button_index];
@@ -209,9 +204,8 @@ void ConfigMapper::mapLayoutPrimaryButtonIdentifier(
         identifier = getPowerButtonIDFromString(std::move(result));
 }
 
-void ConfigMapper::mapLayoutPrimaryButtonText(const toml::node_view<const toml::node> text_node,
-                                              PrimaryButtonData& button, QString& text,
-                                              size_t button_index) {
+void ConfigMapper::mapLayoutPrimaryButtonText(node_view text_node, PrimaryButtonData& button,
+                                              QString& text, size_t button_index) {
         const auto& defaults = Config::getDefaultConfig()
                                        .getWindowLayoutProperties()
                                        .getPrimaryPowerButtons()[button_index];
@@ -231,10 +225,9 @@ void ConfigMapper::mapLayoutPrimaryButtonText(const toml::node_view<const toml::
         text = result;
 }
 
-void ConfigMapper::mapLayoutPrimaryButtonOrder(const toml::node_view<const toml::node> order_node,
-                                               PrimaryButtonData& button, long& order,
-                                               std::vector<PrimaryButtonData>& buttons,
-                                               size_t                          button_index) {
+void ConfigMapper::mapLayoutPrimaryButtonOrder(node_view order_node, PrimaryButtonData& button,
+                                               long& order, std::vector<PrimaryButtonData>& buttons,
+                                               size_t button_index) {
         const auto& defaults = Config::getDefaultConfig()
                                        .getWindowLayoutProperties()
                                        .getPrimaryPowerButtons()[button_index];
@@ -261,9 +254,9 @@ void ConfigMapper::mapLayoutPrimaryButtonOrder(const toml::node_view<const toml:
         order = result;
 }
 
-void ConfigMapper::mapLayoutPrimaryButtonCommandProgram(
-        const toml::node_view<const toml::node> program_node, PrimaryButtonData& button,
-        QString& program, size_t button_index) {
+void ConfigMapper::mapLayoutPrimaryButtonCommandProgram(node_view          program_node,
+                                                        PrimaryButtonData& button, QString& program,
+                                                        size_t button_index) {
         const auto& defaults = Config::getDefaultConfig()
                                        .getWindowLayoutProperties()
                                        .getPrimaryPowerButtons()[button_index];
@@ -280,9 +273,11 @@ void ConfigMapper::mapLayoutPrimaryButtonCommandProgram(
                                           std::move(error_prefix)));
 }
 
-void ConfigMapper::mapLayoutPrimaryButtonCommandArgumentsArgument(
-        const toml::node_view<const toml::node> argument_node, PrimaryButtonData& button,
-        QStringList& arguments, size_t button_index, size_t arg_index) {
+void ConfigMapper::mapLayoutPrimaryButtonCommandArgumentsArgument(node_view          argument_node,
+                                                                  PrimaryButtonData& button,
+                                                                  QStringList&       arguments,
+                                                                  size_t             button_index,
+                                                                  size_t             arg_index) {
         const auto& defaults = Config::getDefaultConfig()
                                        .getWindowLayoutProperties()
                                        .getPrimaryPowerButtons()[button_index];
@@ -300,9 +295,10 @@ void ConfigMapper::mapLayoutPrimaryButtonCommandArgumentsArgument(
                                  error_prefix)));
 }
 
-void ConfigMapper::mapLayoutPrimaryButtonCommandArguments(
-        const toml::node_view<const toml::node> arguments_node, PrimaryButtonData& button,
-        QStringList& arguments, size_t button_index) {
+void ConfigMapper::mapLayoutPrimaryButtonCommandArguments(node_view          arguments_node,
+                                                          PrimaryButtonData& button,
+                                                          QStringList&       arguments,
+                                                          size_t             button_index) {
         const auto& defaults = Config::getDefaultConfig()
                                        .getWindowLayoutProperties()
                                        .getPrimaryPowerButtons()[button_index];
@@ -327,9 +323,8 @@ void ConfigMapper::mapLayoutPrimaryButtonCommandArguments(
         }
 }
 
-void ConfigMapper::mapLayoutPrimaryButtonCommand(
-        const toml::node_view<const toml::node> command_node, PrimaryButtonData& button,
-        ShellCommand& command, size_t button_index) {
+void ConfigMapper::mapLayoutPrimaryButtonCommand(node_view command_node, PrimaryButtonData& button,
+                                                 ShellCommand& command, size_t button_index) {
         const auto& defaults = Config::getDefaultConfig()
                                        .getWindowLayoutProperties()
                                        .getPrimaryPowerButtons()[button_index];
@@ -354,9 +349,10 @@ void ConfigMapper::mapLayoutPrimaryButtonCommand(
                                                command.arguments, button_index);
 }
 
-void ConfigMapper::mapLayoutPrimaryButtonData(
-        const toml::node_view<const toml::node>& button_data_node, PrimaryButtonData& button_data,
-        std::vector<PrimaryButtonData>& buttons, size_t button_index) {
+void ConfigMapper::mapLayoutPrimaryButtonData(node_view&                      button_data_node,
+                                              PrimaryButtonData&              button_data,
+                                              std::vector<PrimaryButtonData>& buttons,
+                                              size_t                          button_index) {
         const auto& defaults = Config::getDefaultConfig()
                                        .getWindowLayoutProperties()
                                        .getPrimaryPowerButtons()[button_index];
@@ -375,8 +371,8 @@ void ConfigMapper::mapLayoutPrimaryButtonData(
 }
 
 // TODO Extract logic shared with mapLayoutPrimaryButtonData
-void ConfigMapper::logButtonDisabled(const toml::node_view<const toml::node>& identifier_node,
-                                     PrimaryButtonData& button_data, size_t button_index) {
+void ConfigMapper::logButtonDisabled(node_view& identifier_node, PrimaryButtonData& button_data,
+                                     size_t button_index) {
         const auto& data     = identifier_node.as_string();
         const auto& defaults = Config::getDefaultConfig()
                                        .getWindowLayoutProperties()
@@ -392,9 +388,8 @@ void ConfigMapper::logButtonDisabled(const toml::node_view<const toml::node>& id
         QDEBUG() << identifier_node.as_string()->get() << ": DISABLED";
 }
 
-void ConfigMapper::mapLayoutPrimaryButtons(
-        const toml::node_view<const toml::node>& primary_buttons_node,
-        std::vector<PrimaryButtonData>&          primary_buttons) {
+void ConfigMapper::mapLayoutPrimaryButtons(node_view&                      primary_buttons_node,
+                                           std::vector<PrimaryButtonData>& primary_buttons) {
         const auto data = getTomlArray(primary_buttons_node,
                                        "in config.toml, power_applet.layout.primary_buttons");
 
@@ -459,8 +454,8 @@ void ConfigMapper::mapLayoutPrimaryButtons(
         primary_buttons = std::move(buttons_found);
 }
 
-void ConfigMapper::mapLayoutProperties(const toml::node_view<const toml::node>& layout_node,
-                                       Config::WindowLayoutProperties&          layout) {
+void ConfigMapper::mapLayoutProperties(node_view&                      layout_node,
+                                       Config::WindowLayoutProperties& layout) {
         const auto& defaults = Config::getDefaultConfig().getWindowLayoutProperties();
 
         const QString error_prefix = "in config.toml, power_applet.layout";
@@ -476,8 +471,7 @@ void ConfigMapper::mapLayoutProperties(const toml::node_view<const toml::node>& 
                                               layout.primary_power_buttons);
 }
 
-void ConfigMapper::mapEnvironmentDBusMode(const toml::node_view<const toml::node>& dbus_mode_node,
-                                          bool                                     dbus_mode) {
+void ConfigMapper::mapEnvironmentDBusMode(node_view& dbus_mode_node, bool dbus_mode) {
         const auto& defaults = Config::getDefaultConfig().getEnvironmentProperties().getDBusMode();
 
         const QString error_prefix = "in config.toml, power_applet.environment.dbus_mode";
@@ -485,7 +479,7 @@ void ConfigMapper::mapEnvironmentDBusMode(const toml::node_view<const toml::node
         dbus_mode = getOrDefault(dbus_mode_node, defaults, std::move(error_prefix));
 }
 
-void ConfigMapper::mapEnvironmentProperties(const toml::node_view<const toml::node>& environment_node,
+void ConfigMapper::mapEnvironmentProperties(node_view&                     environment_node,
                                             Config::EnvironmentProperties& environment) {
         const auto& defaults = Config::getDefaultConfig().getEnvironmentProperties();
 

@@ -32,8 +32,7 @@ using enum_utils::EnumMap;
 using string_utils::toLowerCopy;
 
 template<typename T>
-T getOrDefault(const toml::node_view<const toml::node> node, const T& fallback,
-               const QString& error_prefix) {
+T getOrDefault(node_view node, const T& fallback, const QString& error_prefix) {
         const auto* value = node.as<T>();
 
         if (!value) {
@@ -44,17 +43,15 @@ T getOrDefault(const toml::node_view<const toml::node> node, const T& fallback,
         return value->get();
 }
 
-const toml::table* getTable(const toml::node_view<const toml::node> node,
-                            const QString&                          error_prefix) {
+const toml::table* getTable(node_view node, const QString& error_prefix) {
         const auto* table = node.as_table();
         if (!table) { QWARNING_NS() << error_prefix << ", must be a table! Using defaults..."; }
 
         return table;
 }
 
-std::optional<toml::array> getTomlArray(const toml::node_view<const toml::node> node,
-                                        const QString&                          error_prefix,
-                                        const QString&                          error_arr_details) {
+std::optional<toml::array> getTomlArray(node_view node, const QString& error_prefix,
+                                        const QString& error_arr_details) {
         const auto* arr = node.as_array();
 
         if (!arr) {
@@ -66,8 +63,8 @@ std::optional<toml::array> getTomlArray(const toml::node_view<const toml::node> 
         return *arr;
 }
 
-std::optional<toml::array> getTomlArray(const toml::node_view<const toml::node> node,
-                                        size_t min_size, const QString& error_prefix,
+std::optional<toml::array> getTomlArray(node_view node, size_t min_size,
+                                        const QString& error_prefix,
                                         const QString& error_arr_details) {
         const auto* arr = node.as_array();
 
@@ -80,8 +77,7 @@ std::optional<toml::array> getTomlArray(const toml::node_view<const toml::node> 
         return *arr;
 }
 
-std::optional<toml::array> getTomlArray(const toml::node_view<const toml::node> node,
-                                        size_t min_size, size_t max_size,
+std::optional<toml::array> getTomlArray(node_view node, size_t min_size, size_t max_size,
                                         const QString& error_prefix,
                                         const QString& error_arr_details) {
         const auto* arr = node.as_array();
@@ -95,8 +91,7 @@ std::optional<toml::array> getTomlArray(const toml::node_view<const toml::node> 
         return *arr;
 }
 
-QSize getQSize(const toml::node_view<const toml::node> node, const QSize& fallback,
-               const QString& error_prefix) {
+QSize getQSize(node_view node, const QSize& fallback, const QString& error_prefix) {
         const auto& arr = getTomlArray(node, 2, error_prefix, "Format: [int, int]");
 
         if (!arr) { return fallback; }
