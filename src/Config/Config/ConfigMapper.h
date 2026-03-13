@@ -54,38 +54,36 @@ private:
                                         Config::PrimaryButtonProperties&         button);
 
         /* Layout Properties */
-        static void mapLayoutPrimaryButtonIdentifier(const toml::node_view<const toml::node> data,
-                                                     PrimaryButtonData&                      button,
-                                                     power_button_id& identifier,
-                                                     size_t           button_index);
-        static void mapLayoutPrimaryButtonText(const toml::node_view<const toml::node> data,
+        static void mapLayoutPrimaryButtonIdentifier(
+                const toml::node_view<const toml::node> button_node, PrimaryButtonData& button,
+                power_button_id& identifier, size_t button_index);
+        static void mapLayoutPrimaryButtonText(const toml::node_view<const toml::node> text_node,
                                                PrimaryButtonData& button, QString& text,
                                                size_t button_index);
-        static void mapLayoutPrimaryButtonOrder(const toml::node_view<const toml::node> data,
+        static void mapLayoutPrimaryButtonOrder(const toml::node_view<const toml::node> order_node,
                                                 PrimaryButtonData& button, long& order,
                                                 std::vector<PrimaryButtonData>& buttons,
                                                 size_t                          button_index);
         static void mapLayoutPrimaryButtonCommandProgram(
-                const toml::node_view<const toml::node> data, PrimaryButtonData& button,
+                const toml::node_view<const toml::node> program_node, PrimaryButtonData& button,
                 QString& program, size_t button_index);
         static void mapLayoutPrimaryButtonCommandArgumentsArgument(
-                const toml::node_view<const toml::node> data, PrimaryButtonData& button,
+                const toml::node_view<const toml::node> argument_node, PrimaryButtonData& button,
                 QStringList& arguments, size_t button_index, size_t arg_index);
         static void mapLayoutPrimaryButtonCommandArguments(
-                const toml::node_view<const toml::node> data, PrimaryButtonData& button,
+                const toml::node_view<const toml::node> arguments_node, PrimaryButtonData& button,
                 QStringList& arguments, size_t button_index);
-        static void mapLayoutPrimaryButtonCommand(const toml::node_view<const toml::node> data,
-                                                  PrimaryButtonData& button, ShellCommand& command,
-                                                  size_t button_index);
+        static void mapLayoutPrimaryButtonCommand(
+                const toml::node_view<const toml::node> command_node, PrimaryButtonData& button,
+                ShellCommand& command, size_t button_index);
         static void mapLayoutPrimaryButtonData(
                 const toml::node_view<const toml::node>& button_data_node,
                 PrimaryButtonData& button_data, std::vector<PrimaryButtonData>& buttons,
                 size_t button_index);
-        static void logButtonDisabled(const toml::node_view<const toml::node>& id_node,
+        static void logButtonDisabled(const toml::node_view<const toml::node>& identifier_node,
                                       PrimaryButtonData& button_data, size_t button_index);
-        static void mapLayoutPrimaryButtons(
-                const toml::node_view<const toml::node>& primary_buttons_node,
-                std::vector<PrimaryButtonData>&          primary_buttons);
+        static void mapLayoutPrimaryButtons(const toml::node_view<const toml::node>& buttons_node,
+                                            std::vector<PrimaryButtonData>&          buttons);
         static void mapLayoutProperties(const toml::node_view<const toml::node>& layout_node,
                                         Config::WindowLayoutProperties&          layout);
 
