@@ -52,8 +52,9 @@ private:
                                                PrimaryButtonData& button, QString& text,
                                                size_t button_index);
         static void mapLayoutPrimaryButtonOrder(const toml::node_view<const toml::node> data,
-                                                PrimaryButtonData& button, long& order,
-                                                size_t button_index);
+                                                PrimaryButtonData&                      button,
+                                                std::vector<PrimaryButtonData>&         buttons,
+                                                long& order, size_t button_index);
         static void mapLayoutPrimaryButtonCommandProgram(
                 const toml::node_view<const toml::node> data, PrimaryButtonData& button,
                 QString& program, size_t button_index);
@@ -65,8 +66,10 @@ private:
                 QStringList& arguments, size_t button_index);
         static void mapLayoutPrimaryButtonCommand(const toml::node_view<const toml::node> data,
                                                   PrimaryButtonData& button, size_t button_index);
-        static void mapLayoutPrimaryButtonData(const toml::table& button_table,
-                                               PrimaryButtonData& button_data, size_t button_index);
+        static void mapLayoutPrimaryButtonData(const toml::table&              button_table,
+                                               PrimaryButtonData&              button_data,
+                                               std::vector<PrimaryButtonData>& buttons,
+                                               size_t                          button_index);
         static void logButtonDisabled(const toml::table& button_table,
                                       PrimaryButtonData& button_data, size_t button_index);
         static void mapLayoutPrimaryButtons(const toml::table& layout, Config& config);
