@@ -27,10 +27,6 @@
 // Values needed to find configs
 namespace {
 
-static std::array<QString, 2> toml_dir_paths = {qEnvironmentVariable("XDG_CONFIG_HOME")
-                                                        + "/FastApplets/",
-                                                qEnvironmentVariable("XDG_DATA_HOME")
-                                                        + "/FastApplets/"};
 static std::array<QString, toml_file_names_cnt> config_file_names = {"config.toml", "keys.toml"};
 
 } // namespace
@@ -42,24 +38,18 @@ std::array<std::string, toml_file_names_cnt> TomlLocator::locateTomlFiles() {
 
         QString file_path;
         // Loop through expected config files
-        for (size_t file_i = 0; file_i != toml_file_names_cnt; ++file_i) {
+        // No valid file_path found for the current file, terminate
+        // TODO Fallback into default config
+        for (size_t i = 0; i != toml_file_names_cnt; ++i) {
                 bool found = false;
-                // Loop through expected directories
-                for (size_t dir_i = 0; !found && dir_i != toml_dir_paths_cnt; ++dir_i) {
-                        file_path = toml_dir_paths[dir_i] + config_file_names[file_i];
-                        // If file found, save filepath, stop the loop for that file
-                        if (QFileInfo::exists(file_path)) {
-                                files[file_i] = file_path.toStdString();
-                                found         = true;
-                                break;
-                        }
+                file_path  = qEnvironmentVariable("XDG_CONFIG_HOME") + "/FastApplets/";
+                // If file found, save filepath
+                if (QFileInfo::exists(file_path)) {
+                        files[i] = file_path.toStdString();
+                        found    = true;
                 }
 
-                // No valid file_path found for the current file, terminate
-                // TODO Generate default TOML file on failure
-                if (!found) {
-                        QFATAL("%s not found!", config_file_names[file_i].toStdString().c_str());
-                }
+                if (!found) { QFATAL("%s not found!", file_path); }
         }
 
         return files;

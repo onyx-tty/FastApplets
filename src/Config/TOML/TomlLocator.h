@@ -21,7 +21,6 @@
 #include <string>
 
 constexpr int toml_file_names_cnt = 2;
-constexpr int toml_dir_paths_cnt  = 2;
 
 // TODO Alias for config files
 class TomlLocator final {
