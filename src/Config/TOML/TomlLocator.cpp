@@ -24,17 +24,10 @@
 #include <QString>
 #include <QtEnvironmentVariables>
 
-// Values needed to find configs
-namespace {
-
-static std::array<QString, toml_file_names_cnt> config_file_names = {"config.toml", "keys.toml"};
-
-} // namespace
-
-// TODO Split
 // Look for configs in $XDG_CONFIG_HOME and $XDG_DATA_HOME
 std::array<std::string, toml_file_names_cnt> TomlLocator::locateTomlFiles() {
         std::array<std::string, toml_file_names_cnt> files{}; // Only enough slots for each file
+        std::array<QString, toml_file_names_cnt> config_file_names = {"config.toml", "keys.toml"};
 
         QString file_path;
         // Loop through expected config files
