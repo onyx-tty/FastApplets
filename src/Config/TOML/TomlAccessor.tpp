@@ -55,7 +55,7 @@ std::optional<toml::array> getTomlArray(node_view node, const QString& error_pre
         const auto* arr = node.as_array();
 
         if (!arr) {
-                QWARNING_NS() << error_prefix << ", must be an array!  " << error_arr_details
+                QWARNING_NS() << error_prefix << ", must be an array! " << error_arr_details
                               << " Using defaults...";
                 return std::nullopt;
         }
