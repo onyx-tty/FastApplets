@@ -17,22 +17,29 @@
 
 #pragma once
 
-#include <toml++/toml.hpp>
+#include "Config/Keys/Keys.h"
+#include "Config/TOML/NodeView.h"
 
-class Keys;
+#include <toml++/toml.hpp>
 
 class KeysMapper final {
 private:
         KeysMapper() = delete;
 
         /* Global Keys */
-        static void mapGlobalQuitKeys(const toml::table& global, Keys& keys);
-        static void mapGlobalKeys(const toml::table& keys_table, Keys& keys);
+        static void mapGlobalQuitKeys(node_view quit_node, keybindings& quit);
+        static void mapGlobalKeys(node_view global_node, Keys::GlobalKeys& global);
 
         /* Power Applet Keys*/
-        static void mapPowerAppletQuitKeys(const toml::table& power_applet, Keys& keys);
-        static void mapPowerAppletPrimaryButtonKeys(const toml::table& power_applet, Keys& keys);
-        static void mapPowerAppletKeys(const toml::table& keys_table, Keys& keys);
+        static void mapPowerAppletQuitKeys(node_view quit_node, keybindings& quit,
+                                           keybindings& global_quit);
+        static void mapPowerAppletPrimaryButtonKeys(
+                node_view primary_button_node1, node_view primary_button_node2,
+                node_view primary_button_node3, node_view primary_button_node4,
+                keybindings& primary_button1, keybindings& primary_button2,
+                keybindings& primary_button3, keybindings& primary_button4);
+        static void mapPowerAppletKeys(node_view power_node, Keys::PowerAppletKeys& power,
+                                       Keys::GlobalKeys& global);
 
 public:
         static void mapToKeys(const toml::table& keys_table, Keys& keys);

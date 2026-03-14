@@ -17,10 +17,12 @@
 
 #include "KeysMapper.h"
 #include "Config/TOML/NodeView.h"
+#include "Config/TOML/TomlAccessor.h"
 #include "Core/Log.h"
 #include "Keys.h"
 
 #include <array>
+#include <functional>
 #include <string>
 #include <toml++/toml.hpp>
 #include <QApplication>
@@ -69,96 +71,106 @@ void interpretTextAsKeybindings(node_view source, keybindings& target) {
         }
 }
 
-void KeysMapper::mapGlobalQuitKeys(const toml::table& global, Keys& keys) {
-        const auto& data     = (global)["quit"].as_array();
-        const auto& defaults = Keys::getDefaultKeys().getGlobalKeys().getQuitKeys();
-        auto&       quit     = keys.global_keys.quit_keys;
+void KeysMapper::mapGlobalQuitKeys(node_view quit_node, keybindings& quit) {
+        const auto&      defaults     = Keys::getDefaultKeys().getGlobalKeys().getQuitKeys();
+        QString          error_prefix = "in keys.toml, global.quit";
+        constexpr size_t min_size = 1, max_size = 4;
+        const auto array = getTomlArray(quit_node, min_size, max_size, std::move(error_prefix),
+                                        "Format: [keybindings...]");
 
-        if (!data) {
-                QWARNING() << "in keys.toml, global.quit must be an array! Using defaults...";
+        if (!array || array.value().empty()) {
                 quit = defaults;
                 return;
         }
 
-        interpretTextAsKeybindings(global["quit"], quit);
+        interpretTextAsKeybindings(quit_node, quit);
 }
 
-void KeysMapper::mapGlobalKeys(const toml::table& keys_table, Keys& keys) {
-        const auto& data     = keys_table["global"].as_table();
-        const auto& defaults = Keys::getDefaultKeys().getGlobalKeys();
-        auto&       global   = keys.global_keys;
+void KeysMapper::mapGlobalKeys(node_view global_node, Keys::GlobalKeys& global) {
+        const auto& defaults     = Keys::getDefaultKeys().getGlobalKeys();
+        QString     error_prefix = "in keys.toml, global";
+        const auto* table        = getTable(global_node, std::move(error_prefix));
 
-        if (!data) {
-                QWARNING() << "in keys.toml, global must be a table! Using defaults...";
+        if (!table) {
                 global = defaults;
                 return;
         }
 
         /* Quit Keys */
-        mapGlobalQuitKeys(*data, keys);
+        mapGlobalQuitKeys((*table)["quit"], global.quit_keys);
 }
 
-void KeysMapper::mapPowerAppletQuitKeys(const toml::table& power_applet, Keys& keys) {
-        const auto& data     = power_applet["quit"].as_array();
-        const auto& defaults = Keys::getDefaultKeys().getPowerAppletKeys().getQuitKeys();
-        auto&       quit     = keys.power_applet_keys.quit_keys;
+void KeysMapper::mapPowerAppletQuitKeys(node_view quit_node, keybindings& quit,
+                                        keybindings& global_quit) {
+        QString          error_prefix = "in keys.toml, power_applet.quit";
+        constexpr size_t min_size = 1, max_size = 4;
+        const auto array = getTomlArray(quit_node, min_size, max_size, std::move(error_prefix),
+                                        "Format: [keybindings...]");
 
-        const auto& power_applet_quit = (power_applet)["quit"].as_array();
-        if (!power_applet_quit) {
-                QWARNING() << "in keys.toml, power_applet.quit must be an array! Using defaults..";
-                quit = defaults;
+        if (!array || array.value().empty()) {
+                quit = global_quit;
                 return;
         }
 
-        // If power_applet.quit not empty, interpret, otherwise copy global_keys.quit
-        if (!(*power_applet_quit).empty()) {
-                interpretTextAsKeybindings(power_applet["quit"], quit);
-        } else {
-                keys.power_applet_keys.quit_keys = keys.global_keys.quit_keys;
-        }
+        interpretTextAsKeybindings(quit_node, quit);
 }
 
-void KeysMapper::mapPowerAppletPrimaryButtonKeys(const toml::table& power_applet, Keys& keys) {
-        const std::array<const toml::array*, 4> data = {power_applet["primary_button1"].as_array(),
-                                                        power_applet["primary_button2"].as_array(),
-                                                        power_applet["primary_button3"].as_array(),
-                                                        power_applet["primary_button4"].as_array()};
-        const std::array<keybindings, 4>&       defaults =
+void KeysMapper::mapPowerAppletPrimaryButtonKeys(
+        node_view primary_button_node1, node_view primary_button_node2,
+        node_view primary_button_node3, node_view primary_button_node4,
+        keybindings& primary_button1, keybindings& primary_button2, keybindings& primary_button3,
+        keybindings& primary_button4) {
+        const std::array<keybindings, 4>& defaults =
                 Keys::getDefaultKeys().getPowerAppletKeys().getPrimaryButtonKeys();
-        auto& buttons = keys.power_applet_keys.primary_button_keys;
+        QString error_prefix      = "in keys.toml, power_applet.primary_button";
+        QString error_arr_details = "Format: [keybindings...]";
 
-        // Parse power_applet.primary_buttonX
-        for (size_t i = 0; i != buttons.size(); ++i) {
-                std::string button_name = "primary_button" + std::to_string(i + 1);
-                const auto& button      = data[i];
+        const std::array<node_view, 4> nodes = {primary_button_node1, primary_button_node2,
+                                                primary_button_node3, primary_button_node4};
 
+        constexpr size_t                                min_size = 1, max_size = 4;
+        const std::array<std::optional<toml::array>, 4> data =
+                {getTomlArray(nodes[0], min_size, max_size, error_prefix + "1", error_arr_details),
+                 getTomlArray(nodes[1], min_size, max_size, error_prefix + "2", error_arr_details),
+                 getTomlArray(nodes[2], min_size, max_size, error_prefix + "3", error_arr_details),
+                 getTomlArray(nodes[3], min_size, max_size, std::move(error_prefix) + "4",
+                              std::move(error_arr_details))};
+
+        std::array<std::reference_wrapper<keybindings>, 4> primary_buttons =
+                {std::ref(primary_button1), std::ref(primary_button2), std::ref(primary_button3),
+                 std::ref(primary_button4)};
+
+        // Parse power_applet.primary_buttons
+        for (size_t i = 0; i != data.size(); ++i) {
+                const auto& button = data[i];
                 if (!button) {
-                        QWARNING_NS() << "in keys.toml, power_applet.primary_button" << i
-                                      << " must be an array! Using defaults...";
-                        buttons[i] = defaults[i];
+                        primary_buttons[i].get() = defaults[i];
                         continue;
                 }
 
-                interpretTextAsKeybindings(power_applet[button_name], buttons[i]);
+                interpretTextAsKeybindings(nodes[i], primary_buttons[i]);
         }
 }
 
-void KeysMapper::mapPowerAppletKeys(const toml::table& keys_table, Keys& keys) {
-        const auto& data         = keys_table["power_applet"].as_table();
+void KeysMapper::mapPowerAppletKeys(node_view power_node, Keys::PowerAppletKeys& power,
+                                    Keys::GlobalKeys& global) {
         const auto& defaults     = Keys::getDefaultKeys().getPowerAppletKeys();
-        auto&       power_applet = keys.power_applet_keys;
+        QString     error_prefix = "in keys.toml, power_applet";
+        const auto* table        = getTable(power_node, std::move(error_prefix));
 
-        if (!data) {
-                QWARNING() << "in keys.toml, power_applet must be a table! Using defaults...";
-                power_applet = defaults;
+        if (!table) {
+                power = defaults;
                 return;
         }
 
         /* Quit Keys */
-        mapPowerAppletQuitKeys(*data, keys);
+        mapPowerAppletQuitKeys((*table)["quit"], power.quit_keys, global.quit_keys);
 
         /* Primary Button Keys*/
-        mapPowerAppletPrimaryButtonKeys(*data, keys);
+        mapPowerAppletPrimaryButtonKeys((*table)["primary_button1"], (*table)["primary_button2"],
+                                        (*table)["primary_button3"], (*table)["primary_button4"],
+                                        power.primary_button_keys[0], power.primary_button_keys[1],
+                                        power.primary_button_keys[2], power.primary_button_keys[3]);
 }
 
 void KeysMapper::mapToKeys(const toml::table& keys_table, Keys& keys) {
@@ -167,11 +179,9 @@ void KeysMapper::mapToKeys(const toml::table& keys_table, Keys& keys) {
                 QFATAL("QApplication has not been instantiated yet!");
         }
 
-        const toml::table& data = keys_table;
-
         /* Global Keys */
-        mapGlobalKeys(data, keys);
+        mapGlobalKeys(keys_table["global"], keys.global_keys);
 
         /* PowerApplet Keys*/
-        mapPowerAppletKeys(data, keys);
+        mapPowerAppletKeys(keys_table["power_applet"], keys.power_applet_keys, keys.global_keys);
 }
