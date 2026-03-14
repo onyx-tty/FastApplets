@@ -115,40 +115,38 @@ void KeysMapper::mapPowerAppletQuitKeys(node_view quit_node, keybindings& quit,
         interpretTextAsKeybindings(quit_node, quit);
 }
 
-void KeysMapper::mapPowerAppletPrimaryButtonKeys(
-        node_view primary_button_node1, node_view primary_button_node2,
-        node_view primary_button_node3, node_view primary_button_node4,
-        keybindings& primary_button1, keybindings& primary_button2, keybindings& primary_button3,
-        keybindings& primary_button4) {
+void KeysMapper::mapPowerAppletPrimaryButtonKeys(node_view                   primary_buttons_node,
+                                                 std::array<keybindings, 4>& primary_buttons) {
         const std::array<keybindings, 4>& defaults =
                 Keys::getDefaultKeys().getPowerAppletKeys().getPrimaryButtonKeys();
-        QString error_prefix      = "in keys.toml, power_applet.primary_button";
-        QString error_arr_details = "Format: [keybindings...]";
+        QString    error_prefix         = "in keys.toml, power_applet.primary_buttons";
+        QString    error_arr_details    = "Format: [keybindings...]";
+        const auto primary_button_nodes = getTomlArray(primary_buttons_node, error_prefix,
+                                                       "Format: [keys1, keys2, keys3, keys4]");
 
-        const std::array<node_view, 4> nodes = {primary_button_node1, primary_button_node2,
-                                                primary_button_node3, primary_button_node4};
+        if (!primary_button_nodes || primary_button_nodes.value().size() < 4) {
+                primary_buttons = defaults;
+        }
 
-        constexpr size_t                                min_size = 1, max_size = 4;
-        const std::array<std::optional<toml::array>, 4> data =
-                {getTomlArray(nodes[0], min_size, max_size, error_prefix + "1", error_arr_details),
-                 getTomlArray(nodes[1], min_size, max_size, error_prefix + "2", error_arr_details),
-                 getTomlArray(nodes[2], min_size, max_size, error_prefix + "3", error_arr_details),
-                 getTomlArray(nodes[3], min_size, max_size, std::move(error_prefix) + "4",
-                              std::move(error_arr_details))};
+        constexpr size_t                          min_size = 1, max_size = 4;
+        std::array<std::optional<toml::array>, 4> keys_arr;
 
-        std::array<std::reference_wrapper<keybindings>, 4> primary_buttons =
-                {std::ref(primary_button1), std::ref(primary_button2), std::ref(primary_button3),
-                 std::ref(primary_button4)};
+        for (size_t i = 0; i != primary_button_nodes.value().size(); ++i) {
+                keys_arr[i] = getTomlArray(toml::node_view(primary_button_nodes.value()[i]),
+                                           min_size, max_size,
+                                           QStringLiteral("[%1]").arg(QString::number(i - 1)),
+                                           error_arr_details);
+        };
 
         // Parse power_applet.primary_buttons
-        for (size_t i = 0; i != data.size(); ++i) {
-                const auto& button = data[i];
+        for (size_t i = 0; i != keys_arr.size(); ++i) {
+                const auto& button = keys_arr[i];
                 if (!button) {
-                        primary_buttons[i].get() = defaults[i];
+                        primary_buttons[i] = defaults[i];
                         continue;
                 }
 
-                interpretTextAsKeybindings(nodes[i], primary_buttons[i]);
+                interpretTextAsKeybindings(primary_buttons_node[i], primary_buttons[i]);
         }
 }
 
@@ -167,10 +165,7 @@ void KeysMapper::mapPowerAppletKeys(node_view power_node, Keys::PowerAppletKeys&
         mapPowerAppletQuitKeys((*table)["quit"], power.quit_keys, global.quit_keys);
 
         /* Primary Button Keys*/
-        mapPowerAppletPrimaryButtonKeys((*table)["primary_button1"], (*table)["primary_button2"],
-                                        (*table)["primary_button3"], (*table)["primary_button4"],
-                                        power.primary_button_keys[0], power.primary_button_keys[1],
-                                        power.primary_button_keys[2], power.primary_button_keys[3]);
+        mapPowerAppletPrimaryButtonKeys((*table)["primary_buttons"], power.primary_button_keys);
 }
 
 void KeysMapper::mapToKeys(const toml::table& keys_table, Keys& keys) {
