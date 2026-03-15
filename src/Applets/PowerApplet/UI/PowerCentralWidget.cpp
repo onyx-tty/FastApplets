@@ -114,7 +114,7 @@ PowerButton* PowerCentralWidget::getPowerButtonFromKey(int key) {
 
 PowerButton* PowerCentralWidget::getPowerButtonFromPowerButtonID(power_button_id button) {
         for (auto* power_button : button_list) {
-                if (power_button->getIdentifier() == button) { return power_button; }
+                if (power_button->getID() == button) { return power_button; }
         }
 
         // TODO In CppUtils, qt::qstring_utils::toQString should be able to interpret enums
@@ -129,13 +129,13 @@ const keybindings& PowerCentralWidget::getKeysFromPowerButtonID(power_button_id 
 power_button_id PowerCentralWidget::getPowerButtonIDFromKeys(const keybindings& keys) {
         const auto* power_button = getPowerButtonFromKeys(keys);
 
-        return power_button->getIdentifier();
+        return power_button->getID();
 }
 
 power_button_id PowerCentralWidget::getPowerButtonIDFromKey(int key) {
         const auto* power_button = getPowerButtonFromKey(key);
 
-        return power_button->getIdentifier();
+        return power_button->getID();
 }
 
 QString getDBusMethodFromPowerButtonID(power_button_id id) {

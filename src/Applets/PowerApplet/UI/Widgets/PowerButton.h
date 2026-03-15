@@ -25,12 +25,12 @@ class PowerButton final : public Button {
         Q_OBJECT
 
 private:
-        const power_button_id identifier;
+        const power_button_id id;
         const QString         dbus_action;
 
 public:
-        explicit PowerButton(QBoxLayout* layout, power_button_id identifier, QIcon icon,
-                             QString text, QString dbus_action, ShellCommand command);
-        power_button_id getIdentifier() const;
+        explicit PowerButton(QBoxLayout* layout, power_button_id id, QIcon icon, QString text,
+                             QString dbus_action, ShellCommand command);
+        power_button_id getID() const;
         const QString&  getDBusAction() const;
 };
