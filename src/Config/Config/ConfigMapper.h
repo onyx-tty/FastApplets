@@ -38,15 +38,15 @@ private:
         static void mapWindowTitle(node_view title_node, QString& title);
         static void mapWindowProperties(node_view window_node, Config::WindowProperties& window);
 
-        /* Button Properties */
-        static void mapButtonTextAlignment(node_view      text_alignment_node,
-                                           Qt::Alignment& text_alignment);
-        static void mapButtonIconAlignment(node_view      icon_alignment_node,
-                                           Qt::Alignment& icon_alignment);
-        static void mapButtonIconSize(node_view icon_size_node, QSize& icon_size);
-        static void mapButtonPolicy(node_view policy_node, QSizePolicy& policy);
-        static void mapButtonProperties(node_view                        button_node,
-                                        Config::PrimaryButtonProperties& button);
+        /* Primary Button Properties */
+        static void mapPrimaryButtonTextAlignment(node_view      text_alignment_node,
+                                                  Qt::Alignment& text_alignment);
+        static void mapPrimaryButtonIconAlignment(node_view      icon_alignment_node,
+                                                  Qt::Alignment& icon_alignment);
+        static void mapPrimaryButtonIconSize(node_view icon_size_node, QSize& icon_size);
+        static void mapPrimaryButtonPolicy(node_view policy_node, QSizePolicy& policy);
+        static void mapPrimaryButtonProperties(node_view                        button_node,
+                                               Config::PrimaryButtonProperties& button);
 
         /* Layout Properties */
         static void mapLayoutPrimaryButtonID(node_view id_node, PrimaryButtonData& button,

@@ -38,8 +38,6 @@
 
 using enum_utils::EnumMap;
 
-// TODO Make function names consistent, i.e. mapButtonProperties -> mapPrimaryButtonProperties
-
 namespace {
 
 const EnumMap<Qt::Alignment> alignment_map = {{"top", Qt::AlignTop | Qt::AlignHCenter},
@@ -105,9 +103,9 @@ void ConfigMapper::mapWindowProperties(node_view window_node, Config::WindowProp
         mapWindowTitle((*data)["title"], window.title);
 }
 
-/* Button Properties*/
-void ConfigMapper::mapButtonTextAlignment(node_view      text_alignment_node,
-                                          Qt::Alignment& text_alignment) {
+/* Primary Button Properties*/
+void ConfigMapper::mapPrimaryButtonTextAlignment(node_view      text_alignment_node,
+                                                 Qt::Alignment& text_alignment) {
         const auto& key =
                 getOrDefault<std::string>(text_alignment_node, {},
                                           "in config.toml, global.primary_button.text_alignment");
@@ -123,8 +121,8 @@ void ConfigMapper::mapButtonTextAlignment(node_view      text_alignment_node,
                                       "in config.toml, global.primary_button.text_alignment");
 }
 
-void ConfigMapper::mapButtonIconAlignment(node_view      icon_alignment_node,
-                                          Qt::Alignment& icon_alignment) {
+void ConfigMapper::mapPrimaryButtonIconAlignment(node_view      icon_alignment_node,
+                                                 Qt::Alignment& icon_alignment) {
         const auto& key =
                 getOrDefault<std::string>(icon_alignment_node, {},
                                           "in config.toml, global.primary_button.icon_alignment");
@@ -140,14 +138,14 @@ void ConfigMapper::mapButtonIconAlignment(node_view      icon_alignment_node,
                                       "in config.toml, global.primary_button.icon_alignment");
 }
 
-void ConfigMapper::mapButtonIconSize(node_view icon_size_node, QSize& icon_size) {
+void ConfigMapper::mapPrimaryButtonIconSize(node_view icon_size_node, QSize& icon_size) {
         const auto& defaults = Config::getDefaultConfig().getPrimaryButtonProperties().getIconSize();
 
         icon_size = getQSize(icon_size_node, defaults,
                              "in config.toml, global.primary_button.icon_size");
 }
 
-void ConfigMapper::mapButtonPolicy(node_view policy_node, QSizePolicy& policy) {
+void ConfigMapper::mapPrimaryButtonPolicy(node_view policy_node, QSizePolicy& policy) {
         const auto& key      = getOrDefault<std::string>(policy_node, {},
                                                          "in config.toml, global.primary_button.policy");
         const auto& defaults = Config::getDefaultConfig().getPrimaryButtonProperties().getPolicy();
@@ -156,8 +154,8 @@ void ConfigMapper::mapButtonPolicy(node_view policy_node, QSizePolicy& policy) {
                                "in config.toml, global.primary_button.policy");
 }
 
-void ConfigMapper::mapButtonProperties(node_view                        button_node,
-                                       Config::PrimaryButtonProperties& button) {
+void ConfigMapper::mapPrimaryButtonProperties(node_view                        button_node,
+                                              Config::PrimaryButtonProperties& button) {
         const auto* data     = getTable(button_node, "in config.toml, global.primary_button");
         const auto& defaults = Config::getDefaultConfig().getPrimaryButtonProperties();
 
@@ -167,17 +165,19 @@ void ConfigMapper::mapButtonProperties(node_view                        button_n
         }
 
         // Text alignment
-        ConfigMapper::mapButtonTextAlignment((*data)["text_alignment"], button.text_alignment);
+        ConfigMapper::mapPrimaryButtonTextAlignment((*data)["text_alignment"],
+                                                    button.text_alignment);
 
         // TODO This option doesn't work, fix
         // Icon alignment
-        ConfigMapper::mapButtonIconAlignment((*data)["icon_alignment"], button.icon_alignment);
+        ConfigMapper::mapPrimaryButtonIconAlignment((*data)["icon_alignment"],
+                                                    button.icon_alignment);
 
         // Icon size
-        ConfigMapper::mapButtonIconSize((*data)["icon_size"], button.icon_size);
+        ConfigMapper::mapPrimaryButtonIconSize((*data)["icon_size"], button.icon_size);
 
         // Policy
-        ConfigMapper::mapButtonPolicy((*data)["policy"], button.policy);
+        ConfigMapper::mapPrimaryButtonPolicy((*data)["policy"], button.policy);
 }
 
 /* Layout Properties */
@@ -519,9 +519,9 @@ void ConfigMapper::mapToConfig(const toml::table& config_table, Config& config) 
         /* Window Properties */
         mapWindowProperties(config_table["global"]["window"], config.window_properties);
 
-        /* Button properties */
-        mapButtonProperties(config_table["global"]["primary_button"],
-                            config.primary_button_properties);
+        /* Primary Button Properties */
+        mapPrimaryButtonProperties(config_table["global"]["primary_button"],
+                                   config.primary_button_properties);
 
         /* Layout Properties */
         mapLayoutProperties(config_table["power_applet"]["layout"], config.layout_properties);
