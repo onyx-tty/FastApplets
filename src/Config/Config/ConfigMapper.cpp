@@ -17,6 +17,11 @@
 
 #include "ConfigMapper.h"
 #include "Config.h"
+#include "Config/Config/Properties/EnvironmentProperties.h"
+#include "Config/Config/Properties/LayoutProperties.h"
+#include "Config/Config/Properties/PrimaryButtonProperties.h"
+#include "Config/Config/Properties/WindowProperties.h"
+#include "Config/TOML/NodeView.h"
 #include "Config/TOML/TomlAccessor.h"
 #include "Core/Log.h"
 #include "CppUtils/include/Enum.h"
@@ -26,7 +31,6 @@
 #include <cstdlib>
 #include <qnamespace.h>
 #include <string>
-#include <toml++/impl/value.hpp>
 #include <toml++/toml.hpp>
 #include <unordered_map>
 #include <QApplication>
@@ -90,7 +94,7 @@ void ConfigMapper::mapWindowTitle(node_view title_node, QString& title) {
                                                                  "in global.window.title"));
 }
 
-void ConfigMapper::mapWindowProperties(node_view window_node, Config::WindowProperties& window) {
+void ConfigMapper::mapWindowProperties(node_view window_node, WindowProperties& window) {
         const auto* data     = getTable(window_node, "in config.toml, global.window");
         const auto& defaults = Config::getDefaultConfig().getWindowProperties();
 
@@ -154,8 +158,8 @@ void ConfigMapper::mapPrimaryButtonPolicy(node_view policy_node, QSizePolicy& po
                                "in config.toml, global.primary_button.policy");
 }
 
-void ConfigMapper::mapPrimaryButtonProperties(node_view                        button_node,
-                                              Config::PrimaryButtonProperties& button) {
+void ConfigMapper::mapPrimaryButtonProperties(node_view                button_node,
+                                              PrimaryButtonProperties& button) {
         const auto* data     = getTable(button_node, "in config.toml, global.primary_button");
         const auto& defaults = Config::getDefaultConfig().getPrimaryButtonProperties();
 
@@ -451,7 +455,7 @@ void ConfigMapper::mapLayoutPrimaryButtons(node_view                       prima
         primary_buttons = std::move(buttons_found);
 }
 
-void ConfigMapper::mapLayoutProperties(node_view layout_node, Config::LayoutProperties& layout) {
+void ConfigMapper::mapLayoutProperties(node_view layout_node, LayoutProperties& layout) {
         const auto& defaults = Config::getDefaultConfig().getLayoutProperties();
 
         const QString error_prefix = "in config.toml, power_applet.layout";
@@ -475,8 +479,8 @@ void ConfigMapper::mapEnvironmentDBusMode(node_view dbus_mode_node, bool dbus_mo
         dbus_mode = getOrDefault(dbus_mode_node, defaults, std::move(error_prefix));
 }
 
-void ConfigMapper::mapEnvironmentProperties(node_view                      environment_node,
-                                            Config::EnvironmentProperties& environment) {
+void ConfigMapper::mapEnvironmentProperties(node_view              environment_node,
+                                            EnvironmentProperties& environment) {
         const auto& defaults = Config::getDefaultConfig().getEnvironmentProperties();
 
         const QString error_prefix = "in config.toml, power_applet.environment";

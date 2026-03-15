@@ -1,3 +1,5 @@
+add_subdirectory(Properties)
+
 add_library(Config_Config
         Config.cpp
         ConfigMapper.cpp)
@@ -8,6 +10,7 @@ target_include_directories(Config_Config PRIVATE
         ${GLOBAL_INCLUSIONS})
 
 target_link_libraries(Config_Config PRIVATE
+        Config::Config::Properties
         Config::TOML
         Core::Log
         UI::Enums

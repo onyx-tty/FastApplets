@@ -17,9 +17,11 @@
 
 #pragma once
 
-#include "UI/Widgets/PrimaryButtonData.h"
+#include "Properties/WindowProperties.h"
+#include "Properties/LayoutProperties.h"
+#include "Properties/PrimaryButtonProperties.h"
+#include "Properties/EnvironmentProperties.h"
 
-#include <vector>
 #include <QSize>
 #include <QSizePolicy>
 #include <QString>
@@ -28,64 +30,10 @@ class ConfigMapper;
 
 class Config final {
 public:
-        class WindowProperties final {
-        private:
-                friend class ConfigMapper;
-
-                QSize   size;
-                QString title;
-
-        public:
-                WindowProperties(QSize size = {}, QString title = {});
-                const QSize&   getSize() const;
-                const QString& getTitle() const;
-        };
-
-        class PrimaryButtonProperties final {
-        private:
-                friend class ConfigMapper;
-
-                Qt::Alignment text_alignment;
-                Qt::Alignment icon_alignment;
-                QSize         icon_size;
-                QSizePolicy   policy;
-
-        public:
-                PrimaryButtonProperties(Qt::Alignment text_alignment = {},
-                                        Qt::Alignment icon_alignment = {}, QSize icon_size = {},
-                                        QSizePolicy policy = {});
-                const Qt::Alignment& getTextAlignment() const;
-                const Qt::Alignment& getIconAlignment() const;
-                const QSize&         getIconSize() const;
-                const QSizePolicy&   getPolicy() const;
-        };
-
-        class LayoutProperties final {
-        private:
-                friend class ConfigMapper;
-
-                std::vector<PrimaryButtonData> primary_power_buttons;
-
-        public:
-                LayoutProperties(std::vector<PrimaryButtonData> primary_power_buttons = {});
-                const std::vector<PrimaryButtonData>& getPrimaryPowerButtons() const;
-        };
-
-        class EnvironmentProperties final {
-        private:
-                friend class ConfigMapper;
-
-                bool dbus_mode;
-
-        public:
-                EnvironmentProperties(bool dbus_mode = false);
-                const bool& getDBusMode() const;
-        };
-
-        Config(Config::WindowProperties        window_properties         = {},
-               Config::PrimaryButtonProperties primary_button_properties = {},
-               Config::LayoutProperties        layout_properties         = {},
-               Config::EnvironmentProperties   environment_properties    = {});
+        Config(WindowProperties        window_properties         = {},
+               PrimaryButtonProperties primary_button_properties = {},
+               LayoutProperties        layout_properties         = {},
+               EnvironmentProperties   environment_properties    = {});
         // TODO Make this const to avoid overwrites
         static Config&                 getConfig();
         static const Config&           getDefaultConfig();

@@ -18,65 +18,25 @@
 #include "Config.h"
 #include "Config/TOML/TomlParser.h"
 #include "ConfigMapper.h"
+#include "Properties/EnvironmentProperties.h"
+#include "Properties/LayoutProperties.h"
+#include "Properties/PrimaryButtonProperties.h"
+#include "Properties/WindowProperties.h"
 #include "UI/Enums/ButtonIDs.h"
 #include "UI/Widgets/PrimaryButtonData.h"
 
+#include <qnamespace.h>
+#include <vector>
+#include <QSize>
+#include <QSizePolicy>
+#include <QString>
+
 #include <toml++/toml.hpp>
 
-/* Window Properties*/
-Config::WindowProperties::WindowProperties(QSize size, QString title) : size(size), title(title) {}
-
-const QString& Config::WindowProperties::getTitle() const {
-        return title;
-}
-
-const QSize& Config::WindowProperties::getSize() const {
-        return size;
-}
-
-/* Primary Button Properties */
-Config::PrimaryButtonProperties::PrimaryButtonProperties(Qt::Alignment text_alignment,
-                                                         Qt::Alignment icon_alignment,
-                                                         QSize icon_size, QSizePolicy policy) :
-        text_alignment(text_alignment), icon_alignment(icon_alignment), icon_size(icon_size),
-        policy(policy) {}
-
-const Qt::Alignment& Config::PrimaryButtonProperties::getTextAlignment() const {
-        return text_alignment;
-}
-
-const Qt::Alignment& Config::PrimaryButtonProperties::getIconAlignment() const {
-        return icon_alignment;
-}
-
-const QSize& Config::PrimaryButtonProperties::getIconSize() const {
-        return icon_size;
-}
-
-const QSizePolicy& Config::PrimaryButtonProperties::getPolicy() const {
-        return policy;
-}
-
-/* Layout Properties */
-Config::LayoutProperties::LayoutProperties(std::vector<PrimaryButtonData> primary_power_buttons) :
-        primary_power_buttons(primary_power_buttons) {}
-
-const std::vector<PrimaryButtonData>& Config::LayoutProperties::getPrimaryPowerButtons() const {
-        return primary_power_buttons;
-}
-
-/* Environment Properties */
-Config::EnvironmentProperties::EnvironmentProperties(bool dbus_mode) : dbus_mode(dbus_mode) {}
-
-const bool& Config::EnvironmentProperties::getDBusMode() const {
-        return dbus_mode;
-}
-
 /* Config */
-Config::Config(Config::WindowProperties        window_properties,
-               Config::PrimaryButtonProperties primary_button_properties,
-               Config::LayoutProperties        layout_properties,
-               Config::EnvironmentProperties   environment_properties) :
+Config::Config(WindowProperties        window_properties,
+               PrimaryButtonProperties primary_button_properties,
+               LayoutProperties layout_properties, EnvironmentProperties environment_properties) :
         window_properties(std::move(window_properties)),
         primary_button_properties(std::move(primary_button_properties)),
         layout_properties(std::move(layout_properties)),
@@ -135,18 +95,18 @@ const Config& Config::getDefaultConfig() {
         return default_config;
 }
 
-const Config::WindowProperties& Config::getWindowProperties() const {
+const WindowProperties& Config::getWindowProperties() const {
         return window_properties;
 }
 
-const Config::PrimaryButtonProperties& Config::getPrimaryButtonProperties() const {
+const PrimaryButtonProperties& Config::getPrimaryButtonProperties() const {
         return primary_button_properties;
 }
 
-const Config::LayoutProperties& Config::getLayoutProperties() const {
+const LayoutProperties& Config::getLayoutProperties() const {
         return layout_properties;
 }
 
-const Config::EnvironmentProperties& Config::getEnvironmentProperties() const {
+const EnvironmentProperties& Config::getEnvironmentProperties() const {
         return environment_properties;
 }

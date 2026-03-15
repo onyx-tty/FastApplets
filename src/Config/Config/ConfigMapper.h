@@ -18,6 +18,10 @@
 #pragma once
 
 #include "Config.h"
+#include "Config/Config/Properties/EnvironmentProperties.h"
+#include "Config/Config/Properties/LayoutProperties.h"
+#include "Config/Config/Properties/PrimaryButtonProperties.h"
+#include "Config/Config/Properties/WindowProperties.h"
 #include "Config/TOML/NodeView.h"
 #include "UI/Enums/ButtonIDs.h"
 
@@ -36,7 +40,7 @@ private:
         /* Window Properties */
         static void mapWindowSize(node_view size_node, QSize& size);
         static void mapWindowTitle(node_view title_node, QString& title);
-        static void mapWindowProperties(node_view window_node, Config::WindowProperties& window);
+        static void mapWindowProperties(node_view window_node, WindowProperties& window);
 
         /* Primary Button Properties */
         static void mapPrimaryButtonTextAlignment(node_view      text_alignment_node,
@@ -45,8 +49,8 @@ private:
                                                   Qt::Alignment& icon_alignment);
         static void mapPrimaryButtonIconSize(node_view icon_size_node, QSize& icon_size);
         static void mapPrimaryButtonPolicy(node_view policy_node, QSizePolicy& policy);
-        static void mapPrimaryButtonProperties(node_view                        button_node,
-                                               Config::PrimaryButtonProperties& button);
+        static void mapPrimaryButtonProperties(node_view                button_node,
+                                               PrimaryButtonProperties& button);
 
         /* Layout Properties */
         static void mapLayoutPrimaryButtonID(node_view id_node, PrimaryButtonData& button,
@@ -79,12 +83,12 @@ private:
                                       size_t button_index);
         static void mapLayoutPrimaryButtons(node_view                       buttons_node,
                                             std::vector<PrimaryButtonData>& buttons);
-        static void mapLayoutProperties(node_view layout_node, Config::LayoutProperties& layout);
+        static void mapLayoutProperties(node_view layout_node, LayoutProperties& layout);
 
         /* Environment Properties*/
         static void mapEnvironmentDBusMode(node_view dbus_mode_node, bool dbus_mode);
-        static void mapEnvironmentProperties(node_view                      environment_node,
-                                             Config::EnvironmentProperties& environment);
+        static void mapEnvironmentProperties(node_view              environment_node,
+                                             EnvironmentProperties& environment);
 
 public:
         static void mapToConfig(const toml::table& config_table, Config& config);
