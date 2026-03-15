@@ -526,7 +526,7 @@ void ConfigMapper::mapToConfig(const toml::table& config_table, Config& config) 
         mapButtonProperties(config_table["global"]["primary_button"],
                             config.primary_button_properties);
 
-        /* Window layout properties */
+        /* Layout Properties */
         mapLayoutProperties(config_table["power_applet"]["layout"], config.layout_properties);
 
         /* Environment Properties */

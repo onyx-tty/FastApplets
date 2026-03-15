@@ -57,7 +57,7 @@ const QSizePolicy& Config::PrimaryButtonProperties::getPolicy() const {
         return policy;
 }
 
-/* Window Layout Properties */
+/* Layout Properties */
 Config::LayoutProperties::LayoutProperties(std::vector<PrimaryButtonData> primary_power_buttons) :
         primary_power_buttons(primary_power_buttons) {}
 
