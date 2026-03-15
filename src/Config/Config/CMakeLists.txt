@@ -8,11 +8,11 @@ target_include_directories(Config_Config PRIVATE
         ${GLOBAL_INCLUSIONS})
 
 target_link_libraries(Config_Config PRIVATE
-        tomlplusplus::tomlplusplus
-        Qt${QT_VERSION_MAJOR}::Widgets)
-
-target_link_libraries(Config_Config PUBLIC
         Config::TOML
         Core::Log
         UI::Enums
         UI::Widgets)
+
+target_link_libraries(Config_Config PUBLIC
+        tomlplusplus::tomlplusplus
+        Qt${QT_VERSION_MAJOR}::Widgets)
