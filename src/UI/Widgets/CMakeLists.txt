@@ -1,5 +1,6 @@
 add_library(UI_Widgets
-        Button.cpp)
+        Button.cpp
+        PrimaryButtonData.h)
 add_library(UI::Widgets ALIAS UI_Widgets)
 
 target_include_directories(UI_Widgets PRIVATE
