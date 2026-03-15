@@ -166,12 +166,12 @@ std::vector<PowerButton*> PowerCentralWidget::createButtonList(QBoxLayout* main_
         primary_buttons.reserve(primary_buttons_data.size());
 
         for (size_t i = 0; i != primary_buttons_data.size(); ++i) {
-                QDEBUG() << "Created" << primary_buttons_data[i].text << "!";
-                QString method = getDBusMethodFromPowerButtonID(primary_buttons_data[i].identifier);
-                primary_buttons.push_back(
-                        new PowerButton(main_layout, primary_buttons_data[i].identifier,
-                                        primary_buttons_icons[i], primary_buttons_data[i].text,
-                                        method, primary_buttons_data[i].command));
+                QDEBUG() << "Created" << primary_buttons_data[i].label << "!";
+                QString method = getDBusMethodFromPowerButtonID(primary_buttons_data[i].id);
+                primary_buttons.push_back(new PowerButton(main_layout, primary_buttons_data[i].id,
+                                                          primary_buttons_icons[i],
+                                                          primary_buttons_data[i].label, method,
+                                                          primary_buttons_data[i].command));
         }
 
         if (primary_buttons.empty()) { QFATAL("No buttons found!"); }

@@ -49,12 +49,10 @@ private:
                                         Config::PrimaryButtonProperties& button);
 
         /* Layout Properties */
-        static void mapLayoutPrimaryButtonIdentifier(node_view          button_node,
-                                                     PrimaryButtonData& button,
-                                                     power_button_id&   identifier,
-                                                     size_t             button_index);
-        static void mapLayoutPrimaryButtonText(node_view text_node, PrimaryButtonData& button,
-                                               QString& text, size_t button_index);
+        static void mapLayoutPrimaryButtonID(node_view id_node, PrimaryButtonData& button,
+                                             power_button_id& id, size_t button_index);
+        static void mapLayoutPrimaryButtonLabel(node_view label_node, PrimaryButtonData& button,
+                                                QString& label, size_t button_index);
         static void mapLayoutPrimaryButtonOrder(node_view order_node, PrimaryButtonData& button,
                                                 long&                           order,
                                                 std::vector<PrimaryButtonData>& buttons,
@@ -77,12 +75,11 @@ private:
                                                PrimaryButtonData&              button_data,
                                                std::vector<PrimaryButtonData>& buttons,
                                                size_t                          button_index);
-        static void logButtonDisabled(node_view identifier_node, PrimaryButtonData& button_data,
+        static void logButtonDisabled(node_view id_node, PrimaryButtonData& button_data,
                                       size_t button_index);
         static void mapLayoutPrimaryButtons(node_view                       buttons_node,
                                             std::vector<PrimaryButtonData>& buttons);
-        static void mapLayoutProperties(node_view                       layout_node,
-                                        Config::LayoutProperties& layout);
+        static void mapLayoutProperties(node_view layout_node, Config::LayoutProperties& layout);
 
         /* Environment Properties*/
         static void mapEnvironmentDBusMode(node_view dbus_mode_node, bool dbus_mode);

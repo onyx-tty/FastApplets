@@ -23,8 +23,8 @@
 #include <QString>
 
 struct PrimaryButtonData final {
-        power_button_id identifier;
-        QString         text;
+        power_button_id id;
+        QString         label;
         long            order;
         ShellCommand    command;
 };

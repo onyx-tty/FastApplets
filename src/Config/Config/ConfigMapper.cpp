@@ -181,48 +181,46 @@ void ConfigMapper::mapButtonProperties(node_view                        button_n
 }
 
 /* Layout Properties */
-void ConfigMapper::mapLayoutPrimaryButtonIdentifier(node_view          identifier_node,
-                                                    PrimaryButtonData& button,
-                                                    power_button_id&   identifier,
-                                                    size_t             button_index) {
+void ConfigMapper::mapLayoutPrimaryButtonID(node_view id_node, PrimaryButtonData& button,
+                                            power_button_id& id, size_t button_index) {
         const auto& defaults = Config::getDefaultConfig()
                                        .getLayoutProperties()
                                        .getPrimaryPowerButtons()[button_index];
 
-        QString error_prefix =
-                QStringLiteral("in config.toml, power_applet.layout.primary_buttons[%1].identifier")
-                        .arg(button_index);
+        QString error_prefix = QStringLiteral(
+                                       "in config.toml, power_applet.layout.primary_buttons[%1].id")
+                                       .arg(button_index);
 
         auto result = QString::fromStdString(
-                getOrDefault<std::string>(identifier_node, {}, std::move(error_prefix)));
+                getOrDefault<std::string>(id_node, {}, std::move(error_prefix)));
 
         if (!result.isEmpty()) {
                 button = defaults;
                 return;
         }
 
-        identifier = getPowerButtonIDFromString(std::move(result));
+        id = getPowerButtonIDFromString(std::move(result));
 }
 
-void ConfigMapper::mapLayoutPrimaryButtonText(node_view text_node, PrimaryButtonData& button,
-                                              QString& text, size_t button_index) {
+void ConfigMapper::mapLayoutPrimaryButtonLabel(node_view label_node, PrimaryButtonData& button,
+                                               QString& label, size_t button_index) {
         const auto& defaults = Config::getDefaultConfig()
                                        .getLayoutProperties()
                                        .getPrimaryPowerButtons()[button_index];
 
         QString error_prefix =
-                QStringLiteral("in config.toml, power_applet.layout.primary_buttons[%1].text")
+                QStringLiteral("in config.toml, power_applet.layout.primary_buttons[%1].label")
                         .arg(button_index);
 
         auto result = QString::fromStdString(
-                getOrDefault<std::string>(text_node, {}, std::move(error_prefix)));
+                getOrDefault<std::string>(label_node, {}, std::move(error_prefix)));
 
         if (!result.isEmpty()) {
                 button = defaults;
                 return;
         }
 
-        text = result;
+        label = result;
 }
 
 void ConfigMapper::mapLayoutPrimaryButtonOrder(node_view order_node, PrimaryButtonData& button,
@@ -357,11 +355,10 @@ void ConfigMapper::mapLayoutPrimaryButtonData(node_view                       bu
                                        .getLayoutProperties()
                                        .getPrimaryPowerButtons()[button_index];
 
-        mapLayoutPrimaryButtonIdentifier(button_data_node["id"], button_data,
-                                         button_data.identifier, button_index);
+        mapLayoutPrimaryButtonID(button_data_node["id"], button_data, button_data.id, button_index);
 
-        mapLayoutPrimaryButtonText(button_data_node["label"], button_data, button_data.text,
-                                   button_index);
+        mapLayoutPrimaryButtonLabel(button_data_node["label"], button_data, button_data.label,
+                                    button_index);
 
         mapLayoutPrimaryButtonOrder(button_data_node["order"], button_data, button_data.order,
                                     buttons, button_index);
@@ -371,9 +368,9 @@ void ConfigMapper::mapLayoutPrimaryButtonData(node_view                       bu
 }
 
 // TODO Extract logic shared with mapLayoutPrimaryButtonData
-void ConfigMapper::logButtonDisabled(node_view identifier_node, PrimaryButtonData& button_data,
+void ConfigMapper::logButtonDisabled(node_view id_node, PrimaryButtonData& button_data,
                                      size_t button_index) {
-        const auto& data     = identifier_node.as_string();
+        const auto& data     = id_node.as_string();
         const auto& defaults = Config::getDefaultConfig()
                                        .getLayoutProperties()
                                        .getPrimaryPowerButtons()[button_index];
@@ -385,7 +382,7 @@ void ConfigMapper::logButtonDisabled(node_view identifier_node, PrimaryButtonDat
                 return;
         }
 
-        QDEBUG() << identifier_node.as_string()->get() << ": DISABLED";
+        QDEBUG() << id_node.as_string()->get() << ": DISABLED";
 }
 
 void ConfigMapper::mapLayoutPrimaryButtons(node_view                       primary_buttons_node,
@@ -519,7 +516,7 @@ void ConfigMapper::mapToConfig(const toml::table& config_table, Config& config) 
         }
         */
 
-        /* Window properties */
+        /* Window Properties */
         mapWindowProperties(config_table["global"]["window"], config.window_properties);
 
         /* Button properties */
