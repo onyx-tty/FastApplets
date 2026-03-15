@@ -78,8 +78,8 @@ Config::Config(Config::WindowProperties        window_properties,
                Config::LayoutProperties        layout_properties,
                Config::EnvironmentProperties   environment_properties) :
         window_properties(std::move(window_properties)),
-        layout_properties(std::move(layout_properties)),
         primary_button_properties(std::move(primary_button_properties)),
+        layout_properties(std::move(layout_properties)),
         environment_properties(std::move(environment_properties)) {}
 
 Config& Config::getConfig() {
@@ -139,12 +139,12 @@ const Config::WindowProperties& Config::getWindowProperties() const {
         return window_properties;
 }
 
-const Config::LayoutProperties& Config::getLayoutProperties() const {
-        return layout_properties;
-}
-
 const Config::PrimaryButtonProperties& Config::getPrimaryButtonProperties() const {
         return primary_button_properties;
+}
+
+const Config::LayoutProperties& Config::getLayoutProperties() const {
+        return layout_properties;
 }
 
 const Config::EnvironmentProperties& Config::getEnvironmentProperties() const {

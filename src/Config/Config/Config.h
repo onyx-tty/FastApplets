@@ -41,17 +41,6 @@ public:
                 const QString& getTitle() const;
         };
 
-        class LayoutProperties final {
-        private:
-                friend class ConfigMapper;
-
-                std::vector<PrimaryButtonData> primary_power_buttons;
-
-        public:
-                LayoutProperties(std::vector<PrimaryButtonData> primary_power_buttons = {});
-                const std::vector<PrimaryButtonData>& getPrimaryPowerButtons() const;
-        };
-
         class PrimaryButtonProperties final {
         private:
                 friend class ConfigMapper;
@@ -69,6 +58,17 @@ public:
                 const Qt::Alignment& getIconAlignment() const;
                 const QSize&         getIconSize() const;
                 const QSizePolicy&   getPolicy() const;
+        };
+
+        class LayoutProperties final {
+        private:
+                friend class ConfigMapper;
+
+                std::vector<PrimaryButtonData> primary_power_buttons;
+
+        public:
+                LayoutProperties(std::vector<PrimaryButtonData> primary_power_buttons = {});
+                const std::vector<PrimaryButtonData>& getPrimaryPowerButtons() const;
         };
 
         class EnvironmentProperties final {
@@ -98,7 +98,7 @@ private:
         friend class ConfigMapper;
 
         WindowProperties        window_properties;
-        LayoutProperties        layout_properties;
         PrimaryButtonProperties primary_button_properties;
+        LayoutProperties        layout_properties;
         EnvironmentProperties   environment_properties;
 };
