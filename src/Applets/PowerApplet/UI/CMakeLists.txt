@@ -15,3 +15,6 @@ target_link_libraries(PowerApplet_UI PRIVATE
         Environment
         UI
         PowerApplet::DBus)
+
+target_link_libraries(PowerApplet_UI PUBLIC
+        Qt${QT_VERSION_MAJOR}::Widgets)
