@@ -82,7 +82,7 @@ private:
         static void mapLayoutPrimaryButtons(node_view                       buttons_node,
                                             std::vector<PrimaryButtonData>& buttons);
         static void mapLayoutProperties(node_view                       layout_node,
-                                        Config::WindowLayoutProperties& layout);
+                                        Config::LayoutProperties& layout);
 
         /* Environment Properties*/
         static void mapEnvironmentDBusMode(node_view dbus_mode_node, bool dbus_mode);

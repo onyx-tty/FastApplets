@@ -16,8 +16,8 @@
    along with this program.  If not, see <https://www.gnu.org/licenses/>. */
 
 #include "Config.h"
-#include "ConfigMapper.h"
 #include "Config/TOML/TomlParser.h"
+#include "ConfigMapper.h"
 #include "UI/Enums/ButtonIDs.h"
 #include "UI/Widgets/PrimaryButtonData.h"
 
@@ -58,11 +58,10 @@ const QSizePolicy& Config::PrimaryButtonProperties::getPolicy() const {
 }
 
 /* Window Layout Properties */
-Config::WindowLayoutProperties::WindowLayoutProperties(
-        std::vector<PrimaryButtonData> primary_power_buttons) :
+Config::LayoutProperties::LayoutProperties(std::vector<PrimaryButtonData> primary_power_buttons) :
         primary_power_buttons(primary_power_buttons) {}
 
-const std::vector<PrimaryButtonData>& Config::WindowLayoutProperties::getPrimaryPowerButtons() const {
+const std::vector<PrimaryButtonData>& Config::LayoutProperties::getPrimaryPowerButtons() const {
         return primary_power_buttons;
 }
 
@@ -76,10 +75,10 @@ const bool& Config::EnvironmentProperties::getDBusMode() const {
 /* Config */
 Config::Config(Config::WindowProperties        window_properties,
                Config::PrimaryButtonProperties primary_button_properties,
-               Config::WindowLayoutProperties  window_layout_properties,
+               Config::LayoutProperties        layout_properties,
                Config::EnvironmentProperties   environment_properties) :
         window_properties(std::move(window_properties)),
-        window_layout_properties(std::move(window_layout_properties)),
+        layout_properties(std::move(layout_properties)),
         primary_button_properties(std::move(primary_button_properties)),
         environment_properties(std::move(environment_properties)) {}
 
@@ -123,14 +122,14 @@ const Config& Config::getDefaultConfig() {
                                    "Hibernate",
                                    4,
                                    {"systemctl", {"hibernate"}}}};
-        WindowLayoutProperties default_window_layout_properties = {std::move(primary_buttons)};
+        LayoutProperties default_layout_properties = {std::move(primary_buttons)};
 
         bool                  dbus_mode = false;
         EnvironmentProperties default_environment_properties{dbus_mode};
 
         static Config default_config = {std::move(default_window_properties),
                                         std::move(default_primary_button_properties),
-                                        std::move(default_window_layout_properties),
+                                        std::move(default_layout_properties),
                                         std::move(default_environment_properties)};
 
         return default_config;
@@ -140,8 +139,8 @@ const Config::WindowProperties& Config::getWindowProperties() const {
         return window_properties;
 }
 
-const Config::WindowLayoutProperties& Config::getWindowLayoutProperties() const {
-        return window_layout_properties;
+const Config::LayoutProperties& Config::getLayoutProperties() const {
+        return layout_properties;
 }
 
 const Config::PrimaryButtonProperties& Config::getPrimaryButtonProperties() const {

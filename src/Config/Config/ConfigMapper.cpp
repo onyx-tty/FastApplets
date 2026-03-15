@@ -186,7 +186,7 @@ void ConfigMapper::mapLayoutPrimaryButtonIdentifier(node_view          identifie
                                                     power_button_id&   identifier,
                                                     size_t             button_index) {
         const auto& defaults = Config::getDefaultConfig()
-                                       .getWindowLayoutProperties()
+                                       .getLayoutProperties()
                                        .getPrimaryPowerButtons()[button_index];
 
         QString error_prefix =
@@ -207,7 +207,7 @@ void ConfigMapper::mapLayoutPrimaryButtonIdentifier(node_view          identifie
 void ConfigMapper::mapLayoutPrimaryButtonText(node_view text_node, PrimaryButtonData& button,
                                               QString& text, size_t button_index) {
         const auto& defaults = Config::getDefaultConfig()
-                                       .getWindowLayoutProperties()
+                                       .getLayoutProperties()
                                        .getPrimaryPowerButtons()[button_index];
 
         QString error_prefix =
@@ -229,7 +229,7 @@ void ConfigMapper::mapLayoutPrimaryButtonOrder(node_view order_node, PrimaryButt
                                                long& order, std::vector<PrimaryButtonData>& buttons,
                                                size_t button_index) {
         const auto& defaults = Config::getDefaultConfig()
-                                       .getWindowLayoutProperties()
+                                       .getLayoutProperties()
                                        .getPrimaryPowerButtons()[button_index];
 
         QString error_prefix =
@@ -258,7 +258,7 @@ void ConfigMapper::mapLayoutPrimaryButtonCommandProgram(node_view          progr
                                                         PrimaryButtonData& button, QString& program,
                                                         size_t button_index) {
         const auto& defaults = Config::getDefaultConfig()
-                                       .getWindowLayoutProperties()
+                                       .getLayoutProperties()
                                        .getPrimaryPowerButtons()[button_index];
 
         // clang-format off
@@ -279,7 +279,7 @@ void ConfigMapper::mapLayoutPrimaryButtonCommandArgumentsArgument(node_view     
                                                                   size_t             button_index,
                                                                   size_t             arg_index) {
         const auto& defaults = Config::getDefaultConfig()
-                                       .getWindowLayoutProperties()
+                                       .getLayoutProperties()
                                        .getPrimaryPowerButtons()[button_index];
 
         // clang-format off
@@ -300,7 +300,7 @@ void ConfigMapper::mapLayoutPrimaryButtonCommandArguments(node_view          arg
                                                           QStringList&       arguments,
                                                           size_t             button_index) {
         const auto& defaults = Config::getDefaultConfig()
-                                       .getWindowLayoutProperties()
+                                       .getLayoutProperties()
                                        .getPrimaryPowerButtons()[button_index];
 
         // clang-format off
@@ -326,7 +326,7 @@ void ConfigMapper::mapLayoutPrimaryButtonCommandArguments(node_view          arg
 void ConfigMapper::mapLayoutPrimaryButtonCommand(node_view command_node, PrimaryButtonData& button,
                                                  ShellCommand& command, size_t button_index) {
         const auto& defaults = Config::getDefaultConfig()
-                                       .getWindowLayoutProperties()
+                                       .getLayoutProperties()
                                        .getPrimaryPowerButtons()[button_index];
 
         QString error_prefix =
@@ -354,7 +354,7 @@ void ConfigMapper::mapLayoutPrimaryButtonData(node_view                       bu
                                               std::vector<PrimaryButtonData>& buttons,
                                               size_t                          button_index) {
         const auto& defaults = Config::getDefaultConfig()
-                                       .getWindowLayoutProperties()
+                                       .getLayoutProperties()
                                        .getPrimaryPowerButtons()[button_index];
 
         mapLayoutPrimaryButtonIdentifier(button_data_node["id"], button_data,
@@ -375,7 +375,7 @@ void ConfigMapper::logButtonDisabled(node_view identifier_node, PrimaryButtonDat
                                      size_t button_index) {
         const auto& data     = identifier_node.as_string();
         const auto& defaults = Config::getDefaultConfig()
-                                       .getWindowLayoutProperties()
+                                       .getLayoutProperties()
                                        .getPrimaryPowerButtons()[button_index];
 
         if (!data) { // TODO Duplication, remove
@@ -394,7 +394,7 @@ void ConfigMapper::mapLayoutPrimaryButtons(node_view                       prima
                                        "in config.toml, power_applet.layout.primary_buttons");
 
         const auto& defaults =
-                Config::getDefaultConfig().getWindowLayoutProperties().getPrimaryPowerButtons();
+                Config::getDefaultConfig().getLayoutProperties().getPrimaryPowerButtons();
 
         std::vector<PrimaryButtonData> buttons_found{};
 
@@ -454,9 +454,8 @@ void ConfigMapper::mapLayoutPrimaryButtons(node_view                       prima
         primary_buttons = std::move(buttons_found);
 }
 
-void ConfigMapper::mapLayoutProperties(node_view                       layout_node,
-                                       Config::WindowLayoutProperties& layout) {
-        const auto& defaults = Config::getDefaultConfig().getWindowLayoutProperties();
+void ConfigMapper::mapLayoutProperties(node_view layout_node, Config::LayoutProperties& layout) {
+        const auto& defaults = Config::getDefaultConfig().getLayoutProperties();
 
         const QString error_prefix = "in config.toml, power_applet.layout";
 
@@ -528,7 +527,7 @@ void ConfigMapper::mapToConfig(const toml::table& config_table, Config& config) 
                             config.primary_button_properties);
 
         /* Window layout properties */
-        mapLayoutProperties(config_table["power_applet"]["layout"], config.window_layout_properties);
+        mapLayoutProperties(config_table["power_applet"]["layout"], config.layout_properties);
 
         /* Environment Properties */
         mapEnvironmentProperties(config_table["power_applet"]["environment"],

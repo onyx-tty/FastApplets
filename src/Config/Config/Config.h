@@ -41,14 +41,14 @@ public:
                 const QString& getTitle() const;
         };
 
-        class WindowLayoutProperties final {
+        class LayoutProperties final {
         private:
                 friend class ConfigMapper;
 
                 std::vector<PrimaryButtonData> primary_power_buttons;
 
         public:
-                WindowLayoutProperties(std::vector<PrimaryButtonData> primary_power_buttons = {});
+                LayoutProperties(std::vector<PrimaryButtonData> primary_power_buttons = {});
                 const std::vector<PrimaryButtonData>& getPrimaryPowerButtons() const;
         };
 
@@ -84,13 +84,13 @@ public:
 
         Config(Config::WindowProperties        window_properties         = {},
                Config::PrimaryButtonProperties primary_button_properties = {},
-               Config::WindowLayoutProperties  window_layout_properties  = {},
+               Config::LayoutProperties        layout_properties         = {},
                Config::EnvironmentProperties   environment_properties    = {});
         // TODO Make this const to avoid overwrites
         static Config&                 getConfig();
         static const Config&           getDefaultConfig();
         const WindowProperties&        getWindowProperties() const;
-        const WindowLayoutProperties&  getWindowLayoutProperties() const;
+        const LayoutProperties&        getLayoutProperties() const;
         const PrimaryButtonProperties& getPrimaryButtonProperties() const;
         const EnvironmentProperties&   getEnvironmentProperties() const;
 
@@ -98,7 +98,7 @@ private:
         friend class ConfigMapper;
 
         WindowProperties        window_properties;
-        WindowLayoutProperties  window_layout_properties;
+        LayoutProperties        layout_properties;
         PrimaryButtonProperties primary_button_properties;
         EnvironmentProperties   environment_properties;
 };

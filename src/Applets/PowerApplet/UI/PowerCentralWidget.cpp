@@ -154,7 +154,7 @@ QString getDBusMethodFromPowerButtonID(power_button_id id) {
 
 std::vector<PowerButton*> PowerCentralWidget::createButtonList(QBoxLayout* main_layout) {
         const auto& primary_buttons_data =
-                Config::getConfig().getWindowLayoutProperties().getPrimaryPowerButtons();
+                Config::getConfig().getLayoutProperties().getPrimaryPowerButtons();
         const auto primary_buttons_icons = createButtonIcons();
 
         if (primary_buttons_icons.size() != primary_buttons_data.size()
