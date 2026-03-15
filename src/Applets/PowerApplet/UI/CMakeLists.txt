@@ -1,3 +1,5 @@
+add_subdirectory(Widgets)
+
 add_library(PowerApplet_UI
         ${POWERAPPLET_RESOURCES}
         PowerMainWindow.cpp
@@ -14,7 +16,8 @@ target_link_libraries(PowerApplet_UI PRIVATE
         Core::Log
         Environment
         UI
-        PowerApplet::DBus)
+        PowerApplet::DBus
+        PowerApplet::UI::Widgets)
 
 target_link_libraries(PowerApplet_UI PUBLIC
         Qt${QT_VERSION_MAJOR}::Widgets)

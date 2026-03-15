@@ -16,8 +16,8 @@
    along with this program.  If not, see <https://www.gnu.org/licenses/>. */
 
 #include "PowerButton.h"
+#include "Applets/PowerApplet/DBus/PowerActionManager.h"
 #include "Core/Log.h"
-#include "DBus/PowerActionManager.h"
 #include "Environment/ShellCommand.h"
 #include "Environment/ShellRunner.h"
 #include "UI/Enums/ButtonIDs.h"
