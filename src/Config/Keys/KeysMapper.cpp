@@ -89,7 +89,7 @@ void KeysMapper::mapGlobalQuitKeys(node_view quit_node, keybindings& quit) {
 void KeysMapper::mapGlobalKeys(node_view global_node, Keys::GlobalKeys& global) {
         const auto& defaults     = Keys::getDefaultKeys().getGlobalKeys();
         QString     error_prefix = "in keys.toml, global";
-        const auto* table        = getTable(global_node, std::move(error_prefix));
+        const auto* table        = getTomlTable(global_node, std::move(error_prefix));
 
         if (!table) {
                 global = defaults;
@@ -154,7 +154,7 @@ void KeysMapper::mapPowerAppletKeys(node_view power_node, Keys::PowerAppletKeys&
                                     Keys::GlobalKeys& global) {
         const auto& defaults     = Keys::getDefaultKeys().getPowerAppletKeys();
         QString     error_prefix = "in keys.toml, power_applet";
-        const auto* table        = getTable(power_node, std::move(error_prefix));
+        const auto* table        = getTomlTable(power_node, std::move(error_prefix));
 
         if (!table) {
                 power = defaults;

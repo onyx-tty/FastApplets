@@ -95,7 +95,7 @@ void ConfigMapper::mapWindowTitle(node_view title_node, QString& title) {
 }
 
 void ConfigMapper::mapWindowProperties(node_view window_node, WindowProperties& window) {
-        const auto* data     = getTable(window_node, "in config.toml, global.window");
+        const auto* data     = getTomlTable(window_node, "in config.toml, global.window");
         const auto& defaults = Config::getDefaultConfig().getWindowProperties();
 
         if (!data) {
@@ -160,7 +160,7 @@ void ConfigMapper::mapPrimaryButtonPolicy(node_view policy_node, QSizePolicy& po
 
 void ConfigMapper::mapPrimaryButtonProperties(node_view                button_node,
                                               PrimaryButtonProperties& button) {
-        const auto* data     = getTable(button_node, "in config.toml, global.primary_button");
+        const auto* data     = getTomlTable(button_node, "in config.toml, global.primary_button");
         const auto& defaults = Config::getDefaultConfig().getPrimaryButtonProperties();
 
         if (!data) {
@@ -416,7 +416,7 @@ void ConfigMapper::mapLayoutPrimaryButtons(node_view                       prima
                         QStringLiteral("in config.toml, power_applet.layout.primary_buttons[%1] ")
                                 .arg(index);
 
-                const auto* button = getTable(toml::node_view(button_node), error_prefix);
+                const auto* button = getTomlTable(toml::node_view(button_node), error_prefix);
                 if (!button) {
                         primary_buttons = defaults;
                         return;
@@ -460,7 +460,7 @@ void ConfigMapper::mapLayoutProperties(node_view layout_node, LayoutProperties& 
 
         const QString error_prefix = "in config.toml, power_applet.layout";
 
-        const auto* data = getTable(layout_node, std::move(error_prefix));
+        const auto* data = getTomlTable(layout_node, std::move(error_prefix));
         if (!data) {
                 layout = defaults;
                 return;
@@ -485,7 +485,7 @@ void ConfigMapper::mapEnvironmentProperties(node_view              environment_n
 
         const QString error_prefix = "in config.toml, power_applet.environment";
 
-        const auto* data = getTable(environment_node, std::move(error_prefix));
+        const auto* data = getTomlTable(environment_node, std::move(error_prefix));
         if (!data) {
                 environment = defaults;
                 return;
@@ -505,7 +505,7 @@ void ConfigMapper::mapToConfig(const toml::table& config_table, Config& config) 
 
         // Check the validity of global and power_applet
         const QString error_prefix = "in config.toml, global";
-        const auto*   global       = getTable(config_table["global"], std::move(error_prefix));
+        const auto*   global       = getTomlTable(config_table["global"], std::move(error_prefix));
         if (!global) {
                 config = defaults;
                 return;

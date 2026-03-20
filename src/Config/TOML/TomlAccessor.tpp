@@ -43,7 +43,7 @@ T getOrDefault(node_view node, const T& fallback, const QString& error_prefix) {
         return value->get();
 }
 
-const toml::table* getTable(node_view node, const QString& error_prefix) {
+const toml::table* getTomlTable(node_view node, const QString& error_prefix) {
         const auto* table = node.as_table();
         if (!table) { QWARNING_NS() << error_prefix << ", must be a table! Using defaults..."; }
 

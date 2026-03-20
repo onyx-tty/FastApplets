@@ -29,7 +29,7 @@
 template<typename T>
 T getOrDefault(node_view node, const T& fallback, const QString& error_prefix);
 
-const toml::table* getTable(node_view node, const QString& error_prefix);
+const toml::table* getTomlTable(node_view node, const QString& error_prefix);
 
 std::optional<toml::array> getTomlArray(node_view node, const QString& error_prefix,
                                         const QString& error_arr_details = {});
