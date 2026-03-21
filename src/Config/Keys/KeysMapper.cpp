@@ -16,6 +16,7 @@
    along with this program.  If not, see <https://www.gnu.org/licenses/>. */
 
 #include "KeysMapper.h"
+#include "Config/Keys/Keybindings/Keybindings.h"
 #include "Config/TOML/NodeView.h"
 #include "Config/TOML/TomlAccessor.h"
 #include "Core/Log.h"

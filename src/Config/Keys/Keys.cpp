@@ -17,6 +17,7 @@
 
 #include "Keys.h"
 #include "Config/TOML/TomlParser.h"
+#include "Keybindings/Keybindings.h"
 #include "KeysMapper.h"
 
 #include <qnamespace.h>

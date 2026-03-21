@@ -1,3 +1,5 @@
+add_subdirectory(Keybindings)
+
 add_library(Config_Keys
         Keys.cpp
         KeysMapper.cpp)
@@ -12,5 +14,6 @@ target_link_libraries(Config_Keys PRIVATE
         Qt${QT_VERSION_MAJOR}::Widgets)
 
 target_link_libraries(Config_Keys PUBLIC
+        Config::Keys::Keybindings
         Config::TOML
         Core::Log)

@@ -17,6 +17,7 @@
 
 #include "PowerCentralWidget.h"
 #include "Config/Config/Config.h"
+#include "Config/Keys/Keybindings/Keybindings.h"
 #include "Config/Keys/Keys.h"
 #include "Core/Log.h"
 #include "UI/Enums/ButtonIDs.h"

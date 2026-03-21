@@ -17,12 +17,11 @@
 
 #pragma once
 
+#include "Keybindings/Keybindings.h"
+
 #include <array>
-#include <unordered_set>
 
 class KeysMapper;
-
-using keybindings = std::unordered_set<int>;
 
 class Keys final {
 public:
