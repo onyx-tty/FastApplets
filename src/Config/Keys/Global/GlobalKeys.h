@@ -17,23 +17,17 @@
 
 #pragma once
 
-#include "Global/GlobalKeys.h"
-#include "PowerApplet/PowerAppletKeys.h"
+#include "Config/Keys/Keybindings/Keybindings.h"
 
 class KeysMapper;
 
-class Keys final {
-public:
-        Keys(GlobalKeys global_keys = {}, PowerAppletKeys power_applet_keys = {});
-        // TODO Make this const to avoid overwrites
-        static Keys&           getKeys();
-        static const Keys&     getDefaultKeys();
-        const GlobalKeys&      getGlobalKeys() const;
-        const PowerAppletKeys& getPowerAppletKeys() const;
-
+class GlobalKeys final {
 private:
         friend class KeysMapper;
 
-        GlobalKeys      global_keys;
-        PowerAppletKeys power_applet_keys;
+        keybindings quit_keys;
+
+public:
+        GlobalKeys(keybindings quit_keys = {});
+        const keybindings& getQuitKeys() const;
 };

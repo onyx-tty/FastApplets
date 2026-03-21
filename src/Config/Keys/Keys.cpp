@@ -17,30 +17,15 @@
 
 #include "Keys.h"
 #include "Config/TOML/TomlParser.h"
+#include "Global/GlobalKeys.h"
 #include "Keybindings/Keybindings.h"
 #include "KeysMapper.h"
+#include "PowerApplet/PowerAppletKeys.h"
 
 #include <qnamespace.h>
+#include <utility>
 
-Keys::GlobalKeys::GlobalKeys(keybindings quit_keys) : quit_keys(quit_keys) {}
-
-const keybindings& Keys::GlobalKeys::getQuitKeys() const {
-        return quit_keys;
-}
-
-Keys::PowerAppletKeys::PowerAppletKeys(keybindings                quit_keys,
-                                       std::array<keybindings, 4> primary_button_keys) :
-        quit_keys(quit_keys), primary_button_keys(primary_button_keys) {}
-
-const keybindings& Keys::PowerAppletKeys::getQuitKeys() const {
-        return quit_keys;
-}
-
-const std::array<keybindings, 4>& Keys::PowerAppletKeys::getPrimaryButtonKeys() const {
-        return primary_button_keys;
-}
-
-Keys::Keys(Keys::GlobalKeys global_keys, Keys::PowerAppletKeys power_applet_keys) :
+Keys::Keys(GlobalKeys global_keys, PowerAppletKeys power_applet_keys) :
         global_keys(std::move(global_keys)), power_applet_keys(std::move(power_applet_keys)) {}
 
 Keys& Keys::getKeys() {
@@ -56,14 +41,14 @@ Keys& Keys::getKeys() {
 }
 
 const Keys& Keys::getDefaultKeys() {
-        keybindings      quit_keys           = {Qt::Key_Escape, Qt::Key_Q};
-        Keys::GlobalKeys default_global_keys = {std::move(quit_keys)};
+        keybindings quit_keys           = {Qt::Key_Escape, Qt::Key_Q};
+        GlobalKeys  default_global_keys = {std::move(quit_keys)};
 
         std::array<keybindings, 4> primary_button_keys       = {keybindings{Qt::Key_1},
                                                                 keybindings{Qt::Key_2},
                                                                 keybindings{Qt::Key_3},
                                                                 keybindings{Qt::Key_4}};
-        Keys::PowerAppletKeys      default_power_applet_keys = {default_global_keys.getQuitKeys(),
+        PowerAppletKeys            default_power_applet_keys = {default_global_keys.getQuitKeys(),
                                                                 std::move(primary_button_keys)};
 
         static Keys default_keys{std::move(default_global_keys),
@@ -72,9 +57,9 @@ const Keys& Keys::getDefaultKeys() {
         return default_keys;
 }
 
-const Keys::GlobalKeys& Keys::getGlobalKeys() const {
+const GlobalKeys& Keys::getGlobalKeys() const {
         return global_keys;
 }
-const Keys::PowerAppletKeys& Keys::getPowerAppletKeys() const {
+const PowerAppletKeys& Keys::getPowerAppletKeys() const {
         return power_applet_keys;
 }

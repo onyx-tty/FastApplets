@@ -20,7 +20,10 @@
 #include "Config/Keys/Keybindings/Keybindings.h"
 #include "Config/Keys/Keys.h"
 #include "Config/TOML/NodeView.h"
+#include "Global/GlobalKeys.h"
+#include "PowerApplet/PowerAppletKeys.h"
 
+#include <array>
 #include <toml++/toml.hpp>
 
 class KeysMapper final {
@@ -29,15 +32,15 @@ private:
 
         /* Global Keys */
         static void mapGlobalQuitKeys(node_view quit_node, keybindings& quit);
-        static void mapGlobalKeys(node_view global_node, Keys::GlobalKeys& global);
+        static void mapGlobalKeys(node_view global_node, GlobalKeys& global);
 
         /* Power Applet Keys*/
         static void mapPowerAppletQuitKeys(node_view quit_node, keybindings& quit,
                                            keybindings& global_quit);
         static void mapPowerAppletPrimaryButtonKeys(node_view primary_buttons_node,
                                                     std::array<keybindings, 4>& primary_buttons);
-        static void mapPowerAppletKeys(node_view power_node, Keys::PowerAppletKeys& power,
-                                       Keys::GlobalKeys& global);
+        static void mapPowerAppletKeys(node_view power_node, PowerAppletKeys& power,
+                                       GlobalKeys& global);
 
 public:
         static void mapToKeys(const toml::table& keys_table, Keys& keys);

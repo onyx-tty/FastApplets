@@ -1,4 +1,6 @@
 add_subdirectory(Keybindings)
+add_subdirectory(Global)
+add_subdirectory(PowerApplet)
 
 add_library(Config_Keys
         Keys.cpp
@@ -15,5 +17,7 @@ target_link_libraries(Config_Keys PRIVATE
 
 target_link_libraries(Config_Keys PUBLIC
         Config::Keys::Keybindings
+        Config::Keys::Global
+        Config::Keys::PowerApplet
         Config::TOML
         Core::Log)

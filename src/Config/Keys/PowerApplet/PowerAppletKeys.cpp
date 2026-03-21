@@ -15,25 +15,18 @@
    You should have received a copy of the GNU General Public License
    along with this program.  If not, see <https://www.gnu.org/licenses/>. */
 
-#pragma once
+#include "PowerAppletKeys.h"
 
-#include "Global/GlobalKeys.h"
-#include "PowerApplet/PowerAppletKeys.h"
+#include <array>
 
-class KeysMapper;
+PowerAppletKeys::PowerAppletKeys(keybindings                quit_keys,
+                                 std::array<keybindings, 4> primary_button_keys) :
+        quit_keys(quit_keys), primary_button_keys(primary_button_keys) {}
 
-class Keys final {
-public:
-        Keys(GlobalKeys global_keys = {}, PowerAppletKeys power_applet_keys = {});
-        // TODO Make this const to avoid overwrites
-        static Keys&           getKeys();
-        static const Keys&     getDefaultKeys();
-        const GlobalKeys&      getGlobalKeys() const;
-        const PowerAppletKeys& getPowerAppletKeys() const;
+const keybindings& PowerAppletKeys::getQuitKeys() const {
+        return quit_keys;
+}
 
-private:
-        friend class KeysMapper;
-
-        GlobalKeys      global_keys;
-        PowerAppletKeys power_applet_keys;
-};
+const std::array<keybindings, 4>& PowerAppletKeys::getPrimaryButtonKeys() const {
+        return primary_button_keys;
+}

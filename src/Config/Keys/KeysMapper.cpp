@@ -20,12 +20,15 @@
 #include "Config/TOML/NodeView.h"
 #include "Config/TOML/TomlAccessor.h"
 #include "Core/Log.h"
+#include "Global/GlobalKeys.h"
 #include "Keys.h"
+#include "PowerApplet/PowerAppletKeys.h"
 
 #include <array>
 #include <functional>
 #include <string>
 #include <toml++/toml.hpp>
+#include <utility>
 #include <QApplication>
 #include <QKeyCombination>
 #include <QKeySequence>
@@ -87,7 +90,7 @@ void KeysMapper::mapGlobalQuitKeys(node_view quit_node, keybindings& quit) {
         interpretTextAsKeybindings(quit_node, quit);
 }
 
-void KeysMapper::mapGlobalKeys(node_view global_node, Keys::GlobalKeys& global) {
+void KeysMapper::mapGlobalKeys(node_view global_node, GlobalKeys& global) {
         const auto& defaults     = Keys::getDefaultKeys().getGlobalKeys();
         QString     error_prefix = "in keys.toml, global";
         const auto* table        = getTomlTable(global_node, std::move(error_prefix));
@@ -151,8 +154,8 @@ void KeysMapper::mapPowerAppletPrimaryButtonKeys(node_view                   pri
         }
 }
 
-void KeysMapper::mapPowerAppletKeys(node_view power_node, Keys::PowerAppletKeys& power,
-                                    Keys::GlobalKeys& global) {
+void KeysMapper::mapPowerAppletKeys(node_view power_node, PowerAppletKeys& power,
+                                    GlobalKeys& global) {
         const auto& defaults     = Keys::getDefaultKeys().getPowerAppletKeys();
         QString     error_prefix = "in keys.toml, power_applet";
         const auto* table        = getTomlTable(power_node, std::move(error_prefix));

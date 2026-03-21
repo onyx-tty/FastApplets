@@ -15,25 +15,10 @@
    You should have received a copy of the GNU General Public License
    along with this program.  If not, see <https://www.gnu.org/licenses/>. */
 
-#pragma once
+#include "GlobalKeys.h"
 
-#include "Global/GlobalKeys.h"
-#include "PowerApplet/PowerAppletKeys.h"
+GlobalKeys::GlobalKeys(keybindings quit_keys) : quit_keys(quit_keys) {}
 
-class KeysMapper;
-
-class Keys final {
-public:
-        Keys(GlobalKeys global_keys = {}, PowerAppletKeys power_applet_keys = {});
-        // TODO Make this const to avoid overwrites
-        static Keys&           getKeys();
-        static const Keys&     getDefaultKeys();
-        const GlobalKeys&      getGlobalKeys() const;
-        const PowerAppletKeys& getPowerAppletKeys() const;
-
-private:
-        friend class KeysMapper;
-
-        GlobalKeys      global_keys;
-        PowerAppletKeys power_applet_keys;
-};
+const keybindings& GlobalKeys::getQuitKeys() const {
+        return quit_keys;
+}
