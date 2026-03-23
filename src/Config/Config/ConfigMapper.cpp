@@ -198,7 +198,7 @@ void ConfigMapper::mapLayoutPrimaryButtonID(node_view id_node, PrimaryButtonData
         auto result = QString::fromStdString(
                 getOrDefault<std::string>(id_node, {}, std::move(error_prefix)));
 
-        if (!result.isEmpty()) {
+        if (result.isEmpty()) {
                 button = defaults;
                 return;
         }
@@ -219,7 +219,7 @@ void ConfigMapper::mapLayoutPrimaryButtonLabel(node_view label_node, PrimaryButt
         auto result = QString::fromStdString(
                 getOrDefault<std::string>(label_node, {}, std::move(error_prefix)));
 
-        if (!result.isEmpty()) {
+        if (result.isEmpty()) {
                 button = defaults;
                 return;
         }
