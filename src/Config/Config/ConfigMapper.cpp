@@ -248,7 +248,7 @@ void ConfigMapper::mapLayoutPrimaryButtonOrder(node_view order_node, PrimaryButt
         }
         const long result = getOrDefault<int64_t>(order_node, default_order, std::move(error_prefix));
 
-        if (result != default_order) {
+        if (result == default_order) {
                 button = defaults;
                 return;
         }
