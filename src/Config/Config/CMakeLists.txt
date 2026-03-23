@@ -1,7 +1,8 @@
+add_subdirectory(Global)
+add_subdirectory(PowerApplet)
 add_subdirectory(Properties)
 
 add_library(Config_Config
-        Config.cpp
         ConfigMapper.cpp)
 add_library(Config::Config ALIAS Config_Config)
 
@@ -10,6 +11,8 @@ target_include_directories(Config_Config PRIVATE
         ${GLOBAL_INCLUSIONS})
 
 target_link_libraries(Config_Config PRIVATE
+        Config::Config::Global
+        Config::Config::PowerApplet
         Config::Config::Properties
         Config::TOML
         Core::Log

@@ -17,7 +17,8 @@
 
 #pragma once
 
-#include "Config.h"
+#include "Config/Config/Global/GlobalConfig.h"
+#include "Config/Config/PowerApplet/PowerAppletConfig.h"
 #include "Config/Config/Properties/EnvironmentProperties.h"
 #include "Config/Config/Properties/LayoutProperties.h"
 #include "Config/Config/Properties/PrimaryButtonProperties.h"
@@ -91,5 +92,7 @@ private:
                                              EnvironmentProperties& environment);
 
 public:
-        static void mapToConfig(const toml::table& config_table, Config& config);
+        static void mapToGlobalConfig(const toml::table& config_table, GlobalConfig& config);
+        static void mapToPowerAppletConfig(const toml::table& config_table,
+                                           PowerAppletConfig& config);
 };
