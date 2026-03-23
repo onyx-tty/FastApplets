@@ -16,11 +16,11 @@
    along with this program.  If not, see <https://www.gnu.org/licenses/>. */
 
 #include "MainWindow.h"
-#include "Config/Config/Config.h"
+#include "Config/Config/Global/GlobalConfig.h"
 
 MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent) {
-        resize(Config::getConfig().getWindowProperties().getSize());
-        setWindowTitle(Config::getConfig().getWindowProperties().getTitle());
+        resize(GlobalConfig::getGlobalConfig().getWindowProperties().getSize());
+        setWindowTitle(GlobalConfig::getGlobalConfig().getWindowProperties().getTitle());
 }
 
 MainWindow::~MainWindow() = default;

@@ -16,11 +16,11 @@
    along with this program.  If not, see <https://www.gnu.org/licenses/>. */
 
 #include "PowerMainWindow.h"
-#include "Config/Config/Config.h"
+#include "Config/Config/PowerApplet/PowerAppletConfig.h"
 
 PowerMainWindow::PowerMainWindow(QWidget* parent) :
         MainWindow(parent), central_widget(new PowerCentralWidget(this)) {
-        resize(Config::getConfig().getWindowProperties().getSize());
+        resize(PowerAppletConfig::getPowerAppletConfig().getWindowProperties().getSize());
         setCentralWidget(central_widget);
 }
 

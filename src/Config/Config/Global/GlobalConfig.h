@@ -17,10 +17,8 @@
 
 #pragma once
 
-#include "Properties/WindowProperties.h"
-#include "Properties/LayoutProperties.h"
-#include "Properties/PrimaryButtonProperties.h"
-#include "Properties/EnvironmentProperties.h"
+#include "Config/Config/Properties/PrimaryButtonProperties.h"
+#include "Config/Config/Properties/WindowProperties.h"
 
 #include <QSize>
 #include <QSizePolicy>
@@ -28,25 +26,19 @@
 
 class ConfigMapper;
 
-class Config final {
+class GlobalConfig {
 public:
-        Config(WindowProperties        window_properties         = {},
-               PrimaryButtonProperties primary_button_properties = {},
-               LayoutProperties        layout_properties         = {},
-               EnvironmentProperties   environment_properties    = {});
+        GlobalConfig(WindowProperties        window_properties         = {},
+                     PrimaryButtonProperties primary_button_properties = {});
         // TODO Make this const to avoid overwrites
-        static Config&                 getConfig();
-        static const Config&           getDefaultConfig();
+        static GlobalConfig&           getGlobalConfig();
+        static const GlobalConfig&     getDefaultGlobalConfig();
         const WindowProperties&        getWindowProperties() const;
-        const LayoutProperties&        getLayoutProperties() const;
         const PrimaryButtonProperties& getPrimaryButtonProperties() const;
-        const EnvironmentProperties&   getEnvironmentProperties() const;
 
-private:
+protected:
         friend class ConfigMapper;
 
         WindowProperties        window_properties;
         PrimaryButtonProperties primary_button_properties;
-        LayoutProperties        layout_properties;
-        EnvironmentProperties   environment_properties;
 };
