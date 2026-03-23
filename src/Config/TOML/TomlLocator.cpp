@@ -33,13 +33,14 @@ std::array<std::string, toml_file_names_cnt> TomlLocator::locateTomlFiles() {
         // Loop through expected config files
         // No valid file_path found for the current file, terminate
         // TODO Fallback into default config
-        for (auto& file : files) {
+        for (size_t i = 0; i != toml_file_names_cnt; ++i) {
                 bool found = false;
-                file_path  = qEnvironmentVariable("XDG_CONFIG_HOME") + "/FastApplets/";
+                file_path  = qEnvironmentVariable("XDG_CONFIG_HOME") + "/FastApplets/"
+                           + config_file_names[i];
                 // If file found, save filepath
                 if (QFileInfo::exists(file_path)) {
-                        file  = file_path.toStdString();
-                        found = true;
+                        files[i] = file_path.toStdString();
+                        found    = true;
                 }
 
                 if (!found) { QFATAL("%s not found!", file_path); }
