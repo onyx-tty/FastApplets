@@ -440,6 +440,7 @@ void ConfigMapper::mapLayoutPrimaryButtons(node_view                       prima
 
         if (buttons_found.empty()) {
                 QWARNING() << "in config.toml, no enabled buttons found!";
+                primary_buttons = defaults;
                 return;
         }
 
