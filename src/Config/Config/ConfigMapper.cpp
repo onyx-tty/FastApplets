@@ -471,7 +471,7 @@ void ConfigMapper::mapLayoutProperties(node_view layout_node, LayoutProperties& 
                                               layout.primary_power_buttons);
 }
 
-void ConfigMapper::mapEnvironmentDBusMode(node_view dbus_mode_node, bool dbus_mode) {
+void ConfigMapper::mapEnvironmentDBusMode(node_view dbus_mode_node, bool& dbus_mode) {
         const auto& defaults = Config::getDefaultConfig().getEnvironmentProperties().getDBusMode();
 
         const QString error_prefix = "in config.toml, power_applet.environment.dbus_mode";

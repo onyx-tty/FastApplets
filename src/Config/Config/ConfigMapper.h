@@ -86,7 +86,7 @@ private:
         static void mapLayoutProperties(node_view layout_node, LayoutProperties& layout);
 
         /* Environment Properties*/
-        static void mapEnvironmentDBusMode(node_view dbus_mode_node, bool dbus_mode);
+        static void mapEnvironmentDBusMode(node_view dbus_mode_node, bool& dbus_mode);
         static void mapEnvironmentProperties(node_view              environment_node,
                                              EnvironmentProperties& environment);
 
