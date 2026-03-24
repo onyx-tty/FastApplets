@@ -226,20 +226,16 @@ void ConfigMapper::mapPrimaryButtonIconSize(node_view icon_size_node,
         QString error_prefix = "in config.toml, power_applet.primary_button.icon_size";
         auto    data         = tryGetQSize(icon_size_node, error_prefix);
         if (data) {
-                if (data) {
-                        icon_size = data.value();
-                        return;
-                }
+                icon_size = data.value();
+                return;
         }
 
         // Fall back to global if not found
         error_prefix = "in config.toml, global.primary_button.icon_size";
         data         = tryGetQSize(global_fallback_node, error_prefix);
         if (data) {
-                if (data) {
-                        icon_size = data.value();
-                        return;
-                }
+                icon_size = data.value();
+                return;
         }
 
         // Use hardcoded defaults
@@ -284,7 +280,8 @@ void ConfigMapper::mapPrimaryButtonProperties(node_view button_node, node_view g
                                               PrimaryButtonProperties& button) {
         // Forward power_data and global_data
         auto* power_data = getTomlTable(button_node, "in config.toml, power_applet.primary_button");
-        auto* global_data = getTomlTable(global_fallback_node, "in config.toml, global.primary_button");
+        auto* global_data = getTomlTable(global_fallback_node,
+                                         "in config.toml, global.primary_button");
         if (global_data || power_data) {
                 node_view power_node  = power_data ? node_view(*power_data) : node_view();
                 node_view global_node = global_data ? node_view(*global_data) : node_view();
