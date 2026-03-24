@@ -33,38 +33,6 @@ GlobalConfig::GlobalConfig(WindowProperties        window_properties,
         window_properties(std::move(window_properties)),
         primary_button_properties(std::move(primary_button_properties)) {}
 
-GlobalConfig& GlobalConfig::getGlobalConfig() {
-        static GlobalConfig global_config{};
-        static bool         parsed = false;
-
-        if (!parsed) {
-                ConfigMapper::mapToGlobalConfig(TomlParser::createConfig(), global_config);
-                parsed = true;
-        }
-
-        return global_config;
-}
-
-const GlobalConfig& GlobalConfig::getDefaultGlobalConfig() {
-        QSize            size                      = {960, 220};
-        QString          title                     = "test_window";
-        WindowProperties default_window_properties = {std::move(size), std::move(title)};
-
-        Qt::Alignment           text_alignment = {Qt::AlignHCenter, Qt::AlignTop};
-        Qt::Alignment           icon_alignment = {Qt::AlignHCenter, Qt::AlignVCenter};
-        QSize                   icon_size      = {64, 64};
-        QSizePolicy             policy         = {QSizePolicy::Expanding, QSizePolicy::Expanding};
-        PrimaryButtonProperties default_primary_button_properties{std::move(text_alignment),
-                                                                  std::move(icon_alignment),
-                                                                  std::move(icon_size),
-                                                                  std::move(policy)};
-
-        static GlobalConfig default_global_config = {std::move(default_window_properties),
-                                                     std::move(default_primary_button_properties)};
-
-        return default_global_config;
-}
-
 const WindowProperties& GlobalConfig::getWindowProperties() const {
         return window_properties;
 }

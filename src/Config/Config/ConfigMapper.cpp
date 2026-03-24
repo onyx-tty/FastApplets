@@ -85,21 +85,22 @@ QSizePolicy getSizePolicy(const std::string key, const EnumMap<QSizePolicy>& map
 void ConfigMapper::mapWindowSize(node_view size_node, QSize& size) {
         // TODO size_scale config option to let the size be a % of screen size
         // TODO option to automatically detect and assign monitor size to size and then multiply by size_scale
-        const auto& defaults = GlobalConfig::getDefaultGlobalConfig().getWindowProperties().getSize();
+        const auto& defaults =
+                PowerAppletConfig::getDefaultPowerAppletConfig().getWindowProperties().getSize();
         size = getQSize(size_node, defaults, "in global.window.size");
 }
 
 void ConfigMapper::mapWindowTitle(node_view title_node, QString& title) {
         const auto& defaults =
-                GlobalConfig::getDefaultGlobalConfig().getWindowProperties().getTitle();
+                PowerAppletConfig::getDefaultPowerAppletConfig().getWindowProperties().getTitle();
 
         title = QString::fromStdString(getOrDefault<std::string>(title_node, defaults.toStdString(),
                                                                  "in global.window.title"));
 }
 
 void ConfigMapper::mapWindowProperties(node_view window_node, WindowProperties& window) {
-        const auto* data     = getTomlTable(window_node, "in config.toml, global.window");
-        const auto& defaults = GlobalConfig::getDefaultGlobalConfig().getWindowProperties();
+        const auto* data = getTomlTable(window_node, "in config.toml, global.window");
+        const auto& defaults = PowerAppletConfig::getDefaultPowerAppletConfig().getWindowProperties();
 
         if (!data) {
                 window = defaults;
@@ -116,7 +117,7 @@ void ConfigMapper::mapPrimaryButtonTextAlignment(node_view      text_alignment_n
         const auto& key =
                 getOrDefault<std::string>(text_alignment_node, {},
                                           "in config.toml, global.primary_button.text_alignment");
-        const auto& defaults = GlobalConfig::getDefaultGlobalConfig()
+        const auto& defaults = PowerAppletConfig::getDefaultPowerAppletConfig()
                                        .getPrimaryButtonProperties()
                                        .getTextAlignment();
 
@@ -134,7 +135,7 @@ void ConfigMapper::mapPrimaryButtonIconAlignment(node_view      icon_alignment_n
         const auto& key =
                 getOrDefault<std::string>(icon_alignment_node, {},
                                           "in config.toml, global.primary_button.icon_alignment");
-        const auto& defaults = GlobalConfig::getDefaultGlobalConfig()
+        const auto& defaults = PowerAppletConfig::getDefaultPowerAppletConfig()
                                        .getPrimaryButtonProperties()
                                        .getIconAlignment();
 
@@ -148,8 +149,9 @@ void ConfigMapper::mapPrimaryButtonIconAlignment(node_view      icon_alignment_n
 }
 
 void ConfigMapper::mapPrimaryButtonIconSize(node_view icon_size_node, QSize& icon_size) {
-        const auto& defaults =
-                GlobalConfig::getDefaultGlobalConfig().getPrimaryButtonProperties().getIconSize();
+        const auto& defaults = PowerAppletConfig::getDefaultPowerAppletConfig()
+                                       .getPrimaryButtonProperties()
+                                       .getIconSize();
 
         icon_size = getQSize(icon_size_node, defaults,
                              "in config.toml, global.primary_button.icon_size");
@@ -158,8 +160,9 @@ void ConfigMapper::mapPrimaryButtonIconSize(node_view icon_size_node, QSize& ico
 void ConfigMapper::mapPrimaryButtonPolicy(node_view policy_node, QSizePolicy& policy) {
         const auto& key = getOrDefault<std::string>(policy_node, {},
                                                     "in config.toml, global.primary_button.policy");
-        const auto& defaults =
-                GlobalConfig::getDefaultGlobalConfig().getPrimaryButtonProperties().getPolicy();
+        const auto& defaults = PowerAppletConfig::getDefaultPowerAppletConfig()
+                                       .getPrimaryButtonProperties()
+                                       .getPolicy();
 
         policy = getSizePolicy(key, size_policy_map, defaults,
                                "in config.toml, global.primary_button.policy");
@@ -168,7 +171,8 @@ void ConfigMapper::mapPrimaryButtonPolicy(node_view policy_node, QSizePolicy& po
 void ConfigMapper::mapPrimaryButtonProperties(node_view                button_node,
                                               PrimaryButtonProperties& button) {
         const auto* data     = getTomlTable(button_node, "in config.toml, global.primary_button");
-        const auto& defaults = GlobalConfig::getDefaultGlobalConfig().getPrimaryButtonProperties();
+        const auto& defaults = PowerAppletConfig::getDefaultPowerAppletConfig()
+                                       .getPrimaryButtonProperties();
 
         if (!data) {
                 button = defaults;
@@ -253,7 +257,8 @@ void ConfigMapper::mapLayoutPrimaryButtonOrder(node_view order_node, PrimaryButt
         for (const auto& button_data : buttons) {
                 default_order = std::max(default_order, button_data.order + 1);
         }
-        const long result = getOrDefault<int64_t>(order_node, default_order, std::move(error_prefix));
+        const long result = getOrDefault<int64_t>(order_node, default_order,
+                                                  std::move(error_prefix));
 
         if (result == default_order) {
                 button = defaults;
@@ -513,7 +518,7 @@ void ConfigMapper::mapToGlobalConfig(const toml::table& config_table, GlobalConf
                 QFATAL("QApplication has not been instantiated yet!");
         }
 
-        const auto& defaults = GlobalConfig::getDefaultGlobalConfig();
+        const auto& defaults = PowerAppletConfig::getDefaultPowerAppletConfig();
 
         // Check the validity of global
         const QString error_prefix = "in config.toml, global";

@@ -57,7 +57,18 @@ PowerAppletConfig& PowerAppletConfig::getPowerAppletConfig() {
 }
 
 const PowerAppletConfig& PowerAppletConfig::getDefaultPowerAppletConfig() {
-        const auto& global_defaults = GlobalConfig::getDefaultGlobalConfig();
+        QSize            size                      = {960, 220};
+        QString          title                     = "test_window";
+        WindowProperties default_window_properties = {std::move(size), std::move(title)};
+
+        Qt::Alignment           text_alignment = {Qt::AlignHCenter, Qt::AlignTop};
+        Qt::Alignment           icon_alignment = {Qt::AlignHCenter, Qt::AlignVCenter};
+        QSize                   icon_size      = {64, 64};
+        QSizePolicy             policy         = {QSizePolicy::Expanding, QSizePolicy::Expanding};
+        PrimaryButtonProperties default_primary_button_properties{std::move(text_alignment),
+                                                                  std::move(icon_alignment),
+                                                                  std::move(icon_size),
+                                                                  std::move(policy)};
 
         std::vector<PrimaryButtonData> primary_buttons =
                 {PrimaryButtonData{power_button_id::shutdown,
@@ -79,9 +90,8 @@ const PowerAppletConfig& PowerAppletConfig::getDefaultPowerAppletConfig() {
         EnvironmentProperties default_environment_properties{dbus_mode};
 
         static PowerAppletConfig default_power_applet_config =
-                {global_defaults.getWindowProperties(),
-                 global_defaults.getPrimaryButtonProperties(), std::move(default_layout_properties),
-                 std::move(default_environment_properties)};
+                {std::move(default_window_properties), std::move(default_primary_button_properties),
+                 std::move(default_layout_properties), std::move(default_environment_properties)};
 
         return default_power_applet_config;
 }

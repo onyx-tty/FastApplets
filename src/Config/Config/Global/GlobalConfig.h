@@ -30,9 +30,6 @@ class GlobalConfig {
 public:
         GlobalConfig(WindowProperties        window_properties         = {},
                      PrimaryButtonProperties primary_button_properties = {});
-        // TODO Make this const to avoid overwrites
-        static GlobalConfig&           getGlobalConfig();
-        static const GlobalConfig&     getDefaultGlobalConfig();
         const WindowProperties&        getWindowProperties() const;
         const PrimaryButtonProperties& getPrimaryButtonProperties() const;
 
