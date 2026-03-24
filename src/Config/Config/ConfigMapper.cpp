@@ -16,7 +16,6 @@
    along with this program.  If not, see <https://www.gnu.org/licenses/>. */
 
 #include "ConfigMapper.h"
-#include "Config/Config/Global/GlobalConfig.h"
 #include "Config/Config/PowerApplet/PowerAppletConfig.h"
 #include "Config/Config/Properties/EnvironmentProperties.h"
 #include "Config/Config/Properties/LayoutProperties.h"
@@ -43,6 +42,8 @@
 #include <QStringLiteral>
 
 using enum_utils::EnumMap;
+
+class GlobalConfig;
 
 namespace {
 

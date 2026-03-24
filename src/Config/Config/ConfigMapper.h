@@ -17,7 +17,6 @@
 
 #pragma once
 
-#include "Config/Config/Global/GlobalConfig.h"
 #include "Config/Config/PowerApplet/PowerAppletConfig.h"
 #include "Config/Config/Properties/EnvironmentProperties.h"
 #include "Config/Config/Properties/LayoutProperties.h"
@@ -29,6 +28,7 @@
 #include <toml++/toml.hpp>
 #include <QStringList>
 
+class GlobalConfig;
 class QString;
 class QSize;
 class QSizePolicy;
