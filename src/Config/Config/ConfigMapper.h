@@ -39,18 +39,25 @@ private:
         ConfigMapper() = delete;
 
         /* Window Properties */
-        static void mapWindowSize(node_view size_node, QSize& size);
-        static void mapWindowTitle(node_view title_node, QString& title);
-        static void mapWindowProperties(node_view window_node, WindowProperties& window);
+        static void mapWindowSize(node_view size_node, node_view global_fallback_node, QSize& size);
+        static void mapWindowTitle(node_view title_node, node_view global_fallback_node,
+                                   QString& title);
+        static void mapWindowProperties(node_view window_node, node_view global_fallback_node,
+                                        WindowProperties& window);
 
         /* Primary Button Properties */
         static void mapPrimaryButtonTextAlignment(node_view      text_alignment_node,
+                                                  node_view      global_fallback_node,
                                                   Qt::Alignment& text_alignment);
         static void mapPrimaryButtonIconAlignment(node_view      icon_alignment_node,
+                                                  node_view      global_fallback_node,
                                                   Qt::Alignment& icon_alignment);
-        static void mapPrimaryButtonIconSize(node_view icon_size_node, QSize& icon_size);
-        static void mapPrimaryButtonPolicy(node_view policy_node, QSizePolicy& policy);
+        static void mapPrimaryButtonIconSize(node_view icon_size_node,
+                                             node_view global_fallback_node, QSize& icon_size);
+        static void mapPrimaryButtonPolicy(node_view policy_node, node_view global_fallback_node,
+                                           QSizePolicy& policy);
         static void mapPrimaryButtonProperties(node_view                button_node,
+                                               node_view                global_fallback_node,
                                                PrimaryButtonProperties& button);
 
         /* Layout Properties */
