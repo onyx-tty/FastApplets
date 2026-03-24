@@ -115,6 +115,8 @@
 
 4.  \[X\] Fallback config
 
+5.  \[ \] size scale option - set window size to % of screen resolution
+
     <br>
 
 # Resources \[1/4\]

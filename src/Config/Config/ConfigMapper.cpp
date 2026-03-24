@@ -83,8 +83,6 @@ QSizePolicy getSizePolicy(const std::string key, const EnumMap<QSizePolicy>& map
 
 /* Window Properties */
 void ConfigMapper::mapWindowSize(node_view size_node, QSize& size) {
-        // TODO size_scale config option to let the size be a % of screen size
-        // TODO option to automatically detect and assign monitor size to size and then multiply by size_scale
         const auto& defaults =
                 PowerAppletConfig::getDefaultPowerAppletConfig().getWindowProperties().getSize();
         size = getQSize(size_node, defaults, "in global.window.size");

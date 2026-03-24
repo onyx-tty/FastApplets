@@ -79,6 +79,7 @@
 ** [X] Config error handling
 ** [ ] Config value validation
 ** [X] Fallback config
+** [ ] size scale option - set window size to % of screen resolution
 #+BEGIN_EXPORT markdown
 <br>
 #+END_EXPORT
