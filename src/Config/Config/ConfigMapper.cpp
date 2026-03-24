@@ -76,9 +76,20 @@ Qt::Alignment getAlignment(const std::string key, const EnumMap<Qt::Alignment>& 
         return getValueFromEnumMap<Qt::Alignment>(key, map, fallback, error_prefix);
 }
 
+std::optional<Qt::Alignment> tryGetAlignment(const std::string             key,
+                                             const EnumMap<Qt::Alignment>& map,
+                                             const QString&                error_prefix) {
+        return tryGetValueFromEnumMap<Qt::Alignment>(key, map, error_prefix);
+}
+
 QSizePolicy getSizePolicy(const std::string key, const EnumMap<QSizePolicy>& map,
                           const QSizePolicy& fallback, const QString& error_prefix) {
         return getValueFromEnumMap<QSizePolicy>(key, map, fallback, error_prefix);
+}
+
+std::optional<QSizePolicy> tryGetSizePolicy(const std::string key, const EnumMap<QSizePolicy>& map,
+                                            const QString& error_prefix) {
+        return tryGetValueFromEnumMap<QSizePolicy>(key, map, error_prefix);
 }
 
 /* Window Properties */
