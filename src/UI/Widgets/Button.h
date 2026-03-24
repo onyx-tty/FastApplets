@@ -25,6 +25,8 @@
 #include <QPushButton>
 #include <QString>
 
+class PrimaryButtonProperties;
+
 // TODO Restore mouse click effect
 class Button : public QPushButton {
         Q_OBJECT
@@ -37,7 +39,7 @@ private:
         bool event(QEvent* event) override;
         // Workaround which aligns buttons to a desired position,
         // and keeps the text realigned and separate via a proxy label
-        void debugAlignIcon(const QString& label_text);
+        void debugAlignIcon(const QString& label_text, Qt::Alignment label_alignment);
 
         // TODO Rename debug_text
         QLabel* debug_text;
@@ -45,7 +47,7 @@ private:
 protected:
         explicit Button(QBoxLayout*    layout,
                         const QIcon&   icon, // TODO default icon
-                        const QString& text);
+                        const QString& text, const PrimaryButtonProperties& properties);
         virtual ~Button() = 0;
 
 public:

@@ -19,10 +19,12 @@
 
 #include <QMainWindow>
 
+class WindowProperties;
+
 class MainWindow : public QMainWindow {
         Q_OBJECT
 
 protected:
-        explicit MainWindow(QWidget* parent = nullptr);
+        explicit MainWindow(const WindowProperties& properties, QWidget* parent = nullptr);
         virtual ~MainWindow() = 0;
 };
