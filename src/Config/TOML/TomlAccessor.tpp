@@ -43,6 +43,18 @@ T getOrDefault(node_view node, const T& fallback, const QString& error_prefix) {
         return value->get();
 }
 
+template<typename T>
+std::optional<T> tryGet(node_view node, const QString& error_prefix) {
+        const auto* value = node.as<T>();
+
+        if (!value) {
+                QWARNING_NS() << error_prefix << ", missing or wrong type! Using defaults...";
+                return std::nullopt;
+        }
+
+        return value->get();
+}
+
 const toml::table* getTomlTable(node_view node, const QString& error_prefix) {
         const auto* table = node.as_table();
         if (!table) { QWARNING_NS() << error_prefix << ", must be a table! Using defaults..."; }
@@ -104,12 +116,36 @@ QSize getQSize(node_view node, const QSize& fallback, const QString& error_prefi
         return QSize(width, height);
 }
 
+std::optional<QSize> tryGetQSize(node_view node, const QString& error_prefix) {
+        const auto& arr = getTomlArray(node, 2, error_prefix, "Format: [int, int]");
+
+        if (!arr) { return std::nullopt; }
+
+        auto width  = tryGet<int64_t>(toml::node_view(arr.value()[0]), error_prefix + "[0]");
+        auto height = tryGet<int64_t>(toml::node_view(arr.value()[1]), error_prefix + "[1]");
+
+        if (!width || !height) { return std::nullopt; }
+
+        return QSize(width.value(), height.value());
+}
+
 template<typename T>
 T getValueFromEnumMap(const std::string key, const EnumMap<T>& map, const T& fallback,
                       const QString& error_prefix) {
         if (!map.contains(key)) {
                 QWARNING() << error_prefix << "invalid! Using defaults...";
                 return fallback;
+        }
+
+        return map.at(toLowerCopy(key));
+}
+
+template<typename T>
+std::optional<T> tryGetValueFromEnumMap(const std::string key, const enum_utils::EnumMap<T>& map,
+                                        const QString& error_prefix) {
+        if (!map.contains(key)) {
+                QWARNING() << error_prefix << "invalid! Using defaults...";
+                return std::nullopt;
         }
 
         return map.at(toLowerCopy(key));

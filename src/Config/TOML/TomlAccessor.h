@@ -29,6 +29,9 @@
 template<typename T>
 T getOrDefault(node_view node, const T& fallback, const QString& error_prefix);
 
+template<typename T>
+std::optional<T> tryGet(node_view node, const QString& error_prefix);
+
 const toml::table* getTomlTable(node_view node, const QString& error_prefix);
 
 std::optional<toml::array> getTomlArray(node_view node, const QString& error_prefix,
@@ -44,8 +47,14 @@ std::optional<toml::array> getTomlArray(node_view node, size_t min_size, size_t 
 
 QSize getQSize(node_view node, const QSize& fallback, const QString& error_prefix);
 
+std::optional<QSize> tryGetQSize(node_view node, const QString& error_prefix);
+
 template<typename T>
 T getValueFromEnumMap(const std::string key, const enum_utils::EnumMap<T>& map, const T& fallback,
                       const QString& error_prefix);
+
+template<typename T>
+std::optional<T> tryGetValueFromEnumMap(const std::string key, const enum_utils::EnumMap<T>& map,
+                                        const QString& error_prefix);
 
 #include "TomlAccessor.tpp"
