@@ -434,7 +434,8 @@ void ConfigMapper::mapLayoutPrimaryButtonCommandArguments(node_view          arg
         for (size_t i = 0; i != args.value().size(); ++i) {
                 mapLayoutPrimaryButtonCommandArgumentsArgument(
                         toml::node_view(args.value()[i]), button, arguments, button_index, i,
-                        extendCfgPath(path_context, QString("[%1]").arg(i).toStdString().c_str()));
+                        makeCfgPath("power_applet", path_context)
+                                + QString("[%1]").arg(i).toStdString().c_str());
         }
 }
 
@@ -536,7 +537,9 @@ void ConfigMapper::mapLayoutPrimaryButtons(node_view                       prima
                 }
 
                 const bool enabled = getOrDefault((*button)["enabled"], true,
-                                                  extendCfgPath(button_path_context, "enabled"));
+                                                  extendCfgPath(makeCfgPath("power_applet",
+                                                                            button_path_context),
+                                                                "enabled"));
                 if (enabled) {
                         mapLayoutPrimaryButtonData(toml::node_view(button), button_data,
                                                    buttons_found, index, button_path_context);
@@ -616,7 +619,7 @@ void ConfigMapper::mapToGlobalConfig(const toml::table& config_table, GlobalConf
         const auto& defaults = PowerAppletConfig::getDefaultPowerAppletConfig();
 
         // Check the validity of global
-        const auto* global = getTomlTable(config_table["global"], makeCfgPath("global"));
+        const auto* global = getTomlTable(config_table["global"], makeCfgPath("global", QString()));
         if (!global) {
                 config = defaults;
                 return;
