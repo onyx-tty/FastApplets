@@ -520,7 +520,7 @@ void ConfigMapper::mapLayoutPrimaryButtons(node_view                       prima
         std::vector<PrimaryButtonData> buttons_found{};
 
         // TODO Split and simplify
-        for (auto& button_node : *data) {
+        for (auto& button_node : data.value()) {
                 // Find position of node in primary_buttons
                 // TODO Simplify, find_if I think is redundant
                 const auto& it = std::find_if(data->begin(), data->end(),
