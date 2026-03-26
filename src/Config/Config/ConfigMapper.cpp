@@ -506,8 +506,7 @@ void ConfigMapper::logButtonDisabled(node_view id_node, PrimaryButtonData& butto
 void ConfigMapper::mapLayoutPrimaryButtons(node_view                       primary_buttons_node,
                                            std::vector<PrimaryButtonData>& primary_buttons,
                                            const QString&                  path_context) {
-        const auto data = getTomlArray(primary_buttons_node, path_context);
-
+        const auto data = getTomlArray(primary_buttons_node, makeCfgPath("power_applet", path_context));
         const auto& defaults = PowerAppletConfig::getDefaultPowerAppletConfig()
                                        .getLayoutProperties()
                                        .getPrimaryPowerButtons();
