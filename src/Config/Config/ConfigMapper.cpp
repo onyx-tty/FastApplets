@@ -93,10 +93,6 @@ std::optional<QSizePolicy> tryGetSizePolicy(const std::string key, const EnumMap
         return tryGetValueFromEnumMap<QSizePolicy>(key, map, path);
 }
 
-static QString makeCfgPath(const QString& config_path, const char* separator = ".") {
-        return QString("in config.toml, power_applet%2%3").arg(separator, config_path);
-}
-
 static QString makeCfgPath(const char* scope, const QString& config_path,
                            const char* separator = ".") {
         return QString("in config.toml, %1%2%3").arg(scope, separator, config_path);
@@ -334,7 +330,7 @@ void ConfigMapper::mapLayoutPrimaryButtonID(node_view id_node, PrimaryButtonData
                                        .getPrimaryPowerButtons()[button_index];
 
         auto result = QString::fromStdString(
-                getOrDefault<std::string>(id_node, {}, makeCfgPath(path_context)));
+                getOrDefault<std::string>(id_node, {}, makeCfgPath("power_applet", path_context)));
 
         if (result.isEmpty()) {
                 button = defaults;
@@ -352,7 +348,8 @@ void ConfigMapper::mapLayoutPrimaryButtonLabel(node_view label_node, PrimaryButt
                                        .getPrimaryPowerButtons()[button_index];
 
         auto result = QString::fromStdString(
-                getOrDefault<std::string>(label_node, {}, makeCfgPath(path_context)));
+                getOrDefault<std::string>(label_node, {},
+                                          makeCfgPath("power_applet", path_context)));
 
         if (result.isEmpty()) {
                 button = defaults;
@@ -378,7 +375,7 @@ void ConfigMapper::mapLayoutPrimaryButtonOrder(node_view order_node, PrimaryButt
                 default_order = std::max(default_order, button_data.order + 1);
         }
         const long result = getOrDefault<int64_t>(order_node, default_order,
-                                                  makeCfgPath(path_context));
+                                                  makeCfgPath("power_applet", path_context));
 
         if (result == default_order) {
                 button = defaults;
@@ -398,7 +395,7 @@ void ConfigMapper::mapLayoutPrimaryButtonCommandProgram(node_view          progr
 
         program = QString::fromStdString(
                 getOrDefault<std::string>(program_node, defaults.command.program.toStdString(),
-                                          makeCfgPath(path_context)));
+                                          makeCfgPath("power_applet", path_context)));
 }
 
 void ConfigMapper::mapLayoutPrimaryButtonCommandArgumentsArgument(
@@ -411,7 +408,7 @@ void ConfigMapper::mapLayoutPrimaryButtonCommandArgumentsArgument(
         arguments.insert(arguments.cend(),
                          QString::fromStdString(getOrDefault<std::string>(
                                  argument_node, defaults.command.arguments[arg_index].toStdString(),
-                                 makeCfgPath(path_context))));
+                                 makeCfgPath("power_applet", path_context))));
 }
 
 void ConfigMapper::mapLayoutPrimaryButtonCommandArguments(node_view          arguments_node,
@@ -424,8 +421,9 @@ void ConfigMapper::mapLayoutPrimaryButtonCommandArguments(node_view          arg
                                        .getPrimaryPowerButtons()[button_index];
 
         constexpr size_t min_size = 0;
-        const auto       args = getTomlArray(arguments_node, min_size, makeCfgPath(path_context),
-                                             "Format: [string, array]");
+        const auto       args     = getTomlArray(arguments_node, min_size,
+                                                 makeCfgPath("power_applet", path_context),
+                                                 "Format: [string, array]");
         if (!args) {
                 button = defaults;
                 return;
@@ -450,7 +448,8 @@ void ConfigMapper::mapLayoutPrimaryButtonCommand(node_view command_node, Primary
 
         constexpr size_t min_size = 2, max_size = 2;
         const auto       command_arr = getTomlArray(command_node, min_size, max_size,
-                                                    makeCfgPath(path_context), error_arr_details);
+                                                    makeCfgPath("power_applet", path_context),
+                                                    error_arr_details);
         if (!command_arr) {
                 button = defaults;
                 return;
@@ -495,7 +494,8 @@ void ConfigMapper::logButtonDisabled(node_view id_node, PrimaryButtonData& butto
                                        .getPrimaryPowerButtons()[button_index];
 
         if (!data) { // TODO Duplication, remove
-                QWARNING() << makeCfgPath(path_context) << " must be a string! Using defaults...";
+                QWARNING() << makeCfgPath("power_applet", path_context)
+                           << " must be a string! Using defaults...";
                 button_data = defaults;
                 return;
         }
@@ -530,7 +530,7 @@ void ConfigMapper::mapLayoutPrimaryButtons(node_view                       prima
                 const QString button_path_context = path_context + QString("[%1]").arg(index);
 
                 const auto* button = getTomlTable(toml::node_view(button_node),
-                                                  makeCfgPath(button_path_context));
+                                                  makeCfgPath("power_applet", button_path_context));
                 if (!button) {
                         primary_buttons = defaults;
                         return;
@@ -552,7 +552,8 @@ void ConfigMapper::mapLayoutPrimaryButtons(node_view                       prima
         }
 
         if (buttons_found.empty()) {
-                QWARNING() << makeCfgPath(path_context) + ", no enabled buttons found!";
+                QWARNING() << makeCfgPath("power_applet", path_context)
+                                      + ", no enabled buttons found!";
                 primary_buttons = defaults;
                 return;
         }
@@ -573,7 +574,7 @@ void ConfigMapper::mapLayoutProperties(node_view layout_node, LayoutProperties& 
                                        const QString& path_context) {
         const auto& defaults = PowerAppletConfig::getDefaultPowerAppletConfig().getLayoutProperties();
 
-        const auto* data = getTomlTable(layout_node, makeCfgPath(path_context));
+        const auto* data = getTomlTable(layout_node, makeCfgPath("power_applet", path_context));
         if (!data) {
                 layout = defaults;
                 return;
@@ -590,7 +591,8 @@ void ConfigMapper::mapEnvironmentDBusMode(node_view dbus_mode_node, bool& dbus_m
                                        .getEnvironmentProperties()
                                        .getDBusMode();
 
-        dbus_mode = getOrDefault(dbus_mode_node, defaults, makeCfgPath(path_context));
+        dbus_mode = getOrDefault(dbus_mode_node, defaults,
+                                 makeCfgPath("power_applet", path_context));
 }
 
 void ConfigMapper::mapEnvironmentProperties(node_view              environment_node,
@@ -599,7 +601,7 @@ void ConfigMapper::mapEnvironmentProperties(node_view              environment_n
         const auto& defaults = PowerAppletConfig::getDefaultPowerAppletConfig()
                                        .getEnvironmentProperties();
 
-        const auto* data = getTomlTable(environment_node, makeCfgPath(path_context));
+        const auto* data = getTomlTable(environment_node, makeCfgPath("power_applet", path_context));
         if (!data) {
                 environment = defaults;
                 return;
