@@ -32,11 +32,11 @@ using enum_utils::EnumMap;
 using string_utils::toLowerCopy;
 
 template<typename T>
-T getOrDefault(node_view node, const T& fallback, const QString& error_prefix) {
+T getOrDefault(node_view node, const T& fallback, const QString& path) {
         const auto* value = node.as<T>();
 
         if (!value) {
-                QWARNING_NS() << error_prefix << ", missing or wrong type! Using defaults...";
+                QWARNING_NS() << path << ", missing or wrong type! Using defaults...";
                 return fallback;
         }
 
@@ -44,30 +44,30 @@ T getOrDefault(node_view node, const T& fallback, const QString& error_prefix) {
 }
 
 template<typename T>
-std::optional<T> tryGet(node_view node, const QString& error_prefix) {
+std::optional<T> tryGet(node_view node, const QString& path) {
         const auto* value = node.as<T>();
 
         if (!value) {
-                QWARNING_NS() << error_prefix << ", missing or wrong type! Using defaults...";
+                QWARNING_NS() << path << ", missing or wrong type! Using defaults...";
                 return std::nullopt;
         }
 
         return value->get();
 }
 
-const toml::table* getTomlTable(node_view node, const QString& error_prefix) {
+const toml::table* getTomlTable(node_view node, const QString& path) {
         const auto* table = node.as_table();
-        if (!table) { QWARNING_NS() << error_prefix << ", must be a table! Using defaults..."; }
+        if (!table) { QWARNING_NS() << path << ", must be a table! Using defaults..."; }
 
         return table;
 }
 
-std::optional<toml::array> getTomlArray(node_view node, const QString& error_prefix,
+std::optional<toml::array> getTomlArray(node_view node, const QString& path,
                                         const QString& error_arr_details) {
         const auto* arr = node.as_array();
 
         if (!arr) {
-                QWARNING_NS() << error_prefix << ", must be an array! " << error_arr_details
+                QWARNING_NS() << path << ", must be an array! " << error_arr_details
                               << " Using defaults...";
                 return std::nullopt;
         }
@@ -75,13 +75,12 @@ std::optional<toml::array> getTomlArray(node_view node, const QString& error_pre
         return *arr;
 }
 
-std::optional<toml::array> getTomlArray(node_view node, size_t min_size,
-                                        const QString& error_prefix,
+std::optional<toml::array> getTomlArray(node_view node, size_t min_size, const QString& path,
                                         const QString& error_arr_details) {
         const auto* arr = node.as_array();
 
         if (!arr || arr->size() < min_size) {
-                QWARNING_NS() << error_prefix << ", must be an array! " << error_arr_details
+                QWARNING_NS() << path << ", must be an array! " << error_arr_details
                               << " Using defaults...";
                 return std::nullopt;
         }
@@ -90,12 +89,11 @@ std::optional<toml::array> getTomlArray(node_view node, size_t min_size,
 }
 
 std::optional<toml::array> getTomlArray(node_view node, size_t min_size, size_t max_size,
-                                        const QString& error_prefix,
-                                        const QString& error_arr_details) {
+                                        const QString& path, const QString& error_arr_details) {
         const auto* arr = node.as_array();
 
         if (!arr || arr->size() < min_size || arr->size() > max_size) {
-                QWARNING_NS() << error_prefix << ", must be an array! " << error_arr_details
+                QWARNING_NS() << path << ", must be an array! " << error_arr_details
                               << " Using defaults...";
                 return std::nullopt;
         }
@@ -103,26 +101,26 @@ std::optional<toml::array> getTomlArray(node_view node, size_t min_size, size_t 
         return *arr;
 }
 
-QSize getQSize(node_view node, const QSize& fallback, const QString& error_prefix) {
-        const auto& arr = getTomlArray(node, 2, error_prefix, "Format: [int, int]");
+QSize getQSize(node_view node, const QSize& fallback, const QString& path) {
+        const auto& arr = getTomlArray(node, 2, path, "Format: [int, int]");
 
         if (!arr) { return fallback; }
 
         int width  = getOrDefault<int64_t>(toml::node_view(arr.value()[0]), fallback.width(),
-                                           error_prefix + "[0]");
+                                           path + "[0]");
         int height = getOrDefault<int64_t>(toml::node_view(arr.value()[1]), fallback.height(),
-                                           error_prefix + "[1]");
+                                           path + "[1]");
 
         return QSize(width, height);
 }
 
-std::optional<QSize> tryGetQSize(node_view node, const QString& error_prefix) {
-        const auto& arr = getTomlArray(node, 2, error_prefix, "Format: [int, int]");
+std::optional<QSize> tryGetQSize(node_view node, const QString& path) {
+        const auto& arr = getTomlArray(node, 2, path, "Format: [int, int]");
 
         if (!arr) { return std::nullopt; }
 
-        auto width  = tryGet<int64_t>(toml::node_view(arr.value()[0]), error_prefix + "[0]");
-        auto height = tryGet<int64_t>(toml::node_view(arr.value()[1]), error_prefix + "[1]");
+        auto width  = tryGet<int64_t>(toml::node_view(arr.value()[0]), path + "[0]");
+        auto height = tryGet<int64_t>(toml::node_view(arr.value()[1]), path + "[1]");
 
         if (!width || !height) { return std::nullopt; }
 
@@ -131,9 +129,9 @@ std::optional<QSize> tryGetQSize(node_view node, const QString& error_prefix) {
 
 template<typename T>
 T getValueFromEnumMap(const std::string key, const EnumMap<T>& map, const T& fallback,
-                      const QString& error_prefix) {
+                      const QString& path) {
         if (!map.contains(key)) {
-                QWARNING() << error_prefix << "invalid! Using defaults...";
+                QWARNING() << path << "invalid! Using defaults...";
                 return fallback;
         }
 
@@ -142,9 +140,9 @@ T getValueFromEnumMap(const std::string key, const EnumMap<T>& map, const T& fal
 
 template<typename T>
 std::optional<T> tryGetValueFromEnumMap(const std::string key, const enum_utils::EnumMap<T>& map,
-                                        const QString& error_prefix) {
+                                        const QString& path) {
         if (!map.contains(key)) {
-                QWARNING() << error_prefix << "invalid! Using defaults...";
+                QWARNING() << path << "invalid! Using defaults...";
                 return std::nullopt;
         }
 

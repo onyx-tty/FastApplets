@@ -73,24 +73,24 @@ power_button_id getPowerButtonIDFromString(const QString& string) {
 }
 
 Qt::Alignment getAlignment(const std::string key, const EnumMap<Qt::Alignment>& map,
-                           const Qt::Alignment& fallback, const QString& error_prefix) {
-        return getValueFromEnumMap<Qt::Alignment>(key, map, fallback, error_prefix);
+                           const Qt::Alignment& fallback, const QString& path) {
+        return getValueFromEnumMap<Qt::Alignment>(key, map, fallback, path);
 }
 
 std::optional<Qt::Alignment> tryGetAlignment(const std::string             key,
                                              const EnumMap<Qt::Alignment>& map,
-                                             const QString&                error_prefix) {
-        return tryGetValueFromEnumMap<Qt::Alignment>(key, map, error_prefix);
+                                             const QString&                path) {
+        return tryGetValueFromEnumMap<Qt::Alignment>(key, map, path);
 }
 
 QSizePolicy getSizePolicy(const std::string key, const EnumMap<QSizePolicy>& map,
-                          const QSizePolicy& fallback, const QString& error_prefix) {
-        return getValueFromEnumMap<QSizePolicy>(key, map, fallback, error_prefix);
+                          const QSizePolicy& fallback, const QString& path) {
+        return getValueFromEnumMap<QSizePolicy>(key, map, fallback, path);
 }
 
 std::optional<QSizePolicy> tryGetSizePolicy(const std::string key, const EnumMap<QSizePolicy>& map,
-                                            const QString& error_prefix) {
-        return tryGetValueFromEnumMap<QSizePolicy>(key, map, error_prefix);
+                                            const QString& path) {
+        return tryGetValueFromEnumMap<QSizePolicy>(key, map, path);
 }
 
 static QString makeCfgPath(const QString& config_path, const char* separator = ".") {

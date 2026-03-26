@@ -27,34 +27,32 @@
 #include <QString>
 
 template<typename T>
-T getOrDefault(node_view node, const T& fallback, const QString& error_prefix);
+T getOrDefault(node_view node, const T& fallback, const QString& path);
 
 template<typename T>
-std::optional<T> tryGet(node_view node, const QString& error_prefix);
+std::optional<T> tryGet(node_view node, const QString& path);
 
-const toml::table* getTomlTable(node_view node, const QString& error_prefix);
+const toml::table* getTomlTable(node_view node, const QString& path);
 
-std::optional<toml::array> getTomlArray(node_view node, const QString& error_prefix,
+std::optional<toml::array> getTomlArray(node_view node, const QString& path,
                                         const QString& error_arr_details = {});
 
-std::optional<toml::array> getTomlArray(node_view node, size_t min_size,
-                                        const QString& error_prefix,
+std::optional<toml::array> getTomlArray(node_view node, size_t min_size, const QString& path,
                                         const QString& error_arr_details = {});
 
 std::optional<toml::array> getTomlArray(node_view node, size_t min_size, size_t max_size,
-                                        const QString& error_prefix,
-                                        const QString& error_arr_details = {});
+                                        const QString& path, const QString& error_arr_details = {});
 
-QSize getQSize(node_view node, const QSize& fallback, const QString& error_prefix);
+QSize getQSize(node_view node, const QSize& fallback, const QString& path);
 
-std::optional<QSize> tryGetQSize(node_view node, const QString& error_prefix);
+std::optional<QSize> tryGetQSize(node_view node, const QString& path);
 
 template<typename T>
 T getValueFromEnumMap(const std::string key, const enum_utils::EnumMap<T>& map, const T& fallback,
-                      const QString& error_prefix);
+                      const QString& path);
 
 template<typename T>
 std::optional<T> tryGetValueFromEnumMap(const std::string key, const enum_utils::EnumMap<T>& map,
-                                        const QString& error_prefix);
+                                        const QString& path);
 
 #include "TomlAccessor.tpp"
