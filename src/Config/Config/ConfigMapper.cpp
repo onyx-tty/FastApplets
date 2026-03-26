@@ -625,7 +625,7 @@ void ConfigMapper::mapToGlobalConfig(const toml::table& config_table, GlobalConf
         /* Primary Button Properties */
         mapPrimaryButtonProperties(config_table["power_applet"]["primary_button"],
                                    config_table["global"]["primary_button"],
-                                   config.primary_button_properties, "primary_buttons");
+                                   config.primary_button_properties, "primary_button");
 }
 
 void ConfigMapper::mapToPowerAppletConfig(const toml::table& config_table,
