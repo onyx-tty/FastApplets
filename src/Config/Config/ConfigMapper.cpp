@@ -306,20 +306,20 @@ void ConfigMapper::mapPrimaryButtonProperties(node_view button_node, node_view g
                 node_view power_node  = power_data ? node_view(*power_data) : node_view();
                 node_view global_node = global_data ? node_view(*global_data) : node_view();
 
-                ConfigMapper::mapPrimaryButtonTextAlignment(power_node["text_alignment"],
+                mapPrimaryButtonTextAlignment(power_node["text_alignment"],
                                                             global_node["text_alignment"],
                                                             button.text_alignment,
                                                             extendCfgPath(path_context,
                                                                           "text_alignment"));
-                ConfigMapper::mapPrimaryButtonIconAlignment(power_node["icon_alignment"],
+                mapPrimaryButtonIconAlignment(power_node["icon_alignment"],
                                                             global_node["icon_alignment"],
                                                             button.icon_alignment,
                                                             extendCfgPath(path_context,
                                                                           "icon_alignment"));
-                ConfigMapper::mapPrimaryButtonIconSize(power_node["icon_size"],
+                mapPrimaryButtonIconSize(power_node["icon_size"],
                                                        global_node["icon_size"], button.icon_size,
                                                        extendCfgPath(path_context, "icon_size"));
-                ConfigMapper::mapPrimaryButtonPolicy(power_node["policy"], global_node["policy"],
+                mapPrimaryButtonPolicy(power_node["policy"], global_node["policy"],
                                                      button.policy,
                                                      extendCfgPath(path_context, "policy"));
 
@@ -582,7 +582,7 @@ void ConfigMapper::mapLayoutProperties(node_view layout_node, LayoutProperties& 
         }
 
         // Primary power buttons
-        ConfigMapper::mapLayoutPrimaryButtons((*data)["primary_buttons"],
+        mapLayoutPrimaryButtons((*data)["primary_buttons"],
                                               layout.primary_power_buttons,
                                               extendCfgPath(path_context, "primary_buttons"));
 }
@@ -609,7 +609,7 @@ void ConfigMapper::mapEnvironmentProperties(node_view              environment_n
         }
 
         // D-Bus mode
-        ConfigMapper::mapEnvironmentDBusMode((*data)["dbus_mode"], environment.dbus_mode,
+        mapEnvironmentDBusMode((*data)["dbus_mode"], environment.dbus_mode,
                                              extendCfgPath(path_context, "dbus_mode"));
 }
 
