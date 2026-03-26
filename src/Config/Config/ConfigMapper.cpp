@@ -620,11 +620,8 @@ void ConfigMapper::mapToGlobalConfig(const toml::table& config_table, GlobalConf
 
         const auto& defaults = PowerAppletConfig::getDefaultPowerAppletConfig();
 
-        // Check the validity of global
-        const auto* global = getTomlTable(config_table["global"], makeCfgPath("global", QString()));
-        if (!global) {
-                config = defaults;
-                return;
+        if (!config_table.contains("global")) {
+                QWARNING() << "in config.toml, global missing!";
         }
 
         /* Window Properties */
