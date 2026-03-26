@@ -94,7 +94,7 @@ std::optional<QSizePolicy> tryGetSizePolicy(const std::string key, const EnumMap
 }
 
 static QString makeCfgPath(const QString& config_path, const char* separator = ".") {
-        return QString("in config.toml, global%2%3").arg(separator, config_path);
+        return QString("in config.toml, power_applet%2%3").arg(separator, config_path);
 }
 
 static QString makeCfgPath(const char* scope, const QString& config_path,
