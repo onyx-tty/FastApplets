@@ -93,6 +93,22 @@ std::optional<QSizePolicy> tryGetSizePolicy(const std::string key, const EnumMap
         return tryGetValueFromEnumMap<QSizePolicy>(key, map, error_prefix);
 }
 
+static QString makeCfgPath(const QString& config_path, const char* separator = ".") {
+        return QString("in config.toml, global%2%3").arg(separator, config_path);
+}
+
+static QString makeCfgPath(const char* scope, const QString& config_path,
+                           const char* separator = ".") {
+        return QString("in config.toml, %1%2%3").arg(scope, separator, config_path);
+}
+
+static QString extendCfgPath(const QString& path, const char* extension,
+                             const char* separator = ".") {
+        if (path.isEmpty()) { return QString(extension); }
+
+        return path + separator + extension;
+}
+
 /* Window Properties */
 void ConfigMapper::mapWindowSize(node_view size_node, node_view global_fallback_node, QSize& size) {
         // Look for PowerApplet overrides first
