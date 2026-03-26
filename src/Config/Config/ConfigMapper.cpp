@@ -506,10 +506,16 @@ void ConfigMapper::logButtonDisabled(node_view id_node, PrimaryButtonData& butto
 void ConfigMapper::mapLayoutPrimaryButtons(node_view                       primary_buttons_node,
                                            std::vector<PrimaryButtonData>& primary_buttons,
                                            const QString&                  path_context) {
-        const auto data = getTomlArray(primary_buttons_node, makeCfgPath("power_applet", path_context));
         const auto& defaults = PowerAppletConfig::getDefaultPowerAppletConfig()
                                        .getLayoutProperties()
                                        .getPrimaryPowerButtons();
+        const auto  data     = getTomlArray(primary_buttons_node,
+                                            makeCfgPath("power_applet", path_context));
+
+        if (!data) {
+                primary_buttons = defaults;
+                return;
+        }
 
         std::vector<PrimaryButtonData> buttons_found{};
 
@@ -619,9 +625,7 @@ void ConfigMapper::mapToGlobalConfig(const toml::table& config_table, GlobalConf
 
         const auto& defaults = PowerAppletConfig::getDefaultPowerAppletConfig();
 
-        if (!config_table.contains("global")) {
-                QWARNING() << "in config.toml, global missing!";
-        }
+        if (!config_table.contains("global")) { QWARNING() << "in config.toml, global missing!"; }
 
         /* Window Properties */
         mapWindowProperties(config_table["power_applet"]["window"],
