@@ -643,17 +643,11 @@ void ConfigMapper::mapToPowerAppletConfig(const toml::table& config_table,
 
         const auto& defaults = PowerAppletConfig::getDefaultPowerAppletConfig();
 
-        mapToGlobalConfig(config_table, config);
-
-        // Check the validity of power_applet
-        // NOT IMPLEMENTED YET
-        /*
-        const auto power_applet = config_table["power_applet"].as_table();
-        // TODO Defaults
-        if (!power_applet) {
-                QFATAL("in config.toml, power_applet must be a table! Using defaults...");
+        if (!config_table.contains("power_applet")) {
+                QWARNING() << "in config.toml, power_applet missing!";
         }
-        */
+
+        mapToGlobalConfig(config_table, config);
 
         /* Layout Properties */
         mapLayoutProperties(config_table["power_applet"]["layout"], config.layout_properties,
