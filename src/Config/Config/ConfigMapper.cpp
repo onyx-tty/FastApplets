@@ -307,21 +307,16 @@ void ConfigMapper::mapPrimaryButtonProperties(node_view button_node, node_view g
                 node_view global_node = global_data ? node_view(*global_data) : node_view();
 
                 mapPrimaryButtonTextAlignment(power_node["text_alignment"],
-                                                            global_node["text_alignment"],
-                                                            button.text_alignment,
-                                                            extendCfgPath(path_context,
-                                                                          "text_alignment"));
+                                              global_node["text_alignment"], button.text_alignment,
+                                              extendCfgPath(path_context, "text_alignment"));
                 mapPrimaryButtonIconAlignment(power_node["icon_alignment"],
-                                                            global_node["icon_alignment"],
-                                                            button.icon_alignment,
-                                                            extendCfgPath(path_context,
-                                                                          "icon_alignment"));
-                mapPrimaryButtonIconSize(power_node["icon_size"],
-                                                       global_node["icon_size"], button.icon_size,
-                                                       extendCfgPath(path_context, "icon_size"));
-                mapPrimaryButtonPolicy(power_node["policy"], global_node["policy"],
-                                                     button.policy,
-                                                     extendCfgPath(path_context, "policy"));
+                                              global_node["icon_alignment"], button.icon_alignment,
+                                              extendCfgPath(path_context, "icon_alignment"));
+                mapPrimaryButtonIconSize(power_node["icon_size"], global_node["icon_size"],
+                                         button.icon_size,
+                                         extendCfgPath(path_context, "icon_size"));
+                mapPrimaryButtonPolicy(power_node["policy"], global_node["policy"], button.policy,
+                                       extendCfgPath(path_context, "policy"));
 
                 return;
         }
@@ -582,9 +577,8 @@ void ConfigMapper::mapLayoutProperties(node_view layout_node, LayoutProperties& 
         }
 
         // Primary power buttons
-        mapLayoutPrimaryButtons((*data)["primary_buttons"],
-                                              layout.primary_power_buttons,
-                                              extendCfgPath(path_context, "primary_buttons"));
+        mapLayoutPrimaryButtons((*data)["primary_buttons"], layout.primary_power_buttons,
+                                extendCfgPath(path_context, "primary_buttons"));
 }
 
 void ConfigMapper::mapEnvironmentDBusMode(node_view dbus_mode_node, bool& dbus_mode,
@@ -610,7 +604,7 @@ void ConfigMapper::mapEnvironmentProperties(node_view              environment_n
 
         // D-Bus mode
         mapEnvironmentDBusMode((*data)["dbus_mode"], environment.dbus_mode,
-                                             extendCfgPath(path_context, "dbus_mode"));
+                               extendCfgPath(path_context, "dbus_mode"));
 }
 
 void ConfigMapper::mapToGlobalConfig(const toml::table& config_table, GlobalConfig& config) {
