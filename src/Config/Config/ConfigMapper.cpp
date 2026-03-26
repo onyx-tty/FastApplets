@@ -509,10 +509,10 @@ void ConfigMapper::mapLayoutPrimaryButtons(node_view                       prima
         const auto& defaults = PowerAppletConfig::getDefaultPowerAppletConfig()
                                        .getLayoutProperties()
                                        .getPrimaryPowerButtons();
-        const auto  data     = getTomlArray(primary_buttons_node,
+        const auto  buttons  = getTomlArray(primary_buttons_node,
                                             makeCfgPath("power_applet", path_context));
 
-        if (!data) {
+        if (!buttons) {
                 primary_buttons = defaults;
                 return;
         }
@@ -520,21 +520,12 @@ void ConfigMapper::mapLayoutPrimaryButtons(node_view                       prima
         std::vector<PrimaryButtonData> buttons_found{};
 
         // TODO Split and simplify
-        for (auto& button_node : data.value()) {
-                // Find position of node in primary_buttons
-                // TODO Simplify, find_if I think is redundant
-                const auto& it = std::find_if(data->begin(), data->end(),
-                                              [&button_node](const toml::node& n) -> bool {
-                                                      return &n == &button_node;
-                                              });
-
-                const size_t index = std::distance(data->begin(), it);
-
+        for (size_t i = 0; i != buttons.value().size(); ++i) {
                 PrimaryButtonData button_data{};
 
-                const QString button_path_context = path_context + QString("[%1]").arg(index);
+                const QString button_path_context = path_context + QString("[%1]").arg(i);
 
-                const auto* button = getTomlTable(toml::node_view(button_node),
+                const auto* button = getTomlTable(toml::node_view(buttons.value()[i]),
                                                   makeCfgPath("power_applet", button_path_context));
                 if (!button) {
                         primary_buttons = defaults;
@@ -547,11 +538,11 @@ void ConfigMapper::mapLayoutPrimaryButtons(node_view                       prima
                                                                 "enabled"));
                 if (enabled) {
                         mapLayoutPrimaryButtonData(toml::node_view(button), button_data,
-                                                   buttons_found, index, button_path_context);
+                                                   buttons_found, i, button_path_context);
 
                         buttons_found.push_back(std::move(button_data));
                 } else {
-                        logButtonDisabled((*button)["id"], button_data, index,
+                        logButtonDisabled((*button)["id"], button_data, i,
                                           extendCfgPath(button_path_context, "id"));
                 }
         }
