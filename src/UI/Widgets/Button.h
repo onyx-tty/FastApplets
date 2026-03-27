@@ -41,13 +41,12 @@ private:
         // customizability
         void alignLabel(const QString& label_text, Qt::Alignment label_alignment);
 
-        // TODO Rename debug_text
-        QLabel* debug_text;
+        QLabel* label;
 
 protected:
         explicit Button(QBoxLayout*    layout,
                         const QIcon&   icon, // TODO default icon
-                        const QString& text, const PrimaryButtonProperties& properties);
+                        const QString& label, const PrimaryButtonProperties& properties);
         virtual ~Button() = 0;
 
 public:

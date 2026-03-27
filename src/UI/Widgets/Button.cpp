@@ -59,18 +59,18 @@ bool Button::event(QEvent* event) {
 void Button::alignLabel(const QString& label_text, Qt::Alignment label_alignment) {
         setLayout(new QGridLayout);
         setStyleSheet(stylesheet);
-        debug_text = new QLabel(label_text, this); // label that acts as a button text replacement
-        debug_text->setAlignment(label_alignment);
-        debug_text->setAttribute(Qt::WA_TransparentForMouseEvents, true);
-        layout()->addWidget(debug_text);
-        QDEBUG() << "debug_text successfully initialized with text:" << label_text;
+        label = new QLabel(label_text, this); // label that acts as a button text replacement
+        label->setAlignment(label_alignment);
+        label->setAttribute(Qt::WA_TransparentForMouseEvents, true);
+        layout()->addWidget(label);
+        QDEBUG() << "Label successfully initialized with text:" << label_text;
 }
 
 /* Initializes a button of choice with uniform design */
 // Inheriting constructor defaults from from QPushButton,
 // but customizing the icon, icon size and the alignment of that button
 // TODO Default icon
-Button::Button(QBoxLayout* layout, const QIcon& icon, const QString& text,
+Button::Button(QBoxLayout* layout, const QIcon& icon, const QString& label,
                const PrimaryButtonProperties& properties) :
         QPushButton(layout ? layout->widget() : nullptr) {
         if (!layout) { QFATAL("Button constructor received a null layout! Bad code!"); }
@@ -79,12 +79,12 @@ Button::Button(QBoxLayout* layout, const QIcon& icon, const QString& text,
         setIconSize(properties.getIconSize());
         setSizePolicy(properties.getPolicy());
         setAutoDefault(false);
-        alignLabel(text, properties.getTextAlignment());
+        alignLabel(label, properties.getTextAlignment());
         layout->addWidget(this);
 }
 
 Button::~Button() = default;
 
-QString Button::text() const { // Amendment to return text from the label, not the button itself
-        return debug_text->text();
+QString Button::text() const {
+        return label->text();
 }
