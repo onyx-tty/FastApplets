@@ -526,24 +526,6 @@ bool ConfigMapper::mapLayoutPrimaryButtonData(node_view                       bu
         return false;
 }
 
-// TODO Extract logic shared with mapLayoutPrimaryButtonData
-void ConfigMapper::logButtonDisabled(node_view id_node, PrimaryButtonData& button_data,
-                                     size_t button_index, const QString& path_context) {
-        const auto& data     = id_node.as_string();
-        const auto& defaults = PowerAppletConfig::getDefaultPowerAppletConfig()
-                                       .getLayoutProperties()
-                                       .getPrimaryPowerButtons()[button_index];
-
-        if (!data) { // TODO Duplication, remove
-                QWARNING() << makeCfgPath("power_applet", path_context)
-                           << " must be a string! Using defaults...";
-                button_data = defaults;
-                return;
-        }
-
-        QDEBUG() << id_node.as_string()->get() << ": DISABLED";
-}
-
 void ConfigMapper::mapLayoutPrimaryButtons(node_view                       primary_buttons_node,
                                            std::vector<PrimaryButtonData>& primary_buttons,
                                            const QString&                  path_context) {
