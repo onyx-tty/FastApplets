@@ -27,15 +27,12 @@
 
 class PrimaryButtonProperties;
 
-// TODO Restore mouse click effect
 class Button : public QPushButton {
         Q_OBJECT
 
 private:
         // Modified re-implementation of paintEvent that allows for manual setting of focus
         void paintEvent(QPaintEvent*) override;
-        // Modified re-implementation that turns off the distracting mouse hover effect
-        // TODO Mouse hover on/off depending on the config setting
         bool event(QEvent* event) override;
         // Decouple text from icon and use a proxy label as text, for higher alignment
         // customizability
@@ -50,5 +47,5 @@ protected:
         virtual ~Button() = 0;
 
 public:
-        QString text() const; // Returns text from the label, not the button itself
+        QString text() const;
 };
