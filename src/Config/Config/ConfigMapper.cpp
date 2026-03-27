@@ -152,14 +152,16 @@ void ConfigMapper::mapWindowProperties(node_view window_node, node_view global_f
         auto* power_data  = getTomlTable(window_node, makeCfgPath("power_applet", path_context));
         auto* global_data = getTomlTable(global_fallback_node, makeCfgPath("global", path_context));
         if (global_data || power_data) {
-                node_view power_node  = power_data ? node_view(*power_data) : node_view();
-                node_view global_node = global_data ? node_view(*global_data) : node_view();
+                node_view        power_node  = power_data ? node_view(*power_data) : node_view();
+                node_view        global_node = global_data ? node_view(*global_data) : node_view();
+                WindowProperties window_properties{};
 
-                mapWindowSize(power_node["size"], global_node["size"], window.size,
+                mapWindowSize(power_node["size"], global_node["size"], window_properties.size,
                               extendCfgPath(path_context, "size"));
-                mapWindowTitle(power_node["title"], global_node["title"], window.title,
+                mapWindowTitle(power_node["title"], global_node["title"], window_properties.title,
                                extendCfgPath(path_context, "title"));
 
+                window = std::move(window_properties);
                 return;
         }
 
@@ -301,19 +303,24 @@ void ConfigMapper::mapPrimaryButtonProperties(node_view button_node, node_view g
         if (global_data || power_data) {
                 node_view power_node  = power_data ? node_view(*power_data) : node_view();
                 node_view global_node = global_data ? node_view(*global_data) : node_view();
+                PrimaryButtonProperties button_properties{};
 
                 mapPrimaryButtonTextAlignment(power_node["text_alignment"],
-                                              global_node["text_alignment"], button.text_alignment,
+                                              global_node["text_alignment"],
+                                              button_properties.text_alignment,
                                               extendCfgPath(path_context, "text_alignment"));
                 mapPrimaryButtonIconAlignment(power_node["icon_alignment"],
-                                              global_node["icon_alignment"], button.icon_alignment,
+                                              global_node["icon_alignment"],
+                                              button_properties.icon_alignment,
                                               extendCfgPath(path_context, "icon_alignment"));
                 mapPrimaryButtonIconSize(power_node["icon_size"], global_node["icon_size"],
-                                         button.icon_size,
+                                         button_properties.icon_size,
                                          extendCfgPath(path_context, "icon_size"));
-                mapPrimaryButtonPolicy(power_node["policy"], global_node["policy"], button.policy,
+                mapPrimaryButtonPolicy(power_node["policy"], global_node["policy"],
+                                       button_properties.policy,
                                        extendCfgPath(path_context, "policy"));
 
+                button = std::move(button_properties);
                 return;
         }
 
@@ -429,12 +436,16 @@ void ConfigMapper::mapLayoutPrimaryButtonCommandArguments(node_view          arg
                 return;
         }
 
+        QStringList argument_list{};
+
         for (size_t i = 0; i != args.value().size(); ++i) {
                 mapLayoutPrimaryButtonCommandArgumentsArgument(
-                        toml::node_view(args.value()[i]), button, arguments, button_index, i,
+                        toml::node_view(args.value()[i]), button, argument_list, button_index, i,
                         makeCfgPath("power_applet", path_context)
                                 + QString("[%1]").arg(i).toStdString().c_str());
         }
+
+        arguments = std::move(argument_list);
 }
 
 void ConfigMapper::mapLayoutPrimaryButtonCommand(node_view command_node, PrimaryButtonData& button,
@@ -455,13 +466,17 @@ void ConfigMapper::mapLayoutPrimaryButtonCommand(node_view command_node, Primary
                 return;
         }
 
+        ShellCommand cmd{};
+
         mapLayoutPrimaryButtonCommandProgram(toml::node_view(command_arr.value()[0]), button,
-                                             command.program, button_index,
+                                             cmd.program, button_index,
                                              extendCfgPath(path_context, "program"));
 
         mapLayoutPrimaryButtonCommandArguments(toml::node_view(command_arr.value()[1]), button,
-                                               command.arguments, button_index,
+                                               cmd.arguments, button_index,
                                                extendCfgPath(path_context, "arguments"));
+
+        command = std::move(cmd);
 }
 
 bool ConfigMapper::mapLayoutPrimaryButtonData(node_view                       button_data_node,
@@ -505,23 +520,21 @@ bool ConfigMapper::mapLayoutPrimaryButtonData(node_view                       bu
                 return true;
         }
 
-        buttons.insert(buttons.cend(), PrimaryButtonData{});
+        PrimaryButtonData button{};
 
-        mapLayoutPrimaryButtonID(button_data_node["id"], buttons[button_index],
-                                 buttons[button_index].id, button_index,
+        mapLayoutPrimaryButtonID(button_data_node["id"], button, button.id, button_index,
                                  extendCfgPath(path_context, "id"));
 
-        mapLayoutPrimaryButtonLabel(button_data_node["label"], buttons[button_index],
-                                    buttons[button_index].label, button_index,
+        mapLayoutPrimaryButtonLabel(button_data_node["label"], button, button.label, button_index,
                                     extendCfgPath(path_context, "label"));
 
-        mapLayoutPrimaryButtonOrder(button_data_node["order"], buttons[button_index],
-                                    buttons[button_index].order, buttons, button_index,
-                                    extendCfgPath(path_context, "order"));
+        mapLayoutPrimaryButtonOrder(button_data_node["order"], button, button.order, buttons,
+                                    button_index, extendCfgPath(path_context, "order"));
 
-        mapLayoutPrimaryButtonCommand(button_data_node["command"], buttons[button_index],
-                                      buttons[button_index].command, button_index,
-                                      extendCfgPath(path_context, "command"));
+        mapLayoutPrimaryButtonCommand(button_data_node["command"], button, button.command,
+                                      button_index, extendCfgPath(path_context, "command"));
+
+        buttons.insert(buttons.cend(), std::move(button));
 
         return false;
 }
@@ -573,16 +586,20 @@ void ConfigMapper::mapLayoutPrimaryButtons(node_view                       prima
 void ConfigMapper::mapLayoutProperties(node_view layout_node, LayoutProperties& layout,
                                        const QString& path_context) {
         const auto& defaults = PowerAppletConfig::getDefaultPowerAppletConfig().getLayoutProperties();
+        LayoutProperties layout_properties{};
 
         const auto* data = getTomlTable(layout_node, makeCfgPath("power_applet", path_context));
         if (!data) {
-                layout = defaults;
+                layout_properties = defaults;
+                layout            = std::move(layout_properties);
                 return;
         }
 
         // Primary power buttons
-        mapLayoutPrimaryButtons((*data)["primary_buttons"], layout.primary_power_buttons,
+        mapLayoutPrimaryButtons((*data)["primary_buttons"], layout_properties.primary_power_buttons,
                                 extendCfgPath(path_context, "primary_buttons"));
+
+        layout = std::move(layout_properties);
 }
 
 void ConfigMapper::mapEnvironmentDBusMode(node_view dbus_mode_node, bool& dbus_mode,
@@ -598,18 +615,22 @@ void ConfigMapper::mapEnvironmentDBusMode(node_view dbus_mode_node, bool& dbus_m
 void ConfigMapper::mapEnvironmentProperties(node_view              environment_node,
                                             EnvironmentProperties& environment,
                                             const QString&         path_context) {
-        const auto& defaults = PowerAppletConfig::getDefaultPowerAppletConfig()
-                                       .getEnvironmentProperties();
+        const auto&           defaults = PowerAppletConfig::getDefaultPowerAppletConfig()
+                                                 .getEnvironmentProperties();
+        EnvironmentProperties environment_properties{};
 
         const auto* data = getTomlTable(environment_node, makeCfgPath("power_applet", path_context));
         if (!data) {
-                environment = defaults;
+                environment_properties = defaults;
+                environment            = std::move(environment_properties);
                 return;
         }
 
         // D-Bus mode
-        mapEnvironmentDBusMode((*data)["dbus_mode"], environment.dbus_mode,
+        mapEnvironmentDBusMode((*data)["dbus_mode"], environment_properties.dbus_mode,
                                extendCfgPath(path_context, "dbus_mode"));
+
+        environment = std::move(environment_properties);
 }
 
 void ConfigMapper::mapToGlobalConfig(const toml::table& config_table, GlobalConfig& config) {
