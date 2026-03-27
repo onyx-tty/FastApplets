@@ -92,8 +92,7 @@ private:
         static void mapLayoutPrimaryButtonCommand(node_view command_node, PrimaryButtonData& button,
                                                   ShellCommand& command, size_t button_index,
                                                   const QString& path_context);
-        static void mapLayoutPrimaryButtonData(node_view                       button_data_node,
-                                               PrimaryButtonData&              button_data,
+        static bool mapLayoutPrimaryButtonData(node_view                       button_data_node,
                                                std::vector<PrimaryButtonData>& buttons,
                                                size_t button_index, const QString& path_context);
         static void logButtonDisabled(node_view id_node, PrimaryButtonData& button_data,

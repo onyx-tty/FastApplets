@@ -464,25 +464,66 @@ void ConfigMapper::mapLayoutPrimaryButtonCommand(node_view command_node, Primary
                                                extendCfgPath(path_context, "arguments"));
 }
 
-void ConfigMapper::mapLayoutPrimaryButtonData(node_view                       button_data_node,
-                                              PrimaryButtonData&              button_data,
+bool ConfigMapper::mapLayoutPrimaryButtonData(node_view                       button_data_node,
                                               std::vector<PrimaryButtonData>& buttons,
                                               size_t button_index, const QString& path_context) {
-        const auto& defaults = PowerAppletConfig::getDefaultPowerAppletConfig()
-                                       .getLayoutProperties()
-                                       .getPrimaryPowerButtons()[button_index];
+        if (button_index > buttons.size()) {
+                if (button_index > 1) {
+                        QFATAL("The button after %s is too high! Index is %zu",
+                               buttons[button_index].label, button_index);
+                }
 
-        mapLayoutPrimaryButtonID(button_data_node["id"], button_data, button_data.id, button_index,
+                QFATAL("The button index is too high! %zu", button_index);
+        }
+
+        const auto&   default_buttons     = PowerAppletConfig::getDefaultPowerAppletConfig()
+                                                    .getLayoutProperties()
+                                                    .getPrimaryPowerButtons();
+        const auto&   defaults            = default_buttons[button_index];
+        const QString button_path_context = path_context + QString("[%1]").arg(button_index);
+
+        const auto* button_table = getTomlTable(toml::node_view(button_data_node),
+                                                makeCfgPath("power_applet", button_path_context));
+        if (!button_table) {
+                buttons = default_buttons;
+                return true;
+        }
+
+        const std::optional<bool> enabled =
+                tryGet<bool>((*button_table)["enabled"],
+                             extendCfgPath(makeCfgPath("power_applet", button_path_context),
+                                           "enabled"));
+
+        if (!enabled || !enabled.value()) {
+                QString info = "Button %1: DISABLED";
+                if (const auto label = (*button_table)["label"].as_string()) {
+                        QDEBUG() << info.arg(label->get());
+                } else {
+                        QDEBUG() << info.arg(button_index);
+                }
+
+                return true;
+        }
+
+        buttons.insert(buttons.cend(), PrimaryButtonData{});
+
+        mapLayoutPrimaryButtonID(button_data_node["id"], buttons[button_index],
+                                 buttons[button_index].id, button_index,
                                  extendCfgPath(path_context, "id"));
 
-        mapLayoutPrimaryButtonLabel(button_data_node["label"], button_data, button_data.label,
-                                    button_index, extendCfgPath(path_context, "label"));
+        mapLayoutPrimaryButtonLabel(button_data_node["label"], buttons[button_index],
+                                    buttons[button_index].label, button_index,
+                                    extendCfgPath(path_context, "label"));
 
-        mapLayoutPrimaryButtonOrder(button_data_node["order"], button_data, button_data.order,
-                                    buttons, button_index, extendCfgPath(path_context, "order"));
+        mapLayoutPrimaryButtonOrder(button_data_node["order"], buttons[button_index],
+                                    buttons[button_index].order, buttons, button_index,
+                                    extendCfgPath(path_context, "order"));
 
-        mapLayoutPrimaryButtonCommand(button_data_node["command"], button_data, button_data.command,
-                                      button_index, extendCfgPath(path_context, "command"));
+        mapLayoutPrimaryButtonCommand(button_data_node["command"], buttons[button_index],
+                                      buttons[button_index].command, button_index,
+                                      extendCfgPath(path_context, "command"));
+
+        return false;
 }
 
 // TODO Extract logic shared with mapLayoutPrimaryButtonData
@@ -519,32 +560,13 @@ void ConfigMapper::mapLayoutPrimaryButtons(node_view                       prima
 
         std::vector<PrimaryButtonData> buttons_found{};
 
-        // TODO Split and simplify
+        bool defaulted = false;
         for (size_t i = 0; i != buttons.value().size(); ++i) {
-                PrimaryButtonData button_data{};
-
-                const QString button_path_context = path_context + QString("[%1]").arg(i);
-
-                const auto* button = getTomlTable(toml::node_view(buttons.value()[i]),
-                                                  makeCfgPath("power_applet", button_path_context));
-                if (!button) {
-                        primary_buttons = defaults;
-                        return;
-                }
-
-                const bool enabled = getOrDefault((*button)["enabled"], true,
-                                                  extendCfgPath(makeCfgPath("power_applet",
-                                                                            button_path_context),
-                                                                "enabled"));
-                if (enabled) {
-                        mapLayoutPrimaryButtonData(toml::node_view(button), button_data,
-                                                   buttons_found, i, button_path_context);
-
-                        buttons_found.push_back(std::move(button_data));
-                } else {
-                        logButtonDisabled((*button)["id"], button_data, i,
-                                          extendCfgPath(button_path_context, "id"));
-                }
+                defaulted = mapLayoutPrimaryButtonData(node_view(buttons.value().at(i)),
+                                                       buttons_found, i,
+                                                       extendCfgPath(path_context,
+                                                                     std::to_string(i).c_str()));
+                if (defaulted) { return; }
         }
 
         if (buttons_found.empty()) {
