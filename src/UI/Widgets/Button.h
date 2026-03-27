@@ -37,9 +37,9 @@ private:
         // Modified re-implementation that turns off the distracting mouse hover effect
         // TODO Mouse hover on/off depending on the config setting
         bool event(QEvent* event) override;
-        // Workaround which aligns buttons to a desired position,
-        // and keeps the text realigned and separate via a proxy label
-        void debugAlignIcon(const QString& label_text, Qt::Alignment label_alignment);
+        // Decouple text from icon and use a proxy label as text, for higher alignment
+        // customizability
+        void alignLabel(const QString& label_text, Qt::Alignment label_alignment);
 
         // TODO Rename debug_text
         QLabel* debug_text;

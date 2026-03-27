@@ -56,7 +56,7 @@ bool Button::event(QEvent* event) {
         }
 }
 
-void Button::debugAlignIcon(const QString& label_text, Qt::Alignment label_alignment) {
+void Button::alignLabel(const QString& label_text, Qt::Alignment label_alignment) {
         setLayout(new QGridLayout);
         setStyleSheet(stylesheet);
         debug_text = new QLabel(label_text, this); // label that acts as a button text replacement
@@ -79,7 +79,7 @@ Button::Button(QBoxLayout* layout, const QIcon& icon, const QString& text,
         setIconSize(properties.getIconSize());
         setSizePolicy(properties.getPolicy());
         setAutoDefault(false);
-        debugAlignIcon(text, properties.getTextAlignment());
+        alignLabel(text, properties.getTextAlignment());
         layout->addWidget(this);
 }
 
