@@ -373,23 +373,14 @@ void ConfigMapper::mapLayoutPrimaryButtonOrder(node_view order_node, PrimaryButt
                                        .getLayoutProperties()
                                        .getPrimaryPowerButtons()[button_index];
 
-        // Workaround that creates a unique number corresponding to a default from the largest
-        // order in all primary power buttons + 1
-        // It will overflow if some of the buttons define the largest order possible for a long
-        // TODO Eliminate the button order workaround
-        long default_order = 0;
-        for (const auto& button_data : buttons) {
-                default_order = std::max(default_order, button_data.order + 1);
-        }
-        const long result = getOrDefault<int64_t>(order_node, default_order,
-                                                  makeCfgPath("power_applet", path_context));
+        const auto result = tryGet<int64_t>(order_node, makeCfgPath("power_applet", path_context));
 
-        if (result == default_order) {
+        if (!result) {
                 button = defaults;
                 return;
         }
 
-        order = result;
+        order = result.value();
 }
 
 void ConfigMapper::mapLayoutPrimaryButtonCommandProgram(node_view          program_node,
