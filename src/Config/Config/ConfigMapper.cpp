@@ -184,42 +184,31 @@ static std::optional<T> resolveWithFallback(node_view power_node, node_view glob
 /* Window Properties */
 void ConfigMapper::mapWindowSize(node_view size_node, node_view global_fallback_node, QSize& size,
                                  const QString& path_context) {
-        // Look for PowerApplet overrides first
-        auto data = tryGetQSize(size_node, makeCfgPath("power_applet", path_context));
-        if (data) {
-                size = data.value();
+        const auto& defaults =
+                PowerAppletConfig::getDefaultPowerAppletConfig().getWindowProperties().getSize();
+
+        auto result = resolveWithFallback<QSize>(size_node, global_fallback_node, path_context);
+        if (!result) {
+                size = defaults;
                 return;
         }
 
-        // Fall back to global if not found
-        data = tryGetQSize(global_fallback_node, makeCfgPath("global", path_context));
-        if (data) {
-                size = data.value();
-                return;
-        }
-
-        // Use hardcoded defaults
-        size = PowerAppletConfig::getDefaultPowerAppletConfig().getWindowProperties().getSize();
+        size = result.value();
 }
 
 void ConfigMapper::mapWindowTitle(node_view title_node, node_view global_fallback_node,
                                   QString& title, const QString& path_context) {
-        // Look for PowerApplet overrides first
-        auto data = tryGet<std::string>(title_node, makeCfgPath("power_applet", path_context));
-        if (data) {
-                title = QString::fromStdString(data.value());
+        const auto& defaults =
+                PowerAppletConfig::getDefaultPowerAppletConfig().getWindowProperties().getTitle();
+
+        auto result = resolveWithFallback<std::string>(title_node, global_fallback_node,
+                                                       path_context);
+        if (!result) {
+                title = defaults;
                 return;
         }
 
-        // Fall back to global if not found
-        data = tryGet<std::string>(global_fallback_node, makeCfgPath("global", path_context));
-        if (data) {
-                title = QString::fromStdString(data.value());
-                return;
-        }
-
-        // Use hardcoded defaults
-        title = PowerAppletConfig::getDefaultPowerAppletConfig().getWindowProperties().getTitle();
+        title = QString::fromStdString(result.value());
 }
 
 void ConfigMapper::mapWindowProperties(node_view window_node, node_view global_fallback_node,
@@ -250,34 +239,18 @@ void ConfigMapper::mapPrimaryButtonTextAlignment(node_view      text_alignment_n
                                                  node_view      global_fallback_node,
                                                  Qt::Alignment& text_alignment,
                                                  const QString& path_context) {
-        // Look for PowerApplet overrides first
-        QString path = makeCfgPath("power_applet", path_context);
-        auto    data = tryGet<std::string>(text_alignment_node, path);
-        if (data) {
-                auto data_alignment = tryGetAlignment(data.value(), alignment_map, path);
+        const auto& defaults = PowerAppletConfig::getDefaultPowerAppletConfig()
+                                       .getPrimaryButtonProperties()
+                                       .getTextAlignment();
 
-                if (data_alignment) {
-                        text_alignment = data_alignment.value();
-                        return;
-                }
+        auto result = resolveWithFallback<Qt::Alignment>(text_alignment_node, global_fallback_node,
+                                                         path_context);
+        if (!result) {
+                text_alignment = defaults;
+                return;
         }
 
-        // Fall back to global if not found
-        path = makeCfgPath("global", path_context);
-        data = tryGet<std::string>(global_fallback_node, path);
-        if (data) {
-                auto data_alignment = tryGetAlignment(data.value(), alignment_map, path);
-
-                if (data_alignment) {
-                        text_alignment = data_alignment.value();
-                        return;
-                }
-        }
-
-        // Use hardcoded defaults
-        text_alignment = PowerAppletConfig::getDefaultPowerAppletConfig()
-                                 .getPrimaryButtonProperties()
-                                 .getTextAlignment();
+        text_alignment = result.value();
 }
 
 // TODO This option doesn't work, fix
@@ -285,89 +258,51 @@ void ConfigMapper::mapPrimaryButtonIconAlignment(node_view      icon_alignment_n
                                                  node_view      global_fallback_node,
                                                  Qt::Alignment& icon_alignment,
                                                  const QString& path_context) {
-        // Look for PowerApplet overrides first
-        QString path(makeCfgPath("power_applet", path_context));
-        auto    data = tryGet<std::string>(icon_alignment_node, path);
-        if (data) {
-                auto data_alignment = tryGetAlignment(data.value(), alignment_map, path);
+        const auto& defaults = PowerAppletConfig::getDefaultPowerAppletConfig()
+                                       .getPrimaryButtonProperties()
+                                       .getIconAlignment();
 
-                if (data_alignment) {
-                        icon_alignment = data_alignment.value();
-                        return;
-                }
+        auto result = resolveWithFallback<Qt::Alignment>(icon_alignment_node, global_fallback_node,
+                                                         path_context);
+        if (!result) {
+                icon_alignment = defaults;
+                return;
         }
 
-        // Fall back to global if not found
-        path = makeCfgPath("global", path_context);
-        data = tryGet<std::string>(global_fallback_node, path);
-        if (data) {
-                auto data_alignment = tryGetAlignment(data.value(), alignment_map, path);
-
-                if (data_alignment) {
-                        icon_alignment = data_alignment.value();
-                        return;
-                }
-        }
-
-        // Use hardcoded defaults
-        icon_alignment = PowerAppletConfig::getDefaultPowerAppletConfig()
-                                 .getPrimaryButtonProperties()
-                                 .getIconAlignment();
+        icon_alignment = result.value();
 }
 
 void ConfigMapper::mapPrimaryButtonIconSize(node_view icon_size_node,
                                             node_view global_fallback_node, QSize& icon_size,
                                             const QString& path_context) {
-        // Look for PowerApplet overrides first
-        auto data = tryGetQSize(icon_size_node, makeCfgPath("power_applet", path_context));
-        if (data) {
-                icon_size = data.value();
+        const auto& defaults = PowerAppletConfig::getDefaultPowerAppletConfig()
+                                       .getPrimaryButtonProperties()
+                                       .getIconSize();
+
+        auto results = resolveWithFallback<QSize>(icon_size_node, global_fallback_node,
+                                                  path_context);
+        if (!results) {
+                icon_size = defaults;
                 return;
         }
 
-        // Fall back to global if not found
-        data = tryGetQSize(global_fallback_node, makeCfgPath("global", path_context));
-        if (data) {
-                icon_size = data.value();
-                return;
-        }
-
-        // Use hardcoded defaults
-        icon_size = PowerAppletConfig::getDefaultPowerAppletConfig()
-                            .getPrimaryButtonProperties()
-                            .getIconSize();
+        icon_size = results.value();
 }
 
 void ConfigMapper::mapPrimaryButtonPolicy(node_view policy_node, node_view global_fallback_node,
                                           QSizePolicy& policy, const QString& path_context) {
-        // Look for PowerApplet overrides first
-        QString path = makeCfgPath("power_applet", path_context);
-        auto    data = tryGet<std::string>(policy_node, path);
-        if (data) {
-                auto data_policy = tryGetSizePolicy(data.value(), size_policy_map, path);
+        const auto& defaults = PowerAppletConfig::getDefaultPowerAppletConfig()
+                                       .getPrimaryButtonProperties()
+                                       .getPolicy();
 
-                if (data_policy) {
-                        policy = data_policy.value();
-                        return;
-                }
+        auto results = resolveWithFallback<QSizePolicy>(policy_node, global_fallback_node,
+                                                        path_context);
+        if (!results) {
+                policy = defaults;
+                return;
         }
 
-        // Fall back to global if not found
-        path = makeCfgPath("global", path_context);
-        data = tryGet<std::string>(global_fallback_node, path);
-        if (data) {
-                auto data_policy = tryGetSizePolicy(data.value(), size_policy_map, path);
-
-                if (data_policy) {
-                        policy = data_policy.value();
-                        return;
-                }
-        }
-
-        // Use hardcoded defaults
-        policy = PowerAppletConfig::getDefaultPowerAppletConfig()
-                         .getPrimaryButtonProperties()
-                         .getPolicy();
+        policy = results.value();
 }
 
 void ConfigMapper::mapPrimaryButtonProperties(node_view button_node, node_view global_fallback_node,
