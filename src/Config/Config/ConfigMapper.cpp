@@ -105,6 +105,25 @@ static QString extendCfgPath(const QString& path, const char* extension,
         return path + separator + extension;
 }
 
+namespace extractor {
+template<typename T>
+auto value = [](node_view node, const QString& path) { return tryGet<T>(node, path); };
+
+auto qsize = [](node_view node, const QString& path) { return tryGetQSize(node, path); };
+
+auto alignment = [](node_view node, const QString& path) -> std::optional<Qt::Alignment> {
+        auto raw = tryGet<std::string>(node, path);
+        if (!raw) { return std::nullopt; }
+        return tryGetAlignment(raw.value(), alignment_map, path);
+};
+
+auto size_policy = [](node_view node, const QString& path) -> std::optional<QSizePolicy> {
+        auto raw = tryGet<std::string>(node, path);
+        if (!raw) { return std::nullopt; }
+        return tryGetSizePolicy(raw.value(), size_policy_map, path);
+};
+} // namespace extractor
+
 /* Window Properties */
 void ConfigMapper::mapWindowSize(node_view size_node, node_view global_fallback_node, QSize& size,
                                  const QString& path_context) {
