@@ -124,6 +124,63 @@ auto size_policy = [](node_view node, const QString& path) -> std::optional<QSiz
 };
 } // namespace extractor
 
+template<typename T>
+static std::optional<T> resolveWithFallback(node_view power_node, node_view global_node,
+                                            const QString& path_context) {
+        using DT = std::decay_t<T>;
+        if constexpr (std::is_same_v<DT, QSize>) {
+                // Look for PowerApplet overrides first
+                if (auto power = extractor::qsize(power_node,
+                                                  makeCfgPath("power_applet", path_context))) {
+                        return *power;
+                }
+
+                // Fall back to global if not found
+                if (auto global = extractor::qsize(global_node,
+                                                   makeCfgPath("global", path_context))) {
+                        return *global;
+                }
+        } else if constexpr (std::is_same_v<DT, Qt::Alignment>) {
+                // Look for PowerApplet overrides first
+                if (auto power = extractor::alignment(power_node,
+                                                      makeCfgPath("power_applet", path_context))) {
+                        return *power;
+                }
+
+                // Fall back to global if not found
+                if (auto global = extractor::alignment(global_node,
+                                                       makeCfgPath("global", path_context))) {
+                        return *global;
+                }
+        } else if constexpr (std::is_same_v<DT, QSizePolicy>) {
+                // Look for PowerApplet overrides first
+                if (auto power = extractor::size_policy(power_node, makeCfgPath("power_applet",
+                                                                                path_context))) {
+                        return *power;
+                }
+
+                // Fall back to global if not found
+                if (auto global = extractor::size_policy(global_node,
+                                                         makeCfgPath("global", path_context))) {
+                        return *global;
+                }
+        } else {
+                // Look for PowerApplet overrides first
+                if (auto power = extractor::value<DT>(power_node,
+                                                      makeCfgPath("power_applet", path_context))) {
+                        return *power;
+                }
+
+                // Fall back to global if not found
+                if (auto global = extractor::value<DT>(global_node,
+                                                       makeCfgPath("global", path_context))) {
+                        return *global;
+                }
+        }
+
+        return std::nullopt;
+}
+
 /* Window Properties */
 void ConfigMapper::mapWindowSize(node_view size_node, node_view global_fallback_node, QSize& size,
                                  const QString& path_context) {
