@@ -345,15 +345,14 @@ void ConfigMapper::mapLayoutPrimaryButtonID(node_view id_node, PrimaryButtonData
                                        .getLayoutProperties()
                                        .getPrimaryPowerButtons()[button_index];
 
-        auto result = QString::fromStdString(
-                getOrDefault<std::string>(id_node, {}, makeCfgPath("power_applet", path_context)));
+        auto result = resolve<std::string>(path_context, Source{id_node, "power_applet"});
 
-        if (result.isEmpty()) {
+        if (!result) {
                 button = defaults;
                 return;
         }
 
-        id = getPowerButtonIDFromString(std::move(result));
+        id = getPowerButtonIDFromString(QString::fromStdString(result.value()));
 }
 
 void ConfigMapper::mapLayoutPrimaryButtonLabel(node_view label_node, PrimaryButtonData& button,
@@ -363,16 +362,14 @@ void ConfigMapper::mapLayoutPrimaryButtonLabel(node_view label_node, PrimaryButt
                                        .getLayoutProperties()
                                        .getPrimaryPowerButtons()[button_index];
 
-        auto result = QString::fromStdString(
-                getOrDefault<std::string>(label_node, {},
-                                          makeCfgPath("power_applet", path_context)));
+        auto result = resolve<std::string>(path_context, Source{label_node, "power_applet"});
 
-        if (result.isEmpty()) {
+        if (!result) {
                 button = defaults;
                 return;
         }
 
-        label = result;
+        label = QString::fromStdString(result.value());
 }
 
 void ConfigMapper::mapLayoutPrimaryButtonOrder(node_view order_node, PrimaryButtonData& button,
@@ -382,7 +379,7 @@ void ConfigMapper::mapLayoutPrimaryButtonOrder(node_view order_node, PrimaryButt
                                        .getLayoutProperties()
                                        .getPrimaryPowerButtons()[button_index];
 
-        const auto result = tryGet<int64_t>(order_node, makeCfgPath("power_applet", path_context));
+        const auto result = resolve<int64_t>(path_context, Source{order_node, "power_applet"});
 
         if (!result) {
                 button = defaults;
@@ -400,9 +397,13 @@ void ConfigMapper::mapLayoutPrimaryButtonCommandProgram(node_view          progr
                                        .getLayoutProperties()
                                        .getPrimaryPowerButtons()[button_index];
 
-        program = QString::fromStdString(
-                getOrDefault<std::string>(program_node, defaults.command.program.toStdString(),
-                                          makeCfgPath("power_applet", path_context)));
+        const auto result = resolve<std::string>(path_context, Source{program_node, "power_applet"});
+        if (!result) {
+                button = defaults;
+                return;
+        }
+
+        program = QString::fromStdString(result.value());
 }
 
 void ConfigMapper::mapLayoutPrimaryButtonCommandArgumentsArgument(
@@ -412,10 +413,14 @@ void ConfigMapper::mapLayoutPrimaryButtonCommandArgumentsArgument(
                                        .getLayoutProperties()
                                        .getPrimaryPowerButtons()[button_index];
 
-        arguments.insert(arguments.cend(),
-                         QString::fromStdString(getOrDefault<std::string>(
-                                 argument_node, defaults.command.arguments[arg_index].toStdString(),
-                                 makeCfgPath("power_applet", path_context))));
+        const auto result = resolve<std::string>(path_context,
+                                                 Source{argument_node, "power_applet"});
+        if (!result) {
+                button = defaults;
+                return;
+        }
+
+        arguments.insert(arguments.cend(), QString::fromStdString(result.value()));
 }
 
 void ConfigMapper::mapLayoutPrimaryButtonCommandArguments(node_view          arguments_node,
@@ -504,10 +509,8 @@ bool ConfigMapper::mapLayoutPrimaryButtonData(node_view                       bu
                 return true;
         }
 
-        const std::optional<bool> enabled =
-                tryGet<bool>((button_table.value())["enabled"],
-                             extendCfgPath(makeCfgPath("power_applet", button_path_context),
-                                           "enabled"));
+        const auto enabled = resolve<bool>(extendCfgPath(button_path_context, "enabled"),
+                                           Source{button_table.value()["enabled"], "power_applet"});
 
         if (!enabled || !enabled.value()) {
                 QString info = "Button %1: DISABLED";
@@ -545,9 +548,8 @@ void ConfigMapper::mapLayoutPrimaryButtons(node_view                       prima
         const auto& defaults = PowerAppletConfig::getDefaultPowerAppletConfig()
                                        .getLayoutProperties()
                                        .getPrimaryPowerButtons();
-        const auto  buttons  = getTomlArray(primary_buttons_node,
-                                            makeCfgPath("power_applet", path_context));
-
+        const auto  buttons  = resolve<toml::array>(path_context,
+                                                    Source{primary_buttons_node, "power_applet"});
         if (!buttons) {
                 primary_buttons = defaults;
                 return;
@@ -609,8 +611,13 @@ void ConfigMapper::mapEnvironmentDBusMode(node_view dbus_mode_node, bool& dbus_m
                                        .getEnvironmentProperties()
                                        .getDBusMode();
 
-        dbus_mode = getOrDefault(dbus_mode_node, defaults,
-                                 makeCfgPath("power_applet", path_context));
+        const auto result = resolve<bool>(path_context, Source{dbus_mode_node, "power_applet"});
+        if (!result) {
+                dbus_mode = defaults;
+                return;
+        }
+
+        dbus_mode = result.value();
 }
 
 void ConfigMapper::mapEnvironmentProperties(node_view              environment_node,
