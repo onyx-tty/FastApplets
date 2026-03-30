@@ -106,7 +106,11 @@ static QString extendCfgPath(const QString& path, const char* extension,
 }
 
 namespace extractor {
-auto table = [](node_view node, const QString& path) { return getTomlTable(node, path); };
+auto table = [](node_view node, const QString& path) -> std::optional<toml::table> {
+        if (auto* result = getTomlTable(node, path)) { return *result; }
+
+        return std::nullopt;
+};
 
 auto array = [](node_view node, const QString& path, const QString& error_arr_details = {}) {
         return getTomlArray(node, path, error_arr_details);
@@ -142,9 +146,7 @@ static std::optional<T> resolve(std::initializer_list<Source> sources, const QSt
         // Collapse extraction logic into that of a corresponding type
         auto extract = [&](node_view node, const QString& path) -> std::optional<DT> {
                 if constexpr (std::is_same_v<DT, toml::table>) {
-                        if (const auto* result = extractor::table(node, path)) { return *result; }
-
-                        return std::nullopt;
+                        return extractor::table(node, path);
                 } else if constexpr (std::is_same_v<DT, toml::array>) {
                         return extractor::array(node, path);
                 } else if constexpr (std::is_same_v<DT, QSize>) {
