@@ -179,8 +179,7 @@ static std::optional<T> resolve(const QString& path_context, Sources&&... source
 /* Window Properties */
 void ConfigMapper::mapWindowSize(node_view size_node, node_view global_fallback_node, QSize& size,
                                  const QString& path_context) {
-        const auto& defaults =
-                PowerAppletConfig::getDefaultPowerAppletConfig().getWindowProperties().getSize();
+        const auto& defaults = PowerAppletConfig::getDefault().getWindowProperties().getSize();
 
         auto result = resolve<QSize>(path_context, Source{size_node, "power_applet"},
                                      Source{global_fallback_node, "global"});
@@ -194,8 +193,7 @@ void ConfigMapper::mapWindowSize(node_view size_node, node_view global_fallback_
 
 void ConfigMapper::mapWindowTitle(node_view title_node, node_view global_fallback_node,
                                   QString& title, const QString& path_context) {
-        const auto& defaults =
-                PowerAppletConfig::getDefaultPowerAppletConfig().getWindowProperties().getTitle();
+        const auto& defaults = PowerAppletConfig::getDefault().getWindowProperties().getTitle();
 
         auto result = resolve<std::string>(path_context, Source{title_node, "power_applet"},
                                            Source{global_fallback_node, "global"});
@@ -227,7 +225,7 @@ void ConfigMapper::mapWindowProperties(node_view window_node, node_view global_f
         }
 
         // Use hardcoded defaults
-        window = PowerAppletConfig::getDefaultPowerAppletConfig().getWindowProperties();
+        window = PowerAppletConfig::getDefault().getWindowProperties();
 }
 
 /* Primary Button Properties*/
@@ -235,9 +233,8 @@ void ConfigMapper::mapPrimaryButtonTextAlignment(node_view      text_alignment_n
                                                  node_view      global_fallback_node,
                                                  Qt::Alignment& text_alignment,
                                                  const QString& path_context) {
-        const auto& defaults = PowerAppletConfig::getDefaultPowerAppletConfig()
-                                       .getPrimaryButtonProperties()
-                                       .getTextAlignment();
+        const auto& defaults =
+                PowerAppletConfig::getDefault().getPrimaryButtonProperties().getTextAlignment();
 
         auto result = resolve<Qt::Alignment>(path_context,
                                              Source{text_alignment_node, "power_applet"},
@@ -255,9 +252,8 @@ void ConfigMapper::mapPrimaryButtonIconAlignment(node_view      icon_alignment_n
                                                  node_view      global_fallback_node,
                                                  Qt::Alignment& icon_alignment,
                                                  const QString& path_context) {
-        const auto& defaults = PowerAppletConfig::getDefaultPowerAppletConfig()
-                                       .getPrimaryButtonProperties()
-                                       .getIconAlignment();
+        const auto& defaults =
+                PowerAppletConfig::getDefault().getPrimaryButtonProperties().getIconAlignment();
 
         auto result = resolve<Qt::Alignment>(path_context,
                                              Source{icon_alignment_node, "power_applet"},
@@ -273,9 +269,8 @@ void ConfigMapper::mapPrimaryButtonIconAlignment(node_view      icon_alignment_n
 void ConfigMapper::mapPrimaryButtonIconSize(node_view icon_size_node,
                                             node_view global_fallback_node, QSize& icon_size,
                                             const QString& path_context) {
-        const auto& defaults = PowerAppletConfig::getDefaultPowerAppletConfig()
-                                       .getPrimaryButtonProperties()
-                                       .getIconSize();
+        const auto& defaults =
+                PowerAppletConfig::getDefault().getPrimaryButtonProperties().getIconSize();
 
         auto results = resolve<QSize>(path_context, Source{icon_size_node, "power_applet"},
                                       Source{global_fallback_node, "global"});
@@ -289,9 +284,8 @@ void ConfigMapper::mapPrimaryButtonIconSize(node_view icon_size_node,
 
 void ConfigMapper::mapPrimaryButtonPolicy(node_view policy_node, node_view global_fallback_node,
                                           QSizePolicy& policy, const QString& path_context) {
-        const auto& defaults = PowerAppletConfig::getDefaultPowerAppletConfig()
-                                       .getPrimaryButtonProperties()
-                                       .getPolicy();
+        const auto& defaults =
+                PowerAppletConfig::getDefault().getPrimaryButtonProperties().getPolicy();
 
         auto results = resolve<QSizePolicy>(path_context, Source{policy_node, "power_applet"},
                                             Source{global_fallback_node, "global"});
@@ -334,14 +328,14 @@ void ConfigMapper::mapPrimaryButtonProperties(node_view button_node, node_view g
         }
 
         // Use hardcoded defaults
-        button = PowerAppletConfig::getDefaultPowerAppletConfig().getPrimaryButtonProperties();
+        button = PowerAppletConfig::getDefault().getPrimaryButtonProperties();
 }
 
 /* Layout Properties */
 void ConfigMapper::mapLayoutPrimaryButtonID(node_view id_node, PrimaryButtonData& button,
                                             power_button_id& id, size_t button_index,
                                             const QString& path_context) {
-        const auto& defaults = PowerAppletConfig::getDefaultPowerAppletConfig()
+        const auto& defaults = PowerAppletConfig::getDefault()
                                        .getLayoutProperties()
                                        .getPrimaryPowerButtons()[button_index];
 
@@ -358,7 +352,7 @@ void ConfigMapper::mapLayoutPrimaryButtonID(node_view id_node, PrimaryButtonData
 void ConfigMapper::mapLayoutPrimaryButtonLabel(node_view label_node, PrimaryButtonData& button,
                                                QString& label, size_t button_index,
                                                const QString& path_context) {
-        const auto& defaults = PowerAppletConfig::getDefaultPowerAppletConfig()
+        const auto& defaults = PowerAppletConfig::getDefault()
                                        .getLayoutProperties()
                                        .getPrimaryPowerButtons()[button_index];
 
@@ -375,7 +369,7 @@ void ConfigMapper::mapLayoutPrimaryButtonLabel(node_view label_node, PrimaryButt
 void ConfigMapper::mapLayoutPrimaryButtonOrder(node_view order_node, PrimaryButtonData& button,
                                                long& order, std::vector<PrimaryButtonData>& buttons,
                                                size_t button_index, const QString& path_context) {
-        const auto& defaults = PowerAppletConfig::getDefaultPowerAppletConfig()
+        const auto& defaults = PowerAppletConfig::getDefault()
                                        .getLayoutProperties()
                                        .getPrimaryPowerButtons()[button_index];
 
@@ -393,7 +387,7 @@ void ConfigMapper::mapLayoutPrimaryButtonCommandProgram(node_view          progr
                                                         PrimaryButtonData& button, QString& program,
                                                         size_t         button_index,
                                                         const QString& path_context) {
-        const auto& defaults = PowerAppletConfig::getDefaultPowerAppletConfig()
+        const auto& defaults = PowerAppletConfig::getDefault()
                                        .getLayoutProperties()
                                        .getPrimaryPowerButtons()[button_index];
 
@@ -409,7 +403,7 @@ void ConfigMapper::mapLayoutPrimaryButtonCommandProgram(node_view          progr
 void ConfigMapper::mapLayoutPrimaryButtonCommandArgumentsArgument(
         node_view argument_node, PrimaryButtonData& button, QStringList& arguments,
         size_t button_index, size_t arg_index, const QString& path_context) {
-        const auto& defaults = PowerAppletConfig::getDefaultPowerAppletConfig()
+        const auto& defaults = PowerAppletConfig::getDefault()
                                        .getLayoutProperties()
                                        .getPrimaryPowerButtons()[button_index];
 
@@ -428,7 +422,7 @@ void ConfigMapper::mapLayoutPrimaryButtonCommandArguments(node_view          arg
                                                           QStringList&       arguments,
                                                           size_t             button_index,
                                                           const QString&     path_context) {
-        const auto& defaults = PowerAppletConfig::getDefaultPowerAppletConfig()
+        const auto& defaults = PowerAppletConfig::getDefault()
                                        .getLayoutProperties()
                                        .getPrimaryPowerButtons()[button_index];
 
@@ -456,7 +450,7 @@ void ConfigMapper::mapLayoutPrimaryButtonCommandArguments(node_view          arg
 void ConfigMapper::mapLayoutPrimaryButtonCommand(node_view command_node, PrimaryButtonData& button,
                                                  ShellCommand& command, size_t button_index,
                                                  const QString& path_context) {
-        const auto& defaults = PowerAppletConfig::getDefaultPowerAppletConfig()
+        const auto& defaults = PowerAppletConfig::getDefault()
                                        .getLayoutProperties()
                                        .getPrimaryPowerButtons()[button_index];
 
@@ -496,9 +490,8 @@ bool ConfigMapper::mapLayoutPrimaryButtonData(node_view                       bu
                 QFATAL("The button index is too high! %zu", button_index);
         }
 
-        const auto&   default_buttons     = PowerAppletConfig::getDefaultPowerAppletConfig()
-                                                    .getLayoutProperties()
-                                                    .getPrimaryPowerButtons();
+        const auto& default_buttons =
+                PowerAppletConfig::getDefault().getLayoutProperties().getPrimaryPowerButtons();
         const auto&   defaults            = default_buttons[button_index];
         const QString button_path_context = path_context + QString("[%1]").arg(button_index);
 
@@ -545,11 +538,10 @@ bool ConfigMapper::mapLayoutPrimaryButtonData(node_view                       bu
 void ConfigMapper::mapLayoutPrimaryButtons(node_view                       primary_buttons_node,
                                            std::vector<PrimaryButtonData>& primary_buttons,
                                            const QString&                  path_context) {
-        const auto& defaults = PowerAppletConfig::getDefaultPowerAppletConfig()
-                                       .getLayoutProperties()
-                                       .getPrimaryPowerButtons();
-        const auto  buttons  = resolve<toml::array>(path_context,
-                                                    Source{primary_buttons_node, "power_applet"});
+        const auto& defaults =
+                PowerAppletConfig::getDefault().getLayoutProperties().getPrimaryPowerButtons();
+        const auto buttons = resolve<toml::array>(path_context,
+                                                  Source{primary_buttons_node, "power_applet"});
         if (!buttons) {
                 primary_buttons = defaults;
                 return;
@@ -587,7 +579,7 @@ void ConfigMapper::mapLayoutPrimaryButtons(node_view                       prima
 
 void ConfigMapper::mapLayoutProperties(node_view layout_node, LayoutProperties& layout,
                                        const QString& path_context) {
-        const auto& defaults = PowerAppletConfig::getDefaultPowerAppletConfig().getLayoutProperties();
+        const auto&      defaults = PowerAppletConfig::getDefault().getLayoutProperties();
         LayoutProperties layout_properties{};
 
         const auto data = resolve<toml::table>(path_context, Source{layout_node, "power_applet"});
@@ -607,9 +599,8 @@ void ConfigMapper::mapLayoutProperties(node_view layout_node, LayoutProperties& 
 
 void ConfigMapper::mapEnvironmentDBusMode(node_view dbus_mode_node, bool& dbus_mode,
                                           const QString& path_context) {
-        const auto& defaults = PowerAppletConfig::getDefaultPowerAppletConfig()
-                                       .getEnvironmentProperties()
-                                       .getDBusMode();
+        const auto& defaults =
+                PowerAppletConfig::getDefault().getEnvironmentProperties().getDBusMode();
 
         const auto result = resolve<bool>(path_context, Source{dbus_mode_node, "power_applet"});
         if (!result) {
@@ -623,8 +614,7 @@ void ConfigMapper::mapEnvironmentDBusMode(node_view dbus_mode_node, bool& dbus_m
 void ConfigMapper::mapEnvironmentProperties(node_view              environment_node,
                                             EnvironmentProperties& environment,
                                             const QString&         path_context) {
-        const auto&           defaults = PowerAppletConfig::getDefaultPowerAppletConfig()
-                                                 .getEnvironmentProperties();
+        const auto&           defaults = PowerAppletConfig::getDefault().getEnvironmentProperties();
         EnvironmentProperties environment_properties{};
 
         const auto data = resolve<toml::table>(path_context,
@@ -648,7 +638,7 @@ void ConfigMapper::mapToGlobalConfig(const toml::table& config_table, GlobalConf
                 QFATAL("QApplication has not been instantiated yet!");
         }
 
-        const auto& defaults = PowerAppletConfig::getDefaultPowerAppletConfig();
+        const auto& defaults = PowerAppletConfig::getDefault();
 
         if (!config_table.contains("global")) { QWARNING() << "in config.toml, global missing!"; }
 
@@ -669,7 +659,7 @@ void ConfigMapper::mapToPowerAppletConfig(const toml::table& config_table,
                 QFATAL("QApplication has not been instantiated yet!");
         }
 
-        const auto& defaults = PowerAppletConfig::getDefaultPowerAppletConfig();
+        const auto& defaults = PowerAppletConfig::getDefault();
 
         if (!config_table.contains("power_applet")) {
                 QWARNING() << "in config.toml, power_applet missing!";

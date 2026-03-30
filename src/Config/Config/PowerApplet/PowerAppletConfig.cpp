@@ -43,7 +43,7 @@ PowerAppletConfig::PowerAppletConfig(WindowProperties        window_properties,
         GlobalConfig(window_properties, primary_button_properties),
         layout_properties(layout_properties), environment_properties(environment_properties) {}
 
-PowerAppletConfig& PowerAppletConfig::getPowerAppletConfig() {
+PowerAppletConfig& PowerAppletConfig::get() {
         static PowerAppletConfig power_applet_config{};
         static bool              parsed = false;
 
@@ -56,7 +56,7 @@ PowerAppletConfig& PowerAppletConfig::getPowerAppletConfig() {
         return power_applet_config;
 }
 
-const PowerAppletConfig& PowerAppletConfig::getDefaultPowerAppletConfig() {
+const PowerAppletConfig& PowerAppletConfig::getDefault() {
         QSize            size                      = {960, 220};
         QString          title                     = "test_window";
         WindowProperties default_window_properties = {std::move(size), std::move(title)};

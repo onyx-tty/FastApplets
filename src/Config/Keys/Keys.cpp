@@ -28,7 +28,7 @@
 Keys::Keys(GlobalKeys global_keys, PowerAppletKeys power_applet_keys) :
         global_keys(std::move(global_keys)), power_applet_keys(std::move(power_applet_keys)) {}
 
-Keys& Keys::getKeys() {
+Keys& Keys::get() {
         static Keys keys{};
         static bool parsed = false;
 
@@ -40,7 +40,7 @@ Keys& Keys::getKeys() {
         return keys;
 }
 
-const Keys& Keys::getDefaultKeys() {
+const Keys& Keys::getDefault() {
         keybindings quit_keys           = {Qt::Key_Escape, Qt::Key_Q};
         GlobalKeys  default_global_keys = {std::move(quit_keys)};
 

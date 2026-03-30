@@ -26,7 +26,7 @@
 PowerButton::PowerButton(QBoxLayout* layout, power_button_id id, QIcon icon, QString text,
                          QString dbus_action, ShellCommand command) :
         Button(layout, icon, text,
-               PowerAppletConfig::getPowerAppletConfig().getPrimaryButtonProperties()),
+               PowerAppletConfig::get().getPrimaryButtonProperties()),
         id(id), dbus_action(dbus_action) {
         connect(this, &PowerButton::clicked,
                 [this, command]() { ShellRunner::runCommand(command); });

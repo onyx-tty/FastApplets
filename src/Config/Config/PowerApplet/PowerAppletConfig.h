@@ -36,8 +36,8 @@ public:
                           LayoutProperties        layout_properties         = {},
                           EnvironmentProperties   environment_properties    = {});
         // TODO Make this const to avoid overwrites
-        static PowerAppletConfig&       getPowerAppletConfig();
-        static const PowerAppletConfig& getDefaultPowerAppletConfig();
+        static PowerAppletConfig&       get();
+        static const PowerAppletConfig& getDefault();
         const LayoutProperties&         getLayoutProperties() const;
         const EnvironmentProperties&    getEnvironmentProperties() const;
 

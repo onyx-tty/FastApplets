@@ -43,7 +43,7 @@ static std::array<QIcon, 4> createButtonIcons() {
 
 // TODO Extract
 static bool isPowerKey(int key) {
-        for (const auto& button_keys : Keys::getKeys().getPowerAppletKeys().getPrimaryButtonKeys()) {
+        for (const auto& button_keys : Keys::get().getPowerAppletKeys().getPrimaryButtonKeys()) {
                 if (button_keys.contains(key)) { return true; }
         }
 
@@ -51,7 +51,7 @@ static bool isPowerKey(int key) {
 }
 
 static bool isQuitKey(int key) {
-        const auto& quit_keys = Keys::getKeys().getPowerAppletKeys().getQuitKeys();
+        const auto& quit_keys = Keys::get().getPowerAppletKeys().getQuitKeys();
 
         return quit_keys.contains(key);
 }
@@ -61,7 +61,7 @@ const keybindings& PowerCentralWidget::getKeysFromPowerButton(const PowerButton*
         bool                   processed = false;
 
         if (!processed) {
-                const auto& keys = Keys::getKeys().getPowerAppletKeys().getPrimaryButtonKeys();
+                const auto& keys = Keys::get().getPowerAppletKeys().getPrimaryButtonKeys();
 
                 // Cache the full keys map
                 for (size_t i = 0; i < button_list.size() && i < keys.size(); ++i) {
@@ -80,7 +80,7 @@ PowerButton* PowerCentralWidget::getPowerButtonFromKeys(const keybindings& keys)
 
         // TODO Simply reuse the map in getKeysFromPowerButton
         if (!processed) {
-                const auto& keys = Keys::getKeys().getPowerAppletKeys().getPrimaryButtonKeys();
+                const auto& keys = Keys::get().getPowerAppletKeys().getPrimaryButtonKeys();
 
                 // Cache the full PowerButton map
                 for (size_t i = 0; i < button_list.size() && i < keys.size(); ++i) {
@@ -98,7 +98,7 @@ PowerButton* PowerCentralWidget::getPowerButtonFromKey(int key) {
         static std::unordered_map<int, PowerButton*> map       = {};
         bool                                         processed = false;
 
-        const auto& keys_arr = Keys::getKeys().getPowerAppletKeys().getPrimaryButtonKeys();
+        const auto& keys_arr = Keys::get().getPowerAppletKeys().getPrimaryButtonKeys();
         if (!processed) {
                 // Cache the full keys map
                 for (const auto& keys : keys_arr) { map[key] = getPowerButtonFromKeys(keys); }
@@ -154,10 +154,9 @@ QString getDBusMethodFromPowerButtonID(power_button_id id) {
 }
 
 std::vector<PowerButton*> PowerCentralWidget::createButtonList(QBoxLayout* main_layout) {
-        const auto& primary_buttons_data  = PowerAppletConfig::getPowerAppletConfig()
-                                                    .getLayoutProperties()
-                                                    .getPrimaryPowerButtons();
-        const auto  primary_buttons_icons = createButtonIcons();
+        const auto& primary_buttons_data =
+                PowerAppletConfig::get().getLayoutProperties().getPrimaryPowerButtons();
+        const auto primary_buttons_icons = createButtonIcons();
 
         if (primary_buttons_icons.size() != primary_buttons_data.size()
             && primary_buttons_icons.size() != 4) {

@@ -76,7 +76,7 @@ void interpretTextAsKeybindings(node_view source, keybindings& target) {
 }
 
 void KeysMapper::mapGlobalQuitKeys(node_view quit_node, keybindings& quit) {
-        const auto&      defaults     = Keys::getDefaultKeys().getGlobalKeys().getQuitKeys();
+        const auto&      defaults     = Keys::getDefault().getGlobalKeys().getQuitKeys();
         QString          error_prefix = "in keys.toml, global.quit";
         constexpr size_t min_size = 1, max_size = 4;
         const auto array = getTomlArray(quit_node, min_size, max_size, std::move(error_prefix),
@@ -91,7 +91,7 @@ void KeysMapper::mapGlobalQuitKeys(node_view quit_node, keybindings& quit) {
 }
 
 void KeysMapper::mapGlobalKeys(node_view global_node, GlobalKeys& global) {
-        const auto& defaults     = Keys::getDefaultKeys().getGlobalKeys();
+        const auto& defaults     = Keys::getDefault().getGlobalKeys();
         QString     error_prefix = "in keys.toml, global";
         const auto* table        = getTomlTable(global_node, std::move(error_prefix));
 
@@ -122,7 +122,7 @@ void KeysMapper::mapPowerAppletQuitKeys(node_view quit_node, keybindings& quit,
 void KeysMapper::mapPowerAppletPrimaryButtonKeys(node_view                   primary_buttons_node,
                                                  std::array<keybindings, 4>& primary_buttons) {
         const std::array<keybindings, 4>& defaults =
-                Keys::getDefaultKeys().getPowerAppletKeys().getPrimaryButtonKeys();
+                Keys::getDefault().getPowerAppletKeys().getPrimaryButtonKeys();
         QString    error_prefix         = "in keys.toml, power_applet.primary_buttons";
         QString    error_arr_details    = "Format: [keybindings...]";
         const auto primary_button_nodes = getTomlArray(primary_buttons_node, error_prefix,
@@ -156,7 +156,7 @@ void KeysMapper::mapPowerAppletPrimaryButtonKeys(node_view                   pri
 
 void KeysMapper::mapPowerAppletKeys(node_view power_node, PowerAppletKeys& power,
                                     GlobalKeys& global) {
-        const auto& defaults     = Keys::getDefaultKeys().getPowerAppletKeys();
+        const auto& defaults     = Keys::getDefault().getPowerAppletKeys();
         QString     error_prefix = "in keys.toml, power_applet";
         const auto* table        = getTomlTable(power_node, std::move(error_prefix));
 

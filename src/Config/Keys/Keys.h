@@ -26,8 +26,8 @@ class Keys final {
 public:
         Keys(GlobalKeys global_keys = {}, PowerAppletKeys power_applet_keys = {});
         // TODO Make this const to avoid overwrites
-        static Keys&           getKeys();
-        static const Keys&     getDefaultKeys();
+        static Keys&           get();
+        static const Keys&     getDefault();
         const GlobalKeys&      getGlobalKeys() const;
         const PowerAppletKeys& getPowerAppletKeys() const;
 
