@@ -22,17 +22,20 @@
 #include <QDebug>
 
 int main(int argc, char* argv[]) {
-        // Init
+        // Initialize QApplication
         QApplication app(argc, argv);
 
-        PowerMainWindow applet; // QMainWindow -> MainWindow -> PowerMainWindow
+        // Create main window
+        PowerMainWindow applet;
 
-        // Debug
+        // Print information
         QINFO() << "Applet resolution:" << applet.size();
         QDEBUG() << "Qt Version:" << qVersion();
         qInfo() << " ";
 
-        // Run
+        // Show main window
         applet.show();
+
+        // Start the Qt event loop and return its exit code upon termination
         return app.exec();
 }
