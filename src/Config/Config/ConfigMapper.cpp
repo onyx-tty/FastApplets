@@ -142,7 +142,9 @@ static std::optional<T> resolve(std::initializer_list<Source> sources, const QSt
         // Collapse extraction logic into that of a corresponding type
         auto extract = [&](node_view node, const QString& path) -> std::optional<DT> {
                 if constexpr (std::is_same_v<DT, toml::table>) {
-                        return extractor::table(node, path);
+                        if (const auto* result = extractor::table(node, path)) { return *result; }
+
+                        return std::nullopt;
                 } else if constexpr (std::is_same_v<DT, toml::array>) {
                         return extractor::array(node, path);
                 } else if constexpr (std::is_same_v<DT, QSize>) {
