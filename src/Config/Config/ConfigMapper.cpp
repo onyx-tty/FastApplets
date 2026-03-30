@@ -106,6 +106,12 @@ static QString extendCfgPath(const QString& path, const char* extension,
 }
 
 namespace extractor {
+auto table = [](node_view node, const QString& path) { return getTomlTable(node, path); };
+
+auto array = [](node_view node, const QString& path, const QString& error_arr_details = {}) {
+        return getTomlArray(node, path, error_arr_details);
+};
+
 template<typename T>
 auto value = [](node_view node, const QString& path) { return tryGet<T>(node, path); };
 
