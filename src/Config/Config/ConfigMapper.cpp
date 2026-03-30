@@ -130,8 +130,7 @@ struct Source final {
 };
 
 template<typename T>
-static std::optional<T> resolveWithFallback(Source power_source, Source global_source,
-                                            const QString& path_context) {
+static std::optional<T> resolve(std::initializer_list<Source> sources, const QString& path_context) {
         using DT = std::decay_t<T>;
 
         // Collapse extraction logic into that of a corresponding type
@@ -147,18 +146,14 @@ static std::optional<T> resolveWithFallback(Source power_source, Source global_s
                 }
         };
 
-        // Look for PowerApplet overrides first
-        if (auto power = extract(power_source.node, makeCfgPath(power_source.scope, path_context))) {
-                return *power;
+        // Validate and attempt extraction of each passed source, prioritizing earliest ones
+        for (const auto& source : sources) {
+                if (auto result = extract(source.node, makeCfgPath(source.scope, path_context))) {
+                        return *result;
+                }
         }
 
-        // Fall back to global if not found
-        if (auto global = extract(global_source.node,
-                                  makeCfgPath(global_source.scope, path_context))) {
-                return *global;
-        }
-
-        // Use hardcoded defaults
+        // Use hardcoded defaults if extraction failed
         return std::nullopt;
 }
 
@@ -168,8 +163,8 @@ void ConfigMapper::mapWindowSize(node_view size_node, node_view global_fallback_
         const auto& defaults =
                 PowerAppletConfig::getDefaultPowerAppletConfig().getWindowProperties().getSize();
 
-        auto result = resolveWithFallback<QSize>({size_node, "power_applet"},
-                                                 {global_fallback_node, "global"}, path_context);
+        auto result = resolve<QSize>({{size_node, "power_applet"}, {global_fallback_node, "global"}},
+                                     path_context);
         if (!result) {
                 size = defaults;
                 return;
@@ -183,9 +178,9 @@ void ConfigMapper::mapWindowTitle(node_view title_node, node_view global_fallbac
         const auto& defaults =
                 PowerAppletConfig::getDefaultPowerAppletConfig().getWindowProperties().getTitle();
 
-        auto result = resolveWithFallback<std::string>({title_node, "power_applet"},
-                                                       {global_fallback_node, "global"},
-                                                       path_context);
+        auto result = resolve<std::string>({{title_node, "power_applet"},
+                                            {global_fallback_node, "global"}},
+                                           path_context);
         if (!result) {
                 title = defaults;
                 return;
@@ -226,9 +221,9 @@ void ConfigMapper::mapPrimaryButtonTextAlignment(node_view      text_alignment_n
                                        .getPrimaryButtonProperties()
                                        .getTextAlignment();
 
-        auto result = resolveWithFallback<Qt::Alignment>({text_alignment_node, "power_applet"},
-                                                         {global_fallback_node, "global"},
-                                                         path_context);
+        auto result = resolve<Qt::Alignment>({{text_alignment_node, "power_applet"},
+                                              {global_fallback_node, "global"}},
+                                             path_context);
         if (!result) {
                 text_alignment = defaults;
                 return;
@@ -246,9 +241,9 @@ void ConfigMapper::mapPrimaryButtonIconAlignment(node_view      icon_alignment_n
                                        .getPrimaryButtonProperties()
                                        .getIconAlignment();
 
-        auto result = resolveWithFallback<Qt::Alignment>({icon_alignment_node, "power_applet"},
-                                                         {global_fallback_node, "global"},
-                                                         path_context);
+        auto result = resolve<Qt::Alignment>({{icon_alignment_node, "power_applet"},
+                                              {global_fallback_node, "global"}},
+                                             path_context);
         if (!result) {
                 icon_alignment = defaults;
                 return;
@@ -264,8 +259,9 @@ void ConfigMapper::mapPrimaryButtonIconSize(node_view icon_size_node,
                                        .getPrimaryButtonProperties()
                                        .getIconSize();
 
-        auto results = resolveWithFallback<QSize>({icon_size_node, "power_applet"},
-                                                  {global_fallback_node, "global"}, path_context);
+        auto results = resolve<QSize>({{icon_size_node, "power_applet"},
+                                       {global_fallback_node, "global"}},
+                                      path_context);
         if (!results) {
                 icon_size = defaults;
                 return;
@@ -280,9 +276,9 @@ void ConfigMapper::mapPrimaryButtonPolicy(node_view policy_node, node_view globa
                                        .getPrimaryButtonProperties()
                                        .getPolicy();
 
-        auto results = resolveWithFallback<QSizePolicy>({policy_node, "power_applet"},
-                                                        {global_fallback_node, "global"},
-                                                        path_context);
+        auto results = resolve<QSizePolicy>({{policy_node, "power_applet"},
+                                             {global_fallback_node, "global"}},
+                                            path_context);
         if (!results) {
                 policy = defaults;
                 return;
