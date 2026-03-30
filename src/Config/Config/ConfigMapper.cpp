@@ -495,21 +495,21 @@ bool ConfigMapper::mapLayoutPrimaryButtonData(node_view                       bu
         const auto&   defaults            = default_buttons[button_index];
         const QString button_path_context = path_context + QString("[%1]").arg(button_index);
 
-        const auto* button_table = getTomlTable(toml::node_view(button_data_node),
-                                                makeCfgPath("power_applet", button_path_context));
+        const auto button_table = resolve<toml::table>(button_path_context,
+                                                       Source{button_data_node, "power_applet"});
         if (!button_table) {
                 buttons = default_buttons;
                 return true;
         }
 
         const std::optional<bool> enabled =
-                tryGet<bool>((*button_table)["enabled"],
+                tryGet<bool>((button_table.value())["enabled"],
                              extendCfgPath(makeCfgPath("power_applet", button_path_context),
                                            "enabled"));
 
         if (!enabled || !enabled.value()) {
                 QString info = "Button %1: DISABLED";
-                if (const auto label = (*button_table)["label"].as_string()) {
+                if (const auto label = (button_table.value())["label"].as_string()) {
                         QDEBUG() << info.arg(label->get());
                 } else {
                         QDEBUG() << info.arg(button_index);
@@ -586,7 +586,7 @@ void ConfigMapper::mapLayoutProperties(node_view layout_node, LayoutProperties& 
         const auto& defaults = PowerAppletConfig::getDefaultPowerAppletConfig().getLayoutProperties();
         LayoutProperties layout_properties{};
 
-        const auto* data = getTomlTable(layout_node, makeCfgPath("power_applet", path_context));
+        const auto data = resolve<toml::table>(path_context, Source{layout_node, "power_applet"});
         if (!data) {
                 layout_properties = defaults;
                 layout            = std::move(layout_properties);
@@ -594,7 +594,8 @@ void ConfigMapper::mapLayoutProperties(node_view layout_node, LayoutProperties& 
         }
 
         // Primary power buttons
-        mapLayoutPrimaryButtons((*data)["primary_buttons"], layout_properties.primary_power_buttons,
+        mapLayoutPrimaryButtons(data.value()["primary_buttons"],
+                                layout_properties.primary_power_buttons,
                                 extendCfgPath(path_context, "primary_buttons"));
 
         layout = std::move(layout_properties);
@@ -617,7 +618,8 @@ void ConfigMapper::mapEnvironmentProperties(node_view              environment_n
                                                  .getEnvironmentProperties();
         EnvironmentProperties environment_properties{};
 
-        const auto* data = getTomlTable(environment_node, makeCfgPath("power_applet", path_context));
+        const auto data = resolve<toml::table>(path_context,
+                                               Source{environment_node, "power_applet"});
         if (!data) {
                 environment_properties = defaults;
                 environment            = std::move(environment_properties);
@@ -625,7 +627,7 @@ void ConfigMapper::mapEnvironmentProperties(node_view              environment_n
         }
 
         // D-Bus mode
-        mapEnvironmentDBusMode((*data)["dbus_mode"], environment_properties.dbus_mode,
+        mapEnvironmentDBusMode(data.value()["dbus_mode"], environment_properties.dbus_mode,
                                extendCfgPath(path_context, "dbus_mode"));
 
         environment = std::move(environment_properties);
