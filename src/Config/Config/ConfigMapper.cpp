@@ -169,6 +169,11 @@ static std::optional<T> resolve(std::initializer_list<Source> sources, const QSt
         return std::nullopt;
 }
 
+template<typename T, typename... Sources>
+std::optional<T> resolve(const QString& path_context, Sources&&... sources) {
+        return resolve<T>({std::forward<Sources>(sources)...}, path_context);
+}
+
 /* Window Properties */
 void ConfigMapper::mapWindowSize(node_view size_node, node_view global_fallback_node, QSize& size,
                                  const QString& path_context) {
