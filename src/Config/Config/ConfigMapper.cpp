@@ -59,7 +59,7 @@ const EnumMap<QSizePolicy> size_policy_map = {{"expanding",
 
 } // namespace
 
-power_button_id getPowerButtonIDFromString(const QString& string) {
+static power_button_id getPowerButtonIDFromString(const QString& string) {
         const std::unordered_map<QString, power_button_id> map =
                 {{"poweroff", power_button_id::shutdown},
                  {"shutdown", power_button_id::shutdown},
@@ -72,24 +72,25 @@ power_button_id getPowerButtonIDFromString(const QString& string) {
         return map.at(string);
 }
 
-Qt::Alignment getAlignment(const std::string key, const EnumMap<Qt::Alignment>& map,
-                           const Qt::Alignment& fallback, const QString& path) {
+static Qt::Alignment getAlignment(const std::string key, const EnumMap<Qt::Alignment>& map,
+                                  const Qt::Alignment& fallback, const QString& path) {
         return getValueFromEnumMap<Qt::Alignment>(key, map, fallback, path);
 }
 
-std::optional<Qt::Alignment> tryGetAlignment(const std::string             key,
-                                             const EnumMap<Qt::Alignment>& map,
-                                             const QString&                path) {
+static std::optional<Qt::Alignment> tryGetAlignment(const std::string             key,
+                                                    const EnumMap<Qt::Alignment>& map,
+                                                    const QString&                path) {
         return tryGetValueFromEnumMap<Qt::Alignment>(key, map, path);
 }
 
-QSizePolicy getSizePolicy(const std::string key, const EnumMap<QSizePolicy>& map,
-                          const QSizePolicy& fallback, const QString& path) {
+static QSizePolicy getSizePolicy(const std::string key, const EnumMap<QSizePolicy>& map,
+                                 const QSizePolicy& fallback, const QString& path) {
         return getValueFromEnumMap<QSizePolicy>(key, map, fallback, path);
 }
 
-std::optional<QSizePolicy> tryGetSizePolicy(const std::string key, const EnumMap<QSizePolicy>& map,
-                                            const QString& path) {
+static std::optional<QSizePolicy> tryGetSizePolicy(const std::string           key,
+                                                   const EnumMap<QSizePolicy>& map,
+                                                   const QString&              path) {
         return tryGetValueFromEnumMap<QSizePolicy>(key, map, path);
 }
 
@@ -106,28 +107,28 @@ static QString extendCfgPath(const QString& path, const char* extension,
 }
 
 namespace extractor {
-auto table = [](node_view node, const QString& path) -> std::optional<toml::table> {
+static auto table = [](node_view node, const QString& path) -> std::optional<toml::table> {
         if (auto* result = getTomlTable(node, path)) { return *result; }
 
         return std::nullopt;
 };
 
-auto array = [](node_view node, const QString& path, const QString& error_arr_details = {}) {
+static auto array = [](node_view node, const QString& path, const QString& error_arr_details = {}) {
         return getTomlArray(node, path, error_arr_details);
 };
 
 template<typename T>
-auto value = [](node_view node, const QString& path) { return tryGet<T>(node, path); };
+static auto value = [](node_view node, const QString& path) { return tryGet<T>(node, path); };
 
-auto qsize = [](node_view node, const QString& path) { return tryGetQSize(node, path); };
+static auto qsize = [](node_view node, const QString& path) { return tryGetQSize(node, path); };
 
-auto alignment = [](node_view node, const QString& path) -> std::optional<Qt::Alignment> {
+static auto alignment = [](node_view node, const QString& path) -> std::optional<Qt::Alignment> {
         auto raw = tryGet<std::string>(node, path);
         if (!raw) { return std::nullopt; }
         return tryGetAlignment(raw.value(), alignment_map, path);
 };
 
-auto size_policy = [](node_view node, const QString& path) -> std::optional<QSizePolicy> {
+static auto size_policy = [](node_view node, const QString& path) -> std::optional<QSizePolicy> {
         auto raw = tryGet<std::string>(node, path);
         if (!raw) { return std::nullopt; }
         return tryGetSizePolicy(raw.value(), size_policy_map, path);
