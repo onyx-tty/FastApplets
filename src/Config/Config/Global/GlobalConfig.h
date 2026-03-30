@@ -27,15 +27,15 @@
 class ConfigMapper;
 
 class GlobalConfig {
-public:
-        GlobalConfig(WindowProperties        window_properties         = {},
-                     PrimaryButtonProperties primary_button_properties = {});
-        const WindowProperties&        getWindowProperties() const;
-        const PrimaryButtonProperties& getPrimaryButtonProperties() const;
-
 protected:
         friend class ConfigMapper;
 
         WindowProperties        window_properties;
         PrimaryButtonProperties primary_button_properties;
+
+public:
+        GlobalConfig(WindowProperties        window_properties         = {},
+                     PrimaryButtonProperties primary_button_properties = {});
+        const WindowProperties&        getWindowProperties() const;
+        const PrimaryButtonProperties& getPrimaryButtonProperties() const;
 };

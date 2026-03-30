@@ -23,6 +23,12 @@
 class KeysMapper;
 
 class Keys final {
+private:
+        friend class KeysMapper;
+
+        GlobalKeys      global_keys;
+        PowerAppletKeys power_applet_keys;
+
 public:
         Keys(GlobalKeys global_keys = {}, PowerAppletKeys power_applet_keys = {});
         // TODO Make this const to avoid overwrites
@@ -30,10 +36,4 @@ public:
         static const Keys&     getDefault();
         const GlobalKeys&      getGlobalKeys() const;
         const PowerAppletKeys& getPowerAppletKeys() const;
-
-private:
-        friend class KeysMapper;
-
-        GlobalKeys      global_keys;
-        PowerAppletKeys power_applet_keys;
 };

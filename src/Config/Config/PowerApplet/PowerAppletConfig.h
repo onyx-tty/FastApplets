@@ -30,6 +30,12 @@
 class ConfigMapper;
 
 class PowerAppletConfig final : public GlobalConfig {
+private:
+        friend class ConfigMapper;
+
+        LayoutProperties      layout_properties;
+        EnvironmentProperties environment_properties;
+
 public:
         PowerAppletConfig(WindowProperties        window_properties         = {},
                           PrimaryButtonProperties primary_button_properties = {},
@@ -40,10 +46,4 @@ public:
         static const PowerAppletConfig& getDefault();
         const LayoutProperties&         getLayoutProperties() const;
         const EnvironmentProperties&    getEnvironmentProperties() const;
-
-private:
-        friend class ConfigMapper;
-
-        LayoutProperties      layout_properties;
-        EnvironmentProperties environment_properties;
 };
