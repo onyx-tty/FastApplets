@@ -172,7 +172,7 @@ static std::optional<T> resolve(std::initializer_list<Source> sources, const QSt
 }
 
 template<typename T, typename... Sources>
-std::optional<T> resolve(const QString& path_context, Sources&&... sources) {
+static std::optional<T> resolve(const QString& path_context, Sources&&... sources) {
         return resolve<T>({std::forward<Sources>(sources)...}, path_context);
 }
 
