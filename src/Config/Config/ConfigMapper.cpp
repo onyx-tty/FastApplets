@@ -124,6 +124,11 @@ auto size_policy = [](node_view node, const QString& path) -> std::optional<QSiz
 };
 } // namespace extractor
 
+struct Source final {
+        node_view   node;
+        const char* scope;
+};
+
 template<typename T>
 static std::optional<T> resolveWithFallback(node_view power_node, node_view global_node,
                                             const QString& path_context) {
