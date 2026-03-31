@@ -309,7 +309,7 @@ void ConfigMapper::mapPrimaryButtonProperties(node_view button_node, node_view g
                                                 Source{global_fallback_node, "global"});
 
         // Use hardcoded defaults if no tables found
-        if (!power_data || !global_data) {
+        if (!power_data && !global_data) {
                 button = PowerAppletConfig::getDefault().getPrimaryButtonProperties();
                 return;
         }
