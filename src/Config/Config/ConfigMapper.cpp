@@ -120,6 +120,14 @@ static auto array = [](node_view node, const QString& path, const QString& error
 template<typename T>
 static auto value = [](node_view node, const QString& path) { return tryGet<T>(node, path); };
 
+static auto qstring = [](node_view node, const QString& path) -> std::optional<QString> {
+        if (auto str = extractor::value<std::string>(node, path)) {
+                return QString::fromStdString(str.value());
+        }
+
+        return std::nullopt;
+};
+
 static auto qsize = [](node_view node, const QString& path) { return tryGetQSize(node, path); };
 
 static auto alignment = [](node_view node, const QString& path) -> std::optional<Qt::Alignment> {
@@ -156,6 +164,8 @@ static std::optional<T> resolve(std::initializer_list<Source> sources, const QSt
                         return extractor::alignment(node, path);
                 } else if constexpr (std::is_same_v<DT, QSizePolicy>) {
                         return extractor::size_policy(node, path);
+                } else if constexpr (std::is_same_v<DT, QString>) {
+                        return extractor::qstring(node, path);
                 } else {
                         return extractor::value<DT>(node, path);
                 }
