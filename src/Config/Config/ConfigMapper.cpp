@@ -212,22 +212,23 @@ void ConfigMapper::mapWindowProperties(node_view window_node, node_view global_f
         auto power_data  = resolve<toml::table>(path_context, Source{window_node, "power_applet"});
         auto global_data = resolve<toml::table>(path_context,
                                                 Source{global_fallback_node, "global"});
-        if (global_data || power_data) {
-                node_view        power_node  = power_data ? node_view(*power_data) : node_view();
-                node_view        global_node = global_data ? node_view(*global_data) : node_view();
-                WindowProperties window_properties{};
 
-                mapWindowSize(power_node["size"], global_node["size"], window_properties.size,
-                              extendCfgPath(path_context, "size"));
-                mapWindowTitle(power_node["title"], global_node["title"], window_properties.title,
-                               extendCfgPath(path_context, "title"));
-
-                window = std::move(window_properties);
+        // Use hardcoded defaults if no tables found
+        if (!power_data && !global_data) {
+                window = PowerAppletConfig::getDefault().getWindowProperties();
                 return;
         }
 
-        // Use hardcoded defaults
-        window = PowerAppletConfig::getDefault().getWindowProperties();
+        node_view        power_node  = power_data ? node_view(*power_data) : node_view();
+        node_view        global_node = global_data ? node_view(*global_data) : node_view();
+        WindowProperties window_properties{};
+
+        mapWindowSize(power_node["size"], global_node["size"], window_properties.size,
+                      extendCfgPath(path_context, "size"));
+        mapWindowTitle(power_node["title"], global_node["title"], window_properties.title,
+                       extendCfgPath(path_context, "title"));
+
+        window = std::move(window_properties);
 }
 
 /* Primary Button Properties*/
@@ -306,32 +307,30 @@ void ConfigMapper::mapPrimaryButtonProperties(node_view button_node, node_view g
         auto power_data  = resolve<toml::table>(path_context, Source{button_node, "power_applet"});
         auto global_data = resolve<toml::table>(path_context,
                                                 Source{global_fallback_node, "global"});
-        if (global_data || power_data) {
-                node_view power_node  = power_data ? node_view(*power_data) : node_view();
-                node_view global_node = global_data ? node_view(*global_data) : node_view();
-                PrimaryButtonProperties button_properties{};
 
-                mapPrimaryButtonTextAlignment(power_node["text_alignment"],
-                                              global_node["text_alignment"],
-                                              button_properties.text_alignment,
-                                              extendCfgPath(path_context, "text_alignment"));
-                mapPrimaryButtonIconAlignment(power_node["icon_alignment"],
-                                              global_node["icon_alignment"],
-                                              button_properties.icon_alignment,
-                                              extendCfgPath(path_context, "icon_alignment"));
-                mapPrimaryButtonIconSize(power_node["icon_size"], global_node["icon_size"],
-                                         button_properties.icon_size,
-                                         extendCfgPath(path_context, "icon_size"));
-                mapPrimaryButtonPolicy(power_node["policy"], global_node["policy"],
-                                       button_properties.policy,
-                                       extendCfgPath(path_context, "policy"));
-
-                button = std::move(button_properties);
+        // Use hardcoded defaults if no tables found
+        if (!power_data || !global_data) {
+                button = PowerAppletConfig::getDefault().getPrimaryButtonProperties();
                 return;
         }
 
-        // Use hardcoded defaults
-        button = PowerAppletConfig::getDefault().getPrimaryButtonProperties();
+        node_view               power_node  = power_data ? node_view(*power_data) : node_view();
+        node_view               global_node = global_data ? node_view(*global_data) : node_view();
+        PrimaryButtonProperties button_properties{};
+
+        mapPrimaryButtonTextAlignment(power_node["text_alignment"], global_node["text_alignment"],
+                                      button_properties.text_alignment,
+                                      extendCfgPath(path_context, "text_alignment"));
+        mapPrimaryButtonIconAlignment(power_node["icon_alignment"], global_node["icon_alignment"],
+                                      button_properties.icon_alignment,
+                                      extendCfgPath(path_context, "icon_alignment"));
+        mapPrimaryButtonIconSize(power_node["icon_size"], global_node["icon_size"],
+                                 button_properties.icon_size,
+                                 extendCfgPath(path_context, "icon_size"));
+        mapPrimaryButtonPolicy(power_node["policy"], global_node["policy"],
+                               button_properties.policy, extendCfgPath(path_context, "policy"));
+
+        button = std::move(button_properties);
 }
 
 /* Layout Properties */
