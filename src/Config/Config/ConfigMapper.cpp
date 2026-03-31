@@ -208,9 +208,10 @@ void ConfigMapper::mapWindowTitle(node_view title_node, node_view global_fallbac
 
 void ConfigMapper::mapWindowProperties(node_view window_node, node_view global_fallback_node,
                                        WindowProperties& window, const QString& path_context) {
-        // Forward power_data and global_data
-        auto* power_data  = getTomlTable(window_node, makeCfgPath("power_applet", path_context));
-        auto* global_data = getTomlTable(global_fallback_node, makeCfgPath("global", path_context));
+        // Resolve power_data and global_data
+        auto power_data  = resolve<toml::table>(path_context, Source{window_node, "power_applet"});
+        auto global_data = resolve<toml::table>(path_context,
+                                                Source{global_fallback_node, "global"});
         if (global_data || power_data) {
                 node_view        power_node  = power_data ? node_view(*power_data) : node_view();
                 node_view        global_node = global_data ? node_view(*global_data) : node_view();
@@ -301,9 +302,10 @@ void ConfigMapper::mapPrimaryButtonPolicy(node_view policy_node, node_view globa
 void ConfigMapper::mapPrimaryButtonProperties(node_view button_node, node_view global_fallback_node,
                                               PrimaryButtonProperties& button,
                                               const QString&           path_context) {
-        // Forward power_data and global_data
-        auto* power_data  = getTomlTable(button_node, makeCfgPath("power_applet", path_context));
-        auto* global_data = getTomlTable(global_fallback_node, makeCfgPath("global", path_context));
+        // Resolve power_data and global_data
+        auto power_data  = resolve<toml::table>(path_context, Source{button_node, "power_applet"});
+        auto global_data = resolve<toml::table>(path_context,
+                                                Source{global_fallback_node, "global"});
         if (global_data || power_data) {
                 node_view power_node  = power_data ? node_view(*power_data) : node_view();
                 node_view global_node = global_data ? node_view(*global_data) : node_view();
