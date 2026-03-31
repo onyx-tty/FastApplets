@@ -177,6 +177,17 @@ static std::optional<T> resolve(const QString& path_context, Sources&&... source
         return resolve<T>({std::forward<Sources>(sources)...}, path_context);
 }
 
+template<typename T, typename DefaultT>
+static T resolveOr(std::initializer_list<Source> sources, const DefaultT& defaults,
+                   const QString& path_context) {
+        return resolve<T>(sources, path_context).value_or(defaults);
+}
+
+template<typename T, typename DefaultT, typename... Sources>
+static T resolveOr(const QString& path_context, const DefaultT& defaults, Sources&&... sources) {
+        return resolveOr<T>({std::forward<Sources>(sources)...}, defaults, path_context);
+}
+
 /* Window Properties */
 void ConfigMapper::mapWindowSize(node_view size_node, node_view global_fallback_node, QSize& size,
                                  const QString& path_context) {
