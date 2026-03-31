@@ -126,7 +126,7 @@ void KeysMapper::mapPowerAppletPrimaryButtonKeys(node_view                   pri
         QString    error_prefix         = "in keys.toml, power_applet.primary_buttons";
         QString    error_arr_details    = "Format: [keybindings...]";
         const auto primary_button_nodes = getTomlArray(primary_buttons_node, error_prefix,
-                                                       "Format: [keys1, keys2, keys3, keys4]");
+                                                       error_arr_details);
 
         if (!primary_button_nodes || primary_button_nodes.value().size() < 4) {
                 primary_buttons = defaults;
