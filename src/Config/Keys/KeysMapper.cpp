@@ -79,8 +79,8 @@ void KeysMapper::mapGlobalQuitKeys(node_view quit_node, keybindings& quit) {
         const auto&      defaults     = Keys::getDefault().getGlobalKeys().getQuitKeys();
         QString          error_prefix = "in keys.toml, global.quit";
         constexpr size_t min_size = 1, max_size = 4;
-        const auto array = getTomlArray(quit_node, min_size, max_size, std::move(error_prefix),
-                                        "Format: [keybindings...]");
+        const auto       array = getTomlArray(quit_node, std::move(error_prefix),
+                                              "Format: [keybindings...]", min_size, max_size);
 
         if (!array || array.value().empty()) {
                 quit = defaults;
@@ -108,8 +108,8 @@ void KeysMapper::mapPowerAppletQuitKeys(node_view quit_node, keybindings& quit,
                                         keybindings& global_quit) {
         QString          error_prefix = "in keys.toml, power_applet.quit";
         constexpr size_t min_size = 1, max_size = 4;
-        const auto array = getTomlArray(quit_node, min_size, max_size, std::move(error_prefix),
-                                        "Format: [keybindings...]");
+        const auto       array = getTomlArray(quit_node, std::move(error_prefix),
+                                              "Format: [keybindings...]", min_size, max_size);
 
         if (!array || array.value().empty()) {
                 quit = global_quit;
@@ -134,12 +134,10 @@ void KeysMapper::mapPowerAppletPrimaryButtonKeys(node_view                   pri
 
         constexpr size_t                          min_size = 1, max_size = 4;
         std::array<std::optional<toml::array>, 4> keys_arr;
-
         for (size_t i = 0; i != primary_button_nodes.value().size(); ++i) {
                 keys_arr[i] = getTomlArray(toml::node_view(primary_button_nodes.value()[i]),
-                                           min_size, max_size,
                                            QStringLiteral("[%1]").arg(QString::number(i - 1)),
-                                           error_arr_details);
+                                           error_arr_details, min_size, max_size);
         };
 
         // Parse power_applet.primary_buttons

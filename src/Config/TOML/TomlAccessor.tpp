@@ -63,7 +63,9 @@ const toml::table* getTomlTable(node_view node, const QString& path) {
 }
 
 std::optional<toml::array> getTomlArray(node_view node, const QString& path,
-                                        const QString& error_arr_details) {
+                                        const QString&        error_arr_details,
+                                        std::optional<size_t> min_size,
+                                        std::optional<size_t> max_size) {
         const auto* arr = node.as_array();
 
         if (!arr) {
@@ -72,29 +74,15 @@ std::optional<toml::array> getTomlArray(node_view node, const QString& path,
                 return std::nullopt;
         }
 
-        return *arr;
-}
-
-std::optional<toml::array> getTomlArray(node_view node, size_t min_size, const QString& path,
-                                        const QString& error_arr_details) {
-        const auto* arr = node.as_array();
-
-        if (!arr || arr->size() < min_size) {
-                QWARNING_NS() << path << ", must be an array! " << error_arr_details
-                              << " Using defaults...";
+        if (min_size && arr->size() < min_size.value()) {
+                QWARNING_NS() << path << ", arr size < min_size! min_size: " << min_size.value()
+                              << ", size: " << arr->size() << ". Using defaults...";
                 return std::nullopt;
         }
 
-        return *arr;
-}
-
-std::optional<toml::array> getTomlArray(node_view node, size_t min_size, size_t max_size,
-                                        const QString& path, const QString& error_arr_details) {
-        const auto* arr = node.as_array();
-
-        if (!arr || arr->size() < min_size || arr->size() > max_size) {
-                QWARNING_NS() << path << ", must be an array! " << error_arr_details
-                              << " Using defaults...";
+        if (max_size && arr->size() > max_size.value()) {
+                QWARNING_NS() << path << ", arr size >= max_size! max_size: " << max_size.value()
+                              << ", size: " << arr->size() << ". Using defaults...";
                 return std::nullopt;
         }
 
@@ -102,7 +90,8 @@ std::optional<toml::array> getTomlArray(node_view node, size_t min_size, size_t 
 }
 
 QSize getQSize(node_view node, const QSize& fallback, const QString& path) {
-        const auto& arr = getTomlArray(node, 2, path, "Format: [int, int]");
+        constexpr size_t min_size = 2;
+        const auto arr = getTomlArray(node, path, "Format: [int, int]", min_size, std::nullopt);
 
         if (!arr) { return fallback; }
 
@@ -115,7 +104,8 @@ QSize getQSize(node_view node, const QSize& fallback, const QString& path) {
 }
 
 std::optional<QSize> tryGetQSize(node_view node, const QString& path) {
-        const auto& arr = getTomlArray(node, 2, path, "Format: [int, int]");
+        constexpr size_t min_size = 2;
+        const auto&      arr      = getTomlArray(node, path, "Format: [int, int]", min_size);
 
         if (!arr) { return std::nullopt; }
 

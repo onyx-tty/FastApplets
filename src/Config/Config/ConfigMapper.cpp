@@ -429,9 +429,8 @@ void ConfigMapper::mapLayoutPrimaryButtonCommandArguments(node_view          arg
                                        .getPrimaryPowerButtons()[button_index];
 
         constexpr size_t min_size = 0;
-        const auto       args     = getTomlArray(arguments_node, min_size,
-                                                 makeCfgPath("power_applet", path_context),
-                                                 "Format: [string, array]");
+        const auto args = getTomlArray(arguments_node, makeCfgPath("power_applet", path_context),
+                                       "Format: [string, array]", min_size);
         if (!args) {
                 button = defaults;
                 return;
@@ -459,9 +458,9 @@ void ConfigMapper::mapLayoutPrimaryButtonCommand(node_view command_node, Primary
         QString error_arr_details = "Format: [program, [args...]]";
 
         constexpr size_t min_size = 2, max_size = 2;
-        const auto       command_arr = getTomlArray(command_node, min_size, max_size,
+        const auto       command_arr = getTomlArray(command_node,
                                                     makeCfgPath("power_applet", path_context),
-                                                    error_arr_details);
+                                                    error_arr_details, min_size, max_size);
         if (!command_arr) {
                 button = defaults;
                 return;

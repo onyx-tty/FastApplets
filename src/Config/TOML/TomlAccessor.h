@@ -35,13 +35,9 @@ std::optional<T> tryGet(node_view node, const QString& path);
 const toml::table* getTomlTable(node_view node, const QString& path);
 
 std::optional<toml::array> getTomlArray(node_view node, const QString& path,
-                                        const QString& error_arr_details = {});
-
-std::optional<toml::array> getTomlArray(node_view node, size_t min_size, const QString& path,
-                                        const QString& error_arr_details = {});
-
-std::optional<toml::array> getTomlArray(node_view node, size_t min_size, size_t max_size,
-                                        const QString& path, const QString& error_arr_details = {});
+                                        const QString&        error_arr_details = {},
+                                        std::optional<size_t> min_size          = std::nullopt,
+                                        std::optional<size_t> max_size          = std::nullopt);
 
 QSize getQSize(node_view node, const QSize& fallback, const QString& path);
 
