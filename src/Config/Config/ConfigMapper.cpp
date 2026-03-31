@@ -219,8 +219,8 @@ void ConfigMapper::mapWindowProperties(node_view window_node, node_view global_f
                 return;
         }
 
-        node_view        power_node  = power_data ? node_view(*power_data) : node_view();
-        node_view        global_node = global_data ? node_view(*global_data) : node_view();
+        node_view        power_node  = power_data ? node_view(power_data.value()) : node_view();
+        node_view        global_node = global_data ? node_view(global_data.value()) : node_view();
         WindowProperties window_properties{};
 
         mapWindowSize(power_node["size"], global_node["size"], window_properties.size,
@@ -314,8 +314,8 @@ void ConfigMapper::mapPrimaryButtonProperties(node_view button_node, node_view g
                 return;
         }
 
-        node_view               power_node  = power_data ? node_view(*power_data) : node_view();
-        node_view               global_node = global_data ? node_view(*global_data) : node_view();
+        node_view power_node  = power_data ? node_view(power_data.value()) : node_view();
+        node_view global_node = global_data ? node_view(global_data.value()) : node_view();
         PrimaryButtonProperties button_properties{};
 
         mapPrimaryButtonTextAlignment(power_node["text_alignment"], global_node["text_alignment"],
