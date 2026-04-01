@@ -253,28 +253,25 @@ void resolveTransformOrDefault(const QString& path_context, TAttribute& attribut
 }
 
 /* Window Properties */
-void ConfigMapper::mapWindowSize(node_view size_node, node_view global_fallback_node, QSize& size,
-                                 const QString& path_context) {
+void ConfigMapper::mapWindowSize(NodePair nodes, QSize& size, const QString& path_context) {
         const auto& defaults = PowerAppletConfig::getDefault().getWindowProperties().getSize();
 
-        size = resolveOr<QSize>(path_context, defaults, Source{size_node, "power_applet"},
-                                Source{global_fallback_node, "global"});
+        size = resolveOr<QSize>(path_context, defaults, Source{nodes.primary, "power_applet"},
+                                Source{nodes.fallback, "global"});
 }
 
-void ConfigMapper::mapWindowTitle(node_view title_node, node_view global_fallback_node,
-                                  QString& title, const QString& path_context) {
+void ConfigMapper::mapWindowTitle(NodePair nodes, QString& title, const QString& path_context) {
         const auto& defaults = PowerAppletConfig::getDefault().getWindowProperties().getTitle();
 
-        title = resolveOr<QString>(path_context, defaults, Source{title_node, "power_applet"},
-                                   Source{global_fallback_node, "global"});
+        title = resolveOr<QString>(path_context, defaults, Source{nodes.primary, "power_applet"},
+                                   Source{nodes.fallback, "global"});
 }
 
-void ConfigMapper::mapWindowProperties(node_view window_node, node_view global_fallback_node,
-                                       WindowProperties& window, const QString& path_context) {
+void ConfigMapper::mapWindowProperties(NodePair nodes, WindowProperties& window,
+                                       const QString& path_context) {
         // Resolve power_data and global_data
-        auto power_data  = resolve<toml::table>(path_context, Source{window_node, "power_applet"});
-        auto global_data = resolve<toml::table>(path_context,
-                                                Source{global_fallback_node, "global"});
+        auto power_data = resolve<toml::table>(path_context, Source{nodes.primary, "power_applet"});
+        auto global_data = resolve<toml::table>(path_context, Source{nodes.fallback, "global"});
 
         // Use hardcoded defaults if no tables found
         if (!power_data && !global_data) {
@@ -287,66 +284,60 @@ void ConfigMapper::mapWindowProperties(node_view window_node, node_view global_f
 
         WindowProperties window_properties{};
 
-        mapWindowSize(power_node["size"], global_node["size"], window_properties.size,
+        mapWindowSize(NodePair{power_node["size"], global_node["size"]}, window_properties.size,
                       extendCfgPath(path_context, "size"));
-        mapWindowTitle(power_node["title"], global_node["title"], window_properties.title,
+        mapWindowTitle(NodePair{power_node["title"], global_node["title"]}, window_properties.title,
                        extendCfgPath(path_context, "title"));
 
         window = std::move(window_properties);
 }
 
 /* Primary Button Properties*/
-void ConfigMapper::mapPrimaryButtonTextAlignment(node_view      text_alignment_node,
-                                                 node_view      global_fallback_node,
-                                                 Qt::Alignment& text_alignment,
+void ConfigMapper::mapPrimaryButtonTextAlignment(NodePair nodes, Qt::Alignment& text_alignment,
                                                  const QString& path_context) {
         const auto& defaults =
                 PowerAppletConfig::getDefault().getPrimaryButtonProperties().getTextAlignment();
 
         text_alignment = resolveOr<Qt::Alignment>(path_context, defaults,
-                                                  Source{text_alignment_node, "power_applet"},
-                                                  Source{global_fallback_node, "global"});
+                                                  Source{nodes.primary, "power_applet"},
+                                                  Source{nodes.fallback, "global"});
 }
 
 // TODO This option doesn't work, fix
-void ConfigMapper::mapPrimaryButtonIconAlignment(node_view      icon_alignment_node,
-                                                 node_view      global_fallback_node,
-                                                 Qt::Alignment& icon_alignment,
+void ConfigMapper::mapPrimaryButtonIconAlignment(NodePair nodes, Qt::Alignment& icon_alignment,
                                                  const QString& path_context) {
         const auto& defaults =
                 PowerAppletConfig::getDefault().getPrimaryButtonProperties().getIconAlignment();
 
         icon_alignment = resolveOr<Qt::Alignment>(path_context, defaults,
-                                                  Source{icon_alignment_node, "power_applet"},
-                                                  Source{global_fallback_node, "global"});
+                                                  Source{nodes.primary, "power_applet"},
+                                                  Source{nodes.fallback, "global"});
 }
 
-void ConfigMapper::mapPrimaryButtonIconSize(node_view icon_size_node,
-                                            node_view global_fallback_node, QSize& icon_size,
+void ConfigMapper::mapPrimaryButtonIconSize(NodePair nodes, QSize& icon_size,
                                             const QString& path_context) {
         const auto& defaults =
                 PowerAppletConfig::getDefault().getPrimaryButtonProperties().getIconSize();
 
-        icon_size = resolveOr<QSize>(path_context, defaults, Source{icon_size_node, "power_applet"},
-                                     Source{global_fallback_node, "global"});
+        icon_size = resolveOr<QSize>(path_context, defaults, Source{nodes.primary, "power_applet"},
+                                     Source{nodes.fallback, "global"});
 }
 
-void ConfigMapper::mapPrimaryButtonPolicy(node_view policy_node, node_view global_fallback_node,
-                                          QSizePolicy& policy, const QString& path_context) {
+void ConfigMapper::mapPrimaryButtonPolicy(NodePair nodes, QSizePolicy& policy,
+                                          const QString& path_context) {
         const auto& defaults =
                 PowerAppletConfig::getDefault().getPrimaryButtonProperties().getPolicy();
 
-        policy = resolveOr<QSizePolicy>(path_context, defaults, Source{policy_node, "power_applet"},
-                                        Source{global_fallback_node, "global"});
+        policy = resolveOr<QSizePolicy>(path_context, defaults,
+                                        Source{nodes.primary, "power_applet"},
+                                        Source{nodes.fallback, "global"});
 }
 
-void ConfigMapper::mapPrimaryButtonProperties(node_view button_node, node_view global_fallback_node,
-                                              PrimaryButtonProperties& button,
-                                              const QString&           path_context) {
+void ConfigMapper::mapPrimaryButtonProperties(NodePair nodes, PrimaryButtonProperties& button,
+                                              const QString& path_context) {
         // Resolve power_data and global_data
-        auto power_data  = resolve<toml::table>(path_context, Source{button_node, "power_applet"});
-        auto global_data = resolve<toml::table>(path_context,
-                                                Source{global_fallback_node, "global"});
+        auto power_data = resolve<toml::table>(path_context, Source{nodes.primary, "power_applet"});
+        auto global_data = resolve<toml::table>(path_context, Source{nodes.fallback, "global"});
 
         // Use hardcoded defaults if no tables found
         if (!power_data && !global_data) {
@@ -359,16 +350,18 @@ void ConfigMapper::mapPrimaryButtonProperties(node_view button_node, node_view g
 
         PrimaryButtonProperties button_properties{};
 
-        mapPrimaryButtonTextAlignment(power_node["text_alignment"], global_node["text_alignment"],
+        mapPrimaryButtonTextAlignment(NodePair{power_node["text_alignment"],
+                                               global_node["text_alignment"]},
                                       button_properties.text_alignment,
                                       extendCfgPath(path_context, "text_alignment"));
-        mapPrimaryButtonIconAlignment(power_node["icon_alignment"], global_node["icon_alignment"],
+        mapPrimaryButtonIconAlignment(NodePair{power_node["icon_alignment"],
+                                               global_node["icon_alignment"]},
                                       button_properties.icon_alignment,
                                       extendCfgPath(path_context, "icon_alignment"));
-        mapPrimaryButtonIconSize(power_node["icon_size"], global_node["icon_size"],
+        mapPrimaryButtonIconSize(NodePair{power_node["icon_size"], global_node["icon_size"]},
                                  button_properties.icon_size,
                                  extendCfgPath(path_context, "icon_size"));
-        mapPrimaryButtonPolicy(power_node["policy"], global_node["policy"],
+        mapPrimaryButtonPolicy(NodePair{power_node["policy"], global_node["policy"]},
                                button_properties.policy, extendCfgPath(path_context, "policy"));
 
         button = std::move(button_properties);
@@ -645,12 +638,13 @@ void ConfigMapper::mapToGlobalConfig(const toml::table& config_table, GlobalConf
         if (!config_table.contains("global")) { QWARNING() << "in config.toml, global missing!"; }
 
         /* Window Properties */
-        mapWindowProperties(config_table["power_applet"]["window"],
-                            config_table["global"]["window"], config.window_properties, "window");
+        mapWindowProperties(NodePair{config_table["power_applet"]["window"],
+                                     config_table["global"]["window"]},
+                            config.window_properties, "window");
 
         /* Primary Button Properties */
-        mapPrimaryButtonProperties(config_table["power_applet"]["primary_button"],
-                                   config_table["global"]["primary_button"],
+        mapPrimaryButtonProperties(NodePair{config_table["power_applet"]["primary_button"],
+                                            config_table["global"]["primary_button"]},
                                    config.primary_button_properties, "primary_button");
 }
 
