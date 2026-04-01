@@ -148,6 +148,9 @@ struct Source final {
         const char* scope;
 };
 
+// Use if return value and defaulting must be handled manually
+// On success: extract from a node, return as std::optional<T>
+// On failure: return std::nullopt
 template<typename T>
 static std::optional<T> resolve(std::initializer_list<Source> sources, const QString& path_context) {
         using DT = std::decay_t<T>;
@@ -187,6 +190,9 @@ static std::optional<T> resolve(const QString& path_context, Sources&&... source
         return resolve<T>({std::forward<Sources>(sources)...}, path_context);
 }
 
+// Use to skip validation of return value and to automatically default
+// On success: extract from a node
+// On failure: copy default value
 template<typename T, typename DefaultT>
 static T resolveOr(std::initializer_list<Source> sources, const DefaultT& defaults,
                    const QString& path_context) {
