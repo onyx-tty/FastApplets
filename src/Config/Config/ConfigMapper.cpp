@@ -221,6 +221,31 @@ void resolveOrDefault(const QString& path_context, TAttribute& attribute, TObjec
                                               object, object_defaults, path_context);
 }
 
+// Use if resolveOrDefault is the optimal choice, but the extracted value must first be transformed
+// before being put into use
+// For example: if button ID is erroneous, default the button itself, not just the id
+//
+// On success: transform, then write result into an attribute
+// On failure: overwrite the object with object_defaults entirely
+template<typename TRaw, typename TAttribute, typename TObject, typename Transform>
+void resolveTransformOrDefault(std::initializer_list<Source> sources, TAttribute& attribute,
+                               TObject& object, const TObject& object_defaults,
+                               Transform&& transform, const QString& path_context) {
+        if (auto result = resolve<TRaw>(sources, path_context)) {
+                attribute = transform(std::move(result.value()));
+        } else {
+                object = object_defaults;
+        }
+}
+
+template<typename TRaw, typename TAttribute, typename TObject, typename Transform, typename... Sources>
+void resolveTransformOrDefault(const QString& path_context, TAttribute& attribute, TObject& object,
+                               const TObject& object_defaults, Transform&& transform,
+                               Sources&&... sources) {
+        resolveTransformOrDefault<TRaw>({std::forward<Sources>(sources)...}, attribute, object,
+                                        object_defaults, transform, path_context);
+}
+
 /* Window Properties */
 void ConfigMapper::mapWindowSize(node_view size_node, node_view global_fallback_node, QSize& size,
                                  const QString& path_context) {
