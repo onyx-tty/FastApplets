@@ -198,6 +198,29 @@ static T resolveOr(const QString& path_context, const DefaultT& defaults, Source
         return resolveOr<T>({std::forward<Sources>(sources)...}, defaults, path_context);
 }
 
+// Use to try and extract a value from a node into a specific attribute, and if that fails, to
+// default a completely different object
+// For example: if button ID is erroneous, default the button itself, not just the id
+//
+// On success: write result into a provided attribute
+// On failure: overwrite object with object_defaults entirely
+template<typename TAttribute, typename TObject>
+void resolveOrDefault(std::initializer_list<Source> sources, TAttribute& attribute, TObject& object,
+                      const TObject& object_defaults, const QString& path_context) {
+        if (auto result = resolve<TAttribute>(sources, path_context)) {
+                attribute = result.value();
+        } else {
+                object = object_defaults;
+        }
+}
+
+template<typename TAttribute, typename TObject, typename... Sources>
+void resolveOrDefault(const QString& path_context, TAttribute& attribute, TObject& object,
+                      const TObject& object_defaults, Sources&&... sources) {
+        resolveOrDefault<TAttribute, TObject>({std::forward<Sources>(sources)...}, attribute,
+                                              object, object_defaults, path_context);
+}
+
 /* Window Properties */
 void ConfigMapper::mapWindowSize(node_view size_node, node_view global_fallback_node, QSize& size,
                                  const QString& path_context) {
