@@ -45,14 +45,13 @@ private:
         ConfigMapper() = delete;
 
         /* Window Properties */
-        static void mapWindowProperties(NodePair nodes, WindowProperties& window,
-                                        const WindowProperties& defaults,
-                                        const QString&          path_context);
+        static void mapWindow(NodePair nodes, WindowProperties& window,
+                              const WindowProperties& defaults, const QString& path_context);
 
         /* Primary Button Properties */
-        static void mapPrimaryButtonProperties(NodePair nodes, PrimaryButtonProperties& button,
-                                               const PrimaryButtonProperties& defaults,
-                                               const QString&                 path_context);
+        static void mapPrimaryButton(NodePair nodes, PrimaryButtonProperties& button,
+                                     const PrimaryButtonProperties& defaults,
+                                     const QString&                 path_context);
 
         /* Layout Properties */
         static void mapCommandArgument(node_view argument_node, PrimaryButtonData& button,
@@ -74,15 +73,13 @@ private:
                                       std::vector<PrimaryButtonData>&       primary_buttons,
                                       const std::vector<PrimaryButtonData>& defaults,
                                       const QString&                        path_context);
-        static void mapLayoutProperties(node_view layout_node, LayoutProperties& layout,
-                                        const LayoutProperties& defaults,
-                                        const QString&          path_context);
+        static void mapLayout(node_view layout_node, LayoutProperties& layout,
+                              const LayoutProperties& defaults, const QString& path_context);
 
         /* Environment Properties*/
-        static void mapEnvironmentProperties(node_view                    environment_node,
-                                             EnvironmentProperties&       environment,
-                                             const EnvironmentProperties& defaults,
-                                             const QString&               path_context);
+        static void mapEnvironment(node_view environment_node, EnvironmentProperties& environment,
+                                   const EnvironmentProperties& defaults,
+                                   const QString&               path_context);
 
 public:
         static void mapToGlobalConfig(const toml::table& config_table, GlobalConfig& config);

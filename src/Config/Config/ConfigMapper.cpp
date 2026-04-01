@@ -253,9 +253,8 @@ void resolveTransformOrDefault(const QString& path_context, TAttribute& attribut
 }
 
 /* Window Properties */
-void ConfigMapper::mapWindowProperties(NodePair nodes, WindowProperties& window,
-                                       const WindowProperties& defaults,
-                                       const QString&          path_context) {
+void ConfigMapper::mapWindow(NodePair nodes, WindowProperties& window,
+                             const WindowProperties& defaults, const QString& path_context) {
         // Resolve power_data and global_data
         auto power_data = resolve<toml::table>(path_context, Source{nodes.primary, "power_applet"});
         auto global_data = resolve<toml::table>(path_context, Source{nodes.fallback, "global"});
@@ -286,9 +285,9 @@ void ConfigMapper::mapWindowProperties(NodePair nodes, WindowProperties& window,
 }
 
 /* Primary Button Properties*/
-void ConfigMapper::mapPrimaryButtonProperties(NodePair nodes, PrimaryButtonProperties& button,
-                                              const PrimaryButtonProperties& defaults,
-                                              const QString&                 path_context) {
+void ConfigMapper::mapPrimaryButton(NodePair nodes, PrimaryButtonProperties& button,
+                                    const PrimaryButtonProperties& defaults,
+                                    const QString&                 path_context) {
         // Resolve power_data and global_data
         auto power_data = resolve<toml::table>(path_context, Source{nodes.primary, "power_applet"});
         auto global_data = resolve<toml::table>(path_context, Source{nodes.fallback, "global"});
@@ -482,9 +481,8 @@ void ConfigMapper::mapPrimaryButtons(node_view                             prima
         primary_buttons = std::move(buttons_found);
 }
 
-void ConfigMapper::mapLayoutProperties(node_view layout_node, LayoutProperties& layout,
-                                       const LayoutProperties& defaults,
-                                       const QString&          path_context) {
+void ConfigMapper::mapLayout(node_view layout_node, LayoutProperties& layout,
+                             const LayoutProperties& defaults, const QString& path_context) {
         LayoutProperties layout_properties{};
 
         const auto data = resolve<toml::table>(path_context, Source{layout_node, "power_applet"});
@@ -502,10 +500,9 @@ void ConfigMapper::mapLayoutProperties(node_view layout_node, LayoutProperties& 
         layout = std::move(layout_properties);
 }
 
-void ConfigMapper::mapEnvironmentProperties(node_view                    environment_node,
-                                            EnvironmentProperties&       environment,
-                                            const EnvironmentProperties& defaults,
-                                            const QString&               path_context) {
+void ConfigMapper::mapEnvironment(node_view environment_node, EnvironmentProperties& environment,
+                                  const EnvironmentProperties& defaults,
+                                  const QString&               path_context) {
         EnvironmentProperties environment_properties{};
 
         const auto data = resolve<toml::table>(path_context,
@@ -536,15 +533,14 @@ void ConfigMapper::mapToGlobalConfig(const toml::table& config_table, GlobalConf
         if (!config_table.contains("global")) { QWARNING() << "in config.toml, global missing!"; }
 
         /* Window Properties */
-        mapWindowProperties(NodePair{config_table["power_applet"]["window"],
-                                     config_table["global"]["window"]},
-                            config.window_properties, defaults.getWindowProperties(), "window");
+        mapWindow(NodePair{config_table["power_applet"]["window"], config_table["global"]["window"]},
+                  config.window_properties, defaults.getWindowProperties(), "window");
 
         /* Primary Button Properties */
-        mapPrimaryButtonProperties(NodePair{config_table["power_applet"]["primary_button"],
-                                            config_table["global"]["primary_button"]},
-                                   config.primary_button_properties,
-                                   defaults.getPrimaryButtonProperties(), "primary_button");
+        mapPrimaryButton(NodePair{config_table["power_applet"]["primary_button"],
+                                  config_table["global"]["primary_button"]},
+                         config.primary_button_properties, defaults.getPrimaryButtonProperties(),
+                         "primary_button");
 }
 
 void ConfigMapper::mapToPowerAppletConfig(const toml::table& config_table,
@@ -563,11 +559,10 @@ void ConfigMapper::mapToPowerAppletConfig(const toml::table& config_table,
         mapToGlobalConfig(config_table, config);
 
         /* Layout Properties */
-        mapLayoutProperties(config_table["power_applet"]["layout"], config.layout_properties,
-                            defaults.getLayoutProperties(), "layout");
+        mapLayout(config_table["power_applet"]["layout"], config.layout_properties,
+                  defaults.getLayoutProperties(), "layout");
 
         /* Environment Properties */
-        mapEnvironmentProperties(config_table["power_applet"]["environment"],
-                                 config.environment_properties, defaults.getEnvironmentProperties(),
-                                 "environment");
+        mapEnvironment(config_table["power_applet"]["environment"], config.environment_properties,
+                       defaults.getEnvironmentProperties(), "environment");
 }
