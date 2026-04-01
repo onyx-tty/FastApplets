@@ -31,7 +31,7 @@ class TomlParser final {
 private:
         static std::array<std::string, toml_file_names_cnt> toml_files;
 
-        static toml::table createTable(std::string file_path);
+        static toml::table createTable(const std::string& file_path);
 
 public:
         TomlParser() = delete;
