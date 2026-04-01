@@ -17,22 +17,24 @@
 
 #pragma once
 
+#include "Config/Keys/Global/GlobalKeys.h"
 #include "Config/Keys/Keybindings/Keybindings.h"
 
 #include <array>
 
 class KeysMapper;
 
-class PowerAppletKeys final {
+class PowerAppletKeys final : public GlobalKeys {
 private:
         friend class KeysMapper;
 
-        keybindings                quit_keys;
         std::array<keybindings, 4> primary_button_keys;
 
 public:
         PowerAppletKeys(keybindings                quit_keys           = {},
                         std::array<keybindings, 4> primary_button_keys = {});
-        const keybindings&                getQuitKeys() const;
+        // TODO Make this const to avoid overwrites
+        static PowerAppletKeys&           get();
+        static const PowerAppletKeys&     getDefault();
         const std::array<keybindings, 4>& getPrimaryButtonKeys() const;
 };

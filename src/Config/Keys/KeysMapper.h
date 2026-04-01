@@ -18,13 +18,15 @@
 #pragma once
 
 #include "Config/Keys/Keybindings/Keybindings.h"
-#include "Config/Keys/Keys.h"
 #include "Config/TOML/NodeView.h"
 #include "Global/GlobalKeys.h"
 #include "PowerApplet/PowerAppletKeys.h"
 
 #include <array>
 #include <toml++/toml.hpp>
+
+class GlobalKeys;
+class PowerAppletKeys;
 
 class KeysMapper final {
 private:
@@ -43,5 +45,6 @@ private:
                                        GlobalKeys& global);
 
 public:
-        static void mapToKeys(const toml::table& keys_table, Keys& keys);
+        static void mapToGlobalKeys(const toml::table& keys_table, GlobalKeys& keys);
+        static void mapToPowerAppletKeys(const toml::table& keys_table, PowerAppletKeys& keys);
 };

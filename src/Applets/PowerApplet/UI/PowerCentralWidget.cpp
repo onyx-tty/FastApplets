@@ -18,7 +18,7 @@
 #include "PowerCentralWidget.h"
 #include "Config/Config/PowerApplet/PowerAppletConfig.h"
 #include "Config/Keys/Keybindings/Keybindings.h"
-#include "Config/Keys/Keys.h"
+#include "Config/Keys/PowerApplet/PowerAppletKeys.h"
 #include "Core/Log.h"
 #include "UI/Enums/ButtonIDs.h"
 
@@ -43,7 +43,7 @@ static std::array<QIcon, 4> createButtonIcons() {
 
 // TODO Extract
 static bool isPowerKey(int key) {
-        for (const auto& button_keys : Keys::get().getPowerAppletKeys().getPrimaryButtonKeys()) {
+        for (const auto& button_keys : PowerAppletKeys::get().getPrimaryButtonKeys()) {
                 if (button_keys.contains(key)) { return true; }
         }
 
@@ -51,7 +51,7 @@ static bool isPowerKey(int key) {
 }
 
 static bool isQuitKey(int key) {
-        const auto& quit_keys = Keys::get().getPowerAppletKeys().getQuitKeys();
+        const auto& quit_keys = PowerAppletKeys::get().getQuitKeys();
 
         return quit_keys.contains(key);
 }
@@ -61,7 +61,7 @@ const keybindings& PowerCentralWidget::getKeysFromPowerButton(const PowerButton*
         bool                   processed = false;
 
         if (!processed) {
-                const auto& keys = Keys::get().getPowerAppletKeys().getPrimaryButtonKeys();
+                const auto& keys = PowerAppletKeys::get().getPrimaryButtonKeys();
 
                 // Cache the full keys map
                 for (size_t i = 0; i < button_list.size() && i < keys.size(); ++i) {
@@ -80,7 +80,7 @@ PowerButton* PowerCentralWidget::getPowerButtonFromKeys(const keybindings& keys)
 
         // TODO Simply reuse the map in getKeysFromPowerButton
         if (!processed) {
-                const auto& keys = Keys::get().getPowerAppletKeys().getPrimaryButtonKeys();
+                const auto& keys = PowerAppletKeys::get().getPrimaryButtonKeys();
 
                 // Cache the full PowerButton map
                 for (size_t i = 0; i < button_list.size() && i < keys.size(); ++i) {
@@ -98,7 +98,7 @@ PowerButton* PowerCentralWidget::getPowerButtonFromKey(int key) {
         static std::unordered_map<int, PowerButton*> map       = {};
         bool                                         processed = false;
 
-        const auto& keys_arr = Keys::get().getPowerAppletKeys().getPrimaryButtonKeys();
+        const auto& keys_arr = PowerAppletKeys::get().getPrimaryButtonKeys();
         if (!processed) {
                 // Cache the full keys map
                 for (const auto& keys : keys_arr) { map[key] = getPowerButtonFromKeys(keys); }

@@ -21,7 +21,6 @@
 #include "Config/TOML/TomlAccessor.h"
 #include "Core/Log.h"
 #include "Global/GlobalKeys.h"
-#include "Keys.h"
 #include "PowerApplet/PowerAppletKeys.h"
 
 #include <array>
@@ -74,7 +73,7 @@ void interpretTextAsKeybindings(node_view source, keybindings& target) {
 }
 
 void KeysMapper::mapGlobalQuitKeys(node_view quit_node, keybindings& quit) {
-        const auto&      defaults     = Keys::getDefault().getGlobalKeys().getQuitKeys();
+        const auto&      defaults     = PowerAppletKeys::getDefault().getQuitKeys();
         QString          error_prefix = "in keys.toml, global.quit";
         constexpr size_t min_size = 1, max_size = 4;
         const auto       array = getTomlArray(quit_node, std::move(error_prefix),
@@ -89,12 +88,12 @@ void KeysMapper::mapGlobalQuitKeys(node_view quit_node, keybindings& quit) {
 }
 
 void KeysMapper::mapGlobalKeys(node_view global_node, GlobalKeys& global) {
-        const auto& defaults     = Keys::getDefault().getGlobalKeys();
+        const auto& defaults     = PowerAppletKeys::getDefault();
         QString     error_prefix = "in keys.toml, global";
         const auto* table        = getTomlTable(global_node, std::move(error_prefix));
 
         if (!table) {
-                global = defaults;
+                global = static_cast<GlobalKeys>(defaults);
                 return;
         }
 
@@ -119,10 +118,10 @@ void KeysMapper::mapPowerAppletQuitKeys(node_view quit_node, keybindings& quit,
 
 void KeysMapper::mapPowerAppletPrimaryButtonKeys(node_view                   primary_buttons_node,
                                                  std::array<keybindings, 4>& primary_buttons) {
-        const std::array<keybindings, 4>& defaults =
-                Keys::getDefault().getPowerAppletKeys().getPrimaryButtonKeys();
-        QString    error_prefix         = "in keys.toml, power_applet.primary_buttons";
-        QString    error_arr_details    = "Format: [keybindings...]";
+        const std::array<keybindings, 4>& defaults = PowerAppletKeys::getDefault()
+                                                             .getPrimaryButtonKeys();
+        QString    error_prefix                    = "in keys.toml, power_applet.primary_buttons";
+        QString    error_arr_details               = "Format: [keybindings...]";
         const auto primary_button_nodes = getTomlArray(primary_buttons_node, error_prefix,
                                                        error_arr_details);
 
@@ -152,7 +151,7 @@ void KeysMapper::mapPowerAppletPrimaryButtonKeys(node_view                   pri
 
 void KeysMapper::mapPowerAppletKeys(node_view power_node, PowerAppletKeys& power,
                                     GlobalKeys& global) {
-        const auto& defaults     = Keys::getDefault().getPowerAppletKeys();
+        const auto& defaults     = PowerAppletKeys::getDefault();
         QString     error_prefix = "in keys.toml, power_applet";
         const auto* table        = getTomlTable(power_node, std::move(error_prefix));
 
@@ -168,15 +167,22 @@ void KeysMapper::mapPowerAppletKeys(node_view power_node, PowerAppletKeys& power
         mapPowerAppletPrimaryButtonKeys((*table)["primary_buttons"], power.primary_button_keys);
 }
 
-void KeysMapper::mapToKeys(const toml::table& keys_table, Keys& keys) {
+void KeysMapper::mapToGlobalKeys(const toml::table& keys_table, GlobalKeys& keys) {
         // Confirm that a QApplication instance exists
         if (!QApplication::instanceExists()) {
                 QFATAL("QApplication has not been instantiated yet!");
         }
 
-        /* Global Keys */
-        mapGlobalKeys(keys_table["global"], keys.global_keys);
+        mapGlobalKeys(keys_table["global"], keys);
+}
 
-        /* PowerApplet Keys*/
-        mapPowerAppletKeys(keys_table["power_applet"], keys.power_applet_keys, keys.global_keys);
+void KeysMapper::mapToPowerAppletKeys(const toml::table& keys_table, PowerAppletKeys& keys) {
+        // Confirm that a QApplication instance exists
+        if (!QApplication::instanceExists()) {
+                QFATAL("QApplication has not been instantiated yet!");
+        }
+
+        mapToGlobalKeys(keys_table, keys);
+
+        mapPowerAppletKeys(keys_table["power_applet"], keys, keys);
 }

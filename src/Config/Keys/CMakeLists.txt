@@ -3,7 +3,6 @@ add_subdirectory(Global)
 add_subdirectory(PowerApplet)
 
 add_library(Config_Keys
-        Keys.cpp
         KeysMapper.cpp)
 add_library(Config::Keys ALIAS Config_Keys)
 

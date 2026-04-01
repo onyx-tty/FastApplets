@@ -7,4 +7,8 @@ target_include_directories(Config_Keys_PowerApplet PRIVATE
         ${GLOBAL_INCLUSIONS})
 
 target_link_libraries(Config_Keys_PowerApplet PRIVATE
-        Config::Keys::Keybindings)
+        Config::Keys::Keybindings
+        Config::TOML)
+
+target_link_libraries(Config_Keys_PowerApplet PUBLIC
+        Qt${QT_VERSION_MAJOR}::Core)

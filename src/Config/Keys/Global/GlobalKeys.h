@@ -21,13 +21,15 @@
 
 class KeysMapper;
 
-class GlobalKeys final {
+class GlobalKeys {
 private:
         friend class KeysMapper;
 
         keybindings quit_keys;
 
-public:
+protected:
         GlobalKeys(keybindings quit_keys = {});
+
+public:
         const keybindings& getQuitKeys() const;
 };

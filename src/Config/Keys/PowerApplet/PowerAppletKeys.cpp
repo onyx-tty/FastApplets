@@ -16,15 +16,40 @@
    along with this program.  If not, see <https://www.gnu.org/licenses/>. */
 
 #include "PowerAppletKeys.h"
+#include "Config/Keys/Global/GlobalKeys.h"
+#include "Config/Keys/KeysMapper.h"
+#include "Config/TOML/TomlParser.h"
 
 #include <array>
+#include <qnamespace.h>
 
 PowerAppletKeys::PowerAppletKeys(keybindings                quit_keys,
                                  std::array<keybindings, 4> primary_button_keys) :
-        quit_keys(quit_keys), primary_button_keys(primary_button_keys) {}
+        GlobalKeys(quit_keys), primary_button_keys(primary_button_keys) {}
 
-const keybindings& PowerAppletKeys::getQuitKeys() const {
-        return quit_keys;
+PowerAppletKeys& PowerAppletKeys::get() {
+        static PowerAppletKeys keys{};
+        static bool            parsed = false;
+
+        if (!parsed) {
+                KeysMapper::mapToPowerAppletKeys(TomlParser::createKeys(), keys);
+                parsed = true;
+        }
+
+        return keys;
+}
+
+const PowerAppletKeys& PowerAppletKeys::getDefault() {
+        keybindings quit_keys = {Qt::Key_Escape, Qt::Key_Q};
+
+        std::array<keybindings, 4> primary_button_keys = {keybindings{Qt::Key_1},
+                                                          keybindings{Qt::Key_2},
+                                                          keybindings{Qt::Key_3},
+                                                          keybindings{Qt::Key_4}};
+
+        static PowerAppletKeys default_keys{std::move(quit_keys), std::move(primary_button_keys)};
+
+        return default_keys;
 }
 
 const std::array<keybindings, 4>& PowerAppletKeys::getPrimaryButtonKeys() const {
