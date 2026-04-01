@@ -431,7 +431,7 @@ void ConfigMapper::mapLayoutPrimaryButtonCommandArgumentsArgument(
         QString argument{};
         resolveOrDefault<QString>(path_context, argument, button, defaults,
                                   Source{argument_node, "power_applet"});
-        if (!argument.isEmpty()) { return; }
+        if (argument.isEmpty()) { return; }
 
         arguments.append(std::move(argument));
 }
