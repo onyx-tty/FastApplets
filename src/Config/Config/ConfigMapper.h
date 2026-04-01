@@ -45,64 +45,80 @@ private:
         ConfigMapper() = delete;
 
         /* Window Properties */
-        static void mapWindowSize(NodePair nodes, QSize& size, const QString& path_context);
-        static void mapWindowTitle(NodePair nodes, QString& title, const QString& path_context);
+        static void mapWindowSize(NodePair nodes, QSize& size, const QSize& defaults,
+                                  const QString& path_context);
+        static void mapWindowTitle(NodePair nodes, QString& title, const QString& defaults,
+                                   const QString& path_context);
         static void mapWindowProperties(NodePair nodes, WindowProperties& window,
-                                        const QString& path_context);
+                                        const WindowProperties& defaults,
+                                        const QString&          path_context);
 
         /* Primary Button Properties */
         static void mapPrimaryButtonTextAlignment(NodePair nodes, Qt::Alignment& text_alignment,
+                                                  Qt::Alignment  defaults,
                                                   const QString& path_context);
         static void mapPrimaryButtonIconAlignment(NodePair nodes, Qt::Alignment& icon_alignment,
+                                                  Qt::Alignment  defaults,
                                                   const QString& path_context);
         static void mapPrimaryButtonIconSize(NodePair nodes, QSize& icon_size,
-                                             const QString& path_context);
+                                             const QSize& defaults, const QString& path_context);
         static void mapPrimaryButtonPolicy(NodePair nodes, QSizePolicy& policy,
-                                           const QString& path_context);
+                                           const QSizePolicy& defaults,
+                                           const QString&     path_context);
         static void mapPrimaryButtonProperties(NodePair nodes, PrimaryButtonProperties& button,
-                                               const QString& path_context);
+                                               const PrimaryButtonProperties& defaults,
+                                               const QString&                 path_context);
 
         /* Layout Properties */
         static void mapLayoutPrimaryButtonID(node_view id_node, PrimaryButtonData& button,
-                                             power_button_id& id, size_t button_index,
-                                             const QString& path_context);
+                                             const PrimaryButtonData& defaults, power_button_id& id,
+                                             size_t button_index, const QString& path_context);
         static void mapLayoutPrimaryButtonLabel(node_view label_node, PrimaryButtonData& button,
-                                                QString& label, size_t button_index,
-                                                const QString& path_context);
+                                                const PrimaryButtonData& defaults, QString& label,
+                                                size_t button_index, const QString& path_context);
         static void mapLayoutPrimaryButtonOrder(node_view order_node, PrimaryButtonData& button,
-                                                long&                           order,
+                                                const PrimaryButtonData& defaults, long& order,
                                                 std::vector<PrimaryButtonData>& buttons,
                                                 size_t button_index, const QString& path_context);
-        static void mapLayoutPrimaryButtonCommandProgram(node_view          program_node,
-                                                         PrimaryButtonData& button,
+        static void mapLayoutPrimaryButtonCommandProgram(node_view                program_node,
+                                                         PrimaryButtonData&       button,
+                                                         const PrimaryButtonData& defaults,
                                                          QString& program, size_t button_index,
                                                          const QString& path_context);
         static void mapLayoutPrimaryButtonCommandArgumentsArgument(
-                node_view argument_node, PrimaryButtonData& button, QStringList& arguments,
-                size_t button_index, size_t arg_index, const QString& path_context);
-        static void mapLayoutPrimaryButtonCommandArguments(node_view          arguments_node,
-                                                           PrimaryButtonData& button,
-                                                           QStringList&       arguments,
-                                                           size_t             button_index,
-                                                           const QString&     path_context);
+                node_view argument_node, PrimaryButtonData& button,
+                const PrimaryButtonData& defaults, QStringList& arguments, size_t button_index,
+                size_t arg_index, const QString& path_context);
+        static void mapLayoutPrimaryButtonCommandArguments(node_view                arguments_node,
+                                                           PrimaryButtonData&       button,
+                                                           const PrimaryButtonData& defaults,
+                                                           QStringList&             arguments,
+                                                           size_t                   button_index,
+                                                           const QString&           path_context);
         static void mapLayoutPrimaryButtonCommand(node_view command_node, PrimaryButtonData& button,
+                                                  const PrimaryButtonData& defaults,
                                                   ShellCommand& command, size_t button_index,
                                                   const QString& path_context);
         static bool mapLayoutPrimaryButtonData(node_view                       button_data_node,
                                                std::vector<PrimaryButtonData>& buttons,
+                                               const std::vector<PrimaryButtonData>& default_buttons,
+                                               const PrimaryButtonData& defaults,
                                                size_t button_index, const QString& path_context);
         static void mapLayoutPrimaryButtons(node_view                       primary_buttons_node,
                                             std::vector<PrimaryButtonData>& primary_buttons,
-                                            const QString&                  path_context);
+                                            const std::vector<PrimaryButtonData>& defaults,
+                                            const QString&                        path_context);
         static void mapLayoutProperties(node_view layout_node, LayoutProperties& layout,
-                                        const QString& path_context);
+                                        const LayoutProperties& defaults,
+                                        const QString&          path_context);
 
         /* Environment Properties*/
-        static void mapEnvironmentDBusMode(node_view dbus_mode_node, bool& dbus_mode,
+        static void mapEnvironmentDBusMode(node_view dbus_mode_node, bool& dbus_mode, bool defaults,
                                            const QString& path_context);
-        static void mapEnvironmentProperties(node_view              environment_node,
-                                             EnvironmentProperties& environment,
-                                             const QString&         path_context);
+        static void mapEnvironmentProperties(node_view                    environment_node,
+                                             EnvironmentProperties&       environment,
+                                             const EnvironmentProperties& defaults,
+                                             const QString&               path_context);
 
 public:
         static void mapToGlobalConfig(const toml::table& config_table, GlobalConfig& config);
