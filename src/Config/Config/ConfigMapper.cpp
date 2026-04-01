@@ -253,18 +253,6 @@ void resolveTransformOrDefault(const QString& path_context, TAttribute& attribut
 }
 
 /* Window Properties */
-void ConfigMapper::mapWindowSize(NodePair nodes, QSize& size, const QSize& defaults,
-                                 const QString& path_context) {
-        size = resolveOr<QSize>(path_context, defaults, Source{nodes.primary, "power_applet"},
-                                Source{nodes.fallback, "global"});
-}
-
-void ConfigMapper::mapWindowTitle(NodePair nodes, QString& title, const QString& defaults,
-                                  const QString& path_context) {
-        title = resolveOr<QString>(path_context, defaults, Source{nodes.primary, "power_applet"},
-                                   Source{nodes.fallback, "global"});
-}
-
 void ConfigMapper::mapWindowProperties(NodePair nodes, WindowProperties& window,
                                        const WindowProperties& defaults,
                                        const QString&          path_context) {
@@ -283,46 +271,21 @@ void ConfigMapper::mapWindowProperties(NodePair nodes, WindowProperties& window,
 
         WindowProperties window_properties{};
 
-        mapWindowSize(NodePair{power_node["size"], global_node["size"]}, window_properties.size,
-                      defaults.getSize(), extendCfgPath(path_context, "size"));
-        mapWindowTitle(NodePair{power_node["title"], global_node["title"]}, window_properties.title,
-                       defaults.getTitle(), extendCfgPath(path_context, "title"));
+        window_properties.size = resolveOr<QSize>(extendCfgPath(path_context, "size"),
+                                                  defaults.getSize(),
+                                                  Source{nodes.primary["size"], "power_applet"},
+                                                  Source{nodes.fallback["size"], "global"});
+
+        window_properties.title = resolveOr<QString>(extendCfgPath(path_context, "title"),
+                                                     defaults.getTitle(),
+                                                     Source{nodes.primary["title"], "power_applet"},
+                                                     Source{nodes.fallback["title"],
+                                                            "power_applet"});
 
         window = std::move(window_properties);
 }
 
 /* Primary Button Properties*/
-void ConfigMapper::mapPrimaryButtonTextAlignment(NodePair nodes, Qt::Alignment& text_alignment,
-                                                 Qt::Alignment  defaults,
-                                                 const QString& path_context) {
-        text_alignment = resolveOr<Qt::Alignment>(path_context, defaults,
-                                                  Source{nodes.primary, "power_applet"},
-                                                  Source{nodes.fallback, "global"});
-}
-
-// TODO This option doesn't work, fix
-void ConfigMapper::mapPrimaryButtonIconAlignment(NodePair nodes, Qt::Alignment& icon_alignment,
-                                                 Qt::Alignment  defaults,
-                                                 const QString& path_context) {
-        icon_alignment = resolveOr<Qt::Alignment>(path_context, defaults,
-                                                  Source{nodes.primary, "power_applet"},
-                                                  Source{nodes.fallback, "global"});
-}
-
-void ConfigMapper::mapPrimaryButtonIconSize(NodePair nodes, QSize& icon_size, const QSize& defaults,
-                                            const QString& path_context) {
-        icon_size = resolveOr<QSize>(path_context, defaults, Source{nodes.primary, "power_applet"},
-                                     Source{nodes.fallback, "global"});
-}
-
-void ConfigMapper::mapPrimaryButtonPolicy(NodePair nodes, QSizePolicy& policy,
-                                          const QSizePolicy& defaults,
-                                          const QString&     path_context) {
-        policy = resolveOr<QSizePolicy>(path_context, defaults,
-                                        Source{nodes.primary, "power_applet"},
-                                        Source{nodes.fallback, "global"});
-}
-
 void ConfigMapper::mapPrimaryButtonProperties(NodePair nodes, PrimaryButtonProperties& button,
                                               const PrimaryButtonProperties& defaults,
                                               const QString&                 path_context) {
@@ -341,57 +304,33 @@ void ConfigMapper::mapPrimaryButtonProperties(NodePair nodes, PrimaryButtonPrope
 
         PrimaryButtonProperties button_properties{};
 
-        mapPrimaryButtonTextAlignment(NodePair{power_node["text_alignment"],
-                                               global_node["text_alignment"]},
-                                      button_properties.text_alignment, defaults.getTextAlignment(),
-                                      extendCfgPath(path_context, "text_alignment"));
-        mapPrimaryButtonIconAlignment(NodePair{power_node["icon_alignment"],
-                                               global_node["icon_alignment"]},
-                                      button_properties.icon_alignment, defaults.getIconAlignment(),
-                                      extendCfgPath(path_context, "icon_alignment"));
-        mapPrimaryButtonIconSize(NodePair{power_node["icon_size"], global_node["icon_size"]},
-                                 button_properties.icon_size, defaults.getIconSize(),
-                                 extendCfgPath(path_context, "icon_size"));
-        mapPrimaryButtonPolicy(NodePair{power_node["policy"], global_node["policy"]},
-                               button_properties.policy, defaults.getPolicy(),
-                               extendCfgPath(path_context, "policy"));
+        button_properties.text_alignment =
+                resolveOr<Qt::Alignment>(extendCfgPath(path_context, "text_alignment"),
+                                         defaults.getTextAlignment(),
+                                         Source{nodes.primary["text_alignment"], "power_applet"},
+                                         Source{nodes.fallback["text_alignment"], "global"});
+
+        // TODO This option doesn't work because icon alignment is not applied anywhere yet, fix
+        button_properties.icon_alignment =
+                resolveOr<Qt::Alignment>(extendCfgPath(path_context, "icon_alignment"),
+                                         defaults.getIconAlignment(),
+                                         Source{nodes.primary["icon_alignment"], "power_applet"},
+                                         Source{nodes.fallback["icon_alignment"], "global"});
+
+        button_properties.icon_size =
+                resolveOr<QSize>(extendCfgPath(path_context, "icon_size"), defaults.getIconSize(),
+                                 Source{nodes.primary["icon_size"], "power_applet"},
+                                 Source{nodes.fallback["icon_size"], "global"});
+
+        button_properties.policy =
+                resolveOr<QSizePolicy>(extendCfgPath(path_context, "policy"), defaults.getPolicy(),
+                                       Source{nodes.primary["policy"], "power_applet"},
+                                       Source{nodes.fallback["policy"], "global"});
 
         button = std::move(button_properties);
 }
 
 /* Layout Properties */
-void ConfigMapper::mapLayoutPrimaryButtonID(node_view id_node, PrimaryButtonData& button,
-                                            const PrimaryButtonData& defaults, power_button_id& id,
-                                            size_t button_index, const QString& path_context) {
-        resolveTransformOrDefault<QString>(path_context, id, button, defaults,
-                                           getPowerButtonIDFromString,
-                                           Source{id_node, "power_applet"});
-}
-
-void ConfigMapper::mapLayoutPrimaryButtonLabel(node_view label_node, PrimaryButtonData& button,
-                                               const PrimaryButtonData& defaults, QString& label,
-                                               size_t button_index, const QString& path_context) {
-        resolveOrDefault<QString>(path_context, label, button, defaults,
-                                  Source{label_node, "power_applet"});
-}
-
-void ConfigMapper::mapLayoutPrimaryButtonOrder(node_view order_node, PrimaryButtonData& button,
-                                               const PrimaryButtonData& defaults, long& order,
-                                               std::vector<PrimaryButtonData>& buttons,
-                                               size_t button_index, const QString& path_context) {
-        resolveOrDefault<int64_t>(path_context, order, button, defaults,
-                                  Source{order_node, "power_applet"});
-}
-
-void ConfigMapper::mapLayoutPrimaryButtonCommandProgram(node_view                program_node,
-                                                        PrimaryButtonData&       button,
-                                                        const PrimaryButtonData& defaults,
-                                                        QString& program, size_t button_index,
-                                                        const QString& path_context) {
-        resolveOrDefault<QString>(path_context, program, button, defaults,
-                                  Source{program_node, "power_applet"});
-}
-
 void ConfigMapper::mapLayoutPrimaryButtonCommandArgumentsArgument(
         node_view argument_node, PrimaryButtonData& button, const PrimaryButtonData& defaults,
         QStringList& arguments, size_t button_index, size_t arg_index,
@@ -446,9 +385,9 @@ void ConfigMapper::mapLayoutPrimaryButtonCommand(node_view command_node, Primary
 
         ShellCommand cmd{};
 
-        mapLayoutPrimaryButtonCommandProgram(toml::node_view(command_arr.value()[0]), button,
-                                             defaults, cmd.program, button_index,
-                                             extendCfgPath(path_context, "program"));
+        resolveOrDefault<QString>(extendCfgPath(path_context, "program"), cmd.program, button,
+                                  defaults,
+                                  Source{toml::node_view(command_arr.value()[0]), "power_applet"});
 
         mapLayoutPrimaryButtonCommandArguments(toml::node_view(command_arr.value()[1]), button,
                                                defaults, cmd.arguments, button_index,
@@ -486,14 +425,15 @@ bool ConfigMapper::mapLayoutPrimaryButtonData(node_view                       bu
                                      Source{button_table.value()["enabled"], "power_applet"});
         if (!enabled) { return true; }
 
-        mapLayoutPrimaryButtonID(button_data_node["id"], button, defaults, button.id, button_index,
-                                 extendCfgPath(path_context, "id"));
+        resolveTransformOrDefault<QString>(extendCfgPath(path_context, "id"), button.id, button,
+                                           defaults, getPowerButtonIDFromString,
+                                           Source{button_table.value()["id"], "power_applet"});
 
-        mapLayoutPrimaryButtonLabel(button_data_node["label"], button, defaults, button.label,
-                                    button_index, extendCfgPath(path_context, "label"));
+        resolveOrDefault<QString>(extendCfgPath(path_context, "label"), button.label, button,
+                                  defaults, Source{button_table.value()["label"], "power_applet"});
 
-        mapLayoutPrimaryButtonOrder(button_data_node["order"], button, defaults, button.order,
-                                    buttons, button_index, extendCfgPath(path_context, "order"));
+        resolveOrDefault<int64_t>(extendCfgPath(path_context, "order"), button.order, button,
+                                  defaults, Source{button_table.value()["order"], "power_applet"});
 
         mapLayoutPrimaryButtonCommand(button_data_node["command"], button, defaults, button.command,
                                       button_index, extendCfgPath(path_context, "command"));
@@ -567,11 +507,6 @@ void ConfigMapper::mapLayoutProperties(node_view layout_node, LayoutProperties& 
         layout = std::move(layout_properties);
 }
 
-void ConfigMapper::mapEnvironmentDBusMode(node_view dbus_mode_node, bool& dbus_mode, bool defaults,
-                                          const QString& path_context) {
-        dbus_mode = resolveOr<bool>(path_context, defaults, Source{dbus_mode_node, "power_applet"});
-}
-
 void ConfigMapper::mapEnvironmentProperties(node_view                    environment_node,
                                             EnvironmentProperties&       environment,
                                             const EnvironmentProperties& defaults,
@@ -587,8 +522,10 @@ void ConfigMapper::mapEnvironmentProperties(node_view                    environ
         }
 
         // D-Bus mode
-        mapEnvironmentDBusMode(data.value()["dbus_mode"], environment_properties.dbus_mode,
-                               defaults.getDBusMode(), extendCfgPath(path_context, "dbus_mode"));
+        environment_properties.dbus_mode = resolveOr<bool>(extendCfgPath(path_context, "dbus_mode"),
+                                                           defaults.getDBusMode(),
+                                                           Source{data.value()["dbus_mode"],
+                                                                  "power_applet"});
 
         environment = std::move(environment_properties);
 }

@@ -45,46 +45,16 @@ private:
         ConfigMapper() = delete;
 
         /* Window Properties */
-        static void mapWindowSize(NodePair nodes, QSize& size, const QSize& defaults,
-                                  const QString& path_context);
-        static void mapWindowTitle(NodePair nodes, QString& title, const QString& defaults,
-                                   const QString& path_context);
         static void mapWindowProperties(NodePair nodes, WindowProperties& window,
                                         const WindowProperties& defaults,
                                         const QString&          path_context);
 
         /* Primary Button Properties */
-        static void mapPrimaryButtonTextAlignment(NodePair nodes, Qt::Alignment& text_alignment,
-                                                  Qt::Alignment  defaults,
-                                                  const QString& path_context);
-        static void mapPrimaryButtonIconAlignment(NodePair nodes, Qt::Alignment& icon_alignment,
-                                                  Qt::Alignment  defaults,
-                                                  const QString& path_context);
-        static void mapPrimaryButtonIconSize(NodePair nodes, QSize& icon_size,
-                                             const QSize& defaults, const QString& path_context);
-        static void mapPrimaryButtonPolicy(NodePair nodes, QSizePolicy& policy,
-                                           const QSizePolicy& defaults,
-                                           const QString&     path_context);
         static void mapPrimaryButtonProperties(NodePair nodes, PrimaryButtonProperties& button,
                                                const PrimaryButtonProperties& defaults,
                                                const QString&                 path_context);
 
         /* Layout Properties */
-        static void mapLayoutPrimaryButtonID(node_view id_node, PrimaryButtonData& button,
-                                             const PrimaryButtonData& defaults, power_button_id& id,
-                                             size_t button_index, const QString& path_context);
-        static void mapLayoutPrimaryButtonLabel(node_view label_node, PrimaryButtonData& button,
-                                                const PrimaryButtonData& defaults, QString& label,
-                                                size_t button_index, const QString& path_context);
-        static void mapLayoutPrimaryButtonOrder(node_view order_node, PrimaryButtonData& button,
-                                                const PrimaryButtonData& defaults, long& order,
-                                                std::vector<PrimaryButtonData>& buttons,
-                                                size_t button_index, const QString& path_context);
-        static void mapLayoutPrimaryButtonCommandProgram(node_view                program_node,
-                                                         PrimaryButtonData&       button,
-                                                         const PrimaryButtonData& defaults,
-                                                         QString& program, size_t button_index,
-                                                         const QString& path_context);
         static void mapLayoutPrimaryButtonCommandArgumentsArgument(
                 node_view argument_node, PrimaryButtonData& button,
                 const PrimaryButtonData& defaults, QStringList& arguments, size_t button_index,
@@ -113,8 +83,6 @@ private:
                                         const QString&          path_context);
 
         /* Environment Properties*/
-        static void mapEnvironmentDBusMode(node_view dbus_mode_node, bool& dbus_mode, bool defaults,
-                                           const QString& path_context);
         static void mapEnvironmentProperties(node_view                    environment_node,
                                              EnvironmentProperties&       environment,
                                              const EnvironmentProperties& defaults,
