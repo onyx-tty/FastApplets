@@ -331,10 +331,10 @@ void ConfigMapper::mapPrimaryButtonProperties(NodePair nodes, PrimaryButtonPrope
 }
 
 /* Layout Properties */
-void ConfigMapper::mapLayoutPrimaryButtonCommandArgumentsArgument(
-        node_view argument_node, PrimaryButtonData& button, const PrimaryButtonData& defaults,
-        QStringList& arguments, size_t button_index, size_t arg_index,
-        const QString& path_context) {
+void ConfigMapper::mapCommandArgument(node_view argument_node, PrimaryButtonData& button,
+                                      const PrimaryButtonData& defaults, QStringList& arguments,
+                                      size_t button_index, size_t arg_index,
+                                      const QString& path_context) {
         QString argument{};
 
         resolveOrDefault<QString>(path_context, argument, button, defaults,
@@ -344,9 +344,9 @@ void ConfigMapper::mapLayoutPrimaryButtonCommandArgumentsArgument(
         arguments.append(std::move(argument));
 }
 
-void ConfigMapper::mapLayoutPrimaryButtonCommandArguments(
-        node_view arguments_node, PrimaryButtonData& button, const PrimaryButtonData& defaults,
-        QStringList& arguments, size_t button_index, const QString& path_context) {
+void ConfigMapper::mapCommandArguments(node_view arguments_node, PrimaryButtonData& button,
+                                       const PrimaryButtonData& defaults, QStringList& arguments,
+                                       size_t button_index, const QString& path_context) {
         constexpr size_t min_size = 0;
         const auto args = getTomlArray(arguments_node, makeCfgPath("power_applet", path_context),
                                        "Format: [string, array]", min_size);
@@ -358,20 +358,18 @@ void ConfigMapper::mapLayoutPrimaryButtonCommandArguments(
         QStringList argument_list{};
 
         for (size_t i = 0; i != args.value().size(); ++i) {
-                mapLayoutPrimaryButtonCommandArgumentsArgument(
-                        toml::node_view(args.value()[i]), button, defaults, argument_list,
-                        button_index, i,
-                        makeCfgPath("power_applet", path_context)
-                                + QString("[%1]").arg(i).toStdString().c_str());
+                mapCommandArgument(toml::node_view(args.value()[i]), button, defaults,
+                                   argument_list, button_index, i,
+                                   makeCfgPath("power_applet", path_context)
+                                           + QString("[%1]").arg(i).toStdString().c_str());
         }
 
         arguments = std::move(argument_list);
 }
 
-void ConfigMapper::mapLayoutPrimaryButtonCommand(node_view command_node, PrimaryButtonData& button,
-                                                 const PrimaryButtonData& defaults,
-                                                 ShellCommand& command, size_t button_index,
-                                                 const QString& path_context) {
+void ConfigMapper::mapCommand(node_view command_node, PrimaryButtonData& button,
+                              const PrimaryButtonData& defaults, ShellCommand& command,
+                              size_t button_index, const QString& path_context) {
         QString error_arr_details = "Format: [program, [args...]]";
 
         constexpr size_t min_size = 2, max_size = 2;
@@ -389,18 +387,17 @@ void ConfigMapper::mapLayoutPrimaryButtonCommand(node_view command_node, Primary
                                   defaults,
                                   Source{toml::node_view(command_arr.value()[0]), "power_applet"});
 
-        mapLayoutPrimaryButtonCommandArguments(toml::node_view(command_arr.value()[1]), button,
-                                               defaults, cmd.arguments, button_index,
-                                               extendCfgPath(path_context, "arguments"));
+        mapCommandArguments(toml::node_view(command_arr.value()[1]), button, defaults,
+                            cmd.arguments, button_index, extendCfgPath(path_context, "arguments"));
 
         command = std::move(cmd);
 }
 
-bool ConfigMapper::mapLayoutPrimaryButtonData(node_view                       button_data_node,
-                                              std::vector<PrimaryButtonData>& buttons,
-                                              const std::vector<PrimaryButtonData>& default_buttons,
-                                              const PrimaryButtonData&              defaults,
-                                              size_t button_index, const QString& path_context) {
+bool ConfigMapper::mapPrimaryButton(node_view                             button_data_node,
+                                    std::vector<PrimaryButtonData>&       buttons,
+                                    const std::vector<PrimaryButtonData>& default_buttons,
+                                    const PrimaryButtonData& defaults, size_t button_index,
+                                    const QString& path_context) {
         if (button_index > buttons.size()) {
                 if (button_index > 1) {
                         QFATAL("The button after %s is too high! Index is %zu",
@@ -435,18 +432,18 @@ bool ConfigMapper::mapLayoutPrimaryButtonData(node_view                       bu
         resolveOrDefault<int64_t>(extendCfgPath(path_context, "order"), button.order, button,
                                   defaults, Source{button_table.value()["order"], "power_applet"});
 
-        mapLayoutPrimaryButtonCommand(button_data_node["command"], button, defaults, button.command,
-                                      button_index, extendCfgPath(path_context, "command"));
+        mapCommand(button_data_node["command"], button, defaults, button.command, button_index,
+                   extendCfgPath(path_context, "command"));
 
         buttons.insert(buttons.cend(), std::move(button));
 
         return false;
 }
 
-void ConfigMapper::mapLayoutPrimaryButtons(node_view                       primary_buttons_node,
-                                           std::vector<PrimaryButtonData>& primary_buttons,
-                                           const std::vector<PrimaryButtonData>& defaults,
-                                           const QString&                        path_context) {
+void ConfigMapper::mapPrimaryButtons(node_view                             primary_buttons_node,
+                                     std::vector<PrimaryButtonData>&       primary_buttons,
+                                     const std::vector<PrimaryButtonData>& defaults,
+                                     const QString&                        path_context) {
         const auto buttons = resolve<toml::array>(path_context,
                                                   Source{primary_buttons_node, "power_applet"});
         if (!buttons) {
@@ -460,10 +457,9 @@ void ConfigMapper::mapLayoutPrimaryButtons(node_view                       prima
         for (size_t i = 0; i != buttons.value().size(); ++i) {
                 // TODO Ensure defaults are at least as long as primary_buttons, or pass optional
                 //      to avoid adding a button that cannot be defaulted
-                defaulted = mapLayoutPrimaryButtonData(node_view(buttons.value().at(i)),
-                                                       buttons_found, defaults, defaults[i], i,
-                                                       extendCfgPath(path_context,
-                                                                     std::to_string(i).c_str()));
+                defaulted = mapPrimaryButton(node_view(buttons.value().at(i)), buttons_found,
+                                             defaults, defaults[i], i,
+                                             extendCfgPath(path_context, std::to_string(i).c_str()));
                 if (defaulted) { return; }
         }
 
@@ -499,10 +495,9 @@ void ConfigMapper::mapLayoutProperties(node_view layout_node, LayoutProperties& 
         }
 
         // Primary power buttons
-        mapLayoutPrimaryButtons(data.value()["primary_buttons"],
-                                layout_properties.primary_power_buttons,
-                                defaults.getPrimaryPowerButtons(),
-                                extendCfgPath(path_context, "primary_buttons"));
+        mapPrimaryButtons(data.value()["primary_buttons"], layout_properties.primary_power_buttons,
+                          defaults.getPrimaryPowerButtons(),
+                          extendCfgPath(path_context, "primary_buttons"));
 
         layout = std::move(layout_properties);
 }

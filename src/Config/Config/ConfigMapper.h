@@ -55,29 +55,25 @@ private:
                                                const QString&                 path_context);
 
         /* Layout Properties */
-        static void mapLayoutPrimaryButtonCommandArgumentsArgument(
-                node_view argument_node, PrimaryButtonData& button,
-                const PrimaryButtonData& defaults, QStringList& arguments, size_t button_index,
-                size_t arg_index, const QString& path_context);
-        static void mapLayoutPrimaryButtonCommandArguments(node_view                arguments_node,
-                                                           PrimaryButtonData&       button,
-                                                           const PrimaryButtonData& defaults,
-                                                           QStringList&             arguments,
-                                                           size_t                   button_index,
-                                                           const QString&           path_context);
-        static void mapLayoutPrimaryButtonCommand(node_view command_node, PrimaryButtonData& button,
-                                                  const PrimaryButtonData& defaults,
-                                                  ShellCommand& command, size_t button_index,
-                                                  const QString& path_context);
-        static bool mapLayoutPrimaryButtonData(node_view                       button_data_node,
-                                               std::vector<PrimaryButtonData>& buttons,
-                                               const std::vector<PrimaryButtonData>& default_buttons,
-                                               const PrimaryButtonData& defaults,
-                                               size_t button_index, const QString& path_context);
-        static void mapLayoutPrimaryButtons(node_view                       primary_buttons_node,
-                                            std::vector<PrimaryButtonData>& primary_buttons,
-                                            const std::vector<PrimaryButtonData>& defaults,
-                                            const QString&                        path_context);
+        static void mapCommandArgument(node_view argument_node, PrimaryButtonData& button,
+                                       const PrimaryButtonData& defaults, QStringList& arguments,
+                                       size_t button_index, size_t arg_index,
+                                       const QString& path_context);
+        static void mapCommandArguments(node_view arguments_node, PrimaryButtonData& button,
+                                        const PrimaryButtonData& defaults, QStringList& arguments,
+                                        size_t button_index, const QString& path_context);
+        static void mapCommand(node_view command_node, PrimaryButtonData& button,
+                               const PrimaryButtonData& defaults, ShellCommand& command,
+                               size_t button_index, const QString& path_context);
+        static bool mapPrimaryButton(node_view                             button_data_node,
+                                     std::vector<PrimaryButtonData>&       buttons,
+                                     const std::vector<PrimaryButtonData>& default_buttons,
+                                     const PrimaryButtonData& defaults, size_t button_index,
+                                     const QString& path_context);
+        static void mapPrimaryButtons(node_view                             primary_buttons_node,
+                                      std::vector<PrimaryButtonData>&       primary_buttons,
+                                      const std::vector<PrimaryButtonData>& defaults,
+                                      const QString&                        path_context);
         static void mapLayoutProperties(node_view layout_node, LayoutProperties& layout,
                                         const LayoutProperties& defaults,
                                         const QString&          path_context);
