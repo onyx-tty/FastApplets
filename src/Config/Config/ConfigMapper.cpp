@@ -382,14 +382,9 @@ void ConfigMapper::mapLayoutPrimaryButtonID(node_view id_node, PrimaryButtonData
                                        .getLayoutProperties()
                                        .getPrimaryPowerButtons()[button_index];
 
-        auto result = resolve<QString>(path_context, Source{id_node, "power_applet"});
-
-        if (!result) {
-                button = defaults;
-                return;
-        }
-
-        id = getPowerButtonIDFromString(result.value());
+        resolveTransformOrDefault<QString>(path_context, id, button, defaults,
+                                           getPowerButtonIDFromString,
+                                           Source{id_node, "power_applet"});
 }
 
 void ConfigMapper::mapLayoutPrimaryButtonLabel(node_view label_node, PrimaryButtonData& button,
@@ -399,14 +394,8 @@ void ConfigMapper::mapLayoutPrimaryButtonLabel(node_view label_node, PrimaryButt
                                        .getLayoutProperties()
                                        .getPrimaryPowerButtons()[button_index];
 
-        auto result = resolve<QString>(path_context, Source{label_node, "power_applet"});
-
-        if (!result) {
-                button = defaults;
-                return;
-        }
-
-        label = result.value();
+        resolveOrDefault<QString>(path_context, label, button, defaults,
+                                  Source{label_node, "power_applet"});
 }
 
 void ConfigMapper::mapLayoutPrimaryButtonOrder(node_view order_node, PrimaryButtonData& button,
@@ -416,14 +405,8 @@ void ConfigMapper::mapLayoutPrimaryButtonOrder(node_view order_node, PrimaryButt
                                        .getLayoutProperties()
                                        .getPrimaryPowerButtons()[button_index];
 
-        const auto result = resolve<int64_t>(path_context, Source{order_node, "power_applet"});
-
-        if (!result) {
-                button = defaults;
-                return;
-        }
-
-        order = result.value();
+        resolveOrDefault<int64_t>(path_context, order, button, defaults,
+                                  Source{order_node, "power_applet"});
 }
 
 void ConfigMapper::mapLayoutPrimaryButtonCommandProgram(node_view          program_node,
@@ -434,13 +417,8 @@ void ConfigMapper::mapLayoutPrimaryButtonCommandProgram(node_view          progr
                                        .getLayoutProperties()
                                        .getPrimaryPowerButtons()[button_index];
 
-        const auto result = resolve<QString>(path_context, Source{program_node, "power_applet"});
-        if (!result) {
-                button = defaults;
-                return;
-        }
-
-        program = result.value();
+        resolveOrDefault<QString>(path_context, program, button, defaults,
+                                  Source{program_node, "power_applet"});
 }
 
 void ConfigMapper::mapLayoutPrimaryButtonCommandArgumentsArgument(
@@ -450,13 +428,12 @@ void ConfigMapper::mapLayoutPrimaryButtonCommandArgumentsArgument(
                                        .getLayoutProperties()
                                        .getPrimaryPowerButtons()[button_index];
 
-        const auto result = resolve<QString>(path_context, Source{argument_node, "power_applet"});
-        if (!result) {
-                button = defaults;
-                return;
-        }
+        QString argument{};
+        resolveOrDefault<QString>(path_context, argument, button, defaults,
+                                  Source{argument_node, "power_applet"});
+        if (!argument.isEmpty()) { return; }
 
-        arguments.insert(arguments.cend(), result.value());
+        arguments.append(std::move(argument));
 }
 
 void ConfigMapper::mapLayoutPrimaryButtonCommandArguments(node_view          arguments_node,
@@ -543,21 +520,12 @@ bool ConfigMapper::mapLayoutPrimaryButtonData(node_view                       bu
                 return true;
         }
 
-        const auto enabled = resolve<bool>(extendCfgPath(button_path_context, "enabled"),
-                                           Source{button_table.value()["enabled"], "power_applet"});
-
-        if (!enabled || !enabled.value()) {
-                QString info = "Button %1: DISABLED";
-                if (const auto label = (button_table.value())["label"].as_string()) {
-                        QDEBUG() << info.arg(label->get());
-                } else {
-                        QDEBUG() << info.arg(button_index);
-                }
-
-                return true;
-        }
-
         PrimaryButtonData button{};
+
+        bool enabled = false;
+        resolveOrDefault<bool>(path_context, enabled, button, defaults,
+                               Source{button_table.value()["enabled"], "power_applet"});
+        if (!enabled) { return true; }
 
         mapLayoutPrimaryButtonID(button_data_node["id"], button, button.id, button_index,
                                  extendCfgPath(path_context, "id"));
@@ -643,13 +611,7 @@ void ConfigMapper::mapEnvironmentDBusMode(node_view dbus_mode_node, bool& dbus_m
         const auto& defaults =
                 PowerAppletConfig::getDefault().getEnvironmentProperties().getDBusMode();
 
-        const auto result = resolve<bool>(path_context, Source{dbus_mode_node, "power_applet"});
-        if (!result) {
-                dbus_mode = defaults;
-                return;
-        }
-
-        dbus_mode = result.value();
+        dbus_mode = resolveOr<bool>(path_context, defaults, Source{dbus_mode_node, "power_applet"});
 }
 
 void ConfigMapper::mapEnvironmentProperties(node_view              environment_node,
