@@ -522,9 +522,8 @@ bool ConfigMapper::mapLayoutPrimaryButtonData(node_view                       bu
 
         PrimaryButtonData button{};
 
-        bool enabled = false;
-        resolveOrDefault<bool>(path_context, enabled, button, defaults,
-                               Source{button_table.value()["enabled"], "power_applet"});
+        auto enabled = resolve<bool>(path_context,
+                                     Source{button_table.value()["enabled"], "power_applet"});
         if (!enabled) { return true; }
 
         mapLayoutPrimaryButtonID(button_data_node["id"], button, button.id, button_index,
