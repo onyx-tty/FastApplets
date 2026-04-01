@@ -19,13 +19,9 @@
 
 #include "TomlLocator.h"
 
-#include <qnamespace.h>
+#include <array>
 #include <string>
 #include <toml++/toml.hpp>
-#include <QKeyCombination>
-#include <QKeySequence>
-#include <QSizePolicy>
-#include <QString>
 
 class TomlParser final {
 private:

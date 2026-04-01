@@ -23,7 +23,6 @@
 #include <string>
 #include <toml++/toml.hpp>
 
-// TODO Extract
 toml::table TomlParser::createTable(const std::string& file_path) {
         toml::table file_table;
 
