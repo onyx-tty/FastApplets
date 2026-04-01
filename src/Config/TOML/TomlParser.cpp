@@ -17,7 +17,6 @@
 
 #include "TomlParser.h"
 #include "Core/Log.h"
-#include "CppUtils/include/Enum.h"
 #include "TomlLocator.h"
 
 // TODO Extract
@@ -38,12 +37,12 @@ toml::table TomlParser::createTable(std::string file_path) {
 
 std::array<std::string, toml_file_names_cnt> TomlParser::toml_files = TomlLocator::locateTomlFiles();
 
-const toml::table& TomlParser::createConfig() {
+const toml::table& TomlParser::parseConfig() {
         static toml::table config = createTable(toml_files[0]);
         return config;
 }
 
-const toml::table& TomlParser::createKeys() {
+const toml::table& TomlParser::parseKeys() {
         static toml::table keys = createTable(toml_files[1]);
         return keys;
 }

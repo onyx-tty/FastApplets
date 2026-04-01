@@ -35,6 +35,6 @@ private:
 
 public:
         TomlParser() = delete;
-        static const toml::table& createConfig();
-        static const toml::table& createKeys();
+        static const toml::table& parseConfig();
+        static const toml::table& parseKeys();
 };

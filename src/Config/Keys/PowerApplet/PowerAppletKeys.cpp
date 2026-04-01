@@ -32,7 +32,7 @@ PowerAppletKeys& PowerAppletKeys::get() {
         static bool            parsed = false;
 
         if (!parsed) {
-                KeysMapper::mapToPowerAppletKeys(TomlParser::createKeys(), keys);
+                KeysMapper::mapToPowerAppletKeys(TomlParser::parseKeys(), keys);
                 parsed = true;
         }
 

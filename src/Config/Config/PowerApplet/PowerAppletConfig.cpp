@@ -48,7 +48,7 @@ PowerAppletConfig& PowerAppletConfig::get() {
         static bool              parsed = false;
 
         if (!parsed) {
-                ConfigMapper::mapToPowerAppletConfig(TomlParser::createConfig(),
+                ConfigMapper::mapToPowerAppletConfig(TomlParser::parseConfig(),
                                                      power_applet_config);
                 parsed = true;
         }
