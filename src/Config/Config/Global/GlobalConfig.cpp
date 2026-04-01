@@ -19,7 +19,6 @@
 #include "Config/Config/ConfigMapper.h"
 #include "Config/Config/Properties/PrimaryButtonProperties.h"
 #include "Config/Config/Properties/WindowProperties.h"
-#include "Config/TOML/TomlParser.h"
 
 #include <qnamespace.h>
 #include <toml++/toml.hpp>

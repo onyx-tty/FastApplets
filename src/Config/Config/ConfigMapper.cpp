@@ -21,7 +21,6 @@
 #include "Config/Config/Properties/LayoutProperties.h"
 #include "Config/Config/Properties/PrimaryButtonProperties.h"
 #include "Config/Config/Properties/WindowProperties.h"
-#include "Config/Keys/PowerApplet/PowerAppletKeys.h"
 #include "Config/TOML/NodeView.h"
 #include "Config/TOML/TomlAccessor.h"
 #include "Core/Log.h"

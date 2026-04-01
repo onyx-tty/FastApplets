@@ -23,9 +23,7 @@
 #include "Config/Config/Properties/PrimaryButtonProperties.h"
 #include "Config/Config/Properties/WindowProperties.h"
 #include "Config/TOML/NodeView.h"
-#include "UI/Enums/ButtonIDs.h"
 
-#include <array>
 #include <toml++/toml.hpp>
 #include <QStringList>
 
