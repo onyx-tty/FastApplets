@@ -339,7 +339,7 @@ void ConfigMapper::mapCommandArgument(node_view argument_node, PrimaryButtonData
                                   Source{argument_node, "power_applet"});
         if (argument.isEmpty()) { return; }
 
-        arguments.append(std::move(argument));
+        arguments << std::move(argument);
 }
 
 void ConfigMapper::mapCommandArguments(node_view arguments_node, PrimaryButtonData& button,
