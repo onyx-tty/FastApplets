@@ -35,6 +35,11 @@ class QSize;
 class QSizePolicy;
 struct ShellCommand;
 
+struct NodePair final {
+        node_view primary;
+        node_view fallback;
+};
+
 class ConfigMapper final {
 private:
         ConfigMapper() = delete;
