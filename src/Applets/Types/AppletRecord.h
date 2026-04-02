@@ -19,10 +19,12 @@
 
 #include "AppletTypes.h"
 
+#include <string_view>
+
 namespace applet {
 struct Record {
-        applet::type id;
-        const char*  scope;
+        applet::type     id;
+        std::string_view scope;
 };
 
 inline constexpr Record global{type::global, "global"};
