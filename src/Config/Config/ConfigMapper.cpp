@@ -16,6 +16,7 @@
    along with this program.  If not, see <https://www.gnu.org/licenses/>. */
 
 #include "ConfigMapper.h"
+#include "Applets/Types/AppletRecord.h"
 #include "Config/Config/PowerApplet/PowerAppletConfig.h"
 #include "Config/Config/Properties/EnvironmentProperties.h"
 #include "Config/Config/Properties/LayoutProperties.h"
@@ -255,8 +256,8 @@ void resolveTransformOrDefault(const QString& path_context, TAttribute& attribut
 void ConfigMapper::mapWindow(NodePair nodes, WindowProperties& window,
                              const WindowProperties& defaults, const QString& path_context) {
         // Resolve power_data and global_data
-        auto power_data = resolve<toml::table>(path_context, Source{nodes.primary, "power_applet"});
-        auto global_data = resolve<toml::table>(path_context, Source{nodes.fallback, "global"});
+        auto power_data = resolve<toml::table>(path_context, Source{nodes.primary, applet::power_applet.scope});
+        auto global_data = resolve<toml::table>(path_context, Source{nodes.fallback, applet::global.scope});
 
         // Use hardcoded defaults if no tables found
         if (!power_data && !global_data) {
@@ -271,14 +272,14 @@ void ConfigMapper::mapWindow(NodePair nodes, WindowProperties& window,
 
         window_properties.size = resolveOr<QSize>(extendCfgPath(path_context, "size"),
                                                   defaults.getSize(),
-                                                  Source{nodes.primary["size"], "power_applet"},
-                                                  Source{nodes.fallback["size"], "global"});
+                                                  Source{nodes.primary["size"], applet::power_applet.scope},
+                                                  Source{nodes.fallback["size"], applet::global.scope});
 
         window_properties.title = resolveOr<QString>(extendCfgPath(path_context, "title"),
                                                      defaults.getTitle(),
-                                                     Source{nodes.primary["title"], "power_applet"},
+                                                     Source{nodes.primary["title"], applet::power_applet.scope},
                                                      Source{nodes.fallback["title"],
-                                                            "power_applet"});
+                                                            applet::power_applet.scope});
 
         window = std::move(window_properties);
 }
@@ -288,8 +289,8 @@ void ConfigMapper::mapPrimaryButton(NodePair nodes, PrimaryButtonProperties& but
                                     const PrimaryButtonProperties& defaults,
                                     const QString&                 path_context) {
         // Resolve power_data and global_data
-        auto power_data = resolve<toml::table>(path_context, Source{nodes.primary, "power_applet"});
-        auto global_data = resolve<toml::table>(path_context, Source{nodes.fallback, "global"});
+        auto power_data = resolve<toml::table>(path_context, Source{nodes.primary, applet::power_applet.scope});
+        auto global_data = resolve<toml::table>(path_context, Source{nodes.fallback, applet::global.scope});
 
         // Use hardcoded defaults if no tables found
         if (!power_data && !global_data) {
@@ -305,25 +306,25 @@ void ConfigMapper::mapPrimaryButton(NodePair nodes, PrimaryButtonProperties& but
         button_properties.text_alignment =
                 resolveOr<Qt::Alignment>(extendCfgPath(path_context, "text_alignment"),
                                          defaults.getTextAlignment(),
-                                         Source{nodes.primary["text_alignment"], "power_applet"},
-                                         Source{nodes.fallback["text_alignment"], "global"});
+                                         Source{nodes.primary["text_alignment"], applet::power_applet.scope},
+                                         Source{nodes.fallback["text_alignment"], applet::global.scope});
 
         // TODO This option doesn't work because icon alignment is not applied anywhere yet, fix
         button_properties.icon_alignment =
                 resolveOr<Qt::Alignment>(extendCfgPath(path_context, "icon_alignment"),
                                          defaults.getIconAlignment(),
-                                         Source{nodes.primary["icon_alignment"], "power_applet"},
-                                         Source{nodes.fallback["icon_alignment"], "global"});
+                                         Source{nodes.primary["icon_alignment"], applet::power_applet.scope},
+                                         Source{nodes.fallback["icon_alignment"], applet::global.scope});
 
         button_properties.icon_size =
                 resolveOr<QSize>(extendCfgPath(path_context, "icon_size"), defaults.getIconSize(),
-                                 Source{nodes.primary["icon_size"], "power_applet"},
-                                 Source{nodes.fallback["icon_size"], "global"});
+                                 Source{nodes.primary["icon_size"], applet::power_applet.scope},
+                                 Source{nodes.fallback["icon_size"], applet::global.scope});
 
         button_properties.policy =
                 resolveOr<QSizePolicy>(extendCfgPath(path_context, "policy"), defaults.getPolicy(),
-                                       Source{nodes.primary["policy"], "power_applet"},
-                                       Source{nodes.fallback["policy"], "global"});
+                                       Source{nodes.primary["policy"], applet::power_applet.scope},
+                                       Source{nodes.fallback["policy"], applet::global.scope});
 
         button = std::move(button_properties);
 }
@@ -336,7 +337,7 @@ void ConfigMapper::mapCommandArgument(node_view argument_node, PrimaryButtonData
         QString argument{};
 
         resolveOrDefault<QString>(path_context, argument, button, defaults,
-                                  Source{argument_node, "power_applet"});
+                                  Source{argument_node, applet::power_applet.scope});
         if (argument.isEmpty()) { return; }
 
         arguments << std::move(argument);
@@ -346,7 +347,7 @@ void ConfigMapper::mapCommandArguments(node_view arguments_node, PrimaryButtonDa
                                        const PrimaryButtonData& defaults, QStringList& arguments,
                                        size_t button_index, const QString& path_context) {
         constexpr size_t min_size = 0;
-        const auto args = getTomlArray(arguments_node, makeCfgPath("power_applet", path_context),
+        const auto args = getTomlArray(arguments_node, makeCfgPath(applet::power_applet.scope, path_context),
                                        "Format: [string, array]", min_size);
         if (!args) {
                 button = defaults;
@@ -358,7 +359,7 @@ void ConfigMapper::mapCommandArguments(node_view arguments_node, PrimaryButtonDa
         for (size_t i = 0; i != args.value().size(); ++i) {
                 mapCommandArgument(toml::node_view(args.value()[i]), button, defaults,
                                    argument_list, button_index, i,
-                                   makeCfgPath("power_applet", path_context)
+                                   makeCfgPath(applet::power_applet.scope, path_context)
                                            + QString("[%1]").arg(i).toStdString().c_str());
         }
 
@@ -372,7 +373,7 @@ void ConfigMapper::mapCommand(node_view command_node, PrimaryButtonData& button,
 
         constexpr size_t min_size = 2, max_size = 2;
         const auto       command_arr = getTomlArray(command_node,
-                                                    makeCfgPath("power_applet", path_context),
+                                                    makeCfgPath(applet::power_applet.scope, path_context),
                                                     error_arr_details, min_size, max_size);
         if (!command_arr) {
                 button = defaults;
@@ -383,7 +384,7 @@ void ConfigMapper::mapCommand(node_view command_node, PrimaryButtonData& button,
 
         resolveOrDefault<QString>(extendCfgPath(path_context, "program"), cmd.program, button,
                                   defaults,
-                                  Source{toml::node_view(command_arr.value()[0]), "power_applet"});
+                                  Source{toml::node_view(command_arr.value()[0]), applet::power_applet.scope});
 
         mapCommandArguments(toml::node_view(command_arr.value()[1]), button, defaults,
                             cmd.arguments, button_index, extendCfgPath(path_context, "arguments"));
@@ -408,7 +409,7 @@ bool ConfigMapper::mapPrimaryButton(node_view                             button
         const QString button_path_context = path_context + QString("[%1]").arg(button_index);
 
         const auto button_table = resolve<toml::table>(button_path_context,
-                                                       Source{button_data_node, "power_applet"});
+                                                       Source{button_data_node, applet::power_applet.scope});
         if (!button_table) {
                 buttons = default_buttons;
                 return true;
@@ -417,18 +418,18 @@ bool ConfigMapper::mapPrimaryButton(node_view                             button
         PrimaryButtonData button{};
 
         auto enabled = resolve<bool>(path_context,
-                                     Source{button_table.value()["enabled"], "power_applet"});
+                                     Source{button_table.value()["enabled"], applet::power_applet.scope});
         if (!enabled) { return true; }
 
         resolveTransformOrDefault<QString>(extendCfgPath(path_context, "id"), button.id, button,
                                            defaults, getPowerButtonIDFromString,
-                                           Source{button_table.value()["id"], "power_applet"});
+                                           Source{button_table.value()["id"], applet::power_applet.scope});
 
         resolveOrDefault<QString>(extendCfgPath(path_context, "label"), button.label, button,
-                                  defaults, Source{button_table.value()["label"], "power_applet"});
+                                  defaults, Source{button_table.value()["label"], applet::power_applet.scope});
 
         resolveOrDefault<int64_t>(extendCfgPath(path_context, "order"), button.order, button,
-                                  defaults, Source{button_table.value()["order"], "power_applet"});
+                                  defaults, Source{button_table.value()["order"], applet::power_applet.scope});
 
         mapCommand(button_data_node["command"], button, defaults, button.command, button_index,
                    extendCfgPath(path_context, "command"));
@@ -443,7 +444,7 @@ void ConfigMapper::mapPrimaryButtons(node_view                             prima
                                      const std::vector<PrimaryButtonData>& defaults,
                                      const QString&                        path_context) {
         const auto buttons = resolve<toml::array>(path_context,
-                                                  Source{primary_buttons_node, "power_applet"});
+                                                  Source{primary_buttons_node, applet::power_applet.scope});
         if (!buttons) {
                 primary_buttons = defaults;
                 return;
@@ -462,7 +463,7 @@ void ConfigMapper::mapPrimaryButtons(node_view                             prima
         }
 
         if (buttons_found.empty()) {
-                QWARNING() << makeCfgPath("power_applet", path_context)
+                QWARNING() << makeCfgPath(applet::power_applet.scope, path_context)
                                       + ", no enabled buttons found!";
                 primary_buttons = defaults;
                 return;
@@ -484,7 +485,7 @@ void ConfigMapper::mapLayout(node_view layout_node, LayoutProperties& layout,
                              const LayoutProperties& defaults, const QString& path_context) {
         LayoutProperties layout_properties{};
 
-        const auto data = resolve<toml::table>(path_context, Source{layout_node, "power_applet"});
+        const auto data = resolve<toml::table>(path_context, Source{layout_node, applet::power_applet.scope});
         if (!data) {
                 layout_properties = defaults;
                 layout            = std::move(layout_properties);
@@ -505,7 +506,7 @@ void ConfigMapper::mapEnvironment(node_view environment_node, EnvironmentPropert
         EnvironmentProperties environment_properties{};
 
         const auto data = resolve<toml::table>(path_context,
-                                               Source{environment_node, "power_applet"});
+                                               Source{environment_node, applet::power_applet.scope});
         if (!data) {
                 environment_properties = defaults;
                 environment            = std::move(environment_properties);
@@ -516,7 +517,7 @@ void ConfigMapper::mapEnvironment(node_view environment_node, EnvironmentPropert
         environment_properties.dbus_mode = resolveOr<bool>(extendCfgPath(path_context, "dbus_mode"),
                                                            defaults.getDBusMode(),
                                                            Source{data.value()["dbus_mode"],
-                                                                  "power_applet"});
+                                                                  applet::power_applet.scope});
 
         environment = std::move(environment_properties);
 }
@@ -529,15 +530,15 @@ void ConfigMapper::mapToGlobalConfig(const toml::table& config_table, GlobalConf
 
         const auto& defaults = PowerAppletConfig::getDefault();
 
-        if (!config_table.contains("global")) { QWARNING() << "in config.toml, global missing!"; }
+        if (!config_table.contains(applet::global.scope)) { QWARNING() << "in config.toml, global missing!"; }
 
         /* Window Properties */
-        mapWindow(NodePair{config_table["power_applet"]["window"], config_table["global"]["window"]},
+        mapWindow(NodePair{config_table[applet::power_applet.scope]["window"], config_table[applet::global.scope]["window"]},
                   config.window_properties, defaults.getWindowProperties(), "window");
 
         /* Primary Button Properties */
-        mapPrimaryButton(NodePair{config_table["power_applet"]["primary_button"],
-                                  config_table["global"]["primary_button"]},
+        mapPrimaryButton(NodePair{config_table[applet::power_applet.scope]["primary_button"],
+                                  config_table[applet::global.scope]["primary_button"]},
                          config.primary_button_properties, defaults.getPrimaryButtonProperties(),
                          "primary_button");
 }
@@ -551,17 +552,17 @@ void ConfigMapper::mapToPowerAppletConfig(const toml::table& config_table,
 
         const auto& defaults = PowerAppletConfig::getDefault();
 
-        if (!config_table.contains("power_applet")) {
+        if (!config_table.contains(applet::power_applet.scope)) {
                 QWARNING() << "in config.toml, power_applet missing!";
         }
 
         mapToGlobalConfig(config_table, config);
 
         /* Layout Properties */
-        mapLayout(config_table["power_applet"]["layout"], config.layout_properties,
+        mapLayout(config_table[applet::power_applet.scope]["layout"], config.layout_properties,
                   defaults.getLayoutProperties(), "layout");
 
         /* Environment Properties */
-        mapEnvironment(config_table["power_applet"]["environment"], config.environment_properties,
+        mapEnvironment(config_table[applet::power_applet.scope]["environment"], config.environment_properties,
                        defaults.getEnvironmentProperties(), "environment");
 }
