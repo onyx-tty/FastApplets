@@ -24,6 +24,7 @@
 #include "Config/Config/Properties/WindowProperties.h"
 #include "Config/TOML/NodeView.h"
 
+#include <cstddef>
 #include <toml++/toml.hpp>
 #include <QStringList>
 

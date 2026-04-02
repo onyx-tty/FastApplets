@@ -26,14 +26,11 @@
 #include "Config/TOML/NodeView.h"
 #include "Config/TOML/TomlAccessor.h"
 #include "Core/Log.h"
-#include "CppUtils/include/Enum.h"
 #include "UI/Enums/ButtonIDs.h"
 
 #include <algorithm>
 #include <cstdlib>
 #include <qnamespace.h>
-#include <string>
-#include <string_view>
 #include <toml++/toml.hpp>
 #include <unordered_map>
 #include <QApplication>
@@ -41,9 +38,6 @@
 #include <QSizePolicy>
 #include <QString>
 #include <QStringList>
-#include <QStringLiteral>
-
-using enum_utils::EnumMap;
 
 class GlobalConfig;
 
