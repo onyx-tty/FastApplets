@@ -54,19 +54,19 @@ private:
 
         /* Layout Properties */
         static void mapCommandArgument(node_view argument_node, PrimaryButtonData& button,
-                                       const PrimaryButtonData& defaults, QStringList& arguments,
+                                       const PrimaryButtonData* defaults, QStringList& arguments,
                                        size_t button_index, size_t arg_index,
                                        const QString& path_context);
         static void mapCommandArguments(node_view arguments_node, PrimaryButtonData& button,
-                                        const PrimaryButtonData& defaults, QStringList& arguments,
+                                        const PrimaryButtonData* defaults, QStringList& arguments,
                                         size_t button_index, const QString& path_context);
         static void mapCommand(node_view command_node, PrimaryButtonData& button,
-                               const PrimaryButtonData& defaults, ShellCommand& command,
+                               const PrimaryButtonData* defaults, ShellCommand& command,
                                size_t button_index, const QString& path_context);
         static bool mapPrimaryButton(node_view                             button_data_node,
                                      std::vector<PrimaryButtonData>&       buttons,
                                      const std::vector<PrimaryButtonData>& default_buttons,
-                                     const PrimaryButtonData& defaults, size_t button_index,
+                                     const PrimaryButtonData* defaults, size_t button_index,
                                      const QString& path_context);
         static void mapPrimaryButtons(node_view                             primary_buttons_node,
                                       std::vector<PrimaryButtonData>&       primary_buttons,

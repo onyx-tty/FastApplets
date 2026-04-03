@@ -54,6 +54,17 @@ static power_button_id getPowerButtonIDFromString(const QString& string) {
         return map.at(string);
 }
 
+static void handleButtonResolutionFailure(PrimaryButtonData&       button,
+                                          const PrimaryButtonData* defaults, size_t button_index) {
+        if (!defaults) {
+                QWARNING() << "Failed to default button" << button_index << ", defaults missing!";
+                return;
+        }
+
+        button = *defaults;
+        return;
+}
+
 /* Window Properties */
 void ConfigMapper::mapWindow(NodePair nodes, WindowProperties& window,
                              const WindowProperties& defaults, const QString& path_context) {
@@ -128,27 +139,35 @@ void ConfigMapper::mapPrimaryButton(NodePair nodes, PrimaryButtonProperties& but
 
 /* Layout Properties */
 void ConfigMapper::mapCommandArgument(node_view argument_node, PrimaryButtonData& button,
-                                      const PrimaryButtonData& defaults, QStringList& arguments,
+                                      const PrimaryButtonData* defaults, QStringList& arguments,
                                       size_t button_index, size_t arg_index,
                                       const QString& path_context) {
         QString argument{};
 
-        resolveOrDefault<QString>(path_context, argument, button, defaults,
-                                  Source{argument_node, applet::power_applet.scope});
+        // TODO Make path here
+        auto argument_result = resolve<QString>(path_context,
+                                                Source{argument_node, applet::power_applet.scope});
+        if (!argument_result) {
+                handleButtonResolutionFailure(button, defaults, button_index);
+                return;
+        } else {
+                argument = argument_result.value();
+        }
+
         if (argument.isEmpty()) { return; }
 
         arguments << std::move(argument);
 }
 
 void ConfigMapper::mapCommandArguments(node_view arguments_node, PrimaryButtonData& button,
-                                       const PrimaryButtonData& defaults, QStringList& arguments,
+                                       const PrimaryButtonData* defaults, QStringList& arguments,
                                        size_t button_index, const QString& path_context) {
         constexpr size_t min_size = 0;
         const auto       args = getTomlArray(arguments_node,
                                              makeCfgPath(applet::power_applet.scope, path_context),
                                              "Format: [string, array]", min_size);
         if (!args) {
-                button = defaults;
+                handleButtonResolutionFailure(button, defaults, button_index);
                 return;
         }
 
@@ -165,7 +184,7 @@ void ConfigMapper::mapCommandArguments(node_view arguments_node, PrimaryButtonDa
 }
 
 void ConfigMapper::mapCommand(node_view command_node, PrimaryButtonData& button,
-                              const PrimaryButtonData& defaults, ShellCommand& command,
+                              const PrimaryButtonData* defaults, ShellCommand& command,
                               size_t button_index, const QString& path_context) {
         QString error_arr_details = "Format: [program, [args...]]";
 
@@ -174,16 +193,21 @@ void ConfigMapper::mapCommand(node_view command_node, PrimaryButtonData& button,
                                               makeCfgPath(applet::power_applet.scope, path_context),
                                               error_arr_details, min_size, max_size);
         if (!command_arr) {
-                button = defaults;
+                handleButtonResolutionFailure(button, defaults, button_index);
                 return;
         }
 
         ShellCommand cmd{};
 
-        resolveOrDefault<QString>(extendCfgPath(path_context, "program"), cmd.program, button,
-                                  defaults,
-                                  Source{toml::node_view(command_arr.value()[0]),
-                                         applet::power_applet.scope});
+        auto program_result = resolve<QString>(extendCfgPath(path_context, "program"),
+                                               Source{toml::node_view(command_arr.value()[0]),
+                                                      applet::power_applet.scope});
+        if (!program_result) {
+                handleButtonResolutionFailure(button, defaults, button_index);
+                return;
+        } else {
+                cmd.program = program_result.value();
+        }
 
         mapCommandArguments(toml::node_view(command_arr.value()[1]), button, defaults,
                             cmd.arguments, button_index, extendCfgPath(path_context, "arguments"));
@@ -194,7 +218,7 @@ void ConfigMapper::mapCommand(node_view command_node, PrimaryButtonData& button,
 bool ConfigMapper::mapPrimaryButton(node_view                             button_data_node,
                                     std::vector<PrimaryButtonData>&       buttons,
                                     const std::vector<PrimaryButtonData>& default_buttons,
-                                    const PrimaryButtonData& defaults, size_t button_index,
+                                    const PrimaryButtonData* defaults, size_t button_index,
                                     const QString& path_context) {
         if (button_index > buttons.size()) {
                 if (!buttons.empty()) {
@@ -222,18 +246,35 @@ bool ConfigMapper::mapPrimaryButton(node_view                             button
                                                           applet::power_applet.scope});
         if (!enabled) { return true; }
 
-        resolveTransformOrDefault<QString>(extendCfgPath(path_context, "id"), button.id, button,
-                                           defaults, getPowerButtonIDFromString,
-                                           Source{button_table.value()["id"],
-                                                  applet::power_applet.scope});
+        auto id_result = resolve<QString>(extendCfgPath(path_context, "id"),
+                                          Source{button_table.value()["id"],
+                                                 applet::power_applet.scope});
+        if (!id_result) {
+                handleButtonResolutionFailure(button, defaults, button_index);
+                return false;
+        } else {
+                button.id = getPowerButtonIDFromString(id_result.value());
+        }
 
-        resolveOrDefault<QString>(extendCfgPath(path_context, "label"), button.label, button,
-                                  defaults,
-                                  Source{button_table.value()["label"], applet::power_applet.scope});
+        auto label_result = resolve<QString>(extendCfgPath(path_context, "label"),
+                                             Source{button_table.value()["label"],
+                                                    applet::power_applet.scope});
+        if (!label_result) {
+                handleButtonResolutionFailure(button, defaults, button_index);
+                return false;
+        } else {
+                button.label = label_result.value();
+        }
 
-        resolveOrDefault<int64_t>(extendCfgPath(path_context, "order"), button.order, button,
-                                  defaults,
-                                  Source{button_table.value()["order"], applet::power_applet.scope});
+        auto order_result = resolve<int64_t>(extendCfgPath(path_context, "order"),
+                                             Source{button_table.value()["order"],
+                                                    applet::power_applet.scope});
+        if (!order_result) {
+                handleButtonResolutionFailure(button, defaults, button_index);
+                return false;
+        } else {
+                button.order = order_result.value();
+        }
 
         mapCommand(button_data_node["command"], button, defaults, button.command, button_index,
                    extendCfgPath(path_context, "command"));
@@ -258,10 +299,10 @@ void ConfigMapper::mapPrimaryButtons(node_view                             prima
 
         bool defaulted = false;
         for (size_t i = 0; i != buttons.value().size(); ++i) {
-                // TODO Ensure defaults are at least as long as primary_buttons, or pass optional
-                //      to avoid adding a button that cannot be defaulted
+                // If index out of bounds for defaults, pass nullptr
+                auto* default_button = (i < defaults.size()) ? &defaults[i] : nullptr;
                 defaulted = mapPrimaryButton(node_view(buttons.value().at(i)), buttons_found,
-                                             defaults, defaults[i], i,
+                                             defaults, default_button, i,
                                              extendCfgPath(path_context, std::to_string(i).c_str()));
                 if (defaulted) { return; }
         }
