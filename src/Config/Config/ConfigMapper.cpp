@@ -197,12 +197,13 @@ bool ConfigMapper::mapPrimaryButton(node_view                             button
                                     const PrimaryButtonData& defaults, size_t button_index,
                                     const QString& path_context) {
         if (button_index > buttons.size()) {
-                if (button_index > 1) {
-                        QFATAL("The index of button after %s is too high! Index is %zu",
-                               buttons[button_index].label, button_index);
+                if (!buttons.empty()) {
+                        QFATAL("Index out of bounds! Index is %zu, size is %zu, last button is %s!",
+                               button_index, buttons.size(), (*buttons.cend()).label);
                 }
 
-                QFATAL("The button index is too high! %zu", button_index);
+                QFATAL("Index out of bounds! Index is %zu, size is %zu!", button_index,
+                       buttons.size());
         }
 
         const QString button_path_context = path_context + QString("[%1]").arg(button_index);
