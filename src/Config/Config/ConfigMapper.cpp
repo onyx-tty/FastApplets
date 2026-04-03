@@ -69,9 +69,6 @@ void ConfigMapper::mapWindow(NodePair nodes, WindowProperties& window,
                 return;
         }
 
-        node_view power_node  = power_data ? node_view(power_data.value()) : node_view();
-        node_view global_node = global_data ? node_view(global_data.value()) : node_view();
-
         WindowProperties window_properties{};
 
         window_properties.size =
@@ -102,9 +99,6 @@ void ConfigMapper::mapPrimaryButton(NodePair nodes, PrimaryButtonProperties& but
                 button = defaults;
                 return;
         }
-
-        node_view power_node  = power_data ? node_view(power_data.value()) : node_view();
-        node_view global_node = global_data ? node_view(global_data.value()) : node_view();
 
         PrimaryButtonProperties button_properties{};
 
