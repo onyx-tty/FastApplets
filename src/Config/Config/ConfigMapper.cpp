@@ -198,7 +198,7 @@ bool ConfigMapper::mapPrimaryButton(node_view                             button
                                     const QString& path_context) {
         if (button_index > buttons.size()) {
                 if (button_index > 1) {
-                        QFATAL("The button after %s is too high! Index is %zu",
+                        QFATAL("The index of button after %s is too high! Index is %zu",
                                buttons[button_index].label, button_index);
                 }
 
