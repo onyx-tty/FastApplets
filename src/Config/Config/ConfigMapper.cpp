@@ -42,7 +42,7 @@
 class GlobalConfig;
 
 static power_button_id getPowerButtonIDFromString(const QString& string) {
-        const std::unordered_map<QString, power_button_id> map =
+        static const std::unordered_map<QString, power_button_id> map =
                 {{"poweroff", power_button_id::shutdown},
                  {"shutdown", power_button_id::shutdown},
                  {"reboot", power_button_id::reboot},
