@@ -66,7 +66,8 @@ static void handleButtonResolutionFailure(PrimaryButtonData&       button,
 }
 
 template<typename T>
-T mapProperties(NodePair nodes, const T& defaults, const QString& path_context, auto fill_fn) {
+static T mapProperties(NodePair nodes, const T& defaults, const QString& path_context,
+                       auto fill_fn) {
         // Resolve power_data and global_data
         auto power_data  = resolve<toml::table>(path_context,
                                                 Source{nodes.primary, applet::power_applet.scope});
