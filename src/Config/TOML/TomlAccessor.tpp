@@ -37,7 +37,8 @@ T getOrDefault(node_view node, const T& fallback, const QString& path, bool is_o
 
         if (!value) {
                 if (is_override) {
-                        QDEBUG() << path << "not detected!";
+                        QDEBUG() << path
+                                 << "is an override, and missing! Proceeding with globals...";
                 } else {
                         QWARNING_NS() << path << ", missing or wrong type! Using defaults...";
                 }
@@ -54,7 +55,8 @@ std::optional<T> tryGet(node_view node, const QString& path, bool is_override) {
 
         if (!value) {
                 if (is_override) {
-                        QDEBUG() << path << "not detected!";
+                        QDEBUG() << path
+                                 << "is an override, and missing! Proceeding with globals...";
                 } else {
                         QWARNING_NS() << path << ", missing or wrong type! Using defaults...";
                 }
@@ -69,7 +71,8 @@ const toml::table* getTomlTable(node_view node, const QString& path, bool is_ove
         const auto* table = node.as_table();
         if (!table) {
                 if (is_override) {
-                        QDEBUG() << path << "not detected!";
+                        QDEBUG() << path
+                                 << "is an override, and missing! Proceeding with globals...";
                 } else {
                         QWARNING_NS() << path << ", must be a table! Using defaults...";
                 }
@@ -88,7 +91,8 @@ std::optional<toml::array> getTomlArray(node_view node, const QString& path, boo
 
         if (!arr) {
                 if (is_override) {
-                        QDEBUG() << path << "not detected!";
+                        QDEBUG() << path
+                                 << "is an override, and missing! Proceeding with globals...";
                 } else {
                         QWARNING_NS() << path << ", must be an array! " << error_arr_details
                                       << " Using defaults...";
@@ -99,7 +103,8 @@ std::optional<toml::array> getTomlArray(node_view node, const QString& path, boo
 
         if (min_size && arr->size() < min_size.value()) {
                 if (is_override) {
-                        QDEBUG() << path << "not detected!";
+                        QDEBUG() << path
+                                 << "is an override, and missing! Proceeding with globals...";
                 } else {
                         QWARNING_NS()
                                 << path << ", arr size < min_size! min_size: " << min_size.value()
@@ -111,7 +116,8 @@ std::optional<toml::array> getTomlArray(node_view node, const QString& path, boo
 
         if (max_size && arr->size() > max_size.value()) {
                 if (is_override) {
-                        QDEBUG() << path << "not detected!";
+                        QDEBUG() << path
+                                 << "is an override, and missing! Proceeding with globals...";
                 } else {
                         QWARNING_NS()
                                 << path << ", arr size >= max_size! max_size: " << max_size.value()
@@ -158,7 +164,8 @@ T getValueFromEnumMap(const std::string key, const EnumMap<T>& map, const T& fal
                       const QString& path, bool is_override) {
         if (!map.contains(key)) {
                 if (is_override) {
-                        QDEBUG_NS() << path << ", not detected!";
+                        QDEBUG() << path
+                                 << "is an override, and missing! Proceeding with globals...";
                 } else {
                         QWARNING_NS() << path << ", invalid! Using defaults...";
                 }
@@ -174,7 +181,8 @@ std::optional<T> tryGetValueFromEnumMap(const std::string key, const enum_utils:
                                         const QString& path, bool is_override) {
         if (!map.contains(key)) {
                 if (is_override) {
-                        QDEBUG_NS() << path << ", not detected!";
+                        QDEBUG() << path
+                                 << "is an override, and missing! Proceeding with globals...";
                 } else {
                         QWARNING_NS() << path << ", invalid! Using defaults...";
                 }
