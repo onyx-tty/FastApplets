@@ -10,8 +10,23 @@
                         "cacheVariables": {
                                 "CMAKE_BUILD_TYPE": "Debug",
                                 "ENABLE_ASAN": "ON",
-				"ENABLE_LSAN": "ON",
-				"ENABLE_UBSAN": "ON",
+                                "ENABLE_LSAN": "ON",
+                                "ENABLE_UBSAN": "ON",
+                                "LOG_DEBUG": "ON"
+                        }
+                },
+                {
+                        "name": "Lint",
+                        "displayName": "Lint",
+                        "description": "Debug build with clang-tidy static analysis enabled",
+                        "generator": "Ninja",
+                        "binaryDir": "build/Lint",
+                        "cacheVariables": {
+                                "CMAKE_BUILD_TYPE": "Debug",
+                                "ENABLE_ASAN": "ON",
+                                "ENABLE_LSAN": "ON",
+                                "ENABLE_UBSAN": "ON",
+                                "ENABLE_CLANG_TIDY": "ON",
                                 "LOG_DEBUG": "ON"
                         }
                 },
