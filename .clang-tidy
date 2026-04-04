@@ -1,6 +1,9 @@
 ---
 Checks: >
-  *
+  *,
+  -portability-restrict-system-includes,
+  -llvmlibc-restrict-system-libc-headers,
+  -portability-avoid-pragma-once
 HeaderFilterRegex: '.*'
 ...
 
