@@ -26,6 +26,6 @@ private:
         bool dbus_mode;
 
 public:
-        EnvironmentProperties(bool dbus_mode = false);
+        explicit EnvironmentProperties(bool dbus_mode = false);
         const bool& getDBusMode() const;
 };

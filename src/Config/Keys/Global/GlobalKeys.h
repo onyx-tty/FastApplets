@@ -28,7 +28,7 @@ private:
         keybindings quit_keys;
 
 protected:
-        GlobalKeys(keybindings quit_keys = {});
+        explicit GlobalKeys(keybindings quit_keys = {});
 
 public:
         const keybindings& getQuitKeys() const;

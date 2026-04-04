@@ -31,8 +31,8 @@ private:
         std::array<keybindings, 4> primary_button_keys;
 
 public:
-        PowerAppletKeys(keybindings                quit_keys           = {},
-                        std::array<keybindings, 4> primary_button_keys = {});
+        explicit PowerAppletKeys(keybindings                quit_keys           = {},
+                                 std::array<keybindings, 4> primary_button_keys = {});
         // TODO Make this const to avoid overwrites
         static PowerAppletKeys&           get();
         static const PowerAppletKeys&     getDefault();

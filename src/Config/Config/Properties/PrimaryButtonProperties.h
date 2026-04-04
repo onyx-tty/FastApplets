@@ -32,9 +32,9 @@ private:
         QSizePolicy   policy;
 
 public:
-        PrimaryButtonProperties(Qt::Alignment text_alignment = {},
-                                Qt::Alignment icon_alignment = {}, QSize icon_size = {},
-                                QSizePolicy policy = {});
+        explicit PrimaryButtonProperties(Qt::Alignment text_alignment = {},
+                                         Qt::Alignment icon_alignment = {}, QSize icon_size = {},
+                                         QSizePolicy policy = {});
         const Qt::Alignment& getTextAlignment() const;
         const Qt::Alignment& getIconAlignment() const;
         const QSize&         getIconSize() const;

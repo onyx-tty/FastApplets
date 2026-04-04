@@ -37,10 +37,11 @@ private:
         EnvironmentProperties environment_properties;
 
 public:
-        PowerAppletConfig(WindowProperties        window_properties         = {},
-                          PrimaryButtonProperties primary_button_properties = {},
-                          LayoutProperties        layout_properties         = {},
-                          EnvironmentProperties   environment_properties    = {});
+        PowerAppletConfig(
+                WindowProperties        window_properties         = WindowProperties{},
+                PrimaryButtonProperties primary_button_properties = PrimaryButtonProperties{},
+                LayoutProperties        layout_properties         = LayoutProperties{},
+                EnvironmentProperties   environment_properties    = EnvironmentProperties{});
         // TODO Make this const to avoid overwrites
         static PowerAppletConfig&       get();
         static const PowerAppletConfig& getDefault();

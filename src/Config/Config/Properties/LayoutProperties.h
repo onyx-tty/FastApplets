@@ -30,6 +30,6 @@ private:
         std::vector<PrimaryButtonData> primary_power_buttons;
 
 public:
-        LayoutProperties(std::vector<PrimaryButtonData> primary_power_buttons = {});
+        explicit LayoutProperties(std::vector<PrimaryButtonData> primary_power_buttons = {});
         const std::vector<PrimaryButtonData>& getPrimaryPowerButtons() const;
 };

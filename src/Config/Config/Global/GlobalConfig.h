@@ -30,8 +30,9 @@ class GlobalConfig {
 protected:
         friend class ConfigMapper;
 
-        GlobalConfig(WindowProperties        window_properties         = {},
-                     PrimaryButtonProperties primary_button_properties = {});
+        explicit GlobalConfig(
+                WindowProperties        window_properties         = WindowProperties{},
+                PrimaryButtonProperties primary_button_properties = PrimaryButtonProperties{});
 
         WindowProperties        window_properties;
         PrimaryButtonProperties primary_button_properties;

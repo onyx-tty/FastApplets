@@ -30,7 +30,7 @@ private:
         QString title;
 
 public:
-        WindowProperties(QSize size = {}, QString title = {});
+        explicit WindowProperties(QSize size = {}, QString title = {});
         const QSize&   getSize() const;
         const QString& getTitle() const;
 };

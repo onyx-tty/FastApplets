@@ -48,8 +48,7 @@ PowerAppletConfig& PowerAppletConfig::get() {
         static bool              parsed = false;
 
         if (!parsed) {
-                ConfigMapper::mapToPowerAppletConfig(TomlParser::parseConfig(),
-                                                     power_applet_config);
+                ConfigMapper::mapToPowerAppletConfig(TomlParser::parseConfig(), power_applet_config);
                 parsed = true;
         }
 
@@ -59,7 +58,8 @@ PowerAppletConfig& PowerAppletConfig::get() {
 const PowerAppletConfig& PowerAppletConfig::getDefault() {
         QSize            size                      = {960, 220};
         QString          title                     = "test_window";
-        WindowProperties default_window_properties = {std::move(size), std::move(title)};
+        WindowProperties default_window_properties = WindowProperties{std::move(size),
+                                                                      std::move(title)};
 
         Qt::Alignment           text_alignment = {Qt::AlignHCenter, Qt::AlignTop};
         Qt::Alignment           icon_alignment = {Qt::AlignHCenter, Qt::AlignVCenter};
@@ -84,7 +84,7 @@ const PowerAppletConfig& PowerAppletConfig::getDefault() {
                                    "Hibernate",
                                    4,
                                    {"systemctl", {"hibernate"}}}};
-        LayoutProperties default_layout_properties = {std::move(primary_buttons)};
+        LayoutProperties default_layout_properties = LayoutProperties{std::move(primary_buttons)};
 
         bool                  dbus_mode = false;
         EnvironmentProperties default_environment_properties{dbus_mode};
