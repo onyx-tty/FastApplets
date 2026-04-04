@@ -12,6 +12,14 @@ option(BUILD_POWERAPPLET "Include PowerApplet in the building process" ON)
 set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
+# clang-tidy
+if(ENABLE_CLANG_TIDY)
+        set(CMAKE_CXX_CLANG_TIDY
+                clang-tidy;
+                -header-filter=.;
+                -checks=*;)
+endif()
+
 # Enable Qt support for QObject MOC
 set(CMAKE_AUTOMOC ON)
 
