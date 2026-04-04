@@ -65,9 +65,8 @@ static void handleButtonResolutionFailure(PrimaryButtonData&       button,
         return;
 }
 
-/* Window Properties */
-void ConfigMapper::mapWindow(NodePair nodes, WindowProperties& window,
-                             const WindowProperties& defaults, const QString& path_context) {
+template<typename T>
+T mapProperties(NodePair nodes, const T& defaults, const QString& path_context, auto fill_fn) {
         // Resolve power_data and global_data
         auto power_data  = resolve<toml::table>(path_context,
                                                 Source{nodes.primary, applet::power_applet.scope});
@@ -75,66 +74,73 @@ void ConfigMapper::mapWindow(NodePair nodes, WindowProperties& window,
                                                 Source{nodes.fallback, applet::global.scope});
 
         // Use hardcoded defaults if no tables found
-        if (!power_data && !global_data) {
-                window = defaults;
-                return;
-        }
+        if (!power_data && !global_data) { return defaults; }
 
-        WindowProperties window_properties{};
+        T props{};
 
-        window_properties.size =
-                resolveOr<QSize>(extendCfgPath(path_context, "size"), defaults.getSize(),
-                                 Source{nodes.primary["size"], applet::power_applet.scope},
-                                 Source{nodes.fallback["size"], applet::global.scope});
+        fill_fn(nodes, props, path_context);
 
-        window_properties.title =
-                resolveOr<QString>(extendCfgPath(path_context, "title"), defaults.getTitle(),
-                                   Source{nodes.primary["title"], applet::power_applet.scope},
-                                   Source{nodes.fallback["title"], applet::power_applet.scope});
+        return std::move(props);
+}
 
-        window = std::move(window_properties);
+/* Window Properties */
+void ConfigMapper::mapWindow(NodePair nodes, WindowProperties& window,
+                             const WindowProperties& defaults, const QString& path_context) {
+        window = mapProperties(
+                nodes, defaults, path_context,
+                [&defaults](NodePair nodes, WindowProperties& properties,
+                            const QString& path_context) {
+                        properties.size = resolveOr<QSize>(extendCfgPath(path_context, "size"),
+                                                           defaults.getSize(),
+                                                           Source{nodes.primary["size"],
+                                                                  applet::power_applet.scope},
+                                                           Source{nodes.fallback["size"],
+                                                                  applet::global.scope});
+
+                        properties.title = resolveOr<QString>(extendCfgPath(path_context, "title"),
+                                                              defaults.getTitle(),
+                                                              Source{nodes.primary["title"],
+                                                                     applet::power_applet.scope},
+                                                              Source{nodes.fallback["title"],
+                                                                     applet::power_applet.scope});
+                });
 }
 
 /* Primary Button Properties*/
 void ConfigMapper::mapPrimaryButton(NodePair nodes, PrimaryButtonProperties& button,
                                     const PrimaryButtonProperties& defaults,
                                     const QString&                 path_context) {
-        // Resolve power_data and global_data
-        auto power_data  = resolve<toml::table>(path_context,
-                                                Source{nodes.primary, applet::power_applet.scope});
-        auto global_data = resolve<toml::table>(path_context,
-                                                Source{nodes.fallback, applet::global.scope});
+        button = mapProperties(
+                nodes, defaults, path_context,
+                [&defaults](NodePair nodes, PrimaryButtonProperties& button,
+                            const QString& path_context) {
+                        button.text_alignment = resolveOr<Qt::Alignment>(
+                                extendCfgPath(path_context, "text_alignment"),
+                                defaults.getTextAlignment(),
+                                Source{nodes.primary["text_alignment"], applet::power_applet.scope},
+                                Source{nodes.fallback["text_alignment"], applet::global.scope});
 
-        // Use hardcoded defaults if no tables found
-        if (!power_data && !global_data) {
-                button = defaults;
-                return;
-        }
+                        // TODO This option doesn't work because icon alignment is not applied anywhere yet, fix
+                        button.icon_alignment = resolveOr<Qt::Alignment>(
+                                extendCfgPath(path_context, "icon_alignment"),
+                                defaults.getIconAlignment(),
+                                Source{nodes.primary["icon_alignment"], applet::power_applet.scope},
+                                Source{nodes.fallback["icon_alignment"], applet::global.scope});
 
-        PrimaryButtonProperties button_properties{};
+                        button.icon_size = resolveOr<QSize>(extendCfgPath(path_context, "icon_size"),
+                                                            defaults.getIconSize(),
+                                                            Source{nodes.primary["icon_size"],
+                                                                   applet::power_applet.scope},
+                                                            Source{nodes.fallback["icon_size"],
+                                                                   applet::global.scope});
 
-        button_properties.text_alignment = resolveOr<Qt::Alignment>(
-                extendCfgPath(path_context, "text_alignment"), defaults.getTextAlignment(),
-                Source{nodes.primary["text_alignment"], applet::power_applet.scope},
-                Source{nodes.fallback["text_alignment"], applet::global.scope});
-
-        // TODO This option doesn't work because icon alignment is not applied anywhere yet, fix
-        button_properties.icon_alignment = resolveOr<Qt::Alignment>(
-                extendCfgPath(path_context, "icon_alignment"), defaults.getIconAlignment(),
-                Source{nodes.primary["icon_alignment"], applet::power_applet.scope},
-                Source{nodes.fallback["icon_alignment"], applet::global.scope});
-
-        button_properties.icon_size =
-                resolveOr<QSize>(extendCfgPath(path_context, "icon_size"), defaults.getIconSize(),
-                                 Source{nodes.primary["icon_size"], applet::power_applet.scope},
-                                 Source{nodes.fallback["icon_size"], applet::global.scope});
-
-        button_properties.policy =
-                resolveOr<QSizePolicy>(extendCfgPath(path_context, "policy"), defaults.getPolicy(),
-                                       Source{nodes.primary["policy"], applet::power_applet.scope},
-                                       Source{nodes.fallback["policy"], applet::global.scope});
-
-        button = std::move(button_properties);
+                        button.policy = resolveOr<QSizePolicy>(extendCfgPath(path_context, "policy"),
+                                                               defaults.getPolicy(),
+                                                               Source{nodes.primary["policy"],
+                                                                      applet::power_applet.scope},
+                                                               Source{nodes.fallback["policy"],
+                                                                      applet::global.scope});
+                });
 }
 
 /* Layout Properties */
@@ -144,7 +150,6 @@ void ConfigMapper::mapCommandArgument(node_view argument_node, PrimaryButtonData
                                       const QString& path_context) {
         QString argument{};
 
-        // TODO Make path here
         auto argument_result = resolve<QString>(path_context,
                                                 Source{argument_node, applet::power_applet.scope});
         if (!argument_result) {
