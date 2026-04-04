@@ -44,25 +44,25 @@ std::optional<QSizePolicy> tryGetSizePolicy(const std::string key, const EnumMap
                                             const QString& path);
 
 namespace extractor {
-auto table = [](node_view node, const QString& path,
-                bool is_override = false) -> std::optional<toml::table> {
+inline auto table = [](node_view node, const QString& path,
+                       bool is_override = false) -> std::optional<toml::table> {
         if (auto* result = getTomlTable(node, path, is_override)) { return *result; }
 
         return std::nullopt;
 };
 
-auto array = [](node_view node, const QString& path, bool is_override = false,
-                const QString& error_arr_details = {}) {
+inline auto array = [](node_view node, const QString& path, bool is_override = false,
+                       const QString& error_arr_details = {}) {
         return getTomlArray(node, path, is_override, error_arr_details);
 };
 
 template<typename T>
-auto value = [](node_view node, const QString& path, bool is_override = false) {
+inline auto value = [](node_view node, const QString& path, bool is_override = false) {
         return tryGet<T>(node, path, is_override);
 };
 
-auto qstring = [](node_view node, const QString& path,
-                  bool is_override = false) -> std::optional<QString> {
+inline auto qstring = [](node_view node, const QString& path,
+                         bool is_override = false) -> std::optional<QString> {
         if (auto str = extractor::value<std::string>(node, path, is_override)) {
                 return QString::fromStdString(str.value());
         }
@@ -70,19 +70,19 @@ auto qstring = [](node_view node, const QString& path,
         return std::nullopt;
 };
 
-auto qsize = [](node_view node, const QString& path, bool is_override = false) {
+inline auto qsize = [](node_view node, const QString& path, bool is_override = false) {
         return tryGetQSize(node, path, is_override);
 };
 
-auto alignment = [](node_view node, const QString& path,
-                    bool is_override = false) -> std::optional<Qt::Alignment> {
+inline auto alignment = [](node_view node, const QString& path,
+                           bool is_override = false) -> std::optional<Qt::Alignment> {
         auto raw = tryGet<std::string>(node, path, is_override);
         if (!raw) { return std::nullopt; }
         return tryGetAlignment(raw.value(), alignment_map, path);
 };
 
-auto size_policy = [](node_view node, const QString& path,
-                      bool is_override = false) -> std::optional<QSizePolicy> {
+inline auto size_policy = [](node_view node, const QString& path,
+                             bool is_override = false) -> std::optional<QSizePolicy> {
         auto raw = tryGet<std::string>(node, path, is_override);
         if (!raw) { return std::nullopt; }
         return tryGetSizePolicy(raw.value(), size_policy_map, path);
