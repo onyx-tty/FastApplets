@@ -16,8 +16,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 if(ENABLE_CLANG_TIDY)
         set(CMAKE_CXX_CLANG_TIDY
                 clang-tidy;
-                -header-filter=.;
-                -checks=*;)
+                -header-filter=.;)
 endif()
 
 # Enable Qt support for QObject MOC
