@@ -88,21 +88,20 @@ void ConfigMapper::mapWindow(NodePair nodes, WindowProperties& window,
                              const WindowProperties& defaults, const QString& path_context) {
         window = mapProperties(
                 nodes, defaults, path_context,
-                [&defaults](NodePair nodes, WindowProperties& properties,
-                            const QString& path_context) {
-                        properties.size = resolveOr<QSize>(extendCfgPath(path_context, "size"),
-                                                           defaults.getSize(),
-                                                           Source{nodes.primary["size"],
-                                                                  applet::power_applet.scope},
-                                                           Source{nodes.fallback["size"],
-                                                                  applet::global.scope});
+                [&defaults](NodePair nodes, WindowProperties& window, const QString& path_context) {
+                        window.size = resolveOr<QSize>(extendCfgPath(path_context, "size"),
+                                                       defaults.getSize(),
+                                                       Source{nodes.primary["size"],
+                                                              applet::power_applet.scope},
+                                                       Source{nodes.fallback["size"],
+                                                              applet::global.scope});
 
-                        properties.title = resolveOr<QString>(extendCfgPath(path_context, "title"),
-                                                              defaults.getTitle(),
-                                                              Source{nodes.primary["title"],
-                                                                     applet::power_applet.scope},
-                                                              Source{nodes.fallback["title"],
-                                                                     applet::power_applet.scope});
+                        window.title = resolveOr<QString>(extendCfgPath(path_context, "title"),
+                                                          defaults.getTitle(),
+                                                          Source{nodes.primary["title"],
+                                                                 applet::power_applet.scope},
+                                                          Source{nodes.fallback["title"],
+                                                                 applet::power_applet.scope});
                 });
 }
 
