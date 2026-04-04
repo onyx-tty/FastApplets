@@ -17,7 +17,9 @@
 
 #include "GlobalKeys.h"
 
-GlobalKeys::GlobalKeys(keybindings quit_keys) : quit_keys(quit_keys) {}
+#include <utility>
+
+GlobalKeys::GlobalKeys(keybindings quit_keys) : quit_keys(std::move(quit_keys)) {}
 
 const keybindings& GlobalKeys::getQuitKeys() const {
         return quit_keys;
