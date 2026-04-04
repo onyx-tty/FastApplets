@@ -57,7 +57,10 @@ std::optional<T> tryGet(node_view node, const QString& path) {
 
 const toml::table* getTomlTable(node_view node, const QString& path) {
         const auto* table = node.as_table();
-        if (!table) { QWARNING_NS() << path << ", must be a table! Using defaults..."; }
+        if (!table) {
+                QWARNING_NS() << path << ", must be a table! Using defaults...";
+                return nullptr;
+        }
 
         return table;
 }
