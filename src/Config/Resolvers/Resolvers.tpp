@@ -42,32 +42,44 @@ static QString extendCfgPath(const QString& path, const char* extension,
 // Use if return value and defaulting must be handled manually
 // On success: extract from a node, return as std::optional<T>
 // On failure: return std::nullopt
+// Forcefully mark as an override by passing 'force_override_on = true',
+// useful for single sources, as only multiple sources get automatic
+// detection of overrides
 template<typename T>
-std::optional<T> resolve(std::initializer_list<Source> sources, const QString& path_context) {
+std::optional<T> resolve(std::initializer_list<Source> sources, const QString& path_context,
+                         bool force_override_on) {
         using DT = std::decay_t<T>;
 
         // Collapse extraction logic into that of a corresponding type
-        static auto extract = [&](node_view node, const QString& path) -> std::optional<DT> {
+        static auto extract = [&](node_view node, const QString& path,
+                                  bool is_override) -> std::optional<DT> {
                 if constexpr (std::is_same_v<DT, toml::table>) {
-                        return extractor::table(node, path);
+                        return extractor::table(node, path, is_override);
                 } else if constexpr (std::is_same_v<DT, toml::array>) {
-                        return extractor::array(node, path);
+                        return extractor::array(node, path, is_override);
                 } else if constexpr (std::is_same_v<DT, QSize>) {
-                        return extractor::qsize(node, path);
+                        return extractor::qsize(node, path, is_override);
                 } else if constexpr (std::is_same_v<DT, Qt::Alignment>) {
-                        return extractor::alignment(node, path);
+                        return extractor::alignment(node, path, is_override);
                 } else if constexpr (std::is_same_v<DT, QSizePolicy>) {
-                        return extractor::size_policy(node, path);
+                        return extractor::size_policy(node, path, is_override);
                 } else if constexpr (std::is_same_v<DT, QString>) {
-                        return extractor::qstring(node, path);
+                        return extractor::qstring(node, path, is_override);
                 } else {
-                        return extractor::value<DT>(node, path);
+                        return extractor::value<DT>(node, path, is_override);
                 }
         };
 
         // Validate and attempt extraction of each passed source, prioritizing earliest ones
-        for (const auto& source : sources) {
-                if (auto result = extract(source.node, makeCfgPath(source.scope, path_context))) {
+        for (size_t i = 0; i != sources.size(); ++i) {
+                auto& source = *(sources.begin() + i);
+
+                // If 'i' is not the last index then 'source' is an override
+                bool is_source_override = (i < sources.size() - 1) || force_override_on ? true
+                                                                                        : false;
+
+                if (auto result = extract(source.node, makeCfgPath(source.scope, path_context),
+                                          is_source_override)) {
                         return *result;
                 }
         }
@@ -77,8 +89,8 @@ std::optional<T> resolve(std::initializer_list<Source> sources, const QString& p
 }
 
 template<typename T, typename... Sources>
-std::optional<T> resolve(const QString& path_context, Sources&&... sources) {
-        return resolve<T>({std::forward<Sources>(sources)...}, path_context);
+std::optional<T> resolve(const QString& path_context, bool force_override_on, Sources&&... sources) {
+        return resolve<T>({std::forward<Sources>(sources)...}, path_context, force_override_on);
 }
 
 // Use to skip validation of return value and to automatically default
@@ -86,7 +98,7 @@ std::optional<T> resolve(const QString& path_context, Sources&&... sources) {
 // On failure: copy default value
 template<typename T, typename DefaultT>
 T resolveOr(std::initializer_list<Source> sources, const DefaultT& defaults,
-                   const QString& path_context) {
+            const QString& path_context) {
         return resolve<T>(sources, path_context).value_or(defaults);
 }
 

@@ -75,8 +75,9 @@ void interpretTextAsKeybindings(node_view source, keybindings& target) {
 void KeysMapper::mapGlobalQuitKeys(node_view quit_node, keybindings& quit) {
         const auto&      defaults     = PowerAppletKeys::getDefault().getQuitKeys();
         QString          error_prefix = "in keys.toml, global.quit";
+        constexpr bool   is_override  = false;
         constexpr size_t min_size = 1, max_size = 4;
-        const auto       array = getTomlArray(quit_node, std::move(error_prefix),
+        const auto       array = getTomlArray(quit_node, std::move(error_prefix), is_override,
                                               "Format: [keybindings...]", min_size, max_size);
 
         if (!array || array.value().empty()) {
@@ -104,8 +105,9 @@ void KeysMapper::mapGlobalKeys(node_view global_node, GlobalKeys& global) {
 void KeysMapper::mapPowerAppletQuitKeys(node_view quit_node, keybindings& quit,
                                         keybindings& global_quit) {
         QString          error_prefix = "in keys.toml, power_applet.quit";
+        constexpr bool   is_override  = true;
         constexpr size_t min_size = 1, max_size = 4;
-        const auto       array = getTomlArray(quit_node, std::move(error_prefix),
+        const auto       array = getTomlArray(quit_node, std::move(error_prefix), is_override,
                                               "Format: [keybindings...]", min_size, max_size);
 
         if (!array || array.value().empty()) {
@@ -120,10 +122,11 @@ void KeysMapper::mapPowerAppletPrimaryButtonKeys(node_view                   pri
                                                  std::array<keybindings, 4>& primary_buttons) {
         const std::array<keybindings, 4>& defaults = PowerAppletKeys::getDefault()
                                                              .getPrimaryButtonKeys();
-        QString    error_prefix                    = "in keys.toml, power_applet.primary_buttons";
-        QString    error_arr_details               = "Format: [keybindings...]";
-        const auto primary_button_nodes = getTomlArray(primary_buttons_node, error_prefix,
-                                                       error_arr_details);
+        QString        error_prefix                = "in keys.toml, power_applet.primary_buttons";
+        constexpr bool is_override                 = false;
+        QString        error_arr_details           = "Format: [keybindings...]";
+        const auto     primary_button_nodes = getTomlArray(primary_buttons_node, error_prefix,
+                                                           is_override, error_arr_details);
 
         if (!primary_button_nodes || primary_button_nodes.value().size() < 4) {
                 primary_buttons = defaults;
@@ -134,7 +137,7 @@ void KeysMapper::mapPowerAppletPrimaryButtonKeys(node_view                   pri
         for (size_t i = 0; i != primary_button_nodes.value().size(); ++i) {
                 keys_arr[i] = getTomlArray(toml::node_view(primary_button_nodes.value()[i]),
                                            QStringLiteral("[%1]").arg(QString::number(i - 1)),
-                                           error_arr_details, min_size, max_size);
+                                           is_override, error_arr_details, min_size, max_size);
         };
 
         // Parse power_applet.primary_buttons

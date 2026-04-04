@@ -36,11 +36,16 @@ struct Source final {
 // Use if return value and defaulting must be handled manually
 // On success: extract from a node, return as std::optional<T>
 // On failure: return std::nullopt
+// Forcefully mark as an override by passing 'force_override_on = true',
+// useful for single sources, as only multiple sources get automatic
+// detection of overrides
 template<typename T>
-std::optional<T> resolve(std::initializer_list<Source> sources, const QString& path_context);
+std::optional<T> resolve(std::initializer_list<Source> sources, const QString& path_context,
+                         bool force_override_on = false);
 
 template<typename T, typename... Sources>
-std::optional<T> resolve(const QString& path_context, Sources&&... sources);
+std::optional<T> resolve(const QString& path_context, bool force_override_on = false,
+                         Sources&&... sources);
 
 // Use to skip validation of return value and to automatically default
 // On success: extract from a node

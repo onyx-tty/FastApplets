@@ -32,11 +32,16 @@ using enum_utils::EnumMap;
 using string_utils::toLowerCopy;
 
 template<typename T>
-T getOrDefault(node_view node, const T& fallback, const QString& path) {
+T getOrDefault(node_view node, const T& fallback, const QString& path, bool is_override) {
         const auto* value = node.as<T>();
 
         if (!value) {
-                QWARNING_NS() << path << ", missing or wrong type! Using defaults...";
+                if (is_override) {
+                        QDEBUG() << path << "not detected!";
+                } else {
+                        QWARNING_NS() << path << ", missing or wrong type! Using defaults...";
+                }
+
                 return fallback;
         }
 
@@ -44,57 +49,85 @@ T getOrDefault(node_view node, const T& fallback, const QString& path) {
 }
 
 template<typename T>
-std::optional<T> tryGet(node_view node, const QString& path) {
+std::optional<T> tryGet(node_view node, const QString& path, bool is_override) {
         const auto* value = node.as<T>();
 
         if (!value) {
-                QWARNING_NS() << path << ", missing or wrong type! Using defaults...";
+                if (is_override) {
+                        QDEBUG() << path << "not detected!";
+                } else {
+                        QWARNING_NS() << path << ", missing or wrong type! Using defaults...";
+                }
+
                 return std::nullopt;
         }
 
         return value->get();
 }
 
-const toml::table* getTomlTable(node_view node, const QString& path) {
+const toml::table* getTomlTable(node_view node, const QString& path, bool is_override) {
         const auto* table = node.as_table();
         if (!table) {
-                QWARNING_NS() << path << ", must be a table! Using defaults...";
+                if (is_override) {
+                        QDEBUG() << path << "not detected!";
+                } else {
+                        QWARNING_NS() << path << ", must be a table! Using defaults...";
+                }
+
                 return nullptr;
         }
 
         return table;
 }
 
-std::optional<toml::array> getTomlArray(node_view node, const QString& path,
+std::optional<toml::array> getTomlArray(node_view node, const QString& path, bool is_override,
                                         const QString&        error_arr_details,
                                         std::optional<size_t> min_size,
                                         std::optional<size_t> max_size) {
         const auto* arr = node.as_array();
 
         if (!arr) {
-                QWARNING_NS() << path << ", must be an array! " << error_arr_details
-                              << " Using defaults...";
+                if (is_override) {
+                        QDEBUG() << path << "not detected!";
+                } else {
+                        QWARNING_NS() << path << ", must be an array! " << error_arr_details
+                                      << " Using defaults...";
+                }
+
                 return std::nullopt;
         }
 
         if (min_size && arr->size() < min_size.value()) {
-                QWARNING_NS() << path << ", arr size < min_size! min_size: " << min_size.value()
-                              << ", size: " << arr->size() << ". Using defaults...";
+                if (is_override) {
+                        QDEBUG() << path << "not detected!";
+                } else {
+                        QWARNING_NS()
+                                << path << ", arr size < min_size! min_size: " << min_size.value()
+                                << ", size: " << arr->size() << ". Using defaults...";
+                }
+
                 return std::nullopt;
         }
 
         if (max_size && arr->size() > max_size.value()) {
-                QWARNING_NS() << path << ", arr size >= max_size! max_size: " << max_size.value()
-                              << ", size: " << arr->size() << ". Using defaults...";
+                if (is_override) {
+                        QDEBUG() << path << "not detected!";
+                } else {
+                        QWARNING_NS()
+                                << path << ", arr size >= max_size! max_size: " << max_size.value()
+                                << ", size: " << arr->size() << ". Using defaults...";
+                }
+
                 return std::nullopt;
         }
 
         return *arr;
 }
 
-QSize getQSize(node_view node, const QSize& fallback, const QString& path) {
+QSize getQSize(node_view node, const QSize& fallback, const QString& path, bool is_override) {
         constexpr size_t min_size = 2;
-        const auto arr = getTomlArray(node, path, "Format: [int, int]", min_size, std::nullopt);
+        const auto       arr = getTomlArray(node, path, is_override, "Format: [int, int]", min_size,
+                                            std::nullopt);
 
         if (!arr) { return fallback; }
 
@@ -106,9 +139,9 @@ QSize getQSize(node_view node, const QSize& fallback, const QString& path) {
         return QSize(width, height);
 }
 
-std::optional<QSize> tryGetQSize(node_view node, const QString& path) {
+std::optional<QSize> tryGetQSize(node_view node, const QString& path, bool is_override) {
         constexpr size_t min_size = 2;
-        const auto&      arr      = getTomlArray(node, path, "Format: [int, int]", min_size);
+        const auto& arr = getTomlArray(node, path, is_override, "Format: [int, int]", min_size);
 
         if (!arr) { return std::nullopt; }
 
@@ -122,9 +155,14 @@ std::optional<QSize> tryGetQSize(node_view node, const QString& path) {
 
 template<typename T>
 T getValueFromEnumMap(const std::string key, const EnumMap<T>& map, const T& fallback,
-                      const QString& path) {
+                      const QString& path, bool is_override) {
         if (!map.contains(key)) {
-                QWARNING() << path << "invalid! Using defaults...";
+                if (is_override) {
+                        QDEBUG_NS() << path << ", not detected!";
+                } else {
+                        QWARNING_NS() << path << ", invalid! Using defaults...";
+                }
+
                 return fallback;
         }
 
@@ -133,9 +171,14 @@ T getValueFromEnumMap(const std::string key, const EnumMap<T>& map, const T& fal
 
 template<typename T>
 std::optional<T> tryGetValueFromEnumMap(const std::string key, const enum_utils::EnumMap<T>& map,
-                                        const QString& path) {
+                                        const QString& path, bool is_override) {
         if (!map.contains(key)) {
-                QWARNING() << path << "invalid! Using defaults...";
+                if (is_override) {
+                        QDEBUG_NS() << path << ", not detected!";
+                } else {
+                        QWARNING_NS() << path << ", invalid! Using defaults...";
+                }
+
                 return std::nullopt;
         }
 

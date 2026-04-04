@@ -69,9 +69,12 @@ template<typename T>
 static T mapProperties(NodePair nodes, const T& defaults, const QString& path_context,
                        auto fill_fn) {
         // Resolve power_data and global_data
-        auto power_data  = resolve<toml::table>(path_context,
-                                                Source{nodes.primary, applet::power_applet.scope});
-        auto global_data = resolve<toml::table>(path_context,
+        constexpr bool is_override_power = true;
+        auto power_data = resolve<toml::table>(path_context, is_override_power,
+                                               Source{nodes.primary, applet::power_applet.scope});
+
+        constexpr bool is_override_global = false;
+        auto global_data = resolve<toml::table>(path_context, is_override_global,
                                                 Source{nodes.fallback, applet::global.scope});
 
         // Use hardcoded defaults if no tables found
@@ -148,9 +151,10 @@ void ConfigMapper::mapCommandArgument(node_view argument_node, PrimaryButtonData
                                       const PrimaryButtonData* defaults, QStringList& arguments,
                                       size_t button_index, size_t arg_index,
                                       const QString& path_context) {
-        QString argument{};
+        QString        argument{};
+        constexpr bool is_override = false;
 
-        auto argument_result = resolve<QString>(path_context,
+        auto argument_result = resolve<QString>(path_context, is_override,
                                                 Source{argument_node, applet::power_applet.scope});
         if (!argument_result) {
                 handleButtonResolutionFailure(button, defaults, button_index);
@@ -167,10 +171,11 @@ void ConfigMapper::mapCommandArgument(node_view argument_node, PrimaryButtonData
 void ConfigMapper::mapCommandArguments(node_view arguments_node, PrimaryButtonData& button,
                                        const PrimaryButtonData* defaults, QStringList& arguments,
                                        size_t button_index, const QString& path_context) {
-        constexpr size_t min_size = 0;
+        constexpr bool   is_override = false;
+        constexpr size_t min_size    = 0;
         const auto       args = getTomlArray(arguments_node,
                                              makeCfgPath(applet::power_applet.scope, path_context),
-                                             "Format: [string, array]", min_size);
+                                             is_override, "Format: [string, array]", min_size);
         if (!args) {
                 handleButtonResolutionFailure(button, defaults, button_index);
                 return;
@@ -193,10 +198,11 @@ void ConfigMapper::mapCommand(node_view command_node, PrimaryButtonData& button,
                               size_t button_index, const QString& path_context) {
         QString error_arr_details = "Format: [program, [args...]]";
 
+        constexpr bool   is_override = false;
         constexpr size_t min_size = 2, max_size = 2;
         const auto command_arr = getTomlArray(command_node,
                                               makeCfgPath(applet::power_applet.scope, path_context),
-                                              error_arr_details, min_size, max_size);
+                                              is_override, error_arr_details, min_size, max_size);
         if (!command_arr) {
                 handleButtonResolutionFailure(button, defaults, button_index);
                 return;
@@ -204,7 +210,7 @@ void ConfigMapper::mapCommand(node_view command_node, PrimaryButtonData& button,
 
         ShellCommand cmd{};
 
-        auto program_result = resolve<QString>(extendCfgPath(path_context, "program"),
+        auto program_result = resolve<QString>(extendCfgPath(path_context, "program"), is_override,
                                                Source{toml::node_view(command_arr.value()[0]),
                                                       applet::power_applet.scope});
         if (!program_result) {
@@ -235,9 +241,10 @@ bool ConfigMapper::mapPrimaryButton(node_view                             button
                        buttons.size());
         }
 
-        const QString button_path_context = path_context + QString("[%1]").arg(button_index);
+        const QString  button_path_context = path_context + QString("[%1]").arg(button_index);
+        constexpr bool is_override         = false;
 
-        const auto button_table = resolve<toml::table>(button_path_context,
+        const auto button_table = resolve<toml::table>(button_path_context, is_override,
                                                        Source{button_data_node,
                                                               applet::power_applet.scope});
         if (!button_table) {
@@ -247,11 +254,12 @@ bool ConfigMapper::mapPrimaryButton(node_view                             button
 
         PrimaryButtonData button{};
 
-        auto enabled = resolve<bool>(path_context, Source{button_table.value()["enabled"],
-                                                          applet::power_applet.scope});
+        auto enabled = resolve<bool>(path_context, is_override,
+                                     Source{button_table.value()["enabled"],
+                                            applet::power_applet.scope});
         if (!enabled) { return true; }
 
-        auto id_result = resolve<QString>(extendCfgPath(path_context, "id"),
+        auto id_result = resolve<QString>(extendCfgPath(path_context, "id"), is_override,
                                           Source{button_table.value()["id"],
                                                  applet::power_applet.scope});
         if (!id_result) {
@@ -261,7 +269,7 @@ bool ConfigMapper::mapPrimaryButton(node_view                             button
                 button.id = getPowerButtonIDFromString(id_result.value());
         }
 
-        auto label_result = resolve<QString>(extendCfgPath(path_context, "label"),
+        auto label_result = resolve<QString>(extendCfgPath(path_context, "label"), is_override,
                                              Source{button_table.value()["label"],
                                                     applet::power_applet.scope});
         if (!label_result) {
@@ -271,7 +279,7 @@ bool ConfigMapper::mapPrimaryButton(node_view                             button
                 button.label = label_result.value();
         }
 
-        auto order_result = resolve<int64_t>(extendCfgPath(path_context, "order"),
+        auto order_result = resolve<int64_t>(extendCfgPath(path_context, "order"), is_override,
                                              Source{button_table.value()["order"],
                                                     applet::power_applet.scope});
         if (!order_result) {
@@ -293,8 +301,11 @@ void ConfigMapper::mapPrimaryButtons(node_view                             prima
                                      std::vector<PrimaryButtonData>&       primary_buttons,
                                      const std::vector<PrimaryButtonData>& defaults,
                                      const QString&                        path_context) {
-        const auto buttons = resolve<toml::array>(path_context, Source{primary_buttons_node,
-                                                                       applet::power_applet.scope});
+        constexpr bool is_override = false;
+
+        const auto buttons = resolve<toml::array>(path_context, is_override,
+                                                  Source{primary_buttons_node,
+                                                         applet::power_applet.scope});
         if (!buttons) {
                 primary_buttons = defaults;
                 return;
@@ -333,9 +344,10 @@ void ConfigMapper::mapPrimaryButtons(node_view                             prima
 
 void ConfigMapper::mapLayout(node_view layout_node, LayoutProperties& layout,
                              const LayoutProperties& defaults, const QString& path_context) {
+        constexpr bool   is_override = false;
         LayoutProperties layout_properties{};
 
-        const auto data = resolve<toml::table>(path_context,
+        const auto data = resolve<toml::table>(path_context, is_override,
                                                Source{layout_node, applet::power_applet.scope});
         if (!data) {
                 layout_properties = defaults;
@@ -354,10 +366,11 @@ void ConfigMapper::mapLayout(node_view layout_node, LayoutProperties& layout,
 void ConfigMapper::mapEnvironment(node_view environment_node, EnvironmentProperties& environment,
                                   const EnvironmentProperties& defaults,
                                   const QString&               path_context) {
+        constexpr bool        is_override = false;
         EnvironmentProperties environment_properties{};
 
-        const auto data = resolve<toml::table>(path_context, Source{environment_node,
-                                                                    applet::power_applet.scope});
+        const auto data = resolve<toml::table>(path_context, is_override,
+                                               Source{environment_node, applet::power_applet.scope});
         if (!data) {
                 environment_properties = defaults;
                 environment            = std::move(environment_properties);
