@@ -18,10 +18,11 @@
 #include "LayoutProperties.h"
 #include "UI/Widgets/PrimaryButtonData.h"
 
+#include <utility>
 #include <vector>
 
 LayoutProperties::LayoutProperties(std::vector<PrimaryButtonData> primary_power_buttons) :
-        primary_power_buttons(primary_power_buttons) {}
+        primary_power_buttons(std::move(primary_power_buttons)) {}
 
 const std::vector<PrimaryButtonData>& LayoutProperties::getPrimaryPowerButtons() const {
         return primary_power_buttons;

@@ -39,8 +39,9 @@ PowerAppletConfig::PowerAppletConfig(WindowProperties        window_properties,
                                      PrimaryButtonProperties primary_button_properties,
                                      LayoutProperties        layout_properties,
                                      EnvironmentProperties   environment_properties) :
-        GlobalConfig(window_properties, primary_button_properties),
-        layout_properties(layout_properties), environment_properties(environment_properties) {}
+        GlobalConfig(std::move(window_properties), std::move(primary_button_properties)),
+        layout_properties(std::move(layout_properties)),
+        environment_properties(std::move(environment_properties)) {}
 
 PowerAppletConfig& PowerAppletConfig::get() {
         static PowerAppletConfig power_applet_config{};

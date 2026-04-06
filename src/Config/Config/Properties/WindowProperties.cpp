@@ -17,10 +17,12 @@
 
 #include "WindowProperties.h"
 
+#include <utility>
 #include <QSize>
 #include <QString>
 
-WindowProperties::WindowProperties(QSize size, QString title) : size(size), title(title) {}
+WindowProperties::WindowProperties(QSize size, QString title) :
+        size(std::move(size)), title(std::move(title)) {}
 
 const QString& WindowProperties::getTitle() const {
         return title;

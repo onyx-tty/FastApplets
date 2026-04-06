@@ -27,7 +27,7 @@
 
 PowerAppletKeys::PowerAppletKeys(keybindings                quit_keys,
                                  std::array<keybindings, 4> primary_button_keys) :
-        GlobalKeys(quit_keys), primary_button_keys(primary_button_keys) {}
+        GlobalKeys(std::move(quit_keys)), primary_button_keys(std::move(primary_button_keys)) {}
 
 PowerAppletKeys& PowerAppletKeys::get() {
         static PowerAppletKeys keys{};
