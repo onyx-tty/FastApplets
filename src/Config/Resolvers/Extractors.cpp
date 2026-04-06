@@ -50,3 +50,41 @@ std::optional<QSizePolicy> tryGetSizePolicy(const std::string& key, const EnumMa
                                             const QString& path) {
         return tryGetValueFromEnumMap<QSizePolicy>(key, map, path);
 }
+
+/* Extractors */
+std::optional<toml::table> extractor::table(node_view node, const QString& path, bool is_override) {
+        if (auto* result = getTomlTable(node, path, is_override)) { return *result; }
+
+        return std::nullopt;
+};
+
+std::optional<toml::array> extractor::array(node_view node, const QString& path, bool is_override,
+                                            const QString& error_arr_details) {
+        return getTomlArray(node, path, is_override, error_arr_details);
+};
+
+std::optional<QString> extractor::qstring(node_view node, const QString& path, bool is_override) {
+        if (auto str = extractor::value<std::string>(node, path, is_override)) {
+                return QString::fromStdString(str.value());
+        }
+
+        return std::nullopt;
+};
+
+std::optional<QSize> extractor::qsize(node_view node, const QString& path, bool is_override) {
+        return tryGetQSize(node, path, is_override);
+};
+
+std::optional<Qt::Alignment> extractor::alignment(node_view node, const QString& path,
+                                                  bool is_override) {
+        auto raw = tryGet<std::string>(node, path, is_override);
+        if (!raw) { return std::nullopt; }
+        return tryGetAlignment(raw.value(), alignment_map, path);
+};
+
+std::optional<QSizePolicy> extractor::size_policy(node_view node, const QString& path,
+                                                  bool is_override) {
+        auto raw = tryGet<std::string>(node, path, is_override);
+        if (!raw) { return std::nullopt; }
+        return tryGetSizePolicy(raw.value(), size_policy_map, path);
+};
