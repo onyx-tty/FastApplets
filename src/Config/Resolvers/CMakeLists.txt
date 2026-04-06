@@ -1,7 +1,6 @@
 add_library(Config_Resolvers
         Extractors.cpp
-        Resolvers.h
-        Resolvers.tpp)
+        Resolvers.cpp)
 add_library(Config::Resolvers ALIAS Config_Resolvers)
 
 target_include_directories(Config_Resolvers PRIVATE

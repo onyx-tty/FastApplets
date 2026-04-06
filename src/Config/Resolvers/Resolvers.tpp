@@ -27,30 +27,6 @@
 class QSizePolicy;
 class QSize;
 
-static QString makeCfgPath(std::string_view scope, const QString& config_path,
-                           const char* separator = ".") {
-        return QString("in config.toml, %1%2%3").arg(scope, separator, config_path);
-}
-
-static QString extendCfgPath(const QString& path, const char* extension,
-                             const char* separator = ".") {
-        if (path.isEmpty()) { return QString(extension); }
-
-        return path + separator + extension;
-}
-
-static QString makeKeysPath(std::string_view scope, const QString& keys_path,
-                            const char* separator = ".") {
-        return QString("in keys.toml, %1%2%3").arg(scope, separator, keys_path);
-}
-
-static QString extendKeysPath(const QString& path, const char* extension,
-                              const char* separator = ".") {
-        if (path.isEmpty()) { return QString(extension); }
-
-        return path + separator + extension;
-}
-
 // Use if return value and defaulting must be handled manually
 // On success: extract from a node, return as std::optional<T>
 // On failure: return std::nullopt

@@ -33,6 +33,14 @@ struct Source final {
         std::string_view scope;
 };
 
+QString makeCfgPath(std::string_view scope, const QString& config_path, const char* separator = ".");
+
+QString extendCfgPath(const QString& path, const char* extension, const char* separator = ".");
+
+QString makeKeysPath(std::string_view scope, const QString& keys_path, const char* separator = ".");
+
+QString extendKeysPath(const QString& path, const char* extension, const char* separator = ".");
+
 // Use if return value and defaulting must be handled manually
 // On success: extract from a node, return as std::optional<T>
 // On failure: return std::nullopt
