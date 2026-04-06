@@ -30,8 +30,6 @@ class PowerAppletKeys;
 
 class KeysMapper final {
 private:
-        KeysMapper() = delete;
-
         /* Global Keys */
         static void mapGlobalQuitKeys(node_view quit_node, keybindings& quit);
         static void mapGlobalKeys(node_view global_node, GlobalKeys& global);
@@ -45,6 +43,7 @@ private:
                                        GlobalKeys& global);
 
 public:
+        KeysMapper() = delete;
         static void mapToGlobalKeys(const toml::table& keys_table, GlobalKeys& keys);
         static void mapToPowerAppletKeys(const toml::table& keys_table, PowerAppletKeys& keys);
 };

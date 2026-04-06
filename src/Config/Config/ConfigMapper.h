@@ -41,8 +41,6 @@ struct NodePair final {
 
 class ConfigMapper final {
 private:
-        ConfigMapper() = delete;
-
         /* Window Properties */
         static void mapWindow(NodePair nodes, WindowProperties& window,
                               const WindowProperties& defaults, const QString& path_context);
@@ -81,6 +79,7 @@ private:
                                    const QString&               path_context);
 
 public:
+        ConfigMapper() = delete;
         static void mapToGlobalConfig(const toml::table& config_table, GlobalConfig& config);
         static void mapToPowerAppletConfig(const toml::table& config_table,
                                            PowerAppletConfig& config);

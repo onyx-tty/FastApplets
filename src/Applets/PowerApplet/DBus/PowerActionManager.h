@@ -24,9 +24,9 @@
 
 class PowerActionManager final {
 private:
-        explicit PowerActionManager() = delete;
         static void printReply(const QDBusPendingReply<QVariantMap>& response);
 
 public:
+        explicit PowerActionManager() = delete;
         static void sendPowerAction(const QString& method);
 };

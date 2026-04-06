@@ -28,9 +28,9 @@ class DBusRequester final {
 private:
         static QDBusPendingReply<QVariantMap> pending_reply;
 
+public:
         DBusRequester() = delete;
 
-public:
         static void call(const DBusTarget& target, const QString& method);
         static void waitForFinished();
         static const QDBusPendingReply<QVariantMap>& getReply();

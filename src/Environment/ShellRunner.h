@@ -20,9 +20,7 @@
 #include "ShellCommand.h"
 
 class ShellRunner final {
-private:
-        ShellRunner() = delete;
-
 public:
+        ShellRunner() = delete;
         static void runCommand(const ShellCommand& command);
 };
