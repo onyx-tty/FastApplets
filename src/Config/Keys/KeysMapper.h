@@ -27,16 +27,19 @@
 
 class GlobalKeys;
 class PowerAppletKeys;
+class QString;
 
 class KeysMapper final {
 private:
         /* Global Keys */
-        static void mapQuitKeys(node_view quit_node, keybindings& quit, const keybindings& defaults);
+        static void mapQuitKeys(node_view quit_node, keybindings& quit, const keybindings& defaults,
+                                const QString& path_context);
 
         /* Power Applet Keys*/
         static void mapPrimaryButtonKeys(node_view                         primary_buttons_node,
                                          std::array<keybindings, 4>&       primary_buttons,
-                                         const std::array<keybindings, 4>& defaults);
+                                         const std::array<keybindings, 4>& defaults,
+                                         const QString&                    path_context);
 
 public:
         KeysMapper() = delete;

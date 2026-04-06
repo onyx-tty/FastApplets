@@ -18,6 +18,7 @@
 #include "KeysMapper.h"
 #include "Applets/Types/AppletRecord.h"
 #include "Config/Keys/Keybindings/Keybindings.h"
+#include "Config/Resolvers/Resolvers.h"
 #include "Config/TOML/NodeView.h"
 #include "Config/TOML/TomlAccessor.h"
 #include "Core/Log.h"
@@ -75,12 +76,13 @@ void interpretTextAsKeybindings(node_view source, keybindings& target) {
         }
 }
 
-void KeysMapper::mapQuitKeys(node_view quit_node, keybindings& quit, const keybindings& defaults) {
-        QString          error_prefix = "in keys.toml, global.quit";
-        constexpr bool   is_override  = false;
+void KeysMapper::mapQuitKeys(node_view quit_node, keybindings& quit, const keybindings& defaults,
+                             const QString& path_context) {
+        constexpr bool   is_override = false;
         constexpr size_t min_size = 1, max_size = 4;
-        const auto       array = getTomlArray(quit_node, std::move(error_prefix), is_override,
-                                              "Format: [keybindings...]", min_size, max_size);
+        const auto array = getTomlArray(quit_node, makeKeysPath(applet::global.scope, path_context),
+                                        is_override, "Format: [keybindings...]", min_size,
+                                        max_size);
 
         if (!array || array.value().empty()) {
                 quit = defaults;
@@ -92,11 +94,13 @@ void KeysMapper::mapQuitKeys(node_view quit_node, keybindings& quit, const keybi
 
 void KeysMapper::mapPrimaryButtonKeys(node_view                         primary_buttons_node,
                                       std::array<keybindings, 4>&       primary_buttons,
-                                      const std::array<keybindings, 4>& defaults) {
-        QString        error_prefix         = "in keys.toml, power_applet.primary_buttons";
-        constexpr bool is_override          = false;
+                                      const std::array<keybindings, 4>& defaults,
+                                      const QString&                    path_context) {
         QString        error_arr_details    = "Format: [keybindings...]";
-        const auto     primary_button_nodes = getTomlArray(primary_buttons_node, error_prefix,
+        constexpr bool is_override          = false;
+        const auto     primary_button_nodes = getTomlArray(primary_buttons_node,
+                                                           makeKeysPath(applet::power_applet.scope,
+                                                                        path_context),
                                                            is_override, error_arr_details);
 
         if (!primary_button_nodes || primary_button_nodes.value().size() < 4) {
@@ -108,7 +112,8 @@ void KeysMapper::mapPrimaryButtonKeys(node_view                         primary_
         std::array<std::optional<toml::array>, 4> keys_arr;
         for (size_t i = 0; i != primary_button_nodes.value().size(); ++i) {
                 keys_arr[i] = getTomlArray(toml::node_view(primary_button_nodes.value()[i]),
-                                           QStringLiteral("[%1]").arg(QString::number(i - 1)),
+                                           makeKeysPath(applet::power_applet.scope, path_context)
+                                                   + QString("[%1]").arg(QString::number(i - 1)),
                                            is_override, error_arr_details, min_size, max_size);
         };
 
@@ -130,9 +135,9 @@ void KeysMapper::mapToGlobalKeys(const toml::table& keys_table, GlobalKeys& keys
                 QFATAL("QApplication has not been instantiated yet!");
         }
 
-        const auto& defaults     = PowerAppletKeys::getDefault();
-        QString     error_prefix = "in keys.toml, global";
-        const auto* table = getTomlTable(keys_table[applet::global.scope], std::move(error_prefix));
+        const auto& defaults = PowerAppletKeys::getDefault();
+        const auto* table    = getTomlTable(keys_table[applet::global.scope],
+                                            makeKeysPath(applet::global.scope, "", ""));
 
         if (!keys_table.contains(applet::global.scope)) {
                 QWARNING() << "in keys.toml, global missing!";
@@ -141,7 +146,7 @@ void KeysMapper::mapToGlobalKeys(const toml::table& keys_table, GlobalKeys& keys
         }
 
         /* Quit Keys */
-        mapQuitKeys(keys_table["quit"], keys.quit_keys, defaults.getQuitKeys());
+        mapQuitKeys(keys_table["quit"], keys.quit_keys, defaults.getQuitKeys(), "quit");
 }
 
 void KeysMapper::mapToPowerAppletKeys(const toml::table& keys_table, PowerAppletKeys& keys) {
@@ -150,10 +155,9 @@ void KeysMapper::mapToPowerAppletKeys(const toml::table& keys_table, PowerApplet
                 QFATAL("QApplication has not been instantiated yet!");
         }
 
-        const auto& defaults     = PowerAppletKeys::getDefault();
-        QString     error_prefix = "in keys.toml, power_applet";
-        const auto* table        = getTomlTable(keys_table[applet::power_applet.scope],
-                                                std::move(error_prefix));
+        const auto& defaults = PowerAppletKeys::getDefault();
+        const auto* table    = getTomlTable(keys_table[applet::power_applet.scope],
+                                            makeKeysPath(applet::power_applet.scope, "", ""));
 
         if (!table) {
                 QWARNING() << "in keys.toml, power_applet missing!";
@@ -164,5 +168,5 @@ void KeysMapper::mapToPowerAppletKeys(const toml::table& keys_table, PowerApplet
         mapToGlobalKeys(keys_table, keys);
 
         mapPrimaryButtonKeys((*table)["primary_buttons"], keys.primary_button_keys,
-                             defaults.getPrimaryButtonKeys());
+                             defaults.getPrimaryButtonKeys(), "primary_button");
 }
