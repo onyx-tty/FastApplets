@@ -1,9 +1,15 @@
 ---
 Checks: >
   *,
-  -portability-restrict-system-includes,
-  -llvmlibc-restrict-system-libc-headers,
-  -portability-avoid-pragma-once
+  -altera-*,
+  -fuchsia-*,
+  -google-readability-todo,
+  -hicpp-*,
+  -llvmlibc-*,
+  -misc-header-include-cycle,
+  -modernize-use-trailing-return-type,
+  -portability-avoid-pragma-once,
+  -portability-restrict-system-includes
 HeaderFilterRegex: '.*'
 ...
 
