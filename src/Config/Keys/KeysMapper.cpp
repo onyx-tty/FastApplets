@@ -136,17 +136,14 @@ void KeysMapper::mapToGlobalKeys(const toml::table& keys_table, GlobalKeys& keys
         }
 
         const auto& defaults = PowerAppletKeys::getDefault();
-        const auto* table    = getTomlTable(keys_table[applet::global.scope],
-                                            makeKeysPath(applet::global.scope, "", ""));
 
         if (!keys_table.contains(applet::global.scope)) {
                 QWARNING() << "in keys.toml, global missing!";
-                keys = static_cast<GlobalKeys>(defaults);
-                return;
         }
 
         /* Quit Keys */
-        mapQuitKeys(keys_table["quit"], keys.quit_keys, defaults.getQuitKeys(), "quit");
+        mapQuitKeys(keys_table[applet::global.scope]["quit"], keys.quit_keys,
+                    defaults.getQuitKeys(), "quit");
 }
 
 void KeysMapper::mapToPowerAppletKeys(const toml::table& keys_table, PowerAppletKeys& keys) {
@@ -156,17 +153,14 @@ void KeysMapper::mapToPowerAppletKeys(const toml::table& keys_table, PowerApplet
         }
 
         const auto& defaults = PowerAppletKeys::getDefault();
-        const auto* table    = getTomlTable(keys_table[applet::power_applet.scope],
-                                            makeKeysPath(applet::power_applet.scope, "", ""));
 
-        if (!table) {
+        if (!keys_table.contains(applet::power_applet.scope)) {
                 QWARNING() << "in keys.toml, power_applet missing!";
-                keys = defaults;
-                return;
         }
 
         mapToGlobalKeys(keys_table, keys);
 
-        mapPrimaryButtonKeys((*table)["primary_buttons"], keys.primary_button_keys,
-                             defaults.getPrimaryButtonKeys(), "primary_button");
+        mapPrimaryButtonKeys(keys_table[applet::power_applet.scope]["primary_buttons"],
+                             keys.primary_button_keys, defaults.getPrimaryButtonKeys(),
+                             "primary_button");
 }
