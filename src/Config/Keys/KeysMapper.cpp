@@ -101,6 +101,7 @@ void KeysMapper::mapPrimaryButtonKeys(node_view                         primary_
 
         if (!primary_button_nodes || primary_button_nodes.value().size() < 4) {
                 primary_buttons = defaults;
+                return;
         }
 
         constexpr size_t                          min_size = 1, max_size = 4;
