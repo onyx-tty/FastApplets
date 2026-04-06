@@ -22,6 +22,7 @@
 
 #include <qnamespace.h>
 #include <toml++/toml.hpp>
+#include <utility>
 #include <QSize>
 #include <QSizePolicy>
 #include <QString>

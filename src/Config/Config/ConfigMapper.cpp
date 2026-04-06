@@ -27,12 +27,17 @@
 #include "Config/TOML/TomlAccessor.h"
 #include "Core/Log.h"
 #include "UI/Enums/ButtonIDs.h"
+#include "UI/Widgets/PrimaryButtonData.h"
 
 #include <algorithm>
+#include <cstdint>
 #include <cstdlib>
 #include <qnamespace.h>
+#include <string>
 #include <toml++/toml.hpp>
 #include <unordered_map>
+#include <utility>
+#include <vector>
 #include <QApplication>
 #include <QSize>
 #include <QSizePolicy>

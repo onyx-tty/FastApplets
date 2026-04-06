@@ -23,8 +23,10 @@
 #include <QDBusConnection>
 #include <QDBusConnectionInterface>
 #include <QDBusInterface>
+#include <QDBusPendingReply>
 #include <QList>
 #include <QVariant>
+#include <QVariantMap>
 
 void PowerActionManager::printReply(const QDBusPendingReply<QVariantMap>& reply) {
         if (reply.reply().type() == QDBusMessage::ErrorMessage) {

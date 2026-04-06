@@ -21,11 +21,19 @@
 #include "Config/Keys/PowerApplet/PowerAppletKeys.h"
 #include "Core/Log.h"
 #include "UI/Enums/ButtonIDs.h"
+#include "Widgets/PowerButton.h"
 
+#include <array>
+#include <cstddef>
 #include <qnamespace.h>
 #include <qobject.h>
+#include <qtresource.h>
 #include <unordered_map>
+#include <vector>
 #include <QApplication>
+#include <QBoxLayout>
+#include <QHBoxLayout>
+#include <QKeyEvent>
 
 // TODO Store a {PowerButton*, keybindings*} map in a more visible place
 using button_bindings     = std::unordered_map<const PowerButton*, const keybindings*>;

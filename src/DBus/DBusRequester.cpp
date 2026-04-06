@@ -17,12 +17,15 @@
 
 #include "DBusRequester.h"
 #include "Core/Log.h"
+#include "DBusTarget.h"
 
 #include <QDBusConnection>
 #include <QDBusConnectionInterface>
 #include <QDBusInterface>
+#include <QDBusPendingReply>
 #include <QList>
 #include <QVariant>
+#include <QVariantMap>
 
 QDBusPendingReply<QVariantMap> DBusRequester::pending_reply;
 

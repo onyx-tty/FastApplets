@@ -22,6 +22,12 @@
 #include "Environment/ShellCommand.h"
 #include "Environment/ShellRunner.h"
 #include "UI/Enums/ButtonIDs.h"
+#include "UI/Widgets/Button.h"
+
+#include <qobject.h>
+#include <QBoxLayout>
+#include <QIcon>
+#include <QString>
 
 PowerButton::PowerButton(QBoxLayout* layout, power_button_id id, QIcon icon, QString text,
                          QString dbus_action, ShellCommand command) :

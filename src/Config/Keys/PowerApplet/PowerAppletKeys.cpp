@@ -17,11 +17,13 @@
 
 #include "PowerAppletKeys.h"
 #include "Config/Keys/Global/GlobalKeys.h"
+#include "Config/Keys/Keybindings/Keybindings.h"
 #include "Config/Keys/KeysMapper.h"
 #include "Config/TOML/TomlParser.h"
 
 #include <array>
 #include <qnamespace.h>
+#include <utility>
 
 PowerAppletKeys::PowerAppletKeys(keybindings                quit_keys,
                                  std::array<keybindings, 4> primary_button_keys) :

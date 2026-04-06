@@ -24,6 +24,8 @@
 #include "PowerApplet/PowerAppletKeys.h"
 
 #include <array>
+#include <cstddef>
+#include <optional>
 #include <toml++/toml.hpp>
 #include <utility>
 #include <QApplication>
