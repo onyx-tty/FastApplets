@@ -36,6 +36,9 @@ private:
                                 const QString& path_context);
 
         /* Power Applet Keys*/
+        static void mapPrimaryButtonKey(node_view primary_button_node, keybindings& primary_button,
+                                        const keybindings& defaults, size_t primary_buttons_size,
+                                        const QString& path_context);
         static void mapPrimaryButtonKeys(node_view                         primary_buttons_node,
                                          std::array<keybindings, 4>&       primary_buttons,
                                          const std::array<keybindings, 4>& defaults,

@@ -92,12 +92,30 @@ void KeysMapper::mapQuitKeys(node_view quit_node, keybindings& quit, const keybi
         interpretTextAsKeybindings(quit_node, quit);
 }
 
+void KeysMapper::mapPrimaryButtonKey(node_view primary_button_node, keybindings& primary_button,
+                                     const keybindings& defaults, size_t primary_buttons_size,
+                                     const QString& path_context) {
+        constexpr bool   is_override       = false;
+        constexpr size_t min_size          = 1;
+        QString          error_arr_details = "Format: [keybindings...]";
+
+        const auto& button = getTomlArray(primary_button_node,
+                                          makeKeysPath(applet::power_applet.scope, path_context),
+                                          is_override, error_arr_details, 1, primary_buttons_size);
+        if (!button) {
+                primary_button = defaults;
+                return;
+        }
+
+        interpretTextAsKeybindings(primary_button_node, primary_button);
+}
+
 void KeysMapper::mapPrimaryButtonKeys(node_view                         primary_buttons_node,
                                       std::array<keybindings, 4>&       primary_buttons,
                                       const std::array<keybindings, 4>& defaults,
                                       const QString&                    path_context) {
-        QString        error_arr_details    = "Format: [keybindings...]";
         constexpr bool is_override          = false;
+        QString        error_arr_details    = "Format: [keybindings...]";
         const auto     primary_button_nodes = getTomlArray(primary_buttons_node,
                                                            makeKeysPath(applet::power_applet.scope,
                                                                         path_context),
@@ -108,25 +126,16 @@ void KeysMapper::mapPrimaryButtonKeys(node_view                         primary_
                 return;
         }
 
-        constexpr size_t                          min_size = 1, max_size = 4;
-        std::array<std::optional<toml::array>, 4> keys_arr;
+        constexpr size_t           max_size = 4;
+        std::array<keybindings, 4> primary_buttons_new{};
         for (size_t i = 0; i != primary_button_nodes.value().size(); ++i) {
-                keys_arr[i] = getTomlArray(toml::node_view(primary_button_nodes.value()[i]),
-                                           makeKeysPath(applet::power_applet.scope, path_context)
-                                                   + QString("[%1]").arg(QString::number(i - 1)),
-                                           is_override, error_arr_details, min_size, max_size);
+                mapPrimaryButtonKey(primary_buttons_node[i], primary_buttons_new[i], defaults[i],
+                                    max_size,
+                                    extendCfgPath(path_context,
+                                                  QString("[%1]").arg(i).toStdString().c_str()));
         };
 
-        // Parse power_applet.primary_buttons
-        for (size_t i = 0; i != keys_arr.size(); ++i) {
-                const auto& button = keys_arr[i];
-                if (!button) {
-                        primary_buttons[i] = defaults[i];
-                        continue;
-                }
-
-                interpretTextAsKeybindings(primary_buttons_node[i], primary_buttons[i]);
-        }
+        primary_buttons = std::move(primary_buttons_new);
 }
 
 void KeysMapper::mapToGlobalKeys(const toml::table& keys_table, GlobalKeys& keys) {
