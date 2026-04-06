@@ -31,11 +31,12 @@ class PowerAppletKeys;
 class KeysMapper final {
 private:
         /* Global Keys */
-        static void mapQuitKeys(node_view quit_node, keybindings& quit);
+        static void mapQuitKeys(node_view quit_node, keybindings& quit, const keybindings& defaults);
 
         /* Power Applet Keys*/
-        static void mapPrimaryButtonKeys(node_view                   primary_buttons_node,
-                                         std::array<keybindings, 4>& primary_buttons);
+        static void mapPrimaryButtonKeys(node_view                         primary_buttons_node,
+                                         std::array<keybindings, 4>&       primary_buttons,
+                                         const std::array<keybindings, 4>& defaults);
 
 public:
         KeysMapper() = delete;
