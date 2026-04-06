@@ -58,7 +58,7 @@ static bool isQuitKey(int key) {
 
 const keybindings& PowerCentralWidget::getKeysFromPowerButton(const PowerButton* power_button) {
         static button_bindings map       = {};
-        bool                   processed = false;
+        static bool            processed = false;
 
         if (!processed) {
                 const auto& keys = PowerAppletKeys::get().getPrimaryButtonKeys();
@@ -76,7 +76,7 @@ const keybindings& PowerCentralWidget::getKeysFromPowerButton(const PowerButton*
 
 PowerButton* PowerCentralWidget::getPowerButtonFromKeys(const keybindings& keys) {
         static keybinding_bindings map       = {};
-        bool                       processed = false;
+        static bool                processed = false;
 
         // TODO Simply reuse the map in getKeysFromPowerButton
         if (!processed) {
@@ -96,7 +96,7 @@ PowerButton* PowerCentralWidget::getPowerButtonFromKeys(const keybindings& keys)
 
 PowerButton* PowerCentralWidget::getPowerButtonFromKey(int key) {
         static std::unordered_map<int, PowerButton*> map       = {};
-        bool                                         processed = false;
+        static bool                                  processed = false;
 
         const auto& keys_arr = PowerAppletKeys::get().getPrimaryButtonKeys();
         if (!processed) {
