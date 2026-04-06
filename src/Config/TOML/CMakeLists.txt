@@ -1,4 +1,5 @@
 add_library(Config_TOML
+        NodePair.h
         NodeView.h
         TomlAccessor.tpp
         TomlLocator.cpp

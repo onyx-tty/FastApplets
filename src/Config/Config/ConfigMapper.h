@@ -22,6 +22,7 @@
 #include "Config/Config/Properties/LayoutProperties.h"
 #include "Config/Config/Properties/PrimaryButtonProperties.h"
 #include "Config/Config/Properties/WindowProperties.h"
+#include "Config/TOML/NodePair.h"
 #include "Config/TOML/NodeView.h"
 
 #include <cstddef>
@@ -33,11 +34,6 @@ class QString;
 class QSize;
 class QSizePolicy;
 struct ShellCommand;
-
-struct NodePair final {
-        node_view primary;
-        node_view fallback;
-};
 
 class ConfigMapper final {
 private:
