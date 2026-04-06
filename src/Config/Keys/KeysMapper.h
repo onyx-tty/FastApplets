@@ -29,6 +29,8 @@ class GlobalKeys;
 class PowerAppletKeys;
 class QString;
 
+void interpretTextAsKeybindings(node_view source, keybindings& target);
+
 class KeysMapper final {
 private:
         /* Global Keys */
