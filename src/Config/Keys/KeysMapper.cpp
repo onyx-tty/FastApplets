@@ -132,7 +132,7 @@ void KeysMapper::mapToGlobalKeys(const toml::table& keys_table, GlobalKeys& keys
 
         const auto& defaults     = PowerAppletKeys::getDefault();
         QString     error_prefix = "in keys.toml, global";
-        const auto* table        = getTomlTable(keys_table["global"], std::move(error_prefix));
+        const auto* table = getTomlTable(keys_table[applet::global.scope], std::move(error_prefix));
 
         if (!keys_table.contains(applet::global.scope)) {
                 QWARNING() << "in keys.toml, global missing!";
@@ -152,7 +152,8 @@ void KeysMapper::mapToPowerAppletKeys(const toml::table& keys_table, PowerApplet
 
         const auto& defaults     = PowerAppletKeys::getDefault();
         QString     error_prefix = "in keys.toml, power_applet";
-        const auto* table = getTomlTable(keys_table["power_applet"], std::move(error_prefix));
+        const auto* table        = getTomlTable(keys_table[applet::power_applet.scope],
+                                                std::move(error_prefix));
 
         if (!table) {
                 QWARNING() << "in keys.toml, power_applet missing!";
