@@ -1,7 +1,7 @@
 add_library(Config_TOML
         NodePair.h
         NodeView.h
-        TomlAccessor.tpp
+        TomlAccessor.cpp
         TomlLocator.cpp
         TomlParser.cpp)
 add_library(Config::TOML ALIAS Config_TOML)
