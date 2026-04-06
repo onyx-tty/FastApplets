@@ -30,23 +30,23 @@ const EnumMap<QSizePolicy> size_policy_map = {{"expanding",
                                                {QSizePolicy::Expanding, QSizePolicy::Expanding}},
                                               {"fixed", {QSizePolicy::Fixed, QSizePolicy::Fixed}}};
 
-Qt::Alignment getAlignment(const std::string key, const EnumMap<Qt::Alignment>& map,
+Qt::Alignment getAlignment(const std::string& key, const EnumMap<Qt::Alignment>& map,
                            const Qt::Alignment& fallback, const QString& path) {
         return getValueFromEnumMap<Qt::Alignment>(key, map, fallback, path);
 }
 
-std::optional<Qt::Alignment> tryGetAlignment(const std::string             key,
+std::optional<Qt::Alignment> tryGetAlignment(const std::string&            key,
                                              const EnumMap<Qt::Alignment>& map,
                                              const QString&                path) {
         return tryGetValueFromEnumMap<Qt::Alignment>(key, map, path);
 }
 
-QSizePolicy getSizePolicy(const std::string key, const EnumMap<QSizePolicy>& map,
+QSizePolicy getSizePolicy(const std::string& key, const EnumMap<QSizePolicy>& map,
                           const QSizePolicy& fallback, const QString& path) {
         return getValueFromEnumMap<QSizePolicy>(key, map, fallback, path);
 }
 
-std::optional<QSizePolicy> tryGetSizePolicy(const std::string key, const EnumMap<QSizePolicy>& map,
+std::optional<QSizePolicy> tryGetSizePolicy(const std::string& key, const EnumMap<QSizePolicy>& map,
                                             const QString& path) {
         return tryGetValueFromEnumMap<QSizePolicy>(key, map, path);
 }

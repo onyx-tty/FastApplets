@@ -30,17 +30,17 @@ class QString;
 extern const EnumMap<Qt::Alignment> alignment_map;
 extern const EnumMap<QSizePolicy>   size_policy_map;
 
-Qt::Alignment getAlignment(const std::string key, const EnumMap<Qt::Alignment>& map,
+Qt::Alignment getAlignment(const std::string& key, const EnumMap<Qt::Alignment>& map,
                            const Qt::Alignment& fallback, const QString& path);
 
-std::optional<Qt::Alignment> tryGetAlignment(const std::string             key,
+std::optional<Qt::Alignment> tryGetAlignment(const std::string&            key,
                                              const EnumMap<Qt::Alignment>& map,
                                              const QString&                path);
 
-QSizePolicy getSizePolicy(const std::string key, const EnumMap<QSizePolicy>& map,
+QSizePolicy getSizePolicy(const std::string& key, const EnumMap<QSizePolicy>& map,
                           const QSizePolicy& fallback, const QString& path);
 
-std::optional<QSizePolicy> tryGetSizePolicy(const std::string key, const EnumMap<QSizePolicy>& map,
+std::optional<QSizePolicy> tryGetSizePolicy(const std::string& key, const EnumMap<QSizePolicy>& map,
                                             const QString& path);
 
 namespace extractor {

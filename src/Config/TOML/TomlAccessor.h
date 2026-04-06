@@ -45,11 +45,11 @@ QSize getQSize(node_view node, const QSize& fallback, const QString& path, bool 
 std::optional<QSize> tryGetQSize(node_view node, const QString& path, bool is_override = false);
 
 template<typename T>
-T getValueFromEnumMap(const std::string key, const enum_utils::EnumMap<T>& map, const T& fallback,
+T getValueFromEnumMap(const std::string& key, const enum_utils::EnumMap<T>& map, const T& fallback,
                       const QString& path, bool is_override = false);
 
 template<typename T>
-std::optional<T> tryGetValueFromEnumMap(const std::string key, const enum_utils::EnumMap<T>& map,
+std::optional<T> tryGetValueFromEnumMap(const std::string& key, const enum_utils::EnumMap<T>& map,
                                         const QString& path, bool is_override = false);
 
 #include "TomlAccessor.tpp"

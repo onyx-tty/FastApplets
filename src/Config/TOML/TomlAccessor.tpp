@@ -160,7 +160,7 @@ std::optional<QSize> tryGetQSize(node_view node, const QString& path, bool is_ov
 }
 
 template<typename T>
-T getValueFromEnumMap(const std::string key, const EnumMap<T>& map, const T& fallback,
+T getValueFromEnumMap(const std::string& key, const EnumMap<T>& map, const T& fallback,
                       const QString& path, bool is_override) {
         if (!map.contains(key)) {
                 if (is_override) {
@@ -177,7 +177,7 @@ T getValueFromEnumMap(const std::string key, const EnumMap<T>& map, const T& fal
 }
 
 template<typename T>
-std::optional<T> tryGetValueFromEnumMap(const std::string key, const enum_utils::EnumMap<T>& map,
+std::optional<T> tryGetValueFromEnumMap(const std::string& key, const enum_utils::EnumMap<T>& map,
                                         const QString& path, bool is_override) {
         if (!map.contains(key)) {
                 if (is_override) {

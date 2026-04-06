@@ -28,8 +28,9 @@
 #include <QIcon>
 #include <QString>
 
-PowerButton::PowerButton(QBoxLayout* layout, power_button_id id, QIcon icon, QString text,
-                         QString dbus_action, ShellCommand command) :
+PowerButton::PowerButton(QBoxLayout* layout, power_button_id id, const QIcon& icon,
+                         const QString& text, const QString& dbus_action,
+                         const ShellCommand& command) :
         Button(layout, icon, text, PowerAppletConfig::get().getPrimaryButtonProperties()), id(id),
         dbus_action(dbus_action) {
         connect(this, &PowerButton::clicked,
