@@ -75,7 +75,7 @@ void interpretTextAsKeybindings(node_view source, keybindings& target) {
         }
 }
 
-void KeysMapper::mapGlobalQuitKeys(node_view quit_node, keybindings& quit) {
+void KeysMapper::mapQuitKeys(node_view quit_node, keybindings& quit) {
         const auto&      defaults     = PowerAppletKeys::getDefault().getQuitKeys();
         QString          error_prefix = "in keys.toml, global.quit";
         constexpr bool   is_override  = false;
@@ -91,8 +91,8 @@ void KeysMapper::mapGlobalQuitKeys(node_view quit_node, keybindings& quit) {
         interpretTextAsKeybindings(quit_node, quit);
 }
 
-void KeysMapper::mapPowerAppletPrimaryButtonKeys(node_view                   primary_buttons_node,
-                                                 std::array<keybindings, 4>& primary_buttons) {
+void KeysMapper::mapPrimaryButtonKeys(node_view                   primary_buttons_node,
+                                      std::array<keybindings, 4>& primary_buttons) {
         const std::array<keybindings, 4>& defaults = PowerAppletKeys::getDefault()
                                                              .getPrimaryButtonKeys();
         QString        error_prefix                = "in keys.toml, power_applet.primary_buttons";
@@ -142,7 +142,7 @@ void KeysMapper::mapToGlobalKeys(const toml::table& keys_table, GlobalKeys& keys
         }
 
         /* Quit Keys */
-        mapGlobalQuitKeys(keys_table["quit"], keys.quit_keys);
+        mapQuitKeys(keys_table["quit"], keys.quit_keys);
 }
 
 void KeysMapper::mapToPowerAppletKeys(const toml::table& keys_table, PowerAppletKeys& keys) {
@@ -163,5 +163,5 @@ void KeysMapper::mapToPowerAppletKeys(const toml::table& keys_table, PowerApplet
 
         mapToGlobalKeys(keys_table, keys);
 
-        mapPowerAppletPrimaryButtonKeys((*table)["primary_buttons"], keys.primary_button_keys);
+        mapPrimaryButtonKeys((*table)["primary_buttons"], keys.primary_button_keys);
 }
