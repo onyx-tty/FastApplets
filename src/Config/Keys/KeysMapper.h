@@ -34,8 +34,6 @@ private:
         static void mapGlobalQuitKeys(node_view quit_node, keybindings& quit);
 
         /* Power Applet Keys*/
-        static void mapPowerAppletQuitKeys(node_view quit_node, keybindings& quit,
-                                           keybindings& global_quit);
         static void mapPowerAppletPrimaryButtonKeys(node_view primary_buttons_node,
                                                     std::array<keybindings, 4>& primary_buttons);
 

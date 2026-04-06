@@ -91,22 +91,6 @@ void KeysMapper::mapGlobalQuitKeys(node_view quit_node, keybindings& quit) {
         interpretTextAsKeybindings(quit_node, quit);
 }
 
-void KeysMapper::mapPowerAppletQuitKeys(node_view quit_node, keybindings& quit,
-                                        keybindings& global_quit) {
-        QString          error_prefix = "in keys.toml, power_applet.quit";
-        constexpr bool   is_override  = true;
-        constexpr size_t min_size = 1, max_size = 4;
-        const auto       array = getTomlArray(quit_node, std::move(error_prefix), is_override,
-                                              "Format: [keybindings...]", min_size, max_size);
-
-        if (!array || array.value().empty()) {
-                quit = global_quit;
-                return;
-        }
-
-        interpretTextAsKeybindings(quit_node, quit);
-}
-
 void KeysMapper::mapPowerAppletPrimaryButtonKeys(node_view                   primary_buttons_node,
                                                  std::array<keybindings, 4>& primary_buttons) {
         const std::array<keybindings, 4>& defaults = PowerAppletKeys::getDefault()
