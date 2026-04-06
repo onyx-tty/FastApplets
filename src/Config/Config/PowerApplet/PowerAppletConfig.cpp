@@ -34,8 +34,6 @@
 #include <QSizePolicy>
 #include <QString>
 
-#include <toml++/toml.hpp>
-
 /* PowerApplet Config */
 PowerAppletConfig::PowerAppletConfig(WindowProperties        window_properties,
                                      PrimaryButtonProperties primary_button_properties,

@@ -20,8 +20,6 @@
 #include "Config/Config/Properties/PrimaryButtonProperties.h"
 #include "Config/Config/Properties/WindowProperties.h"
 
-#include <qnamespace.h>
-#include <toml++/toml.hpp>
 #include <utility>
 #include <QSize>
 #include <QSizePolicy>
