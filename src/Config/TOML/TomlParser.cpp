@@ -18,6 +18,7 @@
 #include "TomlParser.h"
 #include "Core/Log.h"
 #include "TomlLocator.h"
+#include "Types/ConfigTomlFiles.h"
 
 #include <string>
 #include <toml++/toml.hpp>

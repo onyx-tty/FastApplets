@@ -1,4 +1,5 @@
 add_library(Config_TOML_Types
+        ConfigTomlFiles.h
         NodePair.h
         NodeView.h)
 add_library(Config::TOML::Types ALIAS Config_TOML_Types)

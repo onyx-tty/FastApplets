@@ -18,18 +18,8 @@
 #pragma once
 
 #include <string>
-#include <toml++/toml.hpp>
 
-class ConfigTomlFiles;
-
-class TomlParser final {
-private:
-        static ConfigTomlFiles toml_files;
-
-        static toml::table createTable(const std::string& file_path);
-
-public:
-        TomlParser() = delete;
-        static const toml::table& parseConfig();
-        static const toml::table& parseKeys();
+struct ConfigTomlFiles final {
+        std::string config;
+        std::string keys;
 };

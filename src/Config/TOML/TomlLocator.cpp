@@ -17,6 +17,7 @@
 
 #include "TomlLocator.h"
 #include "Core/Log.h"
+#include "Types/ConfigTomlFiles.h"
 
 #include <string>
 #include <QFileInfo>

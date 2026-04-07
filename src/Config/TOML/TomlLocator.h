@@ -17,14 +17,8 @@
 
 #pragma once
 
-#include <string>
+#include "Types/ConfigTomlFiles.h"
 
-struct ConfigTomlFiles final {
-        std::string config;
-        std::string keys;
-};
-
-// TODO Alias for config files
 class TomlLocator final {
 public:
         static ConfigTomlFiles locateTomlFiles();
