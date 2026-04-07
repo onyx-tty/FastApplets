@@ -401,18 +401,13 @@ void ConfigMapper::mapToGlobalConfig(const toml::table& power_applet_table,
 
         const auto& defaults = PowerAppletConfig::getDefault();
 
-        if (!global_table.contains(applet::global.scope)) {
-                QWARNING() << "in config.toml, global missing!";
-        }
-
         /* Window Properties */
-        mapWindow(NodePair{power_applet_table[applet::power_applet.scope]["window"],
-                           global_table[applet::global.scope]["window"]},
+        mapWindow(NodePair{power_applet_table["window"], global_table["window"]},
                   config.window_properties, defaults.getWindowProperties(), "window");
 
         /* Primary Button Properties */
-        mapPrimaryButton(NodePair{power_applet_table[applet::power_applet.scope]["primary_button"],
-                                  global_table[applet::global.scope]["primary_button"]},
+        mapPrimaryButton(NodePair{power_applet_table["primary_button"],
+                                  global_table["primary_button"]},
                          config.primary_button_properties, defaults.getPrimaryButtonProperties(),
                          "primary_button");
 }
@@ -427,18 +422,13 @@ void ConfigMapper::mapToPowerAppletConfig(const toml::table& power_applet_table,
 
         const auto& defaults = PowerAppletConfig::getDefault();
 
-        if (!power_applet_table.contains(applet::power_applet.scope)) {
-                QWARNING() << "in config.toml, power_applet missing!";
-        }
-
         mapToGlobalConfig(power_applet_table, global_table, config);
 
         /* Layout Properties */
-        mapLayout(power_applet_table[applet::power_applet.scope]["layout"],
-                  config.layout_properties, defaults.getLayoutProperties(), "layout");
+        mapLayout(power_applet_table["layout"], config.layout_properties,
+                  defaults.getLayoutProperties(), "layout");
 
         /* Environment Properties */
-        mapEnvironment(power_applet_table[applet::power_applet.scope]["environment"],
-                       config.environment_properties, defaults.getEnvironmentProperties(),
-                       "environment");
+        mapEnvironment(power_applet_table["environment"], config.environment_properties,
+                       defaults.getEnvironmentProperties(), "environment");
 }

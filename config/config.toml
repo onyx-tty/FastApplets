@@ -1,9 +1,8 @@
-[global]
-[global.window]
+[window]
 size = [960, 220]
 title = "test_window"
 
-[global.primary_button]
+[primary_button]
 text_alignment = "top"
 icon_alignment = "center"
 icon_size = [64, 64]
