@@ -17,6 +17,7 @@
 
 #pragma once
 
+#include "Config/TOML/Types/NodeView.h"
 #include "Resolvers.h"
 
 #include <optional>

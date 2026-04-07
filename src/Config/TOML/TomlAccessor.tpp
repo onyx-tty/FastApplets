@@ -21,6 +21,7 @@
 #include "CppUtils/include/Enum.h"
 #include "CppUtils/include/String.h"
 #include "TomlAccessor.h"
+#include "Types/NodeView.h"
 
 #include <optional>
 #include <string>

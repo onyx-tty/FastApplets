@@ -22,8 +22,8 @@
 #include "Config/Config/Properties/LayoutProperties.h"
 #include "Config/Config/Properties/PrimaryButtonProperties.h"
 #include "Config/Config/Properties/WindowProperties.h"
-#include "Config/TOML/NodePair.h"
-#include "Config/TOML/NodeView.h"
+#include "Config/TOML/Types/NodePair.h"
+#include "Config/TOML/Types/NodeView.h"
 
 #include <cstddef>
 #include <toml++/toml.hpp>

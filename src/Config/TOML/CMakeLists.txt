@@ -1,6 +1,6 @@
+add_subdirectory(Types)
+
 add_library(Config_TOML
-        NodePair.h
-        NodeView.h
         TomlAccessor.cpp
         TomlLocator.cpp
         TomlParser.cpp)
@@ -11,6 +11,7 @@ target_include_directories(Config_TOML PRIVATE
         ${GLOBAL_INCLUSIONS})
 
 target_link_libraries(Config_TOML PRIVATE
+        Config::TOML::Types
         Core::Log
         CppUtils)
 

@@ -18,7 +18,7 @@
 #pragma once
 
 #include "CppUtils/include/Enum.h"
-#include "NodeView.h"
+#include "Types/NodeView.h"
 
 #include <optional>
 #include <string>

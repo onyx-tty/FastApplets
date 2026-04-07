@@ -16,6 +16,7 @@
    along with this program.  If not, see <https://www.gnu.org/licenses/>. */
 
 #include "Extractors.h"
+#include "Config/TOML/Types/NodeView.h"
 #include "CppUtils/include/Enum.h"
 
 #include <qnamespace.h>

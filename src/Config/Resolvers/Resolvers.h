@@ -17,7 +17,7 @@
 
 #pragma once
 
-#include "Config/TOML/NodeView.h"
+#include "Config/TOML/Types/NodeView.h"
 #include "Extractors.h"
 
 #include <optional>

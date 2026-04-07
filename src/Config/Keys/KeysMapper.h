@@ -18,7 +18,7 @@
 #pragma once
 
 #include "Config/Keys/Keybindings/Keybindings.h"
-#include "Config/TOML/NodeView.h"
+#include "Config/TOML/Types/NodeView.h"
 #include "Global/GlobalKeys.h"
 #include "PowerApplet/PowerAppletKeys.h"
 
