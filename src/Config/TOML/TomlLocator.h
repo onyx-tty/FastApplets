@@ -21,5 +21,6 @@
 
 class TomlLocator final {
 public:
-        static ConfigTomlFiles locateTomlFiles();
+        static ConfigTomlFiles locateGlobalConfigFiles();
+        static ConfigTomlFiles locatePowerAppletConfigFiles();
 };

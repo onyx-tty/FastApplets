@@ -392,7 +392,8 @@ void ConfigMapper::mapEnvironment(node_view environment_node, EnvironmentPropert
         environment = std::move(environment_properties);
 }
 
-void ConfigMapper::mapToGlobalConfig(const toml::table& config_table, GlobalConfig& config) {
+void ConfigMapper::mapToGlobalConfig(const toml::table& power_applet_table,
+                                     const toml::table& global_table, GlobalConfig& config) {
         // Confirm that a QApplication instance exists
         if (!QApplication::instanceExists()) {
                 QFATAL("QApplication has not been instantiated yet!");
@@ -400,23 +401,24 @@ void ConfigMapper::mapToGlobalConfig(const toml::table& config_table, GlobalConf
 
         const auto& defaults = PowerAppletConfig::getDefault();
 
-        if (!config_table.contains(applet::global.scope)) {
+        if (!global_table.contains(applet::global.scope)) {
                 QWARNING() << "in config.toml, global missing!";
         }
 
         /* Window Properties */
-        mapWindow(NodePair{config_table[applet::power_applet.scope]["window"],
-                           config_table[applet::global.scope]["window"]},
+        mapWindow(NodePair{power_applet_table[applet::power_applet.scope]["window"],
+                           global_table[applet::global.scope]["window"]},
                   config.window_properties, defaults.getWindowProperties(), "window");
 
         /* Primary Button Properties */
-        mapPrimaryButton(NodePair{config_table[applet::power_applet.scope]["primary_button"],
-                                  config_table[applet::global.scope]["primary_button"]},
+        mapPrimaryButton(NodePair{power_applet_table[applet::power_applet.scope]["primary_button"],
+                                  global_table[applet::global.scope]["primary_button"]},
                          config.primary_button_properties, defaults.getPrimaryButtonProperties(),
                          "primary_button");
 }
 
-void ConfigMapper::mapToPowerAppletConfig(const toml::table& config_table,
+void ConfigMapper::mapToPowerAppletConfig(const toml::table& power_applet_table,
+                                          const toml::table& global_table,
                                           PowerAppletConfig& config) {
         // Confirm that a QApplication instance exists
         if (!QApplication::instanceExists()) {
@@ -425,18 +427,18 @@ void ConfigMapper::mapToPowerAppletConfig(const toml::table& config_table,
 
         const auto& defaults = PowerAppletConfig::getDefault();
 
-        if (!config_table.contains(applet::power_applet.scope)) {
+        if (!power_applet_table.contains(applet::power_applet.scope)) {
                 QWARNING() << "in config.toml, power_applet missing!";
         }
 
-        mapToGlobalConfig(config_table, config);
+        mapToGlobalConfig(power_applet_table, global_table, config);
 
         /* Layout Properties */
-        mapLayout(config_table[applet::power_applet.scope]["layout"], config.layout_properties,
-                  defaults.getLayoutProperties(), "layout");
+        mapLayout(power_applet_table[applet::power_applet.scope]["layout"],
+                  config.layout_properties, defaults.getLayoutProperties(), "layout");
 
         /* Environment Properties */
-        mapEnvironment(config_table[applet::power_applet.scope]["environment"],
+        mapEnvironment(power_applet_table[applet::power_applet.scope]["environment"],
                        config.environment_properties, defaults.getEnvironmentProperties(),
                        "environment");
 }

@@ -1,0 +1,7 @@
+[power_applet]
+primary_buttons = [
+    ["1"],
+    ["2"],
+    ["3"],
+    ["4"],
+]

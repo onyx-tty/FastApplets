@@ -38,14 +38,27 @@ toml::table TomlParser::createTable(const std::string& file_path) {
         return file_table;
 }
 
-ConfigTomlFiles TomlParser::toml_files = TomlLocator::locateTomlFiles();
+// TODO Shorten names
+ConfigTomlFiles TomlParser::global_toml_files = TomlLocator::locateGlobalConfigFiles();
+ConfigTomlFiles TomlParser::power_applet_toml_files = TomlLocator::locatePowerAppletConfigFiles();
 
-const toml::table& TomlParser::parseConfig() {
-        static toml::table config = createTable(toml_files.config);
+// TODO Accept applet enum as parameter, return the right config with just 1 function
+const toml::table& TomlParser::parseGlobalConfig() {
+        static toml::table config = createTable(global_toml_files.config);
         return config;
 }
 
-const toml::table& TomlParser::parseKeys() {
-        static toml::table keys = createTable(toml_files.keys);
+const toml::table& TomlParser::parseGlobalKeys() {
+        static toml::table keys = createTable(global_toml_files.keys);
+        return keys;
+}
+
+const toml::table& TomlParser::parsePowerAppletConfig() {
+        static toml::table config = createTable(power_applet_toml_files.config);
+        return config;
+}
+
+const toml::table& TomlParser::parsePowerAppletKeys() {
+        static toml::table keys = createTable(power_applet_toml_files.keys);
         return keys;
 }

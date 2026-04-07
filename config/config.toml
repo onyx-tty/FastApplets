@@ -8,37 +8,3 @@ text_alignment = "top"
 icon_alignment = "center"
 icon_size = [64, 64]
 policy = "expanding"
-
-[power_applet]
-[power_applet.environment]
-dbus_mode = false
-
-[power_applet.layout]
-[[power_applet.layout.primary_buttons]]
-id = "shutdown"
-label = "Shutdown"
-order = 1
-command = ["systemctl", ["poweroff"]]
-enabled = true
-
-[[power_applet.layout.primary_buttons]]
-id = "reboot"
-label = "Reboot"
-order = 2
-command = ["systemctl", ["reboot"]]
-enabled = true
-
-[[power_applet.layout.primary_buttons]]
-id = "suspend"
-label = "Suspend"
-order = 3
-command = ["systemctl", ["suspend"]]
-enabled = true
-
-[[power_applet.layout.primary_buttons]]
-id = "hibernate"
-label = "Hibernate"
-order = 4
-command = ["systemctl", ["hibernate"]]
-enabled = true
-

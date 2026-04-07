@@ -25,8 +25,11 @@
 #include <QStringView>
 #include <QtEnvironmentVariables>
 
-static std::string findFile(const QStringView& filename) {
-        QString filepath = qEnvironmentVariable("XDG_CONFIG_HOME") + "/FastApplets/" + filename;
+static std::string findFile(const QStringView& filename,
+                            const QStringView& subdirectory = QStringLiteral("")) {
+        QString subdir = subdirectory.empty() ? QString(subdirectory) : QString(subdirectory) + "/";
+        QString filepath = qEnvironmentVariable("XDG_CONFIG_HOME") + "/FastApplets/" + subdir
+                         + filename;
 
         // If file found, save filepath
         if (QFileInfo::exists(filepath)) { return filepath.toStdString(); }
@@ -34,12 +37,21 @@ static std::string findFile(const QStringView& filename) {
         QFATAL("%s not found!", filepath);
 }
 
-// Look for configs in $XDG_CONFIG_HOME
-ConfigTomlFiles TomlLocator::locateTomlFiles() {
+// Look for configs in $XDG_CONFIG_HOME/FastApplets
+ConfigTomlFiles TomlLocator::locateGlobalConfigFiles() {
         ConfigTomlFiles files{};
 
         files.config = findFile(QStringLiteral("config.toml"));
         files.keys   = findFile(QStringLiteral("keys.toml"));
+
+        return files;
+}
+
+ConfigTomlFiles TomlLocator::locatePowerAppletConfigFiles() {
+        ConfigTomlFiles files{};
+
+        files.config = findFile(QStringLiteral("config.toml"), QStringLiteral("power_applet"));
+        files.keys   = findFile(QStringLiteral("keys.toml"), QStringLiteral("power_applet"));
 
         return files;
 }

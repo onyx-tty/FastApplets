@@ -139,7 +139,7 @@ void KeysMapper::mapPrimaryButtonKeys(node_view                         primary_
         primary_buttons = std::move(primary_buttons_new);
 }
 
-void KeysMapper::mapToGlobalKeys(const toml::table& keys_table, GlobalKeys& keys) {
+void KeysMapper::mapToGlobalKeys(const toml::table& global_table, GlobalKeys& keys) {
         // Confirm that a QApplication instance exists
         if (!QApplication::instanceExists()) {
                 QFATAL("QApplication has not been instantiated yet!");
@@ -147,16 +147,17 @@ void KeysMapper::mapToGlobalKeys(const toml::table& keys_table, GlobalKeys& keys
 
         const auto& defaults = PowerAppletKeys::getDefault();
 
-        if (!keys_table.contains(applet::global.scope)) {
+        if (!global_table.contains(applet::global.scope)) {
                 QWARNING() << "in keys.toml, global missing!";
         }
 
         /* Quit Keys */
-        mapQuitKeys(keys_table[applet::global.scope]["quit"], keys.quit_keys,
+        mapQuitKeys(global_table[applet::global.scope]["quit"], keys.quit_keys,
                     defaults.getQuitKeys(), "quit");
 }
 
-void KeysMapper::mapToPowerAppletKeys(const toml::table& keys_table, PowerAppletKeys& keys) {
+void KeysMapper::mapToPowerAppletKeys(const toml::table& power_applet_table,
+                                      const toml::table& global_table, PowerAppletKeys& keys) {
         // Confirm that a QApplication instance exists
         if (!QApplication::instanceExists()) {
                 QFATAL("QApplication has not been instantiated yet!");
@@ -164,13 +165,13 @@ void KeysMapper::mapToPowerAppletKeys(const toml::table& keys_table, PowerApplet
 
         const auto& defaults = PowerAppletKeys::getDefault();
 
-        if (!keys_table.contains(applet::power_applet.scope)) {
+        if (!power_applet_table.contains(applet::power_applet.scope)) {
                 QWARNING() << "in keys.toml, power_applet missing!";
         }
 
-        mapToGlobalKeys(keys_table, keys);
+        mapToGlobalKeys(global_table, keys);
 
-        mapPrimaryButtonKeys(keys_table[applet::power_applet.scope]["primary_buttons"],
+        mapPrimaryButtonKeys(power_applet_table[applet::power_applet.scope]["primary_buttons"],
                              keys.primary_button_keys, defaults.getPrimaryButtonKeys(),
                              "primary_button");
 }

@@ -34,7 +34,8 @@ PowerAppletKeys& PowerAppletKeys::get() {
         static bool            parsed = false;
 
         if (!parsed) {
-                KeysMapper::mapToPowerAppletKeys(TomlParser::parseKeys(), keys);
+                KeysMapper::mapToPowerAppletKeys(TomlParser::parsePowerAppletKeys(),
+                                                 TomlParser::parseGlobalKeys(), keys);
                 parsed = true;
         }
 
