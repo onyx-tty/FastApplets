@@ -392,8 +392,9 @@ void ConfigMapper::mapEnvironment(node_view environment_node, EnvironmentPropert
         environment = std::move(environment_properties);
 }
 
-void ConfigMapper::mapToGlobalConfig(const toml::table& power_applet_table,
-                                     const toml::table& global_table, GlobalConfig& config) {
+void ConfigMapper::mapToPowerAppletConfig(const toml::table& power_applet_table,
+                                          const toml::table& global_table,
+                                          PowerAppletConfig& config) {
         // Confirm that a QApplication instance exists
         if (!QApplication::instanceExists()) {
                 QFATAL("QApplication has not been instantiated yet!");
@@ -410,19 +411,6 @@ void ConfigMapper::mapToGlobalConfig(const toml::table& power_applet_table,
                                   global_table["primary_button"]},
                          config.primary_button_properties, defaults.getPrimaryButtonProperties(),
                          "primary_button");
-}
-
-void ConfigMapper::mapToPowerAppletConfig(const toml::table& power_applet_table,
-                                          const toml::table& global_table,
-                                          PowerAppletConfig& config) {
-        // Confirm that a QApplication instance exists
-        if (!QApplication::instanceExists()) {
-                QFATAL("QApplication has not been instantiated yet!");
-        }
-
-        const auto& defaults = PowerAppletConfig::getDefault();
-
-        mapToGlobalConfig(power_applet_table, global_table, config);
 
         /* Layout Properties */
         mapLayout(power_applet_table["layout"], config.layout_properties,

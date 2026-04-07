@@ -48,7 +48,6 @@ private:
 
 public:
         KeysMapper() = delete;
-        static void mapToGlobalKeys(const toml::table& global_table, GlobalKeys& keys);
         static void mapToPowerAppletKeys(const toml::table& power_applet_table,
                                          const toml::table& global_table, PowerAppletKeys& keys);
 };
