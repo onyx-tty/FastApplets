@@ -16,9 +16,12 @@
    along with this program.  If not, see <https://www.gnu.org/licenses/>. */
 
 #include "Extractors.h"
+#include "CppUtils/include/Enum.h"
 
 #include <qnamespace.h>
+#include <string>
 #include <QSizePolicy>
+#include <QString>
 
 const EnumMap<Qt::Alignment> alignment_map = {{"top", Qt::AlignTop | Qt::AlignHCenter},
                                               {"center", Qt::AlignCenter},

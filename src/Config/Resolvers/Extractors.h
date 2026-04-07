@@ -19,6 +19,7 @@
 
 #include "Config/TOML/NodeView.h"
 #include "Config/TOML/TomlAccessor.h"
+#include "CppUtils/include/Enum.h"
 
 #include <optional>
 #include <string>
