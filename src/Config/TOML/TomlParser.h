@@ -19,13 +19,12 @@
 
 #include "TomlLocator.h"
 
-#include <array>
 #include <string>
 #include <toml++/toml.hpp>
 
 class TomlParser final {
 private:
-        static std::array<std::string, toml_file_names_cnt> toml_files;
+        static ConfigTomlFiles toml_files;
 
         static toml::table createTable(const std::string& file_path);
 

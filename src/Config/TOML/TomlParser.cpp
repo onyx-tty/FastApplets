@@ -19,7 +19,6 @@
 #include "Core/Log.h"
 #include "TomlLocator.h"
 
-#include <array>
 #include <string>
 #include <toml++/toml.hpp>
 
@@ -38,14 +37,14 @@ toml::table TomlParser::createTable(const std::string& file_path) {
         return file_table;
 }
 
-std::array<std::string, toml_file_names_cnt> TomlParser::toml_files = TomlLocator::locateTomlFiles();
+ConfigTomlFiles TomlParser::toml_files = TomlLocator::locateTomlFiles();
 
 const toml::table& TomlParser::parseConfig() {
-        static toml::table config = createTable(toml_files[0]);
+        static toml::table config = createTable(toml_files.config);
         return config;
 }
 
 const toml::table& TomlParser::parseKeys() {
-        static toml::table keys = createTable(toml_files[1]);
+        static toml::table keys = createTable(toml_files.keys);
         return keys;
 }

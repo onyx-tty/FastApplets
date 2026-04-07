@@ -17,13 +17,15 @@
 
 #pragma once
 
-#include <array>
 #include <string>
 
-constexpr int toml_file_names_cnt = 2;
+struct ConfigTomlFiles final {
+        std::string config;
+        std::string keys;
+};
 
 // TODO Alias for config files
 class TomlLocator final {
 public:
-        static std::array<std::string, toml_file_names_cnt> locateTomlFiles();
+        static ConfigTomlFiles locateTomlFiles();
 };

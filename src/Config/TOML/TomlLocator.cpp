@@ -18,7 +18,6 @@
 #include "TomlLocator.h"
 #include "Core/Log.h"
 
-#include <array>
 #include <string>
 #include <QFileInfo>
 #include <QString>
@@ -35,17 +34,11 @@ static std::string findFile(const QStringView& filename) {
 }
 
 // Look for configs in $XDG_CONFIG_HOME
-std::array<std::string, toml_file_names_cnt> TomlLocator::locateTomlFiles() {
-        std::array<std::string, toml_file_names_cnt> files{}; // Only enough slots for each file
-        std::array<QString, toml_file_names_cnt> config_file_names = {"config.toml", "keys.toml"};
+ConfigTomlFiles TomlLocator::locateTomlFiles() {
+        ConfigTomlFiles files{};
 
-        QString file_path;
-        // Loop through expected config files
-        // If no valid file_path found for the current file, terminate
-        // TODO Fallback into default config
-        for (size_t i = 0; i != toml_file_names_cnt; ++i) {
-                files[i] = findFile(config_file_names[i]);
-        }
+        files.config = findFile(QStringLiteral("config.toml"));
+        files.keys   = findFile(QStringLiteral("keys.toml"));
 
         return files;
 }
