@@ -22,28 +22,29 @@
 #include <string>
 #include <QFileInfo>
 #include <QString>
+#include <QStringView>
 #include <QtEnvironmentVariables>
 
-// Look for configs in $XDG_CONFIG_HOME and $XDG_DATA_HOME
+static std::string findFile(const QStringView& filename) {
+        QString filepath = qEnvironmentVariable("XDG_CONFIG_HOME") + "/FastApplets/" + filename;
+
+        // If file found, save filepath
+        if (QFileInfo::exists(filepath)) { return filepath.toStdString(); }
+
+        QFATAL("%s not found!", filepath);
+}
+
+// Look for configs in $XDG_CONFIG_HOME
 std::array<std::string, toml_file_names_cnt> TomlLocator::locateTomlFiles() {
         std::array<std::string, toml_file_names_cnt> files{}; // Only enough slots for each file
         std::array<QString, toml_file_names_cnt> config_file_names = {"config.toml", "keys.toml"};
 
         QString file_path;
         // Loop through expected config files
-        // No valid file_path found for the current file, terminate
+        // If no valid file_path found for the current file, terminate
         // TODO Fallback into default config
         for (size_t i = 0; i != toml_file_names_cnt; ++i) {
-                bool found = false;
-                file_path  = qEnvironmentVariable("XDG_CONFIG_HOME") + "/FastApplets/"
-                           + config_file_names[i];
-                // If file found, save filepath
-                if (QFileInfo::exists(file_path)) {
-                        files[i] = file_path.toStdString();
-                        found    = true;
-                }
-
-                if (!found) { QFATAL("%s not found!", file_path); }
+                files[i] = findFile(config_file_names[i]);
         }
 
         return files;
