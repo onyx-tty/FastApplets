@@ -37,11 +37,10 @@ option(BUILD_TESTS "Build unit tests" ON)
 # Set up the Qt environment
 set(QT_VERSION_MAJOR 6 CACHE STRING "Build using this version of Qt")
 
-# TODO Create a CMakeLists.txt file in src/ that does it there
-# Specify the src/ directory as a global include for submodules
+# Specify global inclusions shared by all modules
 set(GLOBAL_INCLUSIONS
         ${CMAKE_CURRENT_LIST_DIR}/src
-        ${CMAKE_CURRENT_LIST_DIR}/modules)
+        ${CMAKE_CURRENT_LIST_DIR}/external)
 
 # Shared requirements
 find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets)
@@ -53,7 +52,7 @@ if(BUILD_POWERAPPLET)
         endif()
 
         add_subdirectory(
-                modules/CppUtils
+                external/CppUtils
                 CppUtils-build)
 endif()
 

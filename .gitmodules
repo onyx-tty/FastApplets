@@ -1,3 +1,3 @@
-[submodule "modules/CppUtils"]
-	path = modules/CppUtils
+[submodule "external/CppUtils"]
+	path = external/CppUtils
 	url = https://github.com/onyx-tty/CppUtils.git
