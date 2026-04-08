@@ -16,7 +16,7 @@
    along with this program.  If not, see <https://www.gnu.org/licenses/>. */
 
 #include "GlobalKeys.h"
-#include "Config/KeysFile/Keybindings/Keybindings.h"
+#include "Config/KeysFile/Types/Keybindings.h"
 
 #include <utility>
 

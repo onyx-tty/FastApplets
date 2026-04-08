@@ -17,7 +17,7 @@
 
 #include "PowerAppletKeys.h"
 #include "Config/KeysFile/Global/GlobalKeys.h"
-#include "Config/KeysFile/Keybindings/Keybindings.h"
+#include "Config/KeysFile/Types/Keybindings.h"
 #include "Config/KeysFile/KeysMapper.h"
 #include "Config/TOML/TomlParser.h"
 

@@ -17,7 +17,7 @@
 
 #include "KeysMapper.h"
 #include "Applets/Types/AppletRecord.h"
-#include "Config/KeysFile/Keybindings/Keybindings.h"
+#include "Config/KeysFile/Types/Keybindings.h"
 #include "Config/Resolvers/Resolvers.h"
 #include "Config/TOML/TomlAccessor.h"
 #include "Config/TOML/Types/NodeView.h"

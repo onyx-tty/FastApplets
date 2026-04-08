@@ -1,6 +1,6 @@
-add_subdirectory(Keybindings)
 add_subdirectory(Global)
 add_subdirectory(PowerApplet)
+add_subdirectory(Types)
 
 add_library(Config_KeysFile
         KeysMapper.cpp)
@@ -15,8 +15,8 @@ target_link_libraries(Config_KeysFile PRIVATE
         Qt${QT_VERSION_MAJOR}::Widgets)
 
 target_link_libraries(Config_KeysFile PUBLIC
-        Config::KeysFile::Keybindings
         Config::KeysFile::Global
         Config::KeysFile::PowerApplet
+        Config::KeysFile::Types
         Config::TOML
         Core::Log)

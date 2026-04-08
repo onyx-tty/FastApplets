@@ -7,4 +7,4 @@ target_include_directories(Config_KeysFile_Global PRIVATE
         ${GLOBAL_INCLUSIONS})
 
 target_link_libraries(Config_KeysFile_Global PRIVATE
-        Config::KeysFile::Keybindings)
+        Config::KeysFile::Types)

@@ -7,7 +7,7 @@ target_include_directories(Config_KeysFile_PowerApplet PRIVATE
         ${GLOBAL_INCLUSIONS})
 
 target_link_libraries(Config_KeysFile_PowerApplet PRIVATE
-        Config::KeysFile::Keybindings
+        Config::KeysFile::Types
         Config::TOML)
 
 target_link_libraries(Config_KeysFile_PowerApplet PUBLIC

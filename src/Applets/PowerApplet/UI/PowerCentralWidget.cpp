@@ -17,7 +17,7 @@
 
 #include "PowerCentralWidget.h"
 #include "Config/ConfigFile/PowerApplet/PowerAppletConfig.h"
-#include "Config/KeysFile/Keybindings/Keybindings.h"
+#include "Config/KeysFile/Types/Keybindings.h"
 #include "Config/KeysFile/PowerApplet/PowerAppletKeys.h"
 #include "Core/Log.h"
 #include "UI/Enums/ButtonIDs.h"
