@@ -15,13 +15,21 @@
    You should have received a copy of the GNU General Public License
    along with this program.  If not, see <https://www.gnu.org/licenses/>. */
 
-#include "GlobalKeys.h"
-#include "Config/Keys/Keybindings/Keybindings.h"
+#pragma once
 
-#include <utility>
+#include "Config/KeysFile/Keybindings/Keybindings.h"
 
-GlobalKeys::GlobalKeys(keybindings quit_keys) : quit_keys(std::move(quit_keys)) {}
+class KeysMapper;
 
-const keybindings& GlobalKeys::getQuitKeys() const {
-        return quit_keys;
-}
+class GlobalKeys {
+private:
+        friend class KeysMapper;
+
+        keybindings quit_keys;
+
+protected:
+        explicit GlobalKeys(keybindings quit_keys = {});
+
+public:
+        const keybindings& getQuitKeys() const;
+};

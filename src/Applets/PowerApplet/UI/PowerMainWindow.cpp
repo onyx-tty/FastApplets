@@ -16,7 +16,7 @@
    along with this program.  If not, see <https://www.gnu.org/licenses/>. */
 
 #include "PowerMainWindow.h"
-#include "Config/Config/PowerApplet/PowerAppletConfig.h"
+#include "Config/ConfigFile/PowerApplet/PowerAppletConfig.h"
 
 PowerMainWindow::PowerMainWindow(QWidget* parent) :
         MainWindow(PowerAppletConfig::get().getWindowProperties(), parent),

@@ -16,9 +16,9 @@
    along with this program.  If not, see <https://www.gnu.org/licenses/>. */
 
 #include "PowerCentralWidget.h"
-#include "Config/Config/PowerApplet/PowerAppletConfig.h"
-#include "Config/Keys/Keybindings/Keybindings.h"
-#include "Config/Keys/PowerApplet/PowerAppletKeys.h"
+#include "Config/ConfigFile/PowerApplet/PowerAppletConfig.h"
+#include "Config/KeysFile/Keybindings/Keybindings.h"
+#include "Config/KeysFile/PowerApplet/PowerAppletKeys.h"
 #include "Core/Log.h"
 #include "UI/Enums/ButtonIDs.h"
 #include "Widgets/PowerButton.h"

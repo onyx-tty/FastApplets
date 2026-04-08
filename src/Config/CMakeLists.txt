@@ -8,9 +8,9 @@ set(CMAKE_AUTORCC ON)
 # Requirements
 find_package(tomlplusplus REQUIRED)
 
-add_subdirectory(Config)
+add_subdirectory(ConfigFile)
 add_subdirectory(Resolvers)
-add_subdirectory(Keys)
+add_subdirectory(KeysFile)
 add_subdirectory(TOML)
 
 add_library(Config)
@@ -20,9 +20,9 @@ target_include_directories(Config PRIVATE
         ${GLOBAL_INCLUSIONS})
 
 target_link_libraries(Config PRIVATE
-        Config::Config
+        Config::ConfigFile
         Config::Resolvers
-        Config::Keys
+        Config::KeysFile
         Config::TOML
         Core::Log
         UI::Widgets

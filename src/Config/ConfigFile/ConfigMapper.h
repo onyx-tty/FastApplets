@@ -17,11 +17,11 @@
 
 #pragma once
 
-#include "Config/Config/PowerApplet/PowerAppletConfig.h"
-#include "Config/Config/Properties/EnvironmentProperties.h"
-#include "Config/Config/Properties/LayoutProperties.h"
-#include "Config/Config/Properties/PrimaryButtonProperties.h"
-#include "Config/Config/Properties/WindowProperties.h"
+#include "Config/ConfigFile/PowerApplet/PowerAppletConfig.h"
+#include "Config/ConfigFile/Properties/EnvironmentProperties.h"
+#include "Config/ConfigFile/Properties/LayoutProperties.h"
+#include "Config/ConfigFile/Properties/PrimaryButtonProperties.h"
+#include "Config/ConfigFile/Properties/WindowProperties.h"
 #include "Config/TOML/Types/NodePair.h"
 #include "Config/TOML/Types/NodeView.h"
 

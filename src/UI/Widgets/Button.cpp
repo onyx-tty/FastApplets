@@ -16,7 +16,7 @@
    along with this program.  If not, see <https://www.gnu.org/licenses/>. */
 
 #include "Button.h"
-#include "Config/Config/Properties/PrimaryButtonProperties.h"
+#include "Config/ConfigFile/Properties/PrimaryButtonProperties.h"
 #include "Core/Log.h"
 
 #include <QGridLayout>

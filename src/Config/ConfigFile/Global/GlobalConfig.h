@@ -17,19 +17,27 @@
 
 #pragma once
 
-#include "Config/Keys/Keybindings/Keybindings.h"
+#include "Config/ConfigFile/Properties/PrimaryButtonProperties.h"
+#include "Config/ConfigFile/Properties/WindowProperties.h"
 
-class KeysMapper;
+#include <QSize>
+#include <QSizePolicy>
+#include <QString>
 
-class GlobalKeys {
-private:
-        friend class KeysMapper;
+class ConfigMapper;
 
-        keybindings quit_keys;
-
+class GlobalConfig {
 protected:
-        explicit GlobalKeys(keybindings quit_keys = {});
+        friend class ConfigMapper;
+
+        explicit GlobalConfig(
+                WindowProperties        window_properties         = WindowProperties{},
+                PrimaryButtonProperties primary_button_properties = PrimaryButtonProperties{});
+
+        WindowProperties        window_properties;
+        PrimaryButtonProperties primary_button_properties;
 
 public:
-        const keybindings& getQuitKeys() const;
+        const WindowProperties&        getWindowProperties() const;
+        const PrimaryButtonProperties& getPrimaryButtonProperties() const;
 };

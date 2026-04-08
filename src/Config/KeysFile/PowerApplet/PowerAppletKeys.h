@@ -17,8 +17,8 @@
 
 #pragma once
 
-#include "Config/Keys/Global/GlobalKeys.h"
-#include "Config/Keys/Keybindings/Keybindings.h"
+#include "Config/KeysFile/Global/GlobalKeys.h"
+#include "Config/KeysFile/Keybindings/Keybindings.h"
 
 #include <array>
 

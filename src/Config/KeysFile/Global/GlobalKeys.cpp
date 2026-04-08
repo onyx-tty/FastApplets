@@ -15,12 +15,13 @@
    You should have received a copy of the GNU General Public License
    along with this program.  If not, see <https://www.gnu.org/licenses/>. */
 
-#include "MainWindow.h"
-#include "Config/ConfigFile/Properties/WindowProperties.h"
+#include "GlobalKeys.h"
+#include "Config/KeysFile/Keybindings/Keybindings.h"
 
-MainWindow::MainWindow(const WindowProperties& properties, QWidget* parent) : QMainWindow(parent) {
-        resize(properties.getSize());
-        setWindowTitle(properties.getTitle());
+#include <utility>
+
+GlobalKeys::GlobalKeys(keybindings quit_keys) : quit_keys(std::move(quit_keys)) {}
+
+const keybindings& GlobalKeys::getQuitKeys() const {
+        return quit_keys;
 }
-
-MainWindow::~MainWindow() = default;

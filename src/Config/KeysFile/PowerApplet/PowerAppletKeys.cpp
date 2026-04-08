@@ -16,9 +16,9 @@
    along with this program.  If not, see <https://www.gnu.org/licenses/>. */
 
 #include "PowerAppletKeys.h"
-#include "Config/Keys/Global/GlobalKeys.h"
-#include "Config/Keys/Keybindings/Keybindings.h"
-#include "Config/Keys/KeysMapper.h"
+#include "Config/KeysFile/Global/GlobalKeys.h"
+#include "Config/KeysFile/Keybindings/Keybindings.h"
+#include "Config/KeysFile/KeysMapper.h"
 #include "Config/TOML/TomlParser.h"
 
 #include <array>

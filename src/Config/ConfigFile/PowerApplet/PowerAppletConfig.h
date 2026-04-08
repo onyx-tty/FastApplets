@@ -17,11 +17,11 @@
 
 #pragma once
 
-#include "Config/Config/Global/GlobalConfig.h"
-#include "Config/Config/Properties/EnvironmentProperties.h"
-#include "Config/Config/Properties/LayoutProperties.h"
-#include "Config/Config/Properties/PrimaryButtonProperties.h"
-#include "Config/Config/Properties/WindowProperties.h"
+#include "Config/ConfigFile/Global/GlobalConfig.h"
+#include "Config/ConfigFile/Properties/EnvironmentProperties.h"
+#include "Config/ConfigFile/Properties/LayoutProperties.h"
+#include "Config/ConfigFile/Properties/PrimaryButtonProperties.h"
+#include "Config/ConfigFile/Properties/WindowProperties.h"
 
 #include <QSize>
 #include <QSizePolicy>

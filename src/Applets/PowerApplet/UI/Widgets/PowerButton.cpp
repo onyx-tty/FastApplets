@@ -17,7 +17,7 @@
 
 #include "PowerButton.h"
 #include "Applets/PowerApplet/DBus/PowerActionManager.h"
-#include "Config/Config/PowerApplet/PowerAppletConfig.h"
+#include "Config/ConfigFile/PowerApplet/PowerAppletConfig.h"
 #include "Environment/ShellCommand.h"
 #include "Environment/ShellRunner.h"
 #include "UI/Enums/ButtonIDs.h"
