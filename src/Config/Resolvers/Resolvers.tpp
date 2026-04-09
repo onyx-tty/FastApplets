@@ -95,7 +95,7 @@ T resolveOr(std::initializer_list<Source> sources, const DefaultT& defaults,
 template<typename T, typename DefaultT, typename... Sources>
 requires(std::is_convertible_v<Sources, Source> && ...)
 T resolveOr(const QString& path_context, const DefaultT& defaults, Sources&&... sources) {
-        return resolveOr<T>({std::forward<Sources>(sources)...}, defaults, path_context);
+        return resolveOr<T, DefaultT>({std::forward<Sources>(sources)...}, defaults, path_context);
 }
 
 // Use to try and extract a value from a node into a specific attribute, and if that fails, to
