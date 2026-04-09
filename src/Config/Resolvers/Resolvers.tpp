@@ -78,6 +78,7 @@ std::optional<T> resolve(std::initializer_list<Source> sources, const QString& p
 }
 
 template<typename T, typename... Sources>
+requires(std::is_convertible_v<Sources, Source> && ...)
 std::optional<T> resolve(const QString& path_context, bool force_override_on, Sources&&... sources) {
         return resolve<T>({std::forward<Sources>(sources)...}, path_context, force_override_on);
 }
@@ -92,6 +93,7 @@ T resolveOr(std::initializer_list<Source> sources, const DefaultT& defaults,
 }
 
 template<typename T, typename DefaultT, typename... Sources>
+requires(std::is_convertible_v<Sources, Source> && ...)
 T resolveOr(const QString& path_context, const DefaultT& defaults, Sources&&... sources) {
         return resolveOr<T>({std::forward<Sources>(sources)...}, defaults, path_context);
 }
@@ -113,6 +115,7 @@ void resolveOrDefault(std::initializer_list<Source> sources, TAttribute& attribu
 }
 
 template<typename TAttribute, typename TObject, typename... Sources>
+requires(std::is_convertible_v<Sources, Source> && ...)
 void resolveOrDefault(const QString& path_context, TAttribute& attribute, TObject& object,
                       const TObject& object_defaults, Sources&&... sources) {
         resolveOrDefault<TAttribute, TObject>({std::forward<Sources>(sources)...}, attribute,

@@ -52,6 +52,7 @@ std::optional<T> resolve(std::initializer_list<Source> sources, const QString& p
                          bool force_override_on = false);
 
 template<typename T, typename... Sources>
+requires(std::is_convertible_v<Sources, Source> && ...)
 std::optional<T> resolve(const QString& path_context, bool force_override_on = false,
                          Sources&&... sources);
 
@@ -63,6 +64,7 @@ T resolveOr(std::initializer_list<Source> sources, const DefaultT& defaults,
             const QString& path_context);
 
 template<typename T, typename DefaultT, typename... Sources>
+requires(std::is_convertible_v<Sources, Source> && ...)
 T resolveOr(const QString& path_context, const DefaultT& defaults, Sources&&... sources);
 
 // Use to try and extract a value from a node into a specific attribute, and if that fails, to
@@ -76,6 +78,7 @@ void resolveOrDefault(std::initializer_list<Source> sources, TAttribute& attribu
                       const TObject& object_defaults, const QString& path_context);
 
 template<typename TAttribute, typename TObject, typename... Sources>
+requires(std::is_convertible_v<Sources, Source> && ...)
 void resolveOrDefault(const QString& path_context, TAttribute& attribute, TObject& object,
                       const TObject& object_defaults, Sources&&... sources);
 
