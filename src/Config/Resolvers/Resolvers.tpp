@@ -83,6 +83,14 @@ std::optional<T> resolve(const QString& path_context, bool force_override_on, So
         return resolve<T>({std::forward<Sources>(sources)...}, path_context, force_override_on);
 }
 
+template<typename... Sources>
+std::optional<toml::array> resolve(const QString& path_context, bool force_override_on,
+                                   const QString& error_arr_details, std::optional<size_t> min_size,
+                                   std::optional<size_t> max_size, Sources&&... sources) {
+        return resolve({std::forward<Sources>(sources)...}, path_context, force_override_on,
+                       error_arr_details, min_size, max_size);
+}
+
 // Use to skip validation of return value and to automatically default
 // On success: extract from a node
 // On failure: copy default value
@@ -92,10 +100,26 @@ T resolveOr(std::initializer_list<Source> sources, const DefaultT& defaults,
         return resolve<T>(sources, path_context).value_or(defaults);
 }
 
+template<typename DefaultT>
+toml::array resolveOr(std::initializer_list<Source> sources, const DefaultT& defaults,
+                      const QString& path_context, const QString& error_arr_details,
+                      std::optional<size_t> min_size, std::optional<size_t> max_size) {
+        return resolve(sources, path_context, false, error_arr_details, min_size, max_size)
+                .value_or(defaults);
+}
+
 template<typename T, typename DefaultT, typename... Sources>
 requires(std::is_convertible_v<Sources, Source> && ...)
 T resolveOr(const QString& path_context, const DefaultT& defaults, Sources&&... sources) {
         return resolveOr<T, DefaultT>({std::forward<Sources>(sources)...}, defaults, path_context);
+}
+
+template<typename DefaultT, typename... Sources>
+toml::array resolveOr(const QString& path_context, const DefaultT& defaults,
+                      const QString& error_arr_details, std::optional<size_t> min_size,
+                      std::optional<size_t> max_size, Sources&&... sources) {
+        return resolveOr<toml::array>({std::forward<Sources>(sources)...}, defaults, path_context,
+                                      error_arr_details, min_size, max_size);
 }
 
 // Use to try and extract a value from a node into a specific attribute, and if that fails, to
@@ -114,12 +138,26 @@ void resolveOrDefault(std::initializer_list<Source> sources, TAttribute& attribu
         }
 }
 
+template<typename TObject>
+void resolveOrDefault(std::initializer_list<Source> sources, toml::array& attribute,
+                      TObject& object, const TObject& object_defaults,
+                      const QString& path_context) {
+        resolveOrDefault<toml::array>(sources, attribute, object, object_defaults, path_context);
+}
+
 template<typename TAttribute, typename TObject, typename... Sources>
 requires(std::is_convertible_v<Sources, Source> && ...)
 void resolveOrDefault(const QString& path_context, TAttribute& attribute, TObject& object,
                       const TObject& object_defaults, Sources&&... sources) {
         resolveOrDefault<TAttribute, TObject>({std::forward<Sources>(sources)...}, attribute,
                                               object, object_defaults, path_context);
+}
+
+template<typename TObject, typename... Sources>
+void resolveOrDefault(const QString& path_context, toml::array& attribute, TObject& object,
+                      const TObject& object_defaults, Sources&&... sources) {
+        resolveOrDefault<toml::array, TObject>({std::forward<Sources>(sources)...}, attribute,
+                                               object, object_defaults, path_context);
 }
 
 // Use if resolveOrDefault is the optimal choice, but the extracted value must first be transformed
