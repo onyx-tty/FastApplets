@@ -63,8 +63,10 @@ std::optional<toml::table> extractor::table(node_view node, const QString& path,
 };
 
 std::optional<toml::array> extractor::array(node_view node, const QString& path, bool is_override,
-                                            const QString& error_arr_details) {
-        return getTomlArray(node, path, is_override, error_arr_details);
+                                            const QString&        error_arr_details,
+                                            std::optional<size_t> min_size,
+                                            std::optional<size_t> max_size) {
+        return getTomlArray(node, path, is_override, error_arr_details, min_size, max_size);
 };
 
 std::optional<QString> extractor::qstring(node_view node, const QString& path, bool is_override) {

@@ -21,6 +21,7 @@
 #include "Config/TOML/Types/NodeView.h"
 #include "CppUtils/include/Enum.h"
 
+#include <cstddef>
 #include <optional>
 #include <string>
 #include <toml++/toml.hpp>
@@ -48,7 +49,9 @@ namespace extractor {
 std::optional<toml::table> table(node_view node, const QString& path, bool is_override = false);
 
 std::optional<toml::array> array(node_view node, const QString& path, bool is_override = false,
-                                 const QString& error_arr_details = {});
+                                 const QString&        error_arr_details = {},
+                                 std::optional<size_t> min_size          = std::nullopt,
+                                 std::optional<size_t> max_size          = std::nullopt);
 
 template<typename T>
 std::optional<T> value(node_view node, const QString& path, bool is_override);
