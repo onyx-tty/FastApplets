@@ -179,9 +179,8 @@ void ConfigMapper::mapCommandArguments(node_view arguments_node, PrimaryButtonDa
                                        size_t button_index, const QString& path_context) {
         constexpr bool   is_override = false;
         constexpr size_t min_size    = 0;
-        const auto       args = getTomlArray(arguments_node,
-                                             makeCfgPath(applet::power_applet.scope, path_context),
-                                             is_override, "Format: [string, array]", min_size);
+        const auto args = resolve(path_context, is_override, "Format: [string, array]", min_size,
+                                  std::nullopt, Source{arguments_node, applet::power_applet.scope});
         if (!args) {
                 handleButtonResolutionFailure(button, defaults, button_index);
                 return;
@@ -206,9 +205,9 @@ void ConfigMapper::mapCommand(node_view command_node, PrimaryButtonData& button,
 
         constexpr bool   is_override = false;
         constexpr size_t min_size = 2, max_size = 2;
-        const auto command_arr = getTomlArray(command_node,
-                                              makeCfgPath(applet::power_applet.scope, path_context),
-                                              is_override, error_arr_details, min_size, max_size);
+        const auto command_arr = resolve(path_context, is_override, error_arr_details, min_size,
+                                         max_size,
+                                         Source{command_node, applet::power_applet.scope});
         if (!command_arr) {
                 handleButtonResolutionFailure(button, defaults, button_index);
                 return;
