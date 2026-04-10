@@ -304,11 +304,11 @@ void ConfigMapper::mapPrimaryButtons(node_view                             prima
                                      std::vector<PrimaryButtonData>&       primary_buttons,
                                      const std::vector<PrimaryButtonData>& defaults,
                                      const QString&                        path_context) {
-        constexpr bool is_override = false;
+        constexpr bool   is_override = false;
+        constexpr size_t min_size    = 1;
 
-        const auto buttons = resolve<toml::array>(path_context, is_override,
-                                                  Source{primary_buttons_node,
-                                                         applet::power_applet.scope});
+        const auto buttons = resolve(path_context, is_override, "", min_size, std::nullopt,
+                                     Source{primary_buttons_node, applet::power_applet.scope});
         if (!buttons) {
                 primary_buttons = defaults;
                 return;
