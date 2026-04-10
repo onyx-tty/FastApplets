@@ -141,9 +141,10 @@ void resolveOrDefault(std::initializer_list<Source> sources, TAttribute& attribu
 template<typename TObject>
 void resolveOrDefault(std::initializer_list<Source> sources, toml::array& attribute,
                       TObject& object, const TObject& object_defaults, const QString& path_context,
-                      std::optional<size_t> min_size, std::optional<size_t> max_size) {
+                      const QString& error_arr_details, std::optional<size_t> min_size,
+                      std::optional<size_t> max_size) {
         resolveOrDefault<toml::array>(sources, attribute, object, object_defaults, path_context,
-                                      min_size, max_size);
+                                      error_arr_details, min_size, max_size);
 }
 
 template<typename TAttribute, typename TObject, typename... Sources>
@@ -156,11 +157,12 @@ void resolveOrDefault(const QString& path_context, TAttribute& attribute, TObjec
 
 template<typename TObject, typename... Sources>
 void resolveOrDefault(const QString& path_context, toml::array& attribute, TObject& object,
-                      const TObject& object_defaults, std::optional<size_t> min_size,
-                      std::optional<size_t> max_size, Sources&&... sources) {
+                      const TObject& object_defaults, const QString& error_arr_details,
+                      std::optional<size_t> min_size, std::optional<size_t> max_size,
+                      Sources&&... sources) {
         resolveOrDefault<toml::array, TObject>({std::forward<Sources>(sources)...}, attribute,
-                                               object, object_defaults, path_context, min_size,
-                                               max_size);
+                                               object, object_defaults, path_context,
+                                               error_arr_details, min_size, max_size);
 }
 
 // Use if resolveOrDefault is the optimal choice, but the extracted value must first be transformed

@@ -105,7 +105,8 @@ void resolveOrDefault(std::initializer_list<Source> sources, TAttribute& attribu
 template<typename TObject>
 void resolveOrDefault(std::initializer_list<Source> sources, toml::array& attribute,
                       TObject& object, const TObject& object_defaults, const QString& path_context,
-                      std::optional<size_t> min_size, std::optional<size_t> max_size);
+                      const QString& error_arr_details, std::optional<size_t> min_size,
+                      std::optional<size_t> max_size);
 
 template<typename TAttribute, typename TObject, typename... Sources>
 requires(std::is_convertible_v<Sources, Source> && ...)
@@ -114,8 +115,9 @@ void resolveOrDefault(const QString& path_context, TAttribute& attribute, TObjec
 
 template<typename TObject, typename... Sources>
 void resolveOrDefault(const QString& path_context, toml::array& attribute, TObject& object,
-                      const TObject& object_defaults, std::optional<size_t> min_size,
-                      std::optional<size_t> max_size, Sources&&... sources);
+                      const TObject& object_defaults, const QString& error_arr_details,
+                      std::optional<size_t> min_size, std::optional<size_t> max_size,
+                      Sources&&... sources);
 
 // Use if resolveOrDefault is the optimal choice, but the extracted value must first be transformed
 // before being put into use
