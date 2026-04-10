@@ -79,11 +79,11 @@ void interpretTextAsKeybindings(node_view source, keybindings& target) {
 
 void KeysMapper::mapQuitKeys(NodePair nodes, keybindings& quit, const keybindings& defaults,
                              const QString& path_context) {
-        constexpr bool   is_override = false;
-        constexpr size_t min_size = 1, max_size = 4;
-        const auto array = resolve(path_context, is_override, "Format: [keybindings...]", min_size,
-                                   max_size, Source{nodes.primary, applet::power_applet.scope},
-                                   Source{nodes.fallback, applet::global.scope});
+        constexpr bool is_override = false;
+        const auto     array       = resolve(path_context, is_override, "Format: [keybindings...]",
+                                             std::nullopt, std::nullopt,
+                                             Source{nodes.primary, applet::power_applet.scope},
+                                             Source{nodes.fallback, applet::global.scope});
 
         if (!array || array.value().empty()) {
                 quit = defaults;
