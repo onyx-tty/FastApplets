@@ -26,6 +26,7 @@
 #include <toml++/toml.hpp>
 
 class GlobalKeys;
+class NodePair;
 class PowerAppletKeys;
 class QString;
 
@@ -34,7 +35,7 @@ void interpretTextAsKeybindings(node_view source, keybindings& target);
 class KeysMapper final {
 private:
         /* Global Keys */
-        static void mapQuitKeys(node_view quit_node, keybindings& quit, const keybindings& defaults,
+        static void mapQuitKeys(NodePair nodes, keybindings& quit, const keybindings& defaults,
                                 const QString& path_context);
 
         /* Power Applet Keys*/

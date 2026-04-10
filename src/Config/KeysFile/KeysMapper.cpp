@@ -20,6 +20,7 @@
 #include "Config/KeysFile/Types/Keybindings.h"
 #include "Config/Resolvers/Resolvers.h"
 #include "Config/TOML/TomlAccessor.h"
+#include "Config/TOML/Types/NodePair.h"
 #include "Config/TOML/Types/NodeView.h"
 #include "Core/Log.h"
 #include "Global/GlobalKeys.h"
@@ -76,20 +77,21 @@ void interpretTextAsKeybindings(node_view source, keybindings& target) {
         }
 }
 
-void KeysMapper::mapQuitKeys(node_view quit_node, keybindings& quit, const keybindings& defaults,
+void KeysMapper::mapQuitKeys(NodePair nodes, keybindings& quit, const keybindings& defaults,
                              const QString& path_context) {
         constexpr bool   is_override = false;
         constexpr size_t min_size = 1, max_size = 4;
         const auto       array = resolve(path_context, is_override, "Format: [keybindings...]",
                                          std::optional(min_size), std::optional(max_size),
-                                         Source{quit_node, applet::global.scope});
+                                         Source{nodes.primary, applet::power_applet.scope},
+                                         Source{nodes.fallback, applet::global.scope});
 
         if (!array || array.value().empty()) {
                 quit = defaults;
                 return;
         }
 
-        interpretTextAsKeybindings(quit_node, quit);
+        interpretTextAsKeybindings(node_view(array.value()), quit);
 }
 
 void KeysMapper::mapPrimaryButtonKey(node_view primary_button_node, keybindings& primary_button,
@@ -148,7 +150,8 @@ void KeysMapper::mapToPowerAppletKeys(const toml::table& power_applet_table,
         const auto& defaults = PowerAppletKeys::getDefault();
 
         /* Quit Keys */
-        mapQuitKeys(global_table["quit"], keys.quit_keys, defaults.getQuitKeys(), "quit");
+        mapQuitKeys(NodePair{power_applet_table["quit"], global_table["quit"]}, keys.quit_keys,
+                    defaults.getQuitKeys(), "quit");
 
         /* Primary Button Keys */
         mapPrimaryButtonKeys(power_applet_table["primary_buttons"], keys.primary_button_keys,
