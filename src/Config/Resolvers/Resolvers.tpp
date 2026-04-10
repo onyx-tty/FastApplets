@@ -143,8 +143,13 @@ void resolveOrDefault(std::initializer_list<Source> sources, toml::array& attrib
                       TObject& object, const TObject& object_defaults, const QString& path_context,
                       const QString& error_arr_details, std::optional<size_t> min_size,
                       std::optional<size_t> max_size) {
-        resolveOrDefault<toml::array>(sources, attribute, object, object_defaults, path_context,
-                                      error_arr_details, min_size, max_size);
+        constexpr bool force_override = false;
+        if (auto result = resolve(sources, path_context, force_override, error_arr_details,
+                                  min_size, max_size)) {
+                attribute = result.value();
+        } else {
+                object = object_defaults;
+        }
 }
 
 template<typename TAttribute, typename TObject, typename... Sources>
@@ -160,9 +165,9 @@ void resolveOrDefault(const QString& path_context, toml::array& attribute, TObje
                       const TObject& object_defaults, const QString& error_arr_details,
                       std::optional<size_t> min_size, std::optional<size_t> max_size,
                       Sources&&... sources) {
-        resolveOrDefault<toml::array, TObject>({std::forward<Sources>(sources)...}, attribute,
-                                               object, object_defaults, path_context,
-                                               error_arr_details, min_size, max_size);
+        resolveOrDefault<TObject>({std::forward<Sources>(sources)...}, attribute, object,
+                                  object_defaults, path_context, error_arr_details, min_size,
+                                  max_size);
 }
 
 // Use if resolveOrDefault is the optimal choice, but the extracted value must first be transformed
