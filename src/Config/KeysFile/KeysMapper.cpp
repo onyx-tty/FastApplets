@@ -120,7 +120,7 @@ void KeysMapper::mapPrimaryButtonKeys(node_view                         primary_
         constexpr size_t max_size          = 4;
         QString          error_arr_details = "Format: [keybindings...]";
         const auto primary_button_nodes    = resolve(path_context, is_override, error_arr_details,
-                                                     std::nullopt, std::nullopt,
+                                                     std::nullopt, max_size,
                                                      Source{primary_buttons_node,
                                                             applet::power_applet.scope});
 
