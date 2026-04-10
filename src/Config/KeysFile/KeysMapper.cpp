@@ -79,18 +79,13 @@ void interpretTextAsKeybindings(node_view source, keybindings& target) {
 
 void KeysMapper::mapQuitKeys(NodePair nodes, keybindings& quit, const keybindings& defaults,
                              const QString& path_context) {
-        constexpr bool is_override = false;
-        const auto     array       = resolve(path_context, is_override, "Format: [keybindings...]",
-                                             std::nullopt, std::nullopt,
-                                             Source{nodes.primary, applet::power_applet.scope},
-                                             Source{nodes.fallback, applet::global.scope});
+        toml::array array{};
+        resolveOrDefault<keybindings>(path_context, array, quit, defaults,
+                                      "Format: [keybindings...]", std::nullopt, std::nullopt,
+                                      Source{nodes.primary, applet::power_applet.scope},
+                                      Source{nodes.fallback, applet::global.scope});
 
-        if (!array || array.value().empty()) {
-                quit = defaults;
-                return;
-        }
-
-        interpretTextAsKeybindings(node_view(array.value()), quit);
+        interpretTextAsKeybindings(node_view(array), quit);
 }
 
 void KeysMapper::mapPrimaryButtonKey(node_view primary_button_node, keybindings& primary_button,
@@ -99,13 +94,10 @@ void KeysMapper::mapPrimaryButtonKey(node_view primary_button_node, keybindings&
         constexpr bool   is_override = false;
         constexpr size_t min_size    = 1;
 
-        const auto button = resolve(path_context, is_override, "Format: [keybindings...]", min_size,
-                                    primary_buttons_size,
-                                    Source{primary_button_node, applet::power_applet.scope});
-        if (!button) {
-                primary_button = defaults;
-                return;
-        }
+        toml::array button{};
+        resolveOrDefault(path_context, button, primary_button, defaults, "Format: [keybindings...]",
+                         min_size, primary_buttons_size,
+                         Source{primary_button_node, applet::power_applet.scope});
 
         interpretTextAsKeybindings(primary_button_node, primary_button);
 }
@@ -114,21 +106,15 @@ void KeysMapper::mapPrimaryButtonKeys(node_view                         primary_
                                       std::array<keybindings, 4>&       primary_buttons,
                                       const std::array<keybindings, 4>& defaults,
                                       const QString&                    path_context) {
-        constexpr bool   is_override          = false;
-        constexpr size_t max_size             = primary_buttons.size();
-        const auto       primary_button_nodes = resolve(path_context, is_override,
-                                                        "Format: [keybindings...]", std::nullopt,
-                                                        max_size,
-                                                        Source{primary_buttons_node,
-                                                               applet::power_applet.scope});
+        constexpr size_t max_size = primary_buttons.size();
+        toml::array      primary_button_arr{};
 
-        if (!primary_button_nodes || primary_button_nodes.value().size() < max_size) {
-                primary_buttons = defaults;
-                return;
-        }
+        resolveOrDefault(path_context, primary_button_arr, primary_buttons, defaults,
+                         "Format: [keybindings...]", std::nullopt, max_size,
+                         Source{primary_buttons_node, applet::power_applet.scope});
 
         std::array<keybindings, max_size> primary_buttons_new{};
-        for (size_t i = 0; i != primary_button_nodes.value().size(); ++i) {
+        for (size_t i = 0; i != primary_button_arr.size(); ++i) {
                 mapPrimaryButtonKey(primary_buttons_node[i], primary_buttons_new[i], defaults[i],
                                     max_size,
                                     extendCfgPath(path_context,
