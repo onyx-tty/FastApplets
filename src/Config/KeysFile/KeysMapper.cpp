@@ -115,8 +115,8 @@ void KeysMapper::mapPrimaryButtonKeys(node_view                         primary_
                                       std::array<keybindings, 4>&       primary_buttons,
                                       const std::array<keybindings, 4>& defaults,
                                       const QString&                    path_context) {
-        constexpr bool   is_override       = false;
-        constexpr size_t max_size          = 4;
+        constexpr bool   is_override          = false;
+        constexpr size_t max_size             = primary_buttons.size();
         const auto       primary_button_nodes = resolve(path_context, is_override,
                                                         "Format: [keybindings...]", std::nullopt,
                                                         max_size,
