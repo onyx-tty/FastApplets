@@ -80,9 +80,9 @@ void KeysMapper::mapQuitKeys(node_view quit_node, keybindings& quit, const keybi
                              const QString& path_context) {
         constexpr bool   is_override = false;
         constexpr size_t min_size = 1, max_size = 4;
-        const auto array = getTomlArray(quit_node, makeKeysPath(applet::global.scope, path_context),
-                                        is_override, "Format: [keybindings...]", min_size,
-                                        max_size);
+        const auto       array = resolve(path_context, is_override, "Format: [keybindings...]",
+                                         std::optional(min_size), std::optional(max_size),
+                                         Source{quit_node, applet::global.scope});
 
         if (!array || array.value().empty()) {
                 quit = defaults;
@@ -99,10 +99,9 @@ void KeysMapper::mapPrimaryButtonKey(node_view primary_button_node, keybindings&
         constexpr size_t min_size          = 1;
         QString          error_arr_details = "Format: [keybindings...]";
 
-        const auto& button = getTomlArray(primary_button_node,
-                                          makeKeysPath(applet::power_applet.scope, path_context),
-                                          is_override, error_arr_details, min_size,
-                                          primary_buttons_size);
+        const auto button = resolve(path_context, is_override, error_arr_details, min_size,
+                                    primary_buttons_size,
+                                    Source{primary_button_node, applet::power_applet.scope});
         if (!button) {
                 primary_button = defaults;
                 return;
@@ -118,10 +117,10 @@ void KeysMapper::mapPrimaryButtonKeys(node_view                         primary_
         constexpr bool   is_override       = false;
         constexpr size_t max_size          = 4;
         QString          error_arr_details = "Format: [keybindings...]";
-        const auto primary_button_nodes    = getTomlArray(primary_buttons_node,
-                                                          makeKeysPath(applet::power_applet.scope,
-                                                                       path_context),
-                                                          is_override, error_arr_details);
+        const auto primary_button_nodes    = resolve(path_context, is_override, error_arr_details,
+                                                     std::nullopt, std::nullopt,
+                                                     Source{primary_buttons_node,
+                                                            applet::power_applet.scope});
 
         if (!primary_button_nodes || primary_button_nodes.value().size() < max_size) {
                 primary_buttons = defaults;
