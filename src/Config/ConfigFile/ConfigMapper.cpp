@@ -201,12 +201,10 @@ void ConfigMapper::mapCommandArguments(node_view arguments_node, PrimaryButtonDa
 void ConfigMapper::mapCommand(node_view command_node, PrimaryButtonData& button,
                               const PrimaryButtonData* defaults, ShellCommand& command,
                               size_t button_index, const QString& path_context) {
-        QString error_arr_details = "Format: [program, [args...]]";
-
         constexpr bool   is_override = false;
         constexpr size_t min_size = 2, max_size = 2;
-        const auto command_arr = resolve(path_context, is_override, error_arr_details, min_size,
-                                         max_size,
+        const auto command_arr = resolve(path_context, is_override, "Format: [program, [args...]]",
+                                         min_size, max_size,
                                          Source{command_node, applet::power_applet.scope});
         if (!command_arr) {
                 handleButtonResolutionFailure(button, defaults, button_index);

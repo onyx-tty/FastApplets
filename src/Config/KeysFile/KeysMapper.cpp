@@ -97,11 +97,10 @@ void KeysMapper::mapQuitKeys(NodePair nodes, keybindings& quit, const keybinding
 void KeysMapper::mapPrimaryButtonKey(node_view primary_button_node, keybindings& primary_button,
                                      const keybindings& defaults, size_t primary_buttons_size,
                                      const QString& path_context) {
-        constexpr bool   is_override       = false;
-        constexpr size_t min_size          = 1;
-        QString          error_arr_details = "Format: [keybindings...]";
+        constexpr bool   is_override = false;
+        constexpr size_t min_size    = 1;
 
-        const auto button = resolve(path_context, is_override, error_arr_details, min_size,
+        const auto button = resolve(path_context, is_override, "Format: [keybindings...]", min_size,
                                     primary_buttons_size,
                                     Source{primary_button_node, applet::power_applet.scope});
         if (!button) {
@@ -118,11 +117,11 @@ void KeysMapper::mapPrimaryButtonKeys(node_view                         primary_
                                       const QString&                    path_context) {
         constexpr bool   is_override       = false;
         constexpr size_t max_size          = 4;
-        QString          error_arr_details = "Format: [keybindings...]";
-        const auto primary_button_nodes    = resolve(path_context, is_override, error_arr_details,
-                                                     std::nullopt, max_size,
-                                                     Source{primary_buttons_node,
-                                                            applet::power_applet.scope});
+        const auto       primary_button_nodes = resolve(path_context, is_override,
+                                                        "Format: [keybindings...]", std::nullopt,
+                                                        max_size,
+                                                        Source{primary_buttons_node,
+                                                               applet::power_applet.scope});
 
         if (!primary_button_nodes || primary_button_nodes.value().size() < max_size) {
                 primary_buttons = defaults;
