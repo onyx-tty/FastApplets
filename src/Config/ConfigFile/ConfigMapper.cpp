@@ -307,7 +307,8 @@ void ConfigMapper::mapPrimaryButtons(node_view                             prima
         constexpr bool   is_override = false;
         constexpr size_t min_size    = 1;
 
-        const auto buttons = resolve(path_context, is_override, "", min_size, std::nullopt,
+        const auto buttons = resolve(path_context, is_override, "Format: [primary buttons...]",
+                                     min_size, std::nullopt,
                                      Source{primary_buttons_node, applet::power_applet.scope});
         if (!buttons) {
                 primary_buttons = defaults;
