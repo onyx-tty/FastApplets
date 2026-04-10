@@ -118,8 +118,8 @@ template<typename DefaultT, typename... Sources>
 toml::array resolveOr(const QString& path_context, const DefaultT& defaults,
                       const QString& error_arr_details, std::optional<size_t> min_size,
                       std::optional<size_t> max_size, Sources&&... sources) {
-        return resolveOr<toml::array>({std::forward<Sources>(sources)...}, defaults, path_context,
-                                      error_arr_details, min_size, max_size);
+        return resolveOr<DefaultT>({std::forward<Sources>(sources)...}, defaults, path_context,
+                                   error_arr_details, min_size, max_size);
 }
 
 // Use to try and extract a value from a node into a specific attribute, and if that fails, to
