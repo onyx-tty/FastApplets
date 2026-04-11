@@ -36,27 +36,23 @@
 #include <QKeySequence>
 #include <QString>
 
-/* Interpret an array of string representations of a keyboard shortcut at a target location */
-// Apply the internal lambda textToHexInterpreter to each keyboard shortcut string representation
-// Assign the result to the given target
+/* Interpret a string representation of a keyboard shortcut as a Qt key code */
+// Given a vector of text:
+// 1. Parse each element into a QKeySequence
+// 2. Extract just the key (without modifiers) from the key combination,
+//    as a hexadecimal value
+int interpretTextAsHex(const std::string& text) {
+        QKeySequence    sequence(QString::fromStdString(text));
+        QKeyCombination combination(sequence[0]);
+
+        return combination.key();
+};
+
+/* Apply interpretTextAsHex to each element of a string vector */
 keybindings interpretTextAsKeybindings(const std::vector<std::string>& text_list) {
-        /* Interpret a string representation of a keyboard shortcut as a Qt key code */
-        // Given a vector of text, this lambda:
-        // 1. Parses each into a QKeySequence
-        // 2. Extracts just the key (without modifiers) from the key combination,
-        //    as a hexadecimal value
-        const auto textToHexInterpreter = [](const std::string& text) {
-                QKeySequence    sequence(QString::fromStdString(text));
-                QKeyCombination combination(sequence[0]);
-
-                return combination.key();
-        };
-
-        // Parse each key shortcut string representation into a corresponding keybinding
-        // and insert it at the target
         keybindings keys{};
         keys.reserve(text_list.size());
-        for (const std::string& text : text_list) { keys.insert(textToHexInterpreter(text)); }
+        for (const std::string& text : text_list) { keys.insert(interpretTextAsHex(text)); }
 
         return keys;
 }
