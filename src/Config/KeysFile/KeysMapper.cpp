@@ -36,11 +36,6 @@
 #include <QKeySequence>
 #include <QString>
 
-/* Interpret a string representation of a keyboard shortcut as a Qt key code */
-// Given a vector of text:
-// 1. Parse each element into a QKeySequence
-// 2. Extract just the key (without modifiers) from the key combination,
-//    as a hexadecimal value
 int interpretTextAsHex(const std::string& text) {
         QKeySequence    sequence(QString::fromStdString(text));
         QKeyCombination combination(sequence[0]);
@@ -48,7 +43,6 @@ int interpretTextAsHex(const std::string& text) {
         return combination.key();
 };
 
-/* Apply interpretTextAsHex to each element of a string vector */
 keybindings interpretTextAsKeybindings(const std::vector<std::string>& text_list) {
         keybindings keys{};
         keys.reserve(text_list.size());

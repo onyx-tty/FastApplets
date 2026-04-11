@@ -30,8 +30,17 @@ class NodePair;
 class PowerAppletKeys;
 class QString;
 
-int                      interpretTextAsHex(const std::string& text);
-keybindings              interpretTextAsKeybindings(node_view source, keybindings& target);
+/* Interpret a string representation of a keyboard shortcut as a Qt key code */
+// Given a vector of text:
+// 1. Parse each element into a QKeySequence
+// 2. Extract just the key (without modifiers) from the key combination,
+//    as a hexadecimal value
+int interpretTextAsHex(const std::string& text);
+
+/* Apply interpretTextAsHex to each element of a string vector */
+keybindings interpretTextAsKeybindings(node_view source, keybindings& target);
+
+/* Validate a toml::array, interpret as a string vector, discard non-string elements */
 std::vector<std::string> interpretTomlArrayAsStringVector(const toml::array& toml_array);
 
 class KeysMapper final {
