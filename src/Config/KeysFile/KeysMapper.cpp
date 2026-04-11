@@ -58,7 +58,7 @@ keybindings interpretTextAsKeybindings(const std::vector<std::string>& text_list
         keys.reserve(text_list.size());
         for (const std::string& text : text_list) { keys.insert(textToHexInterpreter(text)); }
 
-        return std::move(keys);
+        return keys;
 }
 
 std::vector<std::string> interpretTomlArrayAsStringVector(const toml::array& toml_array) {
@@ -71,7 +71,7 @@ std::vector<std::string> interpretTomlArrayAsStringVector(const toml::array& tom
                 }
         }
 
-        return std::move(str_vec);
+        return str_vec;
 }
 
 void KeysMapper::mapQuitKeys(NodePair nodes, keybindings& quit, const keybindings& defaults,
