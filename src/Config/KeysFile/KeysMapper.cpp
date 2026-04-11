@@ -39,42 +39,36 @@
 /* Interpret an array of string representations of a keyboard shortcut at a target location */
 // Apply the internal lambda textToHexInterpreter to each keyboard shortcut string representation
 // Assign the result to the given target
-// TODO Extract into TOML utilities
-// TODO Split into separate functions:
-// TODO 1. Error-handling
-// TODO 2. Returning an array of 'keybindings'
-// TODO 3. Assigning the array of 'keybindings' to the target
-void interpretTextAsKeybindings(node_view source, keybindings& target) {
-        /* Interpret a string representation of a keyboard shortcut to a Qt key code */
-        // Given a node containing a string like "Escape", this lambda:
-        // 1. Extracts the string from the node
-        // 2. Parses it as a QKeySequence, which in this case is recognized as Qt::Key_Escape
-        // 3. Extracts just the key (without modifiers) from the key combination,
+void interpretTextAsKeybindings(const std::vector<std::string>& text_list, keybindings& target) {
+        /* Interpret a string representation of a keyboard shortcut as a Qt key code */
+        // Given a vector of text, this lambda:
+        // 1. Parses each into a QKeySequence
+        // 2. Extracts just the key (without modifiers) from the key combination,
         //    as a hexadecimal value
-        // TODO Error handling, ensure the node is valid, handle possible failed conversions
-        // TODO Extract into TOML utilities
-        const auto textToHexInterpreter = [](const auto& node) {
-                QKeySequence    sequence(QString::fromStdString(node.as_string()->get()));
+        const auto textToHexInterpreter = [](const std::string& text) {
+                QKeySequence    sequence(QString::fromStdString(text));
                 QKeyCombination combination(sequence[0]);
 
                 return combination.key();
         };
 
-        // Validate source
-        if (!source) {
-                QCRITICAL() << "Source doesn't exist!";
-                return;
+        // Parse each key shortcut string representation into a corresponding keybinding
+        // and insert it at the target
+        target.reserve(text_list.size());
+        for (const std::string& text : text_list) { target.insert(textToHexInterpreter(text)); }
+}
+
+std::vector<std::string> interpretTomlArrayAsStringVector(const toml::array& toml_array) {
+        std::vector<std::string> str_vec{};
+        str_vec.reserve(toml_array.size());
+
+        for (const auto& element : toml_array) {
+                if (const auto& str_element = element.as_string()) {
+                        str_vec.push_back(str_element->get());
+                }
         }
 
-        if (const auto& keys_raw = source.as_array()) {
-                // Parse each key shortcut string representation into a corresponding keybinding
-                // and insert it at the target
-                target.reserve(keys_raw->size());
-                for (const auto& key : *keys_raw) { target.insert(textToHexInterpreter(key)); }
-        } else {
-                QCRITICAL() << "Source must be an array!";
-                return;
-        }
+        return std::move(str_vec);
 }
 
 void KeysMapper::mapQuitKeys(NodePair nodes, keybindings& quit, const keybindings& defaults,
@@ -87,7 +81,7 @@ void KeysMapper::mapQuitKeys(NodePair nodes, keybindings& quit, const keybinding
                                       Source{nodes.primary, applet::power_applet.scope},
                                       Source{nodes.fallback, applet::global.scope});
 
-        interpretTextAsKeybindings(node_view(array), quit);
+        interpretTextAsKeybindings(interpretTomlArrayAsStringVector(array), quit);
 }
 
 void KeysMapper::mapPrimaryButtonKey(node_view primary_button_node, keybindings& primary_button,
@@ -101,7 +95,7 @@ void KeysMapper::mapPrimaryButtonKey(node_view primary_button_node, keybindings&
                          min_size, primary_buttons_size,
                          Source{primary_button_node, applet::power_applet.scope});
 
-        interpretTextAsKeybindings(primary_button_node, primary_button);
+        interpretTextAsKeybindings(interpretTomlArrayAsStringVector(button), primary_button);
 }
 
 void KeysMapper::mapPrimaryButtonKeys(node_view                         primary_buttons_node,
