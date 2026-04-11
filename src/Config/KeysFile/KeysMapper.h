@@ -30,7 +30,7 @@ class NodePair;
 class PowerAppletKeys;
 class QString;
 
-void                     interpretTextAsKeybindings(node_view source, keybindings& target);
+keybindings              interpretTextAsKeybindings(node_view source, keybindings& target);
 std::vector<std::string> interpretTomlArrayAsStringVector(const toml::array& toml_array);
 
 class KeysMapper final {

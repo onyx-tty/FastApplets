@@ -39,7 +39,7 @@
 /* Interpret an array of string representations of a keyboard shortcut at a target location */
 // Apply the internal lambda textToHexInterpreter to each keyboard shortcut string representation
 // Assign the result to the given target
-void interpretTextAsKeybindings(const std::vector<std::string>& text_list, keybindings& target) {
+keybindings interpretTextAsKeybindings(const std::vector<std::string>& text_list) {
         /* Interpret a string representation of a keyboard shortcut as a Qt key code */
         // Given a vector of text, this lambda:
         // 1. Parses each into a QKeySequence
@@ -54,8 +54,11 @@ void interpretTextAsKeybindings(const std::vector<std::string>& text_list, keybi
 
         // Parse each key shortcut string representation into a corresponding keybinding
         // and insert it at the target
-        target.reserve(text_list.size());
-        for (const std::string& text : text_list) { target.insert(textToHexInterpreter(text)); }
+        keybindings keys{};
+        keys.reserve(text_list.size());
+        for (const std::string& text : text_list) { keys.insert(textToHexInterpreter(text)); }
+
+        return std::move(keys);
 }
 
 std::vector<std::string> interpretTomlArrayAsStringVector(const toml::array& toml_array) {
@@ -81,7 +84,7 @@ void KeysMapper::mapQuitKeys(NodePair nodes, keybindings& quit, const keybinding
                                       Source{nodes.primary, applet::power_applet.scope},
                                       Source{nodes.fallback, applet::global.scope});
 
-        interpretTextAsKeybindings(interpretTomlArrayAsStringVector(array), quit);
+        quit = interpretTextAsKeybindings(interpretTomlArrayAsStringVector(array));
 }
 
 void KeysMapper::mapPrimaryButtonKey(node_view primary_button_node, keybindings& primary_button,
@@ -95,7 +98,7 @@ void KeysMapper::mapPrimaryButtonKey(node_view primary_button_node, keybindings&
                          min_size, primary_buttons_size,
                          Source{primary_button_node, applet::power_applet.scope});
 
-        interpretTextAsKeybindings(interpretTomlArrayAsStringVector(button), primary_button);
+        primary_button = interpretTextAsKeybindings(interpretTomlArrayAsStringVector(button));
 }
 
 void KeysMapper::mapPrimaryButtonKeys(node_view                         primary_buttons_node,
