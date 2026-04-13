@@ -173,9 +173,9 @@ void ConfigMapper::mapCommandArguments(node_view arguments_node, PrimaryButtonDa
                                        size_t button_index, const QString& path_context) {
         constexpr bool   is_override = false;
         constexpr size_t min_size    = 0;
-        const auto args = resolve({Source{arguments_node, applet::power_applet.scope}},
-                                  path_context, is_override, "Format: [string, array]", min_size,
-                                  std::nullopt);
+        const auto       args        = resolve({Source{arguments_node, applet::power_applet.scope}},
+                                               path_context, is_override,
+                                               {"Format: [string, array]", min_size, std::nullopt});
         if (!args) {
                 handleButtonResolutionFailure(button, defaults, button_index);
                 return;
@@ -199,8 +199,8 @@ void ConfigMapper::mapCommand(node_view command_node, PrimaryButtonData& button,
         constexpr bool   is_override = false;
         constexpr size_t min_size = 2, max_size = 2;
         const auto command_arr = resolve({Source{command_node, applet::power_applet.scope}},
-                                         path_context, is_override, "Format: [program, [args...]]",
-                                         min_size, max_size);
+                                         path_context, is_override,
+                                         {"Format: [program, [args...]]", min_size, max_size});
         if (!command_arr) {
                 handleButtonResolutionFailure(button, defaults, button_index);
                 return;
@@ -303,8 +303,8 @@ void ConfigMapper::mapPrimaryButtons(node_view                             prima
         constexpr size_t min_size    = 1;
 
         const auto buttons = resolve({Source{primary_buttons_node, applet::power_applet.scope}},
-                                     path_context, is_override, "Format: [primary buttons...]",
-                                     min_size, std::nullopt);
+                                     path_context, is_override,
+                                     {"Format: [primary buttons...]", min_size, std::nullopt});
         if (!buttons) {
                 primary_buttons = defaults;
                 return;

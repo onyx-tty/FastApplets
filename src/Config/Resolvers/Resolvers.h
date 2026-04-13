@@ -59,9 +59,7 @@ std::optional<T> resolve(std::initializer_list<Source> sources, const QString& p
 
 std::optional<toml::array> resolve(std::initializer_list<Source> sources,
                                    const QString& path_context, bool force_override_on = false,
-                                   const QString&        error_arr_details = {},
-                                   std::optional<size_t> min_size          = std::nullopt,
-                                   std::optional<size_t> max_size          = std::nullopt);
+                                   const TomlArrayConditions& arr_conditions = {});
 
 // Use to skip validation of return value and to automatically default
 // On success: extract from a node
@@ -72,9 +70,7 @@ T resolveOr(std::initializer_list<Source> sources, const DefaultT& defaults,
 
 template<typename DefaultT>
 toml::array resolveOr(std::initializer_list<Source> sources, const DefaultT& defaults,
-                      const QString& path_context, const QString& error_arr_details = {},
-                      std::optional<size_t> min_size = std::nullopt,
-                      std::optional<size_t> max_size = std::nullopt);
+                      const QString& path_context, const TomlArrayConditions& arr_conditions = {});
 
 // Use to try and extract a value from a node into a specific attribute, and if that fails, to
 // default a completely different object
@@ -89,9 +85,7 @@ void resolveOrDefault(std::initializer_list<Source> sources, TAttribute& attribu
 template<typename TObject>
 void resolveOrDefault(std::initializer_list<Source> sources, toml::array& attribute,
                       TObject& object, const TObject& object_defaults, const QString& path_context,
-                      const QString&        error_arr_details = {},
-                      std::optional<size_t> min_size          = std::nullopt,
-                      std::optional<size_t> max_size          = std::nullopt);
+                      const TomlArrayConditions& arr_conditions = {});
 
 // Use if resolveOrDefault is the optimal choice, but the extracted value must first be transformed
 // before being put into use

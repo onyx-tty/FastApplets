@@ -43,8 +43,7 @@ QString extendKeysPath(const QString& path, const char* extension, const char* s
 
 std::optional<toml::array> resolve(std::initializer_list<Source> sources,
                                    const QString& path_context, bool force_override_on,
-                                   const QString& error_arr_details, std::optional<size_t> min_size,
-                                   std::optional<size_t> max_size) {
+                                   const TomlArrayConditions& arr_conditions) {
         // Validate and attempt extraction of each passed source, prioritizing earliest ones
         for (size_t i = 0; i != sources.size(); ++i) {
                 auto& source = *(sources.begin() + i);
@@ -55,8 +54,9 @@ std::optional<toml::array> resolve(std::initializer_list<Source> sources,
 
                 if (auto result = extractor::array(source.node,
                                                    makeCfgPath(source.scope, path_context),
-                                                   is_source_override, error_arr_details, min_size,
-                                                   max_size)) {
+                                                   is_source_override, arr_conditions.array_format,
+                                                   arr_conditions.min_size,
+                                                   arr_conditions.max_size)) {
                         return *result;
                 }
         }

@@ -88,10 +88,8 @@ T resolveOr(std::initializer_list<Source> sources, const DefaultT& defaults,
 
 template<typename DefaultT>
 toml::array resolveOr(std::initializer_list<Source> sources, const DefaultT& defaults,
-                      const QString& path_context, const QString& error_arr_details,
-                      std::optional<size_t> min_size, std::optional<size_t> max_size) {
-        return resolve(sources, path_context, false, error_arr_details, min_size, max_size)
-                .value_or(defaults);
+                      const QString& path_context, const TomlArrayConditions& arr_conditions) {
+        return resolve(sources, path_context, false, arr_conditions).value_or(defaults);
 }
 
 // Use to try and extract a value from a node into a specific attribute, and if that fails, to
@@ -113,11 +111,9 @@ void resolveOrDefault(std::initializer_list<Source> sources, TAttribute& attribu
 template<typename TObject>
 void resolveOrDefault(std::initializer_list<Source> sources, toml::array& attribute,
                       TObject& object, const TObject& object_defaults, const QString& path_context,
-                      const QString& error_arr_details, std::optional<size_t> min_size,
-                      std::optional<size_t> max_size) {
+                      const TomlArrayConditions& arr_conditions) {
         constexpr bool force_override = false;
-        if (auto result = resolve(sources, path_context, force_override, error_arr_details,
-                                  min_size, max_size)) {
+        if (auto result = resolve(sources, path_context, force_override, arr_conditions)) {
                 attribute = result.value();
         } else {
                 object = object_defaults;
