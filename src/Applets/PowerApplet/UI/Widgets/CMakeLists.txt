@@ -7,7 +7,7 @@ target_include_directories(PowerApplet_UI_Widgets PRIVATE
         ${GLOBAL_INCLUSIONS})
 
 target_link_libraries(PowerApplet_UI_Widgets PRIVATE
-        Core::Log
+        Log
         DBus
         Environment
         UI::Enums)

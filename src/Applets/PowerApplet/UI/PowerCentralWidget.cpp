@@ -19,7 +19,7 @@
 #include "Config/ConfigFile/PowerApplet/PowerAppletConfig.h"
 #include "Config/KeysFile/Types/Keybindings.h"
 #include "Config/KeysFile/PowerApplet/PowerAppletKeys.h"
-#include "Core/Log.h"
+#include "Log/Log.h"
 #include "UI/Enums/ButtonIDs.h"
 #include "Widgets/PowerButton.h"
 

@@ -12,4 +12,4 @@ target_include_directories(Time PRIVATE
 
 target_link_libraries(Time PUBLIC Qt${QT_VERSION_MAJOR}::Widgets)
 
-target_link_libraries(Time PRIVATE Core::Log)
+target_link_libraries(Time PRIVATE Log)

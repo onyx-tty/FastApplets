@@ -16,7 +16,7 @@
    along with this program.  If not, see <https://www.gnu.org/licenses/>. */
 
 #include "TomlAccessor.h"
-#include "Core/Log.h"
+#include "Log/Log.h"
 #include "Types/NodeView.h"
 #include "Types/TomlArrayConditions.h"
 

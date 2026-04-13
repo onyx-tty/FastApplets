@@ -17,7 +17,7 @@
 
 #include "Button.h"
 #include "Config/ConfigFile/Properties/PrimaryButtonProperties.h"
-#include "Core/Log.h"
+#include "Log/Log.h"
 
 #include <QGridLayout>
 #include <QStyleOptionButton>

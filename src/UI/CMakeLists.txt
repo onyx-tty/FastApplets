@@ -17,7 +17,7 @@ target_link_libraries(UI PRIVATE
         UI::Enums
         UI::Widgets
         Config
-        Core::Log)
+        Log)
 
 target_link_libraries(UI PUBLIC
         Qt${QT_VERSION_MAJOR}::Widgets)

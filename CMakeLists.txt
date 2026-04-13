@@ -62,8 +62,8 @@ add_subdirectory(
         Resources-build)
 
 add_subdirectory(
-        src/Core
-        Core-build)
+        src/Log
+        Log-build)
 
 add_subdirectory(
         src/Config

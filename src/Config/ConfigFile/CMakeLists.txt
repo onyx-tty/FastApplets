@@ -15,7 +15,7 @@ target_link_libraries(Config_ConfigFile PRIVATE
         Config::ConfigFile::PowerApplet
         Config::ConfigFile::Properties
         Config::TOML
-        Core::Log
+        Log
         UI::Enums
         UI::Widgets)
 

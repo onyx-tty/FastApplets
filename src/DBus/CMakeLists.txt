@@ -16,4 +16,4 @@ target_link_libraries(DBus PUBLIC
         Qt${QT_VERSION_MAJOR}::DBus)
 
 target_link_libraries(DBus PRIVATE
-        Core::Log)
+        Log)

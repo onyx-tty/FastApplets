@@ -7,7 +7,7 @@ target_include_directories(PowerApplet_DBus PRIVATE
         ${GLOBAL_INCLUSIONS})
 
 target_link_libraries(PowerApplet_DBus PRIVATE
-        Core::Log
+        Log
         DBus)
 
 target_link_libraries(PowerApplet_DBus PUBLIC

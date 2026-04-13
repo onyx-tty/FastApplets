@@ -12,7 +12,7 @@ target_include_directories(Config_TOML PRIVATE
 
 target_link_libraries(Config_TOML PRIVATE
         Config::TOML::Types
-        Core::Log
+        Log
         CppUtils)
 
 target_link_libraries(Config_TOML PUBLIC

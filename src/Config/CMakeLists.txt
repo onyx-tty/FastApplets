@@ -24,7 +24,7 @@ target_link_libraries(Config PRIVATE
         Config::Resolvers
         Config::KeysFile
         Config::TOML
-        Core::Log
+        Log
         UI::Widgets
         CppUtils)
 

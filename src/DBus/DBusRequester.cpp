@@ -16,7 +16,7 @@
    along with this program.  If not, see <https://www.gnu.org/licenses/>. */
 
 #include "DBusRequester.h"
-#include "Core/Log.h"
+#include "Log/Log.h"
 #include "DBusTarget.h"
 
 #include <QDBusConnection>

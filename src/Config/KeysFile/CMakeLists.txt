@@ -19,4 +19,4 @@ target_link_libraries(Config_KeysFile PUBLIC
         Config::KeysFile::PowerApplet
         Config::KeysFile::Types
         Config::TOML
-        Core::Log)
+        Log)

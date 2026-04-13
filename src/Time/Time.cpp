@@ -16,7 +16,7 @@
    along with this program.  If not, see <https://www.gnu.org/licenses/>. */
 
 #include "Time.h"
-#include "Core/Log.h"
+#include "Log/Log.h"
 
 #include <cstdlib>
 #include <QApplication>

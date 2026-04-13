@@ -17,7 +17,7 @@
 
 #pragma once
 
-#include "Core/Log.h"
+#include "Log/Log.h"
 #include "CppUtils/include/Enum.h"
 #include "CppUtils/include/String.h"
 #include "TomlAccessor.h"

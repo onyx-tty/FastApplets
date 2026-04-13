@@ -23,7 +23,7 @@
 #include "Config/ConfigFile/Properties/PrimaryButtonProperties.h"
 #include "Config/ConfigFile/Properties/WindowProperties.h"
 #include "Config/TOML/TomlParser.h"
-#include "Core/Log.h"
+#include "Log/Log.h"
 #include "UI/Enums/ButtonIDs.h"
 #include "UI/Widgets/PrimaryButtonData.h"
 
