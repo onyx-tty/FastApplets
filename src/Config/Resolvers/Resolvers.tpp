@@ -77,20 +77,6 @@ std::optional<T> resolve(std::initializer_list<Source> sources, const QString& p
         return std::nullopt;
 }
 
-template<typename T, typename... Sources>
-requires(std::is_convertible_v<Sources, Source> && ...)
-std::optional<T> resolve(const QString& path_context, bool force_override_on, Sources&&... sources) {
-        return resolve<T>({std::forward<Sources>(sources)...}, path_context, force_override_on);
-}
-
-template<typename... Sources>
-std::optional<toml::array> resolve(const QString& path_context, bool force_override_on,
-                                   const QString& error_arr_details, std::optional<size_t> min_size,
-                                   std::optional<size_t> max_size, Sources&&... sources) {
-        return resolve({std::forward<Sources>(sources)...}, path_context, force_override_on,
-                       error_arr_details, min_size, max_size);
-}
-
 // Use to skip validation of return value and to automatically default
 // On success: extract from a node
 // On failure: copy default value
@@ -106,20 +92,6 @@ toml::array resolveOr(std::initializer_list<Source> sources, const DefaultT& def
                       std::optional<size_t> min_size, std::optional<size_t> max_size) {
         return resolve(sources, path_context, false, error_arr_details, min_size, max_size)
                 .value_or(defaults);
-}
-
-template<typename T, typename DefaultT, typename... Sources>
-requires(std::is_convertible_v<Sources, Source> && ...)
-T resolveOr(const QString& path_context, const DefaultT& defaults, Sources&&... sources) {
-        return resolveOr<T, DefaultT>({std::forward<Sources>(sources)...}, defaults, path_context);
-}
-
-template<typename DefaultT, typename... Sources>
-toml::array resolveOr(const QString& path_context, const DefaultT& defaults,
-                      const QString& error_arr_details, std::optional<size_t> min_size,
-                      std::optional<size_t> max_size, Sources&&... sources) {
-        return resolveOr<DefaultT>({std::forward<Sources>(sources)...}, defaults, path_context,
-                                   error_arr_details, min_size, max_size);
 }
 
 // Use to try and extract a value from a node into a specific attribute, and if that fails, to
@@ -152,24 +124,6 @@ void resolveOrDefault(std::initializer_list<Source> sources, toml::array& attrib
         }
 }
 
-template<typename TAttribute, typename TObject, typename... Sources>
-requires(std::is_convertible_v<Sources, Source> && ...)
-void resolveOrDefault(const QString& path_context, TAttribute& attribute, TObject& object,
-                      const TObject& object_defaults, Sources&&... sources) {
-        resolveOrDefault<TAttribute, TObject>({std::forward<Sources>(sources)...}, attribute,
-                                              object, object_defaults, path_context);
-}
-
-template<typename TObject, typename... Sources>
-void resolveOrDefault(const QString& path_context, toml::array& attribute, TObject& object,
-                      const TObject& object_defaults, const QString& error_arr_details,
-                      std::optional<size_t> min_size, std::optional<size_t> max_size,
-                      Sources&&... sources) {
-        resolveOrDefault<TObject>({std::forward<Sources>(sources)...}, attribute, object,
-                                  object_defaults, path_context, error_arr_details, min_size,
-                                  max_size);
-}
-
 // Use if resolveOrDefault is the optimal choice, but the extracted value must first be transformed
 // before being put into use
 // For example: if button ID is erroneous, default the button itself, not just the id
@@ -185,12 +139,4 @@ void resolveTransformOrDefault(std::initializer_list<Source> sources, TAttribute
         } else {
                 object = object_defaults;
         }
-}
-
-template<typename TRaw, typename TAttribute, typename TObject, typename Transform, typename... Sources>
-void resolveTransformOrDefault(const QString& path_context, TAttribute& attribute, TObject& object,
-                               const TObject& object_defaults, Transform&& transform,
-                               Sources&&... sources) {
-        resolveTransformOrDefault<TRaw>({std::forward<Sources>(sources)...}, attribute, object,
-                                        object_defaults, transform, path_context);
 }
