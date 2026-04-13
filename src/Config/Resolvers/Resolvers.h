@@ -18,6 +18,7 @@
 #pragma once
 
 #include "Config/TOML/Types/NodeView.h"
+#include "Config/TOML/Types/TomlArrayConditions.h"
 #include "Extractors.h"
 
 #include <optional>
@@ -31,12 +32,6 @@ class QSize;
 struct Source final {
         node_view        node;
         std::string_view scope;
-};
-
-struct TomlArrayConditions final {
-        QString               array_format = {};
-        std::optional<size_t> min_size     = std::nullopt;
-        std::optional<size_t> max_size     = std::nullopt;
 };
 
 QString makeCfgPath(std::string_view scope, const QString& config_path, const char* separator = ".");

@@ -18,6 +18,7 @@
 #pragma once
 
 #include "Config/TOML/Types/NodeView.h"
+#include "Config/TOML/Types/TomlArrayConditions.h"
 #include "Resolvers.h"
 
 #include <optional>
