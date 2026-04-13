@@ -17,34 +17,14 @@
 
 #pragma once
 
-#include "Config/TOML/TomlAccessor.h"
 #include "Config/TOML/Types/NodeView.h"
 #include "Config/TOML/Types/TomlArrayConditions.h"
-#include "CppUtils/include/Enum.h"
 
-#include <cstddef>
 #include <optional>
-#include <string>
 #include <toml++/toml.hpp>
 #include <QSizePolicy>
 
 class QString;
-
-extern const EnumMap<Qt::Alignment> alignment_map;
-extern const EnumMap<QSizePolicy>   size_policy_map;
-
-Qt::Alignment getAlignment(const std::string& key, const EnumMap<Qt::Alignment>& map,
-                           const Qt::Alignment& fallback, const QString& path);
-
-std::optional<Qt::Alignment> tryGetAlignment(const std::string&            key,
-                                             const EnumMap<Qt::Alignment>& map,
-                                             const QString&                path);
-
-QSizePolicy getSizePolicy(const std::string& key, const EnumMap<QSizePolicy>& map,
-                          const QSizePolicy& fallback, const QString& path);
-
-std::optional<QSizePolicy> tryGetSizePolicy(const std::string& key, const EnumMap<QSizePolicy>& map,
-                                            const QString& path);
 
 namespace extractor {
 std::optional<toml::table> table(node_view node, const QString& path, bool is_override = false);

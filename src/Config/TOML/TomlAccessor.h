@@ -22,10 +22,15 @@
 #include "Types/TomlArrayConditions.h"
 
 #include <optional>
+#include <qnamespace.h>
 #include <string>
 #include <toml++/toml.hpp>
 #include <QSize>
+#include <QSizePolicy>
 #include <QString>
+
+extern const enum_utils::EnumMap<Qt::Alignment> alignment_map;
+extern const enum_utils::EnumMap<QSizePolicy>   size_policy_map;
 
 class TomlAccessor final {
 public:
@@ -54,6 +59,22 @@ public:
                                                        const enum_utils::EnumMap<T>& map,
                                                        const QString&                path,
                                                        bool is_override = false);
+
+        static Qt::Alignment getAlignment(const std::string&                        key,
+                                          const enum_utils::EnumMap<Qt::Alignment>& map,
+                                          const Qt::Alignment& fallback, const QString& path);
+
+        static std::optional<Qt::Alignment> tryGetAlignment(
+                const std::string& key, const enum_utils::EnumMap<Qt::Alignment>& map,
+                const QString& path);
+
+        static QSizePolicy getSizePolicy(const std::string&                      key,
+                                         const enum_utils::EnumMap<QSizePolicy>& map,
+                                         const QSizePolicy& fallback, const QString& path);
+
+        static std::optional<QSizePolicy> tryGetSizePolicy(
+                const std::string& key, const enum_utils::EnumMap<QSizePolicy>& map,
+                const QString& path);
 };
 
 #include "TomlAccessor.tpp"

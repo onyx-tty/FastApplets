@@ -16,6 +16,7 @@
    along with this program.  If not, see <https://www.gnu.org/licenses/>. */
 
 #include "TomlAccessor.h"
+#include "CppUtils/include/Enum.h"
 #include "Log/Log.h"
 #include "Types/NodeView.h"
 #include "Types/TomlArrayConditions.h"
@@ -23,9 +24,21 @@
 #include <cstddef>
 #include <cstdint>
 #include <optional>
+#include <qnamespace.h>
 #include <toml++/toml.hpp>
 #include <QSize>
+#include <QSizePolicy>
 #include <QString>
+
+const EnumMap<Qt::Alignment> alignment_map = {{"top", Qt::AlignTop | Qt::AlignHCenter},
+                                              {"center", Qt::AlignCenter},
+                                              {"bottom", Qt::AlignBottom | Qt::AlignHCenter},
+                                              {"left", Qt::AlignVCenter | Qt::AlignLeft},
+                                              {"right", Qt::AlignVCenter | Qt::AlignRight}};
+
+const EnumMap<QSizePolicy> size_policy_map = {{"expanding",
+                                               {QSizePolicy::Expanding, QSizePolicy::Expanding}},
+                                              {"fixed", {QSizePolicy::Fixed, QSizePolicy::Fixed}}};
 
 const toml::table* TomlAccessor::getTomlTable(node_view node, const QString& path,
                                               bool is_override) {
@@ -119,4 +132,26 @@ std::optional<QSize> TomlAccessor::tryGetQSize(node_view node, const QString& pa
         if (!width || !height) { return std::nullopt; }
 
         return QSize(width.value(), height.value());
+}
+
+Qt::Alignment TomlAccessor::getAlignment(const std::string& key, const EnumMap<Qt::Alignment>& map,
+                                         const Qt::Alignment& fallback, const QString& path) {
+        return TomlAccessor::getValueFromEnumMap<Qt::Alignment>(key, map, fallback, path);
+}
+
+std::optional<Qt::Alignment> TomlAccessor::tryGetAlignment(const std::string&            key,
+                                                           const EnumMap<Qt::Alignment>& map,
+                                                           const QString&                path) {
+        return TomlAccessor::tryGetValueFromEnumMap<Qt::Alignment>(key, map, path);
+}
+
+QSizePolicy TomlAccessor::getSizePolicy(const std::string& key, const EnumMap<QSizePolicy>& map,
+                                        const QSizePolicy& fallback, const QString& path) {
+        return TomlAccessor::getValueFromEnumMap<QSizePolicy>(key, map, fallback, path);
+}
+
+std::optional<QSizePolicy> TomlAccessor::tryGetSizePolicy(const std::string&          key,
+                                                          const EnumMap<QSizePolicy>& map,
+                                                          const QString&              path) {
+        return TomlAccessor::tryGetValueFromEnumMap<QSizePolicy>(key, map, path);
 }

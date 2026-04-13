@@ -18,43 +18,13 @@
 #include "Extractors.h"
 #include "Config/TOML/Types/NodeView.h"
 #include "Config/TOML/Types/TomlArrayConditions.h"
-#include "CppUtils/include/Enum.h"
 
+#include <optional>
 #include <qnamespace.h>
 #include <string>
+#include <QSize>
 #include <QSizePolicy>
 #include <QString>
-
-const EnumMap<Qt::Alignment> alignment_map = {{"top", Qt::AlignTop | Qt::AlignHCenter},
-                                              {"center", Qt::AlignCenter},
-                                              {"bottom", Qt::AlignBottom | Qt::AlignHCenter},
-                                              {"left", Qt::AlignVCenter | Qt::AlignLeft},
-                                              {"right", Qt::AlignVCenter | Qt::AlignRight}};
-
-const EnumMap<QSizePolicy> size_policy_map = {{"expanding",
-                                               {QSizePolicy::Expanding, QSizePolicy::Expanding}},
-                                              {"fixed", {QSizePolicy::Fixed, QSizePolicy::Fixed}}};
-
-Qt::Alignment getAlignment(const std::string& key, const EnumMap<Qt::Alignment>& map,
-                           const Qt::Alignment& fallback, const QString& path) {
-        return TomlAccessor::getValueFromEnumMap<Qt::Alignment>(key, map, fallback, path);
-}
-
-std::optional<Qt::Alignment> tryGetAlignment(const std::string&            key,
-                                             const EnumMap<Qt::Alignment>& map,
-                                             const QString&                path) {
-        return TomlAccessor::tryGetValueFromEnumMap<Qt::Alignment>(key, map, path);
-}
-
-QSizePolicy getSizePolicy(const std::string& key, const EnumMap<QSizePolicy>& map,
-                          const QSizePolicy& fallback, const QString& path) {
-        return TomlAccessor::getValueFromEnumMap<QSizePolicy>(key, map, fallback, path);
-}
-
-std::optional<QSizePolicy> tryGetSizePolicy(const std::string& key, const EnumMap<QSizePolicy>& map,
-                                            const QString& path) {
-        return TomlAccessor::tryGetValueFromEnumMap<QSizePolicy>(key, map, path);
-}
 
 /* Extractors */
 std::optional<toml::table> extractor::table(node_view node, const QString& path, bool is_override) {
@@ -84,12 +54,12 @@ std::optional<Qt::Alignment> extractor::alignment(node_view node, const QString&
                                                   bool is_override) {
         auto raw = TomlAccessor::tryGet<std::string>(node, path, is_override);
         if (!raw) { return std::nullopt; }
-        return tryGetAlignment(raw.value(), alignment_map, path);
+        return TomlAccessor::tryGetAlignment(raw.value(), alignment_map, path);
 };
 
 std::optional<QSizePolicy> extractor::size_policy(node_view node, const QString& path,
                                                   bool is_override) {
         auto raw = TomlAccessor::tryGet<std::string>(node, path, is_override);
         if (!raw) { return std::nullopt; }
-        return tryGetSizePolicy(raw.value(), size_policy_map, path);
+        return TomlAccessor::tryGetSizePolicy(raw.value(), size_policy_map, path);
 };
