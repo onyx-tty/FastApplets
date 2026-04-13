@@ -33,6 +33,12 @@ struct Source final {
         std::string_view scope;
 };
 
+struct TomlArrayConditions final {
+        QString               array_format = {};
+        std::optional<size_t> min_size     = std::nullopt;
+        std::optional<size_t> max_size     = std::nullopt;
+};
+
 QString makeCfgPath(std::string_view scope, const QString& config_path, const char* separator = ".");
 
 QString extendCfgPath(const QString& path, const char* extension, const char* separator = ".");
