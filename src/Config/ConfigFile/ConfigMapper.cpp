@@ -76,12 +76,12 @@ static T mapProperties(NodePair nodes, const T& defaults, const QString& path_co
                        auto fill_fn) {
         // Resolve power_data and global_data
         constexpr bool is_override_power = true;
-        auto power_data = resolve<toml::table>(path_context, is_override_power,
-                                               Source{nodes.primary, applet::power_applet.scope});
+        auto power_data = resolve<toml::table>({Source{nodes.primary, applet::power_applet.scope}},
+                                               path_context, is_override_power);
 
         constexpr bool is_override_global = false;
-        auto global_data = resolve<toml::table>(path_context, is_override_global,
-                                                Source{nodes.fallback, applet::global.scope});
+        auto global_data = resolve<toml::table>({Source{nodes.fallback, applet::global.scope}},
+                                                path_context, is_override_global);
 
         // Use hardcoded defaults if no tables found
         if (!power_data && !global_data) { return defaults; }
@@ -99,19 +99,17 @@ void ConfigMapper::mapWindow(NodePair nodes, WindowProperties& window,
         window = mapProperties(
                 nodes, defaults, path_context,
                 [&defaults](NodePair nodes, WindowProperties& window, const QString& path_context) {
-                        window.size = resolveOr<QSize>(extendCfgPath(path_context, "size"),
-                                                       defaults.getSize(),
-                                                       Source{nodes.primary["size"],
-                                                              applet::power_applet.scope},
-                                                       Source{nodes.fallback["size"],
-                                                              applet::global.scope});
+                        window.size = resolveOr<QSize, QSize>({Source{nodes.primary["size"],
+                                                                      applet::power_applet.scope},
+                                                               Source{nodes.fallback["size"],
+                                                                      applet::global.scope}},
+                                                              defaults.getSize(),
+                                                              extendCfgPath(path_context, "size"));
 
-                        window.title = resolveOr<QString>(extendCfgPath(path_context, "title"),
-                                                          defaults.getTitle(),
-                                                          Source{nodes.primary["title"],
-                                                                 applet::power_applet.scope},
-                                                          Source{nodes.fallback["title"],
-                                                                 applet::power_applet.scope});
+                        window.title = resolveOr<QString, QString>(
+                                {Source{nodes.primary["title"], applet::power_applet.scope},
+                                 Source{nodes.fallback["title"], applet::power_applet.scope}},
+                                defaults.getTitle(), extendCfgPath(path_context, "title"));
                 });
 }
 
@@ -123,32 +121,28 @@ void ConfigMapper::mapPrimaryButton(NodePair nodes, PrimaryButtonProperties& but
                 nodes, defaults, path_context,
                 [&defaults](NodePair nodes, PrimaryButtonProperties& button,
                             const QString& path_context) {
-                        button.text_alignment = resolveOr<Qt::Alignment>(
-                                extendCfgPath(path_context, "text_alignment"),
+                        button.text_alignment = resolveOr<Qt::Alignment, Qt::Alignment>(
+                                {Source{nodes.primary["text_alignment"], applet::power_applet.scope},
+                                 Source{nodes.fallback["text_alignment"], applet::global.scope}},
                                 defaults.getTextAlignment(),
-                                Source{nodes.primary["text_alignment"], applet::power_applet.scope},
-                                Source{nodes.fallback["text_alignment"], applet::global.scope});
+                                extendCfgPath(path_context, "text_alignment"));
 
                         // TODO This option doesn't work because icon alignment is not applied anywhere yet, fix
-                        button.icon_alignment = resolveOr<Qt::Alignment>(
-                                extendCfgPath(path_context, "icon_alignment"),
+                        button.icon_alignment = resolveOr<Qt::Alignment, Qt::Alignment>(
+                                {Source{nodes.primary["icon_alignment"], applet::power_applet.scope},
+                                 Source{nodes.fallback["icon_alignment"], applet::global.scope}},
                                 defaults.getIconAlignment(),
-                                Source{nodes.primary["icon_alignment"], applet::power_applet.scope},
-                                Source{nodes.fallback["icon_alignment"], applet::global.scope});
+                                extendCfgPath(path_context, "icon_alignment"));
 
-                        button.icon_size = resolveOr<QSize>(extendCfgPath(path_context, "icon_size"),
-                                                            defaults.getIconSize(),
-                                                            Source{nodes.primary["icon_size"],
-                                                                   applet::power_applet.scope},
-                                                            Source{nodes.fallback["icon_size"],
-                                                                   applet::global.scope});
+                        button.icon_size = resolveOr<QSize, QSize>(
+                                {Source{nodes.primary["icon_size"], applet::power_applet.scope},
+                                 Source{nodes.fallback["icon_size"], applet::global.scope}},
+                                defaults.getIconSize(), extendCfgPath(path_context, "icon_size"));
 
-                        button.policy = resolveOr<QSizePolicy>(extendCfgPath(path_context, "policy"),
-                                                               defaults.getPolicy(),
-                                                               Source{nodes.primary["policy"],
-                                                                      applet::power_applet.scope},
-                                                               Source{nodes.fallback["policy"],
-                                                                      applet::global.scope});
+                        button.policy = resolveOr<QSizePolicy, QSizePolicy>(
+                                {Source{nodes.primary["policy"], applet::power_applet.scope},
+                                 Source{nodes.fallback["policy"], applet::global.scope}},
+                                defaults.getPolicy(), extendCfgPath(path_context, "policy"));
                 });
 }
 
@@ -160,8 +154,8 @@ void ConfigMapper::mapCommandArgument(node_view argument_node, PrimaryButtonData
         QString        argument{};
         constexpr bool is_override = false;
 
-        auto argument_result = resolve<QString>(path_context, is_override,
-                                                Source{argument_node, applet::power_applet.scope});
+        auto argument_result = resolve<QString>({Source{argument_node, applet::power_applet.scope}},
+                                                path_context, is_override);
         if (!argument_result) {
                 handleButtonResolutionFailure(button, defaults, button_index);
                 return;
@@ -179,8 +173,9 @@ void ConfigMapper::mapCommandArguments(node_view arguments_node, PrimaryButtonDa
                                        size_t button_index, const QString& path_context) {
         constexpr bool   is_override = false;
         constexpr size_t min_size    = 0;
-        const auto args = resolve(path_context, is_override, "Format: [string, array]", min_size,
-                                  std::nullopt, Source{arguments_node, applet::power_applet.scope});
+        const auto args = resolve({Source{arguments_node, applet::power_applet.scope}},
+                                  path_context, is_override, "Format: [string, array]", min_size,
+                                  std::nullopt);
         if (!args) {
                 handleButtonResolutionFailure(button, defaults, button_index);
                 return;
@@ -203,9 +198,9 @@ void ConfigMapper::mapCommand(node_view command_node, PrimaryButtonData& button,
                               size_t button_index, const QString& path_context) {
         constexpr bool   is_override = false;
         constexpr size_t min_size = 2, max_size = 2;
-        const auto command_arr = resolve(path_context, is_override, "Format: [program, [args...]]",
-                                         min_size, max_size,
-                                         Source{command_node, applet::power_applet.scope});
+        const auto command_arr = resolve({Source{command_node, applet::power_applet.scope}},
+                                         path_context, is_override, "Format: [program, [args...]]",
+                                         min_size, max_size);
         if (!command_arr) {
                 handleButtonResolutionFailure(button, defaults, button_index);
                 return;
@@ -213,9 +208,9 @@ void ConfigMapper::mapCommand(node_view command_node, PrimaryButtonData& button,
 
         ShellCommand cmd{};
 
-        auto program_result = resolve<QString>(extendCfgPath(path_context, "program"), is_override,
-                                               Source{toml::node_view(command_arr.value()[0]),
-                                                      applet::power_applet.scope});
+        auto program_result = resolve<QString>({Source{toml::node_view(command_arr.value()[0]),
+                                                       applet::power_applet.scope}},
+                                               extendCfgPath(path_context, "program"), is_override);
         if (!program_result) {
                 handleButtonResolutionFailure(button, defaults, button_index);
                 return;
@@ -247,9 +242,9 @@ bool ConfigMapper::mapPrimaryButton(node_view                             button
         const QString  button_path_context = path_context + QString("[%1]").arg(button_index);
         constexpr bool is_override         = false;
 
-        const auto button_table = resolve<toml::table>(button_path_context, is_override,
-                                                       Source{button_data_node,
-                                                              applet::power_applet.scope});
+        const auto button_table = resolve<toml::table>({Source{button_data_node,
+                                                               applet::power_applet.scope}},
+                                                       button_path_context, is_override);
         if (!button_table) {
                 buttons = default_buttons;
                 return true;
@@ -257,14 +252,14 @@ bool ConfigMapper::mapPrimaryButton(node_view                             button
 
         PrimaryButtonData button{};
 
-        auto enabled = resolve<bool>(path_context, is_override,
-                                     Source{button_table.value()["enabled"],
-                                            applet::power_applet.scope});
+        auto enabled = resolve<bool>({Source{button_table.value()["enabled"],
+                                             applet::power_applet.scope}},
+                                     path_context, is_override);
         if (!enabled) { return true; }
 
-        auto id_result = resolve<QString>(extendCfgPath(path_context, "id"), is_override,
-                                          Source{button_table.value()["id"],
-                                                 applet::power_applet.scope});
+        auto id_result = resolve<QString>({Source{button_table.value()["id"],
+                                                  applet::power_applet.scope}},
+                                          extendCfgPath(path_context, "id"), is_override);
         if (!id_result) {
                 handleButtonResolutionFailure(button, defaults, button_index);
                 return false;
@@ -272,9 +267,9 @@ bool ConfigMapper::mapPrimaryButton(node_view                             button
                 button.id = getPowerButtonIDFromString(id_result.value());
         }
 
-        auto label_result = resolve<QString>(extendCfgPath(path_context, "label"), is_override,
-                                             Source{button_table.value()["label"],
-                                                    applet::power_applet.scope});
+        auto label_result = resolve<QString>({Source{button_table.value()["label"],
+                                                     applet::power_applet.scope}},
+                                             extendCfgPath(path_context, "label"), is_override);
         if (!label_result) {
                 handleButtonResolutionFailure(button, defaults, button_index);
                 return false;
@@ -282,9 +277,9 @@ bool ConfigMapper::mapPrimaryButton(node_view                             button
                 button.label = label_result.value();
         }
 
-        auto order_result = resolve<int64_t>(extendCfgPath(path_context, "order"), is_override,
-                                             Source{button_table.value()["order"],
-                                                    applet::power_applet.scope});
+        auto order_result = resolve<int64_t>({Source{button_table.value()["order"],
+                                                     applet::power_applet.scope}},
+                                             extendCfgPath(path_context, "order"), is_override);
         if (!order_result) {
                 handleButtonResolutionFailure(button, defaults, button_index);
                 return false;
@@ -307,9 +302,9 @@ void ConfigMapper::mapPrimaryButtons(node_view                             prima
         constexpr bool   is_override = false;
         constexpr size_t min_size    = 1;
 
-        const auto buttons = resolve(path_context, is_override, "Format: [primary buttons...]",
-                                     min_size, std::nullopt,
-                                     Source{primary_buttons_node, applet::power_applet.scope});
+        const auto buttons = resolve({Source{primary_buttons_node, applet::power_applet.scope}},
+                                     path_context, is_override, "Format: [primary buttons...]",
+                                     min_size, std::nullopt);
         if (!buttons) {
                 primary_buttons = defaults;
                 return;
@@ -351,8 +346,8 @@ void ConfigMapper::mapLayout(node_view layout_node, LayoutProperties& layout,
         constexpr bool   is_override = false;
         LayoutProperties layout_properties{};
 
-        const auto data = resolve<toml::table>(path_context, is_override,
-                                               Source{layout_node, applet::power_applet.scope});
+        const auto data = resolve<toml::table>({Source{layout_node, applet::power_applet.scope}},
+                                               path_context, is_override);
         if (!data) {
                 layout_properties = defaults;
                 layout            = std::move(layout_properties);
@@ -373,8 +368,9 @@ void ConfigMapper::mapEnvironment(node_view environment_node, EnvironmentPropert
         constexpr bool        is_override = false;
         EnvironmentProperties environment_properties{};
 
-        const auto data = resolve<toml::table>(path_context, is_override,
-                                               Source{environment_node, applet::power_applet.scope});
+        const auto data = resolve<toml::table>({Source{environment_node,
+                                                       applet::power_applet.scope}},
+                                               path_context, is_override);
         if (!data) {
                 environment_properties = defaults;
                 environment            = std::move(environment_properties);
@@ -382,10 +378,11 @@ void ConfigMapper::mapEnvironment(node_view environment_node, EnvironmentPropert
         }
 
         // D-Bus mode
-        environment_properties.dbus_mode = resolveOr<bool>(extendCfgPath(path_context, "dbus_mode"),
-                                                           defaults.getDBusMode(),
-                                                           Source{data.value()["dbus_mode"],
-                                                                  applet::power_applet.scope});
+        environment_properties.dbus_mode =
+                resolveOr<bool, bool>({Source{data.value()["dbus_mode"],
+                                              applet::power_applet.scope}},
+                                      defaults.getDBusMode(),
+                                      extendCfgPath(path_context, "dbus_mode"));
 
         environment = std::move(environment_properties);
 }

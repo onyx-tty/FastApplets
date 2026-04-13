@@ -69,10 +69,10 @@ void KeysMapper::mapQuitKeys(NodePair nodes, keybindings& quit, const keybinding
         constexpr size_t min_size = 1;
 
         toml::array array{};
-        resolveOrDefault<keybindings>(path_context, array, quit, defaults,
-                                      "Format: [keybindings...]", min_size, std::nullopt,
-                                      Source{nodes.primary, applet::power_applet.scope},
-                                      Source{nodes.fallback, applet::global.scope});
+        resolveOrDefault<keybindings>({Source{nodes.primary, applet::power_applet.scope},
+                                       Source{nodes.fallback, applet::global.scope}},
+                                      array, quit, defaults, path_context,
+                                      "Format: [keybindings...]", min_size, std::nullopt);
 
         quit = interpretTextAsKeybindings(interpretTomlArrayAsStringVector(array));
 }
@@ -84,9 +84,9 @@ void KeysMapper::mapPrimaryButtonKey(node_view primary_button_node, keybindings&
         constexpr size_t min_size    = 1;
 
         toml::array button{};
-        resolveOrDefault(path_context, button, primary_button, defaults, "Format: [keybindings...]",
-                         min_size, primary_buttons_size,
-                         Source{primary_button_node, applet::power_applet.scope});
+        resolveOrDefault({Source{primary_button_node, applet::power_applet.scope}}, button,
+                         primary_button, defaults, path_context, "Format: [keybindings...]",
+                         min_size, primary_buttons_size);
 
         primary_button = interpretTextAsKeybindings(interpretTomlArrayAsStringVector(button));
 }
@@ -98,9 +98,9 @@ void KeysMapper::mapPrimaryButtonKeys(node_view                         primary_
         constexpr size_t min_size = 1, max_size = primary_buttons.size();
 
         toml::array primary_button_arr{};
-        resolveOrDefault(path_context, primary_button_arr, primary_buttons, defaults,
-                         "Format: [keybindings...]", min_size, max_size,
-                         Source{primary_buttons_node, applet::power_applet.scope});
+        resolveOrDefault({Source{primary_buttons_node, applet::power_applet.scope}},
+                         primary_button_arr, primary_buttons, defaults, path_context,
+                         "Format: [keybindings...]", min_size, max_size);
 
         std::array<keybindings, max_size> primary_buttons_new{};
         for (size_t i = 0; i != primary_button_arr.size(); ++i) {
