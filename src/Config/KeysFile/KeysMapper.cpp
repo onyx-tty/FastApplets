@@ -69,7 +69,7 @@ void KeysMapper::mapQuitKeys(NodePair nodes, keybindings& quit, const keybinding
         constexpr size_t min_size = 1;
 
         toml::array array{};
-        resolveOrDefault<keybindings>({Source{nodes.primary, applet::power_applet.scope},
+        resolveOrDefault<toml::array>({Source{nodes.primary, applet::power_applet.scope},
                                        Source{nodes.fallback, applet::global.scope}},
                                       array, quit, defaults, path_context,
                                       {"Format: [keybindings...]", min_size, std::nullopt});
@@ -84,9 +84,9 @@ void KeysMapper::mapPrimaryButtonKey(node_view primary_button_node, keybindings&
         constexpr size_t min_size    = 1;
 
         toml::array button{};
-        resolveOrDefault({Source{primary_button_node, applet::power_applet.scope}}, button,
-                         primary_button, defaults, path_context,
-                         {"Format: [keybindings...]", min_size, primary_buttons_size});
+        resolveOrDefault<toml::array>({Source{primary_button_node, applet::power_applet.scope}},
+                                      button, primary_button, defaults, path_context,
+                                      {"Format: [keybindings...]", min_size, primary_buttons_size});
 
         primary_button = interpretTextAsKeybindings(interpretTomlArrayAsStringVector(button));
 }

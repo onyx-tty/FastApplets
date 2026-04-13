@@ -55,22 +55,15 @@ QString extendKeysPath(const QString& path, const char* extension, const char* s
 // detection of overrides
 template<typename T>
 std::optional<T> resolve(std::initializer_list<Source> sources, const QString& path_context,
-                         bool force_override_on = false);
-
-std::optional<toml::array> resolve(std::initializer_list<Source> sources,
-                                   const QString& path_context, bool force_override_on = false,
-                                   const TomlArrayConditions& arr_conditions = {});
+                         bool                       force_override_on = false,
+                         const TomlArrayConditions& arr_conditions    = {});
 
 // Use to skip validation of return value and to automatically default
 // On success: extract from a node
 // On failure: copy default value
 template<typename T, typename DefaultT>
 T resolveOr(std::initializer_list<Source> sources, const DefaultT& defaults,
-            const QString& path_context);
-
-template<typename DefaultT>
-toml::array resolveOr(std::initializer_list<Source> sources, const DefaultT& defaults,
-                      const QString& path_context, const TomlArrayConditions& arr_conditions = {});
+            const QString& path_context, const TomlArrayConditions& arr_conditions = {});
 
 // Use to try and extract a value from a node into a specific attribute, and if that fails, to
 // default a completely different object
@@ -80,11 +73,7 @@ toml::array resolveOr(std::initializer_list<Source> sources, const DefaultT& def
 // On failure: overwrite object with object_defaults entirely
 template<typename TAttribute, typename TObject>
 void resolveOrDefault(std::initializer_list<Source> sources, TAttribute& attribute, TObject& object,
-                      const TObject& object_defaults, const QString& path_context);
-
-template<typename TObject>
-void resolveOrDefault(std::initializer_list<Source> sources, toml::array& attribute,
-                      TObject& object, const TObject& object_defaults, const QString& path_context,
+                      const TObject& object_defaults, const QString& path_context,
                       const TomlArrayConditions& arr_conditions = {});
 
 // Use if resolveOrDefault is the optimal choice, but the extracted value must first be transformed

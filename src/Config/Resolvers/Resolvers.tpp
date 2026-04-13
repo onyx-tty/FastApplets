@@ -36,16 +36,19 @@ class QSize;
 // detection of overrides
 template<typename T>
 std::optional<T> resolve(std::initializer_list<Source> sources, const QString& path_context,
-                         bool force_override_on) {
+                         bool force_override_on, const TomlArrayConditions& arr_conditions) {
         using DT = std::decay_t<T>;
 
         // Collapse extraction logic into that of a corresponding type
-        static auto extract = [&](node_view node, const QString& path,
-                                  bool is_override) -> std::optional<DT> {
+        static auto extract =
+                [&](node_view node, const QString& path, bool is_override,
+                    const TomlArrayConditions& arr_conditions = {}) -> std::optional<DT> {
                 if constexpr (std::is_same_v<DT, toml::table>) {
                         return extractor::table(node, path, is_override);
                 } else if constexpr (std::is_same_v<DT, toml::array>) {
-                        return extractor::array(node, path, is_override);
+                        return extractor::array(node, path, is_override,
+                                                arr_conditions.array_format,
+                                                arr_conditions.min_size, arr_conditions.max_size);
                 } else if constexpr (std::is_same_v<DT, QSize>) {
                         return extractor::qsize(node, path, is_override);
                 } else if constexpr (std::is_same_v<DT, Qt::Alignment>) {
@@ -68,7 +71,7 @@ std::optional<T> resolve(std::initializer_list<Source> sources, const QString& p
                                                                                         : false;
 
                 if (auto result = extract(source.node, makeCfgPath(source.scope, path_context),
-                                          is_source_override)) {
+                                          is_source_override, arr_conditions)) {
                         return *result;
                 }
         }
@@ -82,14 +85,8 @@ std::optional<T> resolve(std::initializer_list<Source> sources, const QString& p
 // On failure: copy default value
 template<typename T, typename DefaultT>
 T resolveOr(std::initializer_list<Source> sources, const DefaultT& defaults,
-            const QString& path_context) {
-        return resolve<T>(sources, path_context).value_or(defaults);
-}
-
-template<typename DefaultT>
-toml::array resolveOr(std::initializer_list<Source> sources, const DefaultT& defaults,
-                      const QString& path_context, const TomlArrayConditions& arr_conditions) {
-        return resolve(sources, path_context, false, arr_conditions).value_or(defaults);
+            const QString& path_context, const TomlArrayConditions& arr_conditions) {
+        return resolve<T>(sources, path_context, false, arr_conditions).value_or(defaults);
 }
 
 // Use to try and extract a value from a node into a specific attribute, and if that fails, to
@@ -100,20 +97,9 @@ toml::array resolveOr(std::initializer_list<Source> sources, const DefaultT& def
 // On failure: overwrite object with object_defaults entirely
 template<typename TAttribute, typename TObject>
 void resolveOrDefault(std::initializer_list<Source> sources, TAttribute& attribute, TObject& object,
-                      const TObject& object_defaults, const QString& path_context) {
-        if (auto result = resolve<TAttribute>(sources, path_context)) {
-                attribute = result.value();
-        } else {
-                object = object_defaults;
-        }
-}
-
-template<typename TObject>
-void resolveOrDefault(std::initializer_list<Source> sources, toml::array& attribute,
-                      TObject& object, const TObject& object_defaults, const QString& path_context,
+                      const TObject& object_defaults, const QString& path_context,
                       const TomlArrayConditions& arr_conditions) {
-        constexpr bool force_override = false;
-        if (auto result = resolve(sources, path_context, force_override, arr_conditions)) {
+        if (auto result = resolve<TAttribute>(sources, path_context, false, arr_conditions)) {
                 attribute = result.value();
         } else {
                 object = object_defaults;
@@ -130,7 +116,7 @@ template<typename TRaw, typename TAttribute, typename TObject, typename Transfor
 void resolveTransformOrDefault(std::initializer_list<Source> sources, TAttribute& attribute,
                                TObject& object, const TObject& object_defaults,
                                Transform&& transform, const QString& path_context) {
-        if (auto result = resolve<TRaw>(sources, path_context)) {
+        if (auto result = resolve<TRaw>(sources, path_context, false)) {
                 attribute = transform(std::move(result.value()));
         } else {
                 object = object_defaults;

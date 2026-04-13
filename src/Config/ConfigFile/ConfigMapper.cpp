@@ -99,17 +99,19 @@ void ConfigMapper::mapWindow(NodePair nodes, WindowProperties& window,
         window = mapProperties(
                 nodes, defaults, path_context,
                 [&defaults](NodePair nodes, WindowProperties& window, const QString& path_context) {
-                        window.size = resolveOr<QSize, QSize>({Source{nodes.primary["size"],
-                                                                      applet::power_applet.scope},
-                                                               Source{nodes.fallback["size"],
-                                                                      applet::global.scope}},
-                                                              defaults.getSize(),
-                                                              extendCfgPath(path_context, "size"));
+                        window.size = resolveOr<QSize>({Source{nodes.primary["size"],
+                                                               applet::power_applet.scope},
+                                                        Source{nodes.fallback["size"],
+                                                               applet::global.scope}},
+                                                       defaults.getSize(),
+                                                       extendCfgPath(path_context, "size"));
 
-                        window.title = resolveOr<QString, QString>(
-                                {Source{nodes.primary["title"], applet::power_applet.scope},
-                                 Source{nodes.fallback["title"], applet::power_applet.scope}},
-                                defaults.getTitle(), extendCfgPath(path_context, "title"));
+                        window.title = resolveOr<QString>({Source{nodes.primary["title"],
+                                                                  applet::power_applet.scope},
+                                                           Source{nodes.fallback["title"],
+                                                                  applet::power_applet.scope}},
+                                                          defaults.getTitle(),
+                                                          extendCfgPath(path_context, "title"));
                 });
 }
 
@@ -121,28 +123,34 @@ void ConfigMapper::mapPrimaryButton(NodePair nodes, PrimaryButtonProperties& but
                 nodes, defaults, path_context,
                 [&defaults](NodePair nodes, PrimaryButtonProperties& button,
                             const QString& path_context) {
-                        button.text_alignment = resolveOr<Qt::Alignment, Qt::Alignment>(
+                        button.text_alignment = resolveOr<Qt::Alignment>(
                                 {Source{nodes.primary["text_alignment"], applet::power_applet.scope},
                                  Source{nodes.fallback["text_alignment"], applet::global.scope}},
                                 defaults.getTextAlignment(),
                                 extendCfgPath(path_context, "text_alignment"));
 
                         // TODO This option doesn't work because icon alignment is not applied anywhere yet, fix
-                        button.icon_alignment = resolveOr<Qt::Alignment, Qt::Alignment>(
+                        button.icon_alignment = resolveOr<Qt::Alignment>(
                                 {Source{nodes.primary["icon_alignment"], applet::power_applet.scope},
                                  Source{nodes.fallback["icon_alignment"], applet::global.scope}},
                                 defaults.getIconAlignment(),
                                 extendCfgPath(path_context, "icon_alignment"));
 
-                        button.icon_size = resolveOr<QSize, QSize>(
-                                {Source{nodes.primary["icon_size"], applet::power_applet.scope},
-                                 Source{nodes.fallback["icon_size"], applet::global.scope}},
-                                defaults.getIconSize(), extendCfgPath(path_context, "icon_size"));
+                        button.icon_size = resolveOr<QSize>({Source{nodes.primary["icon_size"],
+                                                                    applet::power_applet.scope},
+                                                             Source{nodes.fallback["icon_size"],
+                                                                    applet::global.scope}},
+                                                            defaults.getIconSize(),
+                                                            extendCfgPath(path_context,
+                                                                          "icon_size"));
 
-                        button.policy = resolveOr<QSizePolicy, QSizePolicy>(
-                                {Source{nodes.primary["policy"], applet::power_applet.scope},
-                                 Source{nodes.fallback["policy"], applet::global.scope}},
-                                defaults.getPolicy(), extendCfgPath(path_context, "policy"));
+                        button.policy = resolveOr<QSizePolicy>({Source{nodes.primary["policy"],
+                                                                       applet::power_applet.scope},
+                                                                Source{nodes.fallback["policy"],
+                                                                       applet::global.scope}},
+                                                               defaults.getPolicy(),
+                                                               extendCfgPath(path_context,
+                                                                             "policy"));
                 });
 }
 
@@ -173,7 +181,7 @@ void ConfigMapper::mapCommandArguments(node_view arguments_node, PrimaryButtonDa
                                        size_t button_index, const QString& path_context) {
         constexpr bool   is_override = false;
         constexpr size_t min_size    = 0;
-        const auto       args        = resolve({Source{arguments_node, applet::power_applet.scope}},
+        const auto args = resolve<toml::array>({Source{arguments_node, applet::power_applet.scope}},
                                                path_context, is_override,
                                                {"Format: [string, array]", min_size, std::nullopt});
         if (!args) {
@@ -198,9 +206,11 @@ void ConfigMapper::mapCommand(node_view command_node, PrimaryButtonData& button,
                               size_t button_index, const QString& path_context) {
         constexpr bool   is_override = false;
         constexpr size_t min_size = 2, max_size = 2;
-        const auto command_arr = resolve({Source{command_node, applet::power_applet.scope}},
-                                         path_context, is_override,
-                                         {"Format: [program, [args...]]", min_size, max_size});
+        const auto command_arr = resolve<toml::array>({Source{command_node,
+                                                              applet::power_applet.scope}},
+                                                      path_context, is_override,
+                                                      {"Format: [program, [args...]]", min_size,
+                                                       max_size});
         if (!command_arr) {
                 handleButtonResolutionFailure(button, defaults, button_index);
                 return;
@@ -302,9 +312,11 @@ void ConfigMapper::mapPrimaryButtons(node_view                             prima
         constexpr bool   is_override = false;
         constexpr size_t min_size    = 1;
 
-        const auto buttons = resolve({Source{primary_buttons_node, applet::power_applet.scope}},
-                                     path_context, is_override,
-                                     {"Format: [primary buttons...]", min_size, std::nullopt});
+        const auto buttons = resolve<toml::array>({Source{primary_buttons_node,
+                                                          applet::power_applet.scope}},
+                                                  path_context, is_override,
+                                                  {"Format: [primary buttons...]", min_size,
+                                                   std::nullopt});
         if (!buttons) {
                 primary_buttons = defaults;
                 return;
