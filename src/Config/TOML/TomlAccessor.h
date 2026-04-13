@@ -19,6 +19,7 @@
 
 #include "CppUtils/include/Enum.h"
 #include "Types/NodeView.h"
+#include "Types/TomlArrayConditions.h"
 
 #include <optional>
 #include <string>
@@ -35,10 +36,8 @@ std::optional<T> tryGet(node_view node, const QString& path, bool is_override = 
 const toml::table* getTomlTable(node_view node, const QString& path, bool is_override = false);
 
 std::optional<toml::array> getTomlArray(node_view node, const QString& path,
-                                        bool                  is_override       = false,
-                                        const QString&        error_arr_details = {},
-                                        std::optional<size_t> min_size          = std::nullopt,
-                                        std::optional<size_t> max_size          = std::nullopt);
+                                        bool                       is_override    = false,
+                                        const TomlArrayConditions& arr_conditions = {});
 
 QSize getQSize(node_view node, const QSize& fallback, const QString& path, bool is_override = false);
 

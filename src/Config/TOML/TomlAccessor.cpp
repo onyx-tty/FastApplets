@@ -18,6 +18,7 @@
 #include "TomlAccessor.h"
 #include "Core/Log.h"
 #include "Types/NodeView.h"
+#include "Types/TomlArrayConditions.h"
 
 #include <cstddef>
 #include <cstdint>
@@ -43,9 +44,7 @@ const toml::table* getTomlTable(node_view node, const QString& path, bool is_ove
 }
 
 std::optional<toml::array> getTomlArray(node_view node, const QString& path, bool is_override,
-                                        const QString&        error_arr_details,
-                                        std::optional<size_t> min_size,
-                                        std::optional<size_t> max_size) {
+                                        const TomlArrayConditions& arr_conditions) {
         const auto* arr = node.as_array();
 
         if (!arr) {
@@ -53,34 +52,34 @@ std::optional<toml::array> getTomlArray(node_view node, const QString& path, boo
                         QDEBUG() << path
                                  << "is an override, and missing! Proceeding with globals...";
                 } else {
-                        QWARNING_NS() << path << ", must be an array! " << error_arr_details
-                                      << " Using defaults...";
+                        QWARNING_NS() << path << ", must be an array! "
+                                      << arr_conditions.array_format << " Using defaults...";
                 }
 
                 return std::nullopt;
         }
 
-        if (min_size && arr->size() < min_size.value()) {
+        if (arr_conditions.min_size && arr->size() < arr_conditions.min_size.value()) {
                 if (is_override) {
                         QDEBUG() << path
                                  << "is an override, and missing! Proceeding with globals...";
                 } else {
-                        QWARNING_NS()
-                                << path << ", arr size < min_size! min_size: " << min_size.value()
-                                << ", size: " << arr->size() << ". Using defaults...";
+                        QWARNING_NS() << path << ", arr size < min_size! min_size: "
+                                      << arr_conditions.min_size.value()
+                                      << ", size: " << arr->size() << ". Using defaults...";
                 }
 
                 return std::nullopt;
         }
 
-        if (max_size && arr->size() > max_size.value()) {
+        if (arr_conditions.max_size && arr->size() > arr_conditions.max_size.value()) {
                 if (is_override) {
                         QDEBUG() << path
                                  << "is an override, and missing! Proceeding with globals...";
                 } else {
-                        QWARNING_NS()
-                                << path << ", arr size >= max_size! max_size: " << max_size.value()
-                                << ", size: " << arr->size() << ". Using defaults...";
+                        QWARNING_NS() << path << ", arr size >= max_size! max_size: "
+                                      << arr_conditions.max_size.value()
+                                      << ", size: " << arr->size() << ". Using defaults...";
                 }
 
                 return std::nullopt;
@@ -91,8 +90,8 @@ std::optional<toml::array> getTomlArray(node_view node, const QString& path, boo
 
 QSize getQSize(node_view node, const QSize& fallback, const QString& path, bool is_override) {
         constexpr size_t min_size = 2;
-        const auto       arr = getTomlArray(node, path, is_override, "Format: [int, int]", min_size,
-                                            std::nullopt);
+        const auto       arr      = getTomlArray(node, path, is_override,
+                                                 {"Format: [int, int]", min_size, std::nullopt});
 
         if (!arr) { return fallback; }
 
@@ -106,7 +105,7 @@ QSize getQSize(node_view node, const QSize& fallback, const QString& path, bool 
 
 std::optional<QSize> tryGetQSize(node_view node, const QString& path, bool is_override) {
         constexpr size_t min_size = 2;
-        const auto& arr = getTomlArray(node, path, is_override, "Format: [int, int]", min_size);
+        const auto& arr = getTomlArray(node, path, is_override, {"Format: [int, int]", min_size});
 
         if (!arr) { return std::nullopt; }
 

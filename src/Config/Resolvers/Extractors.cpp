@@ -17,6 +17,7 @@
 
 #include "Extractors.h"
 #include "Config/TOML/Types/NodeView.h"
+#include "Config/TOML/Types/TomlArrayConditions.h"
 #include "CppUtils/include/Enum.h"
 
 #include <qnamespace.h>
@@ -63,10 +64,8 @@ std::optional<toml::table> extractor::table(node_view node, const QString& path,
 };
 
 std::optional<toml::array> extractor::array(node_view node, const QString& path, bool is_override,
-                                            const QString&        error_arr_details,
-                                            std::optional<size_t> min_size,
-                                            std::optional<size_t> max_size) {
-        return getTomlArray(node, path, is_override, error_arr_details, min_size, max_size);
+                                            const TomlArrayConditions& arr_conditions) {
+        return getTomlArray(node, path, is_override, arr_conditions);
 };
 
 std::optional<QString> extractor::qstring(node_view node, const QString& path, bool is_override) {

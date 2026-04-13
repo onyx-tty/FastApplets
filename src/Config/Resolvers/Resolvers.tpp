@@ -48,8 +48,8 @@ std::optional<T> resolve(std::initializer_list<Source> sources, const QString& p
                         return extractor::table(node, path, is_override);
                 } else if constexpr (std::is_same_v<DT, toml::array>) {
                         return extractor::array(node, path, is_override,
-                                                arr_conditions.array_format,
-                                                arr_conditions.min_size, arr_conditions.max_size);
+                                                {arr_conditions.array_format,
+                                                 arr_conditions.min_size, arr_conditions.max_size});
                 } else if constexpr (std::is_same_v<DT, QSize>) {
                         return extractor::qsize(node, path, is_override);
                 } else if constexpr (std::is_same_v<DT, Qt::Alignment>) {
