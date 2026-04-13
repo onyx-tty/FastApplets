@@ -27,7 +27,8 @@
 #include <QSize>
 #include <QString>
 
-const toml::table* getTomlTable(node_view node, const QString& path, bool is_override) {
+const toml::table* TomlAccessor::getTomlTable(node_view node, const QString& path,
+                                              bool is_override) {
         const auto* table = node.as_table();
         if (!table) {
                 if (is_override) {
@@ -43,8 +44,9 @@ const toml::table* getTomlTable(node_view node, const QString& path, bool is_ove
         return table;
 }
 
-std::optional<toml::array> getTomlArray(node_view node, const QString& path, bool is_override,
-                                        const TomlArrayConditions& arr_conditions) {
+std::optional<toml::array> TomlAccessor::getTomlArray(node_view node, const QString& path,
+                                                      bool                       is_override,
+                                                      const TomlArrayConditions& arr_conditions) {
         const auto* arr = node.as_array();
 
         if (!arr) {
@@ -88,7 +90,8 @@ std::optional<toml::array> getTomlArray(node_view node, const QString& path, boo
         return *arr;
 }
 
-QSize getQSize(node_view node, const QSize& fallback, const QString& path, bool is_override) {
+QSize TomlAccessor::getQSize(node_view node, const QSize& fallback, const QString& path,
+                             bool is_override) {
         constexpr size_t min_size = 2;
         const auto       arr      = getTomlArray(node, path, is_override,
                                                  {"Format: [int, int]", min_size, std::nullopt});
@@ -103,7 +106,8 @@ QSize getQSize(node_view node, const QSize& fallback, const QString& path, bool 
         return QSize(width, height);
 }
 
-std::optional<QSize> tryGetQSize(node_view node, const QString& path, bool is_override) {
+std::optional<QSize> TomlAccessor::tryGetQSize(node_view node, const QString& path,
+                                               bool is_override) {
         constexpr size_t min_size = 2;
         const auto& arr = getTomlArray(node, path, is_override, {"Format: [int, int]", min_size});
 

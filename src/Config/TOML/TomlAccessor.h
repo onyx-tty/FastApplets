@@ -27,28 +27,33 @@
 #include <QSize>
 #include <QString>
 
-template<typename T>
-T getOrDefault(node_view node, const T& fallback, const QString& path, bool is_override = false);
-
-template<typename T>
-std::optional<T> tryGet(node_view node, const QString& path, bool is_override = false);
-
-const toml::table* getTomlTable(node_view node, const QString& path, bool is_override = false);
-
-std::optional<toml::array> getTomlArray(node_view node, const QString& path,
-                                        bool                       is_override    = false,
-                                        const TomlArrayConditions& arr_conditions = {});
-
-QSize getQSize(node_view node, const QSize& fallback, const QString& path, bool is_override = false);
-
-std::optional<QSize> tryGetQSize(node_view node, const QString& path, bool is_override = false);
-
-template<typename T>
-T getValueFromEnumMap(const std::string& key, const enum_utils::EnumMap<T>& map, const T& fallback,
-                      const QString& path, bool is_override = false);
-
-template<typename T>
-std::optional<T> tryGetValueFromEnumMap(const std::string& key, const enum_utils::EnumMap<T>& map,
-                                        const QString& path, bool is_override = false);
+class TomlAccessor final {
+public:
+        TomlAccessor() = delete;
+        template<typename T>
+        static T getOrDefault(node_view node, const T& fallback, const QString& path,
+                              bool is_override = false);
+        template<typename T>
+        static std::optional<T>           tryGet(node_view node, const QString& path,
+                                                 bool is_override = false);
+        static const toml::table*         getTomlTable(node_view node, const QString& path,
+                                                       bool is_override = false);
+        static std::optional<toml::array> getTomlArray(
+                node_view node, const QString& path, bool is_override = false,
+                const TomlArrayConditions& arr_conditions = {});
+        static QSize getQSize(node_view node, const QSize& fallback, const QString& path,
+                              bool is_override = false);
+        static std::optional<QSize> tryGetQSize(node_view node, const QString& path,
+                                                bool is_override = false);
+        template<typename T>
+        static T getValueFromEnumMap(const std::string& key, const enum_utils::EnumMap<T>& map,
+                                     const T& fallback, const QString& path,
+                                     bool is_override = false);
+        template<typename T>
+        static std::optional<T> tryGetValueFromEnumMap(const std::string&            key,
+                                                       const enum_utils::EnumMap<T>& map,
+                                                       const QString&                path,
+                                                       bool is_override = false);
+};
 
 #include "TomlAccessor.tpp"

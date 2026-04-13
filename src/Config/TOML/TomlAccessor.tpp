@@ -17,9 +17,9 @@
 
 #pragma once
 
-#include "Log/Log.h"
 #include "CppUtils/include/Enum.h"
 #include "CppUtils/include/String.h"
+#include "Log/Log.h"
 #include "TomlAccessor.h"
 #include "Types/NodeView.h"
 
@@ -33,7 +33,8 @@ using enum_utils::EnumMap;
 using string_utils::toLowerCopy;
 
 template<typename T>
-T getOrDefault(node_view node, const T& fallback, const QString& path, bool is_override) {
+T TomlAccessor::getOrDefault(node_view node, const T& fallback, const QString& path,
+                             bool is_override) {
         const auto* value = node.as<T>();
 
         if (!value) {
@@ -51,7 +52,7 @@ T getOrDefault(node_view node, const T& fallback, const QString& path, bool is_o
 }
 
 template<typename T>
-std::optional<T> tryGet(node_view node, const QString& path, bool is_override) {
+std::optional<T> TomlAccessor::tryGet(node_view node, const QString& path, bool is_override) {
         const auto* value = node.as<T>();
 
         if (!value) {
@@ -69,8 +70,8 @@ std::optional<T> tryGet(node_view node, const QString& path, bool is_override) {
 }
 
 template<typename T>
-T getValueFromEnumMap(const std::string& key, const EnumMap<T>& map, const T& fallback,
-                      const QString& path, bool is_override) {
+T TomlAccessor::getValueFromEnumMap(const std::string& key, const EnumMap<T>& map,
+                                    const T& fallback, const QString& path, bool is_override) {
         if (!map.contains(key)) {
                 if (is_override) {
                         QDEBUG() << path
@@ -86,8 +87,9 @@ T getValueFromEnumMap(const std::string& key, const EnumMap<T>& map, const T& fa
 }
 
 template<typename T>
-std::optional<T> tryGetValueFromEnumMap(const std::string& key, const enum_utils::EnumMap<T>& map,
-                                        const QString& path, bool is_override) {
+std::optional<T> TomlAccessor::tryGetValueFromEnumMap(const std::string&            key,
+                                                      const enum_utils::EnumMap<T>& map,
+                                                      const QString& path, bool is_override) {
         if (!map.contains(key)) {
                 if (is_override) {
                         QDEBUG() << path

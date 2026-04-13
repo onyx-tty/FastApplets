@@ -27,5 +27,5 @@
 /* Extractors */
 template<typename T>
 std::optional<T> extractor::value(node_view node, const QString& path, bool is_override) {
-        return tryGet<T>(node, path, is_override);
+        return TomlAccessor::tryGet<T>(node, path, is_override);
 }
