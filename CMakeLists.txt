@@ -32,7 +32,7 @@ option(BUILD_SHARED_LIBS "Build using shared libraries" ON)
 option(BUILD_TESTS "Build unit tests" ON)
 
 # Set up the Qt environment
-set(QT_VERSION_MAJOR 6 CACHE STRING "Build using this version of Qt")
+set(QT_VERSION_MAJOR 6)
 
 # Specify global inclusions shared by all modules
 set(GLOBAL_INCLUSIONS
