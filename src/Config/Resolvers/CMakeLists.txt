@@ -1,5 +1,4 @@
 add_library(Config_Resolvers
-        Extractors.cpp
         Resolvers.cpp)
 add_library(Config::Resolvers ALIAS Config_Resolvers)
 

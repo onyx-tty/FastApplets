@@ -17,6 +17,7 @@
 
 #pragma once
 
+#include "Config/TOML/TomlAccessor.h"
 #include "Config/TOML/Types/NodeView.h"
 #include "Config/TOML/Types/TomlArrayConditions.h"
 #include "Resolvers.h"
@@ -48,7 +49,7 @@ std::optional<T> resolve(std::initializer_list<Source> sources, const QString& p
                 } else if constexpr (std::is_pointer_v<R>) {
                         return raw ? std::optional<DT>(*raw) : std::nullopt;
                 } else {
-                        static_assert(false, "Unknown extractor return type!");
+                        static_assert(false, "Unknown accessor return type!");
                 }
         };
 
@@ -57,19 +58,20 @@ std::optional<T> resolve(std::initializer_list<Source> sources, const QString& p
                 [&](node_view node, const QString& path, bool is_override,
                     const TomlArrayConditions& arr_conditions = {}) -> std::optional<DT> {
                 if constexpr (std::is_same_v<DT, toml::table>) {
-                        return normalize(extractor::table(node, path, is_override));
+                        return normalize(TomlAccessor::tryGetTomlTable(node, path, is_override));
                 } else if constexpr (std::is_same_v<DT, toml::array>) {
-                        return normalize(extractor::array(node, path, is_override, arr_conditions));
+                        return normalize(TomlAccessor::tryGetTomlArray(node, path, is_override,
+                                                                       arr_conditions));
                 } else if constexpr (std::is_same_v<DT, QSize>) {
-                        return normalize(extractor::qsize(node, path, is_override));
+                        return normalize(TomlAccessor::tryGetQSize(node, path, is_override));
                 } else if constexpr (std::is_same_v<DT, Qt::Alignment>) {
-                        return normalize(extractor::alignment(node, path, is_override));
+                        return normalize(TomlAccessor::tryGetAlignment(node, path, is_override));
                 } else if constexpr (std::is_same_v<DT, QSizePolicy>) {
-                        return normalize(extractor::size_policy(node, path, is_override));
+                        return normalize(TomlAccessor::tryGetSizePolicy(node, path, is_override));
                 } else if constexpr (std::is_same_v<DT, QString>) {
-                        return normalize(extractor::qstring(node, path, is_override));
+                        return normalize(TomlAccessor::tryGetQString(node, path, is_override));
                 } else {
-                        return normalize(extractor::value<DT>(node, path, is_override));
+                        return normalize(TomlAccessor::tryGet<DT>(node, path, is_override));
                 }
         };
 

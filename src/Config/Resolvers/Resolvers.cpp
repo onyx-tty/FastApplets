@@ -16,7 +16,6 @@
    along with this program.  If not, see <https://www.gnu.org/licenses/>. */
 
 #include "Resolvers.h"
-#include "Extractors.h"
 
 #include <string_view>
 #include <QString>
