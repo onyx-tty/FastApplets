@@ -2,9 +2,6 @@ cmake_minimum_required(VERSION 3.16)
 
 project(FastApplets)
 
-# Source code directories
-set(POWERAPPLET_SOURCE_DIR ${CMAKE_CURRENT_LIST_DIR}/src/Applets/PowerApplet CACHE PATH "Path to PowerApplet's source code")
-
 # Applets to be built
 option(BUILD_POWERAPPLET "Include PowerApplet in the building process" ON)
 
