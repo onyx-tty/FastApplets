@@ -83,41 +83,6 @@ if(BUILD_POWERAPPLET)
                 src/Applets/PowerApplet)
 endif()
 
-# Executables
-if (BUILD_POWERAPPLET)
-        qt_add_executable(PowerApplet
-                MANUAL_FINALIZATION
-                ${POWERAPPLET_SOURCE_DIR}/main.cpp)
-endif()
-
-# Target linking and configuration
-if(BUILD_POWERAPPLET)
-        target_include_directories(PowerApplet PRIVATE
-                ${GLOBAL_INCLUSIONS})
-
-        target_link_libraries(PowerApplet PRIVATE
-                PowerApplet::Deps)
-
-        if (ENABLE_ASAN OR ENABLE_LSAN OR ENABLE_UBSAN)
-                target_compile_options(PowerApplet PRIVATE -fno-omit-frame-pointer -g)
-        endif()
-
-        if(ENABLE_ASAN)
-                target_compile_options(PowerApplet PRIVATE -fsanitize=address)
-                target_link_options(PowerApplet PRIVATE -fsanitize=address)
-        endif()
-
-        if(ENABLE_LSAN)
-                target_compile_options(PowerApplet PRIVATE -fsanitize=leak)
-                target_link_options(PowerApplet PRIVATE -fsanitize=leak)
-        endif()
-
-        if(ENABLE_UBSAN)
-                target_compile_options(PowerApplet PRIVATE -fsanitize=undefined)
-                target_link_options(PowerApplet PRIVATE -fsanitize=undefined)
-        endif()
-endif()
-
 # Tests
 if(BUILD_TESTS)
         enable_testing()
@@ -126,14 +91,3 @@ endif()
 
 # Installation
 include(GNUInstallDirs)
-
-if(BUILD_POWERAPPLET)
-        install(TARGETS PowerApplet
-                LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
-                RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})
-endif()
-
-# Finalization
-if(BUILD_POWERAPPLET)
-        qt_finalize_executable(PowerApplet)
-endif()
