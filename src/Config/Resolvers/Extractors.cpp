@@ -27,16 +27,16 @@
 #include <QString>
 
 /* Extractors */
-std::optional<toml::table> extractor::table(node_view node, const QString& path, bool is_override) {
-        if (auto* result = TomlAccessor::tryGetTomlTable(node, path, is_override)) {
-                return *result;
+const toml::table* extractor::table(node_view node, const QString& path, bool is_override) {
+        if (const auto* result = TomlAccessor::tryGetTomlTable(node, path, is_override)) {
+                return result;
         }
 
-        return std::nullopt;
+        return nullptr;
 };
 
-std::optional<toml::array> extractor::array(node_view node, const QString& path, bool is_override,
-                                            const TomlArrayConditions& arr_conditions) {
+const toml::array* extractor::array(node_view node, const QString& path, bool is_override,
+                                    const TomlArrayConditions& arr_conditions) {
         return TomlAccessor::tryGetTomlArray(node, path, is_override, arr_conditions);
 };
 

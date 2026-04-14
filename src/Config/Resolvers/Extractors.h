@@ -27,10 +27,10 @@
 class QString;
 
 namespace extractor {
-std::optional<toml::table> table(node_view node, const QString& path, bool is_override = false);
+const toml::table* table(node_view node, const QString& path, bool is_override = false);
 
-std::optional<toml::array> array(node_view node, const QString& path, bool is_override = false,
-                                 const TomlArrayConditions& arr_conditions = {});
+const toml::array* array(node_view node, const QString& path, bool is_override = false,
+                         const TomlArrayConditions& arr_conditions = {});
 
 template<typename T>
 std::optional<T> value(node_view node, const QString& path, bool is_override);

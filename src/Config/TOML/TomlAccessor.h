@@ -39,13 +39,13 @@ public:
         static T getOrDefault(node_view node, const T& fallback, const QString& path,
                               bool is_override = false);
         template<typename T>
-        static std::optional<T>           tryGet(node_view node, const QString& path,
-                                                 bool is_override = false);
-        static const toml::table*         tryGetTomlTable(node_view node, const QString& path,
-                                                          bool is_override = false);
-        static std::optional<toml::array> tryGetTomlArray(
-                node_view node, const QString& path, bool is_override = false,
-                const TomlArrayConditions& arr_conditions = {});
+        static std::optional<T>   tryGet(node_view node, const QString& path,
+                                         bool is_override = false);
+        static const toml::table* tryGetTomlTable(node_view node, const QString& path,
+                                                  bool is_override = false);
+        static const toml::array* tryGetTomlArray(node_view node, const QString& path,
+                                                  bool                       is_override    = false,
+                                                  const TomlArrayConditions& arr_conditions = {});
         static QSize getQSize(node_view node, const QSize& fallback, const QString& path,
                               bool is_override = false);
         static std::optional<QSize> tryGetQSize(node_view node, const QString& path,

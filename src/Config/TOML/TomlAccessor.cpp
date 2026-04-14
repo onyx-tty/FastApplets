@@ -57,9 +57,9 @@ const toml::table* TomlAccessor::tryGetTomlTable(node_view node, const QString& 
         return table;
 }
 
-std::optional<toml::array> TomlAccessor::tryGetTomlArray(node_view node, const QString& path,
-                                                         bool is_override,
-                                                         const TomlArrayConditions& arr_conditions) {
+const toml::array* TomlAccessor::tryGetTomlArray(node_view node, const QString& path,
+                                                 bool                       is_override,
+                                                 const TomlArrayConditions& arr_conditions) {
         const auto* arr = node.as_array();
 
         if (!arr) {
@@ -71,7 +71,7 @@ std::optional<toml::array> TomlAccessor::tryGetTomlArray(node_view node, const Q
                                       << arr_conditions.array_format << " Using defaults...";
                 }
 
-                return std::nullopt;
+                return nullptr;
         }
 
         if (arr_conditions.min_size && arr->size() < arr_conditions.min_size.value()) {
@@ -84,7 +84,7 @@ std::optional<toml::array> TomlAccessor::tryGetTomlArray(node_view node, const Q
                                       << ", size: " << arr->size() << ". Using defaults...";
                 }
 
-                return std::nullopt;
+                return nullptr;
         }
 
         if (arr_conditions.max_size && arr->size() > arr_conditions.max_size.value()) {
@@ -97,23 +97,23 @@ std::optional<toml::array> TomlAccessor::tryGetTomlArray(node_view node, const Q
                                       << ", size: " << arr->size() << ". Using defaults...";
                 }
 
-                return std::nullopt;
+                return nullptr;
         }
 
-        return *arr;
+        return arr;
 }
 
 QSize TomlAccessor::getQSize(node_view node, const QSize& fallback, const QString& path,
                              bool is_override) {
         constexpr size_t min_size = 2;
-        const auto       arr      = tryGetTomlArray(node, path, is_override,
+        const auto*      arr      = tryGetTomlArray(node, path, is_override,
                                                     {"Format: [int, int]", min_size, std::nullopt});
 
         if (!arr) { return fallback; }
 
-        int width  = getOrDefault<int64_t>(toml::node_view(arr.value()[0]), fallback.width(),
+        int width  = getOrDefault<int64_t>(toml::node_view((*arr)[0]), fallback.width(),
                                            path + "[0]");
-        int height = getOrDefault<int64_t>(toml::node_view(arr.value()[1]), fallback.height(),
+        int height = getOrDefault<int64_t>(toml::node_view((*arr)[1]), fallback.height(),
                                            path + "[1]");
 
         return QSize(width, height);
@@ -122,12 +122,12 @@ QSize TomlAccessor::getQSize(node_view node, const QSize& fallback, const QStrin
 std::optional<QSize> TomlAccessor::tryGetQSize(node_view node, const QString& path,
                                                bool is_override) {
         constexpr size_t min_size = 2;
-        const auto& arr = tryGetTomlArray(node, path, is_override, {"Format: [int, int]", min_size});
+        const auto* arr = tryGetTomlArray(node, path, is_override, {"Format: [int, int]", min_size});
 
         if (!arr) { return std::nullopt; }
 
-        auto width  = tryGet<int64_t>(toml::node_view(arr.value()[0]), path + "[0]");
-        auto height = tryGet<int64_t>(toml::node_view(arr.value()[1]), path + "[1]");
+        auto width  = tryGet<int64_t>(toml::node_view((*arr)[0]), path + "[0]");
+        auto height = tryGet<int64_t>(toml::node_view((*arr)[1]), path + "[1]");
 
         if (!width || !height) { return std::nullopt; }
 

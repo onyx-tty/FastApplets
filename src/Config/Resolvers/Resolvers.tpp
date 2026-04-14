@@ -40,26 +40,36 @@ std::optional<T> resolve(std::initializer_list<Source> sources, const QString& p
                          bool force_override_on, const TomlArrayConditions& arr_conditions) {
         using DT = std::decay_t<T>;
 
+        // Convert pointers to std::optional
+        static auto normalize = [&](auto&& raw) -> std::optional<T> {
+                using R = std::decay_t<decltype(raw)>;
+                if constexpr (std::is_same_v<R, std::optional<DT>>) {
+                        return raw;
+                } else if constexpr (std::is_pointer_v<R>) {
+                        return raw ? std::optional<DT>(*raw) : std::nullopt;
+                } else {
+                        static_assert(false, "Unknown extractor return type!");
+                }
+        };
+
         // Collapse extraction logic into that of a corresponding type
         static auto extract =
                 [&](node_view node, const QString& path, bool is_override,
                     const TomlArrayConditions& arr_conditions = {}) -> std::optional<DT> {
                 if constexpr (std::is_same_v<DT, toml::table>) {
-                        return extractor::table(node, path, is_override);
+                        return normalize(extractor::table(node, path, is_override));
                 } else if constexpr (std::is_same_v<DT, toml::array>) {
-                        return extractor::array(node, path, is_override,
-                                                {arr_conditions.array_format,
-                                                 arr_conditions.min_size, arr_conditions.max_size});
+                        return normalize(extractor::array(node, path, is_override, arr_conditions));
                 } else if constexpr (std::is_same_v<DT, QSize>) {
-                        return extractor::qsize(node, path, is_override);
+                        return normalize(extractor::qsize(node, path, is_override));
                 } else if constexpr (std::is_same_v<DT, Qt::Alignment>) {
-                        return extractor::alignment(node, path, is_override);
+                        return normalize(extractor::alignment(node, path, is_override));
                 } else if constexpr (std::is_same_v<DT, QSizePolicy>) {
-                        return extractor::size_policy(node, path, is_override);
+                        return normalize(extractor::size_policy(node, path, is_override));
                 } else if constexpr (std::is_same_v<DT, QString>) {
-                        return extractor::qstring(node, path, is_override);
+                        return normalize(extractor::qstring(node, path, is_override));
                 } else {
-                        return extractor::value<DT>(node, path, is_override);
+                        return normalize(extractor::value<DT>(node, path, is_override));
                 }
         };
 
