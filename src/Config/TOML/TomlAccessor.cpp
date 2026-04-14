@@ -118,6 +118,15 @@ std::optional<QSize> TomlAccessor::tryGetQSize(node_view node, const QString& pa
         return QSize(width.value(), height.value());
 }
 
+std::optional<QString> TomlAccessor::tryGetQString(node_view node, const QString& path,
+                                                   bool is_override) {
+        if (auto str = tryGet<std::string>(node, path, is_override)) {
+                return QString::fromStdString(str.value());
+        }
+
+        return std::nullopt;
+}
+
 std::optional<Qt::Alignment> TomlAccessor::tryGetAlignment(const std::string&            key,
                                                            const EnumMap<Qt::Alignment>& map,
                                                            const QString&                path) {

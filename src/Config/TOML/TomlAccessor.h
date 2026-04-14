@@ -45,6 +45,8 @@ public:
                                                     const TomlArrayConditions& arr_conditions = {});
         static std::optional<QSize> tryGetQSize(node_view node, const QString& path,
                                                 bool is_override = false);
+        static std::optional<QString> tryGetQString(node_view node, const QString& path,
+                                                    bool is_override = false);
         template<typename T>
         static std::optional<T> tryGetValueFromEnumMap(const std::string&            key,
                                                        const enum_utils::EnumMap<T>& map,
