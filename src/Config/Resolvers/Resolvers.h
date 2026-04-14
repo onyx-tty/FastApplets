@@ -56,8 +56,8 @@ std::optional<T> resolve(std::initializer_list<Source> sources, const QString& p
 // Use to skip validation of return value and to automatically default
 // On success: extract from a node
 // On failure: copy default value
-template<typename T, typename DefaultT>
-T resolveOr(std::initializer_list<Source> sources, const DefaultT& defaults,
+template<typename T, typename TDefault>
+T resolveOr(std::initializer_list<Source> sources, const TDefault& defaults,
             const QString& path_context, const TomlArrayConditions& arr_conditions = {});
 
 // Use to try and extract a value from a node into a specific attribute, and if that fails, to
