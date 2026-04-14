@@ -36,38 +36,23 @@ class TomlAccessor final {
 public:
         TomlAccessor() = delete;
         template<typename T>
-        static T getOrDefault(node_view node, const T& fallback, const QString& path,
-                              bool is_override = false);
-        template<typename T>
-        static std::optional<T>   tryGet(node_view node, const QString& path,
-                                         bool is_override = false);
-        static const toml::table* tryGetTomlTable(node_view node, const QString& path,
-                                                  bool is_override = false);
-        static const toml::array* tryGetTomlArray(node_view node, const QString& path,
-                                                  bool                       is_override    = false,
-                                                  const TomlArrayConditions& arr_conditions = {});
-        static QSize getQSize(node_view node, const QSize& fallback, const QString& path,
-                              bool is_override = false);
+        static std::optional<T>     tryGet(node_view node, const QString& path,
+                                           bool is_override = false);
+        static const toml::table*   tryGetTomlTable(node_view node, const QString& path,
+                                                    bool is_override = false);
+        static const toml::array*   tryGetTomlArray(node_view node, const QString& path,
+                                                    bool                       is_override = false,
+                                                    const TomlArrayConditions& arr_conditions = {});
         static std::optional<QSize> tryGetQSize(node_view node, const QString& path,
                                                 bool is_override = false);
-        template<typename T>
-        static T getValueFromEnumMap(const std::string& key, const enum_utils::EnumMap<T>& map,
-                                     const T& fallback, const QString& path,
-                                     bool is_override = false);
         template<typename T>
         static std::optional<T> tryGetValueFromEnumMap(const std::string&            key,
                                                        const enum_utils::EnumMap<T>& map,
                                                        const QString&                path,
                                                        bool is_override = false);
-        static Qt::Alignment    getAlignment(const std::string&                        key,
-                                             const enum_utils::EnumMap<Qt::Alignment>& map,
-                                             const Qt::Alignment& fallback, const QString& path);
         static std::optional<Qt::Alignment> tryGetAlignment(
                 const std::string& key, const enum_utils::EnumMap<Qt::Alignment>& map,
                 const QString& path);
-        static QSizePolicy getSizePolicy(const std::string&                      key,
-                                         const enum_utils::EnumMap<QSizePolicy>& map,
-                                         const QSizePolicy& fallback, const QString& path);
         static std::optional<QSizePolicy> tryGetSizePolicy(
                 const std::string& key, const enum_utils::EnumMap<QSizePolicy>& map,
                 const QString& path);

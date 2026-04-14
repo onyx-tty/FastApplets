@@ -33,25 +33,6 @@ using enum_utils::EnumMap;
 using string_utils::toLowerCopy;
 
 template<typename T>
-T TomlAccessor::getOrDefault(node_view node, const T& fallback, const QString& path,
-                             bool is_override) {
-        const auto* value = node.as<T>();
-
-        if (!value) {
-                if (is_override) {
-                        QDEBUG() << path
-                                 << "is an override, and missing! Proceeding with globals...";
-                } else {
-                        QWARNING_NS() << path << ", missing or wrong type! Using defaults...";
-                }
-
-                return fallback;
-        }
-
-        return value->get();
-}
-
-template<typename T>
 std::optional<T> TomlAccessor::tryGet(node_view node, const QString& path, bool is_override) {
         const auto* value = node.as<T>();
 
@@ -67,23 +48,6 @@ std::optional<T> TomlAccessor::tryGet(node_view node, const QString& path, bool 
         }
 
         return value->get();
-}
-
-template<typename T>
-T TomlAccessor::getValueFromEnumMap(const std::string& key, const EnumMap<T>& map,
-                                    const T& fallback, const QString& path, bool is_override) {
-        if (!map.contains(key)) {
-                if (is_override) {
-                        QDEBUG() << path
-                                 << "is an override, and missing! Proceeding with globals...";
-                } else {
-                        QWARNING_NS() << path << ", invalid! Using defaults...";
-                }
-
-                return fallback;
-        }
-
-        return map.at(toLowerCopy(key));
 }
 
 template<typename T>

@@ -103,22 +103,6 @@ const toml::array* TomlAccessor::tryGetTomlArray(node_view node, const QString& 
         return arr;
 }
 
-QSize TomlAccessor::getQSize(node_view node, const QSize& fallback, const QString& path,
-                             bool is_override) {
-        constexpr size_t min_size = 2;
-        const auto*      arr      = tryGetTomlArray(node, path, is_override,
-                                                    {"Format: [int, int]", min_size, std::nullopt});
-
-        if (!arr) { return fallback; }
-
-        int width  = getOrDefault<int64_t>(toml::node_view((*arr)[0]), fallback.width(),
-                                           path + "[0]");
-        int height = getOrDefault<int64_t>(toml::node_view((*arr)[1]), fallback.height(),
-                                           path + "[1]");
-
-        return QSize(width, height);
-}
-
 std::optional<QSize> TomlAccessor::tryGetQSize(node_view node, const QString& path,
                                                bool is_override) {
         constexpr size_t min_size = 2;
@@ -134,20 +118,10 @@ std::optional<QSize> TomlAccessor::tryGetQSize(node_view node, const QString& pa
         return QSize(width.value(), height.value());
 }
 
-Qt::Alignment TomlAccessor::getAlignment(const std::string& key, const EnumMap<Qt::Alignment>& map,
-                                         const Qt::Alignment& fallback, const QString& path) {
-        return TomlAccessor::getValueFromEnumMap<Qt::Alignment>(key, map, fallback, path);
-}
-
 std::optional<Qt::Alignment> TomlAccessor::tryGetAlignment(const std::string&            key,
                                                            const EnumMap<Qt::Alignment>& map,
                                                            const QString&                path) {
         return TomlAccessor::tryGetValueFromEnumMap<Qt::Alignment>(key, map, path);
-}
-
-QSizePolicy TomlAccessor::getSizePolicy(const std::string& key, const EnumMap<QSizePolicy>& map,
-                                        const QSizePolicy& fallback, const QString& path) {
-        return TomlAccessor::getValueFromEnumMap<QSizePolicy>(key, map, fallback, path);
 }
 
 std::optional<QSizePolicy> TomlAccessor::tryGetSizePolicy(const std::string&          key,
