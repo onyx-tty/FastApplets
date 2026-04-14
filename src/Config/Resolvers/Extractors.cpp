@@ -28,14 +28,16 @@
 
 /* Extractors */
 std::optional<toml::table> extractor::table(node_view node, const QString& path, bool is_override) {
-        if (auto* result = TomlAccessor::getTomlTable(node, path, is_override)) { return *result; }
+        if (auto* result = TomlAccessor::tryGetTomlTable(node, path, is_override)) {
+                return *result;
+        }
 
         return std::nullopt;
 };
 
 std::optional<toml::array> extractor::array(node_view node, const QString& path, bool is_override,
                                             const TomlArrayConditions& arr_conditions) {
-        return TomlAccessor::getTomlArray(node, path, is_override, arr_conditions);
+        return TomlAccessor::tryGetTomlArray(node, path, is_override, arr_conditions);
 };
 
 std::optional<QString> extractor::qstring(node_view node, const QString& path, bool is_override) {

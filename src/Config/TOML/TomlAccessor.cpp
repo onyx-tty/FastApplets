@@ -40,8 +40,8 @@ const EnumMap<QSizePolicy> size_policy_map = {{"expanding",
                                                {QSizePolicy::Expanding, QSizePolicy::Expanding}},
                                               {"fixed", {QSizePolicy::Fixed, QSizePolicy::Fixed}}};
 
-const toml::table* TomlAccessor::getTomlTable(node_view node, const QString& path,
-                                              bool is_override) {
+const toml::table* TomlAccessor::tryGetTomlTable(node_view node, const QString& path,
+                                                 bool is_override) {
         const auto* table = node.as_table();
         if (!table) {
                 if (is_override) {
@@ -57,9 +57,9 @@ const toml::table* TomlAccessor::getTomlTable(node_view node, const QString& pat
         return table;
 }
 
-std::optional<toml::array> TomlAccessor::getTomlArray(node_view node, const QString& path,
-                                                      bool                       is_override,
-                                                      const TomlArrayConditions& arr_conditions) {
+std::optional<toml::array> TomlAccessor::tryGetTomlArray(node_view node, const QString& path,
+                                                         bool is_override,
+                                                         const TomlArrayConditions& arr_conditions) {
         const auto* arr = node.as_array();
 
         if (!arr) {
@@ -106,8 +106,8 @@ std::optional<toml::array> TomlAccessor::getTomlArray(node_view node, const QStr
 QSize TomlAccessor::getQSize(node_view node, const QSize& fallback, const QString& path,
                              bool is_override) {
         constexpr size_t min_size = 2;
-        const auto       arr      = getTomlArray(node, path, is_override,
-                                                 {"Format: [int, int]", min_size, std::nullopt});
+        const auto       arr      = tryGetTomlArray(node, path, is_override,
+                                                    {"Format: [int, int]", min_size, std::nullopt});
 
         if (!arr) { return fallback; }
 
@@ -122,7 +122,7 @@ QSize TomlAccessor::getQSize(node_view node, const QSize& fallback, const QStrin
 std::optional<QSize> TomlAccessor::tryGetQSize(node_view node, const QString& path,
                                                bool is_override) {
         constexpr size_t min_size = 2;
-        const auto& arr = getTomlArray(node, path, is_override, {"Format: [int, int]", min_size});
+        const auto& arr = tryGetTomlArray(node, path, is_override, {"Format: [int, int]", min_size});
 
         if (!arr) { return std::nullopt; }
 
