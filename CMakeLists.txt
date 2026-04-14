@@ -44,10 +44,6 @@ find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets)
 
 # External modules
 if(BUILD_POWERAPPLET)
-        if(LOG_DEBUG)
-                set(LOG_DEBUG ON CACHE BOOL "Print debug-level logs" FORCE)
-        endif()
-
         add_subdirectory(
                 external/CppUtils)
 endif()
