@@ -130,14 +130,14 @@ std::optional<QString> TomlAccessor::tryGetQString(node_view node, const QString
         return std::nullopt;
 }
 
-std::optional<Qt::Alignment> TomlAccessor::tryGetAlignment(node_view                     node,
-                                                           const EnumMap<Qt::Alignment>& map,
-                                                           const QString& path, bool is_override) {
-        return TomlAccessor::tryGetValueFromEnumMap<Qt::Alignment>(node, map, path, is_override);
+std::optional<Qt::Alignment> TomlAccessor::tryGetAlignment(node_view node, const QString& path,
+                                                           bool is_override) {
+        return TomlAccessor::tryGetValueFromEnumMap<Qt::Alignment>(node, alignment_map, path,
+                                                                   is_override);
 }
 
-std::optional<QSizePolicy> TomlAccessor::tryGetSizePolicy(node_view                   node,
-                                                          const EnumMap<QSizePolicy>& map,
-                                                          const QString& path, bool is_override) {
-        return TomlAccessor::tryGetValueFromEnumMap<QSizePolicy>(node, map, path, is_override);
+std::optional<QSizePolicy> TomlAccessor::tryGetSizePolicy(node_view node, const QString& path,
+                                                          bool is_override) {
+        return TomlAccessor::tryGetValueFromEnumMap<QSizePolicy>(node, size_policy_map, path,
+                                                                 is_override);
 }

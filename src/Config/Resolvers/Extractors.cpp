@@ -46,10 +46,10 @@ std::optional<QSize> extractor::qsize(node_view node, const QString& path, bool 
 
 std::optional<Qt::Alignment> extractor::alignment(node_view node, const QString& path,
                                                   bool is_override) {
-        return TomlAccessor::tryGetAlignment(node, alignment_map, path, is_override);
+        return TomlAccessor::tryGetAlignment(node, path, is_override);
 }
 
 std::optional<QSizePolicy> extractor::size_policy(node_view node, const QString& path,
                                                   bool is_override) {
-        return TomlAccessor::tryGetSizePolicy(node, size_policy_map, path, is_override);
+        return TomlAccessor::tryGetSizePolicy(node, path, is_override);
 }

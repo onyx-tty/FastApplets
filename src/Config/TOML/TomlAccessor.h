@@ -51,12 +51,10 @@ public:
                                                        const enum_utils::EnumMap<T>& map,
                                                        const QString&                path,
                                                        bool is_override = false);
-        static std::optional<Qt::Alignment> tryGetAlignment(
-                node_view node, const enum_utils::EnumMap<Qt::Alignment>& map, const QString& path,
-                bool is_override = false);
-        static std::optional<QSizePolicy> tryGetSizePolicy(
-                node_view node, const enum_utils::EnumMap<QSizePolicy>& map, const QString& path,
-                bool is_override = false);
+        static std::optional<Qt::Alignment> tryGetAlignment(node_view node, const QString& path,
+                                                            bool is_override = false);
+        static std::optional<QSizePolicy>   tryGetSizePolicy(node_view node, const QString& path,
+                                                             bool is_override = false);
 };
 
 #include "TomlAccessor.tpp"
