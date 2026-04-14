@@ -52,44 +52,35 @@ if(BUILD_POWERAPPLET)
         endif()
 
         add_subdirectory(
-                external/CppUtils
-                CppUtils-build)
+                external/CppUtils)
 endif()
 
 # Internal modules
 add_subdirectory(
-        resources
-        Resources-build)
+        resources)
 
 add_subdirectory(
-        src/Log
-        Log-build)
+        src/Log)
 
 add_subdirectory(
-        src/Config
-        Config-build)
+        src/Config)
 
 add_subdirectory(
-        src/Shell
-        Shell-build)
+        src/Shell)
 
 add_subdirectory(
-        src/UI
-        UI-build)
+        src/UI)
 
 add_subdirectory(
-        src/DBus
-        DBus-build)
+        src/DBus)
 
 add_subdirectory(
-        src/Time
-        Time-build)
+        src/Time)
 
 # Applets
 if(BUILD_POWERAPPLET)
         add_subdirectory(
-                src/Applets/PowerApplet
-                PowerApplet-build)
+                src/Applets/PowerApplet)
 endif()
 
 # Executables
