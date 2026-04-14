@@ -31,6 +31,8 @@
 #include <QSizePolicy>
 #include <QString>
 
+using enum_utils::EnumMap;
+
 const EnumMap<Qt::Alignment> alignment_map = {{"top", Qt::AlignTop | Qt::AlignHCenter},
                                               {"center", Qt::AlignCenter},
                                               {"bottom", Qt::AlignBottom | Qt::AlignHCenter},

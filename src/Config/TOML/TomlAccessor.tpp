@@ -29,9 +29,6 @@
 #include <QSize>
 #include <QString>
 
-using enum_utils::EnumMap;
-using string_utils::toLowerCopy;
-
 template<typename T>
 std::optional<T> TomlAccessor::tryGet(node_view node, const QString& path, bool is_override) {
         const auto* value = node.as<T>();
@@ -54,6 +51,8 @@ template<typename T>
 std::optional<T> TomlAccessor::tryGetValueFromEnumMap(node_view                     node,
                                                       const enum_utils::EnumMap<T>& map,
                                                       const QString& path, bool is_override) {
+        using string_utils::toLowerCopy;
+
         const auto key = tryGet<std::string>(node, path, is_override);
         if (!key) { return std::nullopt; }
 
