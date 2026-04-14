@@ -9,7 +9,7 @@ target_include_directories(PowerApplet_UI_Widgets PRIVATE
 target_link_libraries(PowerApplet_UI_Widgets PRIVATE
         Log
         DBus
-        Environment
+        Shell
         UI::Enums)
 
 target_link_libraries(PowerApplet_UI_Widgets PUBLIC

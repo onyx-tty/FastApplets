@@ -11,4 +11,4 @@ target_link_libraries(Config_ConfigFile_PowerApplet PRIVATE
 
 target_link_libraries(Config_ConfigFile_PowerApplet PUBLIC
         Config::ConfigFile::Properties
-        Environment)
+        Shell)

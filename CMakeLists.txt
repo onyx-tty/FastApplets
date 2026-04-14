@@ -70,8 +70,8 @@ add_subdirectory(
         Config-build)
 
 add_subdirectory(
-        src/Environment
-        Environment-build)
+        src/Shell
+        Shell-build)
 
 add_subdirectory(
         src/UI

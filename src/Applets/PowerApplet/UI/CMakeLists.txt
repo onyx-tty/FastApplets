@@ -14,7 +14,7 @@ target_include_directories(PowerApplet_UI PRIVATE
 target_link_libraries(PowerApplet_UI PRIVATE
         Config
         Log
-        Environment
+        Shell
         UI
         PowerApplet::DBus
         PowerApplet::UI::Widgets)

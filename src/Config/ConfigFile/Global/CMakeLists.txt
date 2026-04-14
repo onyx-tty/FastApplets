@@ -11,4 +11,4 @@ target_link_libraries(Config_ConfigFile_Global PRIVATE
 
 target_link_libraries(Config_ConfigFile_Global PUBLIC
         Config::ConfigFile::Properties
-        Environment)
+        Shell)
