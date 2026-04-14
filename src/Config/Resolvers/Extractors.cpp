@@ -28,11 +28,7 @@
 
 /* Extractors */
 const toml::table* extractor::table(node_view node, const QString& path, bool is_override) {
-        if (const auto* result = TomlAccessor::tryGetTomlTable(node, path, is_override)) {
-                return result;
-        }
-
-        return nullptr;
+        return TomlAccessor::tryGetTomlTable(node, path, is_override);
 };
 
 const toml::array* extractor::array(node_view node, const QString& path, bool is_override,
