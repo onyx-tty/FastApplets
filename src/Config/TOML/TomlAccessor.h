@@ -23,7 +23,6 @@
 
 #include <optional>
 #include <qnamespace.h>
-#include <string>
 #include <toml++/toml.hpp>
 #include <QSize>
 #include <QSizePolicy>
@@ -48,16 +47,16 @@ public:
         static std::optional<QString> tryGetQString(node_view node, const QString& path,
                                                     bool is_override = false);
         template<typename T>
-        static std::optional<T> tryGetValueFromEnumMap(const std::string&            key,
+        static std::optional<T> tryGetValueFromEnumMap(node_view                     key,
                                                        const enum_utils::EnumMap<T>& map,
                                                        const QString&                path,
                                                        bool is_override = false);
         static std::optional<Qt::Alignment> tryGetAlignment(
-                const std::string& key, const enum_utils::EnumMap<Qt::Alignment>& map,
-                const QString& path);
+                node_view node, const enum_utils::EnumMap<Qt::Alignment>& map, const QString& path,
+                bool is_override = false);
         static std::optional<QSizePolicy> tryGetSizePolicy(
-                const std::string& key, const enum_utils::EnumMap<QSizePolicy>& map,
-                const QString& path);
+                node_view node, const enum_utils::EnumMap<QSizePolicy>& map, const QString& path,
+                bool is_override = false);
 };
 
 #include "TomlAccessor.tpp"

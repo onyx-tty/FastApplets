@@ -25,6 +25,7 @@
 #include <cstdint>
 #include <optional>
 #include <qnamespace.h>
+#include <string>
 #include <toml++/toml.hpp>
 #include <QSize>
 #include <QSizePolicy>
@@ -127,14 +128,14 @@ std::optional<QString> TomlAccessor::tryGetQString(node_view node, const QString
         return std::nullopt;
 }
 
-std::optional<Qt::Alignment> TomlAccessor::tryGetAlignment(const std::string&            key,
+std::optional<Qt::Alignment> TomlAccessor::tryGetAlignment(node_view                     node,
                                                            const EnumMap<Qt::Alignment>& map,
-                                                           const QString&                path) {
-        return TomlAccessor::tryGetValueFromEnumMap<Qt::Alignment>(key, map, path);
+                                                           const QString& path, bool is_override) {
+        return TomlAccessor::tryGetValueFromEnumMap<Qt::Alignment>(node, map, path, is_override);
 }
 
-std::optional<QSizePolicy> TomlAccessor::tryGetSizePolicy(const std::string&          key,
+std::optional<QSizePolicy> TomlAccessor::tryGetSizePolicy(node_view                   node,
                                                           const EnumMap<QSizePolicy>& map,
-                                                          const QString&              path) {
-        return TomlAccessor::tryGetValueFromEnumMap<QSizePolicy>(key, map, path);
+                                                          const QString& path, bool is_override) {
+        return TomlAccessor::tryGetValueFromEnumMap<QSizePolicy>(node, map, path, is_override);
 }

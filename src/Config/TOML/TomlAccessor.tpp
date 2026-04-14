@@ -51,10 +51,13 @@ std::optional<T> TomlAccessor::tryGet(node_view node, const QString& path, bool 
 }
 
 template<typename T>
-std::optional<T> TomlAccessor::tryGetValueFromEnumMap(const std::string&            key,
+std::optional<T> TomlAccessor::tryGetValueFromEnumMap(node_view                     node,
                                                       const enum_utils::EnumMap<T>& map,
                                                       const QString& path, bool is_override) {
-        if (!map.contains(key)) {
+        const auto key = tryGet<std::string>(node, path, is_override);
+        if (!key) { return std::nullopt; }
+
+        if (!map.contains(key.value())) {
                 if (is_override) {
                         QDEBUG() << path
                                  << "is an override, and missing! Proceeding with globals...";
@@ -65,5 +68,5 @@ std::optional<T> TomlAccessor::tryGetValueFromEnumMap(const std::string&        
                 return std::nullopt;
         }
 
-        return map.at(toLowerCopy(key));
+        return map.at(toLowerCopy(key.value()));
 }
