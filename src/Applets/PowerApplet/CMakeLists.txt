@@ -15,7 +15,12 @@ target_include_directories(PowerApplet PRIVATE
         ${GLOBAL_INCLUSIONS})
 
 target_link_libraries(PowerApplet PRIVATE
-        PowerApplet::Deps)
+        Config
+        DBus
+        Log
+        UI
+        PowerApplet::UI
+        PowerApplet::DBus)
 
 if (ENABLE_ASAN OR ENABLE_LSAN OR ENABLE_UBSAN)
         target_compile_options(PowerApplet PRIVATE -fno-omit-frame-pointer -g)
@@ -42,15 +47,3 @@ install(TARGETS PowerApplet
 
 # Finalization
 qt_finalize_executable(PowerApplet)
-
-# Internal dependencies
-add_library(PowerApplet_Deps)
-add_library(PowerApplet::Deps ALIAS PowerApplet_Deps)
-
-target_link_libraries(PowerApplet_Deps INTERFACE
-        Config
-        DBus
-        Log
-        UI
-        PowerApplet::UI
-        PowerApplet::DBus)
