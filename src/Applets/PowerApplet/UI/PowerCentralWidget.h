@@ -39,14 +39,14 @@ private:
         const keybindings&        getKeysFromPowerButtonID(power_button_id button);
         power_button_id           getPowerButtonIDFromKeys(const keybindings& keys);
         power_button_id           getPowerButtonIDFromKey(int key);
-        std::vector<PowerButton*> createButtonList(QBoxLayout* main_layout);
+        std::vector<PowerButton*> createButtons(QBoxLayout* main_layout);
 
         QBoxLayout*                     main_layout;
-        const std::vector<PowerButton*> button_list;
+        const std::vector<PowerButton*> buttons;
 
 public:
         explicit PowerCentralWidget(QWidget* parent);
         const QBoxLayout*                getMainLayout() const;
-        const std::vector<PowerButton*>& getButtonList() const;
+        const std::vector<PowerButton*>& getButtons() const;
         void                             keyPressEvent(QKeyEvent* event) override;
 };

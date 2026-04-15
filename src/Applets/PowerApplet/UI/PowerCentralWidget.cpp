@@ -72,8 +72,8 @@ const keybindings& PowerCentralWidget::getKeysFromPowerButton(const PowerButton*
                 const auto& keys = PowerAppletKeys::get().getPrimaryButtonKeys();
 
                 // Cache the full keys map
-                for (size_t i = 0; i < button_list.size() && i < keys.size(); ++i) {
-                        map[button_list[i]] = &keys[i];
+                for (size_t i = 0; i < buttons.size() && i < keys.size(); ++i) {
+                        map[buttons[i]] = &keys[i];
                 }
 
                 processed = true;
@@ -91,8 +91,8 @@ PowerButton* PowerCentralWidget::getPowerButtonFromKeys(const keybindings& keys)
                 const auto& keys = PowerAppletKeys::get().getPrimaryButtonKeys();
 
                 // Cache the full PowerButton map
-                for (size_t i = 0; i < button_list.size() && i < keys.size(); ++i) {
-                        map[&keys[i]] = button_list[i];
+                for (size_t i = 0; i < buttons.size() && i < keys.size(); ++i) {
+                        map[&keys[i]] = buttons[i];
                 }
 
                 processed = true;
@@ -122,7 +122,7 @@ PowerButton* PowerCentralWidget::getPowerButtonFromKey(int key) {
 }
 
 PowerButton* PowerCentralWidget::getPowerButtonFromPowerButtonID(power_button_id button) {
-        for (auto* power_button : button_list) {
+        for (auto* power_button : buttons) {
                 if (power_button->getID() == button) { return power_button; }
         }
 
@@ -161,7 +161,7 @@ QString getDBusMethodFromPowerButtonID(power_button_id id) {
         return map.at(id);
 }
 
-std::vector<PowerButton*> PowerCentralWidget::createButtonList(QBoxLayout* main_layout) {
+std::vector<PowerButton*> PowerCentralWidget::createButtons(QBoxLayout* main_layout) {
         const auto& primary_buttons_data =
                 PowerAppletConfig::get().getLayoutProperties().getPowerButtons();
         const auto primary_buttons_icons = createButtonIcons();
@@ -189,8 +189,7 @@ std::vector<PowerButton*> PowerCentralWidget::createButtonList(QBoxLayout* main_
 }
 
 PowerCentralWidget::PowerCentralWidget(QWidget* parent) :
-        QWidget(parent), main_layout(new QHBoxLayout(this)),
-        button_list(createButtonList(main_layout)) {
+        QWidget(parent), main_layout(new QHBoxLayout(this)), buttons(createButtons(main_layout)) {
         if (!parent) {
                 QFATAL("Parent of PowerCentralWidget is null! Shutting down to avoid memory leaks...");
         }
@@ -200,8 +199,8 @@ const QBoxLayout* PowerCentralWidget::getMainLayout() const {
         return main_layout;
 }
 
-const std::vector<PowerButton*>& PowerCentralWidget::getButtonList() const {
-        return button_list;
+const std::vector<PowerButton*>& PowerCentralWidget::getButtons() const {
+        return buttons;
 }
 
 void PowerCentralWidget::keyPressEvent(QKeyEvent* event) {
