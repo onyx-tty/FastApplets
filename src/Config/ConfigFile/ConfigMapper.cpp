@@ -61,7 +61,7 @@ static power_button_id getPowerButtonIDFromString(const QString& string) {
         return map.at(string);
 }
 
-static QIcon findIcon(power_button_id id) {
+static QIcon iconFor(power_button_id id) {
         Q_INIT_RESOURCE(Icons);
 
         switch (id) {
@@ -326,7 +326,7 @@ bool ConfigMapper::mapPrimaryButton(node_view                             button
         mapCommand(button_params_node["command"], button, defaults, button.command, button_index,
                    extendCfgPath(path_context, "command"));
 
-        button.icon = findIcon(button.id);
+        button.icon = iconFor(button.id);
 
         button.dbus_method = dbusMethodFor(button.id);
 
