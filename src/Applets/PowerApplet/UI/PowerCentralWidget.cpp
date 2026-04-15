@@ -83,7 +83,7 @@ PowerButtonRecords PowerCentralWidget::createButtons(QBoxLayout* main_layout) {
 PowerCentralWidget::PowerCentralWidget(QWidget* parent) :
         QWidget(parent), main_layout(new QHBoxLayout(this)), buttons(createButtons(main_layout)) {
         if (!parent) {
-                QFATAL("Parent of PowerCentralWidget is null! Shutting down to avoid memory leaks...");
+                QFATAL("Parent of PowerCentralWidget is null!");
         }
 }
 
