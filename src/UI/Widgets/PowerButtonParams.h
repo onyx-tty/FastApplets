@@ -20,12 +20,15 @@
 #include "UI/Widgets/PrimaryButtonParams.h"
 
 class ShellCommand;
+class QString;
 
 struct PowerButtonParams final : PrimaryButtonParams {
         power_button_id id;
         ShellCommand    command;
+        QString         dbus_method;
 
         PowerButtonParams(power_button_id id = power_button_id::none, QString label = {},
-                          long order = {}, ShellCommand command = {}) :
-                PrimaryButtonParams(std::move(label), order), id(id), command(std::move(command)) {}
+                          long order = {}, ShellCommand command = {}, QString dbus_method = {}) :
+                PrimaryButtonParams(std::move(label), order), id(id), command(std::move(command)),
+                dbus_method(std::move(dbus_method)) {}
 };
