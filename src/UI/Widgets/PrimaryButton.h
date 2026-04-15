@@ -36,13 +36,13 @@ private:
         // Decouple text and icon using proxy labels
         void alignIconLabel(const QPixmap& icon_pixmap, Qt::Alignment alignment,
                             QSizePolicy size_policy);
-        void alignLabel(const QString& label_text, Qt::Alignment label_alignment);
+        void alignLabel(const QString& text, Qt::Alignment label_alignment);
 
         QLabel* icon_label;
-        QLabel* label;
+        QLabel* text_label;
 
 protected:
-        explicit PrimaryButton(const QIcon& icon, const QString& label,
+        explicit PrimaryButton(const QIcon& icon, const QString& text,
                                const PrimaryButtonProperties& properties);
         virtual ~PrimaryButton() = 0;
 

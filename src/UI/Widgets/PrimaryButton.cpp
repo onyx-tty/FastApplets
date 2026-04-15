@@ -43,13 +43,13 @@ void PrimaryButton::paintEvent(QPaintEvent*) {
         style()->drawControl(QStyle::CE_PushButton, &option, &painter, this);
 }
 
-void PrimaryButton::alignLabel(const QString& label_text, Qt::Alignment label_alignment) {
-        label = new QLabel(label_text, this); // label that acts as a button text replacement
-        label->setAlignment(label_alignment);
-        label->setAttribute(Qt::WA_TransparentForMouseEvents, true);
-        layout()->addWidget(label);
+void PrimaryButton::alignLabel(const QString& text, Qt::Alignment label_alignment) {
+        text_label = new QLabel(text, this); // label that acts as a button text replacement
+        text_label->setAlignment(label_alignment);
+        text_label->setAttribute(Qt::WA_TransparentForMouseEvents, true);
+        layout()->addWidget(text_label);
 
-        QDEBUG() << "Label successfully initialized with text:" << label_text;
+        QDEBUG() << "Label successfully initialized with text:" << text;
 }
 
 void PrimaryButton::alignIconLabel(const QPixmap& icon_pixmap, Qt::Alignment alignment,
@@ -66,7 +66,7 @@ void PrimaryButton::alignIconLabel(const QPixmap& icon_pixmap, Qt::Alignment ali
 // Inheriting constructor defaults from from QPushButton,
 // but customizing the icon, icon size and the alignment of that button
 // TODO Default icon
-PrimaryButton::PrimaryButton(const QIcon& icon, const QString& label,
+PrimaryButton::PrimaryButton(const QIcon& icon, const QString& text,
                              const PrimaryButtonProperties& properties) {
         auto* stacked = new QStackedLayout(this);
         stacked->setStackingMode(QStackedLayout::StackAll);
@@ -75,7 +75,7 @@ PrimaryButton::PrimaryButton(const QIcon& icon, const QString& label,
         setIconSize(properties.getIconSize());
         setSizePolicy(properties.getPolicy());
         setAutoDefault(false);
-        alignLabel(label, properties.getTextAlignment());
+        alignLabel(text, properties.getTextAlignment());
         alignIconLabel(icon.pixmap(properties.getIconSize()), properties.getIconAlignment(),
                        properties.getPolicy());
 }
@@ -83,5 +83,5 @@ PrimaryButton::PrimaryButton(const QIcon& icon, const QString& label,
 PrimaryButton::~PrimaryButton() = default;
 
 QString PrimaryButton::text() const {
-        return label->text();
+        return text_label->text();
 }

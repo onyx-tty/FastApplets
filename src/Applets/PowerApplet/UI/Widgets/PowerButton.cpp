@@ -29,14 +29,14 @@
 #include <QIcon>
 #include <QString>
 
-PowerButton::PowerButton(power_button_id id, const QIcon& icon, const QString& label,
+PowerButton::PowerButton(power_button_id id, const QIcon& icon, const QString& text,
                          const QString& dbus_action, const ShellCommand& command) :
-        PrimaryButton(icon, label, PowerAppletConfig::get().getPrimaryButtonProperties()), id(id),
+        PrimaryButton(icon, text, PowerAppletConfig::get().getPrimaryButtonProperties()), id(id),
         dbus_action(dbus_action) {
         connect(this, &PowerButton::clicked,
                 [this, command]() { ShellRunner::runCommand(command); });
 
-        QDEBUG_NS() << "Created " << label << "!";
+        QDEBUG_NS() << "Created " << text << "!";
 }
 
 power_button_id PowerButton::getID() const {
