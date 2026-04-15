@@ -29,11 +29,10 @@
 #include <QIcon>
 #include <QString>
 
-PowerButton::PowerButton(QBoxLayout* layout, power_button_id id, const QIcon& icon,
-                         const QString& label, const QString& dbus_action,
-                         const ShellCommand& command) :
-        PrimaryButton(layout, icon, label, PowerAppletConfig::get().getPrimaryButtonProperties()),
-        id(id), dbus_action(dbus_action) {
+PowerButton::PowerButton(power_button_id id, const QIcon& icon, const QString& label,
+                         const QString& dbus_action, const ShellCommand& command) :
+        PrimaryButton(icon, label, PowerAppletConfig::get().getPrimaryButtonProperties()), id(id),
+        dbus_action(dbus_action) {
         connect(this, &PowerButton::clicked,
                 [this, command]() { ShellRunner::runCommand(command); });
 

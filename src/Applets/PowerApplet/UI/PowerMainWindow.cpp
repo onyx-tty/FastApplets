@@ -17,10 +17,11 @@
 
 #include "PowerMainWindow.h"
 #include "Config/ConfigFile/PowerApplet/PowerAppletConfig.h"
+#include "PowerCentralWidget.h"
 
-PowerMainWindow::PowerMainWindow(QWidget* parent) :
-        MainWindow(PowerAppletConfig::get().getWindowProperties(), parent),
-        central_widget(new PowerCentralWidget(this)) {
+PowerMainWindow::PowerMainWindow() :
+        MainWindow(PowerAppletConfig::get().getWindowProperties()),
+        central_widget(new PowerCentralWidget{}) {
         resize(PowerAppletConfig::get().getWindowProperties().getSize());
         setCentralWidget(central_widget);
 }

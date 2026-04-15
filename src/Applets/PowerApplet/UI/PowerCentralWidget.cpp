@@ -54,7 +54,7 @@ static bool isQuitKey(int key) {
         return quit_keys.contains(key);
 }
 
-PowerButtonRecords PowerCentralWidget::createButtons(QBoxLayout* main_layout) {
+PowerButtonRecords PowerCentralWidget::createButtons() {
         const auto& primary_buttons_data =
                 PowerAppletConfig::get().getLayoutProperties().getPowerButtons();
 
@@ -67,10 +67,10 @@ PowerButtonRecords PowerCentralWidget::createButtons(QBoxLayout* main_layout) {
                 QString         label       = primary_buttons_data[i].label;
                 QString         dbus_method = primary_buttons_data[i].dbus_method;
                 ShellCommand    command     = primary_buttons_data[i].command;
-                auto* power_button      = new PowerButton(main_layout, id, icon, label, dbus_method,
-                                                          command);
+                auto* power_button      = new PowerButton(id, icon, label, dbus_method, command);
                 const keybindings& keys = PowerAppletKeys::get().getPrimaryButtonKeys()[i];
 
+                main_layout->addWidget(power_button);
                 primary_buttons.push_back({id, power_button, keys});
         }
 
@@ -79,12 +79,8 @@ PowerButtonRecords PowerCentralWidget::createButtons(QBoxLayout* main_layout) {
         return primary_buttons;
 }
 
-PowerCentralWidget::PowerCentralWidget(QWidget* parent) :
-        QWidget(parent), main_layout(new QHBoxLayout(this)), buttons(createButtons(main_layout)) {
-        if (!parent) {
-                QFATAL("Parent of PowerCentralWidget is null!");
-        }
-}
+PowerCentralWidget::PowerCentralWidget() :
+        main_layout(new QHBoxLayout(this)), buttons(createButtons()) {}
 
 const QBoxLayout* PowerCentralWidget::getMainLayout() const {
         return main_layout;

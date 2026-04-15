@@ -33,13 +33,13 @@ class PowerCentralWidget final : public QWidget {
         Q_OBJECT
 
 private:
-        PowerButtonRecords createButtons(QBoxLayout* main_layout);
+        PowerButtonRecords createButtons();
 
         QBoxLayout*        main_layout;
         PowerButtonRecords buttons;
 
 public:
-        explicit PowerCentralWidget(QWidget* parent);
+        explicit PowerCentralWidget();
         const QBoxLayout*         getMainLayout() const;
         const PowerButtonRecords& getButtons() const;
         void                      keyPressEvent(QKeyEvent* event) override;

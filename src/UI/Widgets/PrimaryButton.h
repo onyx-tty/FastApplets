@@ -42,7 +42,7 @@ private:
         QLabel* label;
 
 protected:
-        explicit PrimaryButton(QBoxLayout* layout, const QIcon& icon, const QString& label,
+        explicit PrimaryButton(const QIcon& icon, const QString& label,
                                const PrimaryButtonProperties& properties);
         virtual ~PrimaryButton() = 0;
 

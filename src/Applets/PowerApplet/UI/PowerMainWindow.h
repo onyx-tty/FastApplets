@@ -29,6 +29,6 @@ private:
         PowerCentralWidget* central_widget;
 
 public:
-        explicit PowerMainWindow(QWidget* parent = nullptr);
+        explicit PowerMainWindow();
         const PowerCentralWidget* getCentralWidget() const;
 };

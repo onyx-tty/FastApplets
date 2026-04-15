@@ -25,6 +25,6 @@ class MainWindow : public QMainWindow {
         Q_OBJECT
 
 protected:
-        explicit MainWindow(const WindowProperties& properties, QWidget* parent = nullptr);
+        explicit MainWindow(const WindowProperties& properties);
         virtual ~MainWindow() = 0;
 };

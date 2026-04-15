@@ -34,9 +34,8 @@ private:
         const QString         dbus_action;
 
 public:
-        explicit PowerButton(QBoxLayout* layout, power_button_id id, const QIcon& icon,
-                             const QString& label, const QString& dbus_action,
-                             const ShellCommand& command);
+        explicit PowerButton(power_button_id id, const QIcon& icon, const QString& label,
+                             const QString& dbus_action, const ShellCommand& command);
         power_button_id getID() const;
         const QString&  getDBusAction() const;
 };
