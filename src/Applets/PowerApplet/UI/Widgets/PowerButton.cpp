@@ -18,6 +18,7 @@
 #include "PowerButton.h"
 #include "Applets/PowerApplet/DBus/PowerActionManager.h"
 #include "Config/ConfigFile/PowerApplet/PowerAppletConfig.h"
+#include "Log/Log.h"
 #include "Shell/ShellCommand.h"
 #include "Shell/ShellRunner.h"
 #include "UI/Enums/ButtonIDs.h"
@@ -35,6 +36,8 @@ PowerButton::PowerButton(QBoxLayout* layout, power_button_id id, const QIcon& ic
         id(id), dbus_action(dbus_action) {
         connect(this, &PowerButton::clicked,
                 [this, command]() { ShellRunner::runCommand(command); });
+
+        QDEBUG_NS() << "Created " << text << "!";
 }
 
 power_button_id PowerButton::getID() const {

@@ -62,7 +62,6 @@ PowerButtonRecords PowerCentralWidget::createButtons(QBoxLayout* main_layout) {
         primary_buttons.reserve(primary_buttons_data.size());
 
         for (size_t i = 0; i != primary_buttons_data.size(); ++i) {
-                QDEBUG() << "Created" << primary_buttons_data[i].label << "!";
                 power_button_id id          = primary_buttons_data[i].id;
                 QIcon           icon        = primary_buttons_data[i].icon;
                 QString         label       = primary_buttons_data[i].label;
