@@ -19,7 +19,7 @@
 #include "Config/ConfigFile/Properties/PrimaryButtonProperties.h"
 #include "Log/Log.h"
 
-#include <QGridLayout>
+#include <QStackedLayout>
 #include <QStyleOptionButton>
 #include <QStylePainter>
 
@@ -44,11 +44,15 @@ void PrimaryButton::paintEvent(QPaintEvent*) {
 }
 
 void PrimaryButton::alignLabel(const QString& label_text, Qt::Alignment label_alignment) {
-        setLayout(new QGridLayout);
+        auto* layout = new QStackedLayout(this);
+        layout->setStackingMode(QStackedLayout::StackAll);
+        setLayout(layout);
+
         label = new QLabel(label_text, this); // label that acts as a button text replacement
         label->setAlignment(label_alignment);
         label->setAttribute(Qt::WA_TransparentForMouseEvents, true);
-        layout()->addWidget(label);
+        layout->addWidget(label);
+
         QDEBUG() << "Label successfully initialized with text:" << label_text;
 }
 
