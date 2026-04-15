@@ -39,10 +39,6 @@
 using button_bindings     = std::unordered_map<const PowerButton*, const keybindings*>;
 using keybinding_bindings = std::unordered_map<const keybindings*, PowerButton*>;
 
-static std::array<QString, 4> createDBusMethods() {
-        return {"PowerOff", "Reboot", "Suspend", "Hibernate"};
-}
-
 // TODO Extract
 static bool isPowerKey(int key) {
         for (const auto& button_keys : PowerAppletKeys::get().getPrimaryButtonKeys()) {
@@ -61,26 +57,20 @@ static bool isQuitKey(int key) {
 PowerButtonRecords PowerCentralWidget::createButtons(QBoxLayout* main_layout) {
         const auto& primary_buttons_data =
                 PowerAppletConfig::get().getLayoutProperties().getPowerButtons();
-        const auto primary_buttons_dbus_methods = createDBusMethods();
-
-        if (primary_buttons_dbus_methods.size() != primary_buttons_data.size()
-            && primary_buttons_dbus_methods.size() != 4) {
-                QFATAL("primary_buttons_icons mismatched, 4 icons expected!");
-        }
 
         PowerButtonRecords primary_buttons{};
         primary_buttons.reserve(primary_buttons_data.size());
 
         for (size_t i = 0; i != primary_buttons_data.size(); ++i) {
                 QDEBUG() << "Created" << primary_buttons_data[i].label << "!";
-                power_button_id    id           = primary_buttons_data[i].id;
-                QIcon              icon         = primary_buttons_data[i].icon;
-                QString            label        = primary_buttons_data[i].label;
-                QString            dbus_method  = primary_buttons_dbus_methods[i];
-                ShellCommand       command      = primary_buttons_data[i].command;
-                PowerButton*       power_button = new PowerButton(main_layout, id, icon, label,
-                                                                  dbus_method, command);
-                const keybindings& keys         = PowerAppletKeys::get().getPrimaryButtonKeys()[i];
+                power_button_id id          = primary_buttons_data[i].id;
+                QIcon           icon        = primary_buttons_data[i].icon;
+                QString         label       = primary_buttons_data[i].label;
+                QString         dbus_method = primary_buttons_data[i].dbus_method;
+                ShellCommand    command     = primary_buttons_data[i].command;
+                auto* power_button      = new PowerButton(main_layout, id, icon, label, dbus_method,
+                                                          command);
+                const keybindings& keys = PowerAppletKeys::get().getPrimaryButtonKeys()[i];
 
                 primary_buttons.push_back({id, power_button, keys});
         }

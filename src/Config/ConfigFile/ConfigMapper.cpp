@@ -74,6 +74,18 @@ static QIcon findIcon(power_button_id id) {
         return {};
 }
 
+static QString dbusMethodFor(power_button_id id) {
+        switch (id) {
+        case power_button_id::shutdown:  return "PowerOff";
+        case power_button_id::reboot:    return "Reboot";
+        case power_button_id::suspend:   return "Suspend";
+        case power_button_id::hibernate: return "Hibernate";
+        }
+
+        QCRITICAL() << "DBus method unclear, power_button_id:" << static_cast<int>(id);
+        return {};
+}
+
 static void handleButtonResolutionFailure(PowerButtonParams&       button,
                                           const PowerButtonParams* defaults, size_t button_index) {
         if (!defaults) {
@@ -315,6 +327,8 @@ bool ConfigMapper::mapPrimaryButton(node_view                             button
                    extendCfgPath(path_context, "command"));
 
         button.icon = findIcon(button.id);
+
+        button.dbus_method = dbusMethodFor(button.id);
 
         buttons.insert(buttons.cend(), std::move(button));
 
