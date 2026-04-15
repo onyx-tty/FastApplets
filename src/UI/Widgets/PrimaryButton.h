@@ -33,10 +33,12 @@ class PrimaryButton : public QPushButton {
 private:
         // Modified re-implementation of paintEvent that allows for manual setting of focus
         void paintEvent(QPaintEvent*) override;
-        // Decouple text from icon and use a proxy label as text, for higher alignment
-        // customizability
+        // Decouple text and icon using proxy labels
+        void alignIconLabel(const QPixmap& icon_pixmap, Qt::Alignment alignment,
+                            QSizePolicy size_policy);
         void alignLabel(const QString& label_text, Qt::Alignment label_alignment);
 
+        QLabel* icon_label;
         QLabel* label;
 
 protected:
@@ -45,5 +47,6 @@ protected:
         virtual ~PrimaryButton() = 0;
 
 public:
+        QIcon   icon() = delete;
         QString text() const;
 };

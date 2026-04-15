@@ -56,6 +56,16 @@ void PrimaryButton::alignLabel(const QString& label_text, Qt::Alignment label_al
         QDEBUG() << "Label successfully initialized with text:" << label_text;
 }
 
+void PrimaryButton::alignIconLabel(const QPixmap& icon_pixmap, Qt::Alignment alignment,
+                                   QSizePolicy size_policy) {
+        icon_label = new QLabel("", this);
+        icon_label->setAlignment(alignment);
+        icon_label->setSizePolicy(size_policy);
+        icon_label->setAttribute(Qt::WA_TransparentForMouseEvents, true);
+        icon_label->setPixmap(icon_pixmap);
+        layout()->addWidget(icon_label);
+}
+
 /* Initializes a button of choice with uniform design */
 // Inheriting constructor defaults from from QPushButton,
 // but customizing the icon, icon size and the alignment of that button
@@ -65,11 +75,13 @@ PrimaryButton::PrimaryButton(QBoxLayout* layout, const QIcon& icon, const QStrin
         QPushButton(layout ? layout->widget() : nullptr) {
         if (!layout) { QFATAL("Button constructor received a null layout! Bad code!"); }
 
-        setIcon(icon);
         setIconSize(properties.getIconSize());
         setSizePolicy(properties.getPolicy());
         setAutoDefault(false);
         alignLabel(label, properties.getTextAlignment());
+        alignIconLabel(icon.pixmap(properties.getIconSize()), properties.getIconAlignment(),
+                       properties.getPolicy());
+
         layout->addWidget(this);
 }
 
