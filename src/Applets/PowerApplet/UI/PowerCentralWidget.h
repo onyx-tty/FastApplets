@@ -21,6 +21,7 @@
 #include "Config/KeysFile/Types/Keybindings.h"
 #include "UI/Enums/ButtonIDs.h"
 #include "Widgets/PowerButton.h"
+#include "Widgets/PowerButtonRecord.h"
 
 #include <qnamespace.h>
 #include <vector>
@@ -32,21 +33,21 @@ class PowerCentralWidget final : public QWidget {
         Q_OBJECT
 
 private:
-        const keybindings&        getKeysFromPowerButton(const PowerButton* power_button);
-        PowerButton*              getPowerButtonFromKeys(const keybindings& keys);
-        PowerButton*              getPowerButtonFromKey(int key);
-        PowerButton*              getPowerButtonFromPowerButtonID(power_button_id button);
-        const keybindings&        getKeysFromPowerButtonID(power_button_id button);
-        power_button_id           getPowerButtonIDFromKeys(const keybindings& keys);
-        power_button_id           getPowerButtonIDFromKey(int key);
-        std::vector<PowerButton*> createButtons(QBoxLayout* main_layout);
+        const keybindings& getKeysFromPowerButton(const PowerButton* power_button);
+        PowerButton*       getPowerButtonFromKeys(const keybindings& keys);
+        PowerButton*       getPowerButtonFromKey(int key);
+        PowerButton*       getPowerButtonFromPowerButtonID(power_button_id button);
+        const keybindings& getKeysFromPowerButtonID(power_button_id button);
+        power_button_id    getPowerButtonIDFromKeys(const keybindings& keys);
+        power_button_id    getPowerButtonIDFromKey(int key);
+        PowerButtonRecords createButtons(QBoxLayout* main_layout);
 
-        QBoxLayout*                     main_layout;
-        const std::vector<PowerButton*> buttons;
+        QBoxLayout*        main_layout;
+        PowerButtonRecords buttons;
 
 public:
         explicit PowerCentralWidget(QWidget* parent);
-        const QBoxLayout*                getMainLayout() const;
-        const std::vector<PowerButton*>& getButtons() const;
-        void                             keyPressEvent(QKeyEvent* event) override;
+        const QBoxLayout*         getMainLayout() const;
+        const PowerButtonRecords& getButtons() const;
+        void                      keyPressEvent(QKeyEvent* event) override;
 };

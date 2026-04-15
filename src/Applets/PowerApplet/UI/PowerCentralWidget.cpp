@@ -73,7 +73,7 @@ const keybindings& PowerCentralWidget::getKeysFromPowerButton(const PowerButton*
 
                 // Cache the full keys map
                 for (size_t i = 0; i < buttons.size() && i < keys.size(); ++i) {
-                        map[buttons[i]] = &keys[i];
+                        map[buttons[i].widget] = &keys[i];
                 }
 
                 processed = true;
@@ -92,7 +92,7 @@ PowerButton* PowerCentralWidget::getPowerButtonFromKeys(const keybindings& keys)
 
                 // Cache the full PowerButton map
                 for (size_t i = 0; i < buttons.size() && i < keys.size(); ++i) {
-                        map[&keys[i]] = buttons[i];
+                        map[&keys[i]] = buttons[i].widget;
                 }
 
                 processed = true;
@@ -122,7 +122,8 @@ PowerButton* PowerCentralWidget::getPowerButtonFromKey(int key) {
 }
 
 PowerButton* PowerCentralWidget::getPowerButtonFromPowerButtonID(power_button_id button) {
-        for (auto* power_button : buttons) {
+        for (auto& power_record : buttons) {
+                PowerButton* power_button = power_record.widget;
                 if (power_button->getID() == button) { return power_button; }
         }
 
@@ -161,7 +162,7 @@ QString getDBusMethodFromPowerButtonID(power_button_id id) {
         return map.at(id);
 }
 
-std::vector<PowerButton*> PowerCentralWidget::createButtons(QBoxLayout* main_layout) {
+PowerButtonRecords PowerCentralWidget::createButtons(QBoxLayout* main_layout) {
         const auto& primary_buttons_data =
                 PowerAppletConfig::get().getLayoutProperties().getPowerButtons();
         const auto primary_buttons_icons = createButtonIcons();
@@ -171,16 +172,21 @@ std::vector<PowerButton*> PowerCentralWidget::createButtons(QBoxLayout* main_lay
                 QFATAL("primary_buttons_icons mismatched, 4 icons expected!");
         }
 
-        std::vector<PowerButton*> primary_buttons;
+        PowerButtonRecords primary_buttons{};
         primary_buttons.reserve(primary_buttons_data.size());
 
         for (size_t i = 0; i != primary_buttons_data.size(); ++i) {
                 QDEBUG() << "Created" << primary_buttons_data[i].label << "!";
-                QString method = getDBusMethodFromPowerButtonID(primary_buttons_data[i].id);
-                primary_buttons.push_back(new PowerButton(main_layout, primary_buttons_data[i].id,
-                                                          primary_buttons_icons[i],
-                                                          primary_buttons_data[i].label, method,
-                                                          primary_buttons_data[i].command));
+                power_button_id id    = primary_buttons_data[i].id;
+                QIcon           icon  = primary_buttons_icons[i];
+                QString         label = primary_buttons_data[i].label;
+                QString dbus_method   = getDBusMethodFromPowerButtonID(primary_buttons_data[i].id);
+                ShellCommand       command      = primary_buttons_data[i].command;
+                PowerButton*       power_button = new PowerButton(main_layout, id, icon, label,
+                                                                  dbus_method, command);
+                const keybindings& keys         = PowerAppletKeys::get().getPrimaryButtonKeys()[i];
+
+                primary_buttons.push_back({id, power_button, keys});
         }
 
         if (primary_buttons.empty()) { QFATAL("No buttons found!"); }
@@ -199,7 +205,7 @@ const QBoxLayout* PowerCentralWidget::getMainLayout() const {
         return main_layout;
 }
 
-const std::vector<PowerButton*>& PowerCentralWidget::getButtons() const {
+const PowerButtonRecords& PowerCentralWidget::getButtons() const {
         return buttons;
 }
 
