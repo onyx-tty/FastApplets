@@ -47,15 +47,6 @@ void PrimaryButton::paintEvent(QPaintEvent*) {
         style()->drawControl(QStyle::CE_PushButton, &option, &painter, this);
 }
 
-bool PrimaryButton::event(QEvent* event) {
-        switch (event->type()) { // Ignore mouse hover, forward anything else
-        case QEvent::HoverMove:
-        case QEvent::HoverEnter:
-        case QEvent::HoverLeave: return false;
-        default:                 return QPushButton::event(event);
-        }
-}
-
 void PrimaryButton::alignLabel(const QString& label_text, Qt::Alignment label_alignment) {
         setLayout(new QGridLayout);
         setStyleSheet(stylesheet);

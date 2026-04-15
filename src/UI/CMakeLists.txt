@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.16)
 
-project(UI VERSION 0.4.1 LANGUAGES CXX)
+project(UI VERSION 0.4.2 LANGUAGES CXX)
 
 add_subdirectory(Enums)
 add_subdirectory(Widgets)
