@@ -68,104 +68,6 @@ static bool isQuitKey(int key) {
         return quit_keys.contains(key);
 }
 
-const keybindings& PowerCentralWidget::getKeysFromPowerButton(const PowerButton* power_button) {
-        static button_bindings map       = {};
-        static bool            processed = false;
-
-        if (!processed) {
-                const auto& keys = PowerAppletKeys::get().getPrimaryButtonKeys();
-
-                // Cache the full keys map
-                for (size_t i = 0; i < buttons.size() && i < keys.size(); ++i) {
-                        map[buttons[i].widget] = &keys[i];
-                }
-
-                processed = true;
-        }
-
-        return *(map.at(power_button));
-}
-
-PowerButton* PowerCentralWidget::getPowerButtonFromKeys(const keybindings& keys) {
-        static keybinding_bindings map       = {};
-        static bool                processed = false;
-
-        // TODO Simply reuse the map in getKeysFromPowerButton
-        if (!processed) {
-                const auto& keys = PowerAppletKeys::get().getPrimaryButtonKeys();
-
-                // Cache the full PowerButton map
-                for (size_t i = 0; i < buttons.size() && i < keys.size(); ++i) {
-                        map[&keys[i]] = buttons[i].widget;
-                }
-
-                processed = true;
-        }
-
-        // TODO Needs a safety check for missing keys - improved isPowerKey
-        return map.at(&keys);
-}
-
-PowerButton* PowerCentralWidget::getPowerButtonFromKey(int key) {
-        static std::unordered_map<int, PowerButton*> map       = {};
-        static bool                                  processed = false;
-
-        const auto& keys_arr = PowerAppletKeys::get().getPrimaryButtonKeys();
-        if (!processed) {
-                // Cache the full keys map
-                for (const auto& keys : keys_arr) { map[key] = getPowerButtonFromKeys(keys); }
-
-                processed = true;
-        }
-
-        for (const auto& keys : keys_arr) {
-                if (keys.contains(key)) { return getPowerButtonFromKeys(keys); }
-        }
-
-        return nullptr;
-}
-
-PowerButton* PowerCentralWidget::getPowerButtonFromPowerButtonID(power_button_id button) {
-        for (auto& power_record : buttons) {
-                PowerButton* power_button = power_record.widget;
-                if (power_button->getID() == button) { return power_button; }
-        }
-
-        // TODO In CppUtils, qt::qstring_utils::toQString should be able to interpret enums
-        QFATAL("Received unexpected power_button_id %i!", static_cast<int>(button));
-}
-
-const keybindings& PowerCentralWidget::getKeysFromPowerButtonID(power_button_id button) {
-        const auto* power_button = getPowerButtonFromPowerButtonID(button);
-        return getKeysFromPowerButton(power_button);
-}
-
-power_button_id PowerCentralWidget::getPowerButtonIDFromKeys(const keybindings& keys) {
-        const auto* power_button = getPowerButtonFromKeys(keys);
-
-        return power_button->getID();
-}
-
-power_button_id PowerCentralWidget::getPowerButtonIDFromKey(int key) {
-        const auto* power_button = getPowerButtonFromKey(key);
-
-        return power_button->getID();
-}
-
-QString getDBusMethodFromPowerButtonID(power_button_id id) {
-        const std::unordered_map<power_button_id, QString> map =
-                {{power_button_id::shutdown, "PowerOff"},
-                 {power_button_id::reboot, "Reboot"},
-                 {power_button_id::suspend, "Suspend"},
-                 {power_button_id::hibernate, "Hibernate"}};
-
-        if (!map.contains(id)) {
-                QFATAL("Received invalid power_button_id %i!", static_cast<int>(id));
-        }
-
-        return map.at(id);
-}
-
 PowerButtonRecords PowerCentralWidget::createButtons(QBoxLayout* main_layout) {
         const auto& primary_buttons_data =
                 PowerAppletConfig::get().getLayoutProperties().getPowerButtons();
@@ -220,7 +122,12 @@ const PowerButtonRecords& PowerCentralWidget::getButtons() const {
 }
 
 void PowerCentralWidget::keyPressEvent(QKeyEvent* event) {
-        PowerButton* current = getPowerButtonFromKey(event->key());
+        int        current_key = event->key();
+        const auto found_key = std::find_if(buttons.cbegin(), buttons.cend(),
+                                            [current_key](const PowerButtonRecord& record) -> bool {
+                                                    return record.keys.contains(current_key);
+                                            });
+        PowerButton* current = found_key != buttons.cend() ? found_key->widget : nullptr;
 
         // Quit pressed
         if (isQuitKey(event->key())) {
