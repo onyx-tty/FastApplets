@@ -29,7 +29,7 @@
 #include "Config/TOML/Types/TomlArrayConditions.h"
 #include "Log/Log.h"
 #include "UI/Enums/ButtonIDs.h"
-#include "UI/Widgets/PrimaryButtonData.h"
+#include "UI/Widgets/PrimaryButtonParams.h"
 
 #include <algorithm>
 #include <cstdint>
@@ -61,8 +61,9 @@ static power_button_id getPowerButtonIDFromString(const QString& string) {
         return map.at(string);
 }
 
-static void handleButtonResolutionFailure(PrimaryButtonData&       button,
-                                          const PrimaryButtonData* defaults, size_t button_index) {
+static void handleButtonResolutionFailure(PrimaryButtonParams&       button,
+                                          const PrimaryButtonParams* defaults,
+                                          size_t                     button_index) {
         if (!defaults) {
                 QWARNING() << "Failed to default button" << button_index << ", defaults missing!";
                 return;
@@ -156,8 +157,8 @@ void ConfigMapper::mapPrimaryButton(NodePair nodes, PrimaryButtonProperties& but
 }
 
 /* Layout Properties */
-void ConfigMapper::mapCommandArgument(node_view argument_node, PrimaryButtonData& button,
-                                      const PrimaryButtonData* defaults, QStringList& arguments,
+void ConfigMapper::mapCommandArgument(node_view argument_node, PrimaryButtonParams& button,
+                                      const PrimaryButtonParams* defaults, QStringList& arguments,
                                       size_t button_index, size_t arg_index,
                                       const QString& path_context) {
         QString        argument{};
@@ -177,8 +178,8 @@ void ConfigMapper::mapCommandArgument(node_view argument_node, PrimaryButtonData
         arguments << std::move(argument);
 }
 
-void ConfigMapper::mapCommandArguments(node_view arguments_node, PrimaryButtonData& button,
-                                       const PrimaryButtonData* defaults, QStringList& arguments,
+void ConfigMapper::mapCommandArguments(node_view arguments_node, PrimaryButtonParams& button,
+                                       const PrimaryButtonParams* defaults, QStringList& arguments,
                                        size_t button_index, const QString& path_context) {
         constexpr bool   is_override = false;
         constexpr size_t min_size    = 0;
@@ -202,8 +203,8 @@ void ConfigMapper::mapCommandArguments(node_view arguments_node, PrimaryButtonDa
         arguments = std::move(argument_list);
 }
 
-void ConfigMapper::mapCommand(node_view command_node, PrimaryButtonData& button,
-                              const PrimaryButtonData* defaults, ShellCommand& command,
+void ConfigMapper::mapCommand(node_view command_node, PrimaryButtonParams& button,
+                              const PrimaryButtonParams* defaults, ShellCommand& command,
                               size_t button_index, const QString& path_context) {
         constexpr bool   is_override = false;
         constexpr size_t min_size = 2, max_size = 2;
@@ -235,10 +236,10 @@ void ConfigMapper::mapCommand(node_view command_node, PrimaryButtonData& button,
         command = std::move(cmd);
 }
 
-bool ConfigMapper::mapPrimaryButton(node_view                             button_data_node,
-                                    std::vector<PrimaryButtonData>&       buttons,
-                                    const std::vector<PrimaryButtonData>& default_buttons,
-                                    const PrimaryButtonData* defaults, size_t button_index,
+bool ConfigMapper::mapPrimaryButton(node_view                               button_params_node,
+                                    std::vector<PrimaryButtonParams>&       buttons,
+                                    const std::vector<PrimaryButtonParams>& default_buttons,
+                                    const PrimaryButtonParams* defaults, size_t button_index,
                                     const QString& path_context) {
         if (button_index > buttons.size()) {
                 if (!buttons.empty()) {
@@ -253,7 +254,7 @@ bool ConfigMapper::mapPrimaryButton(node_view                             button
         const QString  button_path_context = path_context + QString("[%1]").arg(button_index);
         constexpr bool is_override         = false;
 
-        const auto button_table = resolve<toml::table>({Source{button_data_node,
+        const auto button_table = resolve<toml::table>({Source{button_params_node,
                                                                applet::power_applet.scope}},
                                                        button_path_context, is_override);
         if (!button_table) {
@@ -261,7 +262,7 @@ bool ConfigMapper::mapPrimaryButton(node_view                             button
                 return true;
         }
 
-        PrimaryButtonData button{};
+        PrimaryButtonParams button{};
 
         auto enabled = resolve<bool>({Source{button_table.value()["enabled"],
                                              applet::power_applet.scope}},
@@ -298,7 +299,7 @@ bool ConfigMapper::mapPrimaryButton(node_view                             button
                 button.order = order_result.value();
         }
 
-        mapCommand(button_data_node["command"], button, defaults, button.command, button_index,
+        mapCommand(button_params_node["command"], button, defaults, button.command, button_index,
                    extendCfgPath(path_context, "command"));
 
         buttons.insert(buttons.cend(), std::move(button));
@@ -306,10 +307,10 @@ bool ConfigMapper::mapPrimaryButton(node_view                             button
         return false;
 }
 
-void ConfigMapper::mapPrimaryButtons(node_view                             primary_buttons_node,
-                                     std::vector<PrimaryButtonData>&       primary_buttons,
-                                     const std::vector<PrimaryButtonData>& defaults,
-                                     const QString&                        path_context) {
+void ConfigMapper::mapPrimaryButtons(node_view                               primary_buttons_node,
+                                     std::vector<PrimaryButtonParams>&       primary_buttons,
+                                     const std::vector<PrimaryButtonParams>& defaults,
+                                     const QString&                          path_context) {
         constexpr bool   is_override = false;
         constexpr size_t min_size    = 1;
 
@@ -323,7 +324,7 @@ void ConfigMapper::mapPrimaryButtons(node_view                             prima
                 return;
         }
 
-        std::vector<PrimaryButtonData> buttons_found{};
+        std::vector<PrimaryButtonParams> buttons_found{};
 
         bool defaulted = false;
         for (size_t i = 0; i != buttons.value().size(); ++i) {
@@ -343,7 +344,7 @@ void ConfigMapper::mapPrimaryButtons(node_view                             prima
         }
 
         std::sort(buttons_found.begin(), buttons_found.end(),
-                  [](const PrimaryButtonData& a, const PrimaryButtonData& b) -> bool {
+                  [](const PrimaryButtonParams& a, const PrimaryButtonParams& b) -> bool {
                           return a.order < b.order;
                   });
 

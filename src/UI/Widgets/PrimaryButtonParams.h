@@ -22,7 +22,7 @@
 
 #include <QString>
 
-struct PrimaryButtonData final {
+struct PrimaryButtonParams final {
         power_button_id id;
         QString         label;
         long            order;

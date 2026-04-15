@@ -47,25 +47,25 @@ private:
                                      const QString&                 path_context);
 
         /* Layout Properties */
-        static void mapCommandArgument(node_view argument_node, PrimaryButtonData& button,
-                                       const PrimaryButtonData* defaults, QStringList& arguments,
+        static void mapCommandArgument(node_view argument_node, PrimaryButtonParams& button,
+                                       const PrimaryButtonParams* defaults, QStringList& arguments,
                                        size_t button_index, size_t arg_index,
                                        const QString& path_context);
-        static void mapCommandArguments(node_view arguments_node, PrimaryButtonData& button,
-                                        const PrimaryButtonData* defaults, QStringList& arguments,
+        static void mapCommandArguments(node_view arguments_node, PrimaryButtonParams& button,
+                                        const PrimaryButtonParams* defaults, QStringList& arguments,
                                         size_t button_index, const QString& path_context);
-        static void mapCommand(node_view command_node, PrimaryButtonData& button,
-                               const PrimaryButtonData* defaults, ShellCommand& command,
+        static void mapCommand(node_view command_node, PrimaryButtonParams& button,
+                               const PrimaryButtonParams* defaults, ShellCommand& command,
                                size_t button_index, const QString& path_context);
-        static bool mapPrimaryButton(node_view                             button_data_node,
-                                     std::vector<PrimaryButtonData>&       buttons,
-                                     const std::vector<PrimaryButtonData>& default_buttons,
-                                     const PrimaryButtonData* defaults, size_t button_index,
+        static bool mapPrimaryButton(node_view                               button_params_node,
+                                     std::vector<PrimaryButtonParams>&       buttons,
+                                     const std::vector<PrimaryButtonParams>& default_buttons,
+                                     const PrimaryButtonParams* defaults, size_t button_index,
                                      const QString& path_context);
-        static void mapPrimaryButtons(node_view                             primary_buttons_node,
-                                      std::vector<PrimaryButtonData>&       primary_buttons,
-                                      const std::vector<PrimaryButtonData>& defaults,
-                                      const QString&                        path_context);
+        static void mapPrimaryButtons(node_view                               primary_buttons_node,
+                                      std::vector<PrimaryButtonParams>&       primary_buttons,
+                                      const std::vector<PrimaryButtonParams>& defaults,
+                                      const QString&                          path_context);
         static void mapLayout(node_view layout_node, LayoutProperties& layout,
                               const LayoutProperties& defaults, const QString& path_context);
 

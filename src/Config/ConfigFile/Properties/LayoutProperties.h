@@ -17,7 +17,7 @@
 
 #pragma once
 
-#include "UI/Widgets/PrimaryButtonData.h"
+#include "UI/Widgets/PrimaryButtonParams.h"
 
 #include <vector>
 
@@ -27,9 +27,9 @@ class LayoutProperties final {
 private:
         friend class ConfigMapper;
 
-        std::vector<PrimaryButtonData> power_buttons;
+        std::vector<PrimaryButtonParams> power_buttons;
 
 public:
-        explicit LayoutProperties(std::vector<PrimaryButtonData> power_buttons = {});
-        const std::vector<PrimaryButtonData>& getPowerButtons() const;
+        explicit LayoutProperties(std::vector<PrimaryButtonParams> power_buttons = {});
+        const std::vector<PrimaryButtonParams>& getPowerButtons() const;
 };
