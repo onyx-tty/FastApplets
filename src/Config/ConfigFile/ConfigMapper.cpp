@@ -368,8 +368,8 @@ void ConfigMapper::mapLayout(node_view layout_node, LayoutProperties& layout,
         }
 
         // Primary power buttons
-        mapPrimaryButtons(data.value()["primary_buttons"], layout_properties.primary_power_buttons,
-                          defaults.getPrimaryPowerButtons(),
+        mapPrimaryButtons(data.value()["primary_buttons"], layout_properties.power_buttons,
+                          defaults.getPowerButtons(),
                           extendCfgPath(path_context, "primary_buttons"));
 
         layout = std::move(layout_properties);

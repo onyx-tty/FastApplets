@@ -17,8 +17,8 @@
 
 #include "PowerCentralWidget.h"
 #include "Config/ConfigFile/PowerApplet/PowerAppletConfig.h"
-#include "Config/KeysFile/Types/Keybindings.h"
 #include "Config/KeysFile/PowerApplet/PowerAppletKeys.h"
+#include "Config/KeysFile/Types/Keybindings.h"
 #include "Log/Log.h"
 #include "UI/Enums/ButtonIDs.h"
 #include "Widgets/PowerButton.h"
@@ -163,7 +163,7 @@ QString getDBusMethodFromPowerButtonID(power_button_id id) {
 
 std::vector<PowerButton*> PowerCentralWidget::createButtonList(QBoxLayout* main_layout) {
         const auto& primary_buttons_data =
-                PowerAppletConfig::get().getLayoutProperties().getPrimaryPowerButtons();
+                PowerAppletConfig::get().getLayoutProperties().getPowerButtons();
         const auto primary_buttons_icons = createButtonIcons();
 
         if (primary_buttons_icons.size() != primary_buttons_data.size()

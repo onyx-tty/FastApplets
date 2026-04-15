@@ -21,9 +21,9 @@
 #include <utility>
 #include <vector>
 
-LayoutProperties::LayoutProperties(std::vector<PrimaryButtonData> primary_power_buttons) :
-        primary_power_buttons(std::move(primary_power_buttons)) {}
+LayoutProperties::LayoutProperties(std::vector<PrimaryButtonData> power_buttons) :
+        power_buttons(std::move(power_buttons)) {}
 
-const std::vector<PrimaryButtonData>& LayoutProperties::getPrimaryPowerButtons() const {
-        return primary_power_buttons;
+const std::vector<PrimaryButtonData>& LayoutProperties::getPowerButtons() const {
+        return power_buttons;
 }

@@ -27,9 +27,9 @@ class LayoutProperties final {
 private:
         friend class ConfigMapper;
 
-        std::vector<PrimaryButtonData> primary_power_buttons;
+        std::vector<PrimaryButtonData> power_buttons;
 
 public:
-        explicit LayoutProperties(std::vector<PrimaryButtonData> primary_power_buttons = {});
-        const std::vector<PrimaryButtonData>& getPrimaryPowerButtons() const;
+        explicit LayoutProperties(std::vector<PrimaryButtonData> power_buttons = {});
+        const std::vector<PrimaryButtonData>& getPowerButtons() const;
 };
