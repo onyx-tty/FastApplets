@@ -17,8 +17,8 @@
 
 #pragma once
 
-#include "Config/KeysFile/Types/Keybindings.h"
 #include "Config/KeysFile/PowerApplet/PowerAppletKeys.h"
+#include "Config/KeysFile/Types/Keybindings.h"
 #include "UI/Enums/ButtonIDs.h"
 #include "Widgets/PowerButton.h"
 

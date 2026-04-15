@@ -23,8 +23,8 @@
 #include "Config/TOML/Types/NodePair.h"
 #include "Config/TOML/Types/NodeView.h"
 #include "Config/TOML/Types/TomlArrayConditions.h"
-#include "Log/Log.h"
 #include "Global/GlobalKeys.h"
+#include "Log/Log.h"
 #include "PowerApplet/PowerAppletKeys.h"
 
 #include <array>
