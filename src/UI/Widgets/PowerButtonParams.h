@@ -19,6 +19,8 @@
 
 #include "UI/Widgets/PrimaryButtonParams.h"
 
+#include <QIcon>
+
 class ShellCommand;
 class QString;
 
@@ -26,9 +28,11 @@ struct PowerButtonParams final : PrimaryButtonParams {
         power_button_id id;
         ShellCommand    command;
         QString         dbus_method;
+        QIcon           icon;
 
         PowerButtonParams(power_button_id id = power_button_id::none, QString label = {},
-                          long order = {}, ShellCommand command = {}, QString dbus_method = {}) :
+                          long order = {}, ShellCommand command = {}, QString dbus_method = {},
+                          const QIcon& icon = {}) :
                 PrimaryButtonParams(std::move(label), order), id(id), command(std::move(command)),
-                dbus_method(std::move(dbus_method)) {}
+                dbus_method(std::move(dbus_method)), icon(icon) {}
 };

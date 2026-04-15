@@ -39,16 +39,6 @@
 using button_bindings     = std::unordered_map<const PowerButton*, const keybindings*>;
 using keybinding_bindings = std::unordered_map<const keybindings*, PowerButton*>;
 
-// TODO Avoid creating icons for uninitialized buttons
-static std::array<QIcon, 4> createButtonIcons() {
-        Q_INIT_RESOURCE(Icons);
-        std::array<QIcon, 4> button_icons{QIcon(":/Icons/Power/shutdown.svg"),
-                                          QIcon(":/Icons/Power/reboot.svg"),
-                                          QIcon(":/Icons/Power/suspend.svg"),
-                                          QIcon(":/Icons/Power/hibernate.svg")};
-        return button_icons;
-}
-
 static std::array<QString, 4> createDBusMethods() {
         return {"PowerOff", "Reboot", "Suspend", "Hibernate"};
 }
@@ -71,13 +61,7 @@ static bool isQuitKey(int key) {
 PowerButtonRecords PowerCentralWidget::createButtons(QBoxLayout* main_layout) {
         const auto& primary_buttons_data =
                 PowerAppletConfig::get().getLayoutProperties().getPowerButtons();
-        const auto primary_buttons_icons        = createButtonIcons();
         const auto primary_buttons_dbus_methods = createDBusMethods();
-
-        if (primary_buttons_icons.size() != primary_buttons_data.size()
-            && primary_buttons_icons.size() != 4) {
-                QFATAL("primary_buttons_icons mismatched, 4 icons expected!");
-        }
 
         if (primary_buttons_dbus_methods.size() != primary_buttons_data.size()
             && primary_buttons_dbus_methods.size() != 4) {
@@ -90,7 +74,7 @@ PowerButtonRecords PowerCentralWidget::createButtons(QBoxLayout* main_layout) {
         for (size_t i = 0; i != primary_buttons_data.size(); ++i) {
                 QDEBUG() << "Created" << primary_buttons_data[i].label << "!";
                 power_button_id    id           = primary_buttons_data[i].id;
-                QIcon              icon         = primary_buttons_icons[i];
+                QIcon              icon         = primary_buttons_data[i].icon;
                 QString            label        = primary_buttons_data[i].label;
                 QString            dbus_method  = primary_buttons_dbus_methods[i];
                 ShellCommand       command      = primary_buttons_data[i].command;

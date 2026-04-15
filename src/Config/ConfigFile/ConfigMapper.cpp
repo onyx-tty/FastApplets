@@ -61,6 +61,19 @@ static power_button_id getPowerButtonIDFromString(const QString& string) {
         return map.at(string);
 }
 
+static QIcon findIcon(power_button_id id) {
+        Q_INIT_RESOURCE(Icons);
+
+        switch (id) {
+        case power_button_id::shutdown:  return QIcon{":/Icons/Power/shutdown.svg"};
+        case power_button_id::reboot:    return QIcon{":/Icons/Power/reboot.svg"};
+        case power_button_id::suspend:   return QIcon{":/Icons/Power/suspend.svg"};
+        case power_button_id::hibernate: return QIcon{":/Icons/Power/hibernate.svg"};
+        }
+
+        return {};
+}
+
 static void handleButtonResolutionFailure(PowerButtonParams&       button,
                                           const PowerButtonParams* defaults, size_t button_index) {
         if (!defaults) {
@@ -300,6 +313,8 @@ bool ConfigMapper::mapPrimaryButton(node_view                             button
 
         mapCommand(button_params_node["command"], button, defaults, button.command, button_index,
                    extendCfgPath(path_context, "command"));
+
+        button.icon = findIcon(button.id);
 
         buttons.insert(buttons.cend(), std::move(button));
 
