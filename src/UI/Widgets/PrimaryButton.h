@@ -41,9 +41,8 @@ private:
         QLabel* label;
 
 protected:
-        explicit PrimaryButton(QBoxLayout*    layout,
-                               const QIcon&   icon, // TODO default icon
-                               const QString& label, const PrimaryButtonProperties& properties);
+        explicit PrimaryButton(QBoxLayout* layout, const QIcon& icon, const QString& label,
+                               const PrimaryButtonProperties& properties);
         virtual ~PrimaryButton() = 0;
 
 public:
