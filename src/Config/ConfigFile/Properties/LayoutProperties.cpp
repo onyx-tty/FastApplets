@@ -16,14 +16,14 @@
    along with this program.  If not, see <https://www.gnu.org/licenses/>. */
 
 #include "LayoutProperties.h"
-#include "UI/Widgets/PrimaryButtonParams.h"
+#include "UI/Widgets/PowerButtonParams.h"
 
 #include <utility>
 #include <vector>
 
-LayoutProperties::LayoutProperties(std::vector<PrimaryButtonParams> power_buttons) :
+LayoutProperties::LayoutProperties(std::vector<PowerButtonParams> power_buttons) :
         power_buttons(std::move(power_buttons)) {}
 
-const std::vector<PrimaryButtonParams>& LayoutProperties::getPowerButtons() const {
+const std::vector<PowerButtonParams>& LayoutProperties::getPowerButtons() const {
         return power_buttons;
 }

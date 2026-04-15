@@ -25,7 +25,7 @@
 #include "Config/TOML/TomlParser.h"
 #include "Log/Log.h"
 #include "UI/Enums/ButtonIDs.h"
-#include "UI/Widgets/PrimaryButtonParams.h"
+#include "UI/Widgets/PowerButtonParams.h"
 
 #include <qnamespace.h>
 #include <utility>
@@ -34,7 +34,6 @@
 #include <QSizePolicy>
 #include <QString>
 
-/* PowerApplet Config */
 PowerAppletConfig::PowerAppletConfig(WindowProperties        window_properties,
                                      PrimaryButtonProperties primary_button_properties,
                                      LayoutProperties        layout_properties,
@@ -72,17 +71,17 @@ const PowerAppletConfig& PowerAppletConfig::getDefault() {
                                                                   std::move(icon_size),
                                                                   std::move(policy)};
 
-        std::vector<PrimaryButtonParams> primary_buttons =
-                {PrimaryButtonParams{power_button_id::shutdown,
+        std::vector<PowerButtonParams> primary_buttons =
+                {PowerButtonParams{power_button_id::shutdown,
                                    "Shutdown",
                                    1,
                                    {"systemctl", {"shutdown"}}},
-                 PrimaryButtonParams{power_button_id::reboot, "Reboot", 2, {"systemctl", {"reboot"}}},
-                 PrimaryButtonParams{power_button_id::suspend,
+                 PowerButtonParams{power_button_id::reboot, "Reboot", 2, {"systemctl", {"reboot"}}},
+                 PowerButtonParams{power_button_id::suspend,
                                    "Suspend",
                                    3,
                                    {"systemctl", {"suspend"}}},
-                 PrimaryButtonParams{power_button_id::hibernate,
+                 PowerButtonParams{power_button_id::hibernate,
                                    "Hibernate",
                                    4,
                                    {"systemctl", {"hibernate"}}}};

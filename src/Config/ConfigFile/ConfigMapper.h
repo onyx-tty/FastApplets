@@ -20,7 +20,6 @@
 #include "Config/ConfigFile/PowerApplet/PowerAppletConfig.h"
 #include "Config/ConfigFile/Properties/EnvironmentProperties.h"
 #include "Config/ConfigFile/Properties/LayoutProperties.h"
-#include "Config/ConfigFile/Properties/PrimaryButtonProperties.h"
 #include "Config/ConfigFile/Properties/WindowProperties.h"
 #include "Config/TOML/Types/NodePair.h"
 #include "Config/TOML/Types/NodeView.h"
@@ -30,6 +29,7 @@
 #include <QStringList>
 
 class GlobalConfig;
+class PowerButtonParams;
 class QString;
 class QSize;
 class QSizePolicy;
@@ -47,24 +47,24 @@ private:
                                      const QString&                 path_context);
 
         /* Layout Properties */
-        static void mapCommandArgument(node_view argument_node, PrimaryButtonParams& button,
-                                       const PrimaryButtonParams* defaults, QStringList& arguments,
+        static void mapCommandArgument(node_view argument_node, PowerButtonParams& button,
+                                       const PowerButtonParams* defaults, QStringList& arguments,
                                        size_t button_index, size_t arg_index,
                                        const QString& path_context);
-        static void mapCommandArguments(node_view arguments_node, PrimaryButtonParams& button,
-                                        const PrimaryButtonParams* defaults, QStringList& arguments,
+        static void mapCommandArguments(node_view arguments_node, PowerButtonParams& button,
+                                        const PowerButtonParams* defaults, QStringList& arguments,
                                         size_t button_index, const QString& path_context);
-        static void mapCommand(node_view command_node, PrimaryButtonParams& button,
-                               const PrimaryButtonParams* defaults, ShellCommand& command,
+        static void mapCommand(node_view command_node, PowerButtonParams& button,
+                               const PowerButtonParams* defaults, ShellCommand& command,
                                size_t button_index, const QString& path_context);
         static bool mapPrimaryButton(node_view                               button_params_node,
-                                     std::vector<PrimaryButtonParams>&       buttons,
-                                     const std::vector<PrimaryButtonParams>& default_buttons,
-                                     const PrimaryButtonParams* defaults, size_t button_index,
+                                     std::vector<PowerButtonParams>&       buttons,
+                                     const std::vector<PowerButtonParams>& default_buttons,
+                                     const PowerButtonParams* defaults, size_t button_index,
                                      const QString& path_context);
         static void mapPrimaryButtons(node_view                               primary_buttons_node,
-                                      std::vector<PrimaryButtonParams>&       primary_buttons,
-                                      const std::vector<PrimaryButtonParams>& defaults,
+                                      std::vector<PowerButtonParams>&       primary_buttons,
+                                      const std::vector<PowerButtonParams>& defaults,
                                       const QString&                          path_context);
         static void mapLayout(node_view layout_node, LayoutProperties& layout,
                               const LayoutProperties& defaults, const QString& path_context);

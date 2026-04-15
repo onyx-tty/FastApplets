@@ -17,12 +17,15 @@
 
 #pragma once
 
-#include "Shell/ShellCommand.h"
-#include "UI/Enums/ButtonIDs.h"
+#include "UI/Widgets/PrimaryButtonParams.h"
 
-#include <QString>
+class ShellCommand;
 
-struct PrimaryButtonParams {
-        QString         label;
-        long            order;
+struct PowerButtonParams final : PrimaryButtonParams {
+        power_button_id id;
+        ShellCommand    command;
+
+        PowerButtonParams(power_button_id id = power_button_id::none, QString label = {},
+                          long order = {}, ShellCommand command = {}) :
+                PrimaryButtonParams(std::move(label), order), id(id), command(std::move(command)) {}
 };

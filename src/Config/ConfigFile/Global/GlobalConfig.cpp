@@ -25,7 +25,6 @@
 #include <QSizePolicy>
 #include <QString>
 
-/* Global Config */
 GlobalConfig::GlobalConfig(WindowProperties        window_properties,
                            PrimaryButtonProperties primary_button_properties) :
         window_properties(std::move(window_properties)),

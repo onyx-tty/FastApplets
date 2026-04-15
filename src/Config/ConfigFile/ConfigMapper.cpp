@@ -29,7 +29,7 @@
 #include "Config/TOML/Types/TomlArrayConditions.h"
 #include "Log/Log.h"
 #include "UI/Enums/ButtonIDs.h"
-#include "UI/Widgets/PrimaryButtonParams.h"
+#include "UI/Widgets/PowerButtonParams.h"
 
 #include <algorithm>
 #include <cstdint>
@@ -61,9 +61,8 @@ static power_button_id getPowerButtonIDFromString(const QString& string) {
         return map.at(string);
 }
 
-static void handleButtonResolutionFailure(PrimaryButtonParams&       button,
-                                          const PrimaryButtonParams* defaults,
-                                          size_t                     button_index) {
+static void handleButtonResolutionFailure(PowerButtonParams&       button,
+                                          const PowerButtonParams* defaults, size_t button_index) {
         if (!defaults) {
                 QWARNING() << "Failed to default button" << button_index << ", defaults missing!";
                 return;
@@ -157,8 +156,8 @@ void ConfigMapper::mapPrimaryButton(NodePair nodes, PrimaryButtonProperties& but
 }
 
 /* Layout Properties */
-void ConfigMapper::mapCommandArgument(node_view argument_node, PrimaryButtonParams& button,
-                                      const PrimaryButtonParams* defaults, QStringList& arguments,
+void ConfigMapper::mapCommandArgument(node_view argument_node, PowerButtonParams& button,
+                                      const PowerButtonParams* defaults, QStringList& arguments,
                                       size_t button_index, size_t arg_index,
                                       const QString& path_context) {
         QString        argument{};
@@ -178,8 +177,8 @@ void ConfigMapper::mapCommandArgument(node_view argument_node, PrimaryButtonPara
         arguments << std::move(argument);
 }
 
-void ConfigMapper::mapCommandArguments(node_view arguments_node, PrimaryButtonParams& button,
-                                       const PrimaryButtonParams* defaults, QStringList& arguments,
+void ConfigMapper::mapCommandArguments(node_view arguments_node, PowerButtonParams& button,
+                                       const PowerButtonParams* defaults, QStringList& arguments,
                                        size_t button_index, const QString& path_context) {
         constexpr bool   is_override = false;
         constexpr size_t min_size    = 0;
@@ -203,8 +202,8 @@ void ConfigMapper::mapCommandArguments(node_view arguments_node, PrimaryButtonPa
         arguments = std::move(argument_list);
 }
 
-void ConfigMapper::mapCommand(node_view command_node, PrimaryButtonParams& button,
-                              const PrimaryButtonParams* defaults, ShellCommand& command,
+void ConfigMapper::mapCommand(node_view command_node, PowerButtonParams& button,
+                              const PowerButtonParams* defaults, ShellCommand& command,
                               size_t button_index, const QString& path_context) {
         constexpr bool   is_override = false;
         constexpr size_t min_size = 2, max_size = 2;
@@ -236,10 +235,10 @@ void ConfigMapper::mapCommand(node_view command_node, PrimaryButtonParams& butto
         command = std::move(cmd);
 }
 
-bool ConfigMapper::mapPrimaryButton(node_view                               button_params_node,
-                                    std::vector<PrimaryButtonParams>&       buttons,
-                                    const std::vector<PrimaryButtonParams>& default_buttons,
-                                    const PrimaryButtonParams* defaults, size_t button_index,
+bool ConfigMapper::mapPrimaryButton(node_view                             button_params_node,
+                                    std::vector<PowerButtonParams>&       buttons,
+                                    const std::vector<PowerButtonParams>& default_buttons,
+                                    const PowerButtonParams* defaults, size_t button_index,
                                     const QString& path_context) {
         if (button_index > buttons.size()) {
                 if (!buttons.empty()) {
@@ -262,7 +261,7 @@ bool ConfigMapper::mapPrimaryButton(node_view                               butt
                 return true;
         }
 
-        PrimaryButtonParams button{};
+        PowerButtonParams button{};
 
         auto enabled = resolve<bool>({Source{button_table.value()["enabled"],
                                              applet::power_applet.scope}},
@@ -307,10 +306,10 @@ bool ConfigMapper::mapPrimaryButton(node_view                               butt
         return false;
 }
 
-void ConfigMapper::mapPrimaryButtons(node_view                               primary_buttons_node,
-                                     std::vector<PrimaryButtonParams>&       primary_buttons,
-                                     const std::vector<PrimaryButtonParams>& defaults,
-                                     const QString&                          path_context) {
+void ConfigMapper::mapPrimaryButtons(node_view                             primary_buttons_node,
+                                     std::vector<PowerButtonParams>&       primary_buttons,
+                                     const std::vector<PowerButtonParams>& defaults,
+                                     const QString&                        path_context) {
         constexpr bool   is_override = false;
         constexpr size_t min_size    = 1;
 
@@ -324,7 +323,7 @@ void ConfigMapper::mapPrimaryButtons(node_view                               pri
                 return;
         }
 
-        std::vector<PrimaryButtonParams> buttons_found{};
+        std::vector<PowerButtonParams> buttons_found{};
 
         bool defaulted = false;
         for (size_t i = 0; i != buttons.value().size(); ++i) {
@@ -344,7 +343,7 @@ void ConfigMapper::mapPrimaryButtons(node_view                               pri
         }
 
         std::sort(buttons_found.begin(), buttons_found.end(),
-                  [](const PrimaryButtonParams& a, const PrimaryButtonParams& b) -> bool {
+                  [](const PowerButtonParams& a, const PowerButtonParams& b) -> bool {
                           return a.order < b.order;
                   });
 
