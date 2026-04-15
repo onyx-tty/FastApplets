@@ -15,7 +15,7 @@
    You should have received a copy of the GNU General Public License
    along with this program.  If not, see <https://www.gnu.org/licenses/>. */
 
-#include "Button.h"
+#include "PrimaryButton.h"
 #include "Config/ConfigFile/Properties/PrimaryButtonProperties.h"
 #include "Log/Log.h"
 
@@ -27,7 +27,7 @@ namespace {
 QString stylesheet = "text-align: center top;";
 } // namespace
 
-void Button::paintEvent(QPaintEvent*) {
+void PrimaryButton::paintEvent(QPaintEvent*) {
         QStyleOptionButton option;
         initStyleOption(&option);
 
@@ -47,7 +47,7 @@ void Button::paintEvent(QPaintEvent*) {
         style()->drawControl(QStyle::CE_PushButton, &option, &painter, this);
 }
 
-bool Button::event(QEvent* event) {
+bool PrimaryButton::event(QEvent* event) {
         switch (event->type()) { // Ignore mouse hover, forward anything else
         case QEvent::HoverMove:
         case QEvent::HoverEnter:
@@ -56,7 +56,7 @@ bool Button::event(QEvent* event) {
         }
 }
 
-void Button::alignLabel(const QString& label_text, Qt::Alignment label_alignment) {
+void PrimaryButton::alignLabel(const QString& label_text, Qt::Alignment label_alignment) {
         setLayout(new QGridLayout);
         setStyleSheet(stylesheet);
         label = new QLabel(label_text, this); // label that acts as a button text replacement
@@ -70,8 +70,8 @@ void Button::alignLabel(const QString& label_text, Qt::Alignment label_alignment
 // Inheriting constructor defaults from from QPushButton,
 // but customizing the icon, icon size and the alignment of that button
 // TODO Default icon
-Button::Button(QBoxLayout* layout, const QIcon& icon, const QString& label,
-               const PrimaryButtonProperties& properties) :
+PrimaryButton::PrimaryButton(QBoxLayout* layout, const QIcon& icon, const QString& label,
+                             const PrimaryButtonProperties& properties) :
         QPushButton(layout ? layout->widget() : nullptr) {
         if (!layout) { QFATAL("Button constructor received a null layout! Bad code!"); }
 
@@ -83,8 +83,8 @@ Button::Button(QBoxLayout* layout, const QIcon& icon, const QString& label,
         layout->addWidget(this);
 }
 
-Button::~Button() = default;
+PrimaryButton::~PrimaryButton() = default;
 
-QString Button::text() const {
+QString PrimaryButton::text() const {
         return label->text();
 }

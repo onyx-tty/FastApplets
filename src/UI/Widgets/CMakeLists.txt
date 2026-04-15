@@ -1,5 +1,5 @@
 add_library(UI_Widgets
-        Button.cpp
+        PrimaryButton.cpp
         PrimaryButtonData.h)
 add_library(UI::Widgets ALIAS UI_Widgets)
 

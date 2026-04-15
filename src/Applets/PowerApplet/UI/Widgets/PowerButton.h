@@ -19,9 +19,14 @@
 
 #include "Shell/ShellCommand.h"
 #include "UI/Enums/ButtonIDs.h"
-#include "UI/Widgets/Button.h"
+#include "UI/Widgets/PrimaryButton.h"
 
-class PowerButton final : public Button {
+#include <QBoxLayout>
+#include <QIcon>
+
+class QString;
+
+class PowerButton final : public PrimaryButton {
         Q_OBJECT
 
 private:

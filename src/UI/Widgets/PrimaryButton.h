@@ -27,7 +27,7 @@
 
 class PrimaryButtonProperties;
 
-class Button : public QPushButton {
+class PrimaryButton : public QPushButton {
         Q_OBJECT
 
 private:
@@ -41,10 +41,10 @@ private:
         QLabel* label;
 
 protected:
-        explicit Button(QBoxLayout*    layout,
-                        const QIcon&   icon, // TODO default icon
-                        const QString& label, const PrimaryButtonProperties& properties);
-        virtual ~Button() = 0;
+        explicit PrimaryButton(QBoxLayout*    layout,
+                               const QIcon&   icon, // TODO default icon
+                               const QString& label, const PrimaryButtonProperties& properties);
+        virtual ~PrimaryButton() = 0;
 
 public:
         QString text() const;
