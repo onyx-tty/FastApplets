@@ -49,23 +49,22 @@ private:
         /* Layout Properties */
         static void mapCommandArgument(node_view argument_node, PowerButtonParams& button,
                                        const PowerButtonParams* defaults, QStringList& arguments,
-                                       size_t button_index, size_t arg_index,
                                        const QString& path_context);
         static void mapCommandArguments(node_view arguments_node, PowerButtonParams& button,
                                         const PowerButtonParams* defaults, QStringList& arguments,
-                                        size_t button_index, const QString& path_context);
+                                        const QString& path_context);
         static void mapCommand(node_view command_node, PowerButtonParams& button,
                                const PowerButtonParams* defaults, ShellCommand& command,
-                               size_t button_index, const QString& path_context);
-        static bool mapPrimaryButton(node_view                               button_params_node,
+                               const QString& path_context);
+        static bool mapPrimaryButton(node_view                             button_params_node,
                                      std::vector<PowerButtonParams>&       buttons,
                                      const std::vector<PowerButtonParams>& default_buttons,
-                                     const PowerButtonParams* defaults, size_t button_index,
-                                     const QString& path_context);
-        static void mapPrimaryButtons(node_view                               primary_buttons_node,
+                                     const PowerButtonParams*              defaults,
+                                     const QString&                        path_context);
+        static void mapPrimaryButtons(node_view                             primary_buttons_node,
                                       std::vector<PowerButtonParams>&       primary_buttons,
                                       const std::vector<PowerButtonParams>& defaults,
-                                      const QString&                          path_context);
+                                      const QString&                        path_context);
         static void mapLayout(node_view layout_node, LayoutProperties& layout,
                               const LayoutProperties& defaults, const QString& path_context);
 
