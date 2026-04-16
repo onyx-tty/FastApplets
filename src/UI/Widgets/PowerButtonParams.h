@@ -30,9 +30,9 @@ struct PowerButtonParams final : PrimaryButtonParams {
         QString         dbus_method;
         QIcon           icon;
 
-        PowerButtonParams(power_button_id id = power_button_id::none, QString label = {},
+        PowerButtonParams(power_button_id id = power_button_id::none, QString text = {},
                           long order = {}, ShellCommand command = {}, QString dbus_method = {},
                           const QIcon& icon = {}) :
-                PrimaryButtonParams(std::move(label), order), id(id), command(std::move(command)),
+                PrimaryButtonParams(std::move(text), order), id(id), command(std::move(command)),
                 dbus_method(std::move(dbus_method)), icon(icon) {}
 };

@@ -270,14 +270,14 @@ bool ConfigMapper::mapPrimaryButton(node_view                             button
                 button.id = getPowerButtonIDFromString(id_result.value());
         }
 
-        auto label_result = resolve<QString>({Source{button_table.value()["label"],
-                                                     applet::power_applet.scope}},
-                                             extendCfgPath(path_context, "label"), is_override);
-        if (!label_result) {
+        auto text_result = resolve<QString>({Source{button_table.value()["text"],
+                                                    applet::power_applet.scope}},
+                                            extendCfgPath(path_context, "text"), is_override);
+        if (!text_result) {
                 handleButtonResolutionFailure(button, defaults, path_context);
                 return false;
         } else {
-                button.label = label_result.value();
+                button.text = text_result.value();
         }
 
         auto order_result = resolve<int64_t>({Source{button_table.value()["order"],

@@ -64,11 +64,11 @@ PowerButtonRecords PowerCentralWidget::createButtons() {
         for (size_t i = 0; i != primary_buttons_data.size(); ++i) {
                 power_button_id id          = primary_buttons_data[i].id;
                 QIcon           icon        = primary_buttons_data[i].icon;
-                QString         label       = primary_buttons_data[i].label;
+                QString         text        = primary_buttons_data[i].text;
                 QString         dbus_method = primary_buttons_data[i].dbus_method;
                 ShellCommand    command     = primary_buttons_data[i].command;
-                auto* power_button      = new PowerButton(id, icon, label, dbus_method, command);
-                const keybindings& keys = PowerAppletKeys::get().getPrimaryButtonKeys()[i];
+                auto* power_button          = new PowerButton(id, icon, text, dbus_method, command);
+                const keybindings& keys     = PowerAppletKeys::get().getPrimaryButtonKeys()[i];
 
                 main_layout->addWidget(power_button);
                 primary_buttons.push_back({id, power_button, keys});

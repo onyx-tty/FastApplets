@@ -23,6 +23,6 @@
 #include <QString>
 
 struct PrimaryButtonParams {
-        QString         label;
+        QString         text;
         long            order;
 };
