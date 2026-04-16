@@ -61,31 +61,6 @@ static power_button_id getPowerButtonIDFromString(const QString& string) {
         return map.at(string);
 }
 
-static QIcon iconFor(power_button_id id) {
-        Q_INIT_RESOURCE(Icons);
-
-        switch (id) {
-        case power_button_id::shutdown:  return QIcon{":/Icons/Power/shutdown.svg"};
-        case power_button_id::reboot:    return QIcon{":/Icons/Power/reboot.svg"};
-        case power_button_id::suspend:   return QIcon{":/Icons/Power/suspend.svg"};
-        case power_button_id::hibernate: return QIcon{":/Icons/Power/hibernate.svg"};
-        }
-
-        return {};
-}
-
-static QString dbusMethodFor(power_button_id id) {
-        switch (id) {
-        case power_button_id::shutdown:  return "PowerOff";
-        case power_button_id::reboot:    return "Reboot";
-        case power_button_id::suspend:   return "Suspend";
-        case power_button_id::hibernate: return "Hibernate";
-        }
-
-        QCRITICAL() << "DBus method unclear, power_button_id:" << static_cast<int>(id);
-        return {};
-}
-
 static void handleButtonResolutionFailure(PowerButtonParams&       button,
                                           const PowerButtonParams* defaults, size_t button_index) {
         if (!defaults) {
