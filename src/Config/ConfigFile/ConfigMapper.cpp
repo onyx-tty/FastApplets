@@ -265,16 +265,6 @@ bool ConfigMapper::mapPrimaryButton(node_view                             button
                                     const std::vector<PowerButtonParams>& default_buttons,
                                     const PowerButtonParams* defaults, size_t button_index,
                                     const QString& path_context) {
-        if (button_index > buttons.size()) {
-                if (!buttons.empty()) {
-                        QFATAL("Index out of bounds! Index is %zu, size is %zu, last button is %s!",
-                               button_index, buttons.size(), (*buttons.cend()).label);
-                }
-
-                QFATAL("Index out of bounds! Index is %zu, size is %zu!", button_index,
-                       buttons.size());
-        }
-
         const QString  button_path_context = path_context + QString("[%1]").arg(button_index);
         constexpr bool is_override         = false;
 
