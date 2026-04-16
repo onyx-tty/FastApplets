@@ -75,16 +75,27 @@ const PowerAppletConfig& PowerAppletConfig::getDefault() {
                 {PowerButtonParams{power_button_id::shutdown,
                                    "Shutdown",
                                    1,
-                                   {"systemctl", {"shutdown"}}},
-                 PowerButtonParams{power_button_id::reboot, "Reboot", 2, {"systemctl", {"reboot"}}},
+                                   {"systemctl", {"shutdown"}},
+                                   dbusMethodFor(power_button_id::shutdown),
+                                   iconFor(power_button_id::shutdown)},
+                 PowerButtonParams{power_button_id::reboot,
+                                   "Reboot",
+                                   2,
+                                   {"systemctl", {"reboot"}},
+                                   dbusMethodFor(power_button_id::reboot),
+                                   iconFor(power_button_id::reboot)},
                  PowerButtonParams{power_button_id::suspend,
                                    "Suspend",
                                    3,
-                                   {"systemctl", {"suspend"}}},
+                                   {"systemctl", {"suspend"}},
+                                   dbusMethodFor(power_button_id::suspend),
+                                   iconFor(power_button_id::suspend)},
                  PowerButtonParams{power_button_id::hibernate,
                                    "Hibernate",
                                    4,
-                                   {"systemctl", {"hibernate"}}}};
+                                   {"systemctl", {"hibernate"}},
+                                   dbusMethodFor(power_button_id::hibernate),
+                                   iconFor(power_button_id::hibernate)}};
         LayoutProperties default_layout_properties = LayoutProperties{std::move(primary_buttons)};
 
         bool                  dbus_mode = false;
