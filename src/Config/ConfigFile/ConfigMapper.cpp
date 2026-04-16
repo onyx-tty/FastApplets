@@ -159,82 +159,76 @@ void ConfigMapper::mapPrimaryButton(NodePair nodes, PrimaryButtonProperties& but
 }
 
 /* Layout Properties */
-void ConfigMapper::mapCommandArgument(node_view argument_node, PowerButtonParams& button,
-                                      const PowerButtonParams* defaults, QStringList& arguments,
-                                      const QString& path_context) {
-        QString        argument{};
-        constexpr bool is_override = false;
+void ConfigMapper::mapLayout(node_view layout_node, LayoutProperties& layout,
+                             const LayoutProperties& defaults, const QString& path_context) {
+        constexpr bool   is_override = false;
+        LayoutProperties layout_properties{};
 
-        auto argument_result = resolve<QString>({Source{argument_node, applet::power_applet.scope}},
-                                                path_context, is_override);
-        if (!argument_result) {
-                handleButtonResolutionFailure(button, defaults, path_context);
+        const auto data = resolve<toml::table>({Source{layout_node, applet::power_applet.scope}},
+                                               path_context, is_override);
+        if (!data) {
+                layout_properties = defaults;
+                layout            = std::move(layout_properties);
                 return;
-        } else {
-                argument = argument_result.value();
         }
 
-        if (argument.isEmpty()) { return; }
+        // Primary power buttons
+        mapPrimaryButtons(data.value()["primary_buttons"], layout_properties.power_buttons,
+                          defaults.getPowerButtons(),
+                          extendCfgPath(path_context, "primary_buttons"));
 
-        arguments << std::move(argument);
+        layout = std::move(layout_properties);
 }
 
-void ConfigMapper::mapCommandArguments(node_view arguments_node, PowerButtonParams& button,
-                                       const PowerButtonParams* defaults, QStringList& arguments,
-                                       const QString& path_context) {
+void ConfigMapper::mapPrimaryButtons(node_view                             primary_buttons_node,
+                                     std::vector<PowerButtonParams>&       primary_buttons,
+                                     const std::vector<PowerButtonParams>& defaults,
+                                     const QString&                        path_context) {
         constexpr bool   is_override = false;
-        constexpr size_t min_size    = 0;
-        const auto args = resolve<toml::array>({Source{arguments_node, applet::power_applet.scope}},
-                                               path_context, is_override,
-                                               {"Format: [string, array]", min_size, std::nullopt});
-        if (!args) {
-                handleButtonResolutionFailure(button, defaults, path_context);
+        constexpr size_t min_size    = 1;
+
+        const auto buttons = resolve<toml::array>({Source{primary_buttons_node,
+                                                          applet::power_applet.scope}},
+                                                  path_context, is_override,
+                                                  {"Format: [primary buttons...]", min_size,
+                                                   std::nullopt});
+        if (!buttons) {
+                primary_buttons = defaults;
                 return;
         }
 
-        QStringList argument_list{};
+        std::vector<PowerButtonParams> buttons_found{};
 
-        for (size_t i = 0; i != args.value().size(); ++i) {
-                mapCommandArgument(toml::node_view(args.value()[i]), button, defaults,
-                                   argument_list,
-                                   makeCfgPath(applet::power_applet.scope, path_context)
-                                           + QString("[%1]").arg(i).toStdString().c_str());
+        bool defaulted = false;
+        for (size_t i = 0; i != buttons.value().size(); ++i) {
+                // If index out of bounds for defaults, pass nullptr
+                auto* default_button = (i < defaults.size()) ? &defaults[i] : nullptr;
+                defaulted =
+                        mapPrimaryButton(node_view(buttons.value().at(i)), buttons_found, defaults,
+                                         default_button,
+                                         extendCfgPath(path_context,
+                                                       QString("[%1]").arg(i).toStdString().c_str(),
+                                                       ""));
+                if (defaulted) { return; }
         }
 
-        arguments = std::move(argument_list);
-}
-
-void ConfigMapper::mapCommand(node_view command_node, PowerButtonParams& button,
-                              const PowerButtonParams* defaults, ShellCommand& command,
-                              const QString& path_context) {
-        constexpr bool   is_override = false;
-        constexpr size_t min_size = 2, max_size = 2;
-        const auto command_arr = resolve<toml::array>({Source{command_node,
-                                                              applet::power_applet.scope}},
-                                                      path_context, is_override,
-                                                      {"Format: [program, [args...]]", min_size,
-                                                       max_size});
-        if (!command_arr) {
-                handleButtonResolutionFailure(button, defaults, path_context);
+        if (buttons_found.empty()) {
+                QWARNING() << makeCfgPath(applet::power_applet.scope, path_context)
+                                      + ", no enabled buttons found!";
+                primary_buttons = defaults;
                 return;
         }
 
-        ShellCommand cmd{};
+        std::sort(buttons_found.begin(), buttons_found.end(),
+                  [](const PowerButtonParams& a, const PowerButtonParams& b) -> bool {
+                          return a.order < b.order;
+                  });
 
-        auto program_result = resolve<QString>({Source{toml::node_view(command_arr.value()[0]),
-                                                       applet::power_applet.scope}},
-                                               extendCfgPath(path_context, "program"), is_override);
-        if (!program_result) {
-                handleButtonResolutionFailure(button, defaults, path_context);
-                return;
-        } else {
-                cmd.program = program_result.value();
-        }
+        // Prevent index out of bound issues and multiple buttons with the same order by
+        // re-mapping order to a range from 1 to the total number of buttons
+        for (size_t i = 0; i != buttons_found.size(); ++i) { buttons_found[i].order = i + 1; }
 
-        mapCommandArguments(toml::node_view(command_arr.value()[1]), button, defaults,
-                            cmd.arguments, extendCfgPath(path_context, "arguments"));
-
-        command = std::move(cmd);
+        primary_buttons = std::move(buttons_found);
 }
 
 bool ConfigMapper::mapPrimaryButton(node_view                             button_params_node,
@@ -302,76 +296,82 @@ bool ConfigMapper::mapPrimaryButton(node_view                             button
         return false;
 }
 
-void ConfigMapper::mapPrimaryButtons(node_view                             primary_buttons_node,
-                                     std::vector<PowerButtonParams>&       primary_buttons,
-                                     const std::vector<PowerButtonParams>& defaults,
-                                     const QString&                        path_context) {
+void ConfigMapper::mapCommand(node_view command_node, PowerButtonParams& button,
+                              const PowerButtonParams* defaults, ShellCommand& command,
+                              const QString& path_context) {
         constexpr bool   is_override = false;
-        constexpr size_t min_size    = 1;
-
-        const auto buttons = resolve<toml::array>({Source{primary_buttons_node,
-                                                          applet::power_applet.scope}},
-                                                  path_context, is_override,
-                                                  {"Format: [primary buttons...]", min_size,
-                                                   std::nullopt});
-        if (!buttons) {
-                primary_buttons = defaults;
+        constexpr size_t min_size = 2, max_size = 2;
+        const auto command_arr = resolve<toml::array>({Source{command_node,
+                                                              applet::power_applet.scope}},
+                                                      path_context, is_override,
+                                                      {"Format: [program, [args...]]", min_size,
+                                                       max_size});
+        if (!command_arr) {
+                handleButtonResolutionFailure(button, defaults, path_context);
                 return;
         }
 
-        std::vector<PowerButtonParams> buttons_found{};
+        ShellCommand cmd{};
 
-        bool defaulted = false;
-        for (size_t i = 0; i != buttons.value().size(); ++i) {
-                // If index out of bounds for defaults, pass nullptr
-                auto* default_button = (i < defaults.size()) ? &defaults[i] : nullptr;
-                defaulted =
-                        mapPrimaryButton(node_view(buttons.value().at(i)), buttons_found, defaults,
-                                         default_button,
-                                         extendCfgPath(path_context,
-                                                       QString("[%1]").arg(i).toStdString().c_str(),
-                                                       ""));
-                if (defaulted) { return; }
-        }
-
-        if (buttons_found.empty()) {
-                QWARNING() << makeCfgPath(applet::power_applet.scope, path_context)
-                                      + ", no enabled buttons found!";
-                primary_buttons = defaults;
+        auto program_result = resolve<QString>({Source{toml::node_view(command_arr.value()[0]),
+                                                       applet::power_applet.scope}},
+                                               extendCfgPath(path_context, "program"), is_override);
+        if (!program_result) {
+                handleButtonResolutionFailure(button, defaults, path_context);
                 return;
+        } else {
+                cmd.program = program_result.value();
         }
 
-        std::sort(buttons_found.begin(), buttons_found.end(),
-                  [](const PowerButtonParams& a, const PowerButtonParams& b) -> bool {
-                          return a.order < b.order;
-                  });
+        mapCommandArguments(toml::node_view(command_arr.value()[1]), button, defaults,
+                            cmd.arguments, extendCfgPath(path_context, "arguments"));
 
-        // Prevent index out of bound issues and multiple buttons with the same order by
-        // re-mapping order to a range from 1 to the total number of buttons
-        for (size_t i = 0; i != buttons_found.size(); ++i) { buttons_found[i].order = i + 1; }
-
-        primary_buttons = std::move(buttons_found);
+        command = std::move(cmd);
 }
 
-void ConfigMapper::mapLayout(node_view layout_node, LayoutProperties& layout,
-                             const LayoutProperties& defaults, const QString& path_context) {
+void ConfigMapper::mapCommandArguments(node_view arguments_node, PowerButtonParams& button,
+                                       const PowerButtonParams* defaults, QStringList& arguments,
+                                       const QString& path_context) {
         constexpr bool   is_override = false;
-        LayoutProperties layout_properties{};
-
-        const auto data = resolve<toml::table>({Source{layout_node, applet::power_applet.scope}},
-                                               path_context, is_override);
-        if (!data) {
-                layout_properties = defaults;
-                layout            = std::move(layout_properties);
+        constexpr size_t min_size    = 0;
+        const auto args = resolve<toml::array>({Source{arguments_node, applet::power_applet.scope}},
+                                               path_context, is_override,
+                                               {"Format: [string, array]", min_size, std::nullopt});
+        if (!args) {
+                handleButtonResolutionFailure(button, defaults, path_context);
                 return;
         }
 
-        // Primary power buttons
-        mapPrimaryButtons(data.value()["primary_buttons"], layout_properties.power_buttons,
-                          defaults.getPowerButtons(),
-                          extendCfgPath(path_context, "primary_buttons"));
+        QStringList argument_list{};
 
-        layout = std::move(layout_properties);
+        for (size_t i = 0; i != args.value().size(); ++i) {
+                mapCommandArgument(toml::node_view(args.value()[i]), button, defaults,
+                                   argument_list,
+                                   makeCfgPath(applet::power_applet.scope, path_context)
+                                           + QString("[%1]").arg(i).toStdString().c_str());
+        }
+
+        arguments = std::move(argument_list);
+}
+
+void ConfigMapper::mapCommandArgument(node_view argument_node, PowerButtonParams& button,
+                                      const PowerButtonParams* defaults, QStringList& arguments,
+                                      const QString& path_context) {
+        QString        argument{};
+        constexpr bool is_override = false;
+
+        auto argument_result = resolve<QString>({Source{argument_node, applet::power_applet.scope}},
+                                                path_context, is_override);
+        if (!argument_result) {
+                handleButtonResolutionFailure(button, defaults, path_context);
+                return;
+        } else {
+                argument = argument_result.value();
+        }
+
+        if (argument.isEmpty()) { return; }
+
+        arguments << std::move(argument);
 }
 
 void ConfigMapper::mapEnvironment(node_view environment_node, EnvironmentProperties& environment,
