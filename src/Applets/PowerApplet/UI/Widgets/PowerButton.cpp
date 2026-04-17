@@ -36,7 +36,7 @@ PowerButton::PowerButton(power_button_id id, const QIcon& icon, const QString& t
         connect(this, &PowerButton::clicked,
                 [this, command]() { ShellRunner::runCommand(command); });
 
-        QDEBUG_NS() << "Created " << text << "!";
+        QDEBUG() << QString("Created %1!").arg(text);
 }
 
 power_button_id PowerButton::getID() const {

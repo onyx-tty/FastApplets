@@ -51,7 +51,7 @@ const toml::table* TomlAccessor::tryGetTomlTable(node_view node, const QString& 
                         QDEBUG() << path
                                  << "is an override, and missing! Proceeding with globals...";
                 } else {
-                        QWARNING_NS() << path << ", must be a table! Using defaults...";
+                        QWARNING() << QString("%1, must be a table! Using defaults...").arg(path);
                 }
 
                 return nullptr;
@@ -70,8 +70,8 @@ const toml::array* TomlAccessor::tryGetTomlArray(node_view node, const QString& 
                         QDEBUG() << path
                                  << "is an override, and missing! Proceeding with globals...";
                 } else {
-                        QWARNING_NS() << path << ", must be an array! "
-                                      << arr_conditions.array_format << " Using defaults...";
+                        QWARNING() << QString("%1, must be an array! %2 Using defaults...")
+                                              .arg(path, arr_conditions.array_format);
                 }
 
                 return nullptr;
@@ -82,9 +82,11 @@ const toml::array* TomlAccessor::tryGetTomlArray(node_view node, const QString& 
                         QDEBUG() << path
                                  << "is an override, and missing! Proceeding with globals...";
                 } else {
-                        QWARNING_NS() << path << ", arr size < min_size! min_size: "
-                                      << arr_conditions.min_size.value()
-                                      << ", size: " << arr->size() << ". Using defaults...";
+                        QWARNING()
+                                << QString("%1, arr size < min_size! min_size: %2, size: %3. Using defaults...")
+                                           .arg(path,
+                                                QString::number(arr_conditions.min_size.value()),
+                                                QString::number(arr->size()));
                 }
 
                 return nullptr;
@@ -95,9 +97,11 @@ const toml::array* TomlAccessor::tryGetTomlArray(node_view node, const QString& 
                         QDEBUG() << path
                                  << "is an override, and missing! Proceeding with globals...";
                 } else {
-                        QWARNING_NS() << path << ", arr size >= max_size! max_size: "
-                                      << arr_conditions.max_size.value()
-                                      << ", size: " << arr->size() << ". Using defaults...";
+                        QWARNING()
+                                << QString("%1, arr size >= max_size! max_size: %2, size: %3. Using defaults...")
+                                           .arg(path,
+                                                QString::number(arr_conditions.max_size.value()),
+                                                QString::number(arr->size()));
                 }
 
                 return nullptr;

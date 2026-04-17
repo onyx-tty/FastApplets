@@ -38,7 +38,8 @@ std::optional<T> TomlAccessor::tryGet(node_view node, const QString& path, bool 
                         QDEBUG() << path
                                  << "is an override, and missing! Proceeding with globals...";
                 } else {
-                        QWARNING_NS() << path << ", missing or wrong type! Using defaults...";
+                        QWARNING()
+                                << QString("%1, missing or wrong type! Using defaults...").arg(path);
                 }
 
                 return std::nullopt;
@@ -61,7 +62,7 @@ std::optional<T> TomlAccessor::tryGetValueFromEnumMap(node_view                 
                         QDEBUG() << path
                                  << "is an override, and missing! Proceeding with globals...";
                 } else {
-                        QWARNING_NS() << path << ", invalid! Using defaults...";
+                        QWARNING() << QString("%1, invalid! Using defaults...").arg(path);
                 }
 
                 return std::nullopt;
