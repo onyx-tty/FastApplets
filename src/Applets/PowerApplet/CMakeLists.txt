@@ -8,7 +8,7 @@ add_subdirectory(UI)
 # Executables
 qt_add_executable(PowerApplet
         MANUAL_FINALIZATION
-        ${POWERAPPLET_SOURCE_DIR}/main.cpp)
+        main.cpp)
 
 # Target linking and configuration
 target_include_directories(PowerApplet PRIVATE
