@@ -16,7 +16,7 @@
    along with this program.  If not, see <https://www.gnu.org/licenses/>. */
 
 #include "GlobalConfig.h"
-#include "Config/ConfigFile/ConfigMapper.h"
+#include "Config/ConfigFile/Mapper/ConfigMapper.h"
 #include "Config/ConfigFile/Properties/PrimaryButtonProperties.h"
 #include "Config/ConfigFile/Properties/WindowProperties.h"
 

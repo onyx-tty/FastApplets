@@ -11,6 +11,7 @@ target_link_libraries(Config_ConfigFile_PowerApplet PRIVATE
         Qt${QT_VERSION_MAJOR}::Widgets)
 
 target_link_libraries(Config_ConfigFile_PowerApplet PUBLIC
+        Config::ConfigFile::Mapper
         Config::ConfigFile::Properties
         Shell
         Log)

@@ -1,21 +1,18 @@
 add_subdirectory(Global)
+add_subdirectory(Mapper)
 add_subdirectory(PowerApplet)
 add_subdirectory(Types)
 
-add_library(Config_KeysFile
-        KeysMapper.cpp)
+add_library(Config_KeysFile INTERFACE)
 add_library(Config::KeysFile ALIAS Config_KeysFile)
 
-target_include_directories(Config_KeysFile PRIVATE
+target_include_directories(Config_KeysFile INTERFACE
         ${CMAKE_CURRENT_LIST_DIR}
         ${GLOBAL_INCLUSIONS})
 
-target_link_libraries(Config_KeysFile PRIVATE
-        tomlplusplus::tomlplusplus
-        Qt${QT_VERSION_MAJOR}::Widgets)
-
-target_link_libraries(Config_KeysFile PUBLIC
+target_link_libraries(Config_KeysFile INTERFACE
         Config::KeysFile::Global
+        Config::KeysFile::Mapper
         Config::KeysFile::PowerApplet
         Config::KeysFile::Types
         Config::TOML

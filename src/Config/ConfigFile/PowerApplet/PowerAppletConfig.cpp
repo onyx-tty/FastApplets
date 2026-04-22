@@ -16,8 +16,8 @@
    along with this program.  If not, see <https://www.gnu.org/licenses/>. */
 
 #include "PowerAppletConfig.h"
-#include "Config/ConfigFile/ConfigMapper.h"
 #include "Config/ConfigFile/Global/GlobalConfig.h"
+#include "Config/ConfigFile/Mapper/ConfigMapper.h"
 #include "Config/ConfigFile/Properties/EnvironmentProperties.h"
 #include "Config/ConfigFile/Properties/LayoutProperties.h"
 #include "Config/ConfigFile/Properties/PrimaryButtonProperties.h"
