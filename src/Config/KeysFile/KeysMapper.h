@@ -58,6 +58,9 @@ private:
 
 public:
         KeysMapper() = delete;
+        template<typename TKeys>
         static void mapToPowerAppletKeys(const toml::table& power_applet_table,
-                                         const toml::table& global_table, PowerAppletKeys& keys);
+                                         const toml::table& global_table, TKeys& keys);
 };
+
+#include "KeysMapper.tpp"

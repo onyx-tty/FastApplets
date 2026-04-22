@@ -1,0 +1,52 @@
+/* FastApplets
+
+   Copyright (C) 2026 Łukasz Wrodarczyk
+
+   This program is free software: you can redistribute it and/or modify
+   it under the terms of the GNU General Public License as published by
+   the Free Software Foundation, either version 3 of the License, or
+   (at your option) any later version.
+
+   This program is distributed in the hope that it will be useful,
+   but WITHOUT ANY WARRANTY; without even the implied warranty of
+   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   GNU General Public License for more details.
+
+   You should have received a copy of the GNU General Public License
+   along with this program.  If not, see <https://www.gnu.org/licenses/>. */
+
+#pragma once
+
+#include "Config/TOML/Types/NodePair.h"
+#include "ConfigMapper.h"
+#include "Log/Log.h"
+
+#include <toml++/toml.hpp>
+#include <QApplication>
+
+template<typename TConfig>
+void ConfigMapper::mapToPowerAppletConfig(const toml::table& power_applet_table,
+                                          const toml::table& global_table, TConfig& config) {
+        // Confirm that a QApplication instance exists
+        if (!QApplication::instance()) { QFATAL("QApplication has not been instantiated yet!"); }
+
+        const auto& defaults = TConfig::getDefault();
+
+        /* Window Properties */
+        mapWindow(NodePair{power_applet_table["window"], global_table["window"]},
+                  config.window_properties, defaults.getWindowProperties(), "window");
+
+        /* Primary Button Properties */
+        mapPrimaryButton(NodePair{power_applet_table["primary_button"],
+                                  global_table["primary_button"]},
+                         config.primary_button_properties, defaults.getPrimaryButtonProperties(),
+                         "primary_button");
+
+        /* Layout Properties */
+        mapLayout(power_applet_table["layout"], config.layout_properties,
+                  defaults.getLayoutProperties(), "layout");
+
+        /* Environment Properties */
+        mapEnvironment(power_applet_table["environment"], config.environment_properties,
+                       defaults.getEnvironmentProperties(), "environment");
+}

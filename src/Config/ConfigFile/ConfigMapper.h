@@ -17,7 +17,6 @@
 
 #pragma once
 
-#include "Config/ConfigFile/PowerApplet/PowerAppletConfig.h"
 #include "Config/TOML/Types/NodePair.h"
 #include "Config/TOML/Types/NodeView.h"
 
@@ -76,7 +75,10 @@ private:
 
 public:
         ConfigMapper() = delete;
+        template<typename TConfig>
         static void mapToPowerAppletConfig(const toml::table& power_applet_table,
                                            const toml::table& global_table,
-                                           PowerAppletConfig& config);
+                                           TConfig& config);
 };
+
+#include "ConfigMapper.tpp"

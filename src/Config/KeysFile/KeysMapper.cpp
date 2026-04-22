@@ -25,7 +25,6 @@
 #include "Config/TOML/Types/TomlArrayConditions.h"
 #include "Global/GlobalKeys.h"
 #include "Log/Log.h"
-#include "PowerApplet/PowerAppletKeys.h"
 
 #include <array>
 #include <cstddef>
@@ -113,22 +112,4 @@ void KeysMapper::mapPrimaryButtonKeys(node_view                         primary_
         };
 
         primary_buttons = std::move(primary_buttons_new);
-}
-
-void KeysMapper::mapToPowerAppletKeys(const toml::table& power_applet_table,
-                                      const toml::table& global_table, PowerAppletKeys& keys) {
-        // Confirm that a QApplication instance exists
-        if (!QApplication::instance()) {
-                QFATAL("QApplication has not been instantiated yet!");
-        }
-
-        const auto& defaults = PowerAppletKeys::getDefault();
-
-        /* Quit Keys */
-        mapQuitKeys(NodePair{power_applet_table["quit"], global_table["quit"]}, keys.quit_keys,
-                    defaults.getQuitKeys(), "quit");
-
-        /* Primary Button Keys */
-        mapPrimaryButtonKeys(power_applet_table["primary_buttons"], keys.primary_button_keys,
-                             defaults.getPrimaryButtonKeys(), "primary_buttons");
 }

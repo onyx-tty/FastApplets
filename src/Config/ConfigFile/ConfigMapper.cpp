@@ -17,7 +17,6 @@
 
 #include "ConfigMapper.h"
 #include "Applets/Types/AppletRecord.h"
-#include "Config/ConfigFile/PowerApplet/PowerAppletConfig.h"
 #include "Config/ConfigFile/Properties/EnvironmentProperties.h"
 #include "Config/ConfigFile/Properties/LayoutProperties.h"
 #include "Config/ConfigFile/Properties/PrimaryButtonProperties.h"
@@ -45,8 +44,6 @@
 #include <QString>
 #include <QStringList>
 #include <Qt>
-
-class GlobalConfig;
 
 static power_button_id getPowerButtonIDFromString(const QString& string) {
         static const std::unordered_map<QString, power_button_id> map =
@@ -397,33 +394,4 @@ void ConfigMapper::mapEnvironment(node_view environment_node, EnvironmentPropert
                                       extendCfgPath(path_context, "dbus_mode"));
 
         environment = std::move(environment_properties);
-}
-
-void ConfigMapper::mapToPowerAppletConfig(const toml::table& power_applet_table,
-                                          const toml::table& global_table,
-                                          PowerAppletConfig& config) {
-        // Confirm that a QApplication instance exists
-        if (!QApplication::instance()) {
-                QFATAL("QApplication has not been instantiated yet!");
-        }
-
-        const auto& defaults = PowerAppletConfig::getDefault();
-
-        /* Window Properties */
-        mapWindow(NodePair{power_applet_table["window"], global_table["window"]},
-                  config.window_properties, defaults.getWindowProperties(), "window");
-
-        /* Primary Button Properties */
-        mapPrimaryButton(NodePair{power_applet_table["primary_button"],
-                                  global_table["primary_button"]},
-                         config.primary_button_properties, defaults.getPrimaryButtonProperties(),
-                         "primary_button");
-
-        /* Layout Properties */
-        mapLayout(power_applet_table["layout"], config.layout_properties,
-                  defaults.getLayoutProperties(), "layout");
-
-        /* Environment Properties */
-        mapEnvironment(power_applet_table["environment"], config.environment_properties,
-                       defaults.getEnvironmentProperties(), "environment");
 }

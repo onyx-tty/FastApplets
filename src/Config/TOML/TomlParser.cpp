@@ -38,7 +38,7 @@ toml::table TomlParser::createTable(const std::string& file_path) {
         return file_table;
 }
 
-// TODO Shorten names
+// TODO Shorter names
 ConfigTomlFiles TomlParser::global_toml_files       = TomlLocator::locateGlobalConfigFiles();
 ConfigTomlFiles TomlParser::power_applet_toml_files = TomlLocator::locatePowerAppletConfigFiles();
 
