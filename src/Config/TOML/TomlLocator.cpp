@@ -27,9 +27,10 @@
 
 static std::string findFile(const QStringView& filename,
                             const QStringView& subdirectory = QStringLiteral("")) {
-        QString subdir = subdirectory.empty() ? QString(subdirectory) : QString(subdirectory) + "/";
+        QString subdir   = subdirectory.empty() ? subdirectory.toString()
+                                                : subdirectory.toString() + "/";
         QString filepath = qEnvironmentVariable("XDG_CONFIG_HOME") + "/FastApplets/" + subdir
-                         + filename;
+                         + filename.toString();
 
         // If file found, save filepath
         if (QFileInfo::exists(filepath)) { return filepath.toStdString(); }
