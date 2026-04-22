@@ -6,14 +6,12 @@ target_include_directories(Config_KeysFile_Mapper PRIVATE
         ${CMAKE_CURRENT_LIST_DIR}
         ${GLOBAL_INCLUSIONS})
 
-# TODO Swap the clauses
 target_link_libraries(Config_KeysFile_Mapper PRIVATE
-        tomlplusplus::tomlplusplus
-        Qt${QT_VERSION_MAJOR}::Widgets)
-
-target_link_libraries(Config_KeysFile_Mapper PUBLIC
         Config::KeysFile::Types
         Config::Resolvers # makeCfgPath and extendCfgPath
         Config::TOML
         Log)
 
+target_link_libraries(Config_KeysFile_Mapper PUBLIC
+        tomlplusplus::tomlplusplus
+        Qt${QT_VERSION_MAJOR}::Widgets)

@@ -25,9 +25,9 @@ target_link_libraries(Config PRIVATE
         Config::Resolvers
         Config::TOML
         Log
-        UI::Widgets
-        CppUtils)
+        UI::Widgets)
 
 target_link_libraries(Config PUBLIC
+        CppUtils
         tomlplusplus::tomlplusplus
         Qt${QT_VERSION_MAJOR}::Widgets)
