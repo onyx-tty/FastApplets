@@ -17,10 +17,10 @@
 
 #include "PrimaryButtonProperties.h"
 
-#include <qnamespace.h>
 #include <toml++/toml.hpp>
 #include <QSize>
 #include <QSizePolicy>
+#include <Qt>
 
 PrimaryButtonProperties::PrimaryButtonProperties(Qt::Alignment text_alignment,
                                                  Qt::Alignment icon_alignment, QSize icon_size,

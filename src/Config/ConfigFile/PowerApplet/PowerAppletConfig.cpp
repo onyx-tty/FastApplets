@@ -27,12 +27,12 @@
 #include "UI/Enums/ButtonIDs.h"
 #include "UI/Widgets/PowerButtonParams.h"
 
-#include <qnamespace.h>
 #include <utility>
 #include <vector>
 #include <QSize>
 #include <QSizePolicy>
 #include <QString>
+#include <Qt>
 
 PowerAppletConfig::PowerAppletConfig(WindowProperties        window_properties,
                                      PrimaryButtonProperties primary_button_properties,

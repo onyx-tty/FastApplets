@@ -20,10 +20,10 @@
 #include "Types/ConfigTomlFiles.h"
 
 #include <string>
+#include <QCoreApplication>
 #include <QFileInfo>
 #include <QString>
 #include <QStringView>
-#include <QtEnvironmentVariables>
 
 static std::string findFile(const QStringView& filename,
                             const QStringView& subdirectory = QStringLiteral("")) {

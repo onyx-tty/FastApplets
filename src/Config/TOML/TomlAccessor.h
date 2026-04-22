@@ -22,11 +22,11 @@
 #include "Types/TomlArrayConditions.h"
 
 #include <optional>
-#include <qnamespace.h>
 #include <toml++/toml.hpp>
 #include <QSize>
 #include <QSizePolicy>
 #include <QString>
+#include <Qt>
 
 extern const enums::EnumMap<Qt::Alignment> alignment_map;
 extern const enums::EnumMap<QSizePolicy>   size_policy_map;

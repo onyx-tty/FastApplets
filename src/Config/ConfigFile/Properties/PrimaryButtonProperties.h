@@ -17,10 +17,10 @@
 
 #pragma once
 
-#include <qnamespace.h>
 #include <toml++/toml.hpp>
 #include <QSize>
 #include <QSizePolicy>
+#include <Qt>
 
 class PrimaryButtonProperties final {
 private:

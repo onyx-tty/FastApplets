@@ -25,15 +25,14 @@
 
 #include <array>
 #include <cstddef>
-#include <qnamespace.h>
-#include <qobject.h>
-#include <qtresource.h>
 #include <unordered_map>
 #include <vector>
 #include <QApplication>
 #include <QBoxLayout>
 #include <QHBoxLayout>
 #include <QKeyEvent>
+#include <QObject>
+#include <Qt>
 
 // TODO Store a {PowerButton*, keybindings*} map in a more visible place
 using button_bindings     = std::unordered_map<const PowerButton*, const keybindings*>;

@@ -21,9 +21,9 @@
 #include "Config/TOML/Types/TomlArrayConditions.h"
 
 #include <optional>
-#include <qnamespace.h>
 #include <string_view>
 #include <toml++/toml.hpp>
+#include <Qt>
 
 class QSizePolicy;
 class QSize;

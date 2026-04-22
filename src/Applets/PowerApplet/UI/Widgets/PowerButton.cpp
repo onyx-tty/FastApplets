@@ -24,9 +24,9 @@
 #include "UI/Enums/ButtonIDs.h"
 #include "UI/Widgets/PrimaryButton.h"
 
-#include <qobject.h>
 #include <QBoxLayout>
 #include <QIcon>
+#include <QObject>
 #include <QString>
 
 PowerButton::PowerButton(power_button_id id, const QIcon& icon, const QString& text,

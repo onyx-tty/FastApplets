@@ -20,10 +20,10 @@
 #include "UI/Enums/ButtonIDs.h"
 #include "UI/Widgets/PowerButtonParams.h"
 
-#include <qtresource.h>
 #include <utility>
 #include <vector>
 #include <QIcon>
+#include <QResource>
 #include <QString>
 
 QIcon iconFor(power_button_id id) {

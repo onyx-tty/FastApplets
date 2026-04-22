@@ -23,11 +23,11 @@
 #include "Widgets/PowerButton.h"
 #include "Widgets/PowerButtonRecord.h"
 
-#include <qnamespace.h>
 #include <vector>
 #include <QBoxLayout>
 #include <QKeyEvent>
 #include <QWidget>
+#include <Qt>
 
 class PowerCentralWidget final : public QWidget {
         Q_OBJECT

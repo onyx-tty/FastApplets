@@ -23,9 +23,9 @@
 #include "Resolvers.h"
 
 #include <optional>
-#include <qnamespace.h>
 #include <string_view>
 #include <toml++/toml.hpp>
+#include <Qt>
 
 class QSizePolicy;
 class QSize;

@@ -24,12 +24,12 @@
 #include <cstddef>
 #include <cstdint>
 #include <optional>
-#include <qnamespace.h>
 #include <string>
 #include <toml++/toml.hpp>
 #include <QSize>
 #include <QSizePolicy>
 #include <QString>
+#include <Qt>
 
 using enums::EnumMap;
 

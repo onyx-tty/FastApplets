@@ -22,8 +22,8 @@
 #include "Config/TOML/TomlParser.h"
 
 #include <array>
-#include <qnamespace.h>
 #include <utility>
+#include <Qt>
 
 PowerAppletKeys::PowerAppletKeys(keybindings                quit_keys,
                                  std::array<keybindings, 4> primary_button_keys) :
