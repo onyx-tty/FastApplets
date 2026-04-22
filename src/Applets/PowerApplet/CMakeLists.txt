@@ -41,6 +41,8 @@ if(ENABLE_UBSAN)
         target_link_options(PowerApplet PRIVATE -fsanitize=undefined)
 endif()
 
+target_compile_definitions(PowerApplet PUBLIC CPPUTILS_ENABLE_QT)
+
 install(TARGETS PowerApplet
         LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
         RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})

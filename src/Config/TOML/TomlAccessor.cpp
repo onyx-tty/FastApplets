@@ -16,7 +16,7 @@
    along with this program.  If not, see <https://www.gnu.org/licenses/>. */
 
 #include "TomlAccessor.h"
-#include "CppUtils/include/Enum.h"
+#include "CppUtils/include/Enum/Enum.h"
 #include "Log/Log.h"
 #include "Types/NodeView.h"
 #include "Types/TomlArrayConditions.h"
@@ -31,7 +31,7 @@
 #include <QSizePolicy>
 #include <QString>
 
-using enum_utils::EnumMap;
+using enums::EnumMap;
 
 const EnumMap<Qt::Alignment> alignment_map = {{"top", Qt::AlignTop | Qt::AlignHCenter},
                                               {"center", Qt::AlignCenter},

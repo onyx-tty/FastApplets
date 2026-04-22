@@ -17,6 +17,6 @@
 
 #pragma once
 
-#include "CppUtils/include/Qt/Log.h"
+#include "CppUtils/include/Log/QtLog.h"
 
-using namespace qt::log_utils;
+using namespace qt::log;

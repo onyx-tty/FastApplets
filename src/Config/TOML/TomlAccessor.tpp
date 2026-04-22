@@ -17,8 +17,8 @@
 
 #pragma once
 
-#include "CppUtils/include/Enum.h"
-#include "CppUtils/include/String.h"
+#include "CppUtils/include/Enum/Enum.h"
+#include "CppUtils/include/String/String.h"
 #include "Log/Log.h"
 #include "TomlAccessor.h"
 #include "Types/NodeView.h"
@@ -49,10 +49,9 @@ std::optional<T> TomlAccessor::tryGet(node_view node, const QString& path, bool 
 }
 
 template<typename T>
-std::optional<T> TomlAccessor::tryGetValueFromEnumMap(node_view                     node,
-                                                      const enum_utils::EnumMap<T>& map,
+std::optional<T> TomlAccessor::tryGetValueFromEnumMap(node_view node, const enums::EnumMap<T>& map,
                                                       const QString& path, bool is_override) {
-        using string_utils::toLowerCopy;
+        using string::toLowerCopy;
 
         const auto key = tryGet<std::string>(node, path, is_override);
         if (!key) { return std::nullopt; }

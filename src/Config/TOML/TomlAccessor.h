@@ -17,7 +17,7 @@
 
 #pragma once
 
-#include "CppUtils/include/Enum.h"
+#include "CppUtils/include/Enum/Enum.h"
 #include "Types/NodeView.h"
 #include "Types/TomlArrayConditions.h"
 
@@ -28,8 +28,8 @@
 #include <QSizePolicy>
 #include <QString>
 
-extern const enum_utils::EnumMap<Qt::Alignment> alignment_map;
-extern const enum_utils::EnumMap<QSizePolicy>   size_policy_map;
+extern const enums::EnumMap<Qt::Alignment> alignment_map;
+extern const enums::EnumMap<QSizePolicy>   size_policy_map;
 
 class TomlAccessor final {
 public:
@@ -47,10 +47,9 @@ public:
         static std::optional<QString> tryGetQString(node_view node, const QString& path,
                                                     bool is_override = false);
         template<typename T>
-        static std::optional<T> tryGetValueFromEnumMap(node_view                     key,
-                                                       const enum_utils::EnumMap<T>& map,
-                                                       const QString&                path,
-                                                       bool is_override = false);
+        static std::optional<T> tryGetValueFromEnumMap(node_view key, const enums::EnumMap<T>& map,
+                                                       const QString& path,
+                                                       bool           is_override = false);
         static std::optional<Qt::Alignment> tryGetAlignment(node_view node, const QString& path,
                                                             bool is_override = false);
         static std::optional<QSizePolicy>   tryGetSizePolicy(node_view node, const QString& path,

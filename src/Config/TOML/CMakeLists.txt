@@ -12,9 +12,9 @@ target_include_directories(Config_TOML PRIVATE
 
 target_link_libraries(Config_TOML PRIVATE
         Config::TOML::Types
-        Log
-        CppUtils)
+        Log)
 
 target_link_libraries(Config_TOML PUBLIC
         Qt${QT_VERSION_MAJOR}::Widgets
-        tomlplusplus::tomlplusplus)
+        tomlplusplus::tomlplusplus
+        CppUtils)

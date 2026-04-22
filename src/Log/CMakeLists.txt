@@ -8,6 +8,9 @@ target_include_directories(Log PRIVATE
         ${GLOBAL_INCLUSIONS})
 
 target_link_libraries(Log PUBLIC
+        CppUtils)
+
+target_link_libraries(Log PUBLIC
         Qt${QT_VERSION_MAJOR}::Core)
 
 # If enabled, print debug-level logs in all files that include this library
