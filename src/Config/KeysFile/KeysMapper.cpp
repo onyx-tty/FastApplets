@@ -104,7 +104,7 @@ void KeysMapper::mapPrimaryButtonKeys(node_view                         primary_
                          primary_button_arr, primary_buttons, defaults, path_context,
                          {"Format: [keybindings...]", min_size, max_size});
 
-        std::array<keybindings, max_size> primary_buttons_new{};
+        std::array<keybindings, 4> primary_buttons_new{};
         for (size_t i = 0; i != primary_button_arr.size(); ++i) {
                 mapPrimaryButtonKey(primary_buttons_node[i], primary_buttons_new[i], defaults[i],
                                     max_size,
