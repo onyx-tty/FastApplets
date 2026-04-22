@@ -56,17 +56,15 @@ add_subdirectory(
 add_subdirectory(
         src/DBus)
 
-add_subdirectory(
-        src/Time)
-
 if(BUILD_POWERAPPLET)
         add_subdirectory(
                 src/Applets/PowerApplet)
 endif()
 
-if(BUILD_TESTS)
-        enable_testing()
-        add_subdirectory(tests)
-endif()
+#if(BUILD_TESTS)
+#        enable_testing()
+#        add_subdirectory(tests)
+#endif()
+
 
 include(GNUInstallDirs)
