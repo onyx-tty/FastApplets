@@ -117,7 +117,7 @@ void KeysMapper::mapPrimaryButtonKeys(node_view                         primary_
 void KeysMapper::mapToPowerAppletKeys(const toml::table& power_applet_table,
                                       const toml::table& global_table, PowerAppletKeys& keys) {
         // Confirm that a QApplication instance exists
-        if (!QApplication::instanceExists()) {
+        if (!QApplication::instance()) {
                 QFATAL("QApplication has not been instantiated yet!");
         }
 

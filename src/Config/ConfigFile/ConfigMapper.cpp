@@ -403,7 +403,7 @@ void ConfigMapper::mapToPowerAppletConfig(const toml::table& power_applet_table,
                                           const toml::table& global_table,
                                           PowerAppletConfig& config) {
         // Confirm that a QApplication instance exists
-        if (!QApplication::instanceExists()) {
+        if (!QApplication::instance()) {
                 QFATAL("QApplication has not been instantiated yet!");
         }
 
