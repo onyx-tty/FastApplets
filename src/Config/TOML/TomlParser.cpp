@@ -26,7 +26,7 @@
 toml::table TomlParser::createTable(const std::string& file_path) {
         toml::table file_table;
 
-        QDEBUG() << file_path;
+        QDEBUG() << QString::fromStdString(file_path);
 
         try {
                 file_table = toml::parse_file(file_path);

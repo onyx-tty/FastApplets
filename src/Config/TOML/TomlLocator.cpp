@@ -35,7 +35,7 @@ static std::string findFile(const QStringView& filename,
         // If file found, save filepath
         if (QFileInfo::exists(filepath)) { return filepath.toStdString(); }
 
-        QFATAL("%s not found!", filepath);
+        QFATAL("%s not found!", filepath.toStdString().c_str());
 }
 
 // Look for configs in $XDG_CONFIG_HOME/FastApplets
