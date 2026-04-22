@@ -96,7 +96,8 @@ void KeysMapper::mapPrimaryButtonKeys(node_view                         primary_
                                       std::array<keybindings, 4>&       primary_buttons,
                                       const std::array<keybindings, 4>& defaults,
                                       const QString&                    path_context) {
-        constexpr size_t min_size = 1, max_size = primary_buttons.size();
+        constexpr size_t min_size = 1;
+        const size_t     max_size = primary_buttons.size();
 
         toml::array primary_button_arr{};
         resolveOrDefault({Source{primary_buttons_node, applet::power_applet.scope}},
