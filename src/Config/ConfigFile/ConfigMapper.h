@@ -18,9 +18,6 @@
 #pragma once
 
 #include "Config/ConfigFile/PowerApplet/PowerAppletConfig.h"
-#include "Config/ConfigFile/Properties/EnvironmentProperties.h"
-#include "Config/ConfigFile/Properties/LayoutProperties.h"
-#include "Config/ConfigFile/Properties/WindowProperties.h"
 #include "Config/TOML/Types/NodePair.h"
 #include "Config/TOML/Types/NodeView.h"
 
@@ -28,12 +25,16 @@
 #include <toml++/toml.hpp>
 #include <QStringList>
 
+class EnvironmentProperties;
+class LayoutProperties;
+class WindowProperties;
 class GlobalConfig;
 class PowerButtonParams;
+class PrimaryButtonProperties;
 class QString;
 class QSize;
 class QSizePolicy;
-struct ShellCommand;
+class ShellCommand;
 
 class ConfigMapper final {
 private:
