@@ -7,10 +7,16 @@ target_include_directories(PowerApplet_UI_Widgets PRIVATE
         ${GLOBAL_INCLUSIONS})
 
 target_link_libraries(PowerApplet_UI_Widgets PRIVATE
+        UI::Enums
+        UI::Widgets
+        Config::ConfigFile::Properties
+        Config::ConfigFile::Global
+        Config::ConfigFile::PowerApplet
+        Config::KeysFile::Global
+        Config::KeysFile::PowerApplet
         Log
         DBus
-        Shell
-        UI::Enums)
+        Shell)
 
 target_link_libraries(PowerApplet_UI_Widgets PUBLIC
         Qt${QT_VERSION_MAJOR}::Widgets)

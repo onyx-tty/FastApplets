@@ -12,12 +12,18 @@ target_include_directories(PowerApplet_UI PRIVATE
         ${GLOBAL_INCLUSIONS})
 
 target_link_libraries(PowerApplet_UI PRIVATE
-        Config
+        PowerApplet::UI::Widgets
+        PowerApplet::DBus
+        Config::ConfigFile::Global
+        Config::ConfigFile::PowerApplet
+        Config::ConfigFile::Properties
+        Config::KeysFile::Global
+        Config::KeysFile::PowerApplet
+        Config::KeysFile::Types
         Log
         Shell
         UI
-        PowerApplet::DBus
-        PowerApplet::UI::Widgets)
+        UI::Widgets)
 
 target_link_libraries(PowerApplet_UI PUBLIC
         Qt${QT_VERSION_MAJOR}::Widgets)

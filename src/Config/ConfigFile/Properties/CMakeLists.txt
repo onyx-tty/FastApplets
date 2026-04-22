@@ -10,7 +10,6 @@ target_include_directories(Config_ConfigFile_Properties PRIVATE
         ${GLOBAL_INCLUSIONS})
 
 target_link_libraries(Config_ConfigFile_Properties PRIVATE
-        UI::Widgets
         Log)
 
 target_link_libraries(Config_ConfigFile_Properties PUBLIC

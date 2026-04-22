@@ -21,8 +21,8 @@ target_include_directories(Config PRIVATE
 
 target_link_libraries(Config PRIVATE
         Config::ConfigFile
-        Config::Resolvers
         Config::KeysFile
+        Config::Resolvers
         Config::TOML
         Log
         UI::Widgets
