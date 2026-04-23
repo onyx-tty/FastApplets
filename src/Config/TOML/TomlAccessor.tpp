@@ -56,7 +56,7 @@ std::optional<T> TomlAccessor::tryGetValueFromEnumMap(node_view key, const enums
         const auto key_str = tryGet<std::string>(key, path, is_override);
         if (!key_str) { return std::nullopt; }
 
-        if (!map.contains(key_str.value())) {
+        if (!map.contains(toLowerCopy(key_str.value()))) {
                 if (is_override) {
                         QDEBUG() << path
                                  << "is an override, and missing! Proceeding with globals...";
