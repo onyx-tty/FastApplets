@@ -47,7 +47,10 @@ const toml::table* TomlAccessor::tryGetTomlTable(node_view node, const QString& 
                                                  bool is_override) {
         const auto* table = node.as_table();
         if (!table) {
-                logMissing(path, is_override, "must be a table!");
+                if (!is_override) {
+                        QWARNING()
+                                << QString("%1, missing or wrong type! Using defaults...").arg(path);
+                }
 
                 return nullptr;
         }
@@ -62,25 +65,36 @@ const toml::array* TomlAccessor::tryGetTomlArray(node_view node, const QString& 
         const auto* arr = node.as_array();
 
         if (!arr) {
-                logMissing(path, is_override, "must be an array!" + arr_conditions.array_format);
+                if (!is_override) {
+                        QWARNING()
+                                << QString("%1, missing or wrong type! Format: %2. Using defaults...")
+                                           .arg(path, QString("must be an array! Format: %1")
+                                                              .arg(arr_conditions.array_format));
+                }
 
                 return nullptr;
         }
 
         if (arr_conditions.min_size && arr->size() < arr_conditions.min_size.value()) {
-                logMissing(path, is_override,
-                           QString("%1, arr size < min_size! min_size: %2, size: %3. Using defaults...")
-                                   .arg(path, QString::number(arr_conditions.min_size.value()),
-                                        QString::number(arr->size())));
+                if (!is_override) {
+                        QWARNING()
+                                << QString("%1, arr size < min_size! min_size: %2, arr size: %3. Using defaults...")
+                                           .arg(path,
+                                                QString::number(arr_conditions.min_size.value()),
+                                                QString::number(arr->size()));
+                }
 
                 return nullptr;
         }
 
         if (arr_conditions.max_size && arr->size() > arr_conditions.max_size.value()) {
-                logMissing(path, is_override,
-                           QString("%1, arr size >= max_size! max_size: %2, size: %3. Using defaults...")
-                                   .arg(path, QString::number(arr_conditions.max_size.value()),
-                                        QString::number(arr->size())));
+                if (!is_override) {
+                        QWARNING()
+                                << QString("%1, arr size >= max_size! max_size: %2, arr size: %3. Using defaults...")
+                                           .arg(path,
+                                                QString::number(arr_conditions.max_size.value()),
+                                                QString::number(arr->size()));
+                }
 
                 return nullptr;
         }
