@@ -33,16 +33,6 @@
 
 using enums::EnumMap;
 
-const EnumMap<Qt::Alignment> alignment_map = {{"top", Qt::AlignTop | Qt::AlignHCenter},
-                                              {"center", Qt::AlignCenter},
-                                              {"bottom", Qt::AlignBottom | Qt::AlignHCenter},
-                                              {"left", Qt::AlignVCenter | Qt::AlignLeft},
-                                              {"right", Qt::AlignVCenter | Qt::AlignRight}};
-
-const EnumMap<QSizePolicy> size_policy_map = {{"expanding",
-                                               {QSizePolicy::Expanding, QSizePolicy::Expanding}},
-                                              {"fixed", {QSizePolicy::Fixed, QSizePolicy::Fixed}}};
-
 const toml::table* TomlAccessor::tryGetTomlTable(node_view node) {
         const auto* table = node.as_table();
         if (!table) { return nullptr; }
@@ -96,9 +86,20 @@ std::optional<QString> TomlAccessor::tryGetQString(node_view node) {
 }
 
 std::optional<Qt::Alignment> TomlAccessor::tryGetAlignment(node_view node) {
+        static const EnumMap<Qt::Alignment> alignment_map =
+                {{"top", Qt::AlignTop | Qt::AlignHCenter},
+                 {"center", Qt::AlignCenter},
+                 {"bottom", Qt::AlignBottom | Qt::AlignHCenter},
+                 {"left", Qt::AlignVCenter | Qt::AlignLeft},
+                 {"right", Qt::AlignVCenter | Qt::AlignRight}};
+
         return TomlAccessor::tryGetValueFromEnumMap<Qt::Alignment>(node, alignment_map);
 }
 
 std::optional<QSizePolicy> TomlAccessor::tryGetSizePolicy(node_view node) {
+        static const EnumMap<QSizePolicy> size_policy_map =
+                {{"expanding", {QSizePolicy::Expanding, QSizePolicy::Expanding}},
+                 {"fixed", {QSizePolicy::Fixed, QSizePolicy::Fixed}}};
+
         return TomlAccessor::tryGetValueFromEnumMap<QSizePolicy>(node, size_policy_map);
 }

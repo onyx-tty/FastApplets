@@ -28,9 +28,6 @@
 #include <QString>
 #include <Qt>
 
-extern const enums::EnumMap<Qt::Alignment> alignment_map;
-extern const enums::EnumMap<QSizePolicy>   size_policy_map;
-
 class TomlAccessor final {
 public:
         TomlAccessor() = delete;
