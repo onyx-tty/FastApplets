@@ -106,8 +106,7 @@ void KeysMapper::mapPrimaryButtonKeys(node_view                         primary_
         for (size_t i = 0; i != primary_button_arr.size(); ++i) {
                 mapPrimaryButtonKey(primary_buttons_node[i], primary_buttons_new[i], defaults[i],
                                     max_size,
-                                    extendCfgPath(path_context,
-                                                  QString("[%1]").arg(i).toStdString().c_str()));
+                                    path_context + QString("[%1]").arg(i).toStdString().c_str());
         };
 
         primary_buttons = std::move(primary_buttons_new);
