@@ -47,6 +47,7 @@ std::optional<T> TomlAccessor::tryGet(node_view node, const QString& path, bool 
                 return std::nullopt;
         }
 
+        QDEBUG() << path << "found!";
         return value->get();
 }
 

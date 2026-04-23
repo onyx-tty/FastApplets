@@ -52,6 +52,7 @@ const toml::table* TomlAccessor::tryGetTomlTable(node_view node, const QString& 
                 return nullptr;
         }
 
+        QDEBUG() << path << "found!";
         return table;
 }
 
@@ -84,6 +85,7 @@ const toml::array* TomlAccessor::tryGetTomlArray(node_view node, const QString& 
                 return nullptr;
         }
 
+        QDEBUG() << path << "found!";
         return arr;
 }
 
