@@ -33,16 +33,8 @@ template<typename T>
 std::optional<T> TomlAccessor::tryGet(node_view node, const QString& path, bool is_override) {
         const auto* value = node.as<T>();
 
-        if (!value) {
-                if (!is_override) {
-                        QWARNING()
-                                << QString("%1, missing or wrong type! Using defaults...").arg(path);
-                }
+        if (!value) { return std::nullopt; }
 
-                return std::nullopt;
-        }
-
-        QDEBUG() << path << "found!";
         return value->get();
 }
 
@@ -55,11 +47,8 @@ std::optional<T> TomlAccessor::tryGetValueFromEnumMap(node_view key, const enums
         if (!key_str) { return std::nullopt; }
 
         if (!map.contains(toLowerCopy(key_str.value()))) {
-                if (!is_override) {
-                        QWARNING()
-                                << QString("%1, missing or wrong type! Using defaults...").arg(path);
-                }
-
+                QWARNING() << QString("%1, key %2 not found in map! Using defaults...")
+                                      .arg(path, QString::fromStdString(key_str.value()));
                 return std::nullopt;
         }
 

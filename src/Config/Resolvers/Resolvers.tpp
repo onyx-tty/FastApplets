@@ -75,6 +75,22 @@ std::optional<T> resolve(std::initializer_list<Source> sources, const QString& p
                 }
         };
 
+        // Collapse logging message variants
+        static auto log = [&](const QString& path) {
+                if constexpr (std::is_same_v<DT, toml::table>) {
+                        QWARNING()
+                                << QString("%1, missing or wrong type! Using defaults...").arg(path);
+                } else if constexpr (std::is_same_v<DT, toml::array>) {
+                        QWARNING()
+                                << QString("%1, missing or wrong type! Format: %2. Using defaults...")
+                                           .arg(path, QString("must be an array! Format: %1")
+                                                              .arg(arr_conditions.array_format));
+                } else {
+                        QWARNING()
+                                << QString("%1, missing or wrong type! Using defaults...").arg(path);
+                }
+        };
+
         // Validate and attempt extraction of each passed source, prioritizing earliest ones
         for (size_t i = 0; i != sources.size(); ++i) {
                 auto& source = *(sources.begin() + i);
@@ -83,10 +99,17 @@ std::optional<T> resolve(std::initializer_list<Source> sources, const QString& p
                 bool is_source_override = (i < sources.size() - 1) || force_override_on ? true
                                                                                         : false;
 
-                if (auto result = extract(source.node, makeCfgPath(source.scope, path_context),
-                                          is_source_override, arr_conditions)) {
-                        return *result;
+                auto result = extract(source.node, makeCfgPath(source.scope, path_context),
+                                      is_source_override, arr_conditions);
+                if (!result) {
+                        if (!is_source_override) {
+                                log(makeCfgPath(source.scope, path_context));
+                        }
+                        continue;
                 }
+
+                QDEBUG() << makeCfgPath(source.scope, path_context) << "found!";
+                return *result;
         }
 
         // Use hardcoded defaults if extraction failed
