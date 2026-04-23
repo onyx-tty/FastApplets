@@ -244,9 +244,8 @@ bool ConfigMapper::mapPrimaryButton(node_view                             button
         if (!id_result) {
                 buttons = defaults;
                 return true;
-        } else {
-                button.id = getPowerButtonIDFromString(id_result.value());
         }
+        button.id = getPowerButtonIDFromString(id_result.value());
 
         auto text_result = resolve<QString>({Source{button_table.value()["text"],
                                                     applet::power_applet.scope}},
@@ -254,9 +253,8 @@ bool ConfigMapper::mapPrimaryButton(node_view                             button
         if (!text_result) {
                 buttons = defaults;
                 return true;
-        } else {
-                button.text = text_result.value();
         }
+        button.text = text_result.value();
 
         auto order_result = resolve<int64_t>({Source{button_table.value()["order"],
                                                      applet::power_applet.scope}},
@@ -264,9 +262,8 @@ bool ConfigMapper::mapPrimaryButton(node_view                             button
         if (!order_result) {
                 buttons = defaults;
                 return true;
-        } else {
-                button.order = order_result.value();
         }
+        button.order = order_result.value();
 
         mapCommand(button_params_node["command"], buttons, defaults, button.command,
                    extendCfgPath(path_context, "command"));
@@ -303,9 +300,8 @@ void ConfigMapper::mapCommand(node_view command_node, std::vector<PowerButtonPar
         if (!program_result) {
                 buttons = defaults;
                 return;
-        } else {
-                cmd.program = program_result.value();
         }
+        cmd.program = program_result.value();
 
         mapCommandArguments(toml::node_view(command_arr.value()[1]), buttons, defaults,
                             cmd.arguments, extendCfgPath(path_context, "arguments"));
@@ -350,9 +346,8 @@ void ConfigMapper::mapCommandArgument(node_view                             argu
         if (!argument_result) {
                 buttons = defaults;
                 return;
-        } else {
-                argument = argument_result.value();
         }
+        argument = argument_result.value();
 
         if (argument.isEmpty()) { return; }
 
