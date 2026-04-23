@@ -43,30 +43,30 @@ const EnumMap<QSizePolicy> size_policy_map = {{"expanding",
                                                {QSizePolicy::Expanding, QSizePolicy::Expanding}},
                                               {"fixed", {QSizePolicy::Fixed, QSizePolicy::Fixed}}};
 
-const toml::table* TomlAccessor::tryGetTomlTable(node_view node, const QString& path) {
+const toml::table* TomlAccessor::tryGetTomlTable(node_view node) {
         const auto* table = node.as_table();
         if (!table) { return nullptr; }
 
         return table;
 }
 
-const toml::array* TomlAccessor::tryGetTomlArray(node_view node, const QString& path,
+const toml::array* TomlAccessor::tryGetTomlArray(node_view                  node,
                                                  const TomlArrayConditions& arr_conditions) {
         const auto* arr = node.as_array();
 
         if (!arr) { return nullptr; }
 
         if (arr_conditions.min_size && arr->size() < arr_conditions.min_size.value()) {
-                QWARNING() << QString("%1, arr size < min_size! min_size: %2, arr size: %3. Using defaults...")
-                                      .arg(path, QString::number(arr_conditions.min_size.value()),
+                QWARNING() << QString("arr size < min_size! min_size: %1, arr size: %2")
+                                      .arg(QString::number(arr_conditions.min_size.value()),
                                            QString::number(arr->size()));
 
                 return nullptr;
         }
 
         if (arr_conditions.max_size && arr->size() > arr_conditions.max_size.value()) {
-                QWARNING() << QString("%1, arr size >= max_size! max_size: %2, arr size: %3. Using defaults...")
-                                      .arg(path, QString::number(arr_conditions.max_size.value()),
+                QWARNING() << QString("arr size >= max_size! max_size: %1, arr size: %2")
+                                      .arg(QString::number(arr_conditions.max_size.value()),
                                            QString::number(arr->size()));
 
                 return nullptr;
@@ -75,32 +75,30 @@ const toml::array* TomlAccessor::tryGetTomlArray(node_view node, const QString& 
         return arr;
 }
 
-std::optional<QSize> TomlAccessor::tryGetQSize(node_view node, const QString& path) {
+std::optional<QSize> TomlAccessor::tryGetQSize(node_view node) {
         constexpr size_t min_size = 2;
-        const auto*      arr      = tryGetTomlArray(node, path, {"Format: [int, int]", min_size});
+        const auto*      arr      = tryGetTomlArray(node, {"Format: [int, int]", min_size});
 
         if (!arr) { return std::nullopt; }
 
-        auto width  = tryGet<int64_t>(toml::node_view((*arr)[0]), path + "[0]");
-        auto height = tryGet<int64_t>(toml::node_view((*arr)[1]), path + "[1]");
+        auto width  = tryGet<int64_t>(toml::node_view((*arr)[0]));
+        auto height = tryGet<int64_t>(toml::node_view((*arr)[1]));
 
         if (!width || !height) { return std::nullopt; }
 
         return QSize(width.value(), height.value());
 }
 
-std::optional<QString> TomlAccessor::tryGetQString(node_view node, const QString& path) {
-        if (auto str = tryGet<std::string>(node, path)) {
-                return QString::fromStdString(str.value());
-        }
+std::optional<QString> TomlAccessor::tryGetQString(node_view node) {
+        if (auto str = tryGet<std::string>(node)) { return QString::fromStdString(str.value()); }
 
         return std::nullopt;
 }
 
-std::optional<Qt::Alignment> TomlAccessor::tryGetAlignment(node_view node, const QString& path) {
-        return TomlAccessor::tryGetValueFromEnumMap<Qt::Alignment>(node, alignment_map, path);
+std::optional<Qt::Alignment> TomlAccessor::tryGetAlignment(node_view node) {
+        return TomlAccessor::tryGetValueFromEnumMap<Qt::Alignment>(node, alignment_map);
 }
 
-std::optional<QSizePolicy> TomlAccessor::tryGetSizePolicy(node_view node, const QString& path) {
-        return TomlAccessor::tryGetValueFromEnumMap<QSizePolicy>(node, size_policy_map, path);
+std::optional<QSizePolicy> TomlAccessor::tryGetSizePolicy(node_view node) {
+        return TomlAccessor::tryGetValueFromEnumMap<QSizePolicy>(node, size_policy_map);
 }

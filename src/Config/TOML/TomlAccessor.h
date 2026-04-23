@@ -38,17 +38,16 @@ class TomlAccessor final {
 public:
         TomlAccessor() = delete;
         template<typename T>
-        static std::optional<T>     tryGet(node_view node, const QString& path);
-        static const toml::table*   tryGetTomlTable(node_view node, const QString& path);
-        static const toml::array*   tryGetTomlArray(node_view node, const QString& path,
+        static std::optional<T>     tryGet(node_view node);
+        static const toml::table*   tryGetTomlTable(node_view node);
+        static const toml::array*   tryGetTomlArray(node_view                  node,
                                                     const TomlArrayConditions& arr_conditions = {});
-        static std::optional<QSize> tryGetQSize(node_view node, const QString& path);
-        static std::optional<QString> tryGetQString(node_view node, const QString& path);
+        static std::optional<QSize> tryGetQSize(node_view node);
+        static std::optional<QString> tryGetQString(node_view node);
         template<typename T>
-        static std::optional<T> tryGetValueFromEnumMap(node_view key, const enums::EnumMap<T>& map,
-                                                       const QString& path);
-        static std::optional<Qt::Alignment> tryGetAlignment(node_view node, const QString& path);
-        static std::optional<QSizePolicy>   tryGetSizePolicy(node_view node, const QString& path);
+        static std::optional<T> tryGetValueFromEnumMap(node_view key, const enums::EnumMap<T>& map);
+        static std::optional<Qt::Alignment> tryGetAlignment(node_view node);
+        static std::optional<QSizePolicy>   tryGetSizePolicy(node_view node);
 };
 
 #include "TomlAccessor.tpp"

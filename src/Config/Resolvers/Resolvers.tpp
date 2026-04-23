@@ -55,22 +55,22 @@ std::optional<T> resolve(std::initializer_list<Source> sources, const QString& p
 
         // Collapse extraction logic into that of a corresponding type
         static auto extract =
-                [&](node_view node, const QString& path,
+                [&](node_view                  node,
                     const TomlArrayConditions& arr_conditions = {}) -> std::optional<DT> {
                 if constexpr (std::is_same_v<DT, toml::table>) {
-                        return normalize(TomlAccessor::tryGetTomlTable(node, path));
+                        return normalize(TomlAccessor::tryGetTomlTable(node));
                 } else if constexpr (std::is_same_v<DT, toml::array>) {
-                        return normalize(TomlAccessor::tryGetTomlArray(node, path, arr_conditions));
+                        return normalize(TomlAccessor::tryGetTomlArray(node, arr_conditions));
                 } else if constexpr (std::is_same_v<DT, QSize>) {
-                        return normalize(TomlAccessor::tryGetQSize(node, path));
+                        return normalize(TomlAccessor::tryGetQSize(node));
                 } else if constexpr (std::is_same_v<DT, Qt::Alignment>) {
-                        return normalize(TomlAccessor::tryGetAlignment(node, path));
+                        return normalize(TomlAccessor::tryGetAlignment(node));
                 } else if constexpr (std::is_same_v<DT, QSizePolicy>) {
-                        return normalize(TomlAccessor::tryGetSizePolicy(node, path));
+                        return normalize(TomlAccessor::tryGetSizePolicy(node));
                 } else if constexpr (std::is_same_v<DT, QString>) {
-                        return normalize(TomlAccessor::tryGetQString(node, path));
+                        return normalize(TomlAccessor::tryGetQString(node));
                 } else {
-                        return normalize(TomlAccessor::tryGet<DT>(node, path));
+                        return normalize(TomlAccessor::tryGet<DT>(node));
                 }
         };
 
@@ -98,8 +98,7 @@ std::optional<T> resolve(std::initializer_list<Source> sources, const QString& p
                 bool is_source_override = (i < sources.size() - 1) || force_override_on ? true
                                                                                         : false;
 
-                auto result = extract(source.node, makeCfgPath(source.scope, path_context),
-                                      arr_conditions);
+                auto result = extract(source.node, arr_conditions);
                 if (!result) {
                         if (!is_source_override) { log(makeCfgPath(source.scope, path_context)); }
                         continue;

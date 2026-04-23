@@ -30,7 +30,7 @@
 #include <QString>
 
 template<typename T>
-std::optional<T> TomlAccessor::tryGet(node_view node, const QString& path) {
+std::optional<T> TomlAccessor::tryGet(node_view node) {
         const auto* value = node.as<T>();
 
         if (!value) { return std::nullopt; }
@@ -39,16 +39,15 @@ std::optional<T> TomlAccessor::tryGet(node_view node, const QString& path) {
 }
 
 template<typename T>
-std::optional<T> TomlAccessor::tryGetValueFromEnumMap(node_view key, const enums::EnumMap<T>& map,
-                                                      const QString& path) {
+std::optional<T> TomlAccessor::tryGetValueFromEnumMap(node_view key, const enums::EnumMap<T>& map) {
         using string::toLowerCopy;
 
-        const auto key_str = tryGet<std::string>(key, path);
+        const auto key_str = tryGet<std::string>(key);
         if (!key_str) { return std::nullopt; }
 
         if (!map.contains(toLowerCopy(key_str.value()))) {
-                QWARNING() << QString("%1, key %2 not found in map! Using defaults...")
-                                      .arg(path, QString::fromStdString(key_str.value()));
+                QWARNING() << QString("Key %1 not found in map!")
+                                      .arg(QString::fromStdString(key_str.value()));
                 return std::nullopt;
         }
 
