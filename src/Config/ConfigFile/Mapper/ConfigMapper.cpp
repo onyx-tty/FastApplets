@@ -232,10 +232,9 @@ bool ConfigMapper::mapPrimaryButton(node_view                             button
 
         PowerButtonParams button{};
 
-        // TODO Pass .enabled, .id, .label, and .order as part of path context
         auto enabled = resolve<bool>({Source{button_table.value()["enabled"],
                                              applet::power_applet.scope}},
-                                     path_context, is_override);
+                                     extendCfgPath(path_context, "enabled"), is_override);
         if (!enabled) { return true; }
 
         auto id_result = resolve<QString>({Source{button_table.value()["id"],
