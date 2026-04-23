@@ -92,7 +92,7 @@ std::optional<T> resolve(std::initializer_list<Source> sources, const QString& p
 
         // Validate and attempt extraction of each passed source, prioritizing earliest ones
         for (size_t i = 0; i != sources.size(); ++i) {
-                auto& source = *(sources.begin() + i);
+                const auto& source = *(sources.begin() + i);
 
                 // If 'i' is not the last index then 'source' is an override
                 bool is_source_override = (i < sources.size() - 1) || force_override_on ? true
