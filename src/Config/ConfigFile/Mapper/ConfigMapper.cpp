@@ -344,8 +344,7 @@ void ConfigMapper::mapCommandArguments(node_view arguments_node, PowerButtonPara
         for (size_t i = 0; i != args.value().size(); ++i) {
                 mapCommandArgument(toml::node_view(args.value()[i]), button, defaults,
                                    argument_list,
-                                   makeCfgPath(applet::power_applet.scope, path_context)
-                                           + QString("[%1]").arg(i).toStdString().c_str());
+                                   path_context + QString("[%1]").arg(i).toStdString().c_str());
         }
 
         arguments = std::move(argument_list);
