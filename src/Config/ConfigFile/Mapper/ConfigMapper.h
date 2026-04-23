@@ -55,18 +55,19 @@ private:
                                       const QString&                        path_context);
         static bool mapPrimaryButton(node_view                             button_params_node,
                                      std::vector<PowerButtonParams>&       buttons,
-                                     const std::vector<PowerButtonParams>& default_buttons,
-                                     const PowerButtonParams*              defaults,
+                                     const std::vector<PowerButtonParams>& defaults,
                                      const QString&                        path_context);
-        static void mapCommand(node_view command_node, PowerButtonParams& button,
-                               const PowerButtonParams* defaults, ShellCommand& command,
-                               const QString& path_context);
-        static void mapCommandArguments(node_view arguments_node, PowerButtonParams& button,
-                                        const PowerButtonParams* defaults, QStringList& arguments,
-                                        const QString& path_context);
-        static void mapCommandArgument(node_view argument_node, PowerButtonParams& button,
-                                       const PowerButtonParams* defaults, QStringList& arguments,
-                                       const QString& path_context);
+        static void mapCommand(node_view command_node, std::vector<PowerButtonParams>& buttons,
+                               const std::vector<PowerButtonParams>& defaults,
+                               ShellCommand& command, const QString& path_context);
+        static void mapCommandArguments(node_view                             arguments_node,
+                                        std::vector<PowerButtonParams>&       buttons,
+                                        const std::vector<PowerButtonParams>& defaults,
+                                        QStringList& arguments, const QString& path_context);
+        static void mapCommandArgument(node_view                             argument_node,
+                                       std::vector<PowerButtonParams>&       buttons,
+                                       const std::vector<PowerButtonParams>& defaults,
+                                       QStringList& arguments, const QString& path_context);
 
         /* Environment Properties*/
         static void mapEnvironment(node_view environment_node, EnvironmentProperties& environment,
@@ -77,8 +78,7 @@ public:
         ConfigMapper() = delete;
         template<typename TConfig>
         static void mapToPowerAppletConfig(const toml::table& power_applet_table,
-                                           const toml::table& global_table,
-                                           TConfig& config);
+                                           const toml::table& global_table, TConfig& config);
 };
 
 #include "ConfigMapper.tpp"

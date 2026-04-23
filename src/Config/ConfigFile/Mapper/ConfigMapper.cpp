@@ -58,20 +58,6 @@ static power_button_id getPowerButtonIDFromString(const QString& string) {
         return map.at(string);
 }
 
-static void handleButtonResolutionFailure(PowerButtonParams&       button,
-                                          const PowerButtonParams* defaults,
-                                          const QString&           path_context) {
-        if (!defaults) {
-                QWARNING() << "Failed to default button"
-                           << makeCfgPath(applet::power_applet.scope, path_context)
-                           << ", defaults missing!";
-                return;
-        }
-
-        button = *defaults;
-        return;
-}
-
 template<typename T>
 static T mapProperties(NodePair nodes, const T& defaults, const QString& path_context,
                        auto fill_fn) {
@@ -202,11 +188,14 @@ void ConfigMapper::mapPrimaryButtons(node_view                             prima
                 auto* default_button = (i < defaults.size()) ? &defaults[i] : nullptr;
                 defaulted =
                         mapPrimaryButton(node_view(buttons.value().at(i)), buttons_found, defaults,
-                                         default_button,
                                          extendCfgPath(path_context,
                                                        QString("[%1]").arg(i).toStdString().c_str(),
                                                        ""));
-                if (defaulted) { return; }
+
+                if (defaulted) {
+                        primary_buttons = std::move(buttons_found);
+                        return;
+                }
         }
 
         if (buttons_found.empty()) {
@@ -230,8 +219,7 @@ void ConfigMapper::mapPrimaryButtons(node_view                             prima
 
 bool ConfigMapper::mapPrimaryButton(node_view                             button_params_node,
                                     std::vector<PowerButtonParams>&       buttons,
-                                    const std::vector<PowerButtonParams>& default_buttons,
-                                    const PowerButtonParams*              defaults,
+                                    const std::vector<PowerButtonParams>& defaults,
                                     const QString&                        path_context) {
         constexpr bool is_override = false;
 
@@ -239,7 +227,7 @@ bool ConfigMapper::mapPrimaryButton(node_view                             button
                                                                applet::power_applet.scope}},
                                                        path_context, is_override);
         if (!button_table) {
-                buttons = default_buttons;
+                buttons = defaults;
                 return true;
         }
 
@@ -255,8 +243,8 @@ bool ConfigMapper::mapPrimaryButton(node_view                             button
                                                   applet::power_applet.scope}},
                                           extendCfgPath(path_context, "id"), is_override);
         if (!id_result) {
-                handleButtonResolutionFailure(button, defaults, path_context);
-                return false;
+                buttons = defaults;
+                return true;
         } else {
                 button.id = getPowerButtonIDFromString(id_result.value());
         }
@@ -265,8 +253,8 @@ bool ConfigMapper::mapPrimaryButton(node_view                             button
                                                     applet::power_applet.scope}},
                                             extendCfgPath(path_context, "text"), is_override);
         if (!text_result) {
-                handleButtonResolutionFailure(button, defaults, path_context);
-                return false;
+                buttons = defaults;
+                return true;
         } else {
                 button.text = text_result.value();
         }
@@ -275,13 +263,13 @@ bool ConfigMapper::mapPrimaryButton(node_view                             button
                                                      applet::power_applet.scope}},
                                              extendCfgPath(path_context, "order"), is_override);
         if (!order_result) {
-                handleButtonResolutionFailure(button, defaults, path_context);
-                return false;
+                buttons = defaults;
+                return true;
         } else {
                 button.order = order_result.value();
         }
 
-        mapCommand(button_params_node["command"], button, defaults, button.command,
+        mapCommand(button_params_node["command"], buttons, defaults, button.command,
                    extendCfgPath(path_context, "command"));
 
         button.icon = iconFor(button.id);
@@ -293,8 +281,8 @@ bool ConfigMapper::mapPrimaryButton(node_view                             button
         return false;
 }
 
-void ConfigMapper::mapCommand(node_view command_node, PowerButtonParams& button,
-                              const PowerButtonParams* defaults, ShellCommand& command,
+void ConfigMapper::mapCommand(node_view command_node, std::vector<PowerButtonParams>& buttons,
+                              const std::vector<PowerButtonParams>& defaults, ShellCommand& command,
                               const QString& path_context) {
         constexpr bool   is_override = false;
         constexpr size_t min_size = 2, max_size = 2;
@@ -304,7 +292,7 @@ void ConfigMapper::mapCommand(node_view command_node, PowerButtonParams& button,
                                                       {"Format: [program, [args...]]", min_size,
                                                        max_size});
         if (!command_arr) {
-                handleButtonResolutionFailure(button, defaults, path_context);
+                buttons = defaults;
                 return;
         }
 
@@ -314,35 +302,36 @@ void ConfigMapper::mapCommand(node_view command_node, PowerButtonParams& button,
                                                        applet::power_applet.scope}},
                                                extendCfgPath(path_context, "program"), is_override);
         if (!program_result) {
-                handleButtonResolutionFailure(button, defaults, path_context);
+                buttons = defaults;
                 return;
         } else {
                 cmd.program = program_result.value();
         }
 
-        mapCommandArguments(toml::node_view(command_arr.value()[1]), button, defaults,
+        mapCommandArguments(toml::node_view(command_arr.value()[1]), buttons, defaults,
                             cmd.arguments, extendCfgPath(path_context, "arguments"));
 
         command = std::move(cmd);
 }
 
-void ConfigMapper::mapCommandArguments(node_view arguments_node, PowerButtonParams& button,
-                                       const PowerButtonParams* defaults, QStringList& arguments,
-                                       const QString& path_context) {
+void ConfigMapper::mapCommandArguments(node_view                             arguments_node,
+                                       std::vector<PowerButtonParams>&       buttons,
+                                       const std::vector<PowerButtonParams>& defaults,
+                                       QStringList& arguments, const QString& path_context) {
         constexpr bool   is_override = false;
         constexpr size_t min_size    = 0;
         const auto args = resolve<toml::array>({Source{arguments_node, applet::power_applet.scope}},
                                                path_context, is_override,
                                                {"Format: [string, array]", min_size, std::nullopt});
         if (!args) {
-                handleButtonResolutionFailure(button, defaults, path_context);
+                buttons = defaults;
                 return;
         }
 
         QStringList argument_list{};
 
         for (size_t i = 0; i != args.value().size(); ++i) {
-                mapCommandArgument(toml::node_view(args.value()[i]), button, defaults,
+                mapCommandArgument(toml::node_view(args.value()[i]), buttons, defaults,
                                    argument_list,
                                    path_context + QString("[%1]").arg(i).toStdString().c_str());
         }
@@ -350,16 +339,17 @@ void ConfigMapper::mapCommandArguments(node_view arguments_node, PowerButtonPara
         arguments = std::move(argument_list);
 }
 
-void ConfigMapper::mapCommandArgument(node_view argument_node, PowerButtonParams& button,
-                                      const PowerButtonParams* defaults, QStringList& arguments,
-                                      const QString& path_context) {
+void ConfigMapper::mapCommandArgument(node_view                             argument_node,
+                                      std::vector<PowerButtonParams>&       buttons,
+                                      const std::vector<PowerButtonParams>& defaults,
+                                      QStringList& arguments, const QString& path_context) {
         QString        argument{};
         constexpr bool is_override = false;
 
         auto argument_result = resolve<QString>({Source{argument_node, applet::power_applet.scope}},
                                                 path_context, is_override);
         if (!argument_result) {
-                handleButtonResolutionFailure(button, defaults, path_context);
+                buttons = defaults;
                 return;
         } else {
                 argument = argument_result.value();
