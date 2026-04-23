@@ -38,25 +38,17 @@ class TomlAccessor final {
 public:
         TomlAccessor() = delete;
         template<typename T>
-        static std::optional<T>     tryGet(node_view node, const QString& path,
-                                           bool is_override = false);
-        static const toml::table*   tryGetTomlTable(node_view node, const QString& path,
-                                                    bool is_override = false);
+        static std::optional<T>     tryGet(node_view node, const QString& path);
+        static const toml::table*   tryGetTomlTable(node_view node, const QString& path);
         static const toml::array*   tryGetTomlArray(node_view node, const QString& path,
-                                                    bool                       is_override = false,
                                                     const TomlArrayConditions& arr_conditions = {});
-        static std::optional<QSize> tryGetQSize(node_view node, const QString& path,
-                                                bool is_override = false);
-        static std::optional<QString> tryGetQString(node_view node, const QString& path,
-                                                    bool is_override = false);
+        static std::optional<QSize> tryGetQSize(node_view node, const QString& path);
+        static std::optional<QString> tryGetQString(node_view node, const QString& path);
         template<typename T>
         static std::optional<T> tryGetValueFromEnumMap(node_view key, const enums::EnumMap<T>& map,
-                                                       const QString& path,
-                                                       bool           is_override = false);
-        static std::optional<Qt::Alignment> tryGetAlignment(node_view node, const QString& path,
-                                                            bool is_override = false);
-        static std::optional<QSizePolicy>   tryGetSizePolicy(node_view node, const QString& path,
-                                                             bool is_override = false);
+                                                       const QString& path);
+        static std::optional<Qt::Alignment> tryGetAlignment(node_view node, const QString& path);
+        static std::optional<QSizePolicy>   tryGetSizePolicy(node_view node, const QString& path);
 };
 
 #include "TomlAccessor.tpp"

@@ -30,7 +30,7 @@
 #include <QString>
 
 template<typename T>
-std::optional<T> TomlAccessor::tryGet(node_view node, const QString& path, bool is_override) {
+std::optional<T> TomlAccessor::tryGet(node_view node, const QString& path) {
         const auto* value = node.as<T>();
 
         if (!value) { return std::nullopt; }
@@ -40,10 +40,10 @@ std::optional<T> TomlAccessor::tryGet(node_view node, const QString& path, bool 
 
 template<typename T>
 std::optional<T> TomlAccessor::tryGetValueFromEnumMap(node_view key, const enums::EnumMap<T>& map,
-                                                      const QString& path, bool is_override) {
+                                                      const QString& path) {
         using string::toLowerCopy;
 
-        const auto key_str = tryGet<std::string>(key, path, is_override);
+        const auto key_str = tryGet<std::string>(key, path);
         if (!key_str) { return std::nullopt; }
 
         if (!map.contains(toLowerCopy(key_str.value()))) {

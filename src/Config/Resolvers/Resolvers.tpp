@@ -55,23 +55,22 @@ std::optional<T> resolve(std::initializer_list<Source> sources, const QString& p
 
         // Collapse extraction logic into that of a corresponding type
         static auto extract =
-                [&](node_view node, const QString& path, bool is_override,
+                [&](node_view node, const QString& path,
                     const TomlArrayConditions& arr_conditions = {}) -> std::optional<DT> {
                 if constexpr (std::is_same_v<DT, toml::table>) {
-                        return normalize(TomlAccessor::tryGetTomlTable(node, path, is_override));
+                        return normalize(TomlAccessor::tryGetTomlTable(node, path));
                 } else if constexpr (std::is_same_v<DT, toml::array>) {
-                        return normalize(TomlAccessor::tryGetTomlArray(node, path, is_override,
-                                                                       arr_conditions));
+                        return normalize(TomlAccessor::tryGetTomlArray(node, path, arr_conditions));
                 } else if constexpr (std::is_same_v<DT, QSize>) {
-                        return normalize(TomlAccessor::tryGetQSize(node, path, is_override));
+                        return normalize(TomlAccessor::tryGetQSize(node, path));
                 } else if constexpr (std::is_same_v<DT, Qt::Alignment>) {
-                        return normalize(TomlAccessor::tryGetAlignment(node, path, is_override));
+                        return normalize(TomlAccessor::tryGetAlignment(node, path));
                 } else if constexpr (std::is_same_v<DT, QSizePolicy>) {
-                        return normalize(TomlAccessor::tryGetSizePolicy(node, path, is_override));
+                        return normalize(TomlAccessor::tryGetSizePolicy(node, path));
                 } else if constexpr (std::is_same_v<DT, QString>) {
-                        return normalize(TomlAccessor::tryGetQString(node, path, is_override));
+                        return normalize(TomlAccessor::tryGetQString(node, path));
                 } else {
-                        return normalize(TomlAccessor::tryGet<DT>(node, path, is_override));
+                        return normalize(TomlAccessor::tryGet<DT>(node, path));
                 }
         };
 
@@ -100,11 +99,9 @@ std::optional<T> resolve(std::initializer_list<Source> sources, const QString& p
                                                                                         : false;
 
                 auto result = extract(source.node, makeCfgPath(source.scope, path_context),
-                                      is_source_override, arr_conditions);
+                                      arr_conditions);
                 if (!result) {
-                        if (!is_source_override) {
-                                log(makeCfgPath(source.scope, path_context));
-                        }
+                        if (!is_source_override) { log(makeCfgPath(source.scope, path_context)); }
                         continue;
                 }
 

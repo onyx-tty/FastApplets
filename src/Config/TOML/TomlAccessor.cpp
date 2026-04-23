@@ -43,8 +43,7 @@ const EnumMap<QSizePolicy> size_policy_map = {{"expanding",
                                                {QSizePolicy::Expanding, QSizePolicy::Expanding}},
                                               {"fixed", {QSizePolicy::Fixed, QSizePolicy::Fixed}}};
 
-const toml::table* TomlAccessor::tryGetTomlTable(node_view node, const QString& path,
-                                                 bool is_override) {
+const toml::table* TomlAccessor::tryGetTomlTable(node_view node, const QString& path) {
         const auto* table = node.as_table();
         if (!table) { return nullptr; }
 
@@ -52,7 +51,6 @@ const toml::table* TomlAccessor::tryGetTomlTable(node_view node, const QString& 
 }
 
 const toml::array* TomlAccessor::tryGetTomlArray(node_view node, const QString& path,
-                                                 bool                       is_override,
                                                  const TomlArrayConditions& arr_conditions) {
         const auto* arr = node.as_array();
 
@@ -77,10 +75,9 @@ const toml::array* TomlAccessor::tryGetTomlArray(node_view node, const QString& 
         return arr;
 }
 
-std::optional<QSize> TomlAccessor::tryGetQSize(node_view node, const QString& path,
-                                               bool is_override) {
+std::optional<QSize> TomlAccessor::tryGetQSize(node_view node, const QString& path) {
         constexpr size_t min_size = 2;
-        const auto* arr = tryGetTomlArray(node, path, is_override, {"Format: [int, int]", min_size});
+        const auto*      arr      = tryGetTomlArray(node, path, {"Format: [int, int]", min_size});
 
         if (!arr) { return std::nullopt; }
 
@@ -92,23 +89,18 @@ std::optional<QSize> TomlAccessor::tryGetQSize(node_view node, const QString& pa
         return QSize(width.value(), height.value());
 }
 
-std::optional<QString> TomlAccessor::tryGetQString(node_view node, const QString& path,
-                                                   bool is_override) {
-        if (auto str = tryGet<std::string>(node, path, is_override)) {
+std::optional<QString> TomlAccessor::tryGetQString(node_view node, const QString& path) {
+        if (auto str = tryGet<std::string>(node, path)) {
                 return QString::fromStdString(str.value());
         }
 
         return std::nullopt;
 }
 
-std::optional<Qt::Alignment> TomlAccessor::tryGetAlignment(node_view node, const QString& path,
-                                                           bool is_override) {
-        return TomlAccessor::tryGetValueFromEnumMap<Qt::Alignment>(node, alignment_map, path,
-                                                                   is_override);
+std::optional<Qt::Alignment> TomlAccessor::tryGetAlignment(node_view node, const QString& path) {
+        return TomlAccessor::tryGetValueFromEnumMap<Qt::Alignment>(node, alignment_map, path);
 }
 
-std::optional<QSizePolicy> TomlAccessor::tryGetSizePolicy(node_view node, const QString& path,
-                                                          bool is_override) {
-        return TomlAccessor::tryGetValueFromEnumMap<QSizePolicy>(node, size_policy_map, path,
-                                                                 is_override);
+std::optional<QSizePolicy> TomlAccessor::tryGetSizePolicy(node_view node, const QString& path) {
+        return TomlAccessor::tryGetValueFromEnumMap<QSizePolicy>(node, size_policy_map, path);
 }
