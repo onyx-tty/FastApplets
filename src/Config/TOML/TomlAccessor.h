@@ -31,6 +31,9 @@
 extern const enums::EnumMap<Qt::Alignment> alignment_map;
 extern const enums::EnumMap<QSizePolicy>   size_policy_map;
 
+// TODO Error calls in this function reported here and not at the caller, fix
+void logMissing(const QString& path, bool is_override, const QString& detail = {});
+
 class TomlAccessor final {
 public:
         TomlAccessor() = delete;

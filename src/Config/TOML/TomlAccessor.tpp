@@ -29,18 +29,20 @@
 #include <QSize>
 #include <QString>
 
+void logMissing(const QString& path, bool is_override, const QString& detail) {
+        if (is_override) {
+                QDEBUG() << path << "is an override, and missing! Proceeding with globals...";
+        } else {
+                QWARNING() << QString("%1,%2 missing or wrong type! Using defaults...").arg(path, detail);
+        }
+}
+
 template<typename T>
 std::optional<T> TomlAccessor::tryGet(node_view node, const QString& path, bool is_override) {
         const auto* value = node.as<T>();
 
         if (!value) {
-                if (is_override) {
-                        QDEBUG() << path
-                                 << "is an override, and missing! Proceeding with globals...";
-                } else {
-                        QWARNING()
-                                << QString("%1, missing or wrong type! Using defaults...").arg(path);
-                }
+                logMissing(path, is_override);
 
                 return std::nullopt;
         }
@@ -57,12 +59,7 @@ std::optional<T> TomlAccessor::tryGetValueFromEnumMap(node_view key, const enums
         if (!key_str) { return std::nullopt; }
 
         if (!map.contains(toLowerCopy(key_str.value()))) {
-                if (is_override) {
-                        QDEBUG() << path
-                                 << "is an override, and missing! Proceeding with globals...";
-                } else {
-                        QWARNING() << QString("%1, invalid! Using defaults...").arg(path);
-                }
+                logMissing(path, is_override);
 
                 return std::nullopt;
         }
