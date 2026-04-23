@@ -116,7 +116,6 @@ void ConfigMapper::mapPrimaryButton(NodePair nodes, PrimaryButtonProperties& but
                                 defaults.getTextAlignment(),
                                 extendCfgPath(path_context, "text_alignment"));
 
-                        // TODO This option doesn't work because icon alignment is not applied anywhere yet, fix
                         button.icon_alignment = resolveOr<Qt::Alignment>(
                                 {Source{nodes.primary["icon_alignment"], applet::power_applet.scope},
                                  Source{nodes.fallback["icon_alignment"], applet::global.scope}},
@@ -185,7 +184,7 @@ void ConfigMapper::mapPrimaryButtons(node_view                             prima
         bool defaulted = false;
         for (size_t i = 0; i != buttons.value().size(); ++i) {
                 // If index out of bounds for defaults, pass nullptr
-                auto* default_button = (i < defaults.size()) ? &defaults[i] : nullptr;
+                const auto* default_button = (i < defaults.size()) ? &defaults[i] : nullptr;
                 defaulted =
                         mapPrimaryButton(node_view(buttons.value().at(i)), buttons_found, defaults,
                                          extendCfgPath(path_context,
