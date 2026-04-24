@@ -56,12 +56,30 @@ static bool isQuitKey(int key) {
 PowerButtonRecords PowerCentralWidget::createButtons() {
         const auto& primary_buttons_data =
                 PowerAppletConfig::get().getLayoutProperties().getPowerButtons();
-        const std::vector<keybindings> primary_button_keys = PowerAppletKeys::get()
-                                                                     .getPrimaryButtonKeys();
-        if (primary_buttons_data.size() != primary_button_keys.size()) {
-                QFATAL("primary_buttons_data (%zu) and primary_button_keys (%zu) not same size!",
-                       primary_buttons_data.size(), primary_button_keys.size());
-        }
+        const std::vector<keybindings>  primary_button_keys = PowerAppletKeys::get()
+                                                                      .getPrimaryButtonKeys();
+        const std::vector<keybindings>& default_primary_button_keys =
+                PowerAppletKeys::getDefault().getPrimaryButtonKeys();
+
+        // TODO If applied key is already used elsewhere, there will be confusion
+        //      For example if for some reason keybinding for primary button 3 is Qt_Key4 and
+        //      primary button 4 has missing keybinding, both buttons will be assigned to Qt_Key4.
+        //      There should be a validation system in place for all keybindings, for example a
+        //      set with all keys which have already been exhausted.
+        const auto key_getter = [&primary_buttons_data, &primary_button_keys,
+                                 &default_primary_button_keys](size_t i) -> keybindings {
+                if (i < primary_button_keys.size()) { return primary_button_keys[i]; }
+                if (i < default_primary_button_keys.size()) {
+                        QWARNING()
+                                << QString("Key for button %1 not found, applying default Qt_Key%1!")
+                                           .arg(i + 1);
+                        return default_primary_button_keys[i];
+                }
+
+                QCRITICAL() << "Number of buttons exceeds size of default keys! Buttons found:"
+                            << primary_buttons_data.size();
+                return keybindings{Qt::Key_unknown};
+        };
 
         PowerButtonRecords primary_buttons{};
         primary_buttons.reserve(primary_buttons_data.size());
@@ -73,7 +91,7 @@ PowerButtonRecords PowerCentralWidget::createButtons() {
                 QString         dbus_method = primary_buttons_data[i].dbus_method;
                 ShellCommand    command     = primary_buttons_data[i].command;
                 auto* power_button          = new PowerButton(id, icon, text, dbus_method, command);
-                const keybindings& keys     = primary_button_keys[i];
+                const keybindings& keys     = key_getter(i);
 
                 main_layout->addWidget(power_button);
                 primary_buttons.push_back({id, power_button, keys});
