@@ -33,10 +33,6 @@
 
 using enums::EnumMap;
 
-const toml::array* TomlAccessor::tryGetTomlArray(node_view node) {
-        return node.as_array();
-}
-
 std::optional<QSize> TomlAccessor::tryGetQSize(node_view node) {
         using result                    = TomlArrayConditions::validation_result;
         constexpr size_t min_size       = 2;

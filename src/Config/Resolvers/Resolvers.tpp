@@ -66,11 +66,8 @@ std::optional<T> resolve(std::initializer_list<Source> sources, const QString& p
                         // TODO Extract as a separate function
                         using result = TomlArrayConditions::validation_result;
 
-                        std::optional<toml::array> arr = normalize(
-                                TomlAccessor::tryGetTomlArray(node));
-                        if (!arr) {
-                                return std::nullopt;
-                        }
+                        std::optional<toml::array> arr = normalize(node.as_array());
+                        if (!arr) { return std::nullopt; }
 
                         auto res = arr_conditions.validate(arr.value());
                         if (res == result::min_size_fail) {
