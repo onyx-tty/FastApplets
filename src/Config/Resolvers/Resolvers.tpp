@@ -63,7 +63,34 @@ std::optional<T> resolve(std::initializer_list<Source> sources, const QString& p
                 if constexpr (std::is_same_v<DT, toml::table>) {
                         return normalize(node.as_table());
                 } else if constexpr (std::is_same_v<DT, toml::array>) {
-                        return normalize(TomlAccessor::tryGetTomlArray(node, arr_conditions));
+                        // TODO Extract as a separate function
+                        using result = TomlArrayConditions::validation_result;
+
+                        std::optional<toml::array> arr = normalize(
+                                TomlAccessor::tryGetTomlArray(node));
+                        if (!arr) {
+                                return std::nullopt;
+                        }
+
+                        auto res = arr_conditions.validate(arr.value());
+                        if (res == result::min_size_fail) {
+                                QWARNING()
+                                        << QString("arr size < min_size! min_size: %1, arr size: %2")
+                                                   .arg(QString::number(
+                                                                arr_conditions.min_size.value()),
+                                                        QString::number(arr->size()));
+                                return std::nullopt;
+                        }
+
+                        if (res == result::max_size_fail) {
+                                QWARNING()
+                                        << QString("arr size > max_size! max_size: %1, arr size: %2")
+                                                   .arg(QString::number(
+                                                                arr_conditions.max_size.value()),
+                                                        QString::number(arr->size()));
+                                return std::nullopt;
+                        }
+                        return std::move(arr);
                 } else if constexpr (std::is_same_v<DT, QSize>) {
                         return normalize(TomlAccessor::tryGetQSize(node));
                 } else if constexpr (std::is_same_v<DT, Qt::Alignment>) {

@@ -31,9 +31,8 @@
 class TomlAccessor final {
 public:
         TomlAccessor() = delete;
-        static const toml::array*   tryGetTomlArray(node_view                  node,
-                                                    const TomlArrayConditions& arr_conditions = {});
-        static std::optional<QSize> tryGetQSize(node_view node);
+        static const toml::array*     tryGetTomlArray(node_view node);
+        static std::optional<QSize>   tryGetQSize(node_view node);
         static std::optional<QString> tryGetQString(node_view node);
         template<typename T>
         static std::optional<T> tryGetValueFromEnumMap(node_view key, const enums::EnumMap<T>& map);

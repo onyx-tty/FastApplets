@@ -33,39 +33,24 @@
 
 using enums::EnumMap;
 
-const toml::array* TomlAccessor::tryGetTomlArray(node_view                  node,
-                                                 const TomlArrayConditions& arr_conditions) {
-        const auto* arr = node.as_array();
+const toml::array* TomlAccessor::tryGetTomlArray(node_view node) {
+        return node.as_array();
+}
 
-        if (!arr) { return nullptr; }
+std::optional<QSize> TomlAccessor::tryGetQSize(node_view node) {
+        using result                    = TomlArrayConditions::validation_result;
+        constexpr size_t min_size       = 2;
+        const auto       arr_conditions = TomlArrayConditions{"Format: [int, int]", min_size};
+        const auto*      arr            = node.as_array();
 
-        using result                                     = TomlArrayConditions::validation_result;
-        const TomlArrayConditions::validation_result res = arr_conditions.validate(*arr);
-
+        if (!arr) { return std::nullopt; }
+        auto res = arr_conditions.validate(*arr);
         if (res == result::min_size_fail) {
                 QWARNING() << QString("arr size < min_size! min_size: %1, arr size: %2")
                                       .arg(QString::number(arr_conditions.min_size.value()),
                                            QString::number(arr->size()));
-
-                return nullptr;
+                return std::nullopt;
         }
-
-        if (res == result::max_size_fail) {
-                QWARNING() << QString("arr size >= max_size! max_size: %1, arr size: %2")
-                                      .arg(QString::number(arr_conditions.max_size.value()),
-                                           QString::number(arr->size()));
-
-                return nullptr;
-        }
-
-        return arr;
-}
-
-std::optional<QSize> TomlAccessor::tryGetQSize(node_view node) {
-        constexpr size_t min_size = 2;
-        const auto*      arr      = tryGetTomlArray(node, {"Format: [int, int]", min_size});
-
-        if (!arr) { return std::nullopt; }
 
         auto width  = (*arr)[0].value<int64_t>();
         auto height = (*arr)[1].value<int64_t>();
