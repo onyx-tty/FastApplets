@@ -36,15 +36,14 @@ using enums::EnumMap;
 std::optional<QSize> TomlAccessor::tryGetQSize(node_view node) {
         using result                    = TomlArrayConditions::validation_result;
         constexpr size_t min_size       = 2;
-        const auto       arr_conditions = TomlArrayConditions{"Format: [int, int]", min_size};
+        const auto       arr_conditions = TomlArrayConditions{min_size};
         const auto*      arr            = node.as_array();
 
         if (!arr) { return std::nullopt; }
         auto res = arr_conditions.validate(*arr);
         if (res == result::min_size_fail) {
-                QWARNING() << QString("arr size < min_size! min_size: %1, arr size: %2")
-                                      .arg(QString::number(arr_conditions.min_size.value()),
-                                           QString::number(arr->size()));
+                QWARNING() << QString("QSize requires 2 numbers for construction! Numbers provided: %1")
+                                      .arg(QString::number(arr->size()));
                 return std::nullopt;
         }
 

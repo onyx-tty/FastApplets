@@ -171,9 +171,8 @@ void ConfigMapper::mapPrimaryButtons(node_view                             prima
 
         const auto buttons = resolve<toml::array>({Source{primary_buttons_node,
                                                           applet::power_applet.scope}},
-                                                  path_context, is_override,
-                                                  {"Format: [primary buttons...]", min_size,
-                                                   std::nullopt});
+                                                  path_context, is_override, {min_size},
+                                                  "Format: [primary buttons...]");
         if (!buttons) {
                 primary_buttons = defaults;
                 return;
@@ -281,11 +280,11 @@ void ConfigMapper::mapCommand(node_view command_node, std::vector<PowerButtonPar
                               const QString& path_context) {
         constexpr bool   is_override = false;
         constexpr size_t min_size = 2, max_size = 2;
-        const auto command_arr = resolve<toml::array>({Source{command_node,
-                                                              applet::power_applet.scope}},
-                                                      path_context, is_override,
-                                                      {"Format: [program, [args...]]", min_size,
-                                                       max_size});
+        const auto       command_arr = resolve<toml::array>({Source{command_node,
+                                                                    applet::power_applet.scope}},
+                                                            path_context, is_override,
+                                                            {min_size, max_size},
+                                                            "Format: [program, [args...]]");
         if (!command_arr) {
                 buttons = defaults;
                 return;
@@ -315,8 +314,8 @@ void ConfigMapper::mapCommandArguments(node_view                             arg
         constexpr bool   is_override = false;
         constexpr size_t min_size    = 0;
         const auto args = resolve<toml::array>({Source{arguments_node, applet::power_applet.scope}},
-                                               path_context, is_override,
-                                               {"Format: [string, array]", min_size, std::nullopt});
+                                               path_context, is_override, {min_size},
+                                               "Format: [string, array]");
         if (!args) {
                 buttons = defaults;
                 return;

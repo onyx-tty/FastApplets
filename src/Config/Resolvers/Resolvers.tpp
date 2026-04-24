@@ -38,7 +38,8 @@ class QSize;
 // detection of overrides
 template<typename T>
 std::optional<T> resolve(std::initializer_list<Source> sources, const QString& path_context,
-                         bool force_override_on, const TomlArrayConditions& arr_conditions) {
+                         bool force_override_on, const TomlArrayConditions& arr_conditions,
+                         const QString& arr_format) {
         using DT = std::decay_t<T>;
 
         // Convert pointers to std::optional
@@ -110,7 +111,7 @@ std::optional<T> resolve(std::initializer_list<Source> sources, const QString& p
                         QWARNING()
                                 << QString("%1, missing or wrong type! Format: %2. Using defaults...")
                                            .arg(path, QString("must be an array! Format: %1")
-                                                              .arg(arr_conditions.array_format));
+                                                              .arg(arr_format));
                 } else {
                         QWARNING()
                                 << QString("%1, missing or wrong type! Using defaults...").arg(path);
@@ -144,8 +145,10 @@ std::optional<T> resolve(std::initializer_list<Source> sources, const QString& p
 // On failure: copy default value
 template<typename T, typename TDefault>
 T resolveOr(std::initializer_list<Source> sources, const TDefault& defaults,
-            const QString& path_context, const TomlArrayConditions& arr_conditions) {
-        return resolve<T>(sources, path_context, false, arr_conditions).value_or(defaults);
+            const QString& path_context, const TomlArrayConditions& arr_conditions,
+            const QString& arr_format) {
+        return resolve<T>(sources, path_context, false, arr_conditions, arr_format)
+                .value_or(defaults);
 }
 
 // Use to try and extract a value from a node into a specific attribute, and if that fails, to
@@ -157,8 +160,9 @@ T resolveOr(std::initializer_list<Source> sources, const TDefault& defaults,
 template<typename TAttribute, typename TObject>
 void resolveOrDefault(std::initializer_list<Source> sources, TAttribute& attribute, TObject& object,
                       const TObject& object_defaults, const QString& path_context,
-                      const TomlArrayConditions& arr_conditions) {
-        if (auto result = resolve<TAttribute>(sources, path_context, false, arr_conditions)) {
+                      const TomlArrayConditions& arr_conditions, const QString& arr_format) {
+        if (auto result = resolve<TAttribute>(sources, path_context, false, arr_conditions,
+                                              arr_format)) {
                 attribute = result.value();
         } else {
                 object = object_defaults;

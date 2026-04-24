@@ -23,7 +23,6 @@
 #include <QString>
 
 struct TomlArrayConditions final {
-        QString               array_format = {};
         std::optional<size_t> min_size     = std::nullopt;
         std::optional<size_t> max_size     = std::nullopt;
         enum class validation_result { success, min_size_fail, max_size_fail };

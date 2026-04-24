@@ -71,8 +71,8 @@ void KeysMapper::mapQuitKeys(NodePair nodes, keybindings& quit, const keybinding
         toml::array array{};
         resolveOrDefault<toml::array>({Source{nodes.primary, applet::power_applet.scope},
                                        Source{nodes.fallback, applet::global.scope}},
-                                      array, quit, defaults, path_context,
-                                      {"Format: [keybindings...]", min_size, std::nullopt});
+                                      array, quit, defaults, path_context, {min_size},
+                                      "Format: [keybindings...]");
 
         quit = interpretTextAsKeybindings(interpretTomlArrayAsStringVector(array));
 }
@@ -84,8 +84,8 @@ void KeysMapper::mapPrimaryButtonKey(node_view primary_button_node, keybindings&
 
         toml::array button{};
         resolveOrDefault<toml::array>({Source{primary_button_node, applet::power_applet.scope}},
-                                      button, primary_button, defaults, path_context,
-                                      {"Format: [keybindings...]", min_size, std::nullopt});
+                                      button, primary_button, defaults, path_context, {min_size},
+                                      "Format: [keybindings...]");
 
         primary_button = interpretTextAsKeybindings(interpretTomlArrayAsStringVector(button));
 }
@@ -99,8 +99,8 @@ void KeysMapper::mapPrimaryButtonKeys(node_view                       primary_bu
 
         toml::array primary_button_arr{};
         resolveOrDefault({Source{primary_buttons_node, applet::power_applet.scope}},
-                         primary_button_arr, primary_buttons, defaults, path_context,
-                         {"Format: [keybindings...]", min_size, std::nullopt});
+                         primary_button_arr, primary_buttons, defaults, path_context, {min_size},
+                         "Format: [keybindings...]");
 
         std::vector<keybindings> primary_buttons_new{};
         for (size_t i = 0; i != primary_button_arr.size(); ++i) {
