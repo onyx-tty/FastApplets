@@ -33,13 +33,6 @@
 
 using enums::EnumMap;
 
-const toml::table* TomlAccessor::tryGetTomlTable(node_view node) {
-        const auto* table = node.as_table();
-        if (!table) { return nullptr; }
-
-        return table;
-}
-
 const toml::array* TomlAccessor::tryGetTomlArray(node_view                  node,
                                                  const TomlArrayConditions& arr_conditions) {
         const auto* arr = node.as_array();

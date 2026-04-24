@@ -31,7 +31,6 @@
 class TomlAccessor final {
 public:
         TomlAccessor() = delete;
-        static const toml::table*   tryGetTomlTable(node_view node);
         static const toml::array*   tryGetTomlArray(node_view                  node,
                                                     const TomlArrayConditions& arr_conditions = {});
         static std::optional<QSize> tryGetQSize(node_view node);

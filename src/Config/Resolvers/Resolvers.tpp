@@ -42,6 +42,9 @@ std::optional<T> resolve(std::initializer_list<Source> sources, const QString& p
         using DT = std::decay_t<T>;
 
         // Convert pointers to std::optional
+        // TODO Eliminate this lambda, toml::array and toml::table should be pointers
+        //      But as long as the return type of resolve is stuck as std::optional,
+        //      this cannot be done.
         static auto normalize = [&](auto&& raw) -> std::optional<T> {
                 using R = std::decay_t<decltype(raw)>;
                 if constexpr (std::is_same_v<R, std::optional<DT>>) {
@@ -58,7 +61,7 @@ std::optional<T> resolve(std::initializer_list<Source> sources, const QString& p
                 [&](node_view                  node,
                     const TomlArrayConditions& arr_conditions = {}) -> std::optional<DT> {
                 if constexpr (std::is_same_v<DT, toml::table>) {
-                        return normalize(TomlAccessor::tryGetTomlTable(node));
+                        return normalize(node.as_table());
                 } else if constexpr (std::is_same_v<DT, toml::array>) {
                         return normalize(TomlAccessor::tryGetTomlArray(node, arr_conditions));
                 } else if constexpr (std::is_same_v<DT, QSize>) {
