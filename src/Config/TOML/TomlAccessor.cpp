@@ -16,7 +16,6 @@
    along with this program.  If not, see <https://www.gnu.org/licenses/>. */
 
 #include "TomlAccessor.h"
-#include "CppUtils/include/Enum/Enum.h"
 #include "Log/Log.h"
 #include "Types/NodeView.h"
 #include "Types/TomlArrayConditions.h"
@@ -26,12 +25,11 @@
 #include <optional>
 #include <string>
 #include <toml++/toml.hpp>
+#include <unordered_map>
 #include <QSize>
 #include <QSizePolicy>
 #include <QString>
 #include <Qt>
-
-using enums::EnumMap;
 
 std::optional<QSize> TomlAccessor::tryGetQSize(node_view node) {
         using result                    = TomlArrayConditions::validation_result;
@@ -62,7 +60,7 @@ std::optional<QString> TomlAccessor::tryGetQString(node_view node) {
 }
 
 std::optional<Qt::Alignment> TomlAccessor::tryGetAlignment(node_view node) {
-        static const EnumMap<Qt::Alignment> alignment_map =
+        static const std::unordered_map<std::string, Qt::Alignment> alignment_map =
                 {{"top", Qt::AlignTop | Qt::AlignHCenter},
                  {"center", Qt::AlignCenter},
                  {"bottom", Qt::AlignBottom | Qt::AlignHCenter},
@@ -73,7 +71,7 @@ std::optional<Qt::Alignment> TomlAccessor::tryGetAlignment(node_view node) {
 }
 
 std::optional<QSizePolicy> TomlAccessor::tryGetSizePolicy(node_view node) {
-        static const EnumMap<QSizePolicy> size_policy_map =
+        static const std::unordered_map<std::string, QSizePolicy> size_policy_map =
                 {{"expanding", {QSizePolicy::Expanding, QSizePolicy::Expanding}},
                  {"fixed", {QSizePolicy::Fixed, QSizePolicy::Fixed}}};
 

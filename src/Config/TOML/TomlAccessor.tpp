@@ -17,7 +17,6 @@
 
 #pragma once
 
-#include "CppUtils/include/Enum/Enum.h"
 #include "CppUtils/include/String/String.h"
 #include "Log/Log.h"
 #include "TomlAccessor.h"
@@ -26,11 +25,13 @@
 #include <optional>
 #include <string>
 #include <toml++/toml.hpp>
+#include <unordered_map>
 #include <QSize>
 #include <QString>
 
 template<typename T>
-std::optional<T> TomlAccessor::tryGetValueFromEnumMap(node_view key, const enums::EnumMap<T>& map) {
+std::optional<T> TomlAccessor::tryGetValueFromEnumMap(
+        node_view key, const std::unordered_map<std::string, T>& map) {
         using string::toLowerCopy;
 
         const auto key_str = key.value<std::string>();

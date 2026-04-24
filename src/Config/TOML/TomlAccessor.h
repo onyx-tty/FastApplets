@@ -17,12 +17,12 @@
 
 #pragma once
 
-#include "CppUtils/include/Enum/Enum.h"
 #include "Types/NodeView.h"
 #include "Types/TomlArrayConditions.h"
 
 #include <optional>
 #include <toml++/toml.hpp>
+#include <unordered_map>
 #include <QSize>
 #include <QSizePolicy>
 #include <QString>
@@ -34,7 +34,8 @@ public:
         static std::optional<QSize>   tryGetQSize(node_view node);
         static std::optional<QString> tryGetQString(node_view node);
         template<typename T>
-        static std::optional<T> tryGetValueFromEnumMap(node_view key, const enums::EnumMap<T>& map);
+        static std::optional<T> tryGetValueFromEnumMap(
+                node_view key, const std::unordered_map<std::string, T>& map);
         static std::optional<Qt::Alignment> tryGetAlignment(node_view node);
         static std::optional<QSizePolicy>   tryGetSizePolicy(node_view node);
 };
