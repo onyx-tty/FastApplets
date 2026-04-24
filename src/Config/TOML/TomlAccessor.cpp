@@ -46,7 +46,10 @@ const toml::array* TomlAccessor::tryGetTomlArray(node_view                  node
 
         if (!arr) { return nullptr; }
 
-        if (arr_conditions.min_size && arr->size() < arr_conditions.min_size.value()) {
+        using result                                     = TomlArrayConditions::validation_result;
+        const TomlArrayConditions::validation_result res = arr_conditions.validate(*arr);
+
+        if (res == result::min_size_fail) {
                 QWARNING() << QString("arr size < min_size! min_size: %1, arr size: %2")
                                       .arg(QString::number(arr_conditions.min_size.value()),
                                            QString::number(arr->size()));
@@ -54,7 +57,7 @@ const toml::array* TomlAccessor::tryGetTomlArray(node_view                  node
                 return nullptr;
         }
 
-        if (arr_conditions.max_size && arr->size() > arr_conditions.max_size.value()) {
+        if (res == result::max_size_fail) {
                 QWARNING() << QString("arr size >= max_size! max_size: %1, arr size: %2")
                                       .arg(QString::number(arr_conditions.max_size.value()),
                                            QString::number(arr->size()));
