@@ -27,7 +27,7 @@ class PowerButton;
 struct PowerButtonRecord final {
         power_button_id    id;
         PowerButton*       widget;
-        const keybindings& keys;
+        const keybindings  keys;
 };
 
 using PowerButtonRecords = std::vector<PowerButtonRecord>;
