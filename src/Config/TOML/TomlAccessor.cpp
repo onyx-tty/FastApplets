@@ -71,8 +71,8 @@ std::optional<QSize> TomlAccessor::tryGetQSize(node_view node) {
 
         if (!arr) { return std::nullopt; }
 
-        auto width  = tryGet<int64_t>(toml::node_view((*arr)[0]));
-        auto height = tryGet<int64_t>(toml::node_view((*arr)[1]));
+        auto width  = (*arr)[0].value<int64_t>();
+        auto height = (*arr)[1].value<int64_t>();
 
         if (!width || !height) { return std::nullopt; }
 
@@ -80,7 +80,7 @@ std::optional<QSize> TomlAccessor::tryGetQSize(node_view node) {
 }
 
 std::optional<QString> TomlAccessor::tryGetQString(node_view node) {
-        if (auto str = tryGet<std::string>(node)) { return QString::fromStdString(str.value()); }
+        if (auto str = node.value<std::string>()) { return QString::fromStdString(str.value()); }
 
         return std::nullopt;
 }

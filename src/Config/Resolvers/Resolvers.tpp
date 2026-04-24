@@ -70,7 +70,7 @@ std::optional<T> resolve(std::initializer_list<Source> sources, const QString& p
                 } else if constexpr (std::is_same_v<DT, QString>) {
                         return normalize(TomlAccessor::tryGetQString(node));
                 } else {
-                        return normalize(TomlAccessor::tryGet<DT>(node));
+                        return normalize(node.value<DT>());
                 }
         };
 

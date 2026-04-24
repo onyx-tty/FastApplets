@@ -31,8 +31,6 @@
 class TomlAccessor final {
 public:
         TomlAccessor() = delete;
-        template<typename T>
-        static std::optional<T>     tryGet(node_view node);
         static const toml::table*   tryGetTomlTable(node_view node);
         static const toml::array*   tryGetTomlArray(node_view                  node,
                                                     const TomlArrayConditions& arr_conditions = {});

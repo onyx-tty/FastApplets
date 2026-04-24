@@ -30,19 +30,10 @@
 #include <QString>
 
 template<typename T>
-std::optional<T> TomlAccessor::tryGet(node_view node) {
-        const auto* value = node.as<T>();
-
-        if (!value) { return std::nullopt; }
-
-        return value->get();
-}
-
-template<typename T>
 std::optional<T> TomlAccessor::tryGetValueFromEnumMap(node_view key, const enums::EnumMap<T>& map) {
         using string::toLowerCopy;
 
-        const auto key_str = tryGet<std::string>(key);
+        const auto key_str = key.value<std::string>();
         if (!key_str) { return std::nullopt; }
 
         if (!map.contains(toLowerCopy(key_str.value()))) {
