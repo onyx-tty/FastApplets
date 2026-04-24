@@ -25,11 +25,12 @@
 #include "Config/TOML/Types/TomlArrayConditions.h"
 #include "Log/Log.h"
 
-#include <array>
 #include <cstddef>
 #include <optional>
+#include <string>
 #include <toml++/toml.hpp>
 #include <utility>
+#include <vector>
 #include <QApplication>
 #include <QKeyCombination>
 #include <QKeySequence>
@@ -77,36 +78,36 @@ void KeysMapper::mapQuitKeys(NodePair nodes, keybindings& quit, const keybinding
 }
 
 void KeysMapper::mapPrimaryButtonKey(node_view primary_button_node, keybindings& primary_button,
-                                     const keybindings& defaults, size_t primary_buttons_size,
-                                     const QString& path_context) {
+                                     const keybindings& defaults, const QString& path_context) {
         constexpr bool   is_override = false;
         constexpr size_t min_size    = 1;
 
         toml::array button{};
         resolveOrDefault<toml::array>({Source{primary_button_node, applet::power_applet.scope}},
                                       button, primary_button, defaults, path_context,
-                                      {"Format: [keybindings...]", min_size, primary_buttons_size});
+                                      {"Format: [keybindings...]", min_size, std::nullopt});
 
         primary_button = interpretTextAsKeybindings(interpretTomlArrayAsStringVector(button));
 }
 
-void KeysMapper::mapPrimaryButtonKeys(node_view                         primary_buttons_node,
-                                      std::array<keybindings, 4>&       primary_buttons,
-                                      const std::array<keybindings, 4>& defaults,
-                                      const QString&                    path_context) {
+void KeysMapper::mapPrimaryButtonKeys(node_view                       primary_buttons_node,
+                                      std::vector<keybindings>&       primary_buttons,
+                                      const std::vector<keybindings>& defaults,
+                                      const QString&                  path_context) {
         constexpr size_t min_size = 1;
         const size_t     max_size = primary_buttons.size();
 
         toml::array primary_button_arr{};
         resolveOrDefault({Source{primary_buttons_node, applet::power_applet.scope}},
                          primary_button_arr, primary_buttons, defaults, path_context,
-                         {"Format: [keybindings...]", min_size, max_size});
+                         {"Format: [keybindings...]", min_size, std::nullopt});
 
-        std::array<keybindings, 4> primary_buttons_new{};
+        std::vector<keybindings> primary_buttons_new{};
         for (size_t i = 0; i != primary_button_arr.size(); ++i) {
-                mapPrimaryButtonKey(primary_buttons_node[i], primary_buttons_new[i], defaults[i],
-                                    max_size,
+                keybindings keys{};
+                mapPrimaryButtonKey(primary_buttons_node[i], keys, defaults[i],
                                     path_context + QString("[%1]").arg(i).toStdString().c_str());
+                if (!keys.empty()) { primary_buttons_new.push_back(keys); }
         };
 
         primary_buttons = std::move(primary_buttons_new);

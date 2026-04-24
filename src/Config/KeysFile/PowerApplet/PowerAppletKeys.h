@@ -20,7 +20,7 @@
 #include "Config/KeysFile/Global/GlobalKeys.h"
 #include "Config/KeysFile/Types/Keybindings.h"
 
-#include <array>
+#include <vector>
 
 class KeysMapper;
 
@@ -28,13 +28,13 @@ class PowerAppletKeys final : public GlobalKeys {
 private:
         friend class KeysMapper;
 
-        std::array<keybindings, 4> primary_button_keys;
+        std::vector<keybindings> primary_button_keys;
 
 public:
-        explicit PowerAppletKeys(keybindings                quit_keys           = {},
-                                 std::array<keybindings, 4> primary_button_keys = {});
+        explicit PowerAppletKeys(keybindings              quit_keys           = {},
+                                 std::vector<keybindings> primary_button_keys = {});
         // TODO Make this const to avoid overwrites
-        static PowerAppletKeys&           get();
-        static const PowerAppletKeys&     getDefault();
-        const std::array<keybindings, 4>& getPrimaryButtonKeys() const;
+        static PowerAppletKeys&         get();
+        static const PowerAppletKeys&   getDefault();
+        const std::vector<keybindings>& getPrimaryButtonKeys() const;
 };

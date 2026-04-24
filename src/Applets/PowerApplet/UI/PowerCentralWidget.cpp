@@ -56,6 +56,12 @@ static bool isQuitKey(int key) {
 PowerButtonRecords PowerCentralWidget::createButtons() {
         const auto& primary_buttons_data =
                 PowerAppletConfig::get().getLayoutProperties().getPowerButtons();
+        const std::vector<keybindings> primary_button_keys = PowerAppletKeys::get()
+                                                                     .getPrimaryButtonKeys();
+        if (primary_buttons_data.size() != primary_button_keys.size()) {
+                QFATAL("primary_buttons_data (%zu) and primary_button_keys (%zu) not same size!",
+                       primary_buttons_data.size(), primary_button_keys.size());
+        }
 
         PowerButtonRecords primary_buttons{};
         primary_buttons.reserve(primary_buttons_data.size());
@@ -67,7 +73,7 @@ PowerButtonRecords PowerCentralWidget::createButtons() {
                 QString         dbus_method = primary_buttons_data[i].dbus_method;
                 ShellCommand    command     = primary_buttons_data[i].command;
                 auto* power_button          = new PowerButton(id, icon, text, dbus_method, command);
-                const keybindings& keys     = PowerAppletKeys::get().getPrimaryButtonKeys()[i];
+                const keybindings& keys     = primary_button_keys[i];
 
                 main_layout->addWidget(power_button);
                 primary_buttons.push_back({id, power_button, keys});

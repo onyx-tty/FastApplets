@@ -20,8 +20,9 @@
 #include "Config/KeysFile/Types/Keybindings.h"
 #include "Config/TOML/Types/NodeView.h"
 
-#include <array>
+#include <string>
 #include <toml++/toml.hpp>
+#include <vector>
 
 class GlobalKeys;
 class NodePair;
@@ -49,12 +50,11 @@ private:
 
         /* Power Applet Keys*/
         static void mapPrimaryButtonKey(node_view primary_button_node, keybindings& primary_button,
-                                        const keybindings& defaults, size_t primary_buttons_size,
-                                        const QString& path_context);
-        static void mapPrimaryButtonKeys(node_view                         primary_buttons_node,
-                                         std::array<keybindings, 4>&       primary_buttons,
-                                         const std::array<keybindings, 4>& defaults,
-                                         const QString&                    path_context);
+                                        const keybindings& defaults, const QString& path_context);
+        static void mapPrimaryButtonKeys(node_view                       primary_buttons_node,
+                                         std::vector<keybindings>&       primary_buttons,
+                                         const std::vector<keybindings>& defaults,
+                                         const QString&                  path_context);
 
 public:
         KeysMapper() = delete;

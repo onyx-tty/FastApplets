@@ -21,12 +21,12 @@
 #include "Config/KeysFile/Types/Keybindings.h"
 #include "Config/TOML/TomlParser.h"
 
-#include <array>
 #include <utility>
+#include <vector>
 #include <Qt>
 
-PowerAppletKeys::PowerAppletKeys(keybindings                quit_keys,
-                                 std::array<keybindings, 4> primary_button_keys) :
+PowerAppletKeys::PowerAppletKeys(keybindings              quit_keys,
+                                 std::vector<keybindings> primary_button_keys) :
         GlobalKeys(std::move(quit_keys)), primary_button_keys(std::move(primary_button_keys)) {}
 
 PowerAppletKeys& PowerAppletKeys::get() {
@@ -45,16 +45,16 @@ PowerAppletKeys& PowerAppletKeys::get() {
 const PowerAppletKeys& PowerAppletKeys::getDefault() {
         keybindings quit_keys = {Qt::Key_Escape, Qt::Key_Q};
 
-        std::array<keybindings, 4> primary_button_keys = {keybindings{Qt::Key_1},
-                                                          keybindings{Qt::Key_2},
-                                                          keybindings{Qt::Key_3},
-                                                          keybindings{Qt::Key_4}};
+        std::vector<keybindings> primary_button_keys = {keybindings{Qt::Key_1},
+                                                        keybindings{Qt::Key_2},
+                                                        keybindings{Qt::Key_3},
+                                                        keybindings{Qt::Key_4}};
 
         static PowerAppletKeys default_keys{std::move(quit_keys), std::move(primary_button_keys)};
 
         return default_keys;
 }
 
-const std::array<keybindings, 4>& PowerAppletKeys::getPrimaryButtonKeys() const {
+const std::vector<keybindings>& PowerAppletKeys::getPrimaryButtonKeys() const {
         return primary_button_keys;
 }
