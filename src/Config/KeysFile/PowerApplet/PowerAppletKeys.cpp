@@ -45,10 +45,11 @@ PowerAppletKeys& PowerAppletKeys::get() {
 const PowerAppletKeys& PowerAppletKeys::getDefault() {
         keybindings quit_keys = {Qt::Key_Escape, Qt::Key_Q};
 
-        std::vector<keybindings> primary_button_keys = {keybindings{Qt::Key_1},
-                                                        keybindings{Qt::Key_2},
-                                                        keybindings{Qt::Key_3},
-                                                        keybindings{Qt::Key_4}};
+        std::vector<keybindings> primary_button_keys = {
+                keybindings{Qt::Key_1}, keybindings{Qt::Key_2}, keybindings{Qt::Key_3},
+                keybindings{Qt::Key_4}, keybindings{Qt::Key_5}, keybindings{Qt::Key_6},
+                keybindings{Qt::Key_7}, keybindings{Qt::Key_8}, keybindings{Qt::Key_9},
+        };
 
         static PowerAppletKeys default_keys{std::move(quit_keys), std::move(primary_button_keys)};
 
