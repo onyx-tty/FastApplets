@@ -26,10 +26,9 @@
 toml::table TomlParser::createTable(const std::string& file_path) {
         toml::table file_table;
 
-        QDEBUG() << QString::fromStdString(file_path);
-
         try {
                 file_table = toml::parse_file(file_path);
+                QDEBUG() << "Parsed file" << QString::fromStdString(file_path);
         } catch (const toml::parse_error& error) {
                 QFATAL("Parsing of %s failed: %s", std::string(file_path).c_str(),
                        std::string(error.description()).c_str());
