@@ -37,11 +37,12 @@ std::optional<T> TomlAccessor::tryGetValueFromEnumMap(
         const auto key_str = key.value<std::string>();
         if (!key_str) { return std::nullopt; }
 
-        if (!map.contains(toLowerCopy(key_str.value()))) {
+        const auto iter = map.find(toLowerCopy(key_str.value()));
+        if (iter == map.cend()) {
                 QWARNING() << QString("Key %1 not found in map!")
                                       .arg(QString::fromStdString(key_str.value()));
                 return std::nullopt;
         }
 
-        return map.at(toLowerCopy(key_str.value()));
+        return iter->second;
 }
