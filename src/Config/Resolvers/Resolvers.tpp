@@ -124,11 +124,11 @@ std::optional<T> resolve(std::initializer_list<Source> sources, const PathContex
                 //      Iteration over sources should probably be done in reverse to
                 //      track if fallback is missing, and if it is then quiet should
                 //      likely be ignored.
-                bool is_source_override = (i != sources.size() - 1) || source.quiet;
+                bool is_override = (i != sources.size() - 1) || source.quiet;
 
                 auto result = extract(source.node, arr_conditions);
                 if (!result) {
-                        if (!is_source_override) { log(path_context.makePath(source.scope)); }
+                        if (!is_override) { log(path_context.makePath(source.scope)); }
                         continue;
                 }
 
