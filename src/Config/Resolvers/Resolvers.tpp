@@ -115,8 +115,9 @@ std::optional<T> resolve(std::initializer_list<Source> sources, const PathContex
         };
 
         // Validate and attempt extraction of each passed source, prioritizing earliest ones
+        const auto* src_ptr = sources.begin();
         for (size_t i = 0; i != sources.size(); ++i) {
-                const auto& source = *(sources.begin() + i);
+                const auto& source = src_ptr[i];
 
                 // If 'i' is not the last index, then sources[i] is an override
                 // TODO If primary source is valid and fallback is not then quiet on
