@@ -61,22 +61,20 @@ static power_button_id getPowerButtonIDFromString(const QString& string) {
 template<typename T>
 static T mapProperties(NodePair nodes, const T& defaults, const PathContext& path_context,
                        auto fill_fn) {
-        // Resolve power_data and global_data
-        constexpr bool is_override_power = true;
-        auto power_data = resolve<toml::table>({Source{nodes.primary, applet::power_applet.scope}},
-                                               path_context, is_override_power);
+        constexpr bool quiet = true;
 
-        constexpr bool is_override_global = false;
+        // Resolve power_data and global_data
+        auto power_data = resolve<toml::table>({Source{nodes.primary, applet::power_applet.scope, quiet}},
+                                               path_context);
+
         auto global_data = resolve<toml::table>({Source{nodes.fallback, applet::global.scope}},
-                                                path_context, is_override_global);
+                                                path_context);
 
         // Use hardcoded defaults if no tables found
         if (!power_data && !global_data) { return defaults; }
 
         T props{};
-
         fill_fn(nodes, props, path_context);
-
         return std::move(props);
 }
 
@@ -97,7 +95,7 @@ void ConfigMapper::mapWindow(NodePair nodes, WindowProperties& window,
                         window.title = resolveOr<QString>({Source{nodes.primary["title"],
                                                                   applet::power_applet.scope},
                                                            Source{nodes.fallback["title"],
-                                                                  applet::power_applet.scope}},
+                                                                  applet::global.scope}},
                                                           defaults.getTitle(),
                                                           path_context.getExtended("title"));
                 });
@@ -142,11 +140,10 @@ void ConfigMapper::mapPrimaryButton(NodePair nodes, PrimaryButtonProperties& but
 /* Layout Properties */
 void ConfigMapper::mapLayout(node_view layout_node, LayoutProperties& layout,
                              const LayoutProperties& defaults, const PathContext& path_context) {
-        constexpr bool   is_override = false;
         LayoutProperties layout_properties{};
 
         const auto data = resolve<toml::table>({Source{layout_node, applet::power_applet.scope}},
-                                               path_context, is_override);
+                                               path_context);
         if (!data) {
                 layout_properties = defaults;
                 layout            = std::move(layout_properties);
@@ -164,12 +161,11 @@ void ConfigMapper::mapPrimaryButtons(node_view                             prima
                                      std::vector<PowerButtonParams>&       primary_buttons,
                                      const std::vector<PowerButtonParams>& defaults,
                                      const PathContext&                    path_context) {
-        constexpr bool   is_override = false;
-        constexpr size_t min_size    = 1;
+        constexpr size_t min_size = 1;
 
         const auto buttons = resolve<toml::array>({Source{primary_buttons_node,
                                                           applet::power_applet.scope}},
-                                                  path_context, is_override, {min_size},
+                                                  path_context, {min_size},
                                                   "Format: [primary buttons...]");
         if (!buttons) {
                 primary_buttons = defaults;
@@ -214,11 +210,9 @@ bool ConfigMapper::mapPrimaryButton(node_view                             button
                                     std::vector<PowerButtonParams>&       buttons,
                                     const std::vector<PowerButtonParams>& defaults,
                                     const PathContext&                    path_context) {
-        constexpr bool is_override = false;
-
         const auto button_table = resolve<toml::table>({Source{button_params_node,
                                                                applet::power_applet.scope}},
-                                                       path_context, is_override);
+                                                       path_context);
         if (!button_table) {
                 buttons = defaults;
                 return true;
@@ -228,12 +222,12 @@ bool ConfigMapper::mapPrimaryButton(node_view                             button
 
         auto enabled = resolve<bool>({Source{button_table.value()["enabled"],
                                              applet::power_applet.scope}},
-                                     path_context.getExtended("enabled"), is_override);
+                                     path_context.getExtended("enabled"));
         if (!enabled || !enabled.value()) { return false; }
 
         auto id_result = resolve<QString>({Source{button_table.value()["id"],
                                                   applet::power_applet.scope}},
-                                          path_context.getExtended("id"), is_override);
+                                          path_context.getExtended("id"));
         if (!id_result) {
                 buttons = defaults;
                 return true;
@@ -242,7 +236,7 @@ bool ConfigMapper::mapPrimaryButton(node_view                             button
 
         auto text_result = resolve<QString>({Source{button_table.value()["text"],
                                                     applet::power_applet.scope}},
-                                            path_context.getExtended("text"), is_override);
+                                            path_context.getExtended("text"));
         if (!text_result) {
                 buttons = defaults;
                 return true;
@@ -251,7 +245,7 @@ bool ConfigMapper::mapPrimaryButton(node_view                             button
 
         auto order_result = resolve<int64_t>({Source{button_table.value()["order"],
                                                      applet::power_applet.scope}},
-                                             path_context.getExtended("order"), is_override);
+                                             path_context.getExtended("order"));
         if (!order_result) {
                 buttons = defaults;
                 return true;
@@ -273,12 +267,10 @@ bool ConfigMapper::mapPrimaryButton(node_view                             button
 void ConfigMapper::mapCommand(node_view command_node, std::vector<PowerButtonParams>& buttons,
                               const std::vector<PowerButtonParams>& defaults, ShellCommand& command,
                               const PathContext& path_context) {
-        constexpr bool   is_override = false;
         constexpr size_t min_size = 2, max_size = 2;
         const auto       command_arr = resolve<toml::array>({Source{command_node,
                                                                     applet::power_applet.scope}},
-                                                            path_context, is_override,
-                                                            {min_size, max_size},
+                                                            path_context, {min_size, max_size},
                                                             "Format: [program, [args...]]");
         if (!command_arr) {
                 buttons = defaults;
@@ -289,7 +281,7 @@ void ConfigMapper::mapCommand(node_view command_node, std::vector<PowerButtonPar
 
         auto program_result = resolve<QString>({Source{toml::node_view(command_arr.value()[0]),
                                                        applet::power_applet.scope}},
-                                               path_context.getExtended("program"), is_override);
+                                               path_context.getExtended("program"));
         if (!program_result) {
                 buttons = defaults;
                 return;
@@ -306,11 +298,9 @@ void ConfigMapper::mapCommandArguments(node_view                             arg
                                        std::vector<PowerButtonParams>&       buttons,
                                        const std::vector<PowerButtonParams>& defaults,
                                        QStringList& arguments, const PathContext& path_context) {
-        constexpr bool   is_override = false;
-        constexpr size_t min_size    = 0;
+        constexpr size_t min_size = 0;
         const auto args = resolve<toml::array>({Source{arguments_node, applet::power_applet.scope}},
-                                               path_context, is_override, {min_size},
-                                               "Format: [string, array]");
+                                               path_context, {min_size}, "Format: [string, array]");
         if (!args) {
                 buttons = defaults;
                 return;
@@ -330,11 +320,10 @@ void ConfigMapper::mapCommandArgument(node_view                             argu
                                       std::vector<PowerButtonParams>&       buttons,
                                       const std::vector<PowerButtonParams>& defaults,
                                       QStringList& arguments, const PathContext& path_context) {
-        QString        argument{};
-        constexpr bool is_override = false;
+        QString argument{};
 
         auto argument_result = resolve<QString>({Source{argument_node, applet::power_applet.scope}},
-                                                path_context, is_override);
+                                                path_context);
         if (!argument_result) {
                 buttons = defaults;
                 return;
@@ -349,12 +338,11 @@ void ConfigMapper::mapCommandArgument(node_view                             argu
 void ConfigMapper::mapEnvironment(node_view environment_node, EnvironmentProperties& environment,
                                   const EnvironmentProperties& defaults,
                                   const PathContext&           path_context) {
-        constexpr bool        is_override = false;
         EnvironmentProperties environment_properties{};
 
         const auto data = resolve<toml::table>({Source{environment_node,
                                                        applet::power_applet.scope}},
-                                               path_context, is_override);
+                                               path_context);
         if (!data) {
                 environment_properties = defaults;
                 environment            = std::move(environment_properties);

@@ -79,8 +79,7 @@ void KeysMapper::mapQuitKeys(NodePair nodes, keybindings& quit, const keybinding
 
 void KeysMapper::mapPrimaryButtonKey(node_view primary_button_node, keybindings& primary_button,
                                      const keybindings& defaults, const PathContext& path_context) {
-        constexpr bool   is_override = false;
-        constexpr size_t min_size    = 1;
+        constexpr size_t min_size = 1;
 
         toml::array button{};
         resolveOrDefault<toml::array>({Source{primary_button_node, applet::power_applet.scope}},

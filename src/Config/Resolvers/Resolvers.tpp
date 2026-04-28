@@ -33,13 +33,9 @@ class QSize;
 // Use if return value and defaulting must be handled manually
 // On success: extract from a node, return as std::optional<T>
 // On failure: return std::nullopt
-// Forcefully mark as an override by passing 'force_override_on = true',
-// useful for single sources, as only multiple sources get automatic
-// detection of overrides
 template<typename T>
 std::optional<T> resolve(std::initializer_list<Source> sources, const PathContext& path_context,
-                         bool force_override_on, const TomlArrayConditions& arr_conditions,
-                         const QString& arr_format) {
+                         const TomlArrayConditions& arr_conditions, const QString& arr_format) {
         using DT = std::decay_t<T>;
 
         // Convert pointers to std::optional
@@ -122,9 +118,13 @@ std::optional<T> resolve(std::initializer_list<Source> sources, const PathContex
         for (size_t i = 0; i != sources.size(); ++i) {
                 const auto& source = *(sources.begin() + i);
 
-                // If 'i' is not the last index then 'source' is an override
-                bool is_source_override = (i < sources.size() - 1) || force_override_on ? true
-                                                                                        : false;
+                // If 'i' is not the last index, then sources[i] is an override
+                // TODO If primary source is valid and fallback is not then quiet on
+                //      primary source will result in no logs being printed at all
+                //      Iteration over sources should probably be done in reverse to
+                //      track if fallback is missing, and if it is then quiet should
+                //      likely be ignored.
+                bool is_source_override = (i != sources.size() - 1) || source.quiet;
 
                 auto result = extract(source.node, arr_conditions);
                 if (!result) {
@@ -147,8 +147,7 @@ template<typename T, typename TDefault>
 T resolveOr(std::initializer_list<Source> sources, const TDefault& defaults,
             const PathContext& path_context, const TomlArrayConditions& arr_conditions,
             const QString& arr_format) {
-        return resolve<T>(sources, path_context, false, arr_conditions, arr_format)
-                .value_or(defaults);
+        return resolve<T>(sources, path_context, arr_conditions, arr_format).value_or(defaults);
 }
 
 // Use to try and extract a value from a node into a specific attribute, and if that fails, to
@@ -161,8 +160,7 @@ template<typename TAttribute, typename TObject>
 void resolveOrDefault(std::initializer_list<Source> sources, TAttribute& attribute, TObject& object,
                       const TObject& object_defaults, const PathContext& path_context,
                       const TomlArrayConditions& arr_conditions, const QString& arr_format) {
-        if (auto result = resolve<TAttribute>(sources, path_context, false, arr_conditions,
-                                              arr_format)) {
+        if (auto result = resolve<TAttribute>(sources, path_context, arr_conditions, arr_format)) {
                 attribute = result.value();
         } else {
                 object = object_defaults;
@@ -179,7 +177,7 @@ template<typename TRaw, typename TAttribute, typename TObject, typename Transfor
 void resolveTransformOrDefault(std::initializer_list<Source> sources, TAttribute& attribute,
                                TObject& object, const TObject& object_defaults,
                                Transform&& transform, const PathContext& path_context) {
-        if (auto result = resolve<TRaw>(sources, path_context, false)) {
+        if (auto result = resolve<TRaw>(sources, path_context)) {
                 attribute = transform(std::move(result.value()));
         } else {
                 object = object_defaults;

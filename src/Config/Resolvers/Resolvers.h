@@ -34,6 +34,7 @@ class QSize;
 struct Source final {
         node_view        node;
         std::string_view scope;
+        bool             quiet = false;
 };
 
 // TODO Move elsewhere
@@ -53,14 +54,10 @@ public:
 // Use if return value and defaulting must be handled manually
 // On success: extract from a node, return as std::optional<T>
 // On failure: return std::nullopt
-// Forcefully mark as an override by passing 'force_override_on = true',
-// useful for single sources, as only multiple sources get automatic
-// detection of overrides
 template<typename T>
 std::optional<T> resolve(std::initializer_list<Source> sources, const PathContext& path_context,
-                         bool                       force_override_on = false,
-                         const TomlArrayConditions& arr_conditions    = {},
-                         const QString&             arr_format        = {});
+                         const TomlArrayConditions& arr_conditions = {},
+                         const QString&             arr_format     = {});
 
 // Use to skip validation of return value and to automatically default
 // On success: extract from a node
