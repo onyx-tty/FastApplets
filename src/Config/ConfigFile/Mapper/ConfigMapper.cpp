@@ -229,7 +229,7 @@ bool ConfigMapper::mapPrimaryButton(node_view                             button
         auto enabled = resolve<bool>({Source{button_table.value()["enabled"],
                                              applet::power_applet.scope}},
                                      path_context.getExtended("enabled"), is_override);
-        if (!enabled) { return true; }
+        if (!enabled || !enabled.value()) { return false; }
 
         auto id_result = resolve<QString>({Source{button_table.value()["id"],
                                                   applet::power_applet.scope}},
