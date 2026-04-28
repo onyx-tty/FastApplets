@@ -17,4 +17,4 @@
 
 #pragma once
 
-enum class power_button_id { none = 0, shutdown = 1, reboot = 2, suspend = 3, hibernate = 4 };
+enum class power_button_id { none, shutdown, reboot, suspend, hibernate };
