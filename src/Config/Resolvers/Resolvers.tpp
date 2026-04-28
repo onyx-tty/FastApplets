@@ -128,13 +128,11 @@ std::optional<T> resolve(std::initializer_list<Source> sources, const PathContex
 
                 auto result = extract(source.node, arr_conditions);
                 if (!result) {
-                        if (!is_source_override) {
-                                log(path_context.makePath("config.toml", source.scope));
-                        }
+                        if (!is_source_override) { log(path_context.makePath(source.scope)); }
                         continue;
                 }
 
-                QDEBUG() << path_context.makePath("config.toml", source.scope) << "found!";
+                QDEBUG() << path_context.makePath(source.scope) << "found!";
                 return *result;
         }
 

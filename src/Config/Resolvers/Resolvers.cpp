@@ -22,19 +22,20 @@
 #include <QString>
 #include <QStringView>
 
-PathContext::PathContext(QStringView path_context, char separator) :
-        path_context(path_context.toString()), separator(separator) {}
+PathContext::PathContext(QStringView filename, QStringView path_context, char separator) :
+        filename(filename.toString()), path_context(path_context.toString()), separator(separator) {
+}
 
-QString PathContext::makePath(std::string_view filename, std::string_view scope) const {
+QString PathContext::makePath(std::string_view scope) const {
         return QString("in %1, %2%3%4")
-                .arg(QString::fromStdString(std::string{filename}),
-                     QString::fromStdString(std::string{scope}))
+                .arg(QString{filename}, QString::fromStdString(std::string{scope}))
                 .arg(separator)
                 .arg(path_context);
 }
 
 PathContext PathContext::getExtended(std::string_view segment) const {
-        return PathContext{QString("%1%2%3")
+        return PathContext{filename,
+                           QString("%1%2%3")
                                    .arg(path_context)
                                    .arg(separator)
                                    .arg(QString::fromStdString(std::string{segment})),
@@ -42,5 +43,5 @@ PathContext PathContext::getExtended(std::string_view segment) const {
 }
 
 PathContext PathContext::getExtended(size_t index) const {
-        return PathContext{QString("%1[%2]").arg(path_context).arg(index), separator};
+        return PathContext{filename, QString("%1[%2]").arg(path_context).arg(index), separator};
 }

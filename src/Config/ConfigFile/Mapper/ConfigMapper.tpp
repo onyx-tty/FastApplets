@@ -35,23 +35,24 @@ void ConfigMapper::mapToPowerAppletConfig(const toml::table& power_applet_table,
 
         using namespace Qt::StringLiterals;
         const auto& defaults = TConfig::getDefault();
+        QStringView filename = u"config.toml"_s;
 
         /* Window Properties */
         mapWindow(NodePair{power_applet_table["window"], global_table["window"]},
                   config.window_properties, defaults.getWindowProperties(),
-                  PathContext{u"window"_s});
+                  PathContext{filename, u"window"_s});
 
         /* Primary Button Properties */
         mapPrimaryButton(NodePair{power_applet_table["primary_button"],
                                   global_table["primary_button"]},
                          config.primary_button_properties, defaults.getPrimaryButtonProperties(),
-                         PathContext{u"primary_button"_s});
+                         PathContext{filename, u"primary_button"_s});
 
         /* Layout Properties */
         mapLayout(power_applet_table["layout"], config.layout_properties,
-                  defaults.getLayoutProperties(), PathContext{u"layout"_s});
+                  defaults.getLayoutProperties(), PathContext{filename, u"layout"_s});
 
         /* Environment Properties */
         mapEnvironment(power_applet_table["environment"], config.environment_properties,
-                       defaults.getEnvironmentProperties(), PathContext{u"environment"_s});
+                       defaults.getEnvironmentProperties(), PathContext{filename, u"environment"_s});
 }

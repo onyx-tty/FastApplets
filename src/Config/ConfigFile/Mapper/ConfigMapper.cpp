@@ -192,7 +192,7 @@ void ConfigMapper::mapPrimaryButtons(node_view                             prima
         }
 
         if (buttons_found.empty()) {
-                QWARNING() << path_context.makePath("config.toml", applet::power_applet.scope)
+                QWARNING() << path_context.makePath(applet::power_applet.scope)
                                       + ", no enabled buttons found! Using defaults...";
                 primary_buttons = defaults;
                 return;

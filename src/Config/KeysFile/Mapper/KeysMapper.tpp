@@ -35,12 +35,14 @@ void KeysMapper::mapToPowerAppletKeys(const toml::table& power_applet_table,
 
         using namespace Qt::StringLiterals;
         const auto& defaults = TKeys::getDefault();
+        QStringView filename = u"keys.toml"_s;
 
         /* Quit Keys */
         mapQuitKeys(NodePair{power_applet_table["quit"], global_table["quit"]}, keys.quit_keys,
-                    defaults.getQuitKeys(), PathContext{u"quit"_s});
+                    defaults.getQuitKeys(), PathContext{filename, u"quit"_s});
 
         /* Primary Button Keys */
         mapPrimaryButtonKeys(power_applet_table["primary_buttons"], keys.primary_button_keys,
-                             defaults.getPrimaryButtonKeys(), PathContext{u"primary_buttons"_s});
+                             defaults.getPrimaryButtonKeys(),
+                             PathContext{filename, u"primary_buttons"_s});
 }
