@@ -20,9 +20,12 @@
 #include "Config/TOML/Types/NodeView.h"
 #include "Config/TOML/Types/TomlArrayConditions.h"
 
+#include <cstddef>
 #include <optional>
 #include <string_view>
 #include <toml++/toml.hpp>
+#include <QString>
+#include <QStringView>
 #include <Qt>
 
 class QSizePolicy;
@@ -33,13 +36,18 @@ struct Source final {
         std::string_view scope;
 };
 
-QString makeCfgPath(std::string_view scope, const QString& config_path, const char* separator = ".");
+// TODO Move elsewhere
+class PathContext final {
+private:
+        QString path_context;
+        char    separator;
 
-QString extendCfgPath(const QString& path, const char* extension, const char* separator = ".");
-
-QString makeKeysPath(std::string_view scope, const QString& keys_path, const char* separator = ".");
-
-QString extendKeysPath(const QString& path, const char* extension, const char* separator = ".");
+public:
+        explicit PathContext(QStringView path_context, char separator = '.');
+        QString     makePath(std::string_view filename, std::string_view scope) const;
+        PathContext getExtended(std::string_view segment) const;
+        PathContext getExtended(size_t index) const;
+};
 
 // Use if return value and defaulting must be handled manually
 // On success: extract from a node, return as std::optional<T>
@@ -48,7 +56,7 @@ QString extendKeysPath(const QString& path, const char* extension, const char* s
 // useful for single sources, as only multiple sources get automatic
 // detection of overrides
 template<typename T>
-std::optional<T> resolve(std::initializer_list<Source> sources, const QString& path_context,
+std::optional<T> resolve(std::initializer_list<Source> sources, const PathContext& path_context,
                          bool                       force_override_on = false,
                          const TomlArrayConditions& arr_conditions    = {},
                          const QString&             arr_format        = {});
@@ -58,7 +66,7 @@ std::optional<T> resolve(std::initializer_list<Source> sources, const QString& p
 // On failure: copy default value
 template<typename T, typename TDefault>
 T resolveOr(std::initializer_list<Source> sources, const TDefault& defaults,
-            const QString& path_context, const TomlArrayConditions& arr_conditions = {},
+            const PathContext& path_context, const TomlArrayConditions& arr_conditions = {},
             const QString& arr_format = {});
 
 // Use to try and extract a value from a node into a specific attribute, and if that fails, to
@@ -69,7 +77,7 @@ T resolveOr(std::initializer_list<Source> sources, const TDefault& defaults,
 // On failure: overwrite object with object_defaults entirely
 template<typename TAttribute, typename TObject>
 void resolveOrDefault(std::initializer_list<Source> sources, TAttribute& attribute, TObject& object,
-                      const TObject& object_defaults, const QString& path_context,
+                      const TObject& object_defaults, const PathContext& path_context,
                       const TomlArrayConditions& arr_conditions = {},
                       const QString&             arr_format     = {});
 
@@ -82,6 +90,6 @@ void resolveOrDefault(std::initializer_list<Source> sources, TAttribute& attribu
 template<typename TRaw, typename TAttribute, typename TObject, typename Transform>
 void resolveTransformOrDefault(std::initializer_list<Source> sources, TAttribute& attribute,
                                TObject& object, const TObject& object_defaults,
-                               Transform&& transform, const QString& path_context);
+                               Transform&& transform, const PathContext& path_context);
 
 #include "Resolvers.tpp"

@@ -65,7 +65,7 @@ std::vector<std::string> interpretTomlArrayAsStringVector(const toml::array& tom
 }
 
 void KeysMapper::mapQuitKeys(NodePair nodes, keybindings& quit, const keybindings& defaults,
-                             const QString& path_context) {
+                             const PathContext& path_context) {
         constexpr size_t min_size = 1;
 
         toml::array array{};
@@ -78,7 +78,7 @@ void KeysMapper::mapQuitKeys(NodePair nodes, keybindings& quit, const keybinding
 }
 
 void KeysMapper::mapPrimaryButtonKey(node_view primary_button_node, keybindings& primary_button,
-                                     const keybindings& defaults, const QString& path_context) {
+                                     const keybindings& defaults, const PathContext& path_context) {
         constexpr bool   is_override = false;
         constexpr size_t min_size    = 1;
 
@@ -93,7 +93,7 @@ void KeysMapper::mapPrimaryButtonKey(node_view primary_button_node, keybindings&
 void KeysMapper::mapPrimaryButtonKeys(node_view                       primary_buttons_node,
                                       std::vector<keybindings>&       primary_buttons,
                                       const std::vector<keybindings>& defaults,
-                                      const QString&                  path_context) {
+                                      const PathContext&              path_context) {
         constexpr size_t min_size = 1;
         const size_t     max_size = primary_buttons.size();
 
@@ -106,7 +106,7 @@ void KeysMapper::mapPrimaryButtonKeys(node_view                       primary_bu
         for (size_t i = 0; i != primary_button_arr.size(); ++i) {
                 keybindings keys{};
                 mapPrimaryButtonKey(primary_buttons_node[i], keys, defaults[i],
-                                    path_context + QString("[%1]").arg(i).toStdString().c_str());
+                                    path_context.getExtended(i));
                 if (!keys.empty()) { primary_buttons_new.push_back(keys); }
         };
 

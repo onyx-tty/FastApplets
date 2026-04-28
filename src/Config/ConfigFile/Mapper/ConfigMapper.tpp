@@ -17,12 +17,15 @@
 
 #pragma once
 
+#include "Config/Resolvers/Resolvers.h"
 #include "Config/TOML/Types/NodePair.h"
 #include "ConfigMapper.h"
 #include "Log/Log.h"
 
 #include <toml++/toml.hpp>
 #include <QApplication>
+#include <QStringLiteral>
+#include <Qt>
 
 template<typename TConfig>
 void ConfigMapper::mapToPowerAppletConfig(const toml::table& power_applet_table,
@@ -30,23 +33,25 @@ void ConfigMapper::mapToPowerAppletConfig(const toml::table& power_applet_table,
         // Confirm that a QApplication instance exists
         if (!QApplication::instance()) { QFATAL("QApplication has not been instantiated yet!"); }
 
+        using namespace Qt::StringLiterals;
         const auto& defaults = TConfig::getDefault();
 
         /* Window Properties */
         mapWindow(NodePair{power_applet_table["window"], global_table["window"]},
-                  config.window_properties, defaults.getWindowProperties(), "window");
+                  config.window_properties, defaults.getWindowProperties(),
+                  PathContext{u"window"_s});
 
         /* Primary Button Properties */
         mapPrimaryButton(NodePair{power_applet_table["primary_button"],
                                   global_table["primary_button"]},
                          config.primary_button_properties, defaults.getPrimaryButtonProperties(),
-                         "primary_button");
+                         PathContext{u"primary_button"_s});
 
         /* Layout Properties */
         mapLayout(power_applet_table["layout"], config.layout_properties,
-                  defaults.getLayoutProperties(), "layout");
+                  defaults.getLayoutProperties(), PathContext{u"layout"_s});
 
         /* Environment Properties */
         mapEnvironment(power_applet_table["environment"], config.environment_properties,
-                       defaults.getEnvironmentProperties(), "environment");
+                       defaults.getEnvironmentProperties(), PathContext{u"environment"_s});
 }

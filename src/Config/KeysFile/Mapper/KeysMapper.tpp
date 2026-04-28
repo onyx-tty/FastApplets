@@ -17,12 +17,15 @@
 
 #pragma once
 
+#include "Config/Resolvers/Resolvers.h"
 #include "Config/TOML/Types/NodePair.h"
 #include "KeysMapper.h"
 #include "Log/Log.h"
 
 #include <toml++/toml.hpp>
 #include <QApplication>
+#include <QStringLiteral>
+#include <Qt>
 
 template<typename TKeys>
 void KeysMapper::mapToPowerAppletKeys(const toml::table& power_applet_table,
@@ -30,13 +33,14 @@ void KeysMapper::mapToPowerAppletKeys(const toml::table& power_applet_table,
         // Confirm that a QApplication instance exists
         if (!QApplication::instance()) { QFATAL("QApplication has not been instantiated yet!"); }
 
+        using namespace Qt::StringLiterals;
         const auto& defaults = TKeys::getDefault();
 
         /* Quit Keys */
         mapQuitKeys(NodePair{power_applet_table["quit"], global_table["quit"]}, keys.quit_keys,
-                    defaults.getQuitKeys(), "quit");
+                    defaults.getQuitKeys(), PathContext{u"quit"_s});
 
         /* Primary Button Keys */
         mapPrimaryButtonKeys(power_applet_table["primary_buttons"], keys.primary_button_keys,
-                             defaults.getPrimaryButtonKeys(), "primary_buttons");
+                             defaults.getPrimaryButtonKeys(), PathContext{u"primary_buttons"_s});
 }

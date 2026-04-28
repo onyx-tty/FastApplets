@@ -18,6 +18,7 @@
 #pragma once
 
 #include "Config/KeysFile/Types/Keybindings.h"
+#include "Config/Resolvers/Resolvers.h"
 #include "Config/TOML/Types/NodeView.h"
 
 #include <string>
@@ -46,15 +47,16 @@ class KeysMapper final {
 private:
         /* Global Keys */
         static void mapQuitKeys(NodePair nodes, keybindings& quit, const keybindings& defaults,
-                                const QString& path_context);
+                                const PathContext& path_context);
 
         /* Power Applet Keys*/
         static void mapPrimaryButtonKey(node_view primary_button_node, keybindings& primary_button,
-                                        const keybindings& defaults, const QString& path_context);
+                                        const keybindings& defaults,
+                                        const PathContext& path_context);
         static void mapPrimaryButtonKeys(node_view                       primary_buttons_node,
                                          std::vector<keybindings>&       primary_buttons,
                                          const std::vector<keybindings>& defaults,
-                                         const QString&                  path_context);
+                                         const PathContext&              path_context);
 
 public:
         KeysMapper() = delete;

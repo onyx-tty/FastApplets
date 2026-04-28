@@ -17,6 +17,7 @@
 
 #pragma once
 
+#include "Config/Resolvers/Resolvers.h"
 #include "Config/TOML/Types/NodePair.h"
 #include "Config/TOML/Types/NodeView.h"
 
@@ -39,40 +40,40 @@ class ConfigMapper final {
 private:
         /* Window Properties */
         static void mapWindow(NodePair nodes, WindowProperties& window,
-                              const WindowProperties& defaults, const QString& path_context);
+                              const WindowProperties& defaults, const PathContext& path_context);
 
         /* Primary Button Properties */
         static void mapPrimaryButton(NodePair nodes, PrimaryButtonProperties& button,
                                      const PrimaryButtonProperties& defaults,
-                                     const QString&                 path_context);
+                                     const PathContext&             path_context);
 
         /* Layout Properties */
         static void mapLayout(node_view layout_node, LayoutProperties& layout,
-                              const LayoutProperties& defaults, const QString& path_context);
+                              const LayoutProperties& defaults, const PathContext& path_context);
         static void mapPrimaryButtons(node_view                             primary_buttons_node,
                                       std::vector<PowerButtonParams>&       primary_buttons,
                                       const std::vector<PowerButtonParams>& defaults,
-                                      const QString&                        path_context);
+                                      const PathContext&                    path_context);
         static bool mapPrimaryButton(node_view                             button_params_node,
                                      std::vector<PowerButtonParams>&       buttons,
                                      const std::vector<PowerButtonParams>& defaults,
-                                     const QString&                        path_context);
+                                     const PathContext&                    path_context);
         static void mapCommand(node_view command_node, std::vector<PowerButtonParams>& buttons,
                                const std::vector<PowerButtonParams>& defaults,
-                               ShellCommand& command, const QString& path_context);
+                               ShellCommand& command, const PathContext& path_context);
         static void mapCommandArguments(node_view                             arguments_node,
                                         std::vector<PowerButtonParams>&       buttons,
                                         const std::vector<PowerButtonParams>& defaults,
-                                        QStringList& arguments, const QString& path_context);
+                                        QStringList& arguments, const PathContext& path_context);
         static void mapCommandArgument(node_view                             argument_node,
                                        std::vector<PowerButtonParams>&       buttons,
                                        const std::vector<PowerButtonParams>& defaults,
-                                       QStringList& arguments, const QString& path_context);
+                                       QStringList& arguments, const PathContext& path_context);
 
         /* Environment Properties*/
         static void mapEnvironment(node_view environment_node, EnvironmentProperties& environment,
                                    const EnvironmentProperties& defaults,
-                                   const QString&               path_context);
+                                   const PathContext&           path_context);
 
 public:
         ConfigMapper() = delete;

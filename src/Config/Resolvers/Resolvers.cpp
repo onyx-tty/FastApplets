@@ -17,27 +17,30 @@
 
 #include "Resolvers.h"
 
+#include <cstddef>
 #include <string_view>
 #include <QString>
+#include <QStringView>
 
-QString makeCfgPath(std::string_view scope, const QString& config_path, const char* separator) {
-        return QString("in config.toml, %1%2%3")
-                .arg(QString::fromStdString(std::string{scope}), separator, config_path);
+PathContext::PathContext(QStringView path_context, char separator) :
+        path_context(path_context.toString()), separator(separator) {}
+
+QString PathContext::makePath(std::string_view filename, std::string_view scope) const {
+        return QString("in %1, %2%3%4")
+                .arg(QString::fromStdString(std::string{filename}),
+                     QString::fromStdString(std::string{scope}))
+                .arg(separator)
+                .arg(path_context);
 }
 
-QString extendCfgPath(const QString& path, const char* extension, const char* separator) {
-        if (path.isEmpty()) { return QString(extension); }
-
-        return path + separator + extension;
+PathContext PathContext::getExtended(std::string_view segment) const {
+        return PathContext{QString("%1%2%3")
+                                   .arg(path_context)
+                                   .arg(separator)
+                                   .arg(QString::fromStdString(std::string{segment})),
+                           separator};
 }
 
-QString makeKeysPath(std::string_view scope, const QString& keys_path, const char* separator) {
-        return QString("in keys.toml, %1%2%3")
-                .arg(QString::fromStdString(std::string{scope}), separator, keys_path);
-}
-
-QString extendKeysPath(const QString& path, const char* extension, const char* separator) {
-        if (path.isEmpty()) { return QString(extension); }
-
-        return path + separator + extension;
+PathContext PathContext::getExtended(size_t index) const {
+        return PathContext{QString("%1[%2]").arg(path_context).arg(index), separator};
 }
