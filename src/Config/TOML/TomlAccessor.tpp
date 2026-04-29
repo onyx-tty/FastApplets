@@ -17,7 +17,7 @@
 
 #pragma once
 
-#include "CppUtils/include/String/String.h"
+#include "CppUtils/include/String/StdString.h"
 #include "Log/Log.h"
 #include "TomlAccessor.h"
 #include "Types/NodeView.h"
