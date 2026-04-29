@@ -1,3 +1,2 @@
-set(ICONS_POWER ${CMAKE_CURRENT_LIST_DIR}/Icons.qrc CACHE INTERNAL "Power icons")
-
-set(POWERAPPLET_RESOURCES ${ICONS_POWER} CACHE INTERNAL "Resources for PowerApplet")
+add_library(Resources_Icons Icons.qrc)
+add_library(Resources::Icons ALIAS Resources_Icons)

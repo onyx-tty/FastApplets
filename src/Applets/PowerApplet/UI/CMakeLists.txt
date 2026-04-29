@@ -1,7 +1,6 @@
 add_subdirectory(Widgets)
 
 add_library(PowerApplet_UI
-        ${POWERAPPLET_RESOURCES}
         PowerMainWindow.cpp
         PowerCentralWidget.cpp)
 add_library(PowerApplet::UI ALIAS PowerApplet_UI)
