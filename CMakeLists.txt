@@ -42,9 +42,6 @@ add_subdirectory(
         resources)
 
 add_subdirectory(
-        src/Log)
-
-add_subdirectory(
         src/Config)
 
 add_subdirectory(

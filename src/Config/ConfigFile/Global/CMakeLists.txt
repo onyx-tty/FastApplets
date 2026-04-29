@@ -11,5 +11,5 @@ target_link_libraries(Config_ConfigFile_Global PRIVATE
         Shell)
 
 target_link_libraries(Config_ConfigFile_Global PUBLIC
-        Qt${QT_VERSION_MAJOR}::Widgets
-        Log)
+        CppUtils::Log
+        Qt${QT_VERSION_MAJOR}::Widgets)

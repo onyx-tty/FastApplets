@@ -9,10 +9,10 @@ target_include_directories(Config_ConfigFile_Mapper PRIVATE
 target_link_libraries(Config_ConfigFile_Mapper PRIVATE
         Config::ConfigFile::Properties
         Config::TOML
-        Log
         UI::Enums
         UI::Widgets)
 
 target_link_libraries(Config_ConfigFile_Mapper PUBLIC
+        CppUtils::Log
         tomlplusplus::tomlplusplus
         Qt${QT_VERSION_MAJOR}::Widgets)

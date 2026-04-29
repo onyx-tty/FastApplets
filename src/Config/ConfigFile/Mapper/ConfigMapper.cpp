@@ -26,7 +26,7 @@
 #include "Config/TOML/Types/NodePair.h"
 #include "Config/TOML/Types/NodeView.h"
 #include "Config/TOML/Types/TomlArrayConditions.h"
-#include "Log/Log.h"
+#include "CppUtils/include/Log/QtLog.h"
 #include "UI/Enums/ButtonIDs.h"
 #include "UI/Widgets/PowerButtonParams.h"
 
@@ -64,7 +64,8 @@ static T mapProperties(NodePair nodes, const T& defaults, const PathContext& pat
         constexpr bool quiet = true;
 
         // Resolve power_data and global_data
-        auto power_data = resolve<toml::table>({Source{nodes.primary, applet::power_applet.scope, quiet}},
+        auto power_data = resolve<toml::table>({Source{nodes.primary, applet::power_applet.scope,
+                                                       quiet}},
                                                path_context);
 
         auto global_data = resolve<toml::table>({Source{nodes.fallback, applet::global.scope}},

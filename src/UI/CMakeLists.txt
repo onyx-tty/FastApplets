@@ -16,8 +16,8 @@ target_include_directories(UI PRIVATE
 target_link_libraries(UI PRIVATE
         UI::Enums
         UI::Widgets
-        Config
-        Log)
+        Config)
 
 target_link_libraries(UI PUBLIC
+        CppUtils::Log
         Qt${QT_VERSION_MAJOR}::Widgets)

@@ -15,9 +15,9 @@ target_link_libraries(PowerApplet_UI_Widgets PRIVATE
         Config::ConfigFile::PowerApplet
         Config::KeysFile::Global
         Config::KeysFile::PowerApplet
-        Log
         DBus
         Shell)
 
 target_link_libraries(PowerApplet_UI_Widgets PUBLIC
+        CppUtils::Log
         Qt${QT_VERSION_MAJOR}::Widgets)

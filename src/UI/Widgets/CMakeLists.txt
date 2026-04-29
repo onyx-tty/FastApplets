@@ -9,8 +9,8 @@ target_include_directories(UI_Widgets PRIVATE
         ${GLOBAL_INCLUSIONS})
 
 target_link_libraries(UI_Widgets PRIVATE
-        Config::ConfigFile::Properties
-        Log)
+        Config::ConfigFile::Properties)
 
 target_link_libraries(UI_Widgets PUBLIC
+        CppUtils::Log
         Qt${QT_VERSION_MAJOR}::Widgets)

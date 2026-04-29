@@ -7,8 +7,8 @@ target_include_directories(PowerApplet_DBus PRIVATE
         ${GLOBAL_INCLUSIONS})
 
 target_link_libraries(PowerApplet_DBus PRIVATE
-        Log
         DBus)
 
 target_link_libraries(PowerApplet_DBus PUBLIC
+        CppUtils::Log
         Qt${QT_VERSION_MAJOR}::DBus)

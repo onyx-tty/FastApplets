@@ -9,8 +9,6 @@ target_include_directories(Config_ConfigFile_Properties PRIVATE
         ${CMAKE_CURRENT_LIST_DIR}
         ${GLOBAL_INCLUSIONS})
 
-target_link_libraries(Config_ConfigFile_Properties PRIVATE
-        Log)
-
 target_link_libraries(Config_ConfigFile_Properties PUBLIC
+        CppUtils::Log
         Qt${QT_VERSION_MAJOR}::Widgets)

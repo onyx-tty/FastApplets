@@ -16,7 +16,7 @@
    along with this program.  If not, see <https://www.gnu.org/licenses/>. */
 
 #include "TomlParser.h"
-#include "Log/Log.h"
+#include "CppUtils/include/Log/QtLog.h"
 #include "TomlLocator.h"
 #include "Types/ConfigTomlFiles.h"
 

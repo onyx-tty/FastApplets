@@ -20,7 +20,7 @@
 #include "Config/Resolvers/Resolvers.h"
 #include "Config/TOML/Types/NodePair.h"
 #include "ConfigMapper.h"
-#include "Log/Log.h"
+#include "CppUtils/include/Log/QtLog.h"
 
 #include <toml++/toml.hpp>
 #include <QApplication>
@@ -54,5 +54,6 @@ void ConfigMapper::mapToPowerAppletConfig(const toml::table& power_applet_table,
 
         /* Environment Properties */
         mapEnvironment(power_applet_table["environment"], config.environment_properties,
-                       defaults.getEnvironmentProperties(), PathContext{filename, u"environment"_s});
+                       defaults.getEnvironmentProperties(),
+                       PathContext{filename, u"environment"_s});
 }

@@ -18,7 +18,7 @@
 #include "PowerButton.h"
 #include "Applets/PowerApplet/DBus/PowerActionManager.h"
 #include "Config/ConfigFile/PowerApplet/PowerAppletConfig.h"
-#include "Log/Log.h"
+#include "CppUtils/include/Log/QtLog.h"
 #include "Shell/ShellCommand.h"
 #include "Shell/ShellRunner.h"
 #include "UI/Enums/ButtonIDs.h"

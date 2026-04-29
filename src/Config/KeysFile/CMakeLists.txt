@@ -16,4 +16,4 @@ target_link_libraries(Config_KeysFile INTERFACE
         Config::KeysFile::PowerApplet
         Config::KeysFile::Types
         Config::TOML
-        Log)
+        CppUtils::Log)

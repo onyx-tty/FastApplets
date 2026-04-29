@@ -9,8 +9,8 @@ target_include_directories(Config_ConfigFile_PowerApplet PRIVATE
 target_link_libraries(Config_ConfigFile_PowerApplet PRIVATE
         Config::ConfigFile::Mapper
         Config::ConfigFile::Properties
-        Shell
-        Log)
+        Shell)
 
 target_link_libraries(Config_ConfigFile_PowerApplet PUBLIC
+        CppUtils::Log
         Qt${QT_VERSION_MAJOR}::Widgets)

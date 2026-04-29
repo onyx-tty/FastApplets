@@ -17,10 +17,12 @@ target_include_directories(PowerApplet PRIVATE
 target_link_libraries(PowerApplet PRIVATE
         Config
         DBus
-        Log
         UI
         PowerApplet::UI
         PowerApplet::DBus)
+
+target_link_libraries(PowerApplet PUBLIC
+        CppUtils::Log)
 
 if (ENABLE_ASAN OR ENABLE_LSAN OR ENABLE_UBSAN)
         target_compile_options(PowerApplet PRIVATE -fno-omit-frame-pointer -g)

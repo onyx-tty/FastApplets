@@ -9,9 +9,9 @@ target_include_directories(Config_KeysFile_Mapper PRIVATE
 target_link_libraries(Config_KeysFile_Mapper PRIVATE
         Config::KeysFile::Types
         Config::Resolvers # PathContext
-        Config::TOML
-        Log)
+        Config::TOML)
 
 target_link_libraries(Config_KeysFile_Mapper PUBLIC
+        CppUtils::Log
         tomlplusplus::tomlplusplus
         Qt${QT_VERSION_MAJOR}::Widgets)

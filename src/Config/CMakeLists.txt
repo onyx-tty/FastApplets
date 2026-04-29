@@ -24,10 +24,10 @@ target_link_libraries(Config PRIVATE
         Config::KeysFile
         Config::Resolvers
         Config::TOML
-        Log
         UI::Widgets)
 
 target_link_libraries(Config PUBLIC
         CppUtils
+        CppUtils::Log
         tomlplusplus::tomlplusplus
         Qt${QT_VERSION_MAJOR}::Widgets)

@@ -17,7 +17,7 @@
 
 #include "PrimaryButton.h"
 #include "Config/ConfigFile/Properties/PrimaryButtonProperties.h"
-#include "Log/Log.h"
+#include "CppUtils/include/Log/QtLog.h"
 
 #include <QStackedLayout>
 #include <QStyleOptionButton>
