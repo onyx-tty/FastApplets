@@ -17,7 +17,7 @@
 
 #pragma once
 
-#include "Config/TOML/Types/NodeView.h"
+#include "Config/Types/NodeView.h"
 #include "TomlQt/ArrayBounds.h"
 
 #include <cstddef>

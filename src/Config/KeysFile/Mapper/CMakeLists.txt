@@ -8,7 +8,7 @@ target_include_directories(Config_KeysFile_Mapper PRIVATE
 target_link_libraries(Config_KeysFile_Mapper PRIVATE
         Config::KeysFile::Types
         Config::Resolvers # PathContext
-        Config::TOML
+        Config::TomlParser
         TomlQt) # TODO This module doesn't use TomlQt but the Resolver & Mapper do
                 # so this file has to link against it too. Maybe Resolver should be public?
 

@@ -19,7 +19,7 @@
 #include "Config/KeysFile/Global/GlobalKeys.h"
 #include "Config/KeysFile/Mapper/KeysMapper.h"
 #include "Config/KeysFile/Types/Keybindings.h"
-#include "Config/TOML/TomlParser.h"
+#include "Config/TomlParser/TomlParser.h"
 
 #include <utility>
 #include <vector>

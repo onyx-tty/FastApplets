@@ -10,8 +10,10 @@ find_package(tomlplusplus REQUIRED)
 
 add_subdirectory(ConfigFile)
 add_subdirectory(KeysFile)
+add_subdirectory(FileLocator)
+add_subdirectory(TomlParser)
 add_subdirectory(Resolvers)
-add_subdirectory(TOML)
+add_subdirectory(Types)
 
 add_library(Config)
 
@@ -21,8 +23,10 @@ target_include_directories(Config PRIVATE
 target_link_libraries(Config PRIVATE
         Config::ConfigFile
         Config::KeysFile
+        Config::FileLocator
+        Config::TomlParser
         Config::Resolvers
-        Config::TOML
+        Config::Types
         UI::Widgets)
 
 target_link_libraries(Config PUBLIC

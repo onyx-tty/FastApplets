@@ -18,8 +18,8 @@
 #pragma once
 
 #include "Config/Resolvers/Resolvers.h"
-#include "Config/TOML/Types/NodePair.h"
-#include "Config/TOML/Types/NodeView.h"
+#include "Config/Types/NodePair.h"
+#include "Config/Types/NodeView.h"
 
 #include <cstddef>
 #include <toml++/toml.hpp>

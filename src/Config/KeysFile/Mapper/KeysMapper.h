@@ -19,7 +19,7 @@
 
 #include "Config/KeysFile/Types/Keybindings.h"
 #include "Config/Resolvers/Resolvers.h"
-#include "Config/TOML/Types/NodeView.h"
+#include "Config/Types/NodeView.h"
 
 #include <string>
 #include <toml++/toml.hpp>

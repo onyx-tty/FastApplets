@@ -7,7 +7,7 @@ target_include_directories(Config_ConfigFile_Mapper PRIVATE
 
 target_link_libraries(Config_ConfigFile_Mapper PRIVATE
         Config::ConfigFile::Properties
-        Config::TOML
+        Config::TomlParser
         UI::Enums
         UI::Widgets)
 

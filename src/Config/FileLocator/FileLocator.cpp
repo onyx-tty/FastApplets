@@ -15,14 +15,15 @@
    You should have received a copy of the GNU General Public License
    along with this program.  If not, see <https://www.gnu.org/licenses/>. */
 
-#include "TomlLocator.h"
+#include "FileLocator.h"
 #include "CppUtils/Log/QtLog.h"
-#include "Types/ConfigTomlFiles.h"
+#include "Config/Types/ConfigTomlFiles.h"
 
 #include <string>
 #include <QCoreApplication>
 #include <QFileInfo>
 #include <QString>
+#include <QStringLiteral>
 #include <QStringView>
 
 static std::string findFile(const QStringView& filename,
@@ -39,7 +40,7 @@ static std::string findFile(const QStringView& filename,
 }
 
 // Look for configs in $XDG_CONFIG_HOME/FastApplets
-ConfigTomlFiles TomlLocator::locateGlobalConfigFiles() {
+ConfigTomlFiles FileLocator::locateGlobalConfigFiles() {
         ConfigTomlFiles files{};
 
         files.config = findFile(QStringLiteral("config.toml"));
@@ -48,7 +49,7 @@ ConfigTomlFiles TomlLocator::locateGlobalConfigFiles() {
         return files;
 }
 
-ConfigTomlFiles TomlLocator::locatePowerAppletConfigFiles() {
+ConfigTomlFiles FileLocator::locatePowerAppletConfigFiles() {
         ConfigTomlFiles files{};
 
         files.config = findFile(QStringLiteral("config.toml"), QStringLiteral("power_applet"));

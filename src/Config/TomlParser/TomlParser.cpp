@@ -16,9 +16,9 @@
    along with this program.  If not, see <https://www.gnu.org/licenses/>. */
 
 #include "TomlParser.h"
+#include "Config/FileLocator/FileLocator.h"
+#include "Config/Types/ConfigTomlFiles.h"
 #include "CppUtils/Log/QtLog.h"
-#include "TomlLocator.h"
-#include "Types/ConfigTomlFiles.h"
 
 #include <string>
 #include <toml++/toml.hpp>
@@ -38,8 +38,8 @@ toml::table TomlParser::createTable(const std::string& file_path) {
 }
 
 // TODO Shorter names
-ConfigTomlFiles TomlParser::global_toml_files       = TomlLocator::locateGlobalConfigFiles();
-ConfigTomlFiles TomlParser::power_applet_toml_files = TomlLocator::locatePowerAppletConfigFiles();
+ConfigTomlFiles TomlParser::global_toml_files       = FileLocator::locateGlobalConfigFiles();
+ConfigTomlFiles TomlParser::power_applet_toml_files = FileLocator::locatePowerAppletConfigFiles();
 
 // TODO Accept applet enum as parameter, return the right config with just 1 function
 const toml::table& TomlParser::parseGlobalConfig() {

@@ -17,7 +17,7 @@
 
 #pragma once
 
-#include "Config/TOML/Types/NodeView.h"
+#include "Config/Types/NodeView.h"
 #include "CppUtils/Log/QtLog.h"
 #include "Resolvers.h"
 #include "TomlQt/ArrayBounds.h"

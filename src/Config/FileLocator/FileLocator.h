@@ -17,9 +17,9 @@
 
 #pragma once
 
-#include "Types/ConfigTomlFiles.h"
+#include "Config/Types/ConfigTomlFiles.h"
 
-class TomlLocator final {
+class FileLocator final {
 public:
         static ConfigTomlFiles locateGlobalConfigFiles();
         static ConfigTomlFiles locatePowerAppletConfigFiles();

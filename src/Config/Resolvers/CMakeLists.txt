@@ -6,7 +6,8 @@ target_include_directories(Config_Resolvers PRIVATE
         ${SRC_DIR})
 
 target_link_libraries(Config_Resolvers PRIVATE
-        Config::TOML)
+        Config::TomlParser
+        Config::Types)
 
 target_link_libraries(Config_Resolvers PUBLIC
         TomlQt
