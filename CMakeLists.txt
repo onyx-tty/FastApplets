@@ -43,7 +43,7 @@ set(SRC_DIR ${ROOT_DIR}/src)
 # Third-party libraries
 if(BUILD_POWERAPPLET)
         CPMAddPackage("gh:onyx-tty/CppUtils#926ee69")
-        CPMAddPackage("gh:onyx-tty/TomlQt#ae41b79")
+        CPMAddPackage("gh:onyx-tty/TomlQt#9d7d517")
 endif()
 
 #find_package(TomlQt REQUIRED)
