@@ -11,6 +11,15 @@ set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
 set(QT_VERSION_MAJOR 6)
 
+# Install and use CPM to resolve conflicting and duplicated CppUtils
+file(
+        DOWNLOAD
+        https://github.com/cpm-cmake/CPM.cmake/releases/download/v0.42.1/CPM.cmake
+        ${CMAKE_CURRENT_BINARY_DIR}/cmake/CPM.cmake
+        EXPECTED_HASH SHA256=f3a6dcc6a04ce9e7f51a127307fa4f699fb2bade357a8eb4c5b45df76e1dc6a5)
+
+include(${CMAKE_CURRENT_BINARY_DIR}/cmake/CPM.cmake)
+
 find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets)
 
 # clang-tidy
@@ -33,8 +42,7 @@ set(SRC_DIR ${ROOT_DIR}/src)
 
 # Third-party libraries
 if(BUILD_POWERAPPLET)
-        add_subdirectory(
-                external/CppUtils)
+        CPMAddPackage("gh:onyx-tty/CppUtils#926ee69")
 endif()
 
 # Internals
