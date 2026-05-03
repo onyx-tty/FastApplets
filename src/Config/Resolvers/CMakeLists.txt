@@ -4,7 +4,7 @@ add_library(Config::Resolvers ALIAS Config_Resolvers)
 
 target_include_directories(Config_Resolvers PRIVATE
         ${CMAKE_CURRENT_LIST_DIR}
-        ${GLOBAL_INCLUSIONS})
+        ${SRC_DIR})
 
 target_link_libraries(Config_Resolvers PRIVATE
         Config::TOML)

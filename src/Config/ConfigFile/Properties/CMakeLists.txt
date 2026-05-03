@@ -7,7 +7,7 @@ add_library(Config::ConfigFile::Properties ALIAS Config_ConfigFile_Properties)
 
 target_include_directories(Config_ConfigFile_Properties PRIVATE
         ${CMAKE_CURRENT_LIST_DIR}
-        ${GLOBAL_INCLUSIONS})
+        ${SRC_DIR})
 
 target_link_libraries(Config_ConfigFile_Properties PRIVATE
         Resources::Icons)

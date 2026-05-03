@@ -12,7 +12,7 @@ qt_add_executable(PowerApplet
 
 # Target linking and configuration
 target_include_directories(PowerApplet PRIVATE
-        ${GLOBAL_INCLUSIONS})
+        ${SRC_DIR})
 
 target_link_libraries(PowerApplet PRIVATE
         Config

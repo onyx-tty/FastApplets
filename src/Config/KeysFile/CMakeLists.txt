@@ -8,7 +8,7 @@ add_library(Config::KeysFile ALIAS Config_KeysFile)
 
 target_include_directories(Config_KeysFile INTERFACE
         ${CMAKE_CURRENT_LIST_DIR}
-        ${GLOBAL_INCLUSIONS})
+        ${SRC_DIR})
 
 target_link_libraries(Config_KeysFile INTERFACE
         Config::KeysFile::Global

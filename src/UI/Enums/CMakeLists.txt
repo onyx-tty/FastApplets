@@ -4,4 +4,4 @@ add_library(UI::Enums ALIAS UI_Enums)
 
 target_include_directories(UI_Enums PRIVATE
         ${CMAKE_CURRENT_LIST_DIR}
-        ${GLOBAL_INCLUSIONS})
+        ${SRC_DIR})

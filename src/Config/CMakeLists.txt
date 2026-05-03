@@ -17,7 +17,7 @@ add_library(Config)
 
 target_include_directories(Config PRIVATE
         ${CMAKE_CURRENT_LIST_DIR}
-        ${GLOBAL_INCLUSIONS})
+        ${SRC_DIR})
 
 target_link_libraries(Config PRIVATE
         Config::ConfigFile

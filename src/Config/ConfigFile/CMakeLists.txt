@@ -8,7 +8,7 @@ add_library(Config::ConfigFile ALIAS Config_ConfigFile)
 
 target_include_directories(Config_ConfigFile INTERFACE
         ${CMAKE_CURRENT_LIST_DIR}
-        ${GLOBAL_INCLUSIONS})
+        ${SRC_DIR})
 
 target_link_libraries(Config_ConfigFile INTERFACE
         Config::ConfigFile::Global

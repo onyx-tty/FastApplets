@@ -4,7 +4,7 @@ add_library(Config::ConfigFile::PowerApplet ALIAS Config_ConfigFile_PowerApplet)
 
 target_include_directories(Config_ConfigFile_PowerApplet PRIVATE
         ${CMAKE_CURRENT_LIST_DIR}
-        ${GLOBAL_INCLUSIONS})
+        ${SRC_DIR})
 
 target_link_libraries(Config_ConfigFile_PowerApplet PRIVATE
         Config::ConfigFile::Mapper

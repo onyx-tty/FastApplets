@@ -5,7 +5,7 @@ add_library(PowerApplet::UI::Widgets ALIAS PowerApplet_UI_Widgets)
 
 target_include_directories(PowerApplet_UI_Widgets PRIVATE
         ${CMAKE_CURRENT_LIST_DIR}
-        ${GLOBAL_INCLUSIONS})
+        ${SRC_DIR})
 
 target_link_libraries(PowerApplet_UI_Widgets PRIVATE
         UI::Enums

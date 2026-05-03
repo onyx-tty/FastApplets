@@ -6,7 +6,7 @@ add_library(Shell
 
 target_include_directories(Shell PRIVATE
         ${CMAKE_CURRENT_LIST_DIR}
-        ${GLOBAL_INCLUSIONS})
+        ${SRC_DIR})
 
 target_link_libraries(Shell PUBLIC
         Qt${QT_VERSION_MAJOR}::Core)

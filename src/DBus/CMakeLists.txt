@@ -9,7 +9,7 @@ add_library(DBus
 
 target_include_directories(DBus PRIVATE
         ${CMAKE_CURRENT_LIST_DIR}
-        ${GLOBAL_INCLUSIONS})
+        ${SRC_DIR})
 
 target_link_libraries(DBus PUBLIC
         CppUtils::Log::Qt

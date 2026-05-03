@@ -4,7 +4,7 @@ add_library(Config::KeysFile::Mapper ALIAS Config_KeysFile_Mapper)
 
 target_include_directories(Config_KeysFile_Mapper PRIVATE
         ${CMAKE_CURRENT_LIST_DIR}
-        ${GLOBAL_INCLUSIONS})
+        ${SRC_DIR})
 
 target_link_libraries(Config_KeysFile_Mapper PRIVATE
         Config::KeysFile::Types

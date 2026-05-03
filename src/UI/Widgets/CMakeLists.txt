@@ -6,7 +6,7 @@ add_library(UI::Widgets ALIAS UI_Widgets)
 
 target_include_directories(UI_Widgets PRIVATE
         ${CMAKE_CURRENT_LIST_DIR}
-        ${GLOBAL_INCLUSIONS})
+        ${SRC_DIR})
 
 target_link_libraries(UI_Widgets PRIVATE
         Config::ConfigFile::Properties)
