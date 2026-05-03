@@ -3,7 +3,6 @@ add_library(Config_ConfigFile_Mapper
 add_library(Config::ConfigFile::Mapper ALIAS Config_ConfigFile_Mapper)
 
 target_include_directories(Config_ConfigFile_Mapper PRIVATE
-        ${CMAKE_CURRENT_LIST_DIR}
         ${SRC_DIR})
 
 target_link_libraries(Config_ConfigFile_Mapper PRIVATE

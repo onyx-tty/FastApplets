@@ -6,7 +6,6 @@ add_library(PowerApplet_UI
 add_library(PowerApplet::UI ALIAS PowerApplet_UI)
 
 target_include_directories(PowerApplet_UI PRIVATE
-        ${CMAKE_CURRENT_LIST_DIR}/..
         ${SRC_DIR})
 
 target_link_libraries(PowerApplet_UI PRIVATE

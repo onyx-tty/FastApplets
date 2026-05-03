@@ -7,7 +7,6 @@ add_library(Config_ConfigFile INTERFACE)
 add_library(Config::ConfigFile ALIAS Config_ConfigFile)
 
 target_include_directories(Config_ConfigFile INTERFACE
-        ${CMAKE_CURRENT_LIST_DIR}
         ${SRC_DIR})
 
 target_link_libraries(Config_ConfigFile INTERFACE

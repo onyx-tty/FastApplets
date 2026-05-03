@@ -3,5 +3,4 @@ add_library(AppletTypes
         AppletRecord.h)
 
 target_include_directories(AppletTypes PRIVATE
-        ${CMAKE_CURRENT_LIST_DIR}
         ${SRC_DIR})

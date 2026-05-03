@@ -16,7 +16,6 @@ add_subdirectory(TOML)
 add_library(Config)
 
 target_include_directories(Config PRIVATE
-        ${CMAKE_CURRENT_LIST_DIR}
         ${SRC_DIR})
 
 target_link_libraries(Config PRIVATE

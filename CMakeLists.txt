@@ -28,7 +28,8 @@ option(BUILD_SHARED_LIBS "Build using shared libraries" ON)
 option(BUILD_TESTS "Build unit tests" ON)
 set(CPPUTILS_ENABLE_QT ON)
 
-set(SRC_DIR ${CMAKE_CURRENT_LIST_DIR}/src)
+set(ROOT_DIR ${CMAKE_CURRENT_LIST_DIR})
+set(SRC_DIR ${ROOT_DIR}/src)
 
 # Third-party libraries
 if(BUILD_POWERAPPLET)

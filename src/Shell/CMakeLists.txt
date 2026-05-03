@@ -5,7 +5,6 @@ add_library(Shell
         ShellRunner.cpp)
 
 target_include_directories(Shell PRIVATE
-        ${CMAKE_CURRENT_LIST_DIR}
         ${SRC_DIR})
 
 target_link_libraries(Shell PUBLIC

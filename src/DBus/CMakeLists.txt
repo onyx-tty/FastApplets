@@ -8,7 +8,6 @@ add_library(DBus
         DBusTarget.h)
 
 target_include_directories(DBus PRIVATE
-        ${CMAKE_CURRENT_LIST_DIR}
         ${SRC_DIR})
 
 target_link_libraries(DBus PUBLIC
