@@ -7,6 +7,7 @@ target_include_directories(Config_ConfigFile_Global PRIVATE
 
 target_link_libraries(Config_ConfigFile_Global PRIVATE
         Config::ConfigFile::Properties
+        Config::ConfigFile::Mapper
         Shell)
 
 target_link_libraries(Config_ConfigFile_Global PUBLIC

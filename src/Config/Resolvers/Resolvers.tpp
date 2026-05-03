@@ -17,13 +17,15 @@
 
 #pragma once
 
-#include "Config/TOML/TomlAccessor.h"
 #include "Config/TOML/Types/NodeView.h"
-#include "Config/TOML/Types/TomlArrayConditions.h"
+#include "CppUtils/Log/QtLog.h"
 #include "Resolvers.h"
+#include "TomlQt/ArrayBounds.h"
+#include "TomlQt/TomlQt.h"
 
 #include <optional>
 #include <string_view>
+#include <toml++/impl/array.hpp>
 #include <toml++/toml.hpp>
 #include <Qt>
 
@@ -35,7 +37,7 @@ class QSize;
 // On failure: return std::nullopt
 template<typename T>
 std::optional<T> resolve(std::initializer_list<Source> sources, const PathContext& path_context,
-                         const TomlArrayConditions& arr_conditions, const QString& arr_format) {
+                         const tomlqt::ArrayBounds& arr_bounds, const QString& arr_format) {
         using DT = std::decay_t<T>;
 
         // Convert pointers to std::optional
@@ -54,24 +56,22 @@ std::optional<T> resolve(std::initializer_list<Source> sources, const PathContex
         };
 
         // Collapse extraction logic into that of a corresponding type
-        static auto extract =
-                [&](node_view                  node,
-                    const TomlArrayConditions& arr_conditions = {}) -> std::optional<DT> {
+        static auto extract = [&](node_view                  node,
+                                  const tomlqt::ArrayBounds& arr_bounds = {}) -> std::optional<DT> {
                 if constexpr (std::is_same_v<DT, toml::table>) {
                         return normalize(node.as_table());
                 } else if constexpr (std::is_same_v<DT, toml::array>) {
                         // TODO Extract as a separate function
-                        using result = TomlArrayConditions::validation_result;
+                        using result = tomlqt::ArrayBounds::validation_result;
 
                         std::optional<toml::array> arr = normalize(node.as_array());
                         if (!arr) { return std::nullopt; }
 
-                        auto res = arr_conditions.validate(arr.value());
+                        auto res = arr_bounds.validate(arr.value());
                         if (res == result::min_size_fail) {
                                 QWARNING()
                                         << QString("arr size < min_size! min_size: %1, arr size: %2")
-                                                   .arg(QString::number(
-                                                                arr_conditions.min_size.value()),
+                                                   .arg(QString::number(arr_bounds.min_size.value()),
                                                         QString::number(arr->size()));
                                 return std::nullopt;
                         }
@@ -79,20 +79,19 @@ std::optional<T> resolve(std::initializer_list<Source> sources, const PathContex
                         if (res == result::max_size_fail) {
                                 QWARNING()
                                         << QString("arr size > max_size! max_size: %1, arr size: %2")
-                                                   .arg(QString::number(
-                                                                arr_conditions.max_size.value()),
+                                                   .arg(QString::number(arr_bounds.max_size.value()),
                                                         QString::number(arr->size()));
                                 return std::nullopt;
                         }
                         return std::move(arr);
                 } else if constexpr (std::is_same_v<DT, QSize>) {
-                        return normalize(TomlAccessor::tryGetQSize(node));
+                        return normalize(tomlqt::tryGetQSize(node));
                 } else if constexpr (std::is_same_v<DT, Qt::Alignment>) {
-                        return normalize(TomlAccessor::tryGetAlignment(node));
+                        return normalize(tomlqt::tryGetQtAlignment(node));
                 } else if constexpr (std::is_same_v<DT, QSizePolicy>) {
-                        return normalize(TomlAccessor::tryGetSizePolicy(node));
+                        return normalize(tomlqt::tryGetQSizePolicy(node));
                 } else if constexpr (std::is_same_v<DT, QString>) {
-                        return normalize(TomlAccessor::tryGetQString(node));
+                        return normalize(tomlqt::tryGetQString(node));
                 } else {
                         return normalize(node.value<DT>());
                 }
@@ -125,11 +124,11 @@ std::optional<T> resolve(std::initializer_list<Source> sources, const PathContex
                 //      Iteration over sources should probably be done in reverse to
                 //      track if fallback is missing, and if it is then quiet should
                 //      likely be ignored.
-                bool is_override = (i != sources.size() - 1);
+                bool is_override  = (i != sources.size() - 1);
                 // If override or explicitly marked "quiet", don't log anything
                 bool silence_logs = is_override || source.quiet;
 
-                auto result = extract(source.node, arr_conditions);
+                auto result = extract(source.node, arr_bounds);
                 if (!result) {
                         if (!silence_logs) { log(path_context.makePath(source.scope)); }
                         continue;
@@ -148,9 +147,9 @@ std::optional<T> resolve(std::initializer_list<Source> sources, const PathContex
 // On failure: copy default value
 template<typename T, typename TDefault>
 T resolveOr(std::initializer_list<Source> sources, const TDefault& defaults,
-            const PathContext& path_context, const TomlArrayConditions& arr_conditions,
+            const PathContext& path_context, const tomlqt::ArrayBounds& arr_bounds,
             const QString& arr_format) {
-        return resolve<T>(sources, path_context, arr_conditions, arr_format).value_or(defaults);
+        return resolve<T>(sources, path_context, arr_bounds, arr_format).value_or(defaults);
 }
 
 // Use to try and extract a value from a node into a specific attribute, and if that fails, to
@@ -162,8 +161,8 @@ T resolveOr(std::initializer_list<Source> sources, const TDefault& defaults,
 template<typename TAttribute, typename TObject>
 void resolveOrDefault(std::initializer_list<Source> sources, TAttribute& attribute, TObject& object,
                       const TObject& object_defaults, const PathContext& path_context,
-                      const TomlArrayConditions& arr_conditions, const QString& arr_format) {
-        if (auto result = resolve<TAttribute>(sources, path_context, arr_conditions, arr_format)) {
+                      const tomlqt::ArrayBounds& arr_bounds, const QString& arr_format) {
+        if (auto result = resolve<TAttribute>(sources, path_context, arr_bounds, arr_format)) {
                 attribute = result.value();
         } else {
                 object = object_defaults;

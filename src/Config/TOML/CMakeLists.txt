@@ -1,7 +1,6 @@
 add_subdirectory(Types)
 
 add_library(Config_TOML
-        TomlAccessor.cpp
         TomlLocator.cpp
         TomlParser.cpp)
 add_library(Config::TOML ALIAS Config_TOML)

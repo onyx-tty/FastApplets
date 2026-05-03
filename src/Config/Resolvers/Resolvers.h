@@ -18,7 +18,7 @@
 #pragma once
 
 #include "Config/TOML/Types/NodeView.h"
-#include "Config/TOML/Types/TomlArrayConditions.h"
+#include "TomlQt/ArrayBounds.h"
 
 #include <cstddef>
 #include <optional>
@@ -56,15 +56,15 @@ public:
 // On failure: return std::nullopt
 template<typename T>
 std::optional<T> resolve(std::initializer_list<Source> sources, const PathContext& path_context,
-                         const TomlArrayConditions& arr_conditions = {},
-                         const QString&             arr_format     = {});
+                         const tomlqt::ArrayBounds& arr_bounds = {},
+                         const QString&             arr_format = {});
 
 // Use to skip validation of return value and to automatically default
 // On success: extract from a node
 // On failure: copy default value
 template<typename T, typename TDefault>
 T resolveOr(std::initializer_list<Source> sources, const TDefault& defaults,
-            const PathContext& path_context, const TomlArrayConditions& arr_conditions = {},
+            const PathContext& path_context, const tomlqt::ArrayBounds& arr_bounds = {},
             const QString& arr_format = {});
 
 // Use to try and extract a value from a node into a specific attribute, and if that fails, to
@@ -76,8 +76,7 @@ T resolveOr(std::initializer_list<Source> sources, const TDefault& defaults,
 template<typename TAttribute, typename TObject>
 void resolveOrDefault(std::initializer_list<Source> sources, TAttribute& attribute, TObject& object,
                       const TObject& object_defaults, const PathContext& path_context,
-                      const TomlArrayConditions& arr_conditions = {},
-                      const QString&             arr_format     = {});
+                      const tomlqt::ArrayBounds& arr_bounds = {}, const QString& arr_format = {});
 
 // Use if resolveOrDefault is the optimal choice, but the extracted value must first be transformed
 // before being put into use

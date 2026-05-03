@@ -19,10 +19,8 @@
 #include "Applets/Types/AppletRecord.h"
 #include "Config/KeysFile/Types/Keybindings.h"
 #include "Config/Resolvers/Resolvers.h"
-#include "Config/TOML/TomlAccessor.h"
 #include "Config/TOML/Types/NodePair.h"
 #include "Config/TOML/Types/NodeView.h"
-#include "Config/TOML/Types/TomlArrayConditions.h"
 #include "CppUtils/Log/QtLog.h"
 
 #include <cstddef>
