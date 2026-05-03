@@ -16,7 +16,7 @@
    along with this program.  If not, see <https://www.gnu.org/licenses/>. */
 
 #include "TomlAccessor.h"
-#include "CppUtils/include/Log/QtLog.h"
+#include "CppUtils/include/CppUtils/Log/QtLog.h"
 #include "Types/NodeView.h"
 #include "Types/TomlArrayConditions.h"
 

@@ -19,7 +19,7 @@
 
 #include "Config/Resolvers/Resolvers.h"
 #include "Config/TOML/Types/NodePair.h"
-#include "CppUtils/include/Log/QtLog.h"
+#include "CppUtils/include/CppUtils/Log/QtLog.h"
 #include "KeysMapper.h"
 
 #include <toml++/toml.hpp>

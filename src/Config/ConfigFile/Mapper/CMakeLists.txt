@@ -13,6 +13,6 @@ target_link_libraries(Config_ConfigFile_Mapper PRIVATE
         UI::Widgets)
 
 target_link_libraries(Config_ConfigFile_Mapper PUBLIC
-        CppUtils::Log
+        CppUtils::Log::Qt
         tomlplusplus::tomlplusplus
         Qt${QT_VERSION_MAJOR}::Widgets)

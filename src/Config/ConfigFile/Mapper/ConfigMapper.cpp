@@ -26,7 +26,7 @@
 #include "Config/TOML/Types/NodePair.h"
 #include "Config/TOML/Types/NodeView.h"
 #include "Config/TOML/Types/TomlArrayConditions.h"
-#include "CppUtils/include/Log/QtLog.h"
+#include "CppUtils/include/CppUtils/Log/QtLog.h"
 #include "UI/Enums/ButtonIDs.h"
 #include "UI/Widgets/PowerButtonParams.h"
 

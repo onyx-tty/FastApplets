@@ -18,4 +18,4 @@ target_link_libraries(Config_ConfigFile INTERFACE
         Config::TOML
         UI::Enums
         UI::Widgets
-        CppUtils::Log)
+        CppUtils::Log::Qt)

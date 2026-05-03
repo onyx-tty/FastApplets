@@ -14,7 +14,6 @@ target_link_libraries(Config_TOML PRIVATE
         Config::TOML::Types)
 
 target_link_libraries(Config_TOML PUBLIC
-        CppUtils
-        CppUtils::Log
+        CppUtils::Log::Qt
         Qt${QT_VERSION_MAJOR}::Widgets
         tomlplusplus::tomlplusplus)

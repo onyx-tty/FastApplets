@@ -10,4 +10,4 @@ target_link_libraries(Config_KeysFile_Global PRIVATE
         Config::KeysFile::Types)
 
 target_link_libraries(Config_KeysFile_Global PUBLIC
-        CppUtils::Log)
+        CppUtils::Log::Qt)

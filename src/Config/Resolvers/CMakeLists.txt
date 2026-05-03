@@ -10,6 +10,6 @@ target_link_libraries(Config_Resolvers PRIVATE
         Config::TOML)
 
 target_link_libraries(Config_Resolvers PUBLIC
-        CppUtils::Log
+        CppUtils::Log::Qt
         Qt${QT_VERSION_MAJOR}::Widgets
         tomlplusplus::tomlplusplus)

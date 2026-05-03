@@ -12,5 +12,5 @@ target_link_libraries(UI_Widgets PRIVATE
         Config::ConfigFile::Properties)
 
 target_link_libraries(UI_Widgets PUBLIC
-        CppUtils::Log
+        CppUtils::Log::Qt
         Qt${QT_VERSION_MAJOR}::Widgets)

@@ -22,7 +22,7 @@ target_link_libraries(PowerApplet PRIVATE
         PowerApplet::DBus)
 
 target_link_libraries(PowerApplet PUBLIC
-        CppUtils::Log)
+        CppUtils::Log::Qt)
 
 if (ENABLE_ASAN OR ENABLE_LSAN OR ENABLE_UBSAN)
         target_compile_options(PowerApplet PRIVATE -fno-omit-frame-pointer -g)

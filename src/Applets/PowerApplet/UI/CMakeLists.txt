@@ -23,5 +23,5 @@ target_link_libraries(PowerApplet_UI PRIVATE
         UI::Widgets)
 
 target_link_libraries(PowerApplet_UI PUBLIC
-        CppUtils::Log
+        CppUtils::Log::Qt
         Qt${QT_VERSION_MAJOR}::Widgets)

@@ -13,5 +13,5 @@ target_link_libraries(Config_ConfigFile_Properties PRIVATE
         Resources::Icons)
 
 target_link_libraries(Config_ConfigFile_Properties PUBLIC
-        CppUtils::Log
+        CppUtils::Log::Qt
         Qt${QT_VERSION_MAJOR}::Widgets)

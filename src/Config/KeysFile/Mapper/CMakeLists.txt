@@ -12,6 +12,6 @@ target_link_libraries(Config_KeysFile_Mapper PRIVATE
         Config::TOML)
 
 target_link_libraries(Config_KeysFile_Mapper PUBLIC
-        CppUtils::Log
+        CppUtils::Log::Qt
         tomlplusplus::tomlplusplus
         Qt${QT_VERSION_MAJOR}::Widgets)

@@ -10,5 +10,5 @@ target_link_libraries(PowerApplet_DBus PRIVATE
         DBus)
 
 target_link_libraries(PowerApplet_DBus PUBLIC
-        CppUtils::Log
+        CppUtils::Log::Qt
         Qt${QT_VERSION_MAJOR}::DBus)

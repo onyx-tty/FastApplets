@@ -12,6 +12,6 @@ target_include_directories(DBus PRIVATE
         ${GLOBAL_INCLUSIONS})
 
 target_link_libraries(DBus PUBLIC
-        CppUtils::Log
+        CppUtils::Log::Qt
         Qt${QT_VERSION_MAJOR}::Core
         Qt${QT_VERSION_MAJOR}::DBus)
