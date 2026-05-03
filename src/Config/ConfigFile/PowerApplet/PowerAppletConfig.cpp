@@ -23,7 +23,7 @@
 #include "Config/ConfigFile/Properties/PrimaryButtonProperties.h"
 #include "Config/ConfigFile/Properties/WindowProperties.h"
 #include "Config/TOML/TomlParser.h"
-#include "CppUtils/include/CppUtils/Log/QtLog.h"
+#include "CppUtils/Log/QtLog.h"
 #include "UI/Enums/ButtonIDs.h"
 #include "UI/Widgets/PowerButtonParams.h"
 

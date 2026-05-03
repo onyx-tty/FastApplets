@@ -29,8 +29,7 @@ option(BUILD_TESTS "Build unit tests" ON)
 set(CPPUTILS_ENABLE_QT ON)
 
 set(GLOBAL_INCLUSIONS
-        ${CMAKE_CURRENT_LIST_DIR}/src
-        ${CMAKE_CURRENT_LIST_DIR}/external)
+        ${CMAKE_CURRENT_LIST_DIR}/src)
 
 # Third-party libraries
 if(BUILD_POWERAPPLET)

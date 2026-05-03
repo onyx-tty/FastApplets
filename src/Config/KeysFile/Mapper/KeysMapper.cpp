@@ -23,7 +23,7 @@
 #include "Config/TOML/Types/NodePair.h"
 #include "Config/TOML/Types/NodeView.h"
 #include "Config/TOML/Types/TomlArrayConditions.h"
-#include "CppUtils/include/CppUtils/Log/QtLog.h"
+#include "CppUtils/Log/QtLog.h"
 
 #include <cstddef>
 #include <optional>

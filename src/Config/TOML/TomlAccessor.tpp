@@ -17,8 +17,8 @@
 
 #pragma once
 
-#include "CppUtils/include/CppUtils/Log/QtLog.h"
-#include "CppUtils/include/CppUtils/String/StdString.h"
+#include "CppUtils/Log/QtLog.h"
+#include "CppUtils/String/StdString.h"
 #include "TomlAccessor.h"
 #include "Types/NodeView.h"
 

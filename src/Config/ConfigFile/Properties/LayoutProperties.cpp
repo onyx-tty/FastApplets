@@ -16,7 +16,7 @@
    along with this program.  If not, see <https://www.gnu.org/licenses/>. */
 
 #include "LayoutProperties.h"
-#include "CppUtils/include/CppUtils/Log/QtLog.h"
+#include "CppUtils/Log/QtLog.h"
 #include "UI/Enums/ButtonIDs.h"
 #include "UI/Widgets/PowerButtonParams.h"
 

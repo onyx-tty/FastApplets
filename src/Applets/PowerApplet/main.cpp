@@ -15,7 +15,7 @@
    You should have received a copy of the GNU General Public License
    along with this program.  If not, see <https://www.gnu.org/licenses/>. */
 
-#include "CppUtils/include/CppUtils/Log/QtLog.h"
+#include "CppUtils/Log/QtLog.h"
 #include "UI/PowerMainWindow.h"
 
 #include <QApplication>
