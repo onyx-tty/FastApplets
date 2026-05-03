@@ -46,8 +46,6 @@ if(BUILD_POWERAPPLET)
         CPMAddPackage("gh:onyx-tty/TomlQt#9d7d517")
 endif()
 
-#find_package(TomlQt REQUIRED)
-
 # Internals
 add_subdirectory(
         resources)
