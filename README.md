@@ -41,6 +41,8 @@ sudo pacman -Sy qt6-base tomlplusplus cmake ninja clang gtest
 # Static linking (recommended for regular users, if not packaging)
 cmake --preset Release -DBUILD_SHARED_LIBS=OFF .
 
+# OR
+
 # Dynamic linking ($LD_LIBRARY_PATH must have access to libs at install location)
 cmake --preset Release .
 ```
@@ -60,6 +62,8 @@ cmake --build build/Release
 #          without it.
 cmake --install build/Release --prefix /your/installation/path
 
+# OR
+
 # Install to the default prefix (build/{$presetName}/install)
 cmake --install build/Release
 ```
@@ -69,6 +73,8 @@ cmake --install build/Release
 ``` sh
 # Run installed version
 /your/installation/path/bin/PowerApplet
+
+# OR
 
 # Run without installation
 ./build/Release/src/Applets/PowerApplet/PowerApplet
