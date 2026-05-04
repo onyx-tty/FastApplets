@@ -18,7 +18,8 @@ add_subdirectory(Types)
 add_library(Config)
 
 target_include_directories(Config PRIVATE
-        ${SRC_DIR})
+        $<BUILD_INTERFACE:${SRC_DIR}>
+        $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>)
 
 target_link_libraries(Config PRIVATE
         Config::ConfigFile

@@ -3,4 +3,5 @@ add_library(UI_Enums
 add_library(UI::Enums ALIAS UI_Enums)
 
 target_include_directories(UI_Enums PRIVATE
-        ${SRC_DIR})
+        $<BUILD_INTERFACE:${SRC_DIR}>
+        $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>)

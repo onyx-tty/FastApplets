@@ -3,7 +3,8 @@ add_library(PowerApplet_DBus
 add_library(PowerApplet::DBus ALIAS PowerApplet_DBus)
 
 target_include_directories(PowerApplet_DBus PRIVATE
-        ${SRC_DIR})
+        $<BUILD_INTERFACE:${SRC_DIR}>
+        $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>)
 
 target_link_libraries(PowerApplet_DBus PRIVATE
         DBus)

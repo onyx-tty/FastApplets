@@ -8,7 +8,8 @@ add_library(DBus
         DBusTarget.h)
 
 target_include_directories(DBus PRIVATE
-        ${SRC_DIR})
+        $<BUILD_INTERFACE:${SRC_DIR}>
+        $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>)
 
 target_link_libraries(DBus PUBLIC
         CppUtils::Log::Qt

@@ -3,7 +3,8 @@ add_library(Config_Resolvers
 add_library(Config::Resolvers ALIAS Config_Resolvers)
 
 target_include_directories(Config_Resolvers PRIVATE
-        ${SRC_DIR})
+        $<BUILD_INTERFACE:${SRC_DIR}>
+        $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>)
 
 target_link_libraries(Config_Resolvers PRIVATE
         Config::TomlParser

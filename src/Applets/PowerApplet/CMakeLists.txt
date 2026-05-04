@@ -12,7 +12,8 @@ qt_add_executable(PowerApplet
 
 # Target linking and configuration
 target_include_directories(PowerApplet PRIVATE
-        ${SRC_DIR})
+        $<BUILD_INTERFACE:${SRC_DIR}>
+        $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>)
 
 target_link_libraries(PowerApplet PRIVATE
         Config

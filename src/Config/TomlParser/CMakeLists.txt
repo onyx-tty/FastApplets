@@ -3,7 +3,8 @@ add_library(Config_TomlParser
 add_library(Config::TomlParser ALIAS Config_TomlParser)
 
 target_include_directories(Config_TomlParser PRIVATE
-        ${SRC_DIR})
+        $<BUILD_INTERFACE:${SRC_DIR}>
+        $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>)
 
 target_link_libraries(Config_TomlParser PRIVATE
         Config::FileLocator

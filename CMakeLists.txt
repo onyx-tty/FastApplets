@@ -11,6 +11,8 @@ set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
 set(QT_VERSION_MAJOR 6)
 
+include(GNUInstallDirs)
+
 # Install and use CPM to resolve conflicting and duplicated CppUtils
 file(
         DOWNLOAD
@@ -71,6 +73,3 @@ endif()
 #        enable_testing()
 #        add_subdirectory(tests)
 #endif()
-
-
-include(GNUInstallDirs)

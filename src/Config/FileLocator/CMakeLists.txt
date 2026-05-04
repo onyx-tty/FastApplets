@@ -3,7 +3,8 @@ add_library(Config_FileLocator
 add_library(Config::FileLocator ALIAS Config_FileLocator)
 
 target_include_directories(Config_FileLocator PRIVATE
-        ${SRC_DIR})
+        $<BUILD_INTERFACE:${SRC_DIR}>
+        $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>)
 
 target_link_libraries(Config_FileLocator PRIVATE
         Config::Types)

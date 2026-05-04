@@ -5,7 +5,8 @@ add_library(Config_Types
 add_library(Config::Types ALIAS Config_Types)
 
 target_include_directories(Config_Types PRIVATE
-        ${SRC_DIR})
+        $<BUILD_INTERFACE:${SRC_DIR}>
+        $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>)
 
 target_link_libraries(Config_Types PUBLIC
         Qt${QT_VERSION_MAJOR}::Core
