@@ -17,7 +17,7 @@ FastApplets is a lightweight suite of applets designed for high performance, sim
 #### Requirements for all applets
 
 * `qt6-base`
-* `tomlplusplus` — config files
+* `tomlplusplus`
 * `cmake`
 * `ninja`
 * `clang` — the "linting" profile
