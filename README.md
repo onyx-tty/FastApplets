@@ -18,6 +18,10 @@ FastApplets is a lightweight suite of applets designed for high performance, sim
 
 * `qt6-base`
 * `tomlplusplus` — config files
+* `cmake`
+* `ninja`
+* `clang` — the "linting" profile
+* `gtest`
 
 #### Requirements for WeatherApplet
 
@@ -25,10 +29,6 @@ FastApplets is a lightweight suite of applets designed for high performance, sim
 * `nlohmann-json` — parsing fetched weather data in JSON format
 
 Additionally, an appropriate API key for OpenWeather is necessary for API calls
-
-#### (optional) Requirements to run tests
-
-* `gtest`
 
 ### Installing
 
@@ -39,7 +39,7 @@ Additionally, an appropriate API key for OpenWeather is necessary for API calls
 On Arch Linux
 
 ``` sh
-sudo pacman -Sy qt6-base tomlplusplus curl nlohmann-json
+sudo pacman -Sy qt6-base tomlplusplus cmake ninja clang gtest curl nlohmann-json
 ```
 
 #### Configure the project
