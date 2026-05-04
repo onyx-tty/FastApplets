@@ -1,0 +1,42 @@
+# This starter workflow is for a CMake project running on a single platform.
+# See: https://github.com/actions/starter-workflows/blob/main/ci/cmake-multi-platform.yml
+name: CMake on a single platform
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+env:
+  BUILD_TYPE: Debug
+
+jobs:
+  build:
+    # The CMake configure and build commands are platform agnostic.
+    # You can convert this to a matrix build if you need cross-platform coverage.
+    # See: https://docs.github.com/en/free-pro-team@latest/actions/learn-github-actions/managing-complex-workflows#using-a-build-matrix
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v5
+
+    - name: Cache apt packages
+      uses: awalsh128/cache-apt-pkgs-action@latest
+      with:
+        packages: cmake ninja-build g++ git clang ccache qt6-base-dev libgtest-dev libtomlplusplus-dev
+        version: 1.0
+
+    - name: ccache
+      uses: hendrikmuhs/ccache-action@v1.2
+
+    - name: Configure CMake
+      # Configure CMake with a specific preset.
+      # See https://cmake.org/cmake/help/latest/variable/CMAKE_BUILD_TYPE.html?highlight=cmake_build_type
+      run: cmake --preset ${{env.BUILD_TYPE}} -DCMAKE_CXX_COMPILER_LAUNCHER=ccache
+
+    - name: Build
+      # Build the program in the specified build directory.
+      run: |
+        export PATH="/usr/lib/ccache:/usr/local/opt/ccache/libexec:$PATH"
+        cmake --build build/${{env.BUILD_TYPE}}
