@@ -9,6 +9,7 @@
                         "binaryDir": "build/Debug",
                         "cacheVariables": {
                                 "CMAKE_BUILD_TYPE": "Debug",
+                                "CMAKE_INSTALL_PREFIX" : "${sourceDir}/build/${presetName}/install",
                                 "ENABLE_ASAN": "ON",
                                 "ENABLE_LSAN": "ON",
                                 "ENABLE_UBSAN": "ON",
@@ -25,6 +26,7 @@
                                 "CMAKE_BUILD_TYPE": "Debug",
                                 "CMAKE_C_COMPILER": "clang",
                                 "CMAKE_CXX_COMPILER": "clang++",
+                                "CMAKE_INSTALL_PREFIX" : "${sourceDir}/build/${presetName}/install",
                                 "ENABLE_ASAN": "ON",
                                 "ENABLE_LSAN": "ON",
                                 "ENABLE_UBSAN": "ON",
@@ -39,7 +41,8 @@
                         "generator": "Ninja",
                         "binaryDir": "build/Release",
                         "cacheVariables": {
-                                "CMAKE_BUILD_TYPE": "Release"
+                                "CMAKE_BUILD_TYPE": "Release",
+                                "CMAKE_INSTALL_PREFIX" : "${sourceDir}/build/${presetName}/install"
                         }
                 },
                 {
@@ -49,7 +52,8 @@
                         "generator": "Ninja",
                         "binaryDir": "build/RelDebWithInfo",
                         "cacheVariables": {
-                                "CMAKE_BUILD_TYPE": "RelWithDebInfo"
+                                "CMAKE_BUILD_TYPE": "RelWithDebInfo",
+                                "CMAKE_INSTALL_PREFIX" : "${sourceDir}/build/${presetName}/install"
                         }
                 }
         ]

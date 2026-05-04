@@ -1,0 +1,7 @@
+@PACKAGE_INIT@
+
+include_guard(GLOBAL)
+
+include("${CMAKE_CURRENT_LIST_DIR}/FastApplets_export.cmake")
+
+check_required_components(FastApplets)

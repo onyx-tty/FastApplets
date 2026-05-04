@@ -42,24 +42,44 @@ On Arch Linux
 sudo pacman -Sy qt6-base tomlplusplus curl nlohmann-json
 ```
 
+#### Configure the project
+
+``` sh
+# Static linking (recommended for regular users, if not packaging)
+cmake --preset Release -DBUILD_SHARED_LIBS=OFF .
+
+# Dynamic linking ($LD_LIBRARY_PATH must have access to libs at install location)
+cmake --preset Release .
+```
+
 #### Build the project
 
 ``` sh
-cmake --preset Release .
 cmake --build build/Release
 ```
 
 #### Install the compiled project
 
-*WORK IN PROGRESS* — `cmake --install` is not supported yet
+``` sh
+# Install to a specific location
+# WARNING: If linking dynamically, /your/installation/path/lib must be a part of
+#          $LD_LIBRARY_PATH. The program won't be able to find the shared libraries
+#          without it.
+cmake --install build/Release --prefix /your/installation/path
+
+# Install to the default prefix (build/{$presetName}/install)
+cmake --install build/Release
+```
 
 #### Launch the executable
 
 ``` sh
-./build/Release/PowerApplet
-```
+# Run installed version
+/your/installation/path/bin/PowerApplet
 
-cmake --install is not supported yet
+# Run without installation
+./build/Release/src/Applets/PowerApplet/PowerApplet
+```
 
 ## Help
 
