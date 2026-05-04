@@ -23,13 +23,6 @@ FastApplets is a lightweight suite of applets designed for high performance, sim
 * `clang` — the "linting" profile
 * `gtest`
 
-#### Requirements for WeatherApplet
-
-* `curl` — fetching weather data with an API call
-* `nlohmann-json` — parsing fetched weather data in JSON format
-
-Additionally, an appropriate API key for OpenWeather is necessary for API calls
-
 ### Installing
 
 *WORK IN PROGRESS*
@@ -39,7 +32,7 @@ Additionally, an appropriate API key for OpenWeather is necessary for API calls
 On Arch Linux
 
 ``` sh
-sudo pacman -Sy qt6-base tomlplusplus cmake ninja clang gtest curl nlohmann-json
+sudo pacman -Sy qt6-base tomlplusplus cmake ninja clang gtest
 ```
 
 #### Configure the project
