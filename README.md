@@ -39,6 +39,8 @@ sudo pacman -Sy qt6-base qt6-svg tomlplusplus cmake ninja clang gtest
 #### Configure the project
 
 ``` sh
+# Choose one:
+
 # Static linking (recommended for regular users, if not packaging)
 cmake --preset Release .
 
@@ -57,6 +59,8 @@ cmake --build build/Release
 #### Install the compiled project
 
 ``` sh
+# Choose one:
+
 # Install to a specific location
 # WARNING: If linking dynamically, /your/installation/path/lib must be a part of
 #          $LD_LIBRARY_PATH. The program won't be able to find the shared libraries
@@ -72,6 +76,8 @@ cmake --install build/Release
 #### Launch the executable
 
 ``` sh
+# Choose one:
+
 # Run installed version
 /your/installation/path/bin/PowerApplet
 
