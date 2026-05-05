@@ -7,8 +7,8 @@ RUN set -ex;                                                                    
 COPY . /app
 WORKDIR /app
 
-RUN set -ex;                                      \
-    cmake --preset Debug -DBUILD_SHARED_LIBS=OFF; \
+RUN set -ex;                  \
+    cmake --preset Debug      \
     cmake --build build/Debug
 
 #RUN ctest --test-dir /app/build/Debug

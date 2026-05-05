@@ -36,7 +36,7 @@ endif()
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 # Build shared by default
-option(BUILD_SHARED_LIBS "Build using shared libraries" ON)
+option(BUILD_SHARED_LIBS "Build using shared libraries" OFF)
 option(BUILD_TESTS "Build unit tests" ON)
 set(CPPUTILS_ENABLE_QT ON)
 

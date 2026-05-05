@@ -39,12 +39,12 @@ sudo pacman -Sy qt6-base tomlplusplus cmake ninja clang gtest
 
 ``` sh
 # Static linking (recommended for regular users, if not packaging)
-cmake --preset Release -DBUILD_SHARED_LIBS=OFF .
+cmake --preset Release .
 
 # OR
 
 # Dynamic linking ($LD_LIBRARY_PATH must have access to libs at install location)
-cmake --preset Release .
+cmake --preset Release -DBUILD_SHARED_LIBS=ON .
 ```
 
 #### Build the project
