@@ -36,8 +36,9 @@ class QSize;
 // On success: extract from a node, return as std::optional<T>
 // On failure: return std::nullopt
 template<typename T>
-std::optional<T> resolve(std::initializer_list<Source> sources, const PathContext& path_context,
-                         const tomlqt::ArrayBounds& arr_bounds, const QString& arr_format) {
+std::optional<T> Resolvers::from(std::initializer_list<Source> sources,
+                                 const PathContext&            path_context,
+                                 const tomlqt::ArrayBounds& arr_bounds, const QString& arr_format) {
         using DT = std::decay_t<T>;
 
         // Convert pointers to std::optional
@@ -146,10 +147,10 @@ std::optional<T> resolve(std::initializer_list<Source> sources, const PathContex
 // On success: extract from a node
 // On failure: copy default value
 template<typename T, typename TDefault>
-T resolveOr(std::initializer_list<Source> sources, const TDefault& defaults,
-            const PathContext& path_context, const tomlqt::ArrayBounds& arr_bounds,
-            const QString& arr_format) {
-        return resolve<T>(sources, path_context, arr_bounds, arr_format).value_or(defaults);
+T Resolvers::fromOr(std::initializer_list<Source> sources, const TDefault& defaults,
+                    const PathContext& path_context, const tomlqt::ArrayBounds& arr_bounds,
+                    const QString& arr_format) {
+        return from<T>(sources, path_context, arr_bounds, arr_format).value_or(defaults);
 }
 
 // Use to try and extract a value from a node into a specific attribute, and if that fails, to
@@ -159,27 +160,28 @@ T resolveOr(std::initializer_list<Source> sources, const TDefault& defaults,
 // On success: write result into a provided attribute
 // On failure: overwrite object with object_defaults entirely
 template<typename TAttribute, typename TObject>
-void resolveOrDefault(std::initializer_list<Source> sources, TAttribute& attribute, TObject& object,
-                      const TObject& object_defaults, const PathContext& path_context,
-                      const tomlqt::ArrayBounds& arr_bounds, const QString& arr_format) {
-        if (auto result = resolve<TAttribute>(sources, path_context, arr_bounds, arr_format)) {
+void Resolvers::fromOrDefault(std::initializer_list<Source> sources, TAttribute& attribute,
+                              TObject& object, const TObject& object_defaults,
+                              const PathContext&         path_context,
+                              const tomlqt::ArrayBounds& arr_bounds, const QString& arr_format) {
+        if (auto result = from<TAttribute>(sources, path_context, arr_bounds, arr_format)) {
                 attribute = result.value();
         } else {
                 object = object_defaults;
         }
 }
 
-// Use if resolveOrDefault is the optimal choice, but the extracted value must first be transformed
+// Use if fromOrDefault is the optimal choice, but the extracted value must first be transformed
 // before being put into use
 // For example: if button ID is erroneous, default the button itself, not just the id
 //
 // On success: transform, then write result into an attribute
 // On failure: overwrite the object with object_defaults entirely
 template<typename TRaw, typename TAttribute, typename TObject, typename Transform>
-void resolveTransformOrDefault(std::initializer_list<Source> sources, TAttribute& attribute,
-                               TObject& object, const TObject& object_defaults,
-                               Transform&& transform, const PathContext& path_context) {
-        if (auto result = resolve<TRaw>(sources, path_context)) {
+void Resolvers::fromTransformOrDefault(std::initializer_list<Source> sources, TAttribute& attribute,
+                                       TObject& object, const TObject& object_defaults,
+                                       Transform&& transform, const PathContext& path_context) {
+        if (auto result = from<TRaw>(sources, path_context)) {
                 attribute = transform(std::move(result.value()));
         } else {
                 object = object_defaults;
