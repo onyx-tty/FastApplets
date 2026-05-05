@@ -8,7 +8,7 @@ COPY . /app
 WORKDIR /app
 
 RUN set -ex;                  \
-    cmake --preset Debug      \
+    cmake --preset Debug;     \
     cmake --build build/Debug
 
 #RUN ctest --test-dir /app/build/Debug
@@ -26,3 +26,4 @@ RUN set -ex;                                                                    
 COPY --from=builder /FastApplets /FastApplets
 
 ENTRYPOINT ["/FastApplets/bin/PowerApplet"]
+
