@@ -17,6 +17,7 @@ FastApplets is a lightweight suite of applets designed for high performance, sim
 #### Requirements for all applets
 
 * `qt6-base`
+* `qt6-svg`
 * `tomlplusplus`
 * `cmake`
 * `ninja`
@@ -32,7 +33,7 @@ FastApplets is a lightweight suite of applets designed for high performance, sim
 On Arch Linux
 
 ``` sh
-sudo pacman -Sy qt6-base tomlplusplus cmake ninja clang gtest
+sudo pacman -Sy qt6-base qt6-svg tomlplusplus cmake ninja clang gtest
 ```
 
 #### Configure the project
