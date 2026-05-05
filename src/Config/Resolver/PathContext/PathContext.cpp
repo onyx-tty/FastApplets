@@ -1,7 +1,7 @@
 // SPDX-FileCopyrightText: 2026 Łukasz Wrodarczyk
 // SPDX-License-Identifier: GPL-3.0-or-later
 
-#include "Resolver.h"
+#include "PathContext.h"
 
 #include <cstddef>
 #include <string_view>

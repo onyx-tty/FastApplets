@@ -18,20 +18,6 @@
 class QSizePolicy;
 class QSize;
 
-// TODO Move elsewhere
-class PathContext final {
-private:
-        QString path_context;
-        QString filename;
-        char    separator;
-
-public:
-        explicit PathContext(QStringView filename, QStringView path_context, char separator = '.');
-        QString     makePath(std::string_view scope) const;
-        PathContext getExtended(std::string_view segment) const;
-        PathContext getExtended(size_t index) const;
-};
-
 class Resolver final {
 public:
         Resolver() = delete;

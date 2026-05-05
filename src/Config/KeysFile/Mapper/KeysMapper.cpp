@@ -4,6 +4,7 @@
 #include "KeysMapper.h"
 #include "Applets/Types/AppletRecord.h"
 #include "Config/KeysFile/Types/Keybindings.h"
+#include "Config/Resolver/PathContext/PathContext.h"
 #include "Config/Resolver/Resolver.h"
 #include "Config/Resolver/Types/Source.h"
 #include "Config/Types/NodePair.h"
