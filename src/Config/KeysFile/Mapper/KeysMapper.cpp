@@ -61,19 +61,6 @@ void KeysMapper::mapQuitKeys(NodePair nodes, keybindings& quit, const keybinding
         quit = interpretTextAsKeybindings(interpretTomlArrayAsStringVector(array));
 }
 
-void KeysMapper::mapPrimaryButtonKey(node_view primary_button_node, keybindings& primary_button,
-                                     const keybindings& defaults, const PathContext& path_context) {
-        constexpr size_t min_size = 1;
-
-        toml::array button{};
-        Resolver::fromOrDefault<toml::array>({Source{primary_button_node,
-                                                     applet::power_applet.scope}},
-                                             button, primary_button, defaults, path_context,
-                                             {min_size}, "Format: [keybindings...]");
-
-        primary_button = interpretTextAsKeybindings(interpretTomlArrayAsStringVector(button));
-}
-
 void KeysMapper::mapPrimaryButtonKeys(node_view                       primary_buttons_node,
                                       std::vector<keybindings>&       primary_buttons,
                                       const std::vector<keybindings>& defaults,
@@ -95,4 +82,17 @@ void KeysMapper::mapPrimaryButtonKeys(node_view                       primary_bu
         };
 
         primary_buttons = std::move(primary_buttons_new);
+}
+
+void KeysMapper::mapPrimaryButtonKey(node_view primary_button_node, keybindings& primary_button,
+                                     const keybindings& defaults, const PathContext& path_context) {
+        constexpr size_t min_size = 1;
+
+        toml::array button{};
+        Resolver::fromOrDefault<toml::array>({Source{primary_button_node,
+                                                     applet::power_applet.scope}},
+                                             button, primary_button, defaults, path_context,
+                                             {min_size}, "Format: [keybindings...]");
+
+        primary_button = interpretTextAsKeybindings(interpretTomlArrayAsStringVector(button));
 }
