@@ -3,6 +3,7 @@
 
 #pragma once
 
+#include "Config/Resolver/Types/Source.h"
 #include "Config/Types/NodeView.h"
 #include "TomlQt/ArrayBounds.h"
 
@@ -16,12 +17,6 @@
 
 class QSizePolicy;
 class QSize;
-
-struct Source final {
-        node_view        node;
-        std::string_view scope;
-        bool             quiet = false;
-};
 
 // TODO Move elsewhere
 class PathContext final {

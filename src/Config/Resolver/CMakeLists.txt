@@ -1,3 +1,5 @@
+add_subdirectory(Types)
+
 add_library(Config_Resolver
         Resolver.cpp)
 add_library(Config::Resolver ALIAS Config_Resolver)
@@ -7,6 +9,7 @@ target_include_directories(Config_Resolver PRIVATE
         $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>)
 
 target_link_libraries(Config_Resolver PRIVATE
+        Config::Resolver::Types
         Config::TomlParser
         Config::Types)
 

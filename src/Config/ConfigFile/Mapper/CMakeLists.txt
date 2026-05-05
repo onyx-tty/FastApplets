@@ -10,6 +10,7 @@ target_link_libraries(Config_ConfigFile_Mapper PRIVATE
         Config::ConfigFile::Properties
         Config::TomlParser
         Config::Resolver
+        Config::Resolver::Types
         UI::Enums
         UI::Widgets)
 

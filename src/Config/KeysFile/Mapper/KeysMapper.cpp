@@ -5,6 +5,7 @@
 #include "Applets/Types/AppletRecord.h"
 #include "Config/KeysFile/Types/Keybindings.h"
 #include "Config/Resolver/Resolver.h"
+#include "Config/Resolver/Types/Source.h"
 #include "Config/Types/NodePair.h"
 #include "Config/Types/NodeView.h"
 #include "CppUtils/Log/QtLog.h"

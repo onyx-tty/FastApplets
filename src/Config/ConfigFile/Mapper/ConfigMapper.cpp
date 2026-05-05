@@ -8,6 +8,7 @@
 #include "Config/ConfigFile/Properties/PrimaryButtonProperties.h"
 #include "Config/ConfigFile/Properties/WindowProperties.h"
 #include "Config/Resolver/Resolver.h"
+#include "Config/Resolver/Types/Source.h"
 #include "Config/Types/NodePair.h"
 #include "Config/Types/NodeView.h"
 #include "CppUtils/Log/QtLog.h"
