@@ -89,7 +89,7 @@ install(# Install compiled artifacts to correct destinations, register all targe
                 Config_KeysFile_Mapper Config_KeysFile_Types
                 Config_FileLocator
                 Config_TomlParser
-                Config_Resolvers
+                Config_Resolver
                 Config_Types
                 DBus
                 Shell

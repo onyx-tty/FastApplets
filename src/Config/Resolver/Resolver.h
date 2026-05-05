@@ -51,9 +51,9 @@ public:
         PathContext getExtended(size_t index) const;
 };
 
-class Resolvers final {
+class Resolver final {
 public:
-        Resolvers() = delete;
+        Resolver() = delete;
 
         // Use if return value and defaulting must be handled manually
         // On success: extract from a node, return as std::optional<T>
@@ -98,4 +98,4 @@ public:
                                            const PathContext& path_context);
 };
 
-#include "Resolvers.tpp"
+#include "Resolver.tpp"

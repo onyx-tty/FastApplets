@@ -9,7 +9,7 @@ target_include_directories(Config_ConfigFile_Mapper PRIVATE
 target_link_libraries(Config_ConfigFile_Mapper PRIVATE
         Config::ConfigFile::Properties
         Config::TomlParser
-        Config::Resolvers
+        Config::Resolver
         UI::Enums
         UI::Widgets)
 

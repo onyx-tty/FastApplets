@@ -17,7 +17,7 @@
 
 #pragma once
 
-#include "Config/Resolvers/Resolvers.h"
+#include "Config/Resolver/Resolver.h"
 #include "Config/Types/NodePair.h"
 #include "Config/Types/NodeView.h"
 

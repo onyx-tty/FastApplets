@@ -19,7 +19,7 @@
 
 #include "Config/Types/NodeView.h"
 #include "CppUtils/Log/QtLog.h"
-#include "Resolvers.h"
+#include "Resolver.h"
 #include "TomlQt/ArrayBounds.h"
 #include "TomlQt/TomlQt.h"
 
@@ -36,9 +36,9 @@ class QSize;
 // On success: extract from a node, return as std::optional<T>
 // On failure: return std::nullopt
 template<typename T>
-std::optional<T> Resolvers::from(std::initializer_list<Source> sources,
-                                 const PathContext&            path_context,
-                                 const tomlqt::ArrayBounds& arr_bounds, const QString& arr_format) {
+std::optional<T> Resolver::from(std::initializer_list<Source> sources,
+                                const PathContext&            path_context,
+                                const tomlqt::ArrayBounds& arr_bounds, const QString& arr_format) {
         using DT = std::decay_t<T>;
 
         // Convert pointers to std::optional
@@ -147,9 +147,9 @@ std::optional<T> Resolvers::from(std::initializer_list<Source> sources,
 // On success: extract from a node
 // On failure: copy default value
 template<typename T, typename TDefault>
-T Resolvers::fromOr(std::initializer_list<Source> sources, const TDefault& defaults,
-                    const PathContext& path_context, const tomlqt::ArrayBounds& arr_bounds,
-                    const QString& arr_format) {
+T Resolver::fromOr(std::initializer_list<Source> sources, const TDefault& defaults,
+                   const PathContext& path_context, const tomlqt::ArrayBounds& arr_bounds,
+                   const QString& arr_format) {
         return from<T>(sources, path_context, arr_bounds, arr_format).value_or(defaults);
 }
 
@@ -160,10 +160,10 @@ T Resolvers::fromOr(std::initializer_list<Source> sources, const TDefault& defau
 // On success: write result into a provided attribute
 // On failure: overwrite object with object_defaults entirely
 template<typename TAttribute, typename TObject>
-void Resolvers::fromOrDefault(std::initializer_list<Source> sources, TAttribute& attribute,
-                              TObject& object, const TObject& object_defaults,
-                              const PathContext&         path_context,
-                              const tomlqt::ArrayBounds& arr_bounds, const QString& arr_format) {
+void Resolver::fromOrDefault(std::initializer_list<Source> sources, TAttribute& attribute,
+                             TObject& object, const TObject& object_defaults,
+                             const PathContext& path_context, const tomlqt::ArrayBounds& arr_bounds,
+                             const QString& arr_format) {
         if (auto result = from<TAttribute>(sources, path_context, arr_bounds, arr_format)) {
                 attribute = result.value();
         } else {
@@ -178,9 +178,9 @@ void Resolvers::fromOrDefault(std::initializer_list<Source> sources, TAttribute&
 // On success: transform, then write result into an attribute
 // On failure: overwrite the object with object_defaults entirely
 template<typename TRaw, typename TAttribute, typename TObject, typename Transform>
-void Resolvers::fromTransformOrDefault(std::initializer_list<Source> sources, TAttribute& attribute,
-                                       TObject& object, const TObject& object_defaults,
-                                       Transform&& transform, const PathContext& path_context) {
+void Resolver::fromTransformOrDefault(std::initializer_list<Source> sources, TAttribute& attribute,
+                                      TObject& object, const TObject& object_defaults,
+                                      Transform&& transform, const PathContext& path_context) {
         if (auto result = from<TRaw>(sources, path_context)) {
                 attribute = transform(std::move(result.value()));
         } else {
