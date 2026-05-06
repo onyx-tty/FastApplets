@@ -1,4 +1,4 @@
-project(Shell VERSION 0.3.0 LANGUAGES CXX)
+project(Shell VERSION 0.3.1 LANGUAGES CXX)
 
 add_library(Shell
         ShellRunner.cpp)
@@ -9,3 +9,4 @@ target_include_directories(Shell PRIVATE
 
 target_link_libraries(Shell PUBLIC
         Qt${QT_VERSION_MAJOR}::Core)
+

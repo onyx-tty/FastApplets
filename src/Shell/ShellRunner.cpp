@@ -6,8 +6,16 @@
 #include <QProcess>
 #include <QStringList>
 
+QString singleQuotesToDoubleQuotes(QString command) {
+        command.replace("'", "\"");
+
+        return command;
+}
+
 void ShellRunner::runCommand(const QString& command) {
-        QStringList parts = QProcess::splitCommand(command);
+        QString     reinterpreted = singleQuotesToDoubleQuotes(command);
+
+        QStringList parts         = QProcess::splitCommand(reinterpreted);
 
         QString     program = parts.takeFirst();
         QStringList args    = parts;

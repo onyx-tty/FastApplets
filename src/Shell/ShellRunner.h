@@ -4,6 +4,9 @@
 #pragma once
 
 class QString;
+class QStringView;
+
+QString singleQuotesToDoubleQuotes(QStringView command);
 
 class ShellRunner final {
 public:
