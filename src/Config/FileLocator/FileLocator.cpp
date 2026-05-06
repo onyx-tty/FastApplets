@@ -21,6 +21,16 @@ std::string findFile(QStringView filename, QStringView subdirectory) {
         // If file found, save filepath
         if (QFileInfo::exists(filepath)) { return filepath.toStdString(); }
 
+        // TODO Find a way to bypass the process and use Config::getDefault alone.
+        //      Rough idea: if nothing is found, perhaps let this func return empty string,
+        //      then handle empty config.toml and keys.toml paths dynamically?
+        //      Consequently the parser will probably fail to parse anything and return
+        //      an empty toml::table, which when passed downstream is read as empty config,
+        //      because of which resolve cannot resolve anything, not finding any fields,
+        //      and defaulting everything.
+        //
+        //      In other words, maybe the program should be allowed to proceed with
+        //      missing paths?
         QFATAL("%s not found!", filepath.toStdString().c_str());
 }
 

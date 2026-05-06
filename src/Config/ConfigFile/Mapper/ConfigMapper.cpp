@@ -40,6 +40,7 @@ static power_button_id getPowerButtonIDFromString(const QString& string) {
                  {"suspend", power_button_id::suspend},
                  {"hibernate", power_button_id::hibernate}};
 
+        // TODO Replace with map.find()
         if (!map.contains(string)) { return power_button_id::none; }
 
         return map.at(string);
