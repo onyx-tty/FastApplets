@@ -24,7 +24,6 @@ static std::string findFile(QStringView filename, QStringView subdirectory = QSt
         QFATAL("%s not found!", filepath.toStdString().c_str());
 }
 
-// Look for configs in $XDG_CONFIG_HOME/FastApplets
 ConfigTomlFiles FileLocator::locateGlobalConfigFiles() {
         ConfigTomlFiles files{};
 

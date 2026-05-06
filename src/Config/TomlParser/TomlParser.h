@@ -10,6 +10,7 @@ class ConfigTomlFiles;
 
 class TomlParser final {
 private:
+        // TODO Shorter names
         static ConfigTomlFiles global_toml_files;
         static ConfigTomlFiles power_applet_toml_files;
 
@@ -17,6 +18,7 @@ private:
 
 public:
         TomlParser() = delete;
+        // TODO Enum for applet + type of file, parse with just one function
         static const toml::table& parseGlobalConfig();
         static const toml::table& parseGlobalKeys();
         static const toml::table& parsePowerAppletConfig();

@@ -14,5 +14,7 @@ private:
 
 public:
         explicit PowerActionManager() = delete;
+        // TODO Check for validity of power action
+        // org.freedesktop.login1 — The D-Bus interface of systemd-logind
         static void sendPowerAction(const QString& method);
 };

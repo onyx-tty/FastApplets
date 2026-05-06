@@ -23,8 +23,6 @@ void PowerActionManager::printReply(const QDBusPendingReply<QVariantMap>& reply)
         }
 }
 
-// TODO Check for validity of power action
-// org.freedesktop.login1 — The D-Bus interface of systemd-logind
 void PowerActionManager::sendPowerAction(const QString& method) {
         constexpr const char* name           = "org.freedesktop.login1";
         constexpr const char* path           = "/org/freedesktop/login1";

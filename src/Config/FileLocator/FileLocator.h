@@ -7,6 +7,7 @@
 
 class FileLocator final {
 public:
+        // Look for configs in $XDG_CONFIG_HOME/FastApplets
         static ConfigTomlFiles locateGlobalConfigFiles();
         static ConfigTomlFiles locatePowerAppletConfigFiles();
 };

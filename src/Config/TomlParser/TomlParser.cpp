@@ -23,11 +23,9 @@ toml::table TomlParser::createTable(const std::string& file_path) {
         return file_table;
 }
 
-// TODO Shorter names
 ConfigTomlFiles TomlParser::global_toml_files       = FileLocator::locateGlobalConfigFiles();
 ConfigTomlFiles TomlParser::power_applet_toml_files = FileLocator::locatePowerAppletConfigFiles();
 
-// TODO Accept applet enum as parameter, return the right config with just 1 function
 const toml::table& TomlParser::parseGlobalConfig() {
         static toml::table config = createTable(global_toml_files.config);
         return config;
