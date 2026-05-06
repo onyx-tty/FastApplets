@@ -6,26 +6,26 @@ dbus_mode = false
 id = "shutdown"
 text = "Shutdown"
 order = 1
-command = ["systemctl", ["poweroff"]]
+command = "systemctl poweroff"
 enabled = true
 
 [[layout.primary_buttons]]
 id = "reboot"
 text = "Reboot"
 order = 2
-command = ["systemctl", ["reboot"]]
+command = "systemctl reboot"
 enabled = true
 
 [[layout.primary_buttons]]
 id = "suspend"
 text = "Suspend"
 order = 3
-command = ["systemctl", ["suspend"]]
+command = "systemctl suspend"
 enabled = true
 
 [[layout.primary_buttons]]
 id = "hibernate"
 text = "Hibernate"
 order = 4
-command = ["systemctl", ["hibernate"]]
+command = "systemctl hibernate"
 enabled = true

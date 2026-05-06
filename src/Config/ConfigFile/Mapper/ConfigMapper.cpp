@@ -251,78 +251,17 @@ bool ConfigMapper::mapPrimaryButton(node_view                             button
 }
 
 void ConfigMapper::mapCommand(node_view command_node, std::vector<PowerButtonParams>& buttons,
-                              const std::vector<PowerButtonParams>& defaults, ShellCommand& command,
+                              const std::vector<PowerButtonParams>& defaults, QString& command,
                               const PathContext& path_context) {
-        constexpr size_t min_size = 2, max_size = 2;
-        const auto command_arr = Resolver::from<toml::array>({Source{command_node,
-                                                                     applet::power_applet.scope}},
-                                                             path_context, {min_size, max_size},
-                                                             "Format: [program, [args...]]");
-        if (!command_arr) {
+        auto command_raw = Resolver::from<QString>({Source{command_node,
+                                                           applet::power_applet.scope}},
+                                                   path_context);
+        if (!command_raw) {
                 buttons = defaults;
                 return;
         }
 
-        ShellCommand cmd{};
-
-        auto program_result = Resolver::from<QString>({Source{toml::node_view(
-                                                                      command_arr.value()[0]),
-                                                              applet::power_applet.scope}},
-                                                      path_context.getExtended("program"));
-        if (!program_result) {
-                buttons = defaults;
-                return;
-        }
-        cmd.program = program_result.value();
-
-        mapCommandArguments(toml::node_view(command_arr.value()[1]), buttons, defaults,
-                            cmd.arguments, path_context.getExtended("arguments"));
-
-        command = std::move(cmd);
-}
-
-void ConfigMapper::mapCommandArguments(node_view                             arguments_node,
-                                       std::vector<PowerButtonParams>&       buttons,
-                                       const std::vector<PowerButtonParams>& defaults,
-                                       QStringList& arguments, const PathContext& path_context) {
-        constexpr size_t min_size = 0;
-        const auto       args = Resolver::from<toml::array>({Source{arguments_node,
-                                                                    applet::power_applet.scope}},
-                                                            path_context, {min_size},
-                                                            "Format: [string, array]");
-        if (!args) {
-                buttons = defaults;
-                return;
-        }
-
-        QStringList argument_list{};
-
-        for (size_t i = 0; i != args.value().size(); ++i) {
-                mapCommandArgument(toml::node_view(args.value()[i]), buttons, defaults,
-                                   argument_list, path_context.getExtended(i));
-        }
-
-        arguments = std::move(argument_list);
-}
-
-void ConfigMapper::mapCommandArgument(node_view                             argument_node,
-                                      std::vector<PowerButtonParams>&       buttons,
-                                      const std::vector<PowerButtonParams>& defaults,
-                                      QStringList& arguments, const PathContext& path_context) {
-        QString argument{};
-
-        auto argument_result = Resolver::from<QString>({Source{argument_node,
-                                                               applet::power_applet.scope}},
-                                                       path_context);
-        if (!argument_result) {
-                buttons = defaults;
-                return;
-        }
-        argument = argument_result.value();
-
-        if (argument.isEmpty()) { return; }
-
-        arguments << std::move(argument);
+        command = std::move(command_raw.value());
 }
 
 void ConfigMapper::mapEnvironment(node_view environment_node, EnvironmentProperties& environment,

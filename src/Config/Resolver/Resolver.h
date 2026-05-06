@@ -12,7 +12,6 @@
 #include <string_view>
 #include <toml++/toml.hpp>
 #include <QString>
-#include <QStringView>
 #include <Qt>
 
 class QSizePolicy;

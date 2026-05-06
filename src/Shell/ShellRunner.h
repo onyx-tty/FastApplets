@@ -3,10 +3,10 @@
 
 #pragma once
 
-#include "ShellCommand.h"
+class QString;
 
 class ShellRunner final {
 public:
         ShellRunner() = delete;
-        static void runCommand(const ShellCommand& command);
+        static void runCommand(const QString& command);
 };

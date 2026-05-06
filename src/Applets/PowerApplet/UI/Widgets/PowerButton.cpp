@@ -5,7 +5,6 @@
 #include "Applets/PowerApplet/DBus/PowerActionManager.h"
 #include "Config/ConfigFile/PowerApplet/PowerAppletConfig.h"
 #include "CppUtils/Log/QtLog.h"
-#include "Shell/ShellCommand.h"
 #include "Shell/ShellRunner.h"
 #include "UI/Enums/ButtonIDs.h"
 #include "UI/Widgets/PrimaryButton.h"
@@ -16,7 +15,7 @@
 #include <QString>
 
 PowerButton::PowerButton(power_button_id id, const QIcon& icon, const QString& text,
-                         const QString& dbus_action, const ShellCommand& command) :
+                         const QString& dbus_action, const QString& command) :
         PrimaryButton(icon, text, PowerAppletConfig::get().getPrimaryButtonProperties()), id(id),
         dbus_action(dbus_action) {
         connect(this, &PowerButton::clicked,

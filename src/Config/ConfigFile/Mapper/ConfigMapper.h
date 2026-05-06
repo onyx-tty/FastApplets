@@ -21,7 +21,6 @@ class PrimaryButtonProperties;
 class QString;
 class QSize;
 class QSizePolicy;
-class ShellCommand;
 
 class ConfigMapper final {
 private:
@@ -46,16 +45,8 @@ private:
                                      const std::vector<PowerButtonParams>& defaults,
                                      const PathContext&                    path_context);
         static void mapCommand(node_view command_node, std::vector<PowerButtonParams>& buttons,
-                               const std::vector<PowerButtonParams>& defaults,
-                               ShellCommand& command, const PathContext& path_context);
-        static void mapCommandArguments(node_view                             arguments_node,
-                                        std::vector<PowerButtonParams>&       buttons,
-                                        const std::vector<PowerButtonParams>& defaults,
-                                        QStringList& arguments, const PathContext& path_context);
-        static void mapCommandArgument(node_view                             argument_node,
-                                       std::vector<PowerButtonParams>&       buttons,
-                                       const std::vector<PowerButtonParams>& defaults,
-                                       QStringList& arguments, const PathContext& path_context);
+                               const std::vector<PowerButtonParams>& defaults, QString& command,
+                               const PathContext& path_context);
 
         /* Environment Properties*/
         static void mapEnvironment(node_view environment_node, EnvironmentProperties& environment,

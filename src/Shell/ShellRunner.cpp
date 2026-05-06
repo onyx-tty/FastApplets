@@ -2,12 +2,15 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 
 #include "ShellRunner.h"
-#include "ShellCommand.h"
 
 #include <QProcess>
+#include <QStringList>
 
-// TODO Replace to eliminate command injection caused by shell interpretation
+void ShellRunner::runCommand(const QString& command) {
+        QStringList parts = QProcess::splitCommand(command);
 
-void ShellRunner::runCommand(const ShellCommand& command) {
-        QProcess::startDetached(command.program, command.arguments);
+        QString     program = parts.takeFirst();
+        QStringList args    = parts;
+
+        QProcess::startDetached(program, parts);
 }

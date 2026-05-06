@@ -75,7 +75,7 @@ PowerButtonRecords PowerCentralWidget::createButtons() {
                 QIcon           icon        = primary_buttons_data[i].icon;
                 QString         text        = primary_buttons_data[i].text;
                 QString         dbus_method = primary_buttons_data[i].dbus_method;
-                ShellCommand    command     = primary_buttons_data[i].command;
+                QString         command     = primary_buttons_data[i].command;
                 auto* power_button          = new PowerButton(id, icon, text, dbus_method, command);
                 const keybindings& keys     = key_getter(i);
 

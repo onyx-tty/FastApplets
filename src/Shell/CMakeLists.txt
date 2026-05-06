@@ -1,7 +1,6 @@
-project(Shell VERSION 0.2.0 LANGUAGES CXX)
+project(Shell VERSION 0.3.0 LANGUAGES CXX)
 
 add_library(Shell
-        ShellCommand.h
         ShellRunner.cpp)
 
 target_include_directories(Shell PRIVATE
