@@ -4,5 +4,7 @@
 #pragma once
 
 namespace applet {
+
 enum class type { global, power_applet };
+
 } // namespace applet

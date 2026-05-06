@@ -8,6 +8,7 @@
 #include <string_view>
 
 namespace applet {
+
 struct Record {
         applet::type     id;
         std::string_view scope;
@@ -15,4 +16,5 @@ struct Record {
 
 inline constexpr Record global{type::global, "global"};
 inline constexpr Record power_applet{type::power_applet, "power_applet"};
+
 } // namespace applet
