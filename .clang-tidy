@@ -10,7 +10,7 @@ Checks: >
   -misc-header-include-cycle,
   -modernize-use-trailing-return-type,
   -portability-avoid-pragma-once,
-  -portability-restrict-system-includes
+  -portability-restrict-system-includes,
+  -cppcoreguidelines-owning-memory # Qt parent-child ownership replaces smart pointers
 HeaderFilterRegex: '.*'
 ...
-
