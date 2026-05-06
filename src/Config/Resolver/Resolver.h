@@ -17,6 +17,7 @@
 
 class QSizePolicy;
 class QSize;
+class PathContext;
 
 class Resolver final {
 public:

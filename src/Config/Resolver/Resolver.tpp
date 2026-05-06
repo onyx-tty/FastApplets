@@ -3,6 +3,7 @@
 
 #pragma once
 
+#include "Config/Resolver/PathContext/PathContext.h"
 #include "Config/Resolver/Types/Source.h"
 #include "Config/Types/NodeView.h"
 #include "CppUtils/Log/QtLog.h"
