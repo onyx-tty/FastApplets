@@ -6,7 +6,7 @@
 #include <QProcess>
 #include <QStringList>
 
-QString singleQuotesToDoubleQuotes(QString command) {
+inline QString singleQuotesToDoubleQuotes(QString command) {
         command.replace("'", "\"");
 
         return command;
