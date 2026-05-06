@@ -12,7 +12,7 @@
 #include <QStringLiteral>
 #include <QStringView>
 
-static std::string findFile(QStringView filename, QStringView subdirectory = QStringLiteral("")) {
+std::string findFile(QStringView filename, QStringView subdirectory) {
         QString subdir   = subdirectory.empty() ? subdirectory.toString()
                                                 : subdirectory.toString() + "/";
         QString filepath = qEnvironmentVariable("XDG_CONFIG_HOME") + "/FastApplets/" + subdir
