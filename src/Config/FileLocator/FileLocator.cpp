@@ -2,8 +2,8 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 
 #include "FileLocator.h"
-#include "CppUtils/Log/QtLog.h"
 #include "Config/Types/ConfigTomlFiles.h"
+#include "CppUtils/Log/QtLog.h"
 
 #include <string>
 #include <QCoreApplication>
@@ -12,8 +12,7 @@
 #include <QStringLiteral>
 #include <QStringView>
 
-static std::string findFile(const QStringView& filename,
-                            const QStringView& subdirectory = QStringLiteral("")) {
+static std::string findFile(QStringView filename, QStringView subdirectory = QStringLiteral("")) {
         QString subdir   = subdirectory.empty() ? subdirectory.toString()
                                                 : subdirectory.toString() + "/";
         QString filepath = qEnvironmentVariable("XDG_CONFIG_HOME") + "/FastApplets/" + subdir
