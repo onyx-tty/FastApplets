@@ -15,6 +15,8 @@
 #include <QWidget>
 #include <Qt>
 
+class QShowEvent;
+
 class PowerCentralWidget final : public QWidget {
         Q_OBJECT
 
@@ -29,4 +31,5 @@ public:
         const QBoxLayout*         getMainLayout() const;
         const PowerButtonRecords& getButtons() const;
         void                      keyPressEvent(QKeyEvent* event) override;
+        void                      showEvent(QShowEvent* event);
 };

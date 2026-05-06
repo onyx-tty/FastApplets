@@ -18,6 +18,7 @@
 #include <QHBoxLayout>
 #include <QKeyEvent>
 #include <QObject>
+#include <QShowEvent>
 #include <Qt>
 
 // TODO Store a {PowerButton*, keybindings*} map in a more visible place
@@ -130,4 +131,13 @@ void PowerCentralWidget::keyPressEvent(QKeyEvent* event) {
                         current->setFocus(Qt::FocusReason::MouseFocusReason);
                 }
         }
+}
+
+void PowerCentralWidget::showEvent(QShowEvent* event) {
+        QWidget::showEvent(event);
+
+        if (auto* focused = qobject_cast<PowerButton*>(QApplication::focusWidget())) {
+                focused->clearFocus();
+        }
+        this->setFocus();
 }
