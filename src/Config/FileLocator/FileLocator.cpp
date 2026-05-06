@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 
 #include "FileLocator.h"
+#include "Applets/Types/AppletRecord.h"
 #include "Config/Types/ConfigTomlFiles.h"
 #include "CppUtils/Log/QtLog.h"
 
@@ -24,20 +25,18 @@ std::string findFile(QStringView filename, QStringView subdirectory) {
         QFATAL("%s not found!", filepath.toStdString().c_str());
 }
 
-ConfigTomlFiles FileLocator::locateGlobalConfigFiles() {
+ConfigTomlFiles FileLocator::locateConfigFiles(std::string_view scope) {
         ConfigTomlFiles files{};
 
-        files.config = findFile(QStringLiteral("config.toml"));
-        files.keys   = findFile(QStringLiteral("keys.toml"));
+        // Treat scope "global" as root
+        if (scope == "global") {
+                scope = "";
+        }
 
-        return files;
-}
-
-ConfigTomlFiles FileLocator::locatePowerAppletConfigFiles() {
-        ConfigTomlFiles files{};
-
-        files.config = findFile(QStringLiteral("config.toml"), QStringLiteral("power_applet"));
-        files.keys   = findFile(QStringLiteral("keys.toml"), QStringLiteral("power_applet"));
+        files.config = findFile(QStringLiteral("config.toml"),
+                                QString::fromStdString(std::string{scope}));
+        files.keys   = findFile(QStringLiteral("keys.toml"),
+                                QString::fromStdString(std::string{scope}));
 
         return files;
 }

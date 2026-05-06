@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 
 #include "TomlParser.h"
+#include "Applets/Types/AppletRecord.h"
 #include "Config/FileLocator/FileLocator.h"
 #include "Config/Types/ConfigTomlFiles.h"
 #include "CppUtils/Log/QtLog.h"
@@ -9,8 +10,9 @@
 #include <string>
 #include <toml++/toml.hpp>
 
-ConfigTomlFiles TomlParser::global_toml_files       = FileLocator::locateGlobalConfigFiles();
-ConfigTomlFiles TomlParser::power_applet_toml_files = FileLocator::locatePowerAppletConfigFiles();
+ConfigTomlFiles TomlParser::global_toml_files = FileLocator::locateConfigFiles(applet::global.scope);
+ConfigTomlFiles TomlParser::power_applet_toml_files = FileLocator::locateConfigFiles(
+        applet::power_applet.scope);
 
 toml::table TomlParser::createTable(const std::string& file_path) {
         toml::table file_table;
