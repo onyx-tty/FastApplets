@@ -2,7 +2,6 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 
 #include "FileLocator.h"
-#include "Applets/Types/AppletRecord.h"
 #include "Config/Types/ConfigTomlFiles.h"
 #include "CppUtils/Log/QtLog.h"
 

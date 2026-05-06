@@ -3,7 +3,6 @@
 
 #pragma once
 
-#include "Applets/Types/AppletTypes.h"
 #include "Config/Types/ConfigTomlFiles.h"
 
 #include <string>
