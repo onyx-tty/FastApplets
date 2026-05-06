@@ -25,22 +25,8 @@ target_link_libraries(PowerApplet PRIVATE
 target_link_libraries(PowerApplet PUBLIC
         CppUtils::Log::Qt)
 
-if (ENABLE_ASAN OR ENABLE_LSAN OR ENABLE_UBSAN)
-        target_compile_options(PowerApplet PRIVATE -fno-omit-frame-pointer -g)
-endif()
-
-if(ENABLE_ASAN)
-        target_compile_options(PowerApplet PRIVATE -fsanitize=address)
-        target_link_options(PowerApplet PRIVATE -fsanitize=address)
-endif()
-
-if(ENABLE_LSAN)
-        target_compile_options(PowerApplet PRIVATE -fsanitize=leak)
-        target_link_options(PowerApplet PRIVATE -fsanitize=leak)
-endif()
-
 if(ENABLE_UBSAN)
-        target_compile_options(PowerApplet PRIVATE -fsanitize=undefined)
+        target_compile_options(PowerApplet PRIVATE -fno-omit-frame-pointer -g -fsanitize=undefined)
         target_link_options(PowerApplet PRIVATE -fsanitize=undefined)
 endif()
 

@@ -19,9 +19,9 @@ COPY config /FastApplets/
 
 FROM ubuntu:latest AS runner
 
-RUN set -ex;                                                                      \
-    apt-get update;                                                               \
-    apt-get install -y cmake qt6-base-dev libtomlplusplus-dev libasan8 libqt6svg6
+RUN set -ex;                                                             \
+    apt-get update;                                                      \
+    apt-get install -y cmake qt6-base-dev libtomlplusplus-dev libqt6svg6
 
 COPY --from=builder /FastApplets /FastApplets
 
