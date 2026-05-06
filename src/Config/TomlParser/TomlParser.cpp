@@ -9,6 +9,9 @@
 #include <string>
 #include <toml++/toml.hpp>
 
+ConfigTomlFiles TomlParser::global_toml_files       = FileLocator::locateGlobalConfigFiles();
+ConfigTomlFiles TomlParser::power_applet_toml_files = FileLocator::locatePowerAppletConfigFiles();
+
 toml::table TomlParser::createTable(const std::string& file_path) {
         toml::table file_table;
 
@@ -22,9 +25,6 @@ toml::table TomlParser::createTable(const std::string& file_path) {
 
         return file_table;
 }
-
-ConfigTomlFiles TomlParser::global_toml_files       = FileLocator::locateGlobalConfigFiles();
-ConfigTomlFiles TomlParser::power_applet_toml_files = FileLocator::locatePowerAppletConfigFiles();
 
 const toml::table& TomlParser::parseGlobalConfig() {
         static toml::table config = createTable(global_toml_files.config);
