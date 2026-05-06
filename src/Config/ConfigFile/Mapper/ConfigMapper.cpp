@@ -264,6 +264,7 @@ void ConfigMapper::mapCommand(node_view command_node, std::vector<PowerButtonPar
         command = std::move(command_raw.value());
 }
 
+/* Environment Properties*/
 void ConfigMapper::mapEnvironment(node_view environment_node, EnvironmentProperties& environment,
                                   const EnvironmentProperties& defaults,
                                   const PathContext&           path_context) {
