@@ -34,8 +34,6 @@ void PrimaryButton::alignLabel(const QString& text, Qt::Alignment label_alignmen
         text_label->setAlignment(label_alignment);
         text_label->setAttribute(Qt::WA_TransparentForMouseEvents, true);
         layout()->addWidget(text_label);
-
-        QDEBUG() << "Label successfully initialized with text:" << text;
 }
 
 void PrimaryButton::alignIconLabel(const QPixmap& icon_pixmap, Qt::Alignment alignment,
