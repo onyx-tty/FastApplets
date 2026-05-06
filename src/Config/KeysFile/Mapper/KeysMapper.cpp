@@ -50,6 +50,7 @@ std::vector<std::string> interpretTomlArrayAsStringVector(const toml::array& tom
         return str_vec;
 }
 
+/* Global Keys */
 void KeysMapper::mapQuitKeys(NodePair nodes, keybindings& quit, const keybindings& defaults,
                              const PathContext& path_context) {
         constexpr size_t min_size = 1;
@@ -63,6 +64,7 @@ void KeysMapper::mapQuitKeys(NodePair nodes, keybindings& quit, const keybinding
         quit = interpretTextAsKeybindings(interpretTomlArrayAsStringVector(array));
 }
 
+/* Power Applet Keys*/
 void KeysMapper::mapPrimaryButtonKeys(node_view                       primary_buttons_node,
                                       std::vector<keybindings>&       primary_buttons,
                                       const std::vector<keybindings>& defaults,
