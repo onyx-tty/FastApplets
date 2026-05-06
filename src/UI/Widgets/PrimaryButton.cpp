@@ -46,10 +46,6 @@ void PrimaryButton::alignIconLabel(const QPixmap& icon_pixmap, Qt::Alignment ali
         layout()->addWidget(icon_label);
 }
 
-/* Initializes a button of choice with uniform design */
-// Inheriting constructor defaults from from QPushButton,
-// but customizing the icon, icon size and the alignment of that button
-// TODO Default icon
 PrimaryButton::PrimaryButton(const QIcon& icon, const QString& text,
                              const PrimaryButtonProperties& properties) {
         auto* stacked = new QStackedLayout(this);

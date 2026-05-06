@@ -25,7 +25,6 @@
 using button_bindings     = std::unordered_map<const PowerButton*, const keybindings*>;
 using keybinding_bindings = std::unordered_map<const keybindings*, PowerButton*>;
 
-// TODO Extract
 static bool isPowerKey(int key) {
         for (const auto& button_keys : PowerAppletKeys::get().getPrimaryButtonKeys()) {
                 if (button_keys.contains(key)) { return true; }
