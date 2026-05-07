@@ -25,9 +25,7 @@ void DBusRequester::call(const DBusTarget& target, const QString& method) {
         auto call = QDBusMessage::createMethodCall(target.name, target.path, target.interface,
                                                    method);
 
-        QList<QVariant> arguments;
-        arguments << QVariant::fromValue(true);
-        call.setArguments(arguments);
+        call.setArguments({QVariant::fromValue(true)});
 
         // Avoid overwriting pending_reply mid-work
         waitForFinished();
