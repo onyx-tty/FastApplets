@@ -6,4 +6,4 @@
 #include "toml++/impl/node.hpp"
 #include "toml++/impl/node_view.hpp"
 
-using node_view = const toml::node_view<const toml::node>;
+using node_view = toml::node_view<const toml::node>;
