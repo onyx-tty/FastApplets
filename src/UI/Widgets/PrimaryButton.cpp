@@ -29,22 +29,22 @@ void PrimaryButton::paintEvent(QPaintEvent*) {
         style()->drawControl(QStyle::CE_PushButton, &option, &painter, this);
 }
 
-void PrimaryButton::setTextLabel(const QString& text, Qt::Alignment label_alignment) {
+void PrimaryButton::setTextLabel(const QString& text, Qt::Alignment alignment) {
         if (text_label) { text_label->deleteLater(); }
         text_label = new QLabel(text, this);
-        text_label->setAlignment(label_alignment);
+        text_label->setAlignment(alignment);
         text_label->setAttribute(Qt::WA_TransparentForMouseEvents, true);
         layout()->addWidget(text_label);
 }
 
-void PrimaryButton::setIconLabel(const QPixmap& icon_pixmap, Qt::Alignment alignment,
+void PrimaryButton::setIconLabel(const QPixmap& pixmap, Qt::Alignment alignment,
                                  QSizePolicy size_policy) {
         if (icon_label) { icon_label->deleteLater(); }
         icon_label = new QLabel("", this);
         icon_label->setAlignment(alignment);
         icon_label->setSizePolicy(size_policy);
         icon_label->setAttribute(Qt::WA_TransparentForMouseEvents, true);
-        icon_label->setPixmap(icon_pixmap);
+        icon_label->setPixmap(pixmap);
         layout()->addWidget(icon_label);
 }
 

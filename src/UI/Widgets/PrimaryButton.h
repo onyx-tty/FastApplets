@@ -19,9 +19,8 @@ class PrimaryButton : public QPushButton {
 private:
         // Modified re-implementation of paintEvent that allows for manual setting of focus
         void paintEvent(QPaintEvent*) override;
-        void setTextLabel(const QString& text, Qt::Alignment label_alignment);
-        void setIconLabel(const QPixmap& icon_pixmap, Qt::Alignment alignment,
-                          QSizePolicy size_policy);
+        void setTextLabel(const QString& text, Qt::Alignment alignment);
+        void setIconLabel(const QPixmap& pixmap, Qt::Alignment alignment, QSizePolicy size_policy);
 
         QLabel* text_label = nullptr;
         QLabel* icon_label = nullptr;
