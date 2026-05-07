@@ -6,6 +6,8 @@
 #include <QProcess>
 #include <QStringList>
 
+// QProcess::splitCommand treats single quotes as regular characters.
+// Treat them like proper quotes by reinterpreting single quotes as double quotes.
 inline QString singleQuotesToDoubleQuotes(QString command) {
         command.replace("'", "\"");
 
