@@ -3,8 +3,9 @@
 
 #pragma once
 
+// Identifies a DBus target; all three fields are required by DBus
 struct DBusTarget {
-        const char* name;
-        const char* path;
-        const char* interface;
+        const char* name;      // e.g. "org.freedesktop.Notifications"
+        const char* path;      // e.g. "/org/freedesktop/Notifications"
+        const char* interface; // e.g. "org.freedesktop.Notifications"
 };
