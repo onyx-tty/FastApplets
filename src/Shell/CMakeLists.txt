@@ -1,4 +1,4 @@
-project(Shell VERSION 0.3.1 LANGUAGES CXX)
+project(Shell VERSION 0.3.3 LANGUAGES CXX)
 
 add_library(Shell
         ShellRunner.cpp)

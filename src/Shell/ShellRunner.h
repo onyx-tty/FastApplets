@@ -14,5 +14,5 @@ public:
         //
         // Example: "hyprshutdown -t 'Shutting down...' -p 'systemctl poweroff'"
         // "hyprshutdown" is treated as the program and the rest as arguments
-        static void runCommand(const QString& command);
+        static void runCommand(QString command);
 };
