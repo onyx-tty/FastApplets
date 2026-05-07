@@ -29,15 +29,15 @@ void PrimaryButton::paintEvent(QPaintEvent*) {
         style()->drawControl(QStyle::CE_PushButton, &option, &painter, this);
 }
 
-void PrimaryButton::alignLabel(const QString& text, Qt::Alignment label_alignment) {
-        text_label = new QLabel(text, this); // label that acts as a button text replacement
+void PrimaryButton::setTextLabel(const QString& text, Qt::Alignment label_alignment) {
+        text_label = new QLabel(text, this);
         text_label->setAlignment(label_alignment);
         text_label->setAttribute(Qt::WA_TransparentForMouseEvents, true);
         layout()->addWidget(text_label);
 }
 
-void PrimaryButton::alignIconLabel(const QPixmap& icon_pixmap, Qt::Alignment alignment,
-                                   QSizePolicy size_policy) {
+void PrimaryButton::setIconLabel(const QPixmap& icon_pixmap, Qt::Alignment alignment,
+                                 QSizePolicy size_policy) {
         icon_label = new QLabel("", this);
         icon_label->setAlignment(alignment);
         icon_label->setSizePolicy(size_policy);
@@ -55,9 +55,9 @@ PrimaryButton::PrimaryButton(const QIcon& icon, const QString& text,
         setIconSize(properties.getIconSize());
         setSizePolicy(properties.getPolicy());
         setAutoDefault(false);
-        alignLabel(text, properties.getTextAlignment());
-        alignIconLabel(icon.pixmap(properties.getIconSize()), properties.getIconAlignment(),
-                       properties.getPolicy());
+        setTextLabel(text, properties.getTextAlignment());
+        setIconLabel(icon.pixmap(properties.getIconSize()), properties.getIconAlignment(),
+                     properties.getPolicy());
 }
 
 PrimaryButton::~PrimaryButton() = default;
