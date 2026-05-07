@@ -4,7 +4,6 @@
 #pragma once
 
 class QString;
-class QStringView;
 
 class ShellRunner final {
 public:
