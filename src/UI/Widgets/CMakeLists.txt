@@ -1,6 +1,5 @@
 add_library(UI_Widgets
         PrimaryButton.cpp
-        PrimaryButtonParams.h
         PowerButtonParams.h)
 add_library(UI::Widgets ALIAS UI_Widgets)
 
