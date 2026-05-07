@@ -38,9 +38,4 @@ void ConfigMapper::mapToPowerAppletConfig(const toml::table& power_applet_table,
         /* Layout Properties */
         mapLayout(power_applet_table["layout"], config.layout_properties,
                   defaults.getLayoutProperties(), PathContext{filename, u"layout"_s});
-
-        /* Environment Properties */
-        mapEnvironment(power_applet_table["environment"], config.environment_properties,
-                       defaults.getEnvironmentProperties(),
-                       PathContext{filename, u"environment"_s});
 }

@@ -15,7 +15,6 @@ target_link_libraries(PowerApplet_UI_Widgets PRIVATE
         Config::ConfigFile::PowerApplet
         Config::KeysFile::Global
         Config::KeysFile::PowerApplet
-        DBus
         Shell)
 
 target_link_libraries(PowerApplet_UI_Widgets PUBLIC

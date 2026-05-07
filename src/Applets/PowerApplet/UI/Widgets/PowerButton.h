@@ -16,11 +16,9 @@ class PowerButton final : public PrimaryButton {
 
 private:
         const power_button_id id;
-        const QString         dbus_action;
 
 public:
         explicit PowerButton(power_button_id id, const QIcon& icon, const QString& text,
-                             const QString& dbus_action, const QString& command);
+                             const QString& command);
         power_button_id getID() const;
-        const QString&  getDBusAction() const;
 };

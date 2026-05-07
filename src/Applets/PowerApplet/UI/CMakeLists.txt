@@ -11,7 +11,6 @@ target_include_directories(PowerApplet_UI PRIVATE
 
 target_link_libraries(PowerApplet_UI PRIVATE
         PowerApplet::UI::Widgets
-        PowerApplet::DBus
         Config::ConfigFile::Global
         Config::ConfigFile::PowerApplet
         Config::ConfigFile::Properties

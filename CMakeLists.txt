@@ -63,9 +63,6 @@ add_subdirectory(
         src/UI)
 
 add_subdirectory(
-        src/DBus)
-
-add_subdirectory(
         src/Applets/Types)
 
 if(BUILD_POWERAPPLET)
@@ -91,7 +88,6 @@ install(# Install compiled artifacts to correct destinations, register all targe
                 Config_TomlParser
                 Config_Resolver Config_Resolver_PathContext Config_Resolver_Types
                 Config_Types
-                DBus
                 Shell
                 UI
                 UI_Enums UI_Widgets
@@ -106,7 +102,6 @@ install(# Install compiled artifacts to correct destinations, register all targe
 if(BUILD_POWERAPPLET)
         install(
                 TARGETS PowerApplet
-                        PowerApplet_DBus
                         PowerApplet_UI
                         PowerApplet_UI_Widgets
                 EXPORT FastApplets_export

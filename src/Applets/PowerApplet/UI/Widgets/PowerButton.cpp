@@ -2,7 +2,6 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 
 #include "PowerButton.h"
-#include "Applets/PowerApplet/DBus/PowerActionManager.h"
 #include "Config/ConfigFile/PowerApplet/PowerAppletConfig.h"
 #include "CppUtils/Log/QtLog.h"
 #include "Shell/ShellRunner.h"
@@ -15,9 +14,8 @@
 #include <QString>
 
 PowerButton::PowerButton(power_button_id id, const QIcon& icon, const QString& text,
-                         const QString& dbus_action, const QString& command) :
-        PrimaryButton(icon, text, PowerAppletConfig::get().getPrimaryButtonProperties()), id(id),
-        dbus_action(dbus_action) {
+                         const QString& command) :
+        PrimaryButton(icon, text, PowerAppletConfig::get().getPrimaryButtonProperties()), id(id) {
         connect(this, &PowerButton::clicked,
                 [this, command]() { ShellRunner::runCommand(command); });
 
@@ -26,8 +24,4 @@ PowerButton::PowerButton(power_button_id id, const QIcon& icon, const QString& t
 
 power_button_id PowerButton::getID() const {
         return id;
-}
-
-const QString& PowerButton::getDBusAction() const {
-        return dbus_action;
 }

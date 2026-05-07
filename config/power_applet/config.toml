@@ -1,6 +1,3 @@
-[environment]
-dbus_mode = false
-
 [layout]
 [[layout.primary_buttons]]
 id = "shutdown"

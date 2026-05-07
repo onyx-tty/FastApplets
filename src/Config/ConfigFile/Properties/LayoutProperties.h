@@ -13,8 +13,6 @@ class QString;
 
 QIcon iconFor(power_button_id id);
 
-QString dbusMethodFor(power_button_id id);
-
 class LayoutProperties final {
 private:
         friend class ConfigMapper;

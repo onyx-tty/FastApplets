@@ -14,6 +14,5 @@ struct PowerButtonParams final {
         QString         text;
         long            order;
         QString         command;
-        QString         dbus_method;
         QIcon           icon;
 };

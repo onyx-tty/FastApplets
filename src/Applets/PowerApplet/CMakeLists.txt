@@ -1,8 +1,7 @@
 cmake_minimum_required(VERSION 3.16)
 
-project(PowerApplet VERSION 0.23.7 LANGUAGES CXX)
+project(PowerApplet VERSION 0.23.8 LANGUAGES CXX)
 
-add_subdirectory(DBus)
 add_subdirectory(UI)
 
 # Executables
@@ -17,10 +16,8 @@ target_include_directories(PowerApplet PRIVATE
 
 target_link_libraries(PowerApplet PRIVATE
         Config
-        DBus
         UI
-        PowerApplet::UI
-        PowerApplet::DBus)
+        PowerApplet::UI)
 
 target_link_libraries(PowerApplet PUBLIC
         CppUtils::Log::Qt)

@@ -12,7 +12,6 @@
 #include <toml++/toml.hpp>
 #include <QStringList>
 
-class EnvironmentProperties;
 class LayoutProperties;
 class WindowProperties;
 class GlobalConfig;
@@ -47,11 +46,6 @@ private:
         static void mapCommand(node_view command_node, std::vector<PowerButtonParams>& buttons,
                                const std::vector<PowerButtonParams>& defaults, QString& command,
                                const PathContext& path_context);
-
-        /* Environment Properties*/
-        static void mapEnvironment(node_view environment_node, EnvironmentProperties& environment,
-                                   const EnvironmentProperties& defaults,
-                                   const PathContext&           path_context);
 
 public:
         ConfigMapper() = delete;

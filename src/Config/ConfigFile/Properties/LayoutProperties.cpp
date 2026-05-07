@@ -25,18 +25,6 @@ QIcon iconFor(power_button_id id) {
         return {};
 }
 
-QString dbusMethodFor(power_button_id id) {
-        switch (id) {
-        case power_button_id::shutdown:  return "PowerOff";
-        case power_button_id::reboot:    return "Reboot";
-        case power_button_id::suspend:   return "Suspend";
-        case power_button_id::hibernate: return "Hibernate";
-        }
-
-        QCRITICAL() << "DBus method unclear, power_button_id:" << static_cast<int>(id);
-        return {};
-}
-
 LayoutProperties::LayoutProperties(std::vector<PowerButtonParams> power_buttons) :
         power_buttons(std::move(power_buttons)) {}
 

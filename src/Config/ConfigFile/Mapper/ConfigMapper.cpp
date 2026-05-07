@@ -3,7 +3,6 @@
 
 #include "ConfigMapper.h"
 #include "Applets/Types/AppletRecord.h"
-#include "Config/ConfigFile/Properties/EnvironmentProperties.h"
 #include "Config/ConfigFile/Properties/LayoutProperties.h"
 #include "Config/ConfigFile/Properties/PrimaryButtonProperties.h"
 #include "Config/ConfigFile/Properties/WindowProperties.h"
@@ -244,8 +243,6 @@ bool ConfigMapper::mapPrimaryButton(node_view                             button
 
         button.icon = iconFor(button.id);
 
-        button.dbus_method = dbusMethodFor(button.id);
-
         buttons.insert(buttons.cend(), std::move(button));
 
         return false;
@@ -263,29 +260,4 @@ void ConfigMapper::mapCommand(node_view command_node, std::vector<PowerButtonPar
         }
 
         command = std::move(command_raw.value());
-}
-
-/* Environment Properties*/
-void ConfigMapper::mapEnvironment(node_view environment_node, EnvironmentProperties& environment,
-                                  const EnvironmentProperties& defaults,
-                                  const PathContext&           path_context) {
-        EnvironmentProperties environment_properties{};
-
-        const auto data = Resolver::from<toml::table>({Source{environment_node,
-                                                              applet::power_applet.scope}},
-                                                      path_context);
-        if (!data) {
-                environment_properties = defaults;
-                environment            = std::move(environment_properties);
-                return;
-        }
-
-        // D-Bus mode
-        environment_properties.dbus_mode =
-                Resolver::fromOr<bool, bool>({Source{data.value()["dbus_mode"],
-                                                     applet::power_applet.scope}},
-                                             defaults.getDBusMode(),
-                                             path_context.getExtended("dbus_mode"));
-
-        environment = std::move(environment_properties);
 }
