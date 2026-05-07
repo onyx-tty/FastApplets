@@ -1,4 +1,4 @@
-project(DBus VERSION 0.1.5 LANGUAGES CXX)
+project(DBus VERSION 0.1.6 LANGUAGES CXX)
 
 # Requirements
 find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS DBus)

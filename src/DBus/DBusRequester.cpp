@@ -16,10 +16,10 @@
 QDBusPendingReply<QVariantMap> DBusRequester::pending_reply;
 
 void DBusRequester::call(const DBusTarget& target, const QString& method) {
-        static const auto connection = QDBusConnection::connectToBus(QDBusConnection::SystemBus,
-                                                                     target.name);
-        static const auto proxy      = QDBusInterface(target.name, target.path, target.interface,
-                                                      connection, nullptr);
+        const auto connection = QDBusConnection::connectToBus(QDBusConnection::SystemBus,
+                                                              target.name);
+        const auto proxy = QDBusInterface(target.name, target.path, target.interface, connection,
+                                          nullptr);
         if (!proxy.isValid()) { QFATAL("D-Bus proxy is invalid!"); }
 
         auto call = QDBusMessage::createMethodCall(target.name, target.path, target.interface,
