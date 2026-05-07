@@ -20,7 +20,6 @@ void ShellRunner::runCommand(const QString& command) {
         QStringList parts         = QProcess::splitCommand(reinterpreted);
 
         QString     program = parts.takeFirst();
-        QStringList args    = parts;
 
         QProcess::startDetached(program, parts);
 }
