@@ -23,8 +23,8 @@ private:
         void setIconLabel(const QPixmap& icon_pixmap, Qt::Alignment alignment,
                           QSizePolicy size_policy);
 
-        QLabel* icon_label;
-        QLabel* text_label;
+        QLabel* icon_label = nullptr;
+        QLabel* text_label = nullptr;
 
 protected:
         explicit PrimaryButton(const QIcon& icon, const QString& text,
