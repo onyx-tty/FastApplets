@@ -1,4 +1,4 @@
-# PROJ PowerApplet \[3/4\]
+# PROJ PowerApplet \[3/3\]
 
 1.  \[X\] Keybindings
 
@@ -6,7 +6,7 @@
 
 3.  \[X\] Shell command mode
 
-4.  \[ \] Restore DBus mode
+4.  \[ \] Mouse controls
 
     <br>
 
@@ -30,19 +30,7 @@
 
 <br>
 
-# <span class="todo TODO">TODO</span> LauncherApplet
-
-<br>
-
-# <span class="todo TODO">TODO</span> SystemApplet
-
-<br>
-
-# <span class="todo TODO">TODO</span> SecurityApplet
-
-<br>
-
-# Docs \[2/5\]
+# Docs \[2/4\]
 
 1.  \[X\] LICENSE
 
@@ -58,11 +46,11 @@
 
     5.  \[X\] Requirement instructions
 
-    6.  \[ \] Installing
+    6.  \[X\] Installing
 
     7.  \[X\] Building
 
-    8.  \[ \] Installation
+    8.  \[X\] Installation
 
     9.  \[ \] Help
 
@@ -74,11 +62,11 @@
 
 4.  \[ \] CONTRIBUTE.md
 
-5.  \[ \] Documentation
+5.  \[ \] Doxygen
 
     <br>
 
-# Infrastructure \[5/8\]
+# Infrastructure \[6/9\]
 
 1.  \[X\] CMake presets
 
@@ -86,14 +74,25 @@
 
 3.  \[X\] Centralized CMake structure
 
-4.  \[ \] Static compilation of private libraries
+4.  \[X\] Static linkage
 
 5.  \[X\] Cleaner build directories
 
-6.  \[X\] Config reliant on environment variables, adhering to the XDG
-    Base Directory Specification
+6.  \[ \] Docker support
 
-7.  \[ \] Testing
+    1.  \[X\] Compilation
+
+    2.  \[ \] Running tests
+
+    3.  \[X\] Deployment
+
+7.  \[ \] GitHub Workflow
+
+    1.  \[X\] Compilation
+
+    2.  \[ \] Running tests
+
+8.  \[ \] Testing
 
     1.  \[ \] GTest
 
@@ -101,30 +100,36 @@
 
     3.  \[ \] GBenchmark
 
-8.  \[ \] CI/CD
+9.  \[X\] Dependencies
 
-    <br>
+    1.  \[X\] Extract CppUtils
 
-# Config \[2/4\]
+    2.  \[X\] Extract TomlQt
+
+        <br>
+
+# Controls \[0/1\]
+
+1.  \[ \] Keychord system
+
+# Config \[4/5\]
 
 1.  \[ \] Standardized window class and title
 
 2.  \[X\] Config error handling
 
-3.  \[ \] Config value validation
+3.  \[X\] Config value validation
 
 4.  \[X\] Fallback config
 
-5.  \[ \] size scale option - set window size to % of screen resolution
+5.  \[X\] \$XDG<sub>CONFIGHOME</sub> for configs
 
     <br>
 
-# Resources \[1/4\]
+# Resources \[1/3\]
 
-1.  \[X\] Icon embedment in the executable
+1.  \[X\] PowerButton icons
 
-2.  \[ \] Fetching of default icons from the current icon theme
+2.  \[ \] Icons from current icon theme
 
 3.  \[ \] Custom icons
-
-4.  \[ \] Fallback icons
