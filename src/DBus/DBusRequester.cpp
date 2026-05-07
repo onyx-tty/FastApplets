@@ -29,6 +29,8 @@ void DBusRequester::call(const DBusTarget& target, const QString& method) {
         arguments << QVariant::fromValue(true);
         call.setArguments(arguments);
 
+        // Avoid overwriting pending_reply mid-work
+        waitForFinished();
         pending_reply = connection.asyncCall(call);
 }
 
