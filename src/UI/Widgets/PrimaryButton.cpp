@@ -30,6 +30,7 @@ void PrimaryButton::paintEvent(QPaintEvent*) {
 }
 
 void PrimaryButton::setTextLabel(const QString& text, Qt::Alignment label_alignment) {
+        if (text_label) { text_label->deleteLater(); }
         text_label = new QLabel(text, this);
         text_label->setAlignment(label_alignment);
         text_label->setAttribute(Qt::WA_TransparentForMouseEvents, true);
@@ -38,6 +39,7 @@ void PrimaryButton::setTextLabel(const QString& text, Qt::Alignment label_alignm
 
 void PrimaryButton::setIconLabel(const QPixmap& icon_pixmap, Qt::Alignment alignment,
                                  QSizePolicy size_policy) {
+        if (icon_label) { icon_label->deleteLater(); }
         icon_label = new QLabel("", this);
         icon_label->setAlignment(alignment);
         icon_label->setSizePolicy(size_policy);
