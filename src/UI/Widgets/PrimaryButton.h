@@ -17,8 +17,11 @@ class PrimaryButton : public QPushButton {
         Q_OBJECT
 
 private:
-        // Modified re-implementation of paintEvent that allows for manual setting of focus
+        // Represent focus as State_Sunken to visualize staging
         void paintEvent(QPaintEvent*) override;
+
+        // Support separate alignments for text and icon by storing both as separate labels
+        // and aligning them separately
         void setTextLabel(const QString& text, Qt::Alignment alignment);
         void setIconLabel(const QPixmap& pixmap, Qt::Alignment alignment, QSizePolicy size_policy);
 
@@ -31,6 +34,7 @@ protected:
         virtual ~PrimaryButton() = 0;
 
 public:
+        // Delete icon() accessor to avoid fetching the unused icon
         QIcon   icon() = delete;
         QString text() const;
 };

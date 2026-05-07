@@ -8,6 +8,7 @@
 #include <QIcon>
 #include <QString>
 
+// Parameters required to construct a PowerButton
 struct PowerButtonParams final {
         power_button_id id;
         QString         text;

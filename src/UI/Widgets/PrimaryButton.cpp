@@ -16,7 +16,7 @@ void PrimaryButton::paintEvent(QPaintEvent*) {
         // Disable Qt's hover effect
         option.state &= ~QStyle::State_MouseOver;
 
-        // Smart apply the focus state
+        // Visualize the state of focus, apply sunken to increase visibility
         if (hasFocus()) {
                 option.state |= QStyle::State_HasFocus;
                 option.state |= QStyle::State_Sunken;
