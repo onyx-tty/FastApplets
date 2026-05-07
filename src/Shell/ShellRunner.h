@@ -10,7 +10,7 @@ class ShellRunner final {
 public:
         ShellRunner() = delete;
 
-        // Pass QString command representing a full shell command, so program + arguments
+        // Single quotes are treated as double quotes
         //
         // Example: "hyprshutdown -t 'Shutting down...' -p 'systemctl poweroff'"
         // "hyprshutdown" is treated as the program and the rest as arguments
