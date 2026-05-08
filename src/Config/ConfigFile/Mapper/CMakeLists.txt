@@ -11,7 +11,7 @@ target_link_libraries(Config_ConfigFile_Mapper PRIVATE
         Config::TomlParser
         Config::Resolver::PathContext
         Config::Resolver::Types
-        UI::Enums
+        UI::Types
         UI::Widgets)
 
 target_link_libraries(Config_ConfigFile_Mapper PUBLIC

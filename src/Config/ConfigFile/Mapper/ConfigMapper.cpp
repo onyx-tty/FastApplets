@@ -13,7 +13,7 @@
 #include "Config/Types/NodeView.h"
 #include "CppUtils/Log/QtLog.h"
 #include "TomlQt/ArrayBounds.h"
-#include "UI/Enums/ButtonIDs.h"
+#include "UI/Types/ButtonID.h"
 #include "UI/Widgets/PowerButtonParams.h"
 
 #include <algorithm>

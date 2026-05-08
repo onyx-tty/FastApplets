@@ -5,7 +5,7 @@
 #include "Config/ConfigFile/PowerApplet/PowerAppletConfig.h"
 #include "CppUtils/Log/QtLog.h"
 #include "Shell/ShellRunner.h"
-#include "UI/Enums/ButtonIDs.h"
+#include "UI/Types/ButtonID.h"
 #include "UI/Widgets/PrimaryButton.h"
 
 #include <QBoxLayout>

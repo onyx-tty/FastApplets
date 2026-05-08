@@ -3,7 +3,7 @@
 
 #pragma once
 
-#include "UI/Enums/ButtonIDs.h"
+#include "UI/Types/ButtonID.h"
 
 #include <QIcon>
 #include <QString>

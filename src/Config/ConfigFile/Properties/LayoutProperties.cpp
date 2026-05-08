@@ -3,7 +3,7 @@
 
 #include "LayoutProperties.h"
 #include "CppUtils/Log/QtLog.h"
-#include "UI/Enums/ButtonIDs.h"
+#include "UI/Types/ButtonID.h"
 #include "UI/Widgets/PowerButtonParams.h"
 
 #include <utility>

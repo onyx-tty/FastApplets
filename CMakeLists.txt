@@ -90,7 +90,7 @@ install(# Install compiled artifacts to correct destinations, register all targe
                 Config_Types
                 Shell
                 UI
-                UI_Enums UI_Widgets
+                UI_Widgets UI_Types
                 AppletTypes
                 Resources_Icons
         EXPORT FastApplets_export

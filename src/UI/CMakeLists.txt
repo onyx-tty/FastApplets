@@ -2,8 +2,8 @@ cmake_minimum_required(VERSION 3.16)
 
 project(UI VERSION 0.5.6 LANGUAGES CXX)
 
-add_subdirectory(Enums)
 add_subdirectory(Widgets)
+add_subdirectory(Types)
 
 # Internal structure
 add_library(UI
@@ -14,7 +14,7 @@ target_include_directories(UI PRIVATE
         $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>)
 
 target_link_libraries(UI PRIVATE
-        UI::Enums
+        UI::Types
         UI::Widgets
         Config)
 

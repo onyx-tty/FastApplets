@@ -4,7 +4,7 @@
 #pragma once
 
 #include "Config/KeysFile/Types/Keybindings.h"
-#include "UI/Enums/ButtonIDs.h"
+#include "UI/Types/ButtonID.h"
 
 #include <vector>
 
