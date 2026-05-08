@@ -10,11 +10,17 @@
 #include <QStringLiteral>
 #include <QStringView>
 
-// TODO Test
+// Locates a file under $XDG_CONFIG_HOME/FastApplets/[subdirectory]/filename.
+// Returns the absolute path as std::string if found.
+//
+// TODO: Currently fatal if the file is missing. Should return an empty string
+//       and let callers fall back to getDefault() instead of hard-crashing.
 std::string findFile(QStringView filename, QStringView subdirectory = QStringLiteral(""));
 
+// Finds files in hardcoded locations.
 class FileLocator final {
 public:
-        // Look for configs in $XDG_CONFIG_HOME/FastApplets
+        // Locates config.toml and keys.toml for the given scope.
+        // A scope of "global" maps to the root FastApplets/ directory.
         static ConfigTomlFiles locateConfigFiles(std::string_view scope);
 };
