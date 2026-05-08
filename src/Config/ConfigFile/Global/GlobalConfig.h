@@ -15,9 +15,8 @@
 // Derive from this and extend with applet-specific properties.
 class GlobalConfig {
 protected:
-        explicit GlobalConfig(
-                WindowProperties        window_properties         = WindowProperties{},
-                PrimaryButtonProperties primary_button_properties = PrimaryButtonProperties{});
+        explicit GlobalConfig(WindowProperties        window_properties,
+                              PrimaryButtonProperties primary_button_properties);
 
         WindowProperties        window_properties;
         PrimaryButtonProperties primary_button_properties;
