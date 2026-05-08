@@ -11,8 +11,10 @@ class ConfigMapper;
 class QIcon;
 class QString;
 
+// Assign hardcoded icons associated with each button.
 QIcon iconFor(power_button_id id);
 
+// Stores properties describing the appearance of the layout.
 class LayoutProperties final {
 private:
         friend class ConfigMapper;

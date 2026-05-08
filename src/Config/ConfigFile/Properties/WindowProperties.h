@@ -8,6 +8,7 @@
 
 class ConfigMapper;
 
+// Stores properties used by MainWindow.
 class WindowProperties final {
 private:
         friend class ConfigMapper;

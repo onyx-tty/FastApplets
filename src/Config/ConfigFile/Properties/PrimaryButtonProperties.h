@@ -8,6 +8,7 @@
 #include <QSizePolicy>
 #include <Qt>
 
+// Stores data used to style each PrimaryButton.
 class PrimaryButtonProperties final {
 private:
         friend class ConfigMapper;
