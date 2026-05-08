@@ -7,7 +7,7 @@
 
 class GlobalKeys {
 protected:
-        explicit GlobalKeys(keybindings quit_keys = {});
+        explicit GlobalKeys(keybindings quit_keys);
 
         keybindings quit_keys;
 
