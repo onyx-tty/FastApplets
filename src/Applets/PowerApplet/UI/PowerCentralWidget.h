@@ -33,6 +33,24 @@ class PowerCentralWidget final : public QWidget {
         Q_OBJECT
 
 private:
+        // Creates and registers all PowerButtons from Config and Keys.
+        //
+        // Reads buttons and definitions from PowerAppletConfig and keybindings
+        // from PowerAppletKeys, constructs a PowerButton widget for each entry,
+        // adds it to main_layout, and returns a record of every button with its
+        // associated ID and keybindings.
+        //
+        // WARNING: If a resolved key is already bound elsewhere, both buttons
+        // will share it silently. A global keybinding validation pass is not
+        // implemented yet.
+        //
+        // Keybinding resolution order:
+        // 1. User-configured keys (PowerAppletKeys::get()).
+        // 2. Default keys (PowerAppletKeys::getDefault()).
+        // 3. Qt::Key_unknown if the defaults are exhausted.
+        //
+        // Returns a vector containing every created button.
+        // Calls QFATAL if no buttons are found in config.
         PowerButtonRecords createButtons();
 
         QBoxLayout*        main_layout;
@@ -42,6 +60,9 @@ public:
         explicit PowerCentralWidget();
         const QBoxLayout*         getMainLayout() const;
         const PowerButtonRecords& getButtons() const;
+        // Adds the stage-then-confirm keyboard navigation. See class doc for more.
         void                      keyPressEvent(QKeyEvent* event) override;
+        // Clears button focus on show so no button starts pre-staged, keeping the
+        // stage-then-confirm flow consistent from the first keypress.
         void                      showEvent(QShowEvent* event) override;
 };
