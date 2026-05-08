@@ -10,12 +10,11 @@
 #include <QSizePolicy>
 #include <QString>
 
-class ConfigMapper;
-
+// Base config holding properties common to all applets.
+//
+// Derive from this and extend with applet-specific properties.
 class GlobalConfig {
 protected:
-        friend class ConfigMapper;
-
         explicit GlobalConfig(
                 WindowProperties        window_properties         = WindowProperties{},
                 PrimaryButtonProperties primary_button_properties = PrimaryButtonProperties{});
