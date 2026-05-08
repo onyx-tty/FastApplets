@@ -1,5 +1,6 @@
 add_library(Config_Types
         ConfigTomlFiles.h
+        ConfigType.h
         NodePair.h
         NodeView.h)
 add_library(Config::Types ALIAS Config_Types)
