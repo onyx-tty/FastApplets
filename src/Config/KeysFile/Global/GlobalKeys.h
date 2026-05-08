@@ -11,10 +11,10 @@ class GlobalKeys {
 private:
         friend class KeysMapper;
 
-        keybindings quit_keys;
-
 protected:
         explicit GlobalKeys(keybindings quit_keys = {});
+
+        keybindings quit_keys;
 
 public:
         const keybindings& getQuitKeys() const;
