@@ -14,6 +14,15 @@
 
 class ConfigMapper;
 
+// Config for PowerApplet, loaded from config.toml.
+//
+// Two pre-installed singletons are accessible via static methods:
+//   get()        - user-defined settings from config.toml
+//   getDefault() - hardcoded fallbacks for missing or invalid settings
+//
+// TODO: The singleton instances and the config schema are coupled in the same
+//       class. They should be separated so the data structure can exist
+//       independently of its accessor. Currently held together with duct tape.
 class PowerAppletConfig final : public GlobalConfig {
 private:
         friend class ConfigMapper;
@@ -25,7 +34,6 @@ public:
                 WindowProperties        window_properties         = WindowProperties{},
                 PrimaryButtonProperties primary_button_properties = PrimaryButtonProperties{},
                 LayoutProperties        layout_properties         = LayoutProperties{});
-        // TODO Make this const to avoid overwrites
         static PowerAppletConfig&       get();
         static const PowerAppletConfig& getDefault();
         const LayoutProperties&         getLayoutProperties() const;
