@@ -31,5 +31,5 @@ public:
         const QBoxLayout*         getMainLayout() const;
         const PowerButtonRecords& getButtons() const;
         void                      keyPressEvent(QKeyEvent* event) override;
-        void                      showEvent(QShowEvent* event);
+        void                      showEvent(QShowEvent* event) override;
 };
