@@ -21,8 +21,5 @@ private:
 
 public:
         TomlParser() = delete;
-        static toml::table parseGlobalConfig();
-        static toml::table parseGlobalKeys();
-        static toml::table parsePowerAppletConfig();
-        static toml::table parsePowerAppletKeys();
+        static toml::table parseFile(applet::type applet, config::type config);
 };

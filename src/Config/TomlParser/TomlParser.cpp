@@ -30,18 +30,24 @@ toml::table TomlParser::createTable(const std::string& file_path) {
         return file_table;
 }
 
-toml::table TomlParser::parseGlobalConfig() {
-        return createTable(global_toml_files.config);
-}
+toml::table TomlParser::parseFile(applet::type applet, config::type config) {
+        ConfigTomlFiles* files = nullptr;
+        switch (applet) {
+        case applet::type::power_applet: files = &power_applet_toml_files; break;
+        case applet::type::global:       files = &global_toml_files; break;
+        default:
+                QWARNING() << "Unsupported applet::type found:" << static_cast<int>(applet);
+                return {};
+        }
 
-toml::table TomlParser::parseGlobalKeys() {
-        return createTable(global_toml_files.keys);
-}
+        std::string* file = nullptr;
+        switch (config) {
+        case config::type::config: file = &files->config; break;
+        case config::type::keys:   file = &files->keys; break;
+        default:
+                QWARNING() << "Unsupported config::type found:" << static_cast<int>(config);
+                return {};
+        }
 
-toml::table TomlParser::parsePowerAppletConfig() {
-        return createTable(power_applet_toml_files.config);
-}
-
-toml::table TomlParser::parsePowerAppletKeys() {
-        return createTable(power_applet_toml_files.keys);
+        return createTable(*file);
 }

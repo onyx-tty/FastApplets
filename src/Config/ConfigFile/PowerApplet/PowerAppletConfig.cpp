@@ -2,12 +2,14 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 
 #include "PowerAppletConfig.h"
+#include "Applets/Types/AppletTypes.h"
 #include "Config/ConfigFile/Global/GlobalConfig.h"
 #include "Config/ConfigFile/Mapper/ConfigMapper.h"
 #include "Config/ConfigFile/Properties/LayoutProperties.h"
 #include "Config/ConfigFile/Properties/PrimaryButtonProperties.h"
 #include "Config/ConfigFile/Properties/WindowProperties.h"
 #include "Config/TomlParser/TomlParser.h"
+#include "Config/Types/ConfigType.h"
 #include "CppUtils/Log/QtLog.h"
 #include "UI/Types/ButtonID.h"
 #include "UI/Widgets/PowerButtonParams.h"
@@ -30,8 +32,11 @@ PowerAppletConfig& PowerAppletConfig::get() {
         static bool              parsed = false;
 
         if (!parsed) {
-                ConfigMapper::mapToPowerAppletConfig(TomlParser::parsePowerAppletConfig(),
-                                                     TomlParser::parseGlobalConfig(), config);
+                ConfigMapper::mapToPowerAppletConfig(TomlParser::parseFile(applet::type::power_applet,
+                                                                           config::type::config),
+                                                     TomlParser::parseFile(applet::type::global,
+                                                                           config::type::config),
+                                                     config);
                 parsed = true;
         }
 

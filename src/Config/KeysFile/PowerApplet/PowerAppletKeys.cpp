@@ -2,10 +2,12 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 
 #include "PowerAppletKeys.h"
+#include "Applets/Types/AppletTypes.h"
 #include "Config/KeysFile/Global/GlobalKeys.h"
 #include "Config/KeysFile/Mapper/KeysMapper.h"
 #include "Config/KeysFile/Types/Keybindings.h"
 #include "Config/TomlParser/TomlParser.h"
+#include "Config/Types/ConfigType.h"
 
 #include <utility>
 #include <vector>
@@ -20,8 +22,11 @@ PowerAppletKeys& PowerAppletKeys::get() {
         static bool            parsed = false;
 
         if (!parsed) {
-                KeysMapper::mapToPowerAppletKeys(TomlParser::parsePowerAppletKeys(),
-                                                 TomlParser::parseGlobalKeys(), keys);
+                KeysMapper::mapToPowerAppletKeys(TomlParser::parseFile(applet::type::power_applet,
+                                                                       config::type::keys),
+                                                 TomlParser::parseFile(applet::type::global,
+                                                                       config::type::keys),
+                                                 keys);
                 parsed = true;
         }
 
