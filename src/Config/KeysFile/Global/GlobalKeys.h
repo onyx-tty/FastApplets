@@ -5,12 +5,7 @@
 
 #include "Config/KeysFile/Types/Keybindings.h"
 
-class KeysMapper;
-
 class GlobalKeys {
-private:
-        friend class KeysMapper;
-
 protected:
         explicit GlobalKeys(keybindings quit_keys = {});
 
