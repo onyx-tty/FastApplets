@@ -5,6 +5,9 @@
 
 #include "Config/KeysFile/Types/Keybindings.h"
 
+// Base keys holding properties common to all applets.
+//
+// Derive from this and extend with applet-specific keybindings.
 class GlobalKeys {
 protected:
         explicit GlobalKeys(keybindings quit_keys);
