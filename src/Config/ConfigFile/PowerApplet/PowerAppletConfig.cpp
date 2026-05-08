@@ -26,17 +26,16 @@ PowerAppletConfig::PowerAppletConfig(WindowProperties        window_properties,
         layout_properties(std::move(layout_properties)) {}
 
 PowerAppletConfig& PowerAppletConfig::get() {
-        static PowerAppletConfig power_applet_config{};
+        static PowerAppletConfig config{};
         static bool              parsed = false;
 
         if (!parsed) {
                 ConfigMapper::mapToPowerAppletConfig(TomlParser::parsePowerAppletConfig(),
-                                                     TomlParser::parseGlobalConfig(),
-                                                     power_applet_config);
+                                                     TomlParser::parseGlobalConfig(), config);
                 parsed = true;
         }
 
-        return power_applet_config;
+        return config;
 }
 
 const PowerAppletConfig& PowerAppletConfig::getDefault() {

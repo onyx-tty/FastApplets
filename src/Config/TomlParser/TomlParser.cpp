@@ -3,8 +3,10 @@
 
 #include "TomlParser.h"
 #include "Applets/Types/AppletRecord.h"
+#include "Applets/Types/AppletTypes.h"
 #include "Config/FileLocator/FileLocator.h"
 #include "Config/Types/ConfigTomlFiles.h"
+#include "Config/Types/ConfigType.h"
 #include "CppUtils/Log/QtLog.h"
 
 #include <string>
@@ -28,22 +30,18 @@ toml::table TomlParser::createTable(const std::string& file_path) {
         return file_table;
 }
 
-const toml::table& TomlParser::parseGlobalConfig() {
-        static toml::table config = createTable(global_toml_files.config);
-        return config;
+toml::table TomlParser::parseGlobalConfig() {
+        return createTable(global_toml_files.config);
 }
 
-const toml::table& TomlParser::parseGlobalKeys() {
-        static toml::table keys = createTable(global_toml_files.keys);
-        return keys;
+toml::table TomlParser::parseGlobalKeys() {
+        return createTable(global_toml_files.keys);
 }
 
-const toml::table& TomlParser::parsePowerAppletConfig() {
-        static toml::table config = createTable(power_applet_toml_files.config);
-        return config;
+toml::table TomlParser::parsePowerAppletConfig() {
+        return createTable(power_applet_toml_files.config);
 }
 
-const toml::table& TomlParser::parsePowerAppletKeys() {
-        static toml::table keys = createTable(power_applet_toml_files.keys);
-        return keys;
+toml::table TomlParser::parsePowerAppletKeys() {
+        return createTable(power_applet_toml_files.keys);
 }

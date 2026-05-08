@@ -3,6 +3,9 @@
 
 #pragma once
 
+#include "Applets/Types/AppletTypes.h"
+#include "Config/Types/ConfigType.h"
+
 #include <string>
 #include <toml++/toml.hpp>
 
@@ -18,9 +21,8 @@ private:
 
 public:
         TomlParser() = delete;
-        // TODO Enum for applet + type of file, parse with just one function
-        static const toml::table& parseGlobalConfig();
-        static const toml::table& parseGlobalKeys();
-        static const toml::table& parsePowerAppletConfig();
-        static const toml::table& parsePowerAppletKeys();
+        static toml::table parseGlobalConfig();
+        static toml::table parseGlobalKeys();
+        static toml::table parsePowerAppletConfig();
+        static toml::table parsePowerAppletKeys();
 };
