@@ -18,21 +18,15 @@
 #include <utility>
 #include <vector>
 #include <QApplication>
-#include <QKeyCombination>
 #include <QKeySequence>
 #include <QString>
-
-int interpretTextAsHex(const std::string& text) {
-        QKeySequence    sequence(QString::fromStdString(text));
-        QKeyCombination combination(sequence[0]);
-
-        return combination.key();
-};
 
 keybindings interpretTextAsKeybindings(const std::vector<std::string>& text_list) {
         keybindings keys{};
         keys.reserve(text_list.size());
-        for (const std::string& text : text_list) { keys.insert(interpretTextAsHex(text)); }
+        for (const std::string& text : text_list) {
+                keys.insert(QKeySequence{QString::fromStdString(text)}[0].key());
+        }
 
         return keys;
 }
