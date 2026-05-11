@@ -31,7 +31,7 @@ keybindings keysFromText(const std::vector<std::string>& text_list) {
         return keys;
 }
 
-std::vector<std::string> interpretTomlArrayAsStringVector(const toml::array& toml_array) {
+std::vector<std::string> textFromTomlArray(const toml::array& toml_array) {
         std::vector<std::string> str_vec{};
         str_vec.reserve(toml_array.size());
 
@@ -55,7 +55,7 @@ void KeysMapper::mapQuitKeys(NodePair nodes, keybindings& quit, const keybinding
                                              array, quit, defaults, path_context, {min_size},
                                              "Format: [keybindings...]");
 
-        quit = keysFromText(interpretTomlArrayAsStringVector(array));
+        quit = keysFromText(textFromTomlArray(array));
 }
 
 /* Power Applet Keys*/
@@ -92,5 +92,5 @@ void KeysMapper::mapPrimaryButtonKey(node_view primary_button_node, keybindings&
                                              button, primary_button, defaults, path_context,
                                              {min_size}, "Format: [keybindings...]");
 
-        primary_button = keysFromText(interpretTomlArrayAsStringVector(button));
+        primary_button = keysFromText(textFromTomlArray(button));
 }

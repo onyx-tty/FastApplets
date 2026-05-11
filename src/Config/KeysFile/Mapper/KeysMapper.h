@@ -22,8 +22,8 @@ class QString;
 // Constructs QKeySequence from each string and returns a set of Qt::Keys
 keybindings keysFromText(const std::vector<std::string>& text_list);
 
-/* Validate a toml::array, interpret as a string vector, discard non-string elements */
-std::vector<std::string> interpretTomlArrayAsStringVector(const toml::array& toml_array);
+// Validates a toml::array, interprets as a string vector, discards non-string elements
+std::vector<std::string> textFromTomlArray(const toml::array& toml_array);
 
 class KeysMapper final {
 private:
