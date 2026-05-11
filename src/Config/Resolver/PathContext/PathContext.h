@@ -7,6 +7,15 @@
 #include <QString>
 #include <QStringView>
 
+// Builds logging paths with dynamic scope substitution.
+//
+// PathContext stores a filename and a navigation path (e.g. ".window.size").
+// When logging messages, the scope ("power_applet", "global", ...) is inserted
+// at runtime to produce full paths like:
+//   "in config.toml, power_applet.window.size"
+//   "in config.toml, global.window.size"
+//
+// With this it's not necessary to store duplicate paths for each scope in NodePair.
 class PathContext final {
 private:
         QString path_context;
@@ -14,8 +23,26 @@ private:
         char    separator;
 
 public:
+        // Creates a context for path construction.
+        //
+        // Example: PathContext{u"config.toml", u".window"}
         explicit PathContext(QStringView filename, QStringView path_context, char separator = '.');
+
+        // Returns a full logging path by inserting scope between filename and
+        // path_context.
+        //
+        // Example: makePath("power_applet") -> "in config.toml, power_applet.window"
         QString     makePath(std::string_view scope) const;
+
+        // Returns a new PathContext with an additional path segment appended.
+        //
+        // Example: context.getExtended("size") -> PathContext with ".window.size"
         PathContext getExtended(std::string_view segment) const;
+
+        // Returns a new PathContext with an array index appended.
+        //
+        // Index is formatted with brackets, no separator is added.
+        //
+        // Example: ctx.getExtended(2) -> PathContext with ".window.size[2]"
         PathContext getExtended(size_t index) const;
 };
