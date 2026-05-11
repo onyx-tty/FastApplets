@@ -36,7 +36,7 @@ toml::table TomlParser::parseFile(applet::type applet, config::type config) {
         case applet::type::power_applet: files = &power_applet_toml_files; break;
         case applet::type::global:       files = &global_toml_files; break;
         default:
-                QWARNING() << "Unsupported applet::type found:" << static_cast<int>(applet);
+                QFATAL("Unsupported applet::type found: %i", static_cast<int>(applet));
                 return {};
         }
 
@@ -45,7 +45,7 @@ toml::table TomlParser::parseFile(applet::type applet, config::type config) {
         case config::type::config: file = &files->config; break;
         case config::type::keys:   file = &files->keys; break;
         default:
-                QWARNING() << "Unsupported config::type found:" << static_cast<int>(config);
+                QFATAL("Unsupported config::type found: %i", static_cast<int>(config));
                 return {};
         }
 
