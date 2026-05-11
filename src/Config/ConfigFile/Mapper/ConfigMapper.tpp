@@ -12,6 +12,7 @@
 #include <toml++/toml.hpp>
 #include <QApplication>
 #include <QStringLiteral>
+#include <QStringView>
 #include <Qt>
 
 template<typename TConfig>
