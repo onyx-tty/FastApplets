@@ -25,7 +25,7 @@ class QString;
 int interpretTextAsHex(const std::string& text);
 
 /* Apply interpretTextAsHex to each element of a string vector */
-keybindings interpretTextAsKeybindings(node_view source, keybindings& target);
+keybindings interpretTextAsKeybindings(const std::vector<std::string>& text_list);
 
 /* Validate a toml::array, interpret as a string vector, discard non-string elements */
 std::vector<std::string> interpretTomlArrayAsStringVector(const toml::array& toml_array);
