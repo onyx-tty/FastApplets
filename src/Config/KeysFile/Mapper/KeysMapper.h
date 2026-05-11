@@ -17,8 +17,10 @@ class NodePair;
 class PowerAppletKeys;
 class QString;
 
-/* Apply interpretTextAsHex to each element of a string vector */
-keybindings interpretTextAsKeybindings(const std::vector<std::string>& text_list);
+// Interprets a vector of strings as a set of keybindings
+//
+// Constructs QKeySequence from each string and returns a set of Qt::Keys
+keybindings keysFromText(const std::vector<std::string>& text_list);
 
 /* Validate a toml::array, interpret as a string vector, discard non-string elements */
 std::vector<std::string> interpretTomlArrayAsStringVector(const toml::array& toml_array);

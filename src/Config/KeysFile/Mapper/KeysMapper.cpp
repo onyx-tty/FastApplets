@@ -21,7 +21,7 @@
 #include <QKeySequence>
 #include <QString>
 
-keybindings interpretTextAsKeybindings(const std::vector<std::string>& text_list) {
+keybindings keysFromText(const std::vector<std::string>& text_list) {
         keybindings keys{};
         keys.reserve(text_list.size());
         for (const std::string& text : text_list) {
@@ -55,7 +55,7 @@ void KeysMapper::mapQuitKeys(NodePair nodes, keybindings& quit, const keybinding
                                              array, quit, defaults, path_context, {min_size},
                                              "Format: [keybindings...]");
 
-        quit = interpretTextAsKeybindings(interpretTomlArrayAsStringVector(array));
+        quit = keysFromText(interpretTomlArrayAsStringVector(array));
 }
 
 /* Power Applet Keys*/
@@ -92,5 +92,5 @@ void KeysMapper::mapPrimaryButtonKey(node_view primary_button_node, keybindings&
                                              button, primary_button, defaults, path_context,
                                              {min_size}, "Format: [keybindings...]");
 
-        primary_button = interpretTextAsKeybindings(interpretTomlArrayAsStringVector(button));
+        primary_button = keysFromText(interpretTomlArrayAsStringVector(button));
 }
