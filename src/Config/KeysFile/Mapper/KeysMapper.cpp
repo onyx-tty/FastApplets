@@ -9,10 +9,8 @@
 #include "Config/Resolver/Types/Source.h"
 #include "Config/Types/NodePair.h"
 #include "Config/Types/NodeView.h"
-#include "CppUtils/Log/QtLog.h"
 
 #include <cstddef>
-#include <optional>
 #include <string>
 #include <toml++/toml.hpp>
 #include <utility>
