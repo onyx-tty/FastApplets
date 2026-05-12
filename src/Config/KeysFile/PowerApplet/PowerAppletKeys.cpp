@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 
 #include "PowerAppletKeys.h"
-#include "Applets/Types/AppletTypes.h"
+#include "Applets/Types/AppletType.h"
 #include "Config/KeysFile/Global/GlobalKeys.h"
 #include "Config/KeysFile/Mapper/KeysMapper.h"
 #include "Config/KeysFile/Types/Keybindings.h"

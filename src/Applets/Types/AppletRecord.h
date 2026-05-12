@@ -3,7 +3,7 @@
 
 #pragma once
 
-#include "AppletTypes.h"
+#include "AppletType.h"
 
 #include <string_view>
 

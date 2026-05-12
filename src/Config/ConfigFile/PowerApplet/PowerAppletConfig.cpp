@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 
 #include "PowerAppletConfig.h"
-#include "Applets/Types/AppletTypes.h"
+#include "Applets/Types/AppletType.h"
 #include "Config/ConfigFile/Global/GlobalConfig.h"
 #include "Config/ConfigFile/Mapper/ConfigMapper.h"
 #include "Config/ConfigFile/Properties/LayoutProperties.h"

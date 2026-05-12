@@ -3,7 +3,7 @@
 
 #pragma once
 
-#include "Applets/Types/AppletTypes.h"
+#include "Applets/Types/AppletType.h"
 #include "Config/Types/ConfigType.h"
 
 #include <string>

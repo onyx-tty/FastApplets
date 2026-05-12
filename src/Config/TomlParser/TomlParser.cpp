@@ -3,7 +3,7 @@
 
 #include "TomlParser.h"
 #include "Applets/Types/AppletRecord.h"
-#include "Applets/Types/AppletTypes.h"
+#include "Applets/Types/AppletType.h"
 #include "Config/FileLocator/FileLocator.h"
 #include "Config/Types/ConfigFiles.h"
 #include "Config/Types/ConfigType.h"
@@ -35,18 +35,14 @@ toml::table TomlParser::parseFile(applet::type applet, config::type config) {
         switch (applet) {
         case applet::type::power_applet: files = &power_applet_toml_files; break;
         case applet::type::global:       files = &global_toml_files; break;
-        default:
-                QFATAL("Unsupported applet::type found: %i", static_cast<int>(applet));
-                return {};
+        default:                         QFATAL("Unsupported applet::type found: %i", static_cast<int>(applet)); return {};
         }
 
         std::string* file = nullptr;
         switch (config) {
         case config::type::config: file = &files->config; break;
         case config::type::keys:   file = &files->keys; break;
-        default:
-                QFATAL("Unsupported config::type found: %i", static_cast<int>(config));
-                return {};
+        default:                   QFATAL("Unsupported config::type found: %i", static_cast<int>(config)); return {};
         }
 
         return createTable(*file);

@@ -1,5 +1,5 @@
 add_library(AppletTypes
-        AppletTypes.h
+        AppletType.h
         AppletRecord.h)
 
 target_include_directories(AppletTypes PRIVATE
