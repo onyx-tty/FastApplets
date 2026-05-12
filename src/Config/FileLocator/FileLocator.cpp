@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 
 #include "FileLocator.h"
-#include "Config/Types/ConfigTomlFiles.h"
+#include "Config/Types/ConfigFiles.h"
 #include "CppUtils/Log/QtLog.h"
 
 #include <string>
@@ -34,8 +34,8 @@ std::string findFile(QStringView filename, QStringView subdirectory) {
         QFATAL("%s not found!", filepath.toStdString().c_str());
 }
 
-ConfigTomlFiles FileLocator::locateConfigFiles(std::string_view scope) {
-        ConfigTomlFiles files{};
+ConfigFiles FileLocator::locateConfigFiles(std::string_view scope) {
+        ConfigFiles files{};
 
         // Treat scope "global" as root
         if (scope == "global") {

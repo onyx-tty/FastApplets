@@ -5,15 +5,15 @@
 #include "Applets/Types/AppletRecord.h"
 #include "Applets/Types/AppletTypes.h"
 #include "Config/FileLocator/FileLocator.h"
-#include "Config/Types/ConfigTomlFiles.h"
+#include "Config/Types/ConfigFiles.h"
 #include "Config/Types/ConfigType.h"
 #include "CppUtils/Log/QtLog.h"
 
 #include <string>
 #include <toml++/toml.hpp>
 
-ConfigTomlFiles TomlParser::global_toml_files = FileLocator::locateConfigFiles(applet::global.scope);
-ConfigTomlFiles TomlParser::power_applet_toml_files = FileLocator::locateConfigFiles(
+ConfigFiles TomlParser::global_toml_files = FileLocator::locateConfigFiles(applet::global.scope);
+ConfigFiles TomlParser::power_applet_toml_files = FileLocator::locateConfigFiles(
         applet::power_applet.scope);
 
 toml::table TomlParser::createTable(const std::string& file_path) {
@@ -31,7 +31,7 @@ toml::table TomlParser::createTable(const std::string& file_path) {
 }
 
 toml::table TomlParser::parseFile(applet::type applet, config::type config) {
-        ConfigTomlFiles* files = nullptr;
+        ConfigFiles* files = nullptr;
         switch (applet) {
         case applet::type::power_applet: files = &power_applet_toml_files; break;
         case applet::type::global:       files = &global_toml_files; break;

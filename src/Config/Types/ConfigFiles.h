@@ -5,7 +5,7 @@
 
 #include <string>
 
-struct ConfigTomlFiles final {
+struct ConfigFiles final {
         std::string config;
         std::string keys;
 };

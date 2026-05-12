@@ -3,7 +3,7 @@
 
 #pragma once
 
-#include "Config/Types/ConfigTomlFiles.h"
+#include "Config/Types/ConfigFiles.h"
 
 #include <string>
 #include <QString>
@@ -22,5 +22,5 @@ class FileLocator final {
 public:
         // Locates config.toml and keys.toml for the given scope.
         // A scope of "global" maps to the root FastApplets/ directory.
-        static ConfigTomlFiles locateConfigFiles(std::string_view scope);
+        static ConfigFiles locateConfigFiles(std::string_view scope);
 };

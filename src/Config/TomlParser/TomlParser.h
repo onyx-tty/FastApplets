@@ -9,7 +9,7 @@
 #include <string>
 #include <toml++/toml.hpp>
 
-class ConfigTomlFiles;
+class ConfigFiles;
 
 // Parses TOML configuration files for different applets and config files
 //
@@ -30,8 +30,8 @@ class TomlParser final {
 private:
         // Cached file paths for each applet scope
         // TODO Shorter names
-        static ConfigTomlFiles global_toml_files;
-        static ConfigTomlFiles power_applet_toml_files;
+        static ConfigFiles global_toml_files;
+        static ConfigFiles power_applet_toml_files;
 
         // Parses a single file or fatals on error
         static toml::table createTable(const std::string& file_path);

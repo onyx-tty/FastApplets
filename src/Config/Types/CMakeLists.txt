@@ -1,5 +1,5 @@
 add_library(Config_Types
-        ConfigTomlFiles.h
+        ConfigFiles.h
         ConfigType.h
         NodePair.h
         NodeView.h)
