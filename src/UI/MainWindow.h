@@ -7,6 +7,7 @@
 
 class WindowProperties;
 
+// Unpacks WindowProperties to set window size and title.
 class MainWindow : public QMainWindow {
         Q_OBJECT
 
