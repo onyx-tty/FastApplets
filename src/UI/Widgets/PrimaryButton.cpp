@@ -65,5 +65,6 @@ PrimaryButton::PrimaryButton(const QIcon& icon, const QString& text,
 PrimaryButton::~PrimaryButton() = default;
 
 QString PrimaryButton::text() const {
+        if (!text_label) { return {}; };
         return text_label->text();
 }
