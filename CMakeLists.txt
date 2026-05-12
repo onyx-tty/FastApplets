@@ -14,7 +14,8 @@ set(QT_VERSION_MAJOR 6)
 include(GNUInstallDirs)
 include(CMakePackageConfigHelpers)
 
-# Install and use CPM to resolve conflicting and duplicated CppUtils
+# Install and use CPM to resolve conflicting and duplicated CppUtils which has
+# been included in TomlQt as well
 file(
         DOWNLOAD
         https://github.com/cpm-cmake/CPM.cmake/releases/download/v0.42.1/CPM.cmake
@@ -25,7 +26,6 @@ include(${CMAKE_CURRENT_BINARY_DIR}/cmake/CPM.cmake)
 
 find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets)
 
-# clang-tidy
 if(ENABLE_CLANG_TIDY)
         set(CMAKE_CXX_CLANG_TIDY
                 clang-tidy;
@@ -35,7 +35,7 @@ endif()
 # Export compile_commands.json to ensure language servers work properly
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
-# Build shared by default
+# Build static by default
 option(BUILD_SHARED_LIBS "Build using shared libraries" OFF)
 option(BUILD_TESTS "Build unit tests" ON)
 set(CPPUTILS_ENABLE_QT ON)
@@ -43,13 +43,12 @@ set(CPPUTILS_ENABLE_QT ON)
 set(ROOT_DIR ${CMAKE_CURRENT_LIST_DIR})
 set(SRC_DIR ${ROOT_DIR}/src)
 
-# Third-party libraries
+# Third-party
 if(BUILD_POWERAPPLET)
         CPMAddPackage("gh:onyx-tty/CppUtils#926ee69")
         CPMAddPackage("gh:onyx-tty/TomlQt#9d7d517")
 endif()
 
-# Internals
 add_subdirectory(
         resources)
 
