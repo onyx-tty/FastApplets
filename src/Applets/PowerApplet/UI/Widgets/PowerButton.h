@@ -12,6 +12,10 @@
 
 class QString;
 
+// Power button with associated icon and keybindings.
+//   - id: Determines which icon to use and which keybindings can activate it.
+//   - command: The actual system action to execute (shutdown, reboot, etc.)
+//   - keys: Key combinations that trigger this button.
 class PowerButton final : public PrimaryButton {
         Q_OBJECT
 
