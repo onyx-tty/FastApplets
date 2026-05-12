@@ -44,10 +44,8 @@ set(ROOT_DIR ${CMAKE_CURRENT_LIST_DIR})
 set(SRC_DIR ${ROOT_DIR}/src)
 
 # Third-party
-if(BUILD_POWERAPPLET)
-        CPMAddPackage("gh:onyx-tty/CppUtils#926ee69")
-        CPMAddPackage("gh:onyx-tty/TomlQt#9d7d517")
-endif()
+CPMAddPackage("gh:onyx-tty/CppUtils#926ee69")
+CPMAddPackage("gh:onyx-tty/TomlQt#9d7d517")
 
 add_subdirectory(
         resources)
