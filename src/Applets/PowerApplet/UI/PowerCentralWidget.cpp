@@ -39,7 +39,7 @@ static bool isQuitKey(int key) {
         return quit_keys.contains(key);
 }
 
-PowerButtonRecords PowerCentralWidget::createButtons() {
+std::vector<PowerButton*> PowerCentralWidget::createButtons() {
         const auto& primary_buttons_data =
                 PowerAppletConfig::get().getLayoutProperties().getPowerButtons();
         const std::vector<keybindings>  primary_button_keys = PowerAppletKeys::get()
@@ -67,19 +67,19 @@ PowerButtonRecords PowerCentralWidget::createButtons() {
                 return keybindings{Qt::Key_unknown};
         };
 
-        PowerButtonRecords primary_buttons{};
+        std::vector<PowerButton*> primary_buttons{};
         primary_buttons.reserve(primary_buttons_data.size());
 
         for (size_t i = 0; i != primary_buttons_data.size(); ++i) {
-                power_button_id    id           = primary_buttons_data[i].id;
-                QIcon              icon         = primary_buttons_data[i].icon;
-                QString            text         = primary_buttons_data[i].text;
-                QString            command      = primary_buttons_data[i].command;
-                auto*              power_button = new PowerButton(id, icon, text, command);
-                const keybindings& keys         = key_getter(i);
+                power_button_id id           = primary_buttons_data[i].id;
+                QIcon           icon         = primary_buttons_data[i].icon;
+                QString         text         = primary_buttons_data[i].text;
+                QString         command      = primary_buttons_data[i].command;
+                keybindings     keys         = key_getter(i);
+                auto*           power_button = new PowerButton{id, icon, text, keys, command};
 
                 main_layout->addWidget(power_button);
-                primary_buttons.push_back({id, power_button, keys});
+                primary_buttons.push_back(power_button);
         }
 
         if (primary_buttons.empty()) { QFATAL("No buttons found!"); }
@@ -94,17 +94,21 @@ const QBoxLayout* PowerCentralWidget::getMainLayout() const {
         return main_layout;
 }
 
-const PowerButtonRecords& PowerCentralWidget::getButtons() const {
+const std::vector<PowerButton*>& PowerCentralWidget::getButtons() const {
         return buttons;
 }
 
 void PowerCentralWidget::keyPressEvent(QKeyEvent* event) {
-        int        current_key = event->key();
-        const auto found_key = std::find_if(buttons.cbegin(), buttons.cend(),
-                                            [current_key](const PowerButtonRecord& record) -> bool {
-                                                    return record.keys.contains(current_key);
-                                            });
-        PowerButton* current = found_key != buttons.cend() ? found_key->widget : nullptr;
+        // TODO Improve messy finding logic and adaptation from iter to ptr
+        // TODO Rename current_key to key and current to button
+        int          current_key  = event->key();
+        const auto   found_button = std::find_if(buttons.cbegin(), buttons.cend(),
+                                                 [current_key](const PowerButton* button) -> bool {
+                                                       if (!button) { return false; }
+                                                       return button->getKeys().contains(
+                                                               current_key);
+                                                 });
+        PowerButton* current      = found_button != buttons.cend() ? *found_button : nullptr;
 
         // Quit pressed
         if (isQuitKey(event->key())) {

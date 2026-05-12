@@ -3,6 +3,7 @@
 
 #pragma once
 
+#include "Config/KeysFile/Types/Keybindings.h"
 #include "UI/Types/ButtonID.h"
 #include "UI/Widgets/PrimaryButton.h"
 
@@ -16,9 +17,11 @@ class PowerButton final : public PrimaryButton {
 
 private:
         const power_button_id id;
+        const keybindings     keys;
 
 public:
         explicit PowerButton(power_button_id id, const QIcon& icon, const QString& text,
-                             const QString& command);
-        power_button_id getID() const;
+                             const keybindings& keys, const QString& command);
+        power_button_id    getID() const;
+        const keybindings& getKeys() const;
 };
