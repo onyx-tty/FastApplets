@@ -51,6 +51,8 @@ private:
         // Calls QFATAL if no buttons are found in config.
         std::vector<PowerButton*> createButtons();
 
+        // TODO: Don't store main_layout separately, QWidget already stores the layout.
+        //       This change should be applied to all classes that do it.
         QBoxLayout*               main_layout;
         std::vector<PowerButton*> buttons;
 
