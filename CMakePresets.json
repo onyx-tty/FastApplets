@@ -46,7 +46,7 @@
                         "displayName": "",
                         "description": "",
                         "generator": "Ninja",
-                        "binaryDir": "build/RelDebWithInfo",
+                        "binaryDir": "build/RelWithDebInfo",
                         "cacheVariables": {
                                 "CMAKE_BUILD_TYPE": "RelWithDebInfo",
                                 "CMAKE_INSTALL_PREFIX" : "${sourceDir}/build/${presetName}/install"
