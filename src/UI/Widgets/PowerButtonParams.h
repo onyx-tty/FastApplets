@@ -3,16 +3,16 @@
 
 #pragma once
 
-#include "UI/Types/ButtonID.h"
+#include "UI/Types/ButtonType.h"
 
 #include <QIcon>
 #include <QString>
 
 // Parameters required to construct a PowerButton
 struct PowerButtonParams final {
-        power_button_id id;
-        QString         text;
-        long            order;
-        QString         command;
-        QIcon           icon;
+        power_button_type id;
+        QString           text;
+        long              order;
+        QString           command;
+        QIcon             icon;
 };

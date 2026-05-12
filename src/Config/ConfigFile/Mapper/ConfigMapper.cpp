@@ -13,7 +13,7 @@
 #include "Config/Types/NodeView.h"
 #include "CppUtils/Log/QtLog.h"
 #include "TomlQt/ArrayBounds.h"
-#include "UI/Types/ButtonID.h"
+#include "UI/Types/ButtonType.h"
 #include "UI/Widgets/PowerButtonParams.h"
 
 #include <algorithm>
@@ -31,16 +31,16 @@
 #include <QStringList>
 #include <Qt>
 
-static power_button_id getPowerButtonIDFromString(const QString& string) {
-        static const std::unordered_map<QString, power_button_id> map =
-                {{"poweroff", power_button_id::shutdown},
-                 {"shutdown", power_button_id::shutdown},
-                 {"reboot", power_button_id::reboot},
-                 {"suspend", power_button_id::suspend},
-                 {"hibernate", power_button_id::hibernate}};
+static power_button_type getPowerButtonTypeFromString(const QString& string) {
+        static const std::unordered_map<QString, power_button_type> map =
+                {{"poweroff", power_button_type::shutdown},
+                 {"shutdown", power_button_type::shutdown},
+                 {"reboot", power_button_type::reboot},
+                 {"suspend", power_button_type::suspend},
+                 {"hibernate", power_button_type::hibernate}};
 
         // TODO Replace with map.find()
-        if (!map.contains(string)) { return power_button_id::none; }
+        if (!map.contains(string)) { return power_button_type::none; }
 
         return map.at(string);
 }
@@ -218,7 +218,7 @@ bool ConfigMapper::mapPrimaryButton(node_view                             button
                 buttons = defaults;
                 return true;
         }
-        button.id = getPowerButtonIDFromString(id_result.value());
+        button.id = getPowerButtonTypeFromString(id_result.value());
 
         auto text_result = Resolver::from<QString>({Source{button_table.value()["text"],
                                                            applet::power_applet.scope}},

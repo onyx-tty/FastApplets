@@ -1,5 +1,5 @@
 add_library(UI_Types
-        ButtonID.h)
+        ButtonType.h)
 add_library(UI::Types ALIAS UI_Types)
 
 target_include_directories(UI_Types PRIVATE

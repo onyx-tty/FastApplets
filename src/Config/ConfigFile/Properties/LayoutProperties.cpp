@@ -3,7 +3,7 @@
 
 #include "LayoutProperties.h"
 #include "CppUtils/Log/QtLog.h"
-#include "UI/Types/ButtonID.h"
+#include "UI/Types/ButtonType.h"
 #include "UI/Widgets/PowerButtonParams.h"
 
 #include <utility>
@@ -12,14 +12,14 @@
 #include <QResource>
 #include <QString>
 
-QIcon iconFor(power_button_id id) {
+QIcon iconFor(power_button_type id) {
         Q_INIT_RESOURCE(Icons);
 
         switch (id) {
-        case power_button_id::shutdown:  return QIcon{":/Icons/Power/shutdown.svg"};
-        case power_button_id::reboot:    return QIcon{":/Icons/Power/reboot.svg"};
-        case power_button_id::suspend:   return QIcon{":/Icons/Power/suspend.svg"};
-        case power_button_id::hibernate: return QIcon{":/Icons/Power/hibernate.svg"};
+        case power_button_type::shutdown:  return QIcon{":/Icons/Power/shutdown.svg"};
+        case power_button_type::reboot:    return QIcon{":/Icons/Power/reboot.svg"};
+        case power_button_type::suspend:   return QIcon{":/Icons/Power/suspend.svg"};
+        case power_button_type::hibernate: return QIcon{":/Icons/Power/hibernate.svg"};
         }
 
         return {};

@@ -6,7 +6,7 @@
 #include "Config/KeysFile/Types/Keybindings.h"
 #include "CppUtils/Log/QtLog.h"
 #include "Shell/ShellRunner.h"
-#include "UI/Types/ButtonID.h"
+#include "UI/Types/ButtonType.h"
 #include "UI/Widgets/PrimaryButton.h"
 
 #include <QBoxLayout>
@@ -14,7 +14,7 @@
 #include <QObject>
 #include <QString>
 
-PowerButton::PowerButton(power_button_id id, const QIcon& icon, const QString& text,
+PowerButton::PowerButton(power_button_type id, const QIcon& icon, const QString& text,
                          const keybindings& keys, const QString& command) :
         PrimaryButton(icon, text, PowerAppletConfig::get().getPrimaryButtonProperties()),
         keys(keys), id(id) {
@@ -24,7 +24,7 @@ PowerButton::PowerButton(power_button_id id, const QIcon& icon, const QString& t
         QDEBUG() << QString("Created %1!").arg(text);
 }
 
-power_button_id PowerButton::getID() const {
+power_button_type PowerButton::getID() const {
         return id;
 }
 

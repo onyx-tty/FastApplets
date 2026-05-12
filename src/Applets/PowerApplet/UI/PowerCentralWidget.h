@@ -5,7 +5,7 @@
 
 #include "Config/KeysFile/PowerApplet/PowerAppletKeys.h"
 #include "Config/KeysFile/Types/Keybindings.h"
-#include "UI/Types/ButtonID.h"
+#include "UI/Types/ButtonType.h"
 #include "Widgets/PowerButton.h"
 
 #include <vector>

@@ -6,7 +6,7 @@
 #include "Config/KeysFile/PowerApplet/PowerAppletKeys.h"
 #include "Config/KeysFile/Types/Keybindings.h"
 #include "CppUtils/Log/QtLog.h"
-#include "UI/Types/ButtonID.h"
+#include "UI/Types/ButtonType.h"
 #include "Widgets/PowerButton.h"
 
 #include <array>
@@ -71,12 +71,12 @@ std::vector<PowerButton*> PowerCentralWidget::createButtons() {
         primary_buttons.reserve(primary_buttons_data.size());
 
         for (size_t i = 0; i != primary_buttons_data.size(); ++i) {
-                power_button_id id           = primary_buttons_data[i].id;
-                QIcon           icon         = primary_buttons_data[i].icon;
-                QString         text         = primary_buttons_data[i].text;
-                QString         command      = primary_buttons_data[i].command;
-                keybindings     keys         = key_getter(i);
-                auto*           power_button = new PowerButton{id, icon, text, keys, command};
+                power_button_type id           = primary_buttons_data[i].id;
+                QIcon             icon         = primary_buttons_data[i].icon;
+                QString           text         = primary_buttons_data[i].text;
+                QString           command      = primary_buttons_data[i].command;
+                keybindings       keys         = key_getter(i);
+                auto*             power_button = new PowerButton{id, icon, text, keys, command};
 
                 main_layout->addWidget(power_button);
                 primary_buttons.push_back(power_button);

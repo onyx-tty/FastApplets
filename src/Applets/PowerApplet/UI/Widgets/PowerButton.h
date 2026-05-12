@@ -4,7 +4,7 @@
 #pragma once
 
 #include "Config/KeysFile/Types/Keybindings.h"
-#include "UI/Types/ButtonID.h"
+#include "UI/Types/ButtonType.h"
 #include "UI/Widgets/PrimaryButton.h"
 
 #include <QBoxLayout>
@@ -16,12 +16,12 @@ class PowerButton final : public PrimaryButton {
         Q_OBJECT
 
 private:
-        const power_button_id id;
-        const keybindings     keys;
+        const power_button_type id;
+        const keybindings       keys;
 
 public:
-        explicit PowerButton(power_button_id id, const QIcon& icon, const QString& text,
+        explicit PowerButton(power_button_type id, const QIcon& icon, const QString& text,
                              const keybindings& keys, const QString& command);
-        power_button_id    getID() const;
+        power_button_type  getID() const;
         const keybindings& getKeys() const;
 };

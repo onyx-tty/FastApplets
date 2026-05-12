@@ -12,7 +12,7 @@ class QIcon;
 class QString;
 
 // Assign hardcoded icons associated with each button.
-QIcon iconFor(power_button_id id);
+QIcon iconFor(power_button_type id);
 
 // Stores properties describing the appearance of the layout.
 class LayoutProperties final {
