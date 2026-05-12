@@ -7,9 +7,9 @@ RUN set -ex;                                                                    
 COPY . /app
 WORKDIR /app
 
-RUN set -ex;                  \
-    cmake --preset Debug;     \
-    cmake --build build/Debug
+RUN set -ex;                     \
+    cmake --preset Debug;        \
+    cmake --build --preset Debug
 
 #RUN ctest --test-dir /app/build/Debug
 

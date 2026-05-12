@@ -41,19 +41,19 @@ sudo pacman -Sy qt6-base qt6-svg tomlplusplus cmake ninja clang gtest
 ``` sh
 # Choose one:
 
-# Static linking (recommended for regular users, if not packaging)
+# Static linking (recommended)
 cmake --preset Release .
 
 # OR
 
-# Dynamic linking ($LD_LIBRARY_PATH must have access to libs at install location)
+# Dynamic linking (for packaging; $LD_LIBRARY_PATH must have access to libs at install location)
 cmake --preset Release -DBUILD_SHARED_LIBS=ON .
 ```
 
 #### Build the project
 
 ``` sh
-cmake --build build/Release
+cmake --build --preset Release
 ```
 
 #### Install the compiled project

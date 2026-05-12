@@ -52,5 +52,23 @@
                                 "CMAKE_INSTALL_PREFIX" : "${sourceDir}/build/${presetName}/install"
                         }
                 }
+        ],
+        "buildPresets": [
+                {
+                        "name": "Debug",
+                        "configurePreset": "Debug"
+                },
+                {
+                        "name": "Lint",
+                        "configurePreset": "Lint"
+                },
+                {
+                        "name": "Release",
+                        "configurePreset": "Release"
+                },
+                {
+                        "name": "RelWithDebInfo",
+                        "configurePreset": "RelWithDebInfo"
+                }
         ]
 }
