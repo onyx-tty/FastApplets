@@ -5,13 +5,20 @@
 
 class QString;
 
+// Handles shell command execution (fire-and-forget, no output capture)
 class ShellRunner final {
 public:
         ShellRunner() = delete;
 
-        // Single quotes are treated as double quotes
+        // Run a string shell command
+        //
+        // QProcess::splitCommand() does not interpret single quotes as quotes,
+        // but as regular characters. This function converts single quotes to
+        // double quotes before parsing, to work around that limitation.
+        //
+        // TODO: Quote conversion should happen at config parse, not here
         //
         // Example: "hyprshutdown -t 'Shutting down...' -p 'systemctl poweroff'"
-        // "hyprshutdown" is treated as the program and the rest as arguments
+        //   "hyprshutdown" = program, rest = arguments
         static void runCommand(QString command);
 };
