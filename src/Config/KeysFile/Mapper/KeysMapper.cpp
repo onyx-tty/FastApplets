@@ -53,6 +53,8 @@ void KeysMapper::mapQuitKeys(NodePair nodes, keybindings& quit, const keybinding
                                              array, quit, defaults, path_context, {min_size},
                                              "Format: [keybindings...]");
 
+        if (array.empty()) { return; }
+
         quit = keysFromText(textFromTomlArray(array));
 }
 
@@ -68,6 +70,8 @@ void KeysMapper::mapPrimaryButtonKeys(node_view                       primary_bu
         Resolver::fromOrDefault({Source{primary_buttons_node, applet::power_applet.scope}},
                                 primary_button_arr, primary_buttons, defaults, path_context,
                                 {min_size}, "Format: [keybindings...]");
+
+        if (primary_button_arr.empty()) { return; }
 
         std::vector<keybindings> primary_buttons_new{};
         for (size_t i = 0; i != primary_button_arr.size(); ++i) {
@@ -89,6 +93,8 @@ void KeysMapper::mapPrimaryButtonKey(node_view primary_button_node, keybindings&
                                                      applet::power_applet.scope}},
                                              button, primary_button, defaults, path_context,
                                              {min_size}, "Format: [keybindings...]");
+
+        if (button.empty()) { return; }
 
         primary_button = keysFromText(textFromTomlArray(button));
 }
