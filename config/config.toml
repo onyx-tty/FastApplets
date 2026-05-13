@@ -1,8 +1,58 @@
+## Global settings applied to all applets.
+##
+## Applet-specific overrides go in "FastApplets/[applet_name]/config.toml"
+## Any setting left unset there will fall back to the value defined here.
+## If neither defines a value, it will fall back to hardcoded defaults.
+
+
+## Properties of the main window.
 [window]
+
+## Window title.
+## Used as title property of xdg_toplevel in Wayland and WM_NAME property in X11.
+## Unset by default to give each applet a distinct title.
+##
+## Default: FastApplets
+#title = "FastApplets"
+
+## Window size in pixels.
+##
+## Format:  [width, height]
+## Default: [960, 220]
 size = [960, 220]
 
+## Visual properties shared by all primary buttons.
 [primary_button]
+
+## Alignment of button text within the button area.
+##
+## Available values: "top", "bottom", "left", "right", "center"
+## Default: "top"
 text_alignment = "top"
+
+## Alignment of button icon within the button area.
+##
+## Available values: "top", "bottom", "left", "right", "center"
+## Default: "center"
 icon_alignment = "center"
+
+## Fixed icon size in pixels.
+##
+## Format:  [width, height]
+## Default: [64, 64]
 icon_size = [64, 64]
+
+## Size policy controlling how buttons expand or contract.
+##
+## Available values:
+##    "Fixed"            - exact size, never grows or shrinks
+##    "Minimum"          - can grow, never shrinks below hint
+##    "Maximum"          - can shrink, never grows above hint
+##    "Preferred"        - hint is preferred, can do either
+##    "Expanding"        - actively tries to take extra space
+##    "MinimumExpanding" - like Expanding, but enforces minimum
+##    "Ignored"          - size hint is ignored entirely
+##
+## See: https://doc.qt.io/qt-6/qsizepolicy.html#Policy-enum
+## Default: "expanding"
 policy = "expanding"

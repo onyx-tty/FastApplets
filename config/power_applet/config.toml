@@ -1,7 +1,49 @@
+## Settings applied to PowerApplet.
+##
+## Applet-specific settings and optional overrides for global defaults.
+## Any commented-out setting below inherits its value from "FastApplets/config.toml".
+##
+## Applet-specific:
+## - layout
+
+
+## Properties of the main window.
 [window]
+
+## Window title.
+##
+## Default: "PowerApplet"
 title = "PowerApplet"
 
-[layout]
+## Window size in pixels.
+## Uncomment to override global.
+#size = [960, 220]
+
+## Visual properties of primary buttons.
+## Uncomment any to override global.
+#[primary_button]
+#text_alignment = "top"
+#icon_alignment = "center"
+#icon_size = [64, 64]
+#policy = "expanding"
+
+## Primary buttons displayed in the applet.
+##
+## Each [[layout.primary_buttons]] entry defines one button.
+##
+## Fields:
+## id      - internal identifier, determines the icon and keys used.
+##           Supported values: "shutdown", "reboot", "suspend", "hibernate"
+## text    - label shown on the button, any string is valid
+## order   - display position (ascending); gaps are allowed
+## command - shell command run on button press; executed as-is
+## enabled - set to false to hide the button without removing its config
+##
+## Warning: commands are executed as-is with no sandboxing or confirmation prompt.
+##          Avoid destructive or irreversible commands (e.g. "rm -rf /") unless
+##          you are sure what you are doing. Commands requiring elevated access need
+##          permissions via sudoers (for sudo) or similar.
+
 [[layout.primary_buttons]]
 id = "shutdown"
 text = "Shutdown"

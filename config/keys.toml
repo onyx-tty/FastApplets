@@ -1,1 +1,26 @@
+## Global keybindings applied to all applets.
+##
+## Applet-specific overrides go in "FastApplets/[applet_name]/keys.toml"
+## Any setting left unset there will fall back to the value defined here.
+## If neither defines a value, it will fall back to hardcoded defaults.
+
+
+## Warning: Avoid re-using the same key. There is no validation mechanism
+##          handling overlapping keybindings yet, so the keybinding may
+##          behave unpredictably if you do that.
+
+
+## Key name format:
+## Each key is the suffix of its Qt::Key_ enum name.
+##     Qt::Key_Escape     -> Escape
+##     Qt::Key_A          -> A
+##     Qt::Key_F4         -> F4
+##     Qt::Key_ParenRight -> ParenRight
+## Full list: https://doc.qt.io/qt-6/qt.html#Key-enum
+
+
+## Keys that quit the applet and unfocus buttons.
+##
+## Format:  ["key1", "key2", ...]
+## Default: ["Escape", "Q"]
 quit = ["Escape", "Q"]

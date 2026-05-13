@@ -1,3 +1,38 @@
+## PowerApplet keybindings.
+##
+## Applet-specific keybindings and optional overrides for global defaults.
+## Any commented-out setting below inherits its value from "FastApplets/keys.toml".
+##
+## Applet-specific:
+## - primary_buttons
+
+
+## Warning: Avoid re-using the same key. There is no validation mechanism
+##          handling overlapping keybindings yet, so the keybinding may
+##          behave unpredictably if you do that.
+
+
+## Key name format:
+## Each key is the suffix of its Qt::Key_ enum name.
+##     Qt::Key_Escape     -> Escape
+##     Qt::Key_A          -> A
+##     Qt::Key_F4         -> F4
+##     Qt::Key_ParenRight -> ParenRight
+## Full list: https://doc.qt.io/qt-6/qt.html#Key-enum
+
+
+## Keys that quit the applet and unfocus buttons.
+## Uncomment to override global.
+#quit = ["Escape", "Q"]
+
+## Keybindings controlling primary buttons.
+##
+## Each inner array maps to one button in the order they are defined
+## in config.toml. The first array maps to button 1, the second button 2, etc.
+## You can supply multiple keybindings.
+##
+## Format:  [ ["key1", ...], ["key2", ...] ...]
+## Default: [ ["1"], ["2"], ["3"], ["4"] ]
 primary_buttons = [
     ["1"],
     ["2"],
