@@ -45,7 +45,7 @@ PowerAppletConfig& PowerAppletConfig::get() {
 
 const PowerAppletConfig& PowerAppletConfig::getDefault() {
         QSize            size                      = {960, 220};
-        QString          title                     = "test_window";
+        QString          title                     = "PowerApplet";
         WindowProperties default_window_properties = WindowProperties{std::move(size),
                                                                       std::move(title)};
 
