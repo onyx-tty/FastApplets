@@ -1,6 +1,5 @@
 [window]
 size = [960, 220]
-title = "test_window"
 
 [primary_button]
 text_alignment = "top"

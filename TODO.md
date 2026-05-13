@@ -112,9 +112,11 @@
 
 1.  \[ \] Keychord system
 
-# Config \[4/5\]
+    <br>
 
-1.  \[ \] Standardized window class and title
+# Config \[5/5\]
+
+1.  \[X\] Standardized window class and title
 
 2.  \[X\] Config error handling
 

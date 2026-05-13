@@ -72,8 +72,11 @@
 #+END_EXPORT
 * Controls [0/1]
 ** [ ] Keychord system
-* Config [4/5]
-** [ ] Standardized window class and title
+#+BEGIN_EXPORT markdown
+<br>
+#+END_EXPORT
+* Config [5/5]
+** [X] Standardized window class and title
 ** [X] Config error handling
 ** [X] Config value validation
 ** [X] Fallback config

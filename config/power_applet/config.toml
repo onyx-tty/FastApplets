@@ -1,3 +1,6 @@
+[window]
+title = "PowerApplet"
+
 [layout]
 [[layout.primary_buttons]]
 id = "shutdown"
