@@ -11,10 +11,7 @@
 #include <QStringView>
 
 // Locates a file under $XDG_CONFIG_HOME/FastApplets/[subdirectory]/filename.
-// Returns the absolute path as std::string if found.
-//
-// TODO: Currently fatal if the file is missing. Should return an empty string
-//       and let callers fall back to getDefault() instead of hard-crashing.
+// Returns the absolute path as std::string if found. Otherwise empty string.
 std::string findFile(QStringView filename, QStringView subdirectory = QStringLiteral(""));
 
 // Finds files in hardcoded locations.

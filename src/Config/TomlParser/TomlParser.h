@@ -18,8 +18,6 @@ class ConfigFiles;
 // File locations are determined once at startup via FileLocator and cached
 // in static members.
 // TODO inline cached TOML files for safety
-// Parse errors are fatal and immediately terminate the application.
-// TODO Handle parse errors, in which case pass empty toml::table without any problems.
 //
 // Available combinations:
 //   - global + config       -> global config.toml
@@ -28,12 +26,14 @@ class ConfigFiles;
 //   - power_applet + keys   -> power_applet keys.toml
 class TomlParser final {
 private:
-        // Cached file paths for each applet scope
+        // Cached file paths for each applet scope.
         // TODO Shorter names
         static ConfigFiles global_toml_files;
         static ConfigFiles power_applet_toml_files;
 
-        // Parses a single file or fatals on error
+        // Parses a single table at given filepath.
+        // If file exists and is parsed successfully, returns a parsed table.
+        // Otherwise returns an empty table and logs warnings.
         static toml::table createTable(const std::string& file_path);
 
 public:
@@ -42,9 +42,7 @@ public:
         // Parses the requested config file into a TOML table, corresponding
         // to the type of config and applet.
         //
-        // Returns: toml::table representing the parsed file.
-        //          Never returns empty table. Parse errors are fatal.
-        //
-        // Note: Parse errors crash the application with QFATAL.
+        // Returns: If found and parsed, toml::table representing the parsed file.
+        //          Otherwise an empty table.
         static toml::table parseFile(applet::type applet, config::type config);
 };

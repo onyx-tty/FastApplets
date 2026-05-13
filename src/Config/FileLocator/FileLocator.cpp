@@ -18,20 +18,13 @@ std::string findFile(QStringView filename, QStringView subdirectory) {
         QString filepath = qEnvironmentVariable("XDG_CONFIG_HOME") + "/FastApplets/" + subdir
                          + filename.toString();
 
-        // If file found, save filepath
-        if (QFileInfo::exists(filepath)) { return filepath.toStdString(); }
+        // Returns empty string if file doesn't exist to avoid downstream errors,
+        // like parsing the wrong file by accident.
+        if (!QFileInfo::exists(filepath)) {
+                return {};
+        }
 
-        // TODO Find a way to bypass the process and use Config::getDefault alone.
-        //      Rough idea: if nothing is found, perhaps let this func return empty string,
-        //      then handle empty config.toml and keys.toml paths dynamically?
-        //      Consequently the parser will probably fail to parse anything and return
-        //      an empty toml::table, which when passed downstream is read as empty config,
-        //      because of which resolve cannot resolve anything, not finding any fields,
-        //      and defaulting everything.
-        //
-        //      In other words, maybe the program should be allowed to proceed with
-        //      missing paths?
-        QFATAL("%s not found!", filepath.toStdString().c_str());
+        return filepath.toStdString();
 }
 
 ConfigFiles FileLocator::locateConfigFiles(std::string_view scope) {

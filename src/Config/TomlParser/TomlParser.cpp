@@ -11,20 +11,27 @@
 
 #include <string>
 #include <toml++/toml.hpp>
+#include <QFileInfo>
 
 ConfigFiles TomlParser::global_toml_files = FileLocator::locateConfigFiles(applet::global.scope);
 ConfigFiles TomlParser::power_applet_toml_files = FileLocator::locateConfigFiles(
         applet::power_applet.scope);
 
 toml::table TomlParser::createTable(const std::string& file_path) {
-        toml::table file_table;
+        toml::table file_table{};
+
+        if (!QFileInfo::exists(QString::fromStdString(file_path))) {
+                QWARNING() << "File not found!";
+                return {};
+        }
 
         try {
                 file_table = toml::parse_file(file_path);
                 QDEBUG() << "Parsed file" << QString::fromStdString(file_path);
         } catch (const toml::parse_error& error) {
-                QFATAL("Parsing of %s failed: %s", std::string(file_path).c_str(),
-                       std::string(error.description()).c_str());
+                QWARNING() << QString("%1:").arg(QString::fromStdString(file_path))
+                           << QString::fromStdString(std::string{error.description()});
+                return {};
         }
 
         return file_table;
@@ -35,14 +42,18 @@ toml::table TomlParser::parseFile(applet::type applet, config::type config) {
         switch (applet) {
         case applet::type::power_applet: files = &power_applet_toml_files; break;
         case applet::type::global:       files = &global_toml_files; break;
-        default:                         QFATAL("Unsupported applet::type found: %i", static_cast<int>(applet)); return {};
+        default:
+                QWARNING() << "Unsupported applet::type found:" << static_cast<int>(applet);
+                return {};
         }
 
         std::string* file = nullptr;
         switch (config) {
         case config::type::config: file = &files->config; break;
         case config::type::keys:   file = &files->keys; break;
-        default:                   QFATAL("Unsupported config::type found: %i", static_cast<int>(config)); return {};
+        default:
+                QWARNING() << "Unsupported config::type found:", static_cast<int>(config);
+                return {};
         }
 
         return createTable(*file);
