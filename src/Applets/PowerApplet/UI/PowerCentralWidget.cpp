@@ -111,7 +111,7 @@ void PowerCentralWidget::keyPressEvent(QKeyEvent* event) {
         PowerButton* current      = found_button != buttons.cend() ? *found_button : nullptr;
 
         // Quit pressed
-        if (isQuitKey(event->key())) {
+        if (isQuitKey(current_key)) {
                 // Unselect if a button is focused
                 if (auto* focused = qobject_cast<PowerButton*>(QApplication::focusWidget())) {
                         focused->clearFocus();
