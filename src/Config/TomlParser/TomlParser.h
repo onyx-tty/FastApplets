@@ -34,7 +34,7 @@ private:
         // Parses a single table at given filepath.
         // If file exists and is parsed successfully, returns a parsed table.
         // Otherwise returns an empty table and logs warnings.
-        static toml::table createTable(const std::string& file_path);
+        static toml::table createTable(const std::string& filepath);
 
 public:
         TomlParser() = delete;

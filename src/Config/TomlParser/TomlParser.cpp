@@ -17,19 +17,19 @@ ConfigFiles TomlParser::global_toml_files = FileLocator::locateConfigFiles(apple
 ConfigFiles TomlParser::power_applet_toml_files = FileLocator::locateConfigFiles(
         applet::power_applet.scope);
 
-toml::table TomlParser::createTable(const std::string& file_path) {
+toml::table TomlParser::createTable(const std::string& filepath) {
         toml::table file_table{};
 
-        if (!QFileInfo::exists(QString::fromStdString(file_path))) {
+        if (!QFileInfo::exists(QString::fromStdString(filepath))) {
                 QWARNING() << "File not found!";
                 return {};
         }
 
         try {
-                file_table = toml::parse_file(file_path);
-                QDEBUG() << "Parsed file" << QString::fromStdString(file_path);
+                file_table = toml::parse_file(filepath);
+                QDEBUG() << "Parsed file" << QString::fromStdString(filepath);
         } catch (const toml::parse_error& error) {
-                QWARNING() << QString("%1:").arg(QString::fromStdString(file_path))
+                QWARNING() << QString("%1:").arg(QString::fromStdString(filepath))
                            << QString::fromStdString(std::string{error.description()});
                 return {};
         }
