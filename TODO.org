@@ -5,7 +5,7 @@
 #+OPTIONS: num:1
 #+OPTIONS: \n:t
 
-* PROJ PowerApplet [3/3]
+* PROJ PowerApplet [3/4]
 ** [X] Keybindings
 ** [X] DBus client class for PowerActionManager
 ** [X] Shell command mode
@@ -27,7 +27,7 @@
 #+BEGIN_EXPORT markdown
 <br>
 #+END_EXPORT
-* Docs [2/4]
+* Docs [2/5]
 ** [X] LICENSE
 ** [ ] README.md
 *** [X] Summary
@@ -47,23 +47,21 @@
 #+BEGIN_EXPORT markdown
 <br>
 #+END_EXPORT
-* Infrastructure [6/9]
+* Infrastructure [9/9]
 ** [X] CMake presets
 ** [X] TOML configuration
 ** [X] Centralized CMake structure
 ** [X] Static linkage
 ** [X] Cleaner build directories
-** [ ] Docker support
+** [X] Docker
 *** [X] Compilation
-*** [ ] Running tests
+*** [X] Running tests
 *** [X] Deployment
-** [ ] GitHub Workflow
+** [X] GitHub Workflow
 *** [X] Compilation
-*** [ ] Running tests
-** [ ] Testing
-*** [ ] GTest
-*** [ ] GMock
-*** [ ] GBenchmark
+*** [X] Running tests
+** [X] Testing
+*** [X] Unit tests
 ** [X] Dependencies
 *** [X] Extract CppUtils
 *** [X] Extract TomlQt

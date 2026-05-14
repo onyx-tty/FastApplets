@@ -22,7 +22,6 @@ FastApplets is a lightweight suite of applets designed for high performance, sim
 * `cmake`
 * `ninja`
 * `clang` — the "linting" profile
-* `gtest`
 
 ### Installing
 
@@ -33,7 +32,7 @@ FastApplets is a lightweight suite of applets designed for high performance, sim
 On Arch Linux
 
 ``` sh
-sudo pacman -Sy qt6-base qt6-svg tomlplusplus cmake ninja clang gtest
+sudo pacman -Sy qt6-base qt6-svg tomlplusplus cmake ninja clang
 ```
 
 #### Configure the project

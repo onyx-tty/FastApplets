@@ -1,4 +1,4 @@
-# PROJ PowerApplet \[3/3\]
+# PROJ PowerApplet \[3/4\]
 
 1.  \[X\] Keybindings
 
@@ -30,7 +30,7 @@
 
 <br>
 
-# Docs \[2/4\]
+# Docs \[2/5\]
 
 1.  \[X\] LICENSE
 
@@ -66,7 +66,7 @@
 
     <br>
 
-# Infrastructure \[6/9\]
+# Infrastructure \[9/9\]
 
 1.  \[X\] CMake presets
 
@@ -78,27 +78,23 @@
 
 5.  \[X\] Cleaner build directories
 
-6.  \[ \] Docker support
+6.  \[X\] Docker
 
     1.  \[X\] Compilation
 
-    2.  \[ \] Running tests
+    2.  \[X\] Running tests
 
     3.  \[X\] Deployment
 
-7.  \[ \] GitHub Workflow
+7.  \[X\] GitHub Workflow
 
     1.  \[X\] Compilation
 
-    2.  \[ \] Running tests
+    2.  \[X\] Running tests
 
-8.  \[ \] Testing
+8.  \[X\] Testing
 
-    1.  \[ \] GTest
-
-    2.  \[ \] GMock
-
-    3.  \[ \] GBenchmark
+    1.  \[X\] Unit tests
 
 9.  \[X\] Dependencies
 

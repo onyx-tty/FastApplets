@@ -1,11 +1,12 @@
-qt_add_executable(FastApplets_UnitTests)
-add_executable(FastApplets::UnitTests ALIAS FastApplets_UnitTests)
+set(UNIT_DIR ${CMAKE_CURRENT_LIST_DIR})
 
-target_link_libraries(FastApplets_UnitTests PUBLIC
-        GTest::gtest
-        GTest::gtest_main
-        Qt${QT_VERSION_MAJOR}::Core)
+add_subdirectory(Config)
 
-target_link_libraries(FastApplets_UnitTests PRIVATE)
+qt_add_executable(UnitTests)
 
-add_test(NAME FastApplets_UnitTests COMMAND FastApplets_UnitTests)
+target_link_libraries(UnitTests
+        PRIVATE UnitTests::Config
+        PUBLIC  Qt::Test
+                Qt${QT_VERSION_MAJOR}::Core)
+
+add_test(NAME UnitTests COMMAND UnitTests)
