@@ -9,7 +9,7 @@
 #include <QFileInfo>
 #include <QString>
 
-toml::table TomlParser::createTable(const std::string& filepath) {
+toml::table TomlParser::parseFile(const std::string& filepath) {
         toml::table file_table{};
 
         if (!QFileInfo::exists(QString::fromStdString(filepath))) {
