@@ -13,7 +13,6 @@
 
 #include <optional>
 #include <string_view>
-#include <toml++/impl/array.hpp>
 #include <toml++/toml.hpp>
 #include <Qt>
 
