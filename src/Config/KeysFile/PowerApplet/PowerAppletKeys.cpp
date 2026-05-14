@@ -2,12 +2,12 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 
 #include "PowerAppletKeys.h"
-#include "Applets/Types/AppletType.h"
+#include "Applets/Types/AppletRecord.h"
+#include "Config/FileLocator/FileLocator.h"
 #include "Config/KeysFile/Global/GlobalKeys.h"
 #include "Config/KeysFile/Mapper/KeysMapper.h"
 #include "Config/KeysFile/Types/Keybindings.h"
 #include "Config/TomlParser/TomlParser.h"
-#include "Config/Types/ConfigType.h"
 
 #include <utility>
 #include <vector>
@@ -22,11 +22,13 @@ PowerAppletKeys& PowerAppletKeys::get() {
         static bool            parsed = false;
 
         if (!parsed) {
-                KeysMapper::mapToPowerAppletKeys(TomlParser::parseFile(applet::type::power_applet,
-                                                                       config::type::keys),
-                                                 TomlParser::parseFile(applet::type::global,
-                                                                       config::type::keys),
-                                                 keys);
+                // TODO: Config files should not be fetched twice, once for config, once for keys.
+                //       Either fetch them individually or cache the result for both.
+                ConfigFiles power_files = FileLocator::locateConfigFiles(applet::power_applet.scope);
+                ConfigFiles global_files = FileLocator::locateConfigFiles(applet::global.scope);
+
+                KeysMapper::mapToPowerAppletKeys(TomlParser::parseFile(power_files.keys),
+                                                 TomlParser::parseFile(global_files.keys), keys);
                 parsed = true;
         }
 

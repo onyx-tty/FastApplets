@@ -2,15 +2,14 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 
 #include "PowerAppletConfig.h"
-#include "Applets/Types/AppletType.h"
+#include "Applets/Types/AppletRecord.h"
 #include "Config/ConfigFile/Global/GlobalConfig.h"
 #include "Config/ConfigFile/Mapper/ConfigMapper.h"
 #include "Config/ConfigFile/Properties/LayoutProperties.h"
 #include "Config/ConfigFile/Properties/PrimaryButtonProperties.h"
 #include "Config/ConfigFile/Properties/WindowProperties.h"
+#include "Config/FileLocator/FileLocator.h"
 #include "Config/TomlParser/TomlParser.h"
-#include "Config/Types/ConfigType.h"
-#include "CppUtils/Log/QtLog.h"
 #include "UI/Types/ButtonType.h"
 #include "UI/Widgets/PowerButtonParams.h"
 
@@ -32,10 +31,13 @@ PowerAppletConfig& PowerAppletConfig::get() {
         static bool              parsed = false;
 
         if (!parsed) {
-                ConfigMapper::mapToPowerAppletConfig(TomlParser::parseFile(applet::type::power_applet,
-                                                                           config::type::config),
-                                                     TomlParser::parseFile(applet::type::global,
-                                                                           config::type::config),
+                // TODO: Config files should not be fetched twice, once for config, once for keys.
+                //       Either fetch them individually or cache the result for both.
+                ConfigFiles power_files = FileLocator::locateConfigFiles(applet::power_applet.scope);
+                ConfigFiles global_files = FileLocator::locateConfigFiles(applet::global.scope);
+
+                ConfigMapper::mapToPowerAppletConfig(TomlParser::parseFile(power_files.config),
+                                                     TomlParser::parseFile(global_files.config),
                                                      config);
                 parsed = true;
         }

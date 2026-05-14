@@ -9,6 +9,9 @@ target_include_directories(Config_ConfigFile_PowerApplet PRIVATE
 target_link_libraries(Config_ConfigFile_PowerApplet PRIVATE
         Config::ConfigFile::Mapper
         Config::ConfigFile::Properties
+        Config::FileLocator
+        Config::TomlParser
+        AppletTypes
         Shell)
 
 target_link_libraries(Config_ConfigFile_PowerApplet PUBLIC

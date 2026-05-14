@@ -9,6 +9,8 @@ target_include_directories(Config_KeysFile_PowerApplet PRIVATE
 target_link_libraries(Config_KeysFile_PowerApplet PRIVATE
         Config::KeysFile::Mapper
         Config::KeysFile::Types
+        Config::FileLocator
         Config::TomlParser
+        AppletTypes
         TomlQt) # TODO This module doesn't use TomlQt but the Resolver & Mapper do
                 # so this file has to link against it too. Maybe Resolver should be public?
