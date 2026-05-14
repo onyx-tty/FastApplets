@@ -59,7 +59,7 @@ const PowerAppletConfig& PowerAppletConfig::getDefault() {
                                                                   std::move(policy)};
 
         std::vector<PowerButtonParams> primary_buttons =
-                {PowerButtonParams{power_button_type::shutdown, "Shutdown", 1, "systemctl shutdown",
+                {PowerButtonParams{power_button_type::shutdown, "Shutdown", 1, "systemctl poweroff",
                                    iconFor(power_button_type::shutdown)},
                  PowerButtonParams{power_button_type::reboot, "Reboot", 2, "systemctl reboot",
                                    iconFor(power_button_type::reboot)},
