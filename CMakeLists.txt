@@ -67,10 +67,10 @@ if(BUILD_POWERAPPLET)
                 src/Applets/PowerApplet)
 endif()
 
-#if(BUILD_TESTS)
-#        enable_testing()
-#        add_subdirectory(tests)
-#endif()
+if(BUILD_TESTS)
+        enable_testing()
+        add_subdirectory(tests)
+endif()
 
 install(# Install compiled artifacts to correct destinations, register all targets
         # under the name FastApplets_export

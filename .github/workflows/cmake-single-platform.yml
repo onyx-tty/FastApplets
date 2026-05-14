@@ -40,3 +40,6 @@ jobs:
       run: |
         export PATH="/usr/lib/ccache:/usr/local/opt/ccache/libexec:$PATH"
         cmake --build --preset ${{env.BUILD_TYPE}}
+
+    - name: Test
+    run: ctest --test-dir build/${{env.BUILD_TYPE}}
