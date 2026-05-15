@@ -7,5 +7,5 @@ target_include_directories(UnitTests_Config INTERFACE
         ${UNIT_DIR}
         ${SRC_DIR})
 
-target_link_libraries(UnitTests_Config
-        INTERFACE UnitTests::Config::TomlParser)
+target_link_libraries(UnitTests_Config INTERFACE
+        UnitTests::Config::TomlParser)

@@ -4,7 +4,7 @@ add_subdirectory(Config)
 
 qt_add_executable(UnitTests)
 
-target_link_libraries(UnitTests
-        PRIVATE UnitTests::Config)
+target_link_libraries(UnitTests PRIVATE
+        UnitTests::Config)
 
 add_test(NAME UnitTests COMMAND UnitTests)
