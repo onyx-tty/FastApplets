@@ -42,4 +42,4 @@ jobs:
         cmake --build --preset ${{env.BUILD_TYPE}}
 
     - name: Test
-      run: ctest --preset ${{env.BUILD_TYPE}}
+      run: ctest --preset ${{env.BUILD_TYPE}} --output-on-failure
