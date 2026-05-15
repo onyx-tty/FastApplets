@@ -33,6 +33,12 @@ Tiling window manager users who want lightweight, keyboard-driven utilities that
 sudo pacman -Sy qt6-base qt6-svg tomlplusplus cmake ninja clang
 ```
 
+##### Ubuntu
+
+``` sh
+sudo apt install qt6-base-dev libqt6svg6 libtomlplusplus-dev cmake ninja-build clang
+```
+
 #### Build from source
 
 ``` sh
@@ -69,7 +75,7 @@ PowerApplet
 
 #### Test
 
-```sh
+``` sh
 ctest --preset Debug --output-on-failure
 ```
 
