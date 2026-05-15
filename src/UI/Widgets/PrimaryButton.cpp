@@ -3,11 +3,13 @@
 
 #include "PrimaryButton.h"
 #include "Config/ConfigFile/Properties/PrimaryButtonProperties.h"
-#include "CppUtils/Log/QtLog.h"
 
+#include <QLabel>
 #include <QStackedLayout>
+#include <QStyle>
 #include <QStyleOptionButton>
 #include <QStylePainter>
+#include <Qt>
 
 void PrimaryButton::paintEvent(QPaintEvent*) {
         QStyleOptionButton option;

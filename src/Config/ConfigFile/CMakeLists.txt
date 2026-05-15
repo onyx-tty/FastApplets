@@ -14,8 +14,4 @@ target_link_libraries(Config_ConfigFile INTERFACE
         Config::ConfigFile::Global
         Config::ConfigFile::Mapper
         Config::ConfigFile::PowerApplet
-        Config::ConfigFile::Properties
-        Config::TomlParser
-        UI::Types
-        UI::Widgets
-        CppUtils::Log::Qt)
+        Config::ConfigFile::Properties)

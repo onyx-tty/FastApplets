@@ -4,6 +4,7 @@
 #include "PathContext.h"
 
 #include <cstddef>
+#include <string>
 #include <string_view>
 #include <QString>
 #include <QStringView>

@@ -4,14 +4,12 @@
 #pragma once
 
 #include "Config/Resolver/PathContext/PathContext.h"
-#include "Config/Resolver/Resolver.h"
 #include "Config/Types/NodePair.h"
 #include "ConfigMapper.h"
 #include "CppUtils/Log/QtLog.h"
 
 #include <toml++/toml.hpp>
 #include <QApplication>
-#include <QStringLiteral>
 #include <QStringView>
 #include <Qt>
 

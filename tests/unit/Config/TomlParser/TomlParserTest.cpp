@@ -9,6 +9,7 @@
 #include <QLatin1StringView>
 #include <QObject>
 #include <QTest>
+#include <QTextStream>
 
 using namespace Qt::Literals::StringLiterals;
 

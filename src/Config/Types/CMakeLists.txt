@@ -10,5 +10,4 @@ target_include_directories(Config_Types PRIVATE
         $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>)
 
 target_link_libraries(Config_Types PUBLIC
-        Qt${QT_VERSION_MAJOR}::Core
         tomlplusplus::tomlplusplus)

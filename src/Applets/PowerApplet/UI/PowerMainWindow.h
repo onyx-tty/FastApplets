@@ -3,10 +3,11 @@
 
 #pragma once
 
-#include "PowerCentralWidget.h"
 #include "UI/MainWindow.h"
 
-#include <QWidget>
+#include <QObject>
+
+class PowerCentralWidget;
 
 class PowerMainWindow final : public MainWindow {
         Q_OBJECT

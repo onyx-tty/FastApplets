@@ -3,12 +3,13 @@
 
 #pragma once
 
-#include "Config/Types/ConfigFiles.h"
-
 #include <string>
+#include <string_view>
 #include <QString>
 #include <QStringLiteral>
 #include <QStringView>
+
+class ConfigFiles;
 
 // Locates a file under $XDG_CONFIG_HOME/FastApplets/[subdirectory]/filename.
 // Returns the absolute path as std::string if found. Otherwise empty string.

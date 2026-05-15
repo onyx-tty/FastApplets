@@ -4,6 +4,7 @@
 #include "PowerMainWindow.h"
 #include "Config/ConfigFile/PowerApplet/PowerAppletConfig.h"
 #include "PowerCentralWidget.h"
+#include "UI/MainWindow.h"
 
 PowerMainWindow::PowerMainWindow() :
         MainWindow(PowerAppletConfig::get().getWindowProperties()),

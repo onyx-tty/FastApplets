@@ -8,6 +8,7 @@
 #include "Config/KeysFile/Mapper/KeysMapper.h"
 #include "Config/KeysFile/Types/Keybindings.h"
 #include "Config/TomlParser/TomlParser.h"
+#include "Config/Types/ConfigFiles.h"
 
 #include <utility>
 #include <vector>

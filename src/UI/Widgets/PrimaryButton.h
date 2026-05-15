@@ -3,15 +3,17 @@
 
 #pragma once
 
-#include <QBoxLayout>
-#include <QEvent>
-#include <QIcon>
-#include <QLabel>
-#include <QPaintEvent>
+#include <QObject>
 #include <QPushButton>
-#include <QString>
+#include <Qt>
 
 class PrimaryButtonProperties;
+class QIcon;
+class QLabel;
+class QPaintEvent;
+class QPixmap;
+class QSizePolicy;
+class QString;
 
 // Base class for applet buttons with custom icon/text positioning and keyboard staging.
 //
@@ -53,7 +55,7 @@ public:
         // QPushButton::icon() would return garbage because the inherited icon
         // storage is not used, and a separate QLabel is used instead. Deleted
         // to prevent misuse.
-        QIcon   icon() = delete;
+        QIcon icon() = delete;
 
         // Returns text from the custom QLabel.
         QString text() const;

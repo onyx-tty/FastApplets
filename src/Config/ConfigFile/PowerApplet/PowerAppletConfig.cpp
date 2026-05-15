@@ -10,6 +10,7 @@
 #include "Config/ConfigFile/Properties/WindowProperties.h"
 #include "Config/FileLocator/FileLocator.h"
 #include "Config/TomlParser/TomlParser.h"
+#include "Config/Types/ConfigFiles.h"
 #include "UI/Types/ButtonType.h"
 #include "UI/Widgets/PowerButtonParams.h"
 

@@ -4,8 +4,6 @@
 #pragma once
 
 #include "Config/KeysFile/Types/Keybindings.h"
-#include "Config/Resolver/PathContext/PathContext.h"
-#include "Config/Resolver/Resolver.h"
 #include "Config/Types/NodeView.h"
 
 #include <string>
@@ -14,6 +12,7 @@
 
 class GlobalKeys;
 class NodePair;
+class PathContext;
 class PowerAppletKeys;
 class QString;
 

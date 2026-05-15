@@ -7,12 +7,9 @@ target_include_directories(PowerApplet_UI_Widgets PRIVATE
         $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>)
 
 target_link_libraries(PowerApplet_UI_Widgets PRIVATE
-        UI::Types
         UI::Widgets
-        Config::ConfigFile::Properties
-        Config::ConfigFile::Global
+        UI::Types
         Config::ConfigFile::PowerApplet
-        Config::KeysFile::Global
         Config::KeysFile::PowerApplet
         Shell)
 

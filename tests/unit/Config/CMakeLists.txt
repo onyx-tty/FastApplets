@@ -8,6 +8,4 @@ target_include_directories(UnitTests_Config INTERFACE
         ${SRC_DIR})
 
 target_link_libraries(UnitTests_Config
-        INTERFACE UnitTests::Config::TomlParser
-                  Qt${QT_VERSION_MAJOR}::Test
-                  Qt${QT_VERSION_MAJOR}::Widgets)
+        INTERFACE UnitTests::Config::TomlParser)

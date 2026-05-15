@@ -3,20 +3,18 @@
 
 #pragma once
 
-#include "Config/Resolver/Types/Source.h"
-#include "Config/Types/NodeView.h"
 #include "TomlQt/ArrayBounds.h"
 
-#include <cstddef>
+#include <initializer_list>
 #include <optional>
-#include <string_view>
 #include <toml++/toml.hpp>
 #include <QString>
 #include <Qt>
 
+class PathContext;
+class Source;
 class QSizePolicy;
 class QSize;
-class PathContext;
 
 // Extracts typed values from TOML nodes with fallback chains and error handling.
 //

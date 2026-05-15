@@ -7,6 +7,3 @@ target_include_directories(Config_Resolver_Types INTERFACE
 
 target_link_libraries(Config_Resolver_Types INTERFACE
         Config::Types)
-
-target_link_libraries(Config_Resolver_Types INTERFACE
-        tomlplusplus::tomlplusplus)

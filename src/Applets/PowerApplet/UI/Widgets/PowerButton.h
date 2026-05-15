@@ -7,9 +7,10 @@
 #include "UI/Types/ButtonType.h"
 #include "UI/Widgets/PrimaryButton.h"
 
-#include <QBoxLayout>
-#include <QIcon>
+#include <QObject>
 
+class QBoxLayout;
+class QIcon;
 class QString;
 
 // Power button with associated icon and keybindings.

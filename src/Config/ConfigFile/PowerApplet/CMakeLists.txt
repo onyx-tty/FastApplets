@@ -14,10 +14,10 @@ target_link_libraries(Config_ConfigFile_PowerApplet PRIVATE
         Config::ConfigFile::Properties
         Config::FileLocator
         Config::TomlParser
-        AppletTypes
+        Config::Types
+        UI::Widgets
         UI::Types
-        Shell)
+        AppletTypes)
 
 target_link_libraries(Config_ConfigFile_PowerApplet PUBLIC
-        CppUtils::Log::Qt
         Qt${QT_VERSION_MAJOR}::Widgets)

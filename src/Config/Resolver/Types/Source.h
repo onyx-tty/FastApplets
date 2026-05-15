@@ -5,6 +5,8 @@
 
 #include "Config/Types/NodeView.h"
 
+#include <string_view>
+
 // Stores a node_view with all metadata in one place
 // TODO Rename to something more accurate
 // TODO Replace scope with applet::type

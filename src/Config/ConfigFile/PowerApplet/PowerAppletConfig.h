@@ -8,10 +8,6 @@
 #include "Config/ConfigFile/Properties/PrimaryButtonProperties.h"
 #include "Config/ConfigFile/Properties/WindowProperties.h"
 
-#include <QSize>
-#include <QSizePolicy>
-#include <QString>
-
 class ConfigMapper;
 
 // Config for PowerApplet, loaded from config.toml.

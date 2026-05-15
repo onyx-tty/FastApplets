@@ -2,14 +2,10 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 
 #include "GlobalConfig.h"
-#include "Config/ConfigFile/Mapper/ConfigMapper.h"
 #include "Config/ConfigFile/Properties/PrimaryButtonProperties.h"
 #include "Config/ConfigFile/Properties/WindowProperties.h"
 
 #include <utility>
-#include <QSize>
-#include <QSizePolicy>
-#include <QString>
 
 GlobalConfig::GlobalConfig(WindowProperties        window_properties,
                            PrimaryButtonProperties primary_button_properties) :

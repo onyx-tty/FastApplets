@@ -3,20 +3,18 @@
 
 #pragma once
 
-#include "Config/Resolver/PathContext/PathContext.h"
-#include "Config/Resolver/Resolver.h"
-#include "Config/Types/NodePair.h"
 #include "Config/Types/NodeView.h"
 
-#include <cstddef>
 #include <toml++/toml.hpp>
-#include <QStringList>
+#include <vector>
 
-class LayoutProperties;
-class WindowProperties;
 class GlobalConfig;
+class NodePair;
+class PathContext;
 class PowerButtonParams;
 class PrimaryButtonProperties;
+class WindowProperties;
+class LayoutProperties;
 class QString;
 class QSize;
 class QSizePolicy;

@@ -9,16 +9,17 @@
 #include "UI/Types/ButtonType.h"
 #include "Widgets/PowerButton.h"
 
-#include <array>
+#include <algorithm>
 #include <cstddef>
-#include <unordered_map>
 #include <vector>
 #include <QApplication>
 #include <QBoxLayout>
 #include <QHBoxLayout>
+#include <QIcon>
 #include <QKeyEvent>
 #include <QObject>
 #include <QShowEvent>
+#include <QWidget>
 #include <Qt>
 
 static bool isPowerKey(int key) {

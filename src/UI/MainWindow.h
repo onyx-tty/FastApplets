@@ -4,6 +4,7 @@
 #pragma once
 
 #include <QMainWindow>
+#include <QObject>
 
 class WindowProperties;
 

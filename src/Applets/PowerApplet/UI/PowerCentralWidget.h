@@ -3,17 +3,14 @@
 
 #pragma once
 
-#include "Config/KeysFile/PowerApplet/PowerAppletKeys.h"
-#include "Config/KeysFile/Types/Keybindings.h"
-#include "UI/Types/ButtonType.h"
-#include "Widgets/PowerButton.h"
-
 #include <vector>
-#include <QBoxLayout>
-#include <QKeyEvent>
+#include <QObject>
 #include <QWidget>
 #include <Qt>
 
+class PowerButton;
+class QBoxLayout;
+class QKeyEvent;
 class QShowEvent;
 
 // Keyboard navigation follows a two-press "stage-then-confirm" pattern to

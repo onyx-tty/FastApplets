@@ -15,12 +15,11 @@ target_include_directories(PowerApplet PRIVATE
         $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>)
 
 target_link_libraries(PowerApplet PRIVATE
-        Config
-        UI
         PowerApplet::UI)
 
 target_link_libraries(PowerApplet PUBLIC
-        CppUtils::Log::Qt)
+        CppUtils::Log::Qt
+        Qt${QT_VERSION_MAJOR}::Widgets)
 
 if(ENABLE_UBSAN)
         target_compile_options(PowerApplet PRIVATE -fno-omit-frame-pointer -g -fsanitize=undefined)

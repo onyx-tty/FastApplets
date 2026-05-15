@@ -11,7 +11,6 @@ target_include_directories(Config_Resolver INTERFACE
 target_link_libraries(Config_Resolver INTERFACE
         Config::Resolver::PathContext
         Config::Resolver::Types
-        Config::TomlParser
         Config::Types)
 
 target_link_libraries(Config_Resolver INTERFACE

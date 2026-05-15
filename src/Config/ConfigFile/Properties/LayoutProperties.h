@@ -3,6 +3,7 @@
 
 #pragma once
 
+#include "UI/Types/ButtonType.h"
 #include "UI/Widgets/PowerButtonParams.h"
 
 #include <vector>

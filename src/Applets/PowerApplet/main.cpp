@@ -5,7 +5,17 @@
 #include "UI/PowerMainWindow.h"
 
 #include <QApplication>
-#include <QDebug>
+
+// Qt 6.5+ provides dedicated headers <QtLogging> and <QtVersion>.
+// Use them when possible to reduce compilation times.
+// For older Qt versions, fall back to the full <QtCore>.
+// <QtVersionChecks> didn't exist before Qt 6.5, so it can't be used either.
+#if __has_include(<QtEnvironmentVariables>) // Qt >=6.5
+#       include <QtLogging>
+#       include <QtVersion>
+#else
+#       include <QtGlobal> // Qt <6.5
+#endif
 
 int main(int argc, char* argv[]) {
         // Initialize QApplication

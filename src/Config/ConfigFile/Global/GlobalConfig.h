@@ -6,10 +6,6 @@
 #include "Config/ConfigFile/Properties/PrimaryButtonProperties.h"
 #include "Config/ConfigFile/Properties/WindowProperties.h"
 
-#include <QSize>
-#include <QSizePolicy>
-#include <QString>
-
 // Base config holding properties common to all applets.
 //
 // Derive from this and extend with applet-specific properties.

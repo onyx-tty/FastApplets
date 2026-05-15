@@ -3,9 +3,11 @@
 
 #pragma once
 
+#include <cstddef>
 #include <string_view>
 #include <QString>
-#include <QStringView>
+
+class QStringView;
 
 // Builds logging paths with dynamic scope substitution.
 //
@@ -32,7 +34,7 @@ public:
         // path_context.
         //
         // Example: makePath("power_applet") -> "in config.toml, power_applet.window"
-        QString     makePath(std::string_view scope) const;
+        QString makePath(std::string_view scope) const;
 
         // Returns a new PathContext with an additional path segment appended.
         //

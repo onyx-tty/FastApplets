@@ -14,6 +14,4 @@ target_link_libraries(Config_KeysFile INTERFACE
         Config::KeysFile::Global
         Config::KeysFile::Mapper
         Config::KeysFile::PowerApplet
-        Config::KeysFile::Types
-        Config::TomlParser
-        CppUtils::Log::Qt)
+        Config::KeysFile::Types)

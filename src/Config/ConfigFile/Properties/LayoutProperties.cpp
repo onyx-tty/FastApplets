@@ -2,7 +2,6 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 
 #include "LayoutProperties.h"
-#include "CppUtils/Log/QtLog.h"
 #include "UI/Types/ButtonType.h"
 #include "UI/Widgets/PowerButtonParams.h"
 

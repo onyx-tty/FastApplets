@@ -3,17 +3,21 @@
 
 #pragma once
 
-#include "Config/Resolver/PathContext/PathContext.h"
 #include "Config/Resolver/Types/Source.h"
 #include "Config/Types/NodeView.h"
 #include "CppUtils/Log/QtLog.h"
+#include "PathContext/PathContext.h"
 #include "Resolver.h"
 #include "TomlQt/ArrayBounds.h"
 #include "TomlQt/TomlQt.h"
 
+#include <cstddef>
+#include <initializer_list>
 #include <optional>
-#include <string_view>
 #include <toml++/toml.hpp>
+#include <type_traits>
+#include <utility>
+#include <QString>
 #include <Qt>
 
 class QSizePolicy;

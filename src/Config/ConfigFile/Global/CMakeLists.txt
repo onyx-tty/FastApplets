@@ -7,10 +7,4 @@ target_include_directories(Config_ConfigFile_Global PRIVATE
         $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>)
 
 target_link_libraries(Config_ConfigFile_Global PRIVATE
-        Config::ConfigFile::Properties
-        Config::ConfigFile::Mapper
-        Shell)
-
-target_link_libraries(Config_ConfigFile_Global PUBLIC
-        CppUtils::Log::Qt
-        Qt${QT_VERSION_MAJOR}::Widgets)
+        Config::ConfigFile::Properties)

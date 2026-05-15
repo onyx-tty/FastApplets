@@ -16,7 +16,7 @@ target_include_directories(UI PRIVATE
 target_link_libraries(UI PRIVATE
         UI::Types
         UI::Widgets
-        Config)
+        Config::ConfigFile::Properties)
 
 target_link_libraries(UI PUBLIC
         CppUtils::Log::Qt

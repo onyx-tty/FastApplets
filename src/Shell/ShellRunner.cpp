@@ -4,6 +4,7 @@
 #include "ShellRunner.h"
 
 #include <QProcess>
+#include <QString>
 #include <QStringList>
 
 void ShellRunner::runCommand(QString command) {

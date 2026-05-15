@@ -12,23 +12,19 @@
 #include "Config/Types/NodePair.h"
 #include "Config/Types/NodeView.h"
 #include "CppUtils/Log/QtLog.h"
-#include "TomlQt/ArrayBounds.h"
 #include "UI/Types/ButtonType.h"
 #include "UI/Widgets/PowerButtonParams.h"
 
 #include <algorithm>
 #include <cstdint>
 #include <cstdlib>
-#include <string>
 #include <toml++/toml.hpp>
 #include <unordered_map>
 #include <utility>
 #include <vector>
-#include <QApplication>
 #include <QSize>
 #include <QSizePolicy>
 #include <QString>
-#include <QStringList>
 #include <Qt>
 
 static power_button_type getPowerButtonTypeFromString(const QString& string) {
