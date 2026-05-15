@@ -30,33 +30,11 @@
 
 <br>
 
-# Docs \[2/5\]
+# Docs \[3/5\]
 
 1.  \[X\] LICENSE
 
-2.  \[ \] README.md
-
-    1.  \[X\] Summary
-
-    2.  \[ \] Description
-
-    3.  \[ \] Getting Started
-
-    4.  \[ \] Dependencies
-
-    5.  \[X\] Requirement instructions
-
-    6.  \[X\] Installing
-
-    7.  \[X\] Building
-
-    8.  \[X\] Installation
-
-    9.  \[ \] Help
-
-    10. \[X\] Authors
-
-    11. \[ \] Acknowledgments
+2.  \[X\] README.md
 
 3.  \[X\] TODO.md
 

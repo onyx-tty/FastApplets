@@ -27,20 +27,9 @@
 #+BEGIN_EXPORT markdown
 <br>
 #+END_EXPORT
-* Docs [2/5]
+* Docs [3/5]
 ** [X] LICENSE
-** [ ] README.md
-*** [X] Summary
-*** [ ] Description
-*** [ ] Getting Started
-*** [ ] Dependencies
-*** [X] Requirement instructions
-*** [X] Installing
-*** [X] Building
-*** [X] Installation
-*** [ ] Help
-*** [X] Authors
-*** [ ] Acknowledgments
+** [X] README.md
 ** [X] TODO.md
 ** [ ] CONTRIBUTE.md
 ** [ ] Doxygen

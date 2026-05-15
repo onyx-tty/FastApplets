@@ -1,110 +1,90 @@
 # FastApplets
 
-FastApplets is a lightweight suite of applets designed for high performance, simplicity, and efficiency
+A collection of lightweight applets for system management, written in Qt6/C++
+
+Currently only PowerApplet - more coming soon!
 
 ## Description
 
-*WORK IN PROGRESS*
+The applets are designed with focus on keyboard-first controls, but with full mouse support. To prevent accidental destructive actions, like shutdown or reboot, they use a "stage-then-confirm" system: keyboard users must press twice. Mouse users don't have the same limitation.
 
-## Getting Started
+### PowerApplet
 
-*WORK IN PROGRESS*
+Provides shutdown, reboot, suspend, and hibernate controls with customizable shell command passing.
 
-### Dependencies
+## Who is this for?
 
-*WORK IN PROGRESS*
+Tiling window manager users who want lightweight, keyboard-driven utilities that don't fight their workflow. Casual users are welcome too, everything works with a mouse.
 
-#### Requirements for all applets
+### Building & Installation
+
+#### Prerequisites
 
 * `qt6-base`
 * `qt6-svg`
 * `tomlplusplus`
 * `cmake`
 * `ninja`
-* `clang` — the "linting" profile
+* `clang`
 
-### Installing
-
-*WORK IN PROGRESS*
-
-#### Install the dependencies listed above
-
-On Arch Linux
+##### Arch Linux
 
 ``` sh
 sudo pacman -Sy qt6-base qt6-svg tomlplusplus cmake ninja clang
 ```
 
-#### Configure the project
+#### Build from source
 
 ``` sh
-# Choose one:
+# Configure (static linking recommended)
+cmake --preset Release
 
-# Static linking (recommended)
-cmake --preset Release .
-
-# OR
-
-# Dynamic linking (for packaging; $LD_LIBRARY_PATH must have access to libs at install location)
-cmake --preset Release -DBUILD_SHARED_LIBS=ON .
-```
-
-#### Build the project
-
-``` sh
+# Build
 cmake --build --preset Release
 ```
 
-#### Install the compiled project
+**For dynamic linking**, pass `-DBUILD_SHARED_LIBS=ON` during configuration.
+Make sure `/your/installation/path/lib` is in `$LD_LIBRARY_PATH`, so that shared libraries are found by the executable.
+
+#### Install
+
+CPack is not supported at present; installation is manual.
 
 ``` sh
-# Choose one:
-
-# Install to a specific location
-# WARNING: If linking dynamically, /your/installation/path/lib must be a part of
-#          $LD_LIBRARY_PATH. The program won't be able to find the shared libraries
-#          without it.
 cmake --install build/Release --prefix /your/installation/path
-
-# OR
-
-# Install to the default prefix (build/{$presetName}/install)
-cmake --install build/Release
 ```
 
-#### Launch the executable
+#### Run
 
 ``` sh
-# Choose one:
+# If installed directory is in $PATH (e.g. /usr/bin)
+PowerApplet
 
-# Run installed version
+# Or with explicit path
 /your/installation/path/bin/PowerApplet
 
-# OR
-
-# Run without installation
+# Or directly from build directory
 ./build/Release/src/Applets/PowerApplet/PowerApplet
 ```
 
-## Help
+#### Test
 
-*WORK IN PROGRESS*
+```sh
+ctest --preset Debug --output-on-failure
+```
+
+## Background
+
+This project started as a way to learn programming in C++17, including CMake, version control, writing tests, setting up CI, and ways to avoid never-ending refactors by structuring the code well. Eventually, it turned into something useful.
 
 ## Authors
 
-- [onyx-tty](https://github.com/onyx-tty)
-
-## Version History
-
-*AWAITING RELEASE*
+* [onyx-tty](https://github.com/onyx-tty)
 
 ## License
 
 This project is licensed under the GPL 3.0 License — see the [LICENSE](./LICENSE) file for details
 
-## Acknowledgments
+## Credits
 
-Thanks to the following people for inspiration and resources:
-
-- [DomPizzie](https://gist.github.com/DomPizzie/7a5ff55ffa9081f2de27c315f5018afc) — the README.md template
-
+Special thanks to C++, CMake, and Ninja for helping translate the code to binary every time I bump a copyright year.
