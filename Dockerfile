@@ -11,7 +11,7 @@ RUN set -ex;                     \
     cmake --preset Debug;        \
     cmake --build --preset Debug
 
-RUN ctest --test-dir build/Debug
+RUN ctest --preset Debug
 
 RUN cmake --install build/Debug --prefix /FastApplets
 

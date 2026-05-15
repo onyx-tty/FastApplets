@@ -70,5 +70,23 @@
                         "name": "RelWithDebInfo",
                         "configurePreset": "RelWithDebInfo"
                 }
+        ],
+        "testPresets": [
+                {
+                        "name": "Debug",
+                        "configurePreset": "Debug"
+                },
+                {
+                        "name": "Lint",
+                        "configurePreset": "Lint"
+                },
+                {
+                        "name": "Release",
+                        "configurePreset": "Release"
+                },
+                {
+                        "name": "RelWithDebInfo",
+                        "configurePreset": "RelWithDebInfo"
+                }
         ]
 }
