@@ -76,8 +76,6 @@ private:
         // TODO: This should be done by mapPrimaryButtons instead, the helper
         //       should not be defaulting the entire vector, that's not its responsibility.
         //
-        // Buttons with 'enabled = false' are silently omitted from output.
-        //
         // Fallback priority: power_applet.layout.primary_buttons -> hardcoded defaults
         //
         // Expected format: primary_buttons (array of tables)
@@ -103,8 +101,7 @@ private:
         // Fallback priority: power_applet.primary_buttons[index] -> hardcoded defaults
         //
         // Expected format: primary_buttons[index] table containing id (string),
-        //                  text (string), order (int), command (string), and
-        //                  enabled (bool)
+        //                  text (string), order (int), command (string)
         //
         // Assigned value: PowerButtonParams
         static bool mapPrimaryButton(node_view                             button_params_node,

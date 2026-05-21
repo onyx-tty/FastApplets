@@ -211,11 +211,6 @@ bool ConfigMapper::mapPrimaryButton(node_view                             button
 
         PowerButtonParams button{};
 
-        auto enabled = Resolver::from<bool>({Source{.node  = button_table.value()["enabled"],
-                                                    .scope = applet::power_applet.scope}},
-                                            path_context.getExtended("enabled"));
-        if (!enabled || !enabled.value()) { return false; }
-
         auto id_result = Resolver::from<QString>({Source{.node  = button_table.value()["id"],
                                                          .scope = applet::power_applet.scope}},
                                                  path_context.getExtended("id"));

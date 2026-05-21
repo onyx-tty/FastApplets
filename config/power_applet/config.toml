@@ -30,6 +30,7 @@ title = "PowerApplet"
 ## Primary buttons displayed in the applet.
 ##
 ## Each [[layout.primary_buttons]] entry defines one button.
+## Comment out the button if you want to disable it.
 ##
 ## Fields:
 ## id      - internal identifier, determines the icon and keys used.
@@ -37,7 +38,6 @@ title = "PowerApplet"
 ## text    - label shown on the button, any string is valid
 ## order   - display position (ascending); gaps are allowed
 ## command - shell command run on button press; executed as-is
-## enabled - set to false to hide the button without removing its config
 ##
 ## Warning: commands are executed as-is with no sandboxing or confirmation prompt.
 ##          Avoid destructive or irreversible commands (e.g. "rm -rf /") unless
@@ -49,25 +49,21 @@ id = "shutdown"
 text = "Shutdown"
 order = 1
 command = "systemctl poweroff"
-enabled = true
 
 [[layout.primary_buttons]]
 id = "reboot"
 text = "Reboot"
 order = 2
 command = "systemctl reboot"
-enabled = true
 
 [[layout.primary_buttons]]
 id = "suspend"
 text = "Suspend"
 order = 3
 command = "systemctl suspend"
-enabled = true
 
 [[layout.primary_buttons]]
 id = "hibernate"
 text = "Hibernate"
 order = 4
 command = "systemctl hibernate"
-enabled = true
