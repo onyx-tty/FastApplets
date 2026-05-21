@@ -184,15 +184,6 @@ void ConfigMapper::mapPrimaryButtons(node_view                             prima
                 return;
         }
 
-        std::sort(buttons_found.begin(), buttons_found.end(),
-                  [](const PowerButtonParams& a, const PowerButtonParams& b) -> bool {
-                          return a.order < b.order;
-                  });
-
-        // Prevent index out of bound issues and multiple buttons with the same order by
-        // re-mapping order to a range from 1 to the total number of buttons
-        for (size_t i = 0; i != buttons_found.size(); ++i) { buttons_found[i].order = i + 1; }
-
         primary_buttons = std::move(buttons_found);
 }
 
@@ -228,15 +219,6 @@ bool ConfigMapper::mapPrimaryButton(node_view                             button
                 return true;
         }
         button.text = text_result.value();
-
-        auto order_result = Resolver::from<int64_t>({Source{.node  = button_table.value()["order"],
-                                                            .scope = applet::power_applet.scope}},
-                                                    path_context.getExtended("order"));
-        if (!order_result) {
-                buttons = defaults;
-                return true;
-        }
-        button.order = order_result.value();
 
         mapCommand(button_params_node["command"], buttons, defaults, button.command,
                    path_context.getExtended("command"));

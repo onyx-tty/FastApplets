@@ -36,7 +36,6 @@ title = "PowerApplet"
 ## id      - internal identifier, determines the icon and keys used.
 ##           Supported values: "shutdown", "reboot", "suspend", "hibernate"
 ## text    - label shown on the button, any string is valid
-## order   - display position (ascending); gaps are allowed
 ## command - shell command run on button press; executed as-is
 ##
 ## Warning: commands are executed as-is with no sandboxing or confirmation prompt.
@@ -47,23 +46,19 @@ title = "PowerApplet"
 [[layout.primary_buttons]]
 id = "shutdown"
 text = "Shutdown"
-order = 1
 command = "systemctl poweroff"
 
 [[layout.primary_buttons]]
 id = "reboot"
 text = "Reboot"
-order = 2
 command = "systemctl reboot"
 
 [[layout.primary_buttons]]
 id = "suspend"
 text = "Suspend"
-order = 3
 command = "systemctl suspend"
 
 [[layout.primary_buttons]]
 id = "hibernate"
 text = "Hibernate"
-order = 4
 command = "systemctl hibernate"

@@ -88,20 +88,20 @@ private:
 
         // Maps primary_button, including its attributes, from a config source.
         //
-        // Because id, string, and order cannot be defaulted without confusing the
+        // Because id and string cannot be defaulted without confusing the
         // user, e.g. with disabled reboot it could lead to defaulting a suspend button
         // title as "Reboot", the method instead defaults all buttons and logs a warning.
         // When all buttons are defaulted, this method returns "true".
         // Otherwise "false".
         // TODO: id should be the only mandatory attribute, all other defaults can be
         //       deduced from it alone. The idea that all buttons should be defaulted
-        //       with missing title/order is a leftover frm the previous index-based
+        //       with missing title is a leftover frm the previous index-based
         //       button passing.
         //
         // Fallback priority: power_applet.primary_buttons[index] -> hardcoded defaults
         //
         // Expected format: primary_buttons[index] table containing id (string),
-        //                  text (string), order (int), command (string)
+        //                  text (string), command (string)
         //
         // Assigned value: PowerButtonParams
         static bool mapPrimaryButton(node_view                             button_params_node,

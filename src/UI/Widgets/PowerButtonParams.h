@@ -9,11 +9,10 @@
 #include <QString>
 
 // Parameters required to construct a PowerButton.
-// Currently id, text, order, command, come from config, icon is assigned from id.
+// Currently id, text, command, come from config, icon is assigned from id.
 struct PowerButtonParams final {
         power_button_type id;
         QString           text;
-        long              order;
         QString           command;
         QIcon             icon;
 };
