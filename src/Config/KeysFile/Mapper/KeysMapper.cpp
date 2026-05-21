@@ -67,8 +67,7 @@ void KeysMapper::mapPrimaryButtonKeys(node_view                       primary_bu
         Resolver::fromOrDefault({Source{.node  = primary_buttons_node,
                                         .scope = applet::power_applet.scope}},
                                 primary_button_arr, primary_buttons, defaults, path_context,
-                                {.min_size = 1, .max_size = primary_buttons.size()},
-                                "Format: [keybindings...]");
+                                {.min_size = 1}, "Format: [keybindings...]");
 
         if (primary_button_arr.empty()) { return; }
 
