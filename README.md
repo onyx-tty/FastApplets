@@ -6,7 +6,7 @@ Currently only PowerApplet - more coming soon!
 
 ## Description
 
-The applets are designed with focus on keyboard-first controls, but with full mouse support. To prevent accidental destructive actions, like shutdown or reboot, they use a "stage-then-confirm" system: keyboard users must press twice. Mouse users don't have the same limitation.
+The applets are designed with focus on keyboard-first controls, but have full mouse support. To prevent accidental destructive actions, like shutdown or reboot, controlling buttons with keyboard requires pressing a button twice. Mouse presses don't have the same limitation.
 
 ### PowerApplet
 
@@ -14,11 +14,11 @@ Provides shutdown, reboot, suspend, and hibernate controls with customizable she
 
 ## Who is this for?
 
-Tiling window manager users who want lightweight, keyboard-driven utilities that don't fight their workflow. Casual users are welcome too, everything works with a mouse.
+Tiling window manager users who want lightweight utilities that complement their keyboard-centric workflow. Casual users are welcome too, mouse is also supported.
 
-### Building & Installation
+## Building & Installation
 
-#### Prerequisites
+### Prerequisites
 
 * `qt6-base`
 * `qt6-svg`
@@ -27,19 +27,19 @@ Tiling window manager users who want lightweight, keyboard-driven utilities that
 * `ninja`
 * `clang`
 
-##### Arch Linux
+#### Arch Linux
 
 ``` sh
 sudo pacman -Sy qt6-base qt6-svg tomlplusplus cmake ninja clang
 ```
 
-##### Ubuntu
+#### Ubuntu
 
 ``` sh
 sudo apt install qt6-base-dev libqt6svg6 libtomlplusplus-dev cmake ninja-build clang
 ```
 
-#### Build from source
+### Build from source
 
 ``` sh
 # Configure (static linking recommended)
@@ -52,7 +52,7 @@ cmake --build --preset Release
 **For dynamic linking**, pass `-DBUILD_SHARED_LIBS=ON` during configuration.
 Make sure `/your/installation/path/lib` is in `$LD_LIBRARY_PATH`, so that shared libraries are found by the executable.
 
-#### Install
+### Install
 
 CPack is not supported at present; installation is manual.
 
@@ -60,7 +60,7 @@ CPack is not supported at present; installation is manual.
 cmake --install build/Release --prefix /your/installation/path
 ```
 
-#### Run
+### Run
 
 ``` sh
 # If installed directory is in $PATH (e.g. /usr/bin)
@@ -73,15 +73,11 @@ PowerApplet
 ./build/Release/src/Applets/PowerApplet/PowerApplet
 ```
 
-#### Test
+### Test
 
 ``` sh
 ctest --preset Debug --output-on-failure
 ```
-
-## Background
-
-This project started as a way to learn programming in C++17, including CMake, version control, writing tests, setting up CI, and ways to avoid never-ending refactors by structuring the code well. Eventually, it turned into something useful.
 
 ## Authors
 
