@@ -44,15 +44,14 @@ static power_button_type getPowerButtonTypeFromString(const QString& string) {
 template<typename T>
 static T mapProperties(NodePair nodes, const T& defaults, const PathContext& path_context,
                        auto fill_fn) {
-        constexpr bool quiet = true;
-
         // Resolve power_data and global_data
-        auto power_data = Resolver::from<toml::table>({Source{nodes.primary,
-                                                              applet::power_applet.scope, quiet}},
+        auto power_data = Resolver::from<toml::table>({Source{.node  = nodes.primary,
+                                                              .scope = applet::power_applet.scope,
+                                                              .quiet = true}},
                                                       path_context);
 
-        auto global_data = Resolver::from<toml::table>({Source{nodes.fallback,
-                                                               applet::global.scope}},
+        auto global_data = Resolver::from<toml::table>({Source{.node  = nodes.fallback,
+                                                               .scope = applet::global.scope}},
                                                        path_context);
 
         // Use hardcoded defaults if no tables found
@@ -66,56 +65,66 @@ static T mapProperties(NodePair nodes, const T& defaults, const PathContext& pat
 /* Window Properties */
 void ConfigMapper::mapWindow(NodePair nodes, WindowProperties& window,
                              const WindowProperties& defaults, const PathContext& path_context) {
-        window = mapProperties(
-                nodes, defaults, path_context,
-                [&defaults](NodePair nodes, WindowProperties& window,
-                            const PathContext& path_context) {
-                        window.size = Resolver::fromOr<QSize>({Source{nodes.primary["size"],
-                                                                      applet::power_applet.scope},
-                                                               Source{nodes.fallback["size"],
-                                                                      applet::global.scope}},
-                                                              defaults.getSize(),
-                                                              path_context.getExtended("size"));
+        window = mapProperties(nodes, defaults, path_context,
+                               [&defaults](NodePair nodes, WindowProperties& window,
+                                           const PathContext& path_context) {
+                                       window.size = Resolver::fromOr<QSize>(
+                                               {Source{.node  = nodes.primary["size"],
+                                                       .scope = applet::power_applet.scope},
+                                                Source{.node  = nodes.fallback["size"],
+                                                       .scope = applet::global.scope}},
+                                               defaults.getSize(),
+                                               path_context.getExtended("size"));
 
-                        window.title = Resolver::fromOr<QString>({Source{nodes.primary["title"],
-                                                                         applet::power_applet.scope},
-                                                                  Source{nodes.fallback["title"],
-                                                                         applet::global.scope}},
-                                                                 defaults.getTitle(),
-                                                                 path_context.getExtended("title"));
-                });
+                                       window.title = Resolver::fromOr<QString>(
+                                               {Source{.node  = nodes.primary["title"],
+                                                       .scope = applet::power_applet.scope},
+                                                Source{.node  = nodes.fallback["title"],
+                                                       .scope = applet::global.scope}},
+                                               defaults.getTitle(),
+                                               path_context.getExtended("title"));
+                               });
 }
 
 /* Primary Button Properties*/
 void ConfigMapper::mapPrimaryButton(NodePair nodes, PrimaryButtonProperties& button,
                                     const PrimaryButtonProperties& defaults,
                                     const PathContext&             path_context) {
-        button = mapProperties(
-                nodes, defaults, path_context,
-                [&defaults](NodePair nodes, PrimaryButtonProperties& button,
-                            const PathContext& path_context) {
-                        button.text_alignment = Resolver::fromOr<Qt::Alignment>(
-                                {Source{nodes.primary["text_alignment"], applet::power_applet.scope},
-                                 Source{nodes.fallback["text_alignment"], applet::global.scope}},
-                                defaults.getTextAlignment(),
-                                path_context.getExtended("text_alignment"));
+        button = mapProperties(nodes, defaults, path_context,
+                               [&defaults](NodePair nodes, PrimaryButtonProperties& button,
+                                           const PathContext& path_context) {
+                                       button.text_alignment = Resolver::fromOr<Qt::Alignment>(
+                                               {Source{.node  = nodes.primary["text_alignment"],
+                                                       .scope = applet::power_applet.scope},
+                                                Source{.node  = nodes.fallback["text_alignment"],
+                                                       .scope = applet::global.scope}},
+                                               defaults.getTextAlignment(),
+                                               path_context.getExtended("text_alignment"));
 
-                        button.icon_alignment = Resolver::fromOr<Qt::Alignment>(
-                                {Source{nodes.primary["icon_alignment"], applet::power_applet.scope},
-                                 Source{nodes.fallback["icon_alignment"], applet::global.scope}},
-                                defaults.getIconAlignment(),
-                                path_context.getExtended("icon_alignment"));
+                                       button.icon_alignment = Resolver::fromOr<Qt::Alignment>(
+                                               {Source{.node  = nodes.primary["icon_alignment"],
+                                                       .scope = applet::power_applet.scope},
+                                                Source{.node  = nodes.fallback["icon_alignment"],
+                                                       .scope = applet::global.scope}},
+                                               defaults.getIconAlignment(),
+                                               path_context.getExtended("icon_alignment"));
 
-                        button.icon_size = Resolver::fromOr<QSize>(
-                                {Source{nodes.primary["icon_size"], applet::power_applet.scope},
-                                 Source{nodes.fallback["icon_size"], applet::global.scope}},
-                                defaults.getIconSize(), path_context.getExtended("icon_size"));
+                                       button.icon_size = Resolver::fromOr<QSize>(
+                                               {Source{.node  = nodes.primary["icon_size"],
+                                                       .scope = applet::power_applet.scope},
+                                                Source{.node  = nodes.fallback["icon_size"],
+                                                       .scope = applet::global.scope}},
+                                               defaults.getIconSize(),
+                                               path_context.getExtended("icon_size"));
 
-                        button.policy = Resolver::fromOr<QSizePolicy>(
-                                {Source{nodes.primary["policy"], applet::power_applet.scope},
-                                 Source{nodes.fallback["policy"], applet::global.scope}},
-                                defaults.getPolicy(), path_context.getExtended("policy"));
-                });
+                                       button.policy = Resolver::fromOr<QSizePolicy>(
+                                               {Source{.node  = nodes.primary["policy"],
+                                                       .scope = applet::power_applet.scope},
+                                                Source{.node  = nodes.fallback["policy"],
+                                                       .scope = applet::global.scope}},
+                                               defaults.getPolicy(),
+                                               path_context.getExtended("policy"));
+                               });
 }
 
 /* Layout Properties */
@@ -123,8 +132,8 @@ void ConfigMapper::mapLayout(node_view layout_node, LayoutProperties& layout,
                              const LayoutProperties& defaults, const PathContext& path_context) {
         LayoutProperties layout_properties{};
 
-        const auto data = Resolver::from<toml::table>({Source{layout_node,
-                                                              applet::power_applet.scope}},
+        const auto data = Resolver::from<toml::table>({Source{.node  = layout_node,
+                                                              .scope = applet::power_applet.scope}},
                                                       path_context);
         if (!data) {
                 layout_properties = defaults;
@@ -143,12 +152,11 @@ void ConfigMapper::mapPrimaryButtons(node_view                             prima
                                      std::vector<PowerButtonParams>&       primary_buttons,
                                      const std::vector<PowerButtonParams>& defaults,
                                      const PathContext&                    path_context) {
-        constexpr size_t min_size = 1;
-
-        const auto buttons = Resolver::from<toml::array>({Source{primary_buttons_node,
-                                                                 applet::power_applet.scope}},
-                                                         path_context, {min_size},
-                                                         "Format: [primary buttons...]");
+        const auto buttons =
+                Resolver::from<toml::array>({Source{.node  = primary_buttons_node,
+                                                    .scope = applet::power_applet.scope}},
+                                            path_context, {.min_size = 1},
+                                            "Format: [primary buttons...]");
         if (!buttons) {
                 primary_buttons = defaults;
                 return;
@@ -192,9 +200,10 @@ bool ConfigMapper::mapPrimaryButton(node_view                             button
                                     std::vector<PowerButtonParams>&       buttons,
                                     const std::vector<PowerButtonParams>& defaults,
                                     const PathContext&                    path_context) {
-        const auto button_table = Resolver::from<toml::table>({Source{button_params_node,
-                                                                      applet::power_applet.scope}},
-                                                              path_context);
+        const auto button_table =
+                Resolver::from<toml::table>({Source{.node  = button_params_node,
+                                                    .scope = applet::power_applet.scope}},
+                                            path_context);
         if (!button_table) {
                 buttons = defaults;
                 return true;
@@ -202,13 +211,13 @@ bool ConfigMapper::mapPrimaryButton(node_view                             button
 
         PowerButtonParams button{};
 
-        auto enabled = Resolver::from<bool>({Source{button_table.value()["enabled"],
-                                                    applet::power_applet.scope}},
+        auto enabled = Resolver::from<bool>({Source{.node  = button_table.value()["enabled"],
+                                                    .scope = applet::power_applet.scope}},
                                             path_context.getExtended("enabled"));
         if (!enabled || !enabled.value()) { return false; }
 
-        auto id_result = Resolver::from<QString>({Source{button_table.value()["id"],
-                                                         applet::power_applet.scope}},
+        auto id_result = Resolver::from<QString>({Source{.node  = button_table.value()["id"],
+                                                         .scope = applet::power_applet.scope}},
                                                  path_context.getExtended("id"));
         if (!id_result) {
                 buttons = defaults;
@@ -216,8 +225,8 @@ bool ConfigMapper::mapPrimaryButton(node_view                             button
         }
         button.id = getPowerButtonTypeFromString(id_result.value());
 
-        auto text_result = Resolver::from<QString>({Source{button_table.value()["text"],
-                                                           applet::power_applet.scope}},
+        auto text_result = Resolver::from<QString>({Source{.node  = button_table.value()["text"],
+                                                           .scope = applet::power_applet.scope}},
                                                    path_context.getExtended("text"));
         if (!text_result) {
                 buttons = defaults;
@@ -225,8 +234,8 @@ bool ConfigMapper::mapPrimaryButton(node_view                             button
         }
         button.text = text_result.value();
 
-        auto order_result = Resolver::from<int64_t>({Source{button_table.value()["order"],
-                                                            applet::power_applet.scope}},
+        auto order_result = Resolver::from<int64_t>({Source{.node  = button_table.value()["order"],
+                                                            .scope = applet::power_applet.scope}},
                                                     path_context.getExtended("order"));
         if (!order_result) {
                 buttons = defaults;
@@ -247,8 +256,8 @@ bool ConfigMapper::mapPrimaryButton(node_view                             button
 void ConfigMapper::mapCommand(node_view command_node, std::vector<PowerButtonParams>& buttons,
                               const std::vector<PowerButtonParams>& defaults, QString& command,
                               const PathContext& path_context) {
-        auto command_raw = Resolver::from<QString>({Source{command_node,
-                                                           applet::power_applet.scope}},
+        auto command_raw = Resolver::from<QString>({Source{.node  = command_node,
+                                                           .scope = applet::power_applet.scope}},
                                                    path_context);
         if (!command_raw) {
                 buttons = defaults;

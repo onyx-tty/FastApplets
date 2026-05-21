@@ -24,8 +24,9 @@ void KeysMapper::mapToPowerAppletKeys(const toml::table& power_applet_table,
         QStringView filename = u"keys.toml"_s;
 
         /* Quit Keys */
-        mapQuitKeys(NodePair{power_applet_table["quit"], global_table["quit"]}, keys.quit_keys,
-                    defaults.getQuitKeys(), PathContext{filename, u"quit"_s});
+        mapQuitKeys(NodePair{.primary  = power_applet_table["quit"],
+                             .fallback = global_table["quit"]},
+                    keys.quit_keys, defaults.getQuitKeys(), PathContext{filename, u"quit"_s});
 
         /* Primary Button Keys */
         mapPrimaryButtonKeys(power_applet_table["primary_buttons"], keys.primary_button_keys,

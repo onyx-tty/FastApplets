@@ -24,13 +24,14 @@ void ConfigMapper::mapToPowerAppletConfig(const toml::table& power_applet_table,
         QStringView filename = u"config.toml"_s;
 
         /* Window Properties */
-        mapWindow(NodePair{power_applet_table["window"], global_table["window"]},
+        mapWindow(NodePair{.primary  = power_applet_table["window"],
+                           .fallback = global_table["window"]},
                   config.window_properties, defaults.getWindowProperties(),
                   PathContext{filename, u"window"_s});
 
         /* Primary Button Properties */
-        mapPrimaryButton(NodePair{power_applet_table["primary_button"],
-                                  global_table["primary_button"]},
+        mapPrimaryButton(NodePair{.primary  = power_applet_table["primary_button"],
+                                  .fallback = global_table["primary_button"]},
                          config.primary_button_properties, defaults.getPrimaryButtonProperties(),
                          PathContext{filename, u"primary_button"_s});
 

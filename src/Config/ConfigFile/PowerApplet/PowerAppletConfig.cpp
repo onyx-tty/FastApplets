@@ -62,14 +62,26 @@ const PowerAppletConfig& PowerAppletConfig::getDefault() {
                                                                   std::move(policy)};
 
         std::vector<PowerButtonParams> primary_buttons =
-                {PowerButtonParams{power_button_type::shutdown, "Shutdown", 1, "systemctl poweroff",
-                                   iconFor(power_button_type::shutdown)},
-                 PowerButtonParams{power_button_type::reboot, "Reboot", 2, "systemctl reboot",
-                                   iconFor(power_button_type::reboot)},
-                 PowerButtonParams{power_button_type::suspend, "Suspend", 3, "systemctl suspend",
-                                   iconFor(power_button_type::suspend)},
-                 PowerButtonParams{power_button_type::hibernate, "Hibernate", 4,
-                                   "systemctl hibernate", iconFor(power_button_type::hibernate)}};
+                {PowerButtonParams{.id      = power_button_type::shutdown,
+                                   .text    = "Shutdown",
+                                   .order   = 1,
+                                   .command = "systemctl poweroff",
+                                   .icon    = iconFor(power_button_type::shutdown)},
+                 PowerButtonParams{.id      = power_button_type::reboot,
+                                   .text    = "Reboot",
+                                   .order   = 2,
+                                   .command = "systemctl reboot",
+                                   .icon    = iconFor(power_button_type::reboot)},
+                 PowerButtonParams{.id      = power_button_type::suspend,
+                                   .text    = "Suspend",
+                                   .order   = 3,
+                                   .command = "systemctl suspend",
+                                   .icon    = iconFor(power_button_type::suspend)},
+                 PowerButtonParams{.id      = power_button_type::hibernate,
+                                   .text    = "Hibernate",
+                                   .order   = 4,
+                                   .command = "systemctl hibernate",
+                                   .icon    = iconFor(power_button_type::hibernate)}};
         LayoutProperties default_layout_properties = LayoutProperties{std::move(primary_buttons)};
 
         static PowerAppletConfig default_power_applet_config =
