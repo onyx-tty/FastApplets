@@ -61,23 +61,24 @@ const PowerAppletConfig& PowerAppletConfig::getDefault() {
                                                                   std::move(icon_size),
                                                                   std::move(policy)};
 
+        using enum power_button_type;
         std::vector<PowerButtonParams> primary_buttons =
-                {PowerButtonParams{.id      = power_button_type::shutdown,
-                                   .text    = textFor(power_button_type::shutdown),
-                                   .command = commandFor(power_button_type::shutdown),
-                                   .icon    = iconFor(power_button_type::shutdown)},
-                 PowerButtonParams{.id      = power_button_type::reboot,
-                                   .text    = textFor(power_button_type::reboot),
-                                   .command = commandFor(power_button_type::reboot),
-                                   .icon    = iconFor(power_button_type::reboot)},
-                 PowerButtonParams{.id      = power_button_type::suspend,
-                                   .text    = textFor(power_button_type::suspend),
-                                   .command = commandFor(power_button_type::suspend),
-                                   .icon    = iconFor(power_button_type::suspend)},
-                 PowerButtonParams{.id      = power_button_type::hibernate,
-                                   .text    = textFor(power_button_type::hibernate),
-                                   .command = commandFor(power_button_type::hibernate),
-                                   .icon    = iconFor(power_button_type::hibernate)}};
+                {PowerButtonParams{.id      = shutdown,
+                                   .text    = textFor(shutdown),
+                                   .command = commandFor(shutdown),
+                                   .icon    = iconFor(shutdown)},
+                 PowerButtonParams{.id      = reboot,
+                                   .text    = textFor(reboot),
+                                   .command = commandFor(reboot),
+                                   .icon    = iconFor(reboot)},
+                 PowerButtonParams{.id      = suspend,
+                                   .text    = textFor(suspend),
+                                   .command = commandFor(suspend),
+                                   .icon    = iconFor(suspend)},
+                 PowerButtonParams{.id      = hibernate,
+                                   .text    = textFor(hibernate),
+                                   .command = commandFor(hibernate),
+                                   .icon    = iconFor(hibernate)}};
         LayoutProperties default_layout_properties = LayoutProperties{std::move(primary_buttons)};
 
         static PowerAppletConfig default_power_applet_config =
