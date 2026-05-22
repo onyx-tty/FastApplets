@@ -20,5 +20,5 @@ public:
         //
         // Example: "hyprshutdown -t 'Shutting down...' -p 'systemctl poweroff'"
         //   "hyprshutdown" = program, rest = arguments
-        static void runCommand(QString command);
+        static void command(QString command);
 };

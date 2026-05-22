@@ -40,8 +40,8 @@ private:
         // Expected format: array of keybinding strings, minimum 1 element.
         //
         // Assigned value: keybindings (std::unordered_set<int>)
-        static keybindings mapQuitKeys(NodePair nodes, const keybindings& defaults,
-                                       const PathContext& path_context);
+        static keybindings quit(NodePair nodes, const keybindings& defaults,
+                                const PathContext& path_context);
 
         /* Power Applet Keys*/
 
@@ -56,9 +56,9 @@ private:
         //                  keybindings
         //
         // Assigned value: vector of keybindings (std::unordered_set<int>)
-        static std::vector<keybindings> mapPrimaryButtonKeys(
-                node_view node, const std::vector<keybindings>& defaults,
-                const PathContext& path_context);
+        static std::vector<keybindings> primaryButtons(node_view                       node,
+                                                       const std::vector<keybindings>& defaults,
+                                                       const PathContext& path_context);
 
         // Maps a single button's keybindings from a config source.
         //
@@ -67,8 +67,8 @@ private:
         // Expected format: string representation of keybinding
         //
         // Assigned value: keybindings (std::unordered_set<int>)
-        static keybindings mapPrimaryButtonKey(node_view node, const keybindings& defaults,
-                                               const PathContext& path_context);
+        static keybindings primaryButton(node_view node, const keybindings& defaults,
+                                         const PathContext& path_context);
 
 public:
         KeysMapper() = delete;
@@ -77,7 +77,7 @@ public:
         //
         // Usage:
         //   PowerAppletKeys keys;
-        //   KeysMapper::mapToPowerAppletKeys(power_applet_table, global_table, keys);
+        //   KeysMapper::keys(power_applet_table, global_table, keys);
         //
         // The power_applet table supplies primary configuration and overrides, global
         // provides fallbacks.
@@ -88,8 +88,7 @@ public:
         // circular dependency between this header and PowerAppletKeys.h by deferring
         // the instantiation of PowerAppletKeys.
         template<typename TKeys>
-        static TKeys mapToPowerAppletKeys(const toml::table& power_applet,
-                                          const toml::table& global);
+        static TKeys keys(const toml::table& power_applet, const toml::table& global);
 };
 
 #include "KeysMapper.tpp"

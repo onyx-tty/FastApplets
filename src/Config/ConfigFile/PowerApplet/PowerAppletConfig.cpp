@@ -30,13 +30,12 @@ PowerAppletConfig::PowerAppletConfig(WindowProperties        window,
 const PowerAppletConfig& PowerAppletConfig::get() {
         // TODO: Config files should not be fetched twice, once for config, once for keys.
         //       Either fetch them individually or cache the result for both.
-        static const ConfigFiles power_files = FileLocator::locateConfigFiles(
-                applet::power_applet.scope);
-        static const ConfigFiles global_files = FileLocator::locateConfigFiles(applet::global.scope);
+        static const ConfigFiles power_files = FileLocator::configFiles(applet::power_applet.scope);
+        static const ConfigFiles global_files = FileLocator::configFiles(applet::global.scope);
 
-        static const auto config = ConfigMapper::mapToPowerAppletConfig<PowerAppletConfig>(
-                TomlParser::parseFile(power_files.config),
-                TomlParser::parseFile(global_files.config));
+        static const auto config =
+                ConfigMapper::config<PowerAppletConfig>(TomlParser::file(power_files.config),
+                                                        TomlParser::file(global_files.config));
 
         return config;
 }

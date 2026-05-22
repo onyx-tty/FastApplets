@@ -18,8 +18,7 @@ PowerButton::PowerButton(power_button_type type, const QIcon& icon, const QStrin
                          const keybindings& keys, const QString& command) :
         PrimaryButton(icon, text, PowerAppletConfig::get().getPrimaryButtonProperties()),
         keys(keys), type(type) {
-        connect(this, &PowerButton::clicked,
-                [this, command]() { ShellRunner::runCommand(command); });
+        connect(this, &PowerButton::clicked, [this, command]() { ShellRunner::command(command); });
 
         QDEBUG() << QString("Created %1!").arg(text);
 }

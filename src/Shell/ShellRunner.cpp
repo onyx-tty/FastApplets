@@ -7,7 +7,7 @@
 #include <QString>
 #include <QStringList>
 
-void ShellRunner::runCommand(QString command) {
+void ShellRunner::command(QString command) {
         // QProcess::splitCommand treats single quotes as regular characters
         // Treat them like proper quotes by reinterpreting single quotes as double quotes
         command.replace("'", "\"");

@@ -75,25 +75,25 @@ private slots:
         }
 
         static void handlesEmptyFilepath() {
-                QVERIFY2(TomlParser::parseFile("").empty(),
+                QVERIFY2(TomlParser::file("").empty(),
                          "Empty filepath must return empty toml::table");
         }
 
         static void handlesMissingFile() {
-                QVERIFY2(TomlParser::parseFile("/tmp/invalid/path/found.toml").empty(),
+                QVERIFY2(TomlParser::file("/tmp/invalid/path/found.toml").empty(),
                          "Missing file must return empty toml::table");
         }
 
         static void handlesInvalidToml() {
                 const auto invalid = QDir(test_dirpath).filePath(test_filename_invalid).toStdString();
-                QVERIFY2(TomlParser::parseFile(invalid).empty(),
+                QVERIFY2(TomlParser::file(invalid).empty(),
                          "File with invalid TOML must return empty toml::table");
         }
 
         static void handlesValidTOML() {
                 const auto valid = QDir(test_dirpath).filePath(test_filename_valid).toStdString();
 
-                QVERIFY2(!TomlParser::parseFile(valid).empty(),
+                QVERIFY2(!TomlParser::file(valid).empty(),
                          "Failed to parse file with valid TOML, must return non-empty table");
         }
 };

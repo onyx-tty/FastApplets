@@ -14,8 +14,7 @@
 #include <Qt>
 
 template<typename TConfig>
-TConfig ConfigMapper::mapToPowerAppletConfig(const toml::table& power_applet,
-                                             const toml::table& global) {
+TConfig ConfigMapper::config(const toml::table& power_applet, const toml::table& global) {
         // Confirm that a QApplication instance exists
         if (!QApplication::instance()) { QFATAL("QApplication has not been instantiated yet!"); }
 
@@ -26,21 +25,21 @@ TConfig ConfigMapper::mapToPowerAppletConfig(const toml::table& power_applet,
         TConfig config{};
 
         /* Window Properties */
-        config.window_properties = mapWindow(NodePair{.primary  = power_applet["window"],
-                                                      .fallback = global["window"]},
-                                             defaults.getWindowProperties(),
-                                             PathContext{filename, u"window"_s});
+        config.window_properties = window(NodePair{.primary  = power_applet["window"],
+                                                   .fallback = global["window"]},
+                                          defaults.getWindowProperties(),
+                                          PathContext{filename, u"window"_s});
 
         /* Primary Button Properties */
         config.primary_button_properties =
-                mapPrimaryButton(NodePair{.primary  = power_applet["primary_button"],
-                                          .fallback = global["primary_button"]},
-                                 defaults.getPrimaryButtonProperties(),
-                                 PathContext{filename, u"primary_button"_s});
+                primaryButton(NodePair{.primary  = power_applet["primary_button"],
+                                       .fallback = global["primary_button"]},
+                              defaults.getPrimaryButtonProperties(),
+                              PathContext{filename, u"primary_button"_s});
 
         /* Layout Properties */
-        config.layout_properties = mapLayout(power_applet["layout"], defaults.getLayoutProperties(),
-                                             PathContext{filename, u"layout"_s});
+        config.layout_properties = layout(power_applet["layout"], defaults.getLayoutProperties(),
+                                          PathContext{filename, u"layout"_s});
 
         return std::move(config);
 }

@@ -16,9 +16,9 @@
 // For older Qt versions, fall back to the full <QtCore>.
 // <QtVersionChecks> didn't exist before Qt 6.5, so it can't be used either.
 #if __has_include(<QtEnvironmentVariables>)
-#       include <QtEnvironmentVariables> // Qt >=6.5
+        #include <QtEnvironmentVariables> // Qt >=6.5
 #else
-#       include <QtGlobal> // Qt <6.5
+        #include <QtGlobal> // Qt <6.5
 #endif
 
 std::string findFile(QStringView filename, QStringView subdirectory) {
@@ -34,7 +34,7 @@ std::string findFile(QStringView filename, QStringView subdirectory) {
         return filepath.toStdString();
 }
 
-ConfigFiles FileLocator::locateConfigFiles(std::string_view scope) {
+ConfigFiles FileLocator::configFiles(std::string_view scope) {
         ConfigFiles files{};
 
         // Treat scope "global" as root

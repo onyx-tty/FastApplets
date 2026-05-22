@@ -14,7 +14,7 @@
 #include <Qt>
 
 template<typename TKeys>
-TKeys KeysMapper::mapToPowerAppletKeys(const toml::table& power_applet, const toml::table& global) {
+TKeys KeysMapper::keys(const toml::table& power_applet, const toml::table& global) {
         // Confirm that a QApplication instance exists
         if (!QApplication::instance()) { QFATAL("QApplication has not been instantiated yet!"); }
 
@@ -25,14 +25,13 @@ TKeys KeysMapper::mapToPowerAppletKeys(const toml::table& power_applet, const to
         TKeys keys{};
 
         /* Quit Keys */
-        keys.quit = mapQuitKeys(NodePair{.primary  = power_applet["quit"],
-                                         .fallback = global["quit"]},
-                                defaults.getQuit(), PathContext{filename, u"quit"_s});
+        keys.quit = quit(NodePair{.primary = power_applet["quit"], .fallback = global["quit"]},
+                         defaults.getQuit(), PathContext{filename, u"quit"_s});
 
         /* Primary Button Keys */
-        keys.primary_button = mapPrimaryButtonKeys(power_applet["primary_buttons"],
-                                                   defaults.getPrimaryButton(),
-                                                   PathContext{filename, u"primary_buttons"_s});
+        keys.primary_button = primaryButtons(power_applet["primary_buttons"],
+                                             defaults.getPrimaryButton(),
+                                             PathContext{filename, u"primary_buttons"_s});
 
         return std::move(keys);
 }

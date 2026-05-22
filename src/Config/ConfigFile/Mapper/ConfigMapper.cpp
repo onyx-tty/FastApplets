@@ -63,8 +63,8 @@ static T mapProperties(NodePair nodes, const T& defaults, const PathContext& pat
 }
 
 /* Window Properties */
-WindowProperties ConfigMapper::mapWindow(NodePair nodes, const WindowProperties& defaults,
-                                         const PathContext& path_context) {
+WindowProperties ConfigMapper::window(NodePair nodes, const WindowProperties& defaults,
+                                      const PathContext& path_context) {
         return mapProperties(nodes, defaults, path_context,
                              [&defaults](NodePair nodes, WindowProperties& window,
                                          const PathContext& path_context) {
@@ -86,9 +86,9 @@ WindowProperties ConfigMapper::mapWindow(NodePair nodes, const WindowProperties&
 }
 
 /* Primary Button Properties*/
-PrimaryButtonProperties ConfigMapper::mapPrimaryButton(NodePair                       nodes,
-                                                       const PrimaryButtonProperties& defaults,
-                                                       const PathContext& path_context) {
+PrimaryButtonProperties ConfigMapper::primaryButton(NodePair                       nodes,
+                                                    const PrimaryButtonProperties& defaults,
+                                                    const PathContext&             path_context) {
         return mapProperties(nodes, defaults, path_context,
                              [&defaults](NodePair nodes, PrimaryButtonProperties& button,
                                          const PathContext& path_context) {
@@ -127,8 +127,8 @@ PrimaryButtonProperties ConfigMapper::mapPrimaryButton(NodePair                 
 }
 
 /* Layout Properties */
-LayoutProperties ConfigMapper::mapLayout(node_view node, const LayoutProperties& defaults,
-                                         const PathContext& path_context) {
+LayoutProperties ConfigMapper::layout(node_view node, const LayoutProperties& defaults,
+                                      const PathContext& path_context) {
         LayoutProperties properties{};
 
         const auto data = Resolver::from<toml::table>({Source{.node  = node,
@@ -137,14 +137,14 @@ LayoutProperties ConfigMapper::mapLayout(node_view node, const LayoutProperties&
         if (!data) { return defaults; }
 
         // Primary power buttons
-        properties.power_buttons = mapPrimaryButtons(data.value()["primary_buttons"],
-                                                     defaults.getPowerButtons(),
-                                                     path_context.getExtended("primary_buttons"));
+        properties.power_buttons = primaryButtons(data.value()["primary_buttons"],
+                                                  defaults.getPowerButtons(),
+                                                  path_context.getExtended("primary_buttons"));
 
         return std::move(properties);
 }
 
-std::vector<PowerButtonParams> ConfigMapper::mapPrimaryButtons(
+std::vector<PowerButtonParams> ConfigMapper::primaryButtons(
         node_view node, const std::vector<PowerButtonParams>& defaults,
         const PathContext& path_context) {
         const auto arr = Resolver::from<toml::array>({Source{.node  = node,
@@ -157,7 +157,7 @@ std::vector<PowerButtonParams> ConfigMapper::mapPrimaryButtons(
 
         for (size_t i = 0; i != arr.value().size(); ++i) {
                 std::optional<PowerButtonParams> new_button =
-                        mapPrimaryButton(node_view(arr.value().at(i)), path_context.getExtended(i));
+                        primaryButton(node_view(arr.value().at(i)), path_context.getExtended(i));
                 if (new_button) { found.push_back(std::move(new_button.value())); }
         }
 
@@ -170,8 +170,8 @@ std::vector<PowerButtonParams> ConfigMapper::mapPrimaryButtons(
         return std::move(found);
 }
 
-std::optional<PowerButtonParams> ConfigMapper::mapPrimaryButton(node_view          node,
-                                                                const PathContext& path_context) {
+std::optional<PowerButtonParams> ConfigMapper::primaryButton(node_view          node,
+                                                             const PathContext& path_context) {
         const auto table = Resolver::from<toml::table>({Source{.node = node,
                                                                .scope = applet::power_applet.scope}},
                                                        path_context);

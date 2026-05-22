@@ -43,8 +43,8 @@ std::vector<std::string> textFromTomlArray(const toml::array& arr) {
 }
 
 /* Global Keys */
-keybindings KeysMapper::mapQuitKeys(NodePair nodes, const keybindings& defaults,
-                                    const PathContext& path_context) {
+keybindings KeysMapper::quit(NodePair nodes, const keybindings& defaults,
+                             const PathContext& path_context) {
         toml::array keys{};
         keybindings quit{};
         Resolver::fromOrDefault<toml::array>({Source{.node  = nodes.primary,
@@ -60,9 +60,9 @@ keybindings KeysMapper::mapQuitKeys(NodePair nodes, const keybindings& defaults,
 }
 
 /* Power Applet Keys*/
-std::vector<keybindings> KeysMapper::mapPrimaryButtonKeys(node_view                       node,
-                                                          const std::vector<keybindings>& defaults,
-                                                          const PathContext& path_context) {
+std::vector<keybindings> KeysMapper::primaryButtons(node_view                       node,
+                                                    const std::vector<keybindings>& defaults,
+                                                    const PathContext&              path_context) {
         toml::array              keys{};
         std::vector<keybindings> primary_buttons{};
 
@@ -74,16 +74,16 @@ std::vector<keybindings> KeysMapper::mapPrimaryButtonKeys(node_view             
 
         std::vector<keybindings> found{};
         for (size_t i = 0; i != keys.size(); ++i) {
-                keybindings found_for_button = mapPrimaryButtonKey(node[i], defaults[i],
-                                                                   path_context.getExtended(i));
+                keybindings found_for_button = primaryButton(node[i], defaults[i],
+                                                             path_context.getExtended(i));
                 if (!keys.empty()) { found.push_back(std::move(found_for_button)); }
         };
 
         return std::move(found);
 }
 
-keybindings KeysMapper::mapPrimaryButtonKey(node_view node, const keybindings& defaults,
-                                            const PathContext& path_context) {
+keybindings KeysMapper::primaryButton(node_view node, const keybindings& defaults,
+                                      const PathContext& path_context) {
         toml::array keys{};
         keybindings primary_button{};
 

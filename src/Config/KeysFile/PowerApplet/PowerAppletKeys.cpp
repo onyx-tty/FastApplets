@@ -20,13 +20,11 @@ PowerAppletKeys::PowerAppletKeys(keybindings quit, std::vector<keybindings> prim
 const PowerAppletKeys& PowerAppletKeys::get() {
         // TODO: Config files should not be fetched twice, once for config, once for keys.
         //       Either fetch them individually or cache the result for both.
-        static const ConfigFiles power = FileLocator::locateConfigFiles(applet::power_applet.scope);
-        static const ConfigFiles global = FileLocator::locateConfigFiles(applet::global.scope);
+        static const ConfigFiles power  = FileLocator::configFiles(applet::power_applet.scope);
+        static const ConfigFiles global = FileLocator::configFiles(applet::global.scope);
 
-        static const auto keys =
-                KeysMapper::mapToPowerAppletKeys<PowerAppletKeys>(TomlParser::parseFile(power.keys),
-                                                                  TomlParser::parseFile(
-                                                                          global.keys));
+        static const auto keys = KeysMapper::keys<PowerAppletKeys>(TomlParser::file(power.keys),
+                                                                   TomlParser::file(global.keys));
 
         return keys;
 }
