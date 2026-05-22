@@ -43,9 +43,10 @@ std::vector<std::string> textFromTomlArray(const toml::array& arr) {
 }
 
 /* Global Keys */
-void KeysMapper::mapQuitKeys(NodePair nodes, keybindings& quit, const keybindings& defaults,
-                             const PathContext& path_context) {
+keybindings KeysMapper::mapQuitKeys(NodePair nodes, const keybindings& defaults,
+                                    const PathContext& path_context) {
         toml::array keys{};
+        keybindings quit{};
         Resolver::fromOrDefault<toml::array>({Source{.node  = nodes.primary,
                                                      .scope = applet::power_applet.scope},
                                               Source{.node  = nodes.fallback,
@@ -53,42 +54,45 @@ void KeysMapper::mapQuitKeys(NodePair nodes, keybindings& quit, const keybinding
                                              keys, quit, defaults, path_context, {.min_size = 1},
                                              "Format: [keybindings...]");
 
-        if (keys.empty()) { return; }
+        if (keys.empty()) { return defaults; }
 
-        quit = keysFromText(textFromTomlArray(keys));
+        return keysFromText(textFromTomlArray(keys));
 }
 
 /* Power Applet Keys*/
-void KeysMapper::mapPrimaryButtonKeys(node_view node, std::vector<keybindings>& primary_buttons,
-                                      const std::vector<keybindings>& defaults,
-                                      const PathContext&              path_context) {
-        toml::array keys{};
+std::vector<keybindings> KeysMapper::mapPrimaryButtonKeys(node_view                       node,
+                                                          const std::vector<keybindings>& defaults,
+                                                          const PathContext& path_context) {
+        toml::array              keys{};
+        std::vector<keybindings> primary_buttons{};
+
         Resolver::fromOrDefault({Source{.node = node, .scope = applet::power_applet.scope}}, keys,
                                 primary_buttons, defaults, path_context, {.min_size = 1},
                                 "Format: [keybindings...]");
 
-        if (keys.empty()) { return; }
+        if (keys.empty()) { return defaults; }
 
         std::vector<keybindings> found{};
         for (size_t i = 0; i != keys.size(); ++i) {
-                keybindings found_for_button{};
-                mapPrimaryButtonKey(node[i], found_for_button, defaults[i],
-                                    path_context.getExtended(i));
-                if (!keys.empty()) { found.push_back(found_for_button); }
+                keybindings found_for_button = mapPrimaryButtonKey(node[i], defaults[i],
+                                                                   path_context.getExtended(i));
+                if (!keys.empty()) { found.push_back(std::move(found_for_button)); }
         };
 
-        primary_buttons = std::move(found);
+        return std::move(found);
 }
 
-void KeysMapper::mapPrimaryButtonKey(node_view node, keybindings& primary_button,
-                                     const keybindings& defaults, const PathContext& path_context) {
+keybindings KeysMapper::mapPrimaryButtonKey(node_view node, const keybindings& defaults,
+                                            const PathContext& path_context) {
         toml::array keys{};
+        keybindings primary_button{};
+
         Resolver::fromOrDefault<toml::array>({Source{.node  = node,
                                                      .scope = applet::power_applet.scope}},
                                              keys, primary_button, defaults, path_context,
                                              {.min_size = 1}, "Format: [keybindings...]");
 
-        if (keys.empty()) { return; }
+        if (keys.empty()) { return defaults; }
 
-        primary_button = keysFromText(textFromTomlArray(keys));
+        return keysFromText(textFromTomlArray(keys));
 }

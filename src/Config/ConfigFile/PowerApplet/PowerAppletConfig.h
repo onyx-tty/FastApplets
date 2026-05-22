@@ -29,7 +29,7 @@ public:
         PowerAppletConfig(WindowProperties        window         = WindowProperties{},
                           PrimaryButtonProperties primary_button = PrimaryButtonProperties{},
                           LayoutProperties        layout         = LayoutProperties{});
-        static PowerAppletConfig&       get();
+        static const PowerAppletConfig& get();
         static const PowerAppletConfig& getDefault();
         const LayoutProperties&         getLayoutProperties() const;
 };

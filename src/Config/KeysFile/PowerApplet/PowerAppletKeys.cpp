@@ -17,20 +17,16 @@
 PowerAppletKeys::PowerAppletKeys(keybindings quit, std::vector<keybindings> primary_button) :
         GlobalKeys(std::move(quit)), primary_button(std::move(primary_button)) {}
 
-PowerAppletKeys& PowerAppletKeys::get() {
-        static PowerAppletKeys keys{};
-        static bool            parsed = false;
+const PowerAppletKeys& PowerAppletKeys::get() {
+        // TODO: Config files should not be fetched twice, once for config, once for keys.
+        //       Either fetch them individually or cache the result for both.
+        static const ConfigFiles power = FileLocator::locateConfigFiles(applet::power_applet.scope);
+        static const ConfigFiles global = FileLocator::locateConfigFiles(applet::global.scope);
 
-        if (!parsed) {
-                // TODO: Config files should not be fetched twice, once for config, once for keys.
-                //       Either fetch them individually or cache the result for both.
-                ConfigFiles power  = FileLocator::locateConfigFiles(applet::power_applet.scope);
-                ConfigFiles global = FileLocator::locateConfigFiles(applet::global.scope);
-
-                KeysMapper::mapToPowerAppletKeys(TomlParser::parseFile(power.keys),
-                                                 TomlParser::parseFile(global.keys), keys);
-                parsed = true;
-        }
+        static const auto keys =
+                KeysMapper::mapToPowerAppletKeys<PowerAppletKeys>(TomlParser::parseFile(power.keys),
+                                                                  TomlParser::parseFile(
+                                                                          global.keys));
 
         return keys;
 }

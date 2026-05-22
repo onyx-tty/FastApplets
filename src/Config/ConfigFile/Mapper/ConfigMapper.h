@@ -39,8 +39,8 @@ private:
         //                  size (array of two integers)
         //
         // Assigned value: WindowProperties
-        static void mapWindow(NodePair nodes, WindowProperties& window,
-                              const WindowProperties& defaults, const PathContext& path_context);
+        static WindowProperties mapWindow(NodePair nodes, const WindowProperties& defaults,
+                                          const PathContext& path_context);
 
         /* Primary Button Properties */
 
@@ -54,9 +54,9 @@ private:
         //                  and policy (string)
         //
         // Assigned value: PrimaryButtonProperties
-        static void mapPrimaryButton(NodePair nodes, PrimaryButtonProperties& button,
-                                     const PrimaryButtonProperties& defaults,
-                                     const PathContext&             path_context);
+        static PrimaryButtonProperties mapPrimaryButton(NodePair                       nodes,
+                                                        const PrimaryButtonProperties& defaults,
+                                                        const PathContext& path_context);
 
         /* Layout Properties */
 
@@ -67,8 +67,8 @@ private:
         // Expected format: layout table containing primary_buttons (array of tables)
         //
         // Assigned value: LayoutProperties
-        static void mapLayout(node_view node, LayoutProperties& layout,
-                              const LayoutProperties& defaults, const PathContext& path_context);
+        static LayoutProperties mapLayout(node_view node, const LayoutProperties& defaults,
+                                          const PathContext& path_context);
 
         // Maps primary_buttons from a config source.
         //
@@ -79,10 +79,9 @@ private:
         // Expected format: primary_buttons (array of tables)
         //
         // Assigned value: vector of PowerButtonParams
-        static void mapPrimaryButtons(node_view                             node,
-                                      std::vector<PowerButtonParams>&       primary_buttons,
-                                      const std::vector<PowerButtonParams>& defaults,
-                                      const PathContext&                    path_context);
+        static std::vector<PowerButtonParams> mapPrimaryButtons(
+                node_view node, const std::vector<PowerButtonParams>& defaults,
+                const PathContext& path_context);
 
         // Maps primary_button, including its attributes, from a config source.
         //
@@ -94,8 +93,8 @@ private:
         //                  text (string), command (string)
         //
         // Assigned value: PowerButtonParams
-        static void mapPrimaryButton(node_view node, std::optional<PowerButtonParams>& button,
-                                     const PathContext& path_context);
+        static std::optional<PowerButtonParams> mapPrimaryButton(node_view          node,
+                                                                 const PathContext& path_context);
 
 public:
         ConfigMapper() = delete;
@@ -115,8 +114,8 @@ public:
         // circular dependency between this header and PowerAppletConfig.h by deferring
         // the instantiation of PowerAppletConfig.
         template<typename TConfig>
-        static void mapToPowerAppletConfig(const toml::table& power_applet,
-                                           const toml::table& global, TConfig& config);
+        static TConfig mapToPowerAppletConfig(const toml::table& power_applet,
+                                              const toml::table& global);
 };
 
 #include "ConfigMapper.tpp"

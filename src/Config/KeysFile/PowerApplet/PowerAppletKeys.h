@@ -28,7 +28,7 @@ private:
 public:
         explicit PowerAppletKeys(keybindings              quit           = {},
                                  std::vector<keybindings> primary_button = {});
-        static PowerAppletKeys&         get();
+        static const PowerAppletKeys&   get();
         static const PowerAppletKeys&   getDefault();
         const std::vector<keybindings>& getPrimaryButton() const;
 };

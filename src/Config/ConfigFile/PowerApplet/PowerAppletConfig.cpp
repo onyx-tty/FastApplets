@@ -27,21 +27,16 @@ PowerAppletConfig::PowerAppletConfig(WindowProperties        window,
         GlobalConfig(std::move(window), std::move(primary_button)),
         layout_properties(std::move(layout)) {}
 
-PowerAppletConfig& PowerAppletConfig::get() {
-        static PowerAppletConfig config{};
-        static bool              parsed = false;
+const PowerAppletConfig& PowerAppletConfig::get() {
+        // TODO: Config files should not be fetched twice, once for config, once for keys.
+        //       Either fetch them individually or cache the result for both.
+        static const ConfigFiles power_files = FileLocator::locateConfigFiles(
+                applet::power_applet.scope);
+        static const ConfigFiles global_files = FileLocator::locateConfigFiles(applet::global.scope);
 
-        if (!parsed) {
-                // TODO: Config files should not be fetched twice, once for config, once for keys.
-                //       Either fetch them individually or cache the result for both.
-                ConfigFiles power_files = FileLocator::locateConfigFiles(applet::power_applet.scope);
-                ConfigFiles global_files = FileLocator::locateConfigFiles(applet::global.scope);
-
-                ConfigMapper::mapToPowerAppletConfig(TomlParser::parseFile(power_files.config),
-                                                     TomlParser::parseFile(global_files.config),
-                                                     config);
-                parsed = true;
-        }
+        static const auto config = ConfigMapper::mapToPowerAppletConfig<PowerAppletConfig>(
+                TomlParser::parseFile(power_files.config),
+                TomlParser::parseFile(global_files.config));
 
         return config;
 }
