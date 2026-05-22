@@ -5,6 +5,7 @@
 
 #include "Config/Types/NodeView.h"
 
+#include <optional>
 #include <toml++/toml.hpp>
 #include <vector>
 
@@ -71,10 +72,7 @@ private:
 
         // Maps primary_buttons from a config source.
         //
-        // Aborts mapping if primary_buttons were defaulted by mapPrimaryButton, to respect
-        // defaulting.
-        // TODO: This should be done by mapPrimaryButtons instead, the helper
-        //       should not be defaulting the entire vector, that's not its responsibility.
+        // Defaults the buttons if none are found.
         //
         // Fallback priority: power_applet.layout.primary_buttons -> hardcoded defaults
         //
@@ -88,19 +86,16 @@ private:
 
         // Maps primary_button, including its attributes, from a config source.
         //
-        // Defaults all buttons and logs a warning.
-        // When all buttons are defaulted, this method returns "true".
-        // Otherwise "false".
+        // Buttons with invalid type are omitted with a warning.
         //
         // Fallback priority: power_applet.primary_buttons[index] -> hardcoded defaults
         //
-        // Expected format: primary_buttons[index] table containing id (string),
+        // Expected format: primary_buttons[index] table containing type (string),
         //                  text (string), command (string)
         //
         // Assigned value: PowerButtonParams
-        static bool mapPrimaryButton(node_view node, std::vector<PowerButtonParams>& buttons,
-                                     const std::vector<PowerButtonParams>& defaults,
-                                     const PathContext&                    path_context);
+        static void mapPrimaryButton(node_view node, std::optional<PowerButtonParams>& button,
+                                     const PathContext& path_context);
 
 public:
         ConfigMapper() = delete;

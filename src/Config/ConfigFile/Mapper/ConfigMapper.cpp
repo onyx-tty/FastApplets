@@ -18,6 +18,7 @@
 #include <algorithm>
 #include <cstdint>
 #include <cstdlib>
+#include <optional>
 #include <toml++/toml.hpp>
 #include <unordered_map>
 #include <utility>
@@ -162,16 +163,12 @@ void ConfigMapper::mapPrimaryButtons(node_view                             node,
 
         std::vector<PowerButtonParams> found{};
 
-        bool defaulted = false;
         for (size_t i = 0; i != arr.value().size(); ++i) {
-                // If index out of bounds for defaults, pass nullptr
-                const auto* default_button = (i < defaults.size()) ? &defaults[i] : nullptr;
-                defaulted = mapPrimaryButton(node_view(arr.value().at(i)), found, defaults,
-                                             path_context.getExtended(i));
-
-                if (defaulted) {
-                        primary_buttons = std::move(found);
-                        return;
+                std::optional<PowerButtonParams> new_button{};
+                mapPrimaryButton(node_view(arr.value().at(i)), new_button,
+                                 path_context.getExtended(i));
+                if (new_button) {
+                        found.push_back(std::move(new_button.value()));
                 }
         }
 
@@ -185,39 +182,35 @@ void ConfigMapper::mapPrimaryButtons(node_view                             node,
         primary_buttons = std::move(found);
 }
 
-bool ConfigMapper::mapPrimaryButton(node_view node, std::vector<PowerButtonParams>& buttons,
-                                    const std::vector<PowerButtonParams>& defaults,
-                                    const PathContext&                    path_context) {
+void ConfigMapper::mapPrimaryButton(node_view node, std::optional<PowerButtonParams>& button,
+                                    const PathContext& path_context) {
         const auto table = Resolver::from<toml::table>({Source{.node = node,
                                                                .scope = applet::power_applet.scope}},
                                                        path_context);
-        if (!table) {
-                buttons = defaults;
-                return true;
-        }
+        if (!table) { return; }
 
-        PowerButtonParams button{};
+        PowerButtonParams new_button{};
 
         auto type = Resolver::from<QString>({Source{.node  = table.value()["id"],
                                                     .scope = applet::power_applet.scope}},
                                             path_context.getExtended("id"));
-        if (!type) {
-                buttons = defaults;
-                return true;
-        }
-        button.type = getPowerButtonTypeFromString(type.value());
+        if (!type) { return; }
 
-        button.text = Resolver::fromOr<QString>({Source{.node  = table.value()["text"],
-                                                    .scope = applet::power_applet.scope}}, textFor(button.type),
-                                            path_context.getExtended("text"));
+        new_button.type = getPowerButtonTypeFromString(type.value());
 
-        button.command = Resolver::fromOr<QString>({Source{.node  = node,
-                                                           .scope = applet::power_applet.scope}}, commandFor(button.type),
-                                                   path_context);
+        if (new_button.type == power_button_type::none) { return; }
 
-        button.icon = iconFor(button.type);
+        new_button.text = Resolver::fromOr<QString>({Source{.node  = table.value()["text"],
+                                                            .scope = applet::power_applet.scope}},
+                                                    textFor(new_button.type),
+                                                    path_context.getExtended("text"));
 
-        buttons.insert(buttons.cend(), std::move(button));
+        new_button.command = Resolver::fromOr<QString>({Source{.node = table.value()["command"],
+                                                               .scope = applet::power_applet.scope}},
+                                                       commandFor(new_button.type),
+                                                       path_context.getExtended("command"));
 
-        return false;
+        new_button.icon = iconFor(new_button.type);
+
+        button = std::move(new_button);
 }
