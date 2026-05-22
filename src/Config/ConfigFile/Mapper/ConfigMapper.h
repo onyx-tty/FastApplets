@@ -88,15 +88,9 @@ private:
 
         // Maps primary_button, including its attributes, from a config source.
         //
-        // Because id and string cannot be defaulted without confusing the
-        // user, e.g. with disabled reboot it could lead to defaulting a suspend button
-        // title as "Reboot", the method instead defaults all buttons and logs a warning.
+        // Defaults all buttons and logs a warning.
         // When all buttons are defaulted, this method returns "true".
         // Otherwise "false".
-        // TODO: id should be the only mandatory attribute, all other defaults can be
-        //       deduced from it alone. The idea that all buttons should be defaulted
-        //       with missing title is a leftover frm the previous index-based
-        //       button passing.
         //
         // Fallback priority: power_applet.primary_buttons[index] -> hardcoded defaults
         //
@@ -107,22 +101,6 @@ private:
         static bool mapPrimaryButton(node_view node, std::vector<PowerButtonParams>& buttons,
                                      const std::vector<PowerButtonParams>& defaults,
                                      const PathContext&                    path_context);
-
-        // Maps command from a config source.
-        //
-        // TODO: mapCommand defaults buttons without returning true to mapPrimaryButton,
-        //       which results in button duplication, as mapping resumes after
-        //       defaulting.
-        //
-        // Fallback priority: power_applet.primary_buttons[index].command ->
-        //                    hardcoded defaults
-        //
-        // Expected format: primary_buttons[index].command (string)
-        //
-        // Assigned value: QString
-        static void mapCommand(node_view node, std::vector<PowerButtonParams>& buttons,
-                               const std::vector<PowerButtonParams>& defaults, QString& command,
-                               const PathContext& path_context);
 
 public:
         ConfigMapper() = delete;

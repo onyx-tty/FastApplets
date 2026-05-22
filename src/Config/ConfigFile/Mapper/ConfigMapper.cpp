@@ -207,35 +207,17 @@ bool ConfigMapper::mapPrimaryButton(node_view node, std::vector<PowerButtonParam
         }
         button.type = getPowerButtonTypeFromString(type.value());
 
-        auto text = Resolver::from<QString>({Source{.node  = table.value()["text"],
-                                                    .scope = applet::power_applet.scope}},
+        button.text = Resolver::fromOr<QString>({Source{.node  = table.value()["text"],
+                                                    .scope = applet::power_applet.scope}}, textFor(button.type),
                                             path_context.getExtended("text"));
-        if (!text) {
-                buttons = defaults;
-                return true;
-        }
-        button.text = text.value();
 
-        mapCommand(node["command"], buttons, defaults, button.command,
-                   path_context.getExtended("command"));
+        button.command = Resolver::fromOr<QString>({Source{.node  = node,
+                                                           .scope = applet::power_applet.scope}}, commandFor(button.type),
+                                                   path_context);
 
         button.icon = iconFor(button.type);
 
         buttons.insert(buttons.cend(), std::move(button));
 
         return false;
-}
-
-void ConfigMapper::mapCommand(node_view node, std::vector<PowerButtonParams>& buttons,
-                              const std::vector<PowerButtonParams>& defaults, QString& command,
-                              const PathContext& path_context) {
-        auto new_command = Resolver::from<QString>({Source{.node  = node,
-                                                           .scope = applet::power_applet.scope}},
-                                                   path_context);
-        if (!new_command) {
-                buttons = defaults;
-                return;
-        }
-
-        command = std::move(new_command.value());
 }
