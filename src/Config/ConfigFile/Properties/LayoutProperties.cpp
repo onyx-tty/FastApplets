@@ -12,13 +12,14 @@
 #include <QString>
 
 QIcon iconFor(power_button_type type) {
+        using enum power_button_type;
         Q_INIT_RESOURCE(Icons);
 
         switch (type) {
-        case power_button_type::shutdown:  return QIcon{":/Icons/Power/shutdown.svg"};
-        case power_button_type::reboot:    return QIcon{":/Icons/Power/reboot.svg"};
-        case power_button_type::suspend:   return QIcon{":/Icons/Power/suspend.svg"};
-        case power_button_type::hibernate: return QIcon{":/Icons/Power/hibernate.svg"};
+        case shutdown:  return QIcon{":/Icons/Power/shutdown.svg"};
+        case reboot:    return QIcon{":/Icons/Power/reboot.svg"};
+        case suspend:   return QIcon{":/Icons/Power/suspend.svg"};
+        case hibernate: return QIcon{":/Icons/Power/hibernate.svg"};
         }
 
         return {};
