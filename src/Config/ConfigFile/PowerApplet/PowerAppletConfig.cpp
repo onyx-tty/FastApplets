@@ -63,20 +63,20 @@ const PowerAppletConfig& PowerAppletConfig::getDefault() {
 
         std::vector<PowerButtonParams> primary_buttons =
                 {PowerButtonParams{.id      = power_button_type::shutdown,
-                                   .text    = "Shutdown",
-                                   .command = "systemctl poweroff",
+                                   .text    = textFor(power_button_type::shutdown),
+                                   .command = commandFor(power_button_type::shutdown),
                                    .icon    = iconFor(power_button_type::shutdown)},
                  PowerButtonParams{.id      = power_button_type::reboot,
-                                   .text    = "Reboot",
-                                   .command = "systemctl reboot",
+                                   .text    = textFor(power_button_type::reboot),
+                                   .command = commandFor(power_button_type::reboot),
                                    .icon    = iconFor(power_button_type::reboot)},
                  PowerButtonParams{.id      = power_button_type::suspend,
-                                   .text    = "Suspend",
-                                   .command = "systemctl suspend",
+                                   .text    = textFor(power_button_type::suspend),
+                                   .command = commandFor(power_button_type::suspend),
                                    .icon    = iconFor(power_button_type::suspend)},
                  PowerButtonParams{.id      = power_button_type::hibernate,
-                                   .text    = "Hibernate",
-                                   .command = "systemctl hibernate",
+                                   .text    = textFor(power_button_type::hibernate),
+                                   .command = commandFor(power_button_type::hibernate),
                                    .icon    = iconFor(power_button_type::hibernate)}};
         LayoutProperties default_layout_properties = LayoutProperties{std::move(primary_buttons)};
 

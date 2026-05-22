@@ -24,6 +24,32 @@ QIcon iconFor(power_button_type id) {
         return {};
 }
 
+QString textFor(power_button_type id) {
+        using enum power_button_type;
+
+        switch (id) {
+        case shutdown:  return "Shutdown";
+        case reboot:    return "Reboot";
+        case suspend:   return "Suspend";
+        case hibernate: return "Hibernate";
+        }
+
+        return "";
+}
+
+QString commandFor(power_button_type id) {
+        using enum power_button_type;
+
+        switch (id) {
+        case shutdown:  return "systemctl poweroff";
+        case reboot:    return "systemctl reboot";
+        case suspend:   return "systemctl suspend";
+        case hibernate: return "systemctl hibernate";
+        }
+
+        return "";
+}
+
 LayoutProperties::LayoutProperties(std::vector<PowerButtonParams> power_buttons) :
         power_buttons(std::move(power_buttons)) {}
 

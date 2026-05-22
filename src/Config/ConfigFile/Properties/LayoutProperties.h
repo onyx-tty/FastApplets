@@ -16,6 +16,10 @@ class QString;
 // TODO: Auto-assign on parse
 QIcon iconFor(power_button_type id);
 
+QString textFor(power_button_type id);
+
+QString commandFor(power_button_type id);
+
 // Stores properties describing the appearance of the layout.
 class LayoutProperties final {
 private:
