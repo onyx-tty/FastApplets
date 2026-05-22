@@ -23,12 +23,12 @@ class PowerAppletKeys final : public GlobalKeys {
 private:
         friend class KeysMapper;
 
-        std::vector<keybindings> primary_button_keys;
+        std::vector<keybindings> primary_button;
 
 public:
-        explicit PowerAppletKeys(keybindings              quit_keys           = {},
-                                 std::vector<keybindings> primary_button_keys = {});
+        explicit PowerAppletKeys(keybindings              quit           = {},
+                                 std::vector<keybindings> primary_button = {});
         static PowerAppletKeys&         get();
         static const PowerAppletKeys&   getDefault();
-        const std::vector<keybindings>& getPrimaryButtonKeys() const;
+        const std::vector<keybindings>& getPrimaryButton() const;
 };

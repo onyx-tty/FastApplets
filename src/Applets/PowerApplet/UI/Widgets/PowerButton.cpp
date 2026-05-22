@@ -14,18 +14,18 @@
 #include <QObject>
 #include <QString>
 
-PowerButton::PowerButton(power_button_type id, const QIcon& icon, const QString& text,
+PowerButton::PowerButton(power_button_type type, const QIcon& icon, const QString& text,
                          const keybindings& keys, const QString& command) :
         PrimaryButton(icon, text, PowerAppletConfig::get().getPrimaryButtonProperties()),
-        keys(keys), id(id) {
+        keys(keys), type(type) {
         connect(this, &PowerButton::clicked,
                 [this, command]() { ShellRunner::runCommand(command); });
 
         QDEBUG() << QString("Created %1!").arg(text);
 }
 
-power_button_type PowerButton::getID() const {
-        return id;
+power_button_type PowerButton::getType() const {
+        return type;
 }
 
 const keybindings& PowerButton::getKeys() const {

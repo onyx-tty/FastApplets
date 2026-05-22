@@ -14,19 +14,19 @@ class QIcon;
 class QString;
 
 // Power button with associated icon and keybindings.
-//   - id: Determines which icon to use and which keybindings can activate it.
+//   - type: Determines which icon to use and which keybindings can activate it.
 //   - command: The actual system action to execute (shutdown, reboot, etc.)
 //   - keys: Key combinations that trigger this button.
 class PowerButton final : public PrimaryButton {
         Q_OBJECT
 
 private:
-        const power_button_type id;
+        const power_button_type type;
         const keybindings       keys;
 
 public:
-        explicit PowerButton(power_button_type id, const QIcon& icon, const QString& text,
+        explicit PowerButton(power_button_type type, const QIcon& icon, const QString& text,
                              const keybindings& keys, const QString& command);
-        power_button_type  getID() const;
+        power_button_type  getType() const;
         const keybindings& getKeys() const;
 };

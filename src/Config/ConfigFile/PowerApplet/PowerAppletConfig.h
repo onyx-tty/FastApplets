@@ -26,10 +26,9 @@ private:
         LayoutProperties layout_properties;
 
 public:
-        PowerAppletConfig(
-                WindowProperties        window_properties         = WindowProperties{},
-                PrimaryButtonProperties primary_button_properties = PrimaryButtonProperties{},
-                LayoutProperties        layout_properties         = LayoutProperties{});
+        PowerAppletConfig(WindowProperties        window         = WindowProperties{},
+                          PrimaryButtonProperties primary_button = PrimaryButtonProperties{},
+                          LayoutProperties        layout         = LayoutProperties{});
         static PowerAppletConfig&       get();
         static const PowerAppletConfig& getDefault();
         const LayoutProperties&         getLayoutProperties() const;

@@ -6,8 +6,8 @@
 
 #include <utility>
 
-GlobalKeys::GlobalKeys(keybindings quit_keys) : quit_keys(std::move(quit_keys)) {}
+GlobalKeys::GlobalKeys(keybindings quit) : quit(std::move(quit)) {}
 
-const keybindings& GlobalKeys::getQuitKeys() const {
-        return quit_keys;
+const keybindings& GlobalKeys::getQuit() const {
+        return quit;
 }

@@ -66,7 +66,7 @@ private:
         // Expected format: layout table containing primary_buttons (array of tables)
         //
         // Assigned value: LayoutProperties
-        static void mapLayout(node_view layout_node, LayoutProperties& layout,
+        static void mapLayout(node_view node, LayoutProperties& layout,
                               const LayoutProperties& defaults, const PathContext& path_context);
 
         // Maps primary_buttons from a config source.
@@ -81,7 +81,7 @@ private:
         // Expected format: primary_buttons (array of tables)
         //
         // Assigned value: vector of PowerButtonParams
-        static void mapPrimaryButtons(node_view                             primary_buttons_node,
+        static void mapPrimaryButtons(node_view                             node,
                                       std::vector<PowerButtonParams>&       primary_buttons,
                                       const std::vector<PowerButtonParams>& defaults,
                                       const PathContext&                    path_context);
@@ -104,8 +104,7 @@ private:
         //                  text (string), command (string)
         //
         // Assigned value: PowerButtonParams
-        static bool mapPrimaryButton(node_view                             button_params_node,
-                                     std::vector<PowerButtonParams>&       buttons,
+        static bool mapPrimaryButton(node_view node, std::vector<PowerButtonParams>& buttons,
                                      const std::vector<PowerButtonParams>& defaults,
                                      const PathContext&                    path_context);
 
@@ -121,7 +120,7 @@ private:
         // Expected format: primary_buttons[index].command (string)
         //
         // Assigned value: QString
-        static void mapCommand(node_view command_node, std::vector<PowerButtonParams>& buttons,
+        static void mapCommand(node_view node, std::vector<PowerButtonParams>& buttons,
                                const std::vector<PowerButtonParams>& defaults, QString& command,
                                const PathContext& path_context);
 
@@ -143,8 +142,8 @@ public:
         // circular dependency between this header and PowerAppletConfig.h by deferring
         // the instantiation of PowerAppletConfig.
         template<typename TConfig>
-        static void mapToPowerAppletConfig(const toml::table& power_applet_table,
-                                           const toml::table& global_table, TConfig& config);
+        static void mapToPowerAppletConfig(const toml::table& power_applet,
+                                           const toml::table& global, TConfig& config);
 };
 
 #include "ConfigMapper.tpp"

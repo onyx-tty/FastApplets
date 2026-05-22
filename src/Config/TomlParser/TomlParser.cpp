@@ -10,7 +10,7 @@
 #include <QString>
 
 toml::table TomlParser::parseFile(const std::string& filepath) {
-        toml::table file_table{};
+        toml::table file{};
 
         if (!QFileInfo::exists(QString::fromStdString(filepath))) {
                 QWARNING() << "File not found!";
@@ -18,7 +18,7 @@ toml::table TomlParser::parseFile(const std::string& filepath) {
         }
 
         try {
-                file_table = toml::parse_file(filepath);
+                file = toml::parse_file(filepath);
                 QDEBUG() << "Parsed file" << QString::fromStdString(filepath);
         } catch (const toml::parse_error& error) {
                 QWARNING() << QString("%1:").arg(QString::fromStdString(filepath))
@@ -26,5 +26,5 @@ toml::table TomlParser::parseFile(const std::string& filepath) {
                 return {};
         }
 
-        return file_table;
+        return file;
 }

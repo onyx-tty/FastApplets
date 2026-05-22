@@ -11,10 +11,10 @@
 #include <QResource>
 #include <QString>
 
-QIcon iconFor(power_button_type id) {
+QIcon iconFor(power_button_type type) {
         Q_INIT_RESOURCE(Icons);
 
-        switch (id) {
+        switch (type) {
         case power_button_type::shutdown:  return QIcon{":/Icons/Power/shutdown.svg"};
         case power_button_type::reboot:    return QIcon{":/Icons/Power/reboot.svg"};
         case power_button_type::suspend:   return QIcon{":/Icons/Power/suspend.svg"};
@@ -24,10 +24,10 @@ QIcon iconFor(power_button_type id) {
         return {};
 }
 
-QString textFor(power_button_type id) {
+QString textFor(power_button_type type) {
         using enum power_button_type;
 
-        switch (id) {
+        switch (type) {
         case shutdown:  return "Shutdown";
         case reboot:    return "Reboot";
         case suspend:   return "Suspend";
@@ -37,10 +37,10 @@ QString textFor(power_button_type id) {
         return "";
 }
 
-QString commandFor(power_button_type id) {
+QString commandFor(power_button_type type) {
         using enum power_button_type;
 
-        switch (id) {
+        switch (type) {
         case shutdown:  return "systemctl poweroff";
         case reboot:    return "systemctl reboot";
         case suspend:   return "systemctl suspend";

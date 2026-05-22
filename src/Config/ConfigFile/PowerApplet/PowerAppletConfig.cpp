@@ -21,11 +21,11 @@
 #include <QString>
 #include <Qt>
 
-PowerAppletConfig::PowerAppletConfig(WindowProperties        window_properties,
-                                     PrimaryButtonProperties primary_button_properties,
-                                     LayoutProperties        layout_properties) :
-        GlobalConfig(std::move(window_properties), std::move(primary_button_properties)),
-        layout_properties(std::move(layout_properties)) {}
+PowerAppletConfig::PowerAppletConfig(WindowProperties        window,
+                                     PrimaryButtonProperties primary_button,
+                                     LayoutProperties        layout) :
+        GlobalConfig(std::move(window), std::move(primary_button)),
+        layout_properties(std::move(layout)) {}
 
 PowerAppletConfig& PowerAppletConfig::get() {
         static PowerAppletConfig config{};
@@ -47,45 +47,40 @@ PowerAppletConfig& PowerAppletConfig::get() {
 }
 
 const PowerAppletConfig& PowerAppletConfig::getDefault() {
-        QSize            size                      = {960, 220};
-        QString          title                     = "PowerApplet";
-        WindowProperties default_window_properties = WindowProperties{std::move(size),
-                                                                      std::move(title)};
+        QSize            size   = {960, 220};
+        QString          title  = "PowerApplet";
+        WindowProperties window = WindowProperties{std::move(size), std::move(title)};
 
         Qt::Alignment           text_alignment = {Qt::AlignHCenter, Qt::AlignTop};
         Qt::Alignment           icon_alignment = {Qt::AlignHCenter, Qt::AlignVCenter};
         QSize                   icon_size      = {64, 64};
         QSizePolicy             policy         = {QSizePolicy::Expanding, QSizePolicy::Expanding};
-        PrimaryButtonProperties default_primary_button_properties{std::move(text_alignment),
-                                                                  std::move(icon_alignment),
-                                                                  std::move(icon_size),
-                                                                  std::move(policy)};
+        PrimaryButtonProperties button{std::move(text_alignment), std::move(icon_alignment),
+                                       std::move(icon_size), std::move(policy)};
 
         using enum power_button_type;
-        std::vector<PowerButtonParams> primary_buttons =
-                {PowerButtonParams{.id      = shutdown,
-                                   .text    = textFor(shutdown),
-                                   .command = commandFor(shutdown),
-                                   .icon    = iconFor(shutdown)},
-                 PowerButtonParams{.id      = reboot,
-                                   .text    = textFor(reboot),
-                                   .command = commandFor(reboot),
-                                   .icon    = iconFor(reboot)},
-                 PowerButtonParams{.id      = suspend,
-                                   .text    = textFor(suspend),
-                                   .command = commandFor(suspend),
-                                   .icon    = iconFor(suspend)},
-                 PowerButtonParams{.id      = hibernate,
-                                   .text    = textFor(hibernate),
-                                   .command = commandFor(hibernate),
-                                   .icon    = iconFor(hibernate)}};
-        LayoutProperties default_layout_properties = LayoutProperties{std::move(primary_buttons)};
+        std::vector<PowerButtonParams>
+                         primary_buttons{PowerButtonParams{.type    = shutdown,
+                                                           .text    = textFor(shutdown),
+                                                           .command = commandFor(shutdown),
+                                                           .icon    = iconFor(shutdown)},
+                                         PowerButtonParams{.type    = reboot,
+                                                           .text    = textFor(reboot),
+                                                           .command = commandFor(reboot),
+                                                           .icon    = iconFor(reboot)},
+                                         PowerButtonParams{.type    = suspend,
+                                                           .text    = textFor(suspend),
+                                                           .command = commandFor(suspend),
+                                                           .icon    = iconFor(suspend)},
+                                         PowerButtonParams{.type    = hibernate,
+                                                           .text    = textFor(hibernate),
+                                                           .command = commandFor(hibernate),
+                                                           .icon    = iconFor(hibernate)}};
+        LayoutProperties layout = LayoutProperties{std::move(primary_buttons)};
 
-        static PowerAppletConfig default_power_applet_config =
-                {std::move(default_window_properties), std::move(default_primary_button_properties),
-                 std::move(default_layout_properties)};
+        static PowerAppletConfig config = {std::move(window), std::move(button), std::move(layout)};
 
-        return default_power_applet_config;
+        return config;
 }
 
 const LayoutProperties& PowerAppletConfig::getLayoutProperties() const {

@@ -18,10 +18,10 @@ class QString;
 
 // Parses key name strings (e.g. "Ctrl+A") into a keybindings set, stripped of
 // modifiers.
-keybindings keysFromText(const std::vector<std::string>& text_list);
+keybindings keysFromText(const std::vector<std::string>& texts);
 
 // Extracts string elements from a toml::array, silently skipping non-string values.
-std::vector<std::string> textFromTomlArray(const toml::array& toml_array);
+std::vector<std::string> textFromTomlArray(const toml::array& arr);
 
 // Maps TOML configuration to PowerAppletKeys structure.
 //
@@ -56,8 +56,7 @@ private:
         //                  keybindings
         //
         // Assigned value: vector of keybindings (std::unordered_set<int>)
-        static void mapPrimaryButtonKeys(node_view                       primary_buttons_node,
-                                         std::vector<keybindings>&       primary_buttons,
+        static void mapPrimaryButtonKeys(node_view node, std::vector<keybindings>& primary_buttons,
                                          const std::vector<keybindings>& defaults,
                                          const PathContext&              path_context);
 
@@ -68,7 +67,7 @@ private:
         // Expected format: string representation of keybinding
         //
         // Assigned value: keybindings (std::unordered_set<int>)
-        static void mapPrimaryButtonKey(node_view primary_button_node, keybindings& primary_button,
+        static void mapPrimaryButtonKey(node_view node, keybindings& primary_button,
                                         const keybindings& defaults,
                                         const PathContext& path_context);
 
@@ -90,8 +89,8 @@ public:
         // circular dependency between this header and PowerAppletKeys.h by deferring
         // the instantiation of PowerAppletKeys.
         template<typename TKeys>
-        static void mapToPowerAppletKeys(const toml::table& power_applet_table,
-                                         const toml::table& global_table, TKeys& keys);
+        static void mapToPowerAppletKeys(const toml::table& power_applet, const toml::table& global,
+                                         TKeys& keys);
 };
 
 #include "KeysMapper.tpp"

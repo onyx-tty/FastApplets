@@ -44,18 +44,17 @@ static power_button_type getPowerButtonTypeFromString(const QString& string) {
 template<typename T>
 static T mapProperties(NodePair nodes, const T& defaults, const PathContext& path_context,
                        auto fill_fn) {
-        // Resolve power_data and global_data
-        auto power_data = Resolver::from<toml::table>({Source{.node  = nodes.primary,
-                                                              .scope = applet::power_applet.scope,
-                                                              .quiet = true}},
-                                                      path_context);
+        auto power = Resolver::from<toml::table>({Source{.node  = nodes.primary,
+                                                         .scope = applet::power_applet.scope,
+                                                         .quiet = true}},
+                                                 path_context);
 
-        auto global_data = Resolver::from<toml::table>({Source{.node  = nodes.fallback,
-                                                               .scope = applet::global.scope}},
-                                                       path_context);
+        auto global = Resolver::from<toml::table>({Source{.node  = nodes.fallback,
+                                                          .scope = applet::global.scope}},
+                                                  path_context);
 
         // Use hardcoded defaults if no tables found
-        if (!power_data && !global_data) { return defaults; }
+        if (!power && !global) { return defaults; }
 
         T props{};
         fill_fn(nodes, props, path_context);
@@ -128,118 +127,115 @@ void ConfigMapper::mapPrimaryButton(NodePair nodes, PrimaryButtonProperties& but
 }
 
 /* Layout Properties */
-void ConfigMapper::mapLayout(node_view layout_node, LayoutProperties& layout,
+void ConfigMapper::mapLayout(node_view node, LayoutProperties& layout,
                              const LayoutProperties& defaults, const PathContext& path_context) {
-        LayoutProperties layout_properties{};
+        LayoutProperties properties{};
 
-        const auto data = Resolver::from<toml::table>({Source{.node  = layout_node,
+        const auto data = Resolver::from<toml::table>({Source{.node  = node,
                                                               .scope = applet::power_applet.scope}},
                                                       path_context);
         if (!data) {
-                layout_properties = defaults;
-                layout            = std::move(layout_properties);
+                properties = defaults;
+                layout     = std::move(properties);
                 return;
         }
 
         // Primary power buttons
-        mapPrimaryButtons(data.value()["primary_buttons"], layout_properties.power_buttons,
+        mapPrimaryButtons(data.value()["primary_buttons"], properties.power_buttons,
                           defaults.getPowerButtons(), path_context.getExtended("primary_buttons"));
 
-        layout = std::move(layout_properties);
+        layout = std::move(properties);
 }
 
-void ConfigMapper::mapPrimaryButtons(node_view                             primary_buttons_node,
+void ConfigMapper::mapPrimaryButtons(node_view                             node,
                                      std::vector<PowerButtonParams>&       primary_buttons,
                                      const std::vector<PowerButtonParams>& defaults,
                                      const PathContext&                    path_context) {
-        const auto buttons =
-                Resolver::from<toml::array>({Source{.node  = primary_buttons_node,
-                                                    .scope = applet::power_applet.scope}},
-                                            path_context, {.min_size = 1},
-                                            "Format: [primary buttons...]");
-        if (!buttons) {
+        const auto arr = Resolver::from<toml::array>({Source{.node  = node,
+                                                             .scope = applet::power_applet.scope}},
+                                                     path_context, {.min_size = 1},
+                                                     "Format: [primary buttons...]");
+        if (!arr) {
                 primary_buttons = defaults;
                 return;
         }
 
-        std::vector<PowerButtonParams> buttons_found{};
+        std::vector<PowerButtonParams> found{};
 
         bool defaulted = false;
-        for (size_t i = 0; i != buttons.value().size(); ++i) {
+        for (size_t i = 0; i != arr.value().size(); ++i) {
                 // If index out of bounds for defaults, pass nullptr
                 const auto* default_button = (i < defaults.size()) ? &defaults[i] : nullptr;
-                defaulted = mapPrimaryButton(node_view(buttons.value().at(i)), buttons_found,
-                                             defaults, path_context.getExtended(i));
+                defaulted = mapPrimaryButton(node_view(arr.value().at(i)), found, defaults,
+                                             path_context.getExtended(i));
 
                 if (defaulted) {
-                        primary_buttons = std::move(buttons_found);
+                        primary_buttons = std::move(found);
                         return;
                 }
         }
 
-        if (buttons_found.empty()) {
+        if (found.empty()) {
                 QWARNING() << path_context.makePath(applet::power_applet.scope)
                                       + ", no enabled buttons found! Using defaults...";
                 primary_buttons = defaults;
                 return;
         }
 
-        primary_buttons = std::move(buttons_found);
+        primary_buttons = std::move(found);
 }
 
-bool ConfigMapper::mapPrimaryButton(node_view                             button_params_node,
-                                    std::vector<PowerButtonParams>&       buttons,
+bool ConfigMapper::mapPrimaryButton(node_view node, std::vector<PowerButtonParams>& buttons,
                                     const std::vector<PowerButtonParams>& defaults,
                                     const PathContext&                    path_context) {
-        const auto button_table =
-                Resolver::from<toml::table>({Source{.node  = button_params_node,
-                                                    .scope = applet::power_applet.scope}},
-                                            path_context);
-        if (!button_table) {
+        const auto table = Resolver::from<toml::table>({Source{.node = node,
+                                                               .scope = applet::power_applet.scope}},
+                                                       path_context);
+        if (!table) {
                 buttons = defaults;
                 return true;
         }
 
         PowerButtonParams button{};
 
-        auto id_result = Resolver::from<QString>({Source{.node  = button_table.value()["id"],
-                                                         .scope = applet::power_applet.scope}},
-                                                 path_context.getExtended("id"));
-        if (!id_result) {
+        auto type = Resolver::from<QString>({Source{.node  = table.value()["id"],
+                                                    .scope = applet::power_applet.scope}},
+                                            path_context.getExtended("id"));
+        if (!type) {
                 buttons = defaults;
                 return true;
         }
-        button.id = getPowerButtonTypeFromString(id_result.value());
+        button.type = getPowerButtonTypeFromString(type.value());
 
-        auto text_result = Resolver::from<QString>({Source{.node  = button_table.value()["text"],
-                                                           .scope = applet::power_applet.scope}},
-                                                   path_context.getExtended("text"));
-        if (!text_result) {
+        auto text = Resolver::from<QString>({Source{.node  = table.value()["text"],
+                                                    .scope = applet::power_applet.scope}},
+                                            path_context.getExtended("text"));
+        if (!text) {
                 buttons = defaults;
                 return true;
         }
-        button.text = text_result.value();
+        button.text = text.value();
 
-        mapCommand(button_params_node["command"], buttons, defaults, button.command,
+        mapCommand(node["command"], buttons, defaults, button.command,
                    path_context.getExtended("command"));
 
-        button.icon = iconFor(button.id);
+        button.icon = iconFor(button.type);
 
         buttons.insert(buttons.cend(), std::move(button));
 
         return false;
 }
 
-void ConfigMapper::mapCommand(node_view command_node, std::vector<PowerButtonParams>& buttons,
+void ConfigMapper::mapCommand(node_view node, std::vector<PowerButtonParams>& buttons,
                               const std::vector<PowerButtonParams>& defaults, QString& command,
                               const PathContext& path_context) {
-        auto command_raw = Resolver::from<QString>({Source{.node  = command_node,
+        auto new_command = Resolver::from<QString>({Source{.node  = node,
                                                            .scope = applet::power_applet.scope}},
                                                    path_context);
-        if (!command_raw) {
+        if (!new_command) {
                 buttons = defaults;
                 return;
         }
 
-        command = std::move(command_raw.value());
+        command = std::move(new_command.value());
 }

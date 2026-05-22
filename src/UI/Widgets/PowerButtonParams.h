@@ -11,7 +11,7 @@
 // Parameters required to construct a PowerButton.
 // Currently id, text, command, come from config, icon is assigned from id.
 struct PowerButtonParams final {
-        power_button_type id;
+        power_button_type type;
         QString           text;
         QString           command;
         QIcon             icon;

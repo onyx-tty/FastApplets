@@ -14,9 +14,8 @@
 #include <vector>
 #include <Qt>
 
-PowerAppletKeys::PowerAppletKeys(keybindings              quit_keys,
-                                 std::vector<keybindings> primary_button_keys) :
-        GlobalKeys(std::move(quit_keys)), primary_button_keys(std::move(primary_button_keys)) {}
+PowerAppletKeys::PowerAppletKeys(keybindings quit, std::vector<keybindings> primary_button) :
+        GlobalKeys(std::move(quit)), primary_button(std::move(primary_button)) {}
 
 PowerAppletKeys& PowerAppletKeys::get() {
         static PowerAppletKeys keys{};
@@ -25,11 +24,11 @@ PowerAppletKeys& PowerAppletKeys::get() {
         if (!parsed) {
                 // TODO: Config files should not be fetched twice, once for config, once for keys.
                 //       Either fetch them individually or cache the result for both.
-                ConfigFiles power_files = FileLocator::locateConfigFiles(applet::power_applet.scope);
-                ConfigFiles global_files = FileLocator::locateConfigFiles(applet::global.scope);
+                ConfigFiles power  = FileLocator::locateConfigFiles(applet::power_applet.scope);
+                ConfigFiles global = FileLocator::locateConfigFiles(applet::global.scope);
 
-                KeysMapper::mapToPowerAppletKeys(TomlParser::parseFile(power_files.keys),
-                                                 TomlParser::parseFile(global_files.keys), keys);
+                KeysMapper::mapToPowerAppletKeys(TomlParser::parseFile(power.keys),
+                                                 TomlParser::parseFile(global.keys), keys);
                 parsed = true;
         }
 
@@ -37,19 +36,19 @@ PowerAppletKeys& PowerAppletKeys::get() {
 }
 
 const PowerAppletKeys& PowerAppletKeys::getDefault() {
-        keybindings quit_keys = {Qt::Key_Escape, Qt::Key_Q};
+        keybindings quit = {Qt::Key_Escape, Qt::Key_Q};
 
-        std::vector<keybindings> primary_button_keys = {
+        std::vector<keybindings> primary_button = {
                 keybindings{Qt::Key_1}, keybindings{Qt::Key_2}, keybindings{Qt::Key_3},
                 keybindings{Qt::Key_4}, keybindings{Qt::Key_5}, keybindings{Qt::Key_6},
                 keybindings{Qt::Key_7}, keybindings{Qt::Key_8}, keybindings{Qt::Key_9},
         };
 
-        static PowerAppletKeys default_keys{std::move(quit_keys), std::move(primary_button_keys)};
+        static PowerAppletKeys keys{std::move(quit), std::move(primary_button)};
 
-        return default_keys;
+        return keys;
 }
 
-const std::vector<keybindings>& PowerAppletKeys::getPrimaryButtonKeys() const {
-        return primary_button_keys;
+const std::vector<keybindings>& PowerAppletKeys::getPrimaryButton() const {
+        return primary_button;
 }

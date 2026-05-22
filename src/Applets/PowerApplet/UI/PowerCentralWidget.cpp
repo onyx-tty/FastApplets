@@ -23,7 +23,7 @@
 #include <Qt>
 
 static bool isPowerKey(int key) {
-        for (const auto& button_keys : PowerAppletKeys::get().getPrimaryButtonKeys()) {
+        for (const auto& button_keys : PowerAppletKeys::get().getPrimaryButton()) {
                 if (button_keys.contains(key)) { return true; }
         }
 
@@ -31,7 +31,7 @@ static bool isPowerKey(int key) {
 }
 
 static bool isQuitKey(int key) {
-        const auto& quit_keys = PowerAppletKeys::get().getQuitKeys();
+        const auto& quit_keys = PowerAppletKeys::get().getQuit();
 
         return quit_keys.contains(key);
 }
@@ -39,10 +39,10 @@ static bool isQuitKey(int key) {
 std::vector<PowerButton*> PowerCentralWidget::createButtons() {
         const auto& primary_buttons_data =
                 PowerAppletConfig::get().getLayoutProperties().getPowerButtons();
-        const std::vector<keybindings>  primary_button_keys = PowerAppletKeys::get()
-                                                                      .getPrimaryButtonKeys();
-        const std::vector<keybindings>& default_primary_button_keys =
-                PowerAppletKeys::getDefault().getPrimaryButtonKeys();
+        const std::vector<keybindings>  primary_button_keys         = PowerAppletKeys::get()
+                                                                              .getPrimaryButton();
+        const std::vector<keybindings>& default_primary_button_keys = PowerAppletKeys::getDefault()
+                                                                              .getPrimaryButton();
 
         // TODO If applied key is already used elsewhere, there will be confusion
         //      For example if for some reason keybinding for primary button 3 is Qt_Key4 and
@@ -68,12 +68,12 @@ std::vector<PowerButton*> PowerCentralWidget::createButtons() {
         primary_buttons.reserve(primary_buttons_data.size());
 
         for (size_t i = 0; i != primary_buttons_data.size(); ++i) {
-                power_button_type id           = primary_buttons_data[i].id;
+                power_button_type type         = primary_buttons_data[i].type;
                 QIcon             icon         = primary_buttons_data[i].icon;
                 QString           text         = primary_buttons_data[i].text;
                 QString           command      = primary_buttons_data[i].command;
                 keybindings       keys         = key_getter(i);
-                auto*             power_button = new PowerButton{id, icon, text, keys, command};
+                auto*             power_button = new PowerButton{type, icon, text, keys, command};
 
                 main_layout->addWidget(power_button);
                 primary_buttons.push_back(power_button);

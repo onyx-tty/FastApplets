@@ -11,12 +11,12 @@ namespace applet {
 
 // Stores all forms of applet representation in one record
 struct Record {
-        applet::type     id;
+        applet::type     type;
         std::string_view scope;
 };
 
-inline constexpr Record global{.id = type::global, .scope = "global"};
-inline constexpr Record power_applet{.id = type::power_applet, .scope = "power_applet"};
+inline constexpr Record global{.type = type::global, .scope = "global"};
+inline constexpr Record power_applet{.type = type::power_applet, .scope = "power_applet"};
 
 // Returns the scope string for an applet::type
 constexpr std::string_view toString(applet::type id) {

@@ -19,78 +19,76 @@
 #include <QKeySequence>
 #include <QString>
 
-keybindings keysFromText(const std::vector<std::string>& text_list) {
+keybindings keysFromText(const std::vector<std::string>& texts) {
         keybindings keys{};
-        keys.reserve(text_list.size());
-        for (const std::string& text : text_list) {
+        keys.reserve(texts.size());
+        for (const std::string& text : texts) {
                 keys.insert(QKeySequence{QString::fromStdString(text)}[0].key());
         }
 
         return keys;
 }
 
-std::vector<std::string> textFromTomlArray(const toml::array& toml_array) {
-        std::vector<std::string> str_vec{};
-        str_vec.reserve(toml_array.size());
+std::vector<std::string> textFromTomlArray(const toml::array& arr) {
+        std::vector<std::string> texts{};
+        texts.reserve(arr.size());
 
-        for (const auto& element : toml_array) {
+        for (const auto& element : arr) {
                 if (const auto& str_element = element.as_string()) {
-                        str_vec.push_back(str_element->get());
+                        texts.push_back(str_element->get());
                 }
         }
 
-        return str_vec;
+        return texts;
 }
 
 /* Global Keys */
 void KeysMapper::mapQuitKeys(NodePair nodes, keybindings& quit, const keybindings& defaults,
                              const PathContext& path_context) {
-        toml::array array{};
+        toml::array keys{};
         Resolver::fromOrDefault<toml::array>({Source{.node  = nodes.primary,
                                                      .scope = applet::power_applet.scope},
                                               Source{.node  = nodes.fallback,
                                                      .scope = applet::global.scope}},
-                                             array, quit, defaults, path_context, {.min_size = 1},
+                                             keys, quit, defaults, path_context, {.min_size = 1},
                                              "Format: [keybindings...]");
 
-        if (array.empty()) { return; }
+        if (keys.empty()) { return; }
 
-        quit = keysFromText(textFromTomlArray(array));
+        quit = keysFromText(textFromTomlArray(keys));
 }
 
 /* Power Applet Keys*/
-void KeysMapper::mapPrimaryButtonKeys(node_view                       primary_buttons_node,
-                                      std::vector<keybindings>&       primary_buttons,
+void KeysMapper::mapPrimaryButtonKeys(node_view node, std::vector<keybindings>& primary_buttons,
                                       const std::vector<keybindings>& defaults,
                                       const PathContext&              path_context) {
-        toml::array primary_button_arr{};
-        Resolver::fromOrDefault({Source{.node  = primary_buttons_node,
-                                        .scope = applet::power_applet.scope}},
-                                primary_button_arr, primary_buttons, defaults, path_context,
-                                {.min_size = 1}, "Format: [keybindings...]");
+        toml::array keys{};
+        Resolver::fromOrDefault({Source{.node = node, .scope = applet::power_applet.scope}}, keys,
+                                primary_buttons, defaults, path_context, {.min_size = 1},
+                                "Format: [keybindings...]");
 
-        if (primary_button_arr.empty()) { return; }
+        if (keys.empty()) { return; }
 
-        std::vector<keybindings> primary_buttons_new{};
-        for (size_t i = 0; i != primary_button_arr.size(); ++i) {
-                keybindings keys{};
-                mapPrimaryButtonKey(primary_buttons_node[i], keys, defaults[i],
+        std::vector<keybindings> found{};
+        for (size_t i = 0; i != keys.size(); ++i) {
+                keybindings found_for_button{};
+                mapPrimaryButtonKey(node[i], found_for_button, defaults[i],
                                     path_context.getExtended(i));
-                if (!keys.empty()) { primary_buttons_new.push_back(keys); }
+                if (!keys.empty()) { found.push_back(found_for_button); }
         };
 
-        primary_buttons = std::move(primary_buttons_new);
+        primary_buttons = std::move(found);
 }
 
-void KeysMapper::mapPrimaryButtonKey(node_view primary_button_node, keybindings& primary_button,
+void KeysMapper::mapPrimaryButtonKey(node_view node, keybindings& primary_button,
                                      const keybindings& defaults, const PathContext& path_context) {
-        toml::array button{};
-        Resolver::fromOrDefault<toml::array>({Source{.node  = primary_button_node,
+        toml::array keys{};
+        Resolver::fromOrDefault<toml::array>({Source{.node  = node,
                                                      .scope = applet::power_applet.scope}},
-                                             button, primary_button, defaults, path_context,
+                                             keys, primary_button, defaults, path_context,
                                              {.min_size = 1}, "Format: [keybindings...]");
 
-        if (button.empty()) { return; }
+        if (keys.empty()) { return; }
 
-        primary_button = keysFromText(textFromTomlArray(button));
+        primary_button = keysFromText(textFromTomlArray(keys));
 }

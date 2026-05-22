@@ -10,10 +10,10 @@
 // Derive from this and extend with applet-specific keybindings.
 class GlobalKeys {
 protected:
-        explicit GlobalKeys(keybindings quit_keys);
+        explicit GlobalKeys(keybindings quit);
 
-        keybindings quit_keys;
+        keybindings quit;
 
 public:
-        const keybindings& getQuitKeys() const;
+        const keybindings& getQuit() const;
 };
