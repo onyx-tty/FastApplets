@@ -95,18 +95,16 @@ const std::vector<PowerButton*>& PowerCentralWidget::getButtons() const {
 
 void PowerCentralWidget::keyPressEvent(QKeyEvent* event) {
         // TODO Improve messy finding logic and adaptation from iter to ptr
-        // TODO Rename current_key to key and current to button
-        int          current_key  = event->key();
+        int          key          = event->key();
         const auto   found_button = std::find_if(buttons.cbegin(), buttons.cend(),
-                                                 [current_key](const PowerButton* button) -> bool {
+                                                 [key](const PowerButton* button) -> bool {
                                                        if (!button) { return false; }
-                                                       return button->getKeys().contains(
-                                                               current_key);
+                                                       return button->getKeys().contains(key);
                                                  });
-        PowerButton* current      = found_button != buttons.cend() ? *found_button : nullptr;
+        PowerButton* power_button = found_button != buttons.cend() ? *found_button : nullptr;
 
         // Quit pressed
-        if (isQuitKey(current_key)) {
+        if (isQuitKey(key)) {
                 // Unselect if a button is focused
                 if (auto* focused = qobject_cast<PowerButton*>(QApplication::focusWidget())) {
                         focused->clearFocus();
@@ -114,18 +112,18 @@ void PowerCentralWidget::keyPressEvent(QKeyEvent* event) {
                 } else { // Quit if not
                         QApplication::quit();
                 }
-        } else if (current) { // PowerButton pressed
+        } else if (power_button) { // PowerButton pressed
                 // Click if already focused
-                if (current->hasFocus()) {
-                        current->animateClick();
-                        current->clearFocus();
+                if (power_button->hasFocus()) {
+                        power_button->animateClick();
+                        power_button->clearFocus();
                         this->setFocus();
                 } else { // Re-focus if not
                         if (auto* focused = qobject_cast<PowerButton*>(
                                     QApplication::focusWidget())) {
                                 focused->clearFocus();
                         }
-                        current->setFocus(Qt::FocusReason::MouseFocusReason);
+                        power_button->setFocus(Qt::FocusReason::MouseFocusReason);
                 }
         }
 }
