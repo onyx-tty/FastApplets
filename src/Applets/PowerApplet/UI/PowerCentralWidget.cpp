@@ -22,7 +22,9 @@
 #include <QWidget>
 #include <Qt>
 
-static bool isPowerKey(int key) {
+namespace {
+
+bool isPowerKey(int key) {
         for (const auto& button_keys : PowerAppletKeys::get().getPrimaryButton()) {
                 if (button_keys.contains(key)) { return true; }
         }
@@ -30,11 +32,13 @@ static bool isPowerKey(int key) {
         return false;
 }
 
-static bool isQuitKey(int key) {
+bool isQuitKey(int key) {
         const auto& quit_keys = PowerAppletKeys::get().getQuit();
 
         return quit_keys.contains(key);
 }
+
+} // namespace
 
 std::vector<PowerButton*> PowerCentralWidget::createButtons() {
         const auto& primary_buttons_data =
