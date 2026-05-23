@@ -6,6 +6,7 @@
 #include "UI/MainWindow.h"
 
 #include <QObject>
+#include <QWidget>
 
 class PowerCentralWidget;
 
@@ -13,5 +14,5 @@ class PowerMainWindow final : public MainWindow {
         Q_OBJECT
 
 public:
-        explicit PowerMainWindow();
+        explicit PowerMainWindow(QWidget* parent = nullptr);
 };

@@ -6,7 +6,10 @@
 #include "PowerCentralWidget.h"
 #include "UI/MainWindow.h"
 
-PowerMainWindow::PowerMainWindow() : MainWindow(PowerAppletConfig::get().getWindowProperties()) {
+#include <QWidget>
+
+PowerMainWindow::PowerMainWindow(QWidget* parent) :
+        MainWindow(PowerAppletConfig::get().getWindowProperties(), parent) {
         resize(PowerAppletConfig::get().getWindowProperties().getSize());
-        setCentralWidget(new PowerCentralWidget());
+        setCentralWidget(new PowerCentralWidget(this));
 }

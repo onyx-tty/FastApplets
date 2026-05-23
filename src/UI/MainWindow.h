@@ -7,12 +7,13 @@
 #include <QObject>
 
 class WindowProperties;
+class QWidget;
 
 // Unpacks WindowProperties to set window size and title.
 class MainWindow : public QMainWindow {
         Q_OBJECT
 
 protected:
-        explicit MainWindow(const WindowProperties& properties);
+        explicit MainWindow(const WindowProperties& properties, QWidget* parent);
         virtual ~MainWindow() = 0;
 };

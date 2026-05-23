@@ -50,7 +50,7 @@ private:
         std::vector<PowerButton*> buttons;
 
 public:
-        explicit PowerCentralWidget();
+        explicit PowerCentralWidget(QWidget* parent);
         const std::vector<PowerButton*>& getButtons() const;
         // Adds the stage-then-confirm keyboard navigation. See class doc for more.
         void                             keyPressEvent(QKeyEvent* event) override;

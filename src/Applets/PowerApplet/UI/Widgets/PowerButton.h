@@ -12,6 +12,7 @@
 class QBoxLayout;
 class QIcon;
 class QString;
+class QWidget;
 
 // Power button with associated icon and keybindings.
 //   - type: Determines which icon to use and which keybindings can activate it.
@@ -26,7 +27,7 @@ private:
 
 public:
         explicit PowerButton(power_button_type type, const QIcon& icon, const QString& text,
-                             const keybindings& keys, const QString& command);
+                             const keybindings& keys, const QString& command, QWidget* parent);
         power_button_type  getType() const;
         const keybindings& getKeys() const;
 };

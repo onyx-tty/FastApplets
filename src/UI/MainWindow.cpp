@@ -4,7 +4,9 @@
 #include "MainWindow.h"
 #include "Config/ConfigFile/Properties/WindowProperties.h"
 
-MainWindow::MainWindow(const WindowProperties& properties) {
+#include <QMainWindow>
+
+MainWindow::MainWindow(const WindowProperties& properties, QWidget* parent) : QMainWindow(parent) {
         resize(properties.getSize());
         setWindowTitle(properties.getTitle());
 }

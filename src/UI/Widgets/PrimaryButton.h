@@ -14,6 +14,7 @@ class QPaintEvent;
 class QPixmap;
 class QSizePolicy;
 class QString;
+class QWidget;
 
 // Base class for applet buttons with custom icon/text positioning and keyboard staging.
 //
@@ -48,7 +49,7 @@ protected:
         //   text       - Button label text
         //   properties - Visual properties (alignments, icon size, size policy)
         explicit PrimaryButton(const QIcon& icon, const QString& text,
-                               const PrimaryButtonProperties& properties);
+                               const PrimaryButtonProperties& properties, QWidget* parent);
         virtual ~PrimaryButton() = 0;
 
 public:

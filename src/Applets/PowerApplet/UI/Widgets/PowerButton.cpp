@@ -13,10 +13,11 @@
 #include <QIcon>
 #include <QObject>
 #include <QString>
+#include <QWidget>
 
 PowerButton::PowerButton(power_button_type type, const QIcon& icon, const QString& text,
-                         const keybindings& keys, const QString& command) :
-        PrimaryButton(icon, text, PowerAppletConfig::get().getPrimaryButtonProperties()),
+                         const keybindings& keys, const QString& command, QWidget* parent) :
+        PrimaryButton(icon, text, PowerAppletConfig::get().getPrimaryButtonProperties(), parent),
         keys(keys), type(type) {
         connect(this, &PowerButton::clicked, [this, command]() { ShellRunner::command(command); });
 

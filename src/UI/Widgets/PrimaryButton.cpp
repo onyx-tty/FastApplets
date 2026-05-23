@@ -5,10 +5,12 @@
 #include "Config/ConfigFile/Properties/PrimaryButtonProperties.h"
 
 #include <QLabel>
+#include <QPushButton>
 #include <QStackedLayout>
 #include <QStyle>
 #include <QStyleOptionButton>
 #include <QStylePainter>
+#include <QWidget>
 #include <Qt>
 
 void PrimaryButton::paintEvent(QPaintEvent*) {
@@ -51,7 +53,8 @@ void PrimaryButton::setIconLabel(const QPixmap& pixmap, Qt::Alignment alignment,
 }
 
 PrimaryButton::PrimaryButton(const QIcon& icon, const QString& text,
-                             const PrimaryButtonProperties& properties) {
+                             const PrimaryButtonProperties& properties, QWidget* parent) :
+        QPushButton(parent) {
         auto* stacked = new QStackedLayout(this);
         stacked->setStackingMode(QStackedLayout::StackAll);
         setLayout(stacked);
