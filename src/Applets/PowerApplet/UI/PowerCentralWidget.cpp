@@ -24,6 +24,16 @@
 
 namespace {
 
+PowerButton* findPowerButton(int key, std::vector<PowerButton*> buttons) {
+        const auto iter = std::find_if(buttons.cbegin(), buttons.cend(),
+                                       [key](const PowerButton* button) -> bool {
+                                               if (!button) { return false; }
+                                               return button->getKeys().contains(key);
+                                       });
+
+        return iter != buttons.cend() ? *iter : nullptr;
+}
+
 bool isPowerKey(int key) {
         for (const auto& button_keys : PowerAppletKeys::get().getPrimaryButton()) {
                 if (button_keys.contains(key)) { return true; }
@@ -98,14 +108,8 @@ const std::vector<PowerButton*>& PowerCentralWidget::getButtons() const {
 }
 
 void PowerCentralWidget::keyPressEvent(QKeyEvent* event) {
-        // TODO Improve messy finding logic and adaptation from iter to ptr
         int          key          = event->key();
-        const auto   found_button = std::find_if(buttons.cbegin(), buttons.cend(),
-                                                 [key](const PowerButton* button) -> bool {
-                                                       if (!button) { return false; }
-                                                       return button->getKeys().contains(key);
-                                                 });
-        PowerButton* power_button = found_button != buttons.cend() ? *found_button : nullptr;
+        PowerButton* power_button = findPowerButton(key, buttons);
 
         // Quit pressed
         if (isQuitKey(key)) {
