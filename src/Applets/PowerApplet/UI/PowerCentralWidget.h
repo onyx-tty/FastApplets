@@ -9,7 +9,6 @@
 #include <Qt>
 
 class PowerButton;
-class QBoxLayout;
 class QKeyEvent;
 class QShowEvent;
 
@@ -33,7 +32,7 @@ private:
         //
         // Reads buttons and definitions from PowerAppletConfig and keybindings
         // from PowerAppletKeys, constructs a PowerButton widget for each entry,
-        // adds it to main_layout, and returns a vector with every button found.
+        // adds it to the layout, and returns a vector with every button found.
         //
         // WARNING: If a resolved key is already bound elsewhere, both buttons
         // will share it silently. A global keybinding validation pass is not
@@ -48,14 +47,10 @@ private:
         // Calls QFATAL if no buttons are found in config.
         std::vector<PowerButton*> createButtons();
 
-        // TODO: Don't store main_layout separately, QWidget already stores the layout.
-        //       This change should be applied to all classes that do it.
-        QBoxLayout*               main_layout;
         std::vector<PowerButton*> buttons;
 
 public:
         explicit PowerCentralWidget();
-        const QBoxLayout*                getMainLayout() const;
         const std::vector<PowerButton*>& getButtons() const;
         // Adds the stage-then-confirm keyboard navigation. See class doc for more.
         void                             keyPressEvent(QKeyEvent* event) override;

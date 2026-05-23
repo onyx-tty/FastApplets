@@ -75,7 +75,7 @@ std::vector<PowerButton*> PowerCentralWidget::createButtons() {
                 keybindings       keys         = key_getter(i);
                 auto*             power_button = new PowerButton{type, icon, text, keys, command};
 
-                main_layout->addWidget(power_button);
+                layout()->addWidget(power_button);
                 primary_buttons.push_back(power_button);
         }
 
@@ -84,11 +84,9 @@ std::vector<PowerButton*> PowerCentralWidget::createButtons() {
         return primary_buttons;
 }
 
-PowerCentralWidget::PowerCentralWidget() :
-        main_layout(new QHBoxLayout(this)), buttons(createButtons()) {}
-
-const QBoxLayout* PowerCentralWidget::getMainLayout() const {
-        return main_layout;
+PowerCentralWidget::PowerCentralWidget() {
+        setLayout(new QHBoxLayout(this));
+        buttons = createButtons();
 }
 
 const std::vector<PowerButton*>& PowerCentralWidget::getButtons() const {
