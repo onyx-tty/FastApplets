@@ -12,10 +12,6 @@ class PowerCentralWidget;
 class PowerMainWindow final : public MainWindow {
         Q_OBJECT
 
-private:
-        PowerCentralWidget* central_widget;
-
 public:
         explicit PowerMainWindow();
-        const PowerCentralWidget* getCentralWidget() const;
 };

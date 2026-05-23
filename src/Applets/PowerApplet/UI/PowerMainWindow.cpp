@@ -6,13 +6,7 @@
 #include "PowerCentralWidget.h"
 #include "UI/MainWindow.h"
 
-PowerMainWindow::PowerMainWindow() :
-        MainWindow(PowerAppletConfig::get().getWindowProperties()),
-        central_widget(new PowerCentralWidget{}) {
+PowerMainWindow::PowerMainWindow() : MainWindow(PowerAppletConfig::get().getWindowProperties()) {
         resize(PowerAppletConfig::get().getWindowProperties().getSize());
-        setCentralWidget(central_widget);
-}
-
-const PowerCentralWidget* PowerMainWindow::getCentralWidget() const {
-        return central_widget;
+        setCentralWidget(new PowerCentralWidget());
 }
