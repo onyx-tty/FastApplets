@@ -108,8 +108,7 @@ const std::vector<PowerButton*>& PowerCentralWidget::getButtons() const {
 }
 
 void PowerCentralWidget::keyPressEvent(QKeyEvent* event) {
-        int          key          = event->key();
-        PowerButton* power_button = findPowerButton(key, buttons);
+        int key = event->key();
 
         // Quit pressed
         if (isQuitKey(key)) {
@@ -120,7 +119,7 @@ void PowerCentralWidget::keyPressEvent(QKeyEvent* event) {
                 } else { // Quit if not
                         QApplication::quit();
                 }
-        } else if (power_button) { // PowerButton pressed
+        } else if (auto* power_button = findPowerButton(key, buttons)) { // PowerButton pressed
                 // Click if already focused
                 if (power_button->hasFocus()) {
                         power_button->animateClick();
