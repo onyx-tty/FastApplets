@@ -131,13 +131,6 @@ std::optional<T> Resolver::from(std::initializer_list<Source> sources,
         return std::nullopt;
 }
 
-template<typename T, typename TDefault>
-T Resolver::fromOr(std::initializer_list<Source> sources, const TDefault& defaults,
-                   const PathContext& path_context, const tomlqt::ArrayBounds& arr_bounds,
-                   const QString& arr_format) {
-        return from<T>(sources, path_context, arr_bounds, arr_format).value_or(defaults);
-}
-
 template<typename TAttribute, typename TObject>
 void Resolver::fromOrDefault(std::initializer_list<Source> sources, TAttribute& attribute,
                              TObject& object, const TObject& object_defaults,

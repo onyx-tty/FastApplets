@@ -29,7 +29,6 @@ class QSize;
 //
 // Quick reference:
 // - from()          -> returns optional<T>, manual error handling
-// - fromOr()        -> returns T, either extracted or defaults, no side effects
 // - fromOrDefault() -> sets attribute OR overwrites entire object
 // - fromTransformOrDefault() -> sets transformed attribute OR overwrites entire object
 class Resolver final {
@@ -47,17 +46,6 @@ public:
                                      const PathContext&            path_context,
                                      const tomlqt::ArrayBounds&    arr_bounds = {},
                                      const QString&                arr_format = {});
-
-        // Extraction with automatic default value.
-        //
-        // Always returns T, automatically handles null checks.
-        //
-        // On success: returns raw extracted value
-        // On failure: returns defaults
-        template<typename T, typename TDefault>
-        static T fromOr(std::initializer_list<Source> sources, const TDefault& defaults,
-                        const PathContext& path_context, const tomlqt::ArrayBounds& arr_bounds = {},
-                        const QString& arr_format = {});
 
         // Extraction that can fall back to replacing the entire parent object.
         //
