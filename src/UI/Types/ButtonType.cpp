@@ -14,8 +14,8 @@ power_button_type toPowerButtonType(const QString& string) {
                  {"suspend", power_button_type::suspend},
                  {"hibernate", power_button_type::hibernate}};
 
-        // TODO Replace with map.find()
-        if (!map.contains(string)) { return power_button_type::none; }
+        const auto iter = map.find(string);
+        if (iter == map.cend()) { return power_button_type::none; }
 
-        return map.value(string);
+        return *iter;
 }
