@@ -3,8 +3,9 @@
 
 #pragma once
 
+#include "Applets/Types/AppletType.h"
 #include "Config/Resolver/PathContext/PathContext.h"
-#include "Config/Types/NodePair.h"
+#include "Config/Resolver/Types/ResolverCandidate.h"
 #include "CppUtils/Log/QtLog.h"
 #include "KeysMapper.h"
 
@@ -25,7 +26,9 @@ TKeys KeysMapper::keys(const toml::table& power_applet, const toml::table& globa
         TKeys keys{};
 
         /* Quit Keys */
-        keys.quit = quit(NodePair{.primary = power_applet["quit"], .fallback = global["quit"]},
+        keys.quit = quit({ResolverCandidate{.node   = power_applet["quit"],
+                                            .applet = applet::type::power_applet},
+                          ResolverCandidate{.node = global["quit"], .applet = applet::type::global}},
                          defaults.getQuit(), PathContext{filename, u"quit"_s});
 
         /* Primary Button Keys */

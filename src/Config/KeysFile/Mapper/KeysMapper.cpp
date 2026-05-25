@@ -7,10 +7,10 @@
 #include "Config/Resolver/PathContext/PathContext.h"
 #include "Config/Resolver/Resolver.h"
 #include "Config/Resolver/Types/ResolverCandidate.h"
-#include "Config/Types/NodePair.h"
 #include "Config/Types/NodeView.h"
 
 #include <cstddef>
+#include <initializer_list>
 #include <string>
 #include <toml++/toml.hpp>
 #include <utility>
@@ -43,16 +43,12 @@ std::vector<std::string> textFromTomlArray(const toml::array& arr) {
 }
 
 /* Global Keys */
-keybindings KeysMapper::quit(NodePair nodes, const keybindings& defaults,
-                             const PathContext& path_context) {
+keybindings KeysMapper::quit(std::initializer_list<ResolverCandidate> candidates,
+                             const keybindings& defaults, const PathContext& path_context) {
         toml::array keys{};
         keybindings quit{};
-        Resolver::fromOrDefault<toml::array>({ResolverCandidate{.node = nodes.primary,
-                                                                .applet = applet::power_applet.type},
-                                              ResolverCandidate{.node   = nodes.fallback,
-                                                                .applet = applet::global.type}},
-                                             keys, quit, defaults, path_context, {.min_size = 1},
-                                             "Format: [keybindings...]");
+        Resolver::fromOrDefault<toml::array>(candidates, keys, quit, defaults, path_context,
+                                             {.min_size = 1}, "Format: [keybindings...]");
 
         if (keys.empty()) { return defaults; }
 

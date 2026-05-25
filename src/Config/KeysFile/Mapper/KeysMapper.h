@@ -4,14 +4,15 @@
 #pragma once
 
 #include "Config/KeysFile/Types/Keybindings.h"
+#include "Config/Resolver/Types/ResolverCandidate.h"
 #include "Config/Types/NodeView.h"
 
+#include <initializer_list>
 #include <string>
 #include <toml++/toml.hpp>
 #include <vector>
 
 class GlobalKeys;
-class NodePair;
 class PathContext;
 class PowerAppletKeys;
 class QString;
@@ -40,8 +41,8 @@ private:
         // Expected format: array of keybinding strings, minimum 1 element.
         //
         // Assigned value: keybindings (std::unordered_set<int>)
-        static keybindings quit(NodePair nodes, const keybindings& defaults,
-                                const PathContext& path_context);
+        static keybindings quit(std::initializer_list<ResolverCandidate> candidates,
+                                const keybindings& defaults, const PathContext& path_context);
 
         /* Power Applet Keys*/
 

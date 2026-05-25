@@ -4,7 +4,7 @@
 #pragma once
 
 #include "Config/Resolver/PathContext/PathContext.h"
-#include "Config/Types/NodePair.h"
+#include "Config/Resolver/Types/ResolverCandidate.h"
 #include "ConfigMapper.h"
 #include "CppUtils/Log/QtLog.h"
 
@@ -25,15 +25,19 @@ TConfig ConfigMapper::config(const toml::table& power_applet, const toml::table&
         TConfig config{};
 
         /* Window Properties */
-        config.window_properties = window(NodePair{.primary  = power_applet["window"],
-                                                   .fallback = global["window"]},
+        config.window_properties = window({ResolverCandidate{.node   = power_applet["window"],
+                                                             .applet = applet::type::power_applet},
+                                           ResolverCandidate{.node   = global["window"],
+                                                             .applet = applet::type::global}},
                                           defaults.getWindowProperties(),
                                           PathContext{filename, u"window"_s});
 
         /* Primary Button Properties */
         config.primary_button_properties =
-                primaryButton(NodePair{.primary  = power_applet["primary_button"],
-                                       .fallback = global["primary_button"]},
+                primaryButton({ResolverCandidate{.node   = power_applet["primary_button"],
+                                                 .applet = applet::type::power_applet},
+                               ResolverCandidate{.node   = global["primary_button"],
+                                                 .applet = applet::type::global}},
                               defaults.getPrimaryButtonProperties(),
                               PathContext{filename, u"primary_button"_s});
 
