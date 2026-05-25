@@ -6,7 +6,7 @@
 #include "Config/KeysFile/Types/Keybindings.h"
 #include "Config/Resolver/PathContext/PathContext.h"
 #include "Config/Resolver/Resolver.h"
-#include "Config/Resolver/Types/Source.h"
+#include "Config/Resolver/Types/ResolverCandidate.h"
 #include "Config/Types/NodePair.h"
 #include "Config/Types/NodeView.h"
 
@@ -47,10 +47,10 @@ keybindings KeysMapper::quit(NodePair nodes, const keybindings& defaults,
                              const PathContext& path_context) {
         toml::array keys{};
         keybindings quit{};
-        Resolver::fromOrDefault<toml::array>({Source{.node  = nodes.primary,
-                                                     .scope = applet::power_applet.scope},
-                                              Source{.node  = nodes.fallback,
-                                                     .scope = applet::global.scope}},
+        Resolver::fromOrDefault<toml::array>({ResolverCandidate{.node = nodes.primary,
+                                                                .scope = applet::power_applet.scope},
+                                              ResolverCandidate{.node  = nodes.fallback,
+                                                                .scope = applet::global.scope}},
                                              keys, quit, defaults, path_context, {.min_size = 1},
                                              "Format: [keybindings...]");
 
@@ -66,8 +66,9 @@ std::vector<keybindings> KeysMapper::primaryButtons(node_view                   
         toml::array              keys{};
         std::vector<keybindings> primary_buttons{};
 
-        Resolver::fromOrDefault({Source{.node = node, .scope = applet::power_applet.scope}}, keys,
-                                primary_buttons, defaults, path_context, {.min_size = 1},
+        Resolver::fromOrDefault({ResolverCandidate{.node  = node,
+                                                   .scope = applet::power_applet.scope}},
+                                keys, primary_buttons, defaults, path_context, {.min_size = 1},
                                 "Format: [keybindings...]");
 
         if (keys.empty()) { return defaults; }
@@ -87,8 +88,8 @@ keybindings KeysMapper::primaryButton(node_view node, const keybindings& default
         toml::array keys{};
         keybindings primary_button{};
 
-        Resolver::fromOrDefault<toml::array>({Source{.node  = node,
-                                                     .scope = applet::power_applet.scope}},
+        Resolver::fromOrDefault<toml::array>({ResolverCandidate{.node = node,
+                                                                .scope = applet::power_applet.scope}},
                                              keys, primary_button, defaults, path_context,
                                              {.min_size = 1}, "Format: [keybindings...]");
 

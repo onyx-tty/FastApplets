@@ -23,7 +23,7 @@ class QSizePolicy;
 // Maps TOML configuration to PowerAppletConfig structure.
 //
 // Note: This file only handles PowerAppletConfig mapping. GlobalConfig is only used
-//       as a fallback source but not mapped to any struct.
+//       as a fallback candidate but not mapped to any struct.
 //
 // All mapping failures will fall back to hardcoded defaults and log warnings.
 // Malformed values (wrong type, out of range, etc.) are treated as failures.
@@ -31,7 +31,7 @@ class ConfigMapper final {
 private:
         /* Window Properties */
 
-        // Maps window from config sources.
+        // Maps window from config nodes.
         //
         // Fallback priority: power_applet.window -> global.window -> hardcoded defaults
         //
@@ -44,7 +44,7 @@ private:
 
         /* Primary Button Properties */
 
-        // Maps button from config sources.
+        // Maps button from config candidates.
         //
         // Fallback priority: power_applet.primary_button -> global.primary_button ->
         //                    hardcoded defaults

@@ -15,12 +15,12 @@
 // This struct does NOT store defaults - that's the caller's responsibility.
 //
 // Names reflect extraction priority (primary first), but fallback is the
-// only other source, there is no secondary, tertiary, etc.
+// only other candidate, there is no secondary, tertiary, etc.
 //
 // TODO Replace this struct with something else, NodePair is a confusing name,
 //      and ideally there should be no limit to how many "fallbacks" you can pass.
 //      Fallback itself is not a good name, it does not emphasize priorities.
 struct NodePair final {
-        node_view primary;  // First source to try for extraction
-        node_view fallback; // Fallback source if primary is missing or invalid
+        node_view primary;  // First candidate to try for extraction
+        node_view fallback; // Fallback candidate if primary is missing or invalid
 };

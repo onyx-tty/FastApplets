@@ -12,13 +12,13 @@
 #include <Qt>
 
 class PathContext;
-class Source;
+class ResolverCandidate;
 class QSizePolicy;
 class QSize;
 
 // Extracts typed values from TOML nodes with fallback chains and error handling.
 //
-// All methods accept multiple Sources (priority ordered). The first source that
+// All methods accept multiple ResolverCandidates (priority ordered). The first candidate that
 // provides a valid value wins. Invalid values (incorrect type, bound failures)
 // are treated as missing.
 //
@@ -42,10 +42,10 @@ public:
         // On success: returns optional extracted value
         // On failure: returns std::nullopt
         template<typename T>
-        static std::optional<T> from(std::initializer_list<Source> sources,
-                                     const PathContext&            path_context,
-                                     const tomlqt::ArrayBounds&    arr_bounds = {},
-                                     const QString&                arr_format = {});
+        static std::optional<T> from(std::initializer_list<ResolverCandidate> candidates,
+                                     const PathContext&                       path_context,
+                                     const tomlqt::ArrayBounds&               arr_bounds = {},
+                                     const QString&                           arr_format = {});
 
         // Extraction that can fall back to replacing the entire parent object.
         //
@@ -55,9 +55,9 @@ public:
         // On failure: silently replaces entire object with object_defaults, with
         //             no partial state
         template<typename TAttribute, typename TObject>
-        static void fromOrDefault(std::initializer_list<Source> sources, TAttribute& attribute,
-                                  TObject& object, const TObject& object_defaults,
-                                  const PathContext&         path_context,
+        static void fromOrDefault(std::initializer_list<ResolverCandidate> candidates,
+                                  TAttribute& attribute, TObject& object,
+                                  const TObject& object_defaults, const PathContext& path_context,
                                   const tomlqt::ArrayBounds& arr_bounds = {},
                                   const QString&             arr_format = {});
 
@@ -70,7 +70,7 @@ public:
         // On failure: silently replaces entire object with object_defaults, with
         //             no partial state
         template<typename TRaw, typename TAttribute, typename TObject, typename Transform>
-        static void fromTransformOrDefault(std::initializer_list<Source> sources,
+        static void fromTransformOrDefault(std::initializer_list<ResolverCandidate> candidates,
                                            TAttribute& attribute, TObject& object,
                                            const TObject& object_defaults, Transform&& transform,
                                            const PathContext& path_context);

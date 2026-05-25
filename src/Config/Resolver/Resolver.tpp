@@ -3,7 +3,7 @@
 
 #pragma once
 
-#include "Config/Resolver/Types/Source.h"
+#include "Config/Resolver/Types/ResolverCandidate.h"
 #include "Config/Types/NodeView.h"
 #include "CppUtils/Log/QtLog.h"
 #include "PathContext/PathContext.h"
@@ -24,8 +24,8 @@ class QSizePolicy;
 class QSize;
 
 template<typename T>
-std::optional<T> Resolver::from(std::initializer_list<Source> sources,
-                                const PathContext&            path_context,
+std::optional<T> Resolver::from(std::initializer_list<ResolverCandidate> candidates,
+                                const PathContext&                       path_context,
                                 const tomlqt::ArrayBounds& arr_bounds, const QString& arr_format) {
         using DT = std::decay_t<T>;
 
@@ -102,28 +102,28 @@ std::optional<T> Resolver::from(std::initializer_list<Source> sources,
                 }
         };
 
-        // Validate and attempt extraction of each passed source, prioritizing earliest ones
-        const auto* src_ptr = sources.begin();
-        for (size_t i = 0; i != sources.size(); ++i) {
-                const auto& source = src_ptr[i];
+        // Validate and attempt extraction of each passed candidate, prioritizing earliest ones
+        const auto* candidate_ptr = candidates.begin();
+        for (size_t i = 0; i != candidates.size(); ++i) {
+                const auto& candidate = candidate_ptr[i];
 
-                // If 'i' is not the last index, then sources[i] is an override
-                // TODO If primary source is valid and fallback is not then quiet on
-                //      primary source will result in no logs being printed at all
-                //      Iteration over sources should probably be done in reverse to
+                // If 'i' is not the last index, then candidates[i] is an override
+                // TODO If primary candidate is valid and fallback is not then quiet on
+                //      primary candidate will result in no logs being printed at all
+                //      Iteration over candidates should probably be done in reverse to
                 //      track if fallback is missing, and if it is then quiet should
                 //      likely be ignored.
-                bool is_override  = (i != sources.size() - 1);
+                bool is_override  = (i != candidates.size() - 1);
                 // If override or explicitly marked "quiet", don't log anything
-                bool silence_logs = is_override || source.quiet;
+                bool silence_logs = is_override || candidate.quiet;
 
-                auto result = extract(source.node, arr_bounds);
+                auto result = extract(candidate.node, arr_bounds);
                 if (!result) {
-                        if (!silence_logs) { log(path_context.makePath(source.scope)); }
+                        if (!silence_logs) { log(path_context.makePath(candidate.scope)); }
                         continue;
                 }
 
-                QDEBUG() << path_context.makePath(source.scope) << "found!";
+                QDEBUG() << path_context.makePath(candidate.scope) << "found!";
                 return *result;
         }
 
@@ -132,11 +132,11 @@ std::optional<T> Resolver::from(std::initializer_list<Source> sources,
 }
 
 template<typename TAttribute, typename TObject>
-void Resolver::fromOrDefault(std::initializer_list<Source> sources, TAttribute& attribute,
-                             TObject& object, const TObject& object_defaults,
+void Resolver::fromOrDefault(std::initializer_list<ResolverCandidate> candidates,
+                             TAttribute& attribute, TObject& object, const TObject& object_defaults,
                              const PathContext& path_context, const tomlqt::ArrayBounds& arr_bounds,
                              const QString& arr_format) {
-        if (auto result = from<TAttribute>(sources, path_context, arr_bounds, arr_format)) {
+        if (auto result = from<TAttribute>(candidates, path_context, arr_bounds, arr_format)) {
                 attribute = result.value();
         } else {
                 object = object_defaults;
@@ -144,10 +144,11 @@ void Resolver::fromOrDefault(std::initializer_list<Source> sources, TAttribute& 
 }
 
 template<typename TRaw, typename TAttribute, typename TObject, typename Transform>
-void Resolver::fromTransformOrDefault(std::initializer_list<Source> sources, TAttribute& attribute,
-                                      TObject& object, const TObject& object_defaults,
-                                      Transform&& transform, const PathContext& path_context) {
-        if (auto result = from<TRaw>(sources, path_context)) {
+void Resolver::fromTransformOrDefault(std::initializer_list<ResolverCandidate> candidates,
+                                      TAttribute& attribute, TObject& object,
+                                      const TObject& object_defaults, Transform&& transform,
+                                      const PathContext& path_context) {
+        if (auto result = from<TRaw>(candidates, path_context)) {
                 attribute = transform(std::move(result.value()));
         } else {
                 object = object_defaults;

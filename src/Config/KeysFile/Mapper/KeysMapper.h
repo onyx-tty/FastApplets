@@ -26,14 +26,14 @@ std::vector<std::string> textFromTomlArray(const toml::array& arr);
 // Maps TOML configuration to PowerAppletKeys structure.
 //
 // Note: This file only handles PowerAppletKeys mapping. GlobalKeys is only used
-//       as a fallback source but not mapped to any struct.
+//       as a fallback candidate but not mapped to any struct.
 //
 // All mapping failures will fall back to defaults and log warnings.
 class KeysMapper final {
 private:
         /* Global Keys */
 
-        // Maps quit keybindings from config sources.
+        // Maps quit keybindings from config nodes.
         //
         // Fallback priority: power_applet.quit -> global.quit -> hardcoded defaults
         //
@@ -45,7 +45,7 @@ private:
 
         /* Power Applet Keys*/
 
-        // Maps the entire primary_buttons array from config sources.
+        // Maps the entire primary_buttons array from config nodes.
         //
         // Length of the vector may differ from defaults if some buttons are omitted
         // from config. Omitted buttons are ignored silently.
@@ -60,7 +60,7 @@ private:
                                                        const std::vector<keybindings>& defaults,
                                                        const PathContext& path_context);
 
-        // Maps a single button's keybindings from a config source.
+        // Maps a single button's keybindings from a config candidate.
         //
         // Fallback priority: power_applet.primary_buttons[index] -> hardcoded defaults
         //
