@@ -161,8 +161,8 @@ std::vector<PowerButtonParams> ConfigMapper::primaryButtons(
         std::vector<PowerButtonParams> found{};
 
         for (size_t i = 0; i != arr.value().size(); ++i) {
-                std::optional<PowerButtonParams> new_button =
-                        primaryButton(node_view(arr.value().at(i)), path_context.getExtended(i));
+                auto new_button = primaryButton(node_view(arr.value().at(i)),
+                                                path_context.getExtended(i));
                 if (new_button) { found.push_back(std::move(new_button.value())); }
         }
 
