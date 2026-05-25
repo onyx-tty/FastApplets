@@ -41,8 +41,8 @@ private:
         // Expected format: array of keybinding strings, minimum 1 element.
         //
         // Assigned value: keybindings (std::unordered_set<int>)
-        static keybindings quit(std::initializer_list<ResolverCandidate> candidates,
-                                const keybindings& defaults, const PathContext& path_context);
+        static keybindings quit(ResolverCandidates candidates, const keybindings& defaults,
+                                const PathContext& path_context);
 
         /* Power Applet Keys*/
 

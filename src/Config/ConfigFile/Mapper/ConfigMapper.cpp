@@ -29,7 +29,7 @@
 #include <Qt>
 
 template<typename T>
-static T mapProperties(std::initializer_list<ResolverCandidate> candidates, const T& defaults,
+static T mapProperties(ResolverCandidates candidates, const T& defaults,
                        const PathContext& path_context, auto fill_fn) {
         std::vector<toml::table> resolved{};
 
@@ -48,9 +48,9 @@ static T mapProperties(std::initializer_list<ResolverCandidate> candidates, cons
 }
 
 /* Window Properties */
-WindowProperties ConfigMapper::window(std::initializer_list<ResolverCandidate> candidates,
-                                      const WindowProperties&                  defaults,
-                                      const PathContext&                       path_context) {
+WindowProperties ConfigMapper::window(ResolverCandidates      candidates,
+                                      const WindowProperties& defaults,
+                                      const PathContext&      path_context) {
         return mapProperties(candidates, defaults, path_context,
                              [&defaults, &candidates](WindowProperties&  window,
                                                       const PathContext& path_context) {
@@ -67,9 +67,9 @@ WindowProperties ConfigMapper::window(std::initializer_list<ResolverCandidate> c
 }
 
 /* Primary Button Properties*/
-PrimaryButtonProperties ConfigMapper::primaryButton(
-        std::initializer_list<ResolverCandidate> candidates,
-        const PrimaryButtonProperties& defaults, const PathContext& path_context) {
+PrimaryButtonProperties ConfigMapper::primaryButton(ResolverCandidates             candidates,
+                                                    const PrimaryButtonProperties& defaults,
+                                                    const PathContext&             path_context) {
         return mapProperties(
                 candidates, defaults, path_context,
                 [&defaults, &candidates](PrimaryButtonProperties& button,

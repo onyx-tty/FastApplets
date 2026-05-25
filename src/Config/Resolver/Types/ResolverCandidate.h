@@ -6,6 +6,12 @@
 #include "Applets/Types/AppletType.h"
 #include "Config/Types/NodeView.h"
 
+#include <initializer_list>
+
+struct ResolverCandidate;
+
+using ResolverCandidates = std::initializer_list<ResolverCandidate>;
+
 // Stores a node with required metadata for use in Resolver method calls.
 //
 // 'node' contains the toml::node_view with data for extraction.

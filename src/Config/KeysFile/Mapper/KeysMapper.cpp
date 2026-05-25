@@ -43,8 +43,8 @@ std::vector<std::string> textFromTomlArray(const toml::array& arr) {
 }
 
 /* Global Keys */
-keybindings KeysMapper::quit(std::initializer_list<ResolverCandidate> candidates,
-                             const keybindings& defaults, const PathContext& path_context) {
+keybindings KeysMapper::quit(ResolverCandidates candidates, const keybindings& defaults,
+                             const PathContext& path_context) {
         toml::array keys{};
         keybindings quit{};
         Resolver::fromOrDefault<toml::array>(candidates, keys, quit, defaults, path_context,

@@ -40,9 +40,9 @@ private:
         //                  size (array of two integers)
         //
         // Assigned value: WindowProperties
-        static WindowProperties window(std::initializer_list<ResolverCandidate> candidates,
-                                       const WindowProperties&                  defaults,
-                                       const PathContext&                       path_context);
+        static WindowProperties window(ResolverCandidates      candidates,
+                                       const WindowProperties& defaults,
+                                       const PathContext&      path_context);
 
         /* Primary Button Properties */
 
@@ -56,9 +56,9 @@ private:
         //                  and policy (string)
         //
         // Assigned value: PrimaryButtonProperties
-        static PrimaryButtonProperties primaryButton(
-                std::initializer_list<ResolverCandidate> candidates,
-                const PrimaryButtonProperties& defaults, const PathContext& path_context);
+        static PrimaryButtonProperties primaryButton(ResolverCandidates             candidates,
+                                                     const PrimaryButtonProperties& defaults,
+                                                     const PathContext&             path_context);
 
         /* Layout Properties */
 

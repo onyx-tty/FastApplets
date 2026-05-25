@@ -24,7 +24,7 @@ class QSizePolicy;
 class QSize;
 
 template<typename T>
-std::optional<T> Resolver::from(std::initializer_list<ResolverCandidate> candidates,
+std::optional<T> Resolver::from(ResolverCandidates candidates,
                                 const PathContext&                       path_context,
                                 const tomlqt::ArrayBounds& arr_bounds, const QString& arr_format) {
         using DT = std::decay_t<T>;
@@ -132,7 +132,7 @@ std::optional<T> Resolver::from(std::initializer_list<ResolverCandidate> candida
 }
 
 template<typename TAttribute, typename TObject>
-void Resolver::fromOrDefault(std::initializer_list<ResolverCandidate> candidates,
+void Resolver::fromOrDefault(ResolverCandidates candidates,
                              TAttribute& attribute, TObject& object, const TObject& object_defaults,
                              const PathContext& path_context, const tomlqt::ArrayBounds& arr_bounds,
                              const QString& arr_format) {
@@ -144,7 +144,7 @@ void Resolver::fromOrDefault(std::initializer_list<ResolverCandidate> candidates
 }
 
 template<typename TRaw, typename TAttribute, typename TObject, typename Transform>
-void Resolver::fromTransformOrDefault(std::initializer_list<ResolverCandidate> candidates,
+void Resolver::fromTransformOrDefault(ResolverCandidates candidates,
                                       TAttribute& attribute, TObject& object,
                                       const TObject& object_defaults, Transform&& transform,
                                       const PathContext& path_context) {
