@@ -2,6 +2,8 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 
 #include "PathContext.h"
+#include "Applets/Types/AppletRecord.h"
+#include "Applets/Types/AppletType.h"
 
 #include <cstddef>
 #include <string>
@@ -13,9 +15,10 @@ PathContext::PathContext(QStringView filename, QStringView path_context, char se
         filename(filename.toString()), path_context(path_context.toString()), separator(separator) {
 }
 
-QString PathContext::makePath(std::string_view scope) const {
+QString PathContext::makePath(applet::type applet) const {
         return QString("in %1, %2%3%4")
-                .arg(QString{filename}, QString::fromStdString(std::string{scope}))
+                .arg(QString{filename},
+                     QString::fromStdString(std::string{applet::toString(applet)}))
                 .arg(separator)
                 .arg(path_context);
 }

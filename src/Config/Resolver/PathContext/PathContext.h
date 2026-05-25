@@ -3,6 +3,9 @@
 
 #pragma once
 
+#include "Applets/Types/AppletRecord.h"
+#include "Applets/Types/AppletType.h"
+
 #include <cstddef>
 #include <string_view>
 #include <QString>
@@ -34,7 +37,7 @@ public:
         // path_context.
         //
         // Example: makePath("power_applet") -> "in config.toml, power_applet.window"
-        QString makePath(std::string_view scope) const;
+        QString makePath(applet::type applet) const;
 
         // Returns a new PathContext with an additional path segment appended.
         //

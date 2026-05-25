@@ -119,11 +119,11 @@ std::optional<T> Resolver::from(std::initializer_list<ResolverCandidate> candida
 
                 auto result = extract(candidate.node, arr_bounds);
                 if (!result) {
-                        if (!silence_logs) { log(path_context.makePath(candidate.scope)); }
+                        if (!silence_logs) { log(path_context.makePath(candidate.applet)); }
                         continue;
                 }
 
-                QDEBUG() << path_context.makePath(candidate.scope) << "found!";
+                QDEBUG() << path_context.makePath(candidate.applet) << "found!";
                 return *result;
         }
 

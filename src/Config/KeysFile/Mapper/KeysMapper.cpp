@@ -48,9 +48,9 @@ keybindings KeysMapper::quit(NodePair nodes, const keybindings& defaults,
         toml::array keys{};
         keybindings quit{};
         Resolver::fromOrDefault<toml::array>({ResolverCandidate{.node = nodes.primary,
-                                                                .scope = applet::power_applet.scope},
-                                              ResolverCandidate{.node  = nodes.fallback,
-                                                                .scope = applet::global.scope}},
+                                                                .applet = applet::power_applet.type},
+                                              ResolverCandidate{.node   = nodes.fallback,
+                                                                .applet = applet::global.type}},
                                              keys, quit, defaults, path_context, {.min_size = 1},
                                              "Format: [keybindings...]");
 
@@ -66,8 +66,8 @@ std::vector<keybindings> KeysMapper::primaryButtons(node_view                   
         toml::array              keys{};
         std::vector<keybindings> primary_buttons{};
 
-        Resolver::fromOrDefault({ResolverCandidate{.node  = node,
-                                                   .scope = applet::power_applet.scope}},
+        Resolver::fromOrDefault({ResolverCandidate{.node   = node,
+                                                   .applet = applet::power_applet.type}},
                                 keys, primary_buttons, defaults, path_context, {.min_size = 1},
                                 "Format: [keybindings...]");
 
@@ -89,7 +89,7 @@ keybindings KeysMapper::primaryButton(node_view node, const keybindings& default
         keybindings primary_button{};
 
         Resolver::fromOrDefault<toml::array>({ResolverCandidate{.node = node,
-                                                                .scope = applet::power_applet.scope}},
+                                                                .applet = applet::power_applet.type}},
                                              keys, primary_button, defaults, path_context,
                                              {.min_size = 1}, "Format: [keybindings...]");
 

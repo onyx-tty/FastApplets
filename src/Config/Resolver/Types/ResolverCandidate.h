@@ -3,17 +3,16 @@
 
 #pragma once
 
+#include "Applets/Types/AppletType.h"
 #include "Config/Types/NodeView.h"
-
-#include <string_view>
 
 // Stores a node with required metadata for use in Resolver method calls.
 // node contains the toml::node_view with data for extraction.
-// scope is used for logging, to create QString path with PathContext.
+// type is used for logging, to create QString path with PathContext.
 // quiet disables logging if true.
 // TODO Replace scope with applet::type
 struct ResolverCandidate final {
-        node_view        node;
-        std::string_view scope;
-        bool             quiet = false;
+        node_view    node;
+        applet::type applet;
+        bool         quiet = false;
 };
