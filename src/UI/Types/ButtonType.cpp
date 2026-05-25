@@ -1,0 +1,21 @@
+// SPDX-FileCopyrightText: 2026 Łukasz Wrodarczyk
+// SPDX-License-Identifier: GPL-3.0-or-later
+
+#include "ButtonType.h"
+
+#include <QHash>
+#include <QString>
+
+power_button_type toPowerButtonType(const QString& string) {
+        static const QHash<QString, power_button_type> map =
+                {{"poweroff", power_button_type::shutdown},
+                 {"shutdown", power_button_type::shutdown},
+                 {"reboot", power_button_type::reboot},
+                 {"suspend", power_button_type::suspend},
+                 {"hibernate", power_button_type::hibernate}};
+
+        // TODO Replace with map.find()
+        if (!map.contains(string)) { return power_button_type::none; }
+
+        return map.value(string);
+}

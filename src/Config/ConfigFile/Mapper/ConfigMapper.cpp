@@ -28,20 +28,6 @@
 #include <QString>
 #include <Qt>
 
-static power_button_type getPowerButtonTypeFromString(const QString& string) {
-        static const std::unordered_map<QString, power_button_type> map =
-                {{"poweroff", power_button_type::shutdown},
-                 {"shutdown", power_button_type::shutdown},
-                 {"reboot", power_button_type::reboot},
-                 {"suspend", power_button_type::suspend},
-                 {"hibernate", power_button_type::hibernate}};
-
-        // TODO Replace with map.find()
-        if (!map.contains(string)) { return power_button_type::none; }
-
-        return map.at(string);
-}
-
 template<typename T>
 static T mapProperties(NodePair nodes, const T& defaults, const PathContext& path_context,
                        auto fill_fn) {
@@ -189,7 +175,7 @@ std::optional<PowerButtonParams> ConfigMapper::primaryButton(node_view          
                                             path_context.getExtended("id"));
         if (!type) { return {}; }
 
-        new_button.type = getPowerButtonTypeFromString(type.value());
+        new_button.type = toPowerButtonType(type.value());
 
         if (new_button.type == power_button_type::none) { return {}; }
 
