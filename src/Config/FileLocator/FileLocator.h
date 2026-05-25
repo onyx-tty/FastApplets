@@ -18,7 +18,8 @@ std::string findFile(QStringView filename, QStringView subdirectory = QStringLit
 // Finds files in hardcoded locations.
 class FileLocator final {
 public:
-        // Locates config.toml and keys.toml for the given scope.
-        // A scope of "global" maps to the root FastApplets/ directory.
-        static ConfigFiles configFiles(std::string_view scope);
+        // Locates config.toml and keys.toml for the given applet.
+        // "global" maps to the root FastApplets/ config directory, as the global config
+        // is stored there.
+        static ConfigFiles configFiles(std::string_view applet_name);
 };

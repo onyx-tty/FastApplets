@@ -34,16 +34,16 @@ std::string findFile(QStringView filename, QStringView subdirectory) {
         return filepath.toStdString();
 }
 
-ConfigFiles FileLocator::configFiles(std::string_view scope) {
+ConfigFiles FileLocator::configFiles(std::string_view applet_name) {
         ConfigFiles files{};
 
-        // Treat scope "global" as root
-        if (scope == "global") { scope = ""; }
+        // Global config is in root, not in a separate directory. Redirect to root.
+        if (applet_name == "global") { applet_name = ""; }
 
         files.config = findFile(QStringLiteral("config.toml"),
-                                QString::fromStdString(std::string{scope}));
+                                QString::fromStdString(std::string{applet_name}));
         files.keys   = findFile(QStringLiteral("keys.toml"),
-                                QString::fromStdString(std::string{scope}));
+                                QString::fromStdString(std::string{applet_name}));
 
         return files;
 }
