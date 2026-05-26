@@ -90,7 +90,7 @@ private slots:
                          "File with invalid TOML must return empty toml::table");
         }
 
-        static void handlesValidTOML() {
+        static void handlesValidToml() {
                 const auto valid = QDir(test_dirpath).filePath(test_filename_valid).toStdString();
 
                 QVERIFY2(!TomlParser::file(valid).empty(),
