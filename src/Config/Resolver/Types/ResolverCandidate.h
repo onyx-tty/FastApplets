@@ -8,11 +8,13 @@
 
 #include <cstddef>
 #include <initializer_list>
+#include <optional>
 #include <string_view>
 #include <utility>
 #include <vector>
 
 // TODO: Remove inlines for both; create dedicated ResolverCandidate.cpp
+// TODO: Consistent behaviors in chaining methods, separate overloads for ALL and index
 // TODO: Docs should explain what role these classes play in Resolver.h
 
 // Stores a node with required metadata for use in Resolver method calls.
@@ -58,6 +60,22 @@ struct ResolverCandidate final {
                 new_candidate.node   = node[index];
                 new_candidate.applet = applet;
                 new_candidate.quiet  = quiet;
+
+                return new_candidate;
+        }
+
+        // Returns a new candidate with quiet set to true/false.
+        // Default is true.
+        //
+        // Replaces:
+        //   auto new_cand = old_cand;
+        //   new_cand.quiet = true/false;
+        //
+        // With:
+        //   auto new_cand = old_cand.makeQuiet(true/false);
+        [[nodiscard]] inline ResolverCandidate makeQuiet(bool quiet = true) const {
+                ResolverCandidate new_candidate = *this;
+                new_candidate.quiet             = quiet;
 
                 return new_candidate;
         }
@@ -121,6 +139,39 @@ public:
 
                 for (const auto& candidate : candidates) {
                         new_candidates.candidates.push_back(candidate.makeExtended(index));
+                }
+
+                return std::move(new_candidates);
+        }
+
+        // Returns a new dynamic array of candidates with quiet bool(s) set to true/false.
+        //
+        // Replaces:
+        //   auto new_cands = old_cands;
+        //   for (size_t i = 0; i != new_cands.size(); ++i) {
+        //       new_cands[i].candidates.quiet = true/false;
+        //   }
+        //
+        // With:
+        //   auto new_cands = old_cands.makeQuiet(true/false);
+        // TODO: Overload without cand_index to avoid confusion
+        [[nodiscard]] inline ResolverCandidates makeQuiet(
+                bool quiet = true, std::optional<size_t> cand_index = std::nullopt) const {
+                // TODO: Always copies all elements,
+                ResolverCandidates new_candidates = {};
+                new_candidates.candidates.reserve(candidates.size());
+
+                for (size_t i = 0; i != candidates.size(); ++i) {
+                        ResolverCandidate cand = candidates[i];
+
+                        // TODO: Simplify this chain
+                        if (!cand_index
+                            || cand_index && cand_index.value() == i
+                                       && cand_index.value() < candidates.size()) {
+                                cand.quiet = quiet;
+                        }
+
+                        new_candidates.candidates.push_back(cand);
                 }
 
                 return std::move(new_candidates);
