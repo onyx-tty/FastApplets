@@ -30,7 +30,7 @@
 
 <br>
 
-# Docs \[3/5\]
+# Docs \[3/6\]
 
 1.  \[X\] LICENSE
 
@@ -42,9 +42,11 @@
 
 5.  \[ \] Doxygen
 
+6.  \[ \] Implementation docs
+
     <br>
 
-# Infrastructure \[9/9\]
+# Infrastructure \[9/10\]
 
 1.  \[X\] CMake presets
 
@@ -80,7 +82,10 @@
 
     2.  \[X\] Extract TomlQt
 
-        <br>
+10. \[ \] Extract src/Applets/PowerApplet into PowerApplet/, replace
+    src/ with Core/
+
+    <br>
 
 # Controls \[0/1\]
 
@@ -88,7 +93,7 @@
 
     <br>
 
-# Config \[5/5\]
+# Config \[5/7\]
 
 1.  \[X\] Standardized window class and title
 
@@ -98,7 +103,12 @@
 
 4.  \[X\] Fallback config
 
-5.  \[X\] \$XDG<sub>CONFIGHOME</sub> for configs
+5.  \[X\] \$XDG<sub>CONFIGHOME</sub> for config
+
+6.  \[ \] Template overloads for Config/Keys mappers to avoid duplicate
+    logic between applets
+
+7.  \[ \] Separate Config/Keys schema from instances
 
     <br>
 
@@ -109,3 +119,11 @@
 2.  \[ \] Icons from current icon theme
 
 3.  \[ \] Custom icons
+
+    <br>
+
+# Style \[0/2\]
+
+1.  \[ \] nodiscard where applicable
+
+2.  \[ \] Standardize initialization style - always use '='

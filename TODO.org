@@ -27,16 +27,17 @@
 #+BEGIN_EXPORT markdown
 <br>
 #+END_EXPORT
-* Docs [3/5]
+* Docs [3/6]
 ** [X] LICENSE
 ** [X] README.md
 ** [X] TODO.md
 ** [ ] CONTRIBUTE.md
 ** [ ] Doxygen
+** [ ] Implementation docs
 #+BEGIN_EXPORT markdown
 <br>
 #+END_EXPORT
-* Infrastructure [9/9]
+* Infrastructure [9/10]
 ** [X] CMake presets
 ** [X] TOML configuration
 ** [X] Centralized CMake structure
@@ -54,6 +55,7 @@
 ** [X] Dependencies
 *** [X] Extract CppUtils
 *** [X] Extract TomlQt
+** [ ] Extract src/Applets/PowerApplet into PowerApplet/, replace src/ with Core/
 #+BEGIN_EXPORT markdown
 <br>
 #+END_EXPORT
@@ -62,12 +64,14 @@
 #+BEGIN_EXPORT markdown
 <br>
 #+END_EXPORT
-* Config [5/5]
+* Config [5/7]
 ** [X] Standardized window class and title
 ** [X] Config error handling
 ** [X] Config value validation
 ** [X] Fallback config
-** [X] $XDG_CONFIG_HOME for configs
+** [X] $XDG_CONFIG_HOME for config
+** [ ] Template overloads for Config/Keys mappers to avoid duplicate logic between applets
+** [ ] Separate Config/Keys schema from instances
 #+BEGIN_EXPORT markdown
 <br>
 #+END_EXPORT
@@ -75,6 +79,12 @@
 ** [X] PowerButton icons
 ** [ ] Icons from current icon theme
 ** [ ] Custom icons
+#+BEGIN_EXPORT markdown
+<br>
+#+END_EXPORT
+* Style [0/2]
+** [ ] nodiscard where applicable
+** [ ] Standardize initialization style - always use '='
 
 #  LocalWords:  md SecurityApplet SystemApplet LauncherApplet JSON XDG GMock
 #  LocalWords:  WeatherApplet PowerActionManager GBenchmark PowerApplet
