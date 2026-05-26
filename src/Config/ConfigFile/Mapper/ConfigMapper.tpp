@@ -3,8 +3,10 @@
 
 #pragma once
 
+#include "Applets/Types/AppletType.h"
 #include "Config/Resolver/PathContext/PathContext.h"
 #include "Config/Resolver/Types/ResolverCandidate.h"
+#include "Config/Types/NodeView.h"
 #include "ConfigMapper.h"
 #include "CppUtils/Log/QtLog.h"
 
@@ -24,22 +26,19 @@ TConfig ConfigMapper::config(const toml::table& power_applet, const toml::table&
 
         TConfig config{};
 
+        ResolverCandidates cands = {{.node   = node_view(power_applet),
+                                     .applet = applet::type::power_applet},
+                                    {.node = node_view(global), .applet = applet::type::global}};
+
         /* Window Properties */
-        config.window_properties = window({ResolverCandidate{.node   = power_applet["window"],
-                                                             .applet = applet::type::power_applet},
-                                           ResolverCandidate{.node   = global["window"],
-                                                             .applet = applet::type::global}},
+        config.window_properties = window(cands.makeExtended("window"),
                                           defaults.getWindowProperties(),
                                           PathContext{filename, u"window"_s});
 
         /* Primary Button Properties */
-        config.primary_button_properties =
-                primaryButton({ResolverCandidate{.node   = power_applet["primary_button"],
-                                                 .applet = applet::type::power_applet},
-                               ResolverCandidate{.node   = global["primary_button"],
-                                                 .applet = applet::type::global}},
-                              defaults.getPrimaryButtonProperties(),
-                              PathContext{filename, u"primary_button"_s});
+        config.primary_button_properties = primaryButton(cands.makeExtended("primary_button"),
+                                                         defaults.getPrimaryButtonProperties(),
+                                                         PathContext{filename, u"primary_button"_s});
 
         /* Layout Properties */
         config.layout_properties = layout(power_applet["layout"], defaults.getLayoutProperties(),

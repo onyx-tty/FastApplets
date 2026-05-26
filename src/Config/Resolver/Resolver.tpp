@@ -12,7 +12,6 @@
 #include "TomlQt/TomlQt.h"
 
 #include <cstddef>
-#include <initializer_list>
 #include <optional>
 #include <toml++/toml.hpp>
 #include <type_traits>
@@ -24,8 +23,8 @@ class QSizePolicy;
 class QSize;
 
 template<typename T>
-std::optional<T> Resolver::from(ResolverCandidates candidates,
-                                const PathContext&                       path_context,
+std::optional<T> Resolver::from(const ResolverCandidates&  candidates,
+                                const PathContext&         path_context,
                                 const tomlqt::ArrayBounds& arr_bounds, const QString& arr_format) {
         using DT = std::decay_t<T>;
 
@@ -103,8 +102,8 @@ std::optional<T> Resolver::from(ResolverCandidates candidates,
         };
 
         // Validate and attempt extraction of each passed candidate, prioritizing earliest ones
-        const auto* candidate_ptr = candidates.begin();
-        for (size_t i = 0; i != candidates.size(); ++i) {
+        const auto candidate_ptr = candidates.get().begin();
+        for (size_t i = 0; i != candidates.get().size(); ++i) {
                 const auto& candidate = candidate_ptr[i];
 
                 // If 'i' is not the last index, then candidates[i] is an override
@@ -113,7 +112,7 @@ std::optional<T> Resolver::from(ResolverCandidates candidates,
                 //      Iteration over candidates should probably be done in reverse to
                 //      track if fallback is missing, and if it is then quiet should
                 //      likely be ignored.
-                bool is_override  = (i != candidates.size() - 1);
+                bool is_override  = (i != candidates.get().size() - 1);
                 // If override or explicitly marked "quiet", don't log anything
                 bool silence_logs = is_override || candidate.quiet;
 
@@ -132,8 +131,8 @@ std::optional<T> Resolver::from(ResolverCandidates candidates,
 }
 
 template<typename TAttribute, typename TObject>
-void Resolver::fromOrDefault(ResolverCandidates candidates,
-                             TAttribute& attribute, TObject& object, const TObject& object_defaults,
+void Resolver::fromOrDefault(const ResolverCandidates& candidates, TAttribute& attribute,
+                             TObject& object, const TObject& object_defaults,
                              const PathContext& path_context, const tomlqt::ArrayBounds& arr_bounds,
                              const QString& arr_format) {
         if (auto result = from<TAttribute>(candidates, path_context, arr_bounds, arr_format)) {
@@ -144,10 +143,9 @@ void Resolver::fromOrDefault(ResolverCandidates candidates,
 }
 
 template<typename TRaw, typename TAttribute, typename TObject, typename Transform>
-void Resolver::fromTransformOrDefault(ResolverCandidates candidates,
-                                      TAttribute& attribute, TObject& object,
-                                      const TObject& object_defaults, Transform&& transform,
-                                      const PathContext& path_context) {
+void Resolver::fromTransformOrDefault(const ResolverCandidates& candidates, TAttribute& attribute,
+                                      TObject& object, const TObject& object_defaults,
+                                      Transform&& transform, const PathContext& path_context) {
         if (auto result = from<TRaw>(candidates, path_context)) {
                 attribute = transform(std::move(result.value()));
         } else {

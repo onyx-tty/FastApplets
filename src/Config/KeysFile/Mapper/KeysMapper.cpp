@@ -43,7 +43,7 @@ std::vector<std::string> textFromTomlArray(const toml::array& arr) {
 }
 
 /* Global Keys */
-keybindings KeysMapper::quit(ResolverCandidates candidates, const keybindings& defaults,
+keybindings KeysMapper::quit(const ResolverCandidates& candidates, const keybindings& defaults,
                              const PathContext& path_context) {
         toml::array keys{};
         keybindings quit{};
@@ -62,8 +62,8 @@ std::vector<keybindings> KeysMapper::primaryButtons(node_view                   
         toml::array              keys{};
         std::vector<keybindings> primary_buttons{};
 
-        Resolver::fromOrDefault({ResolverCandidate{.node   = node,
-                                                   .applet = applet::power_applet.type}},
+        Resolver::fromOrDefault(ResolverCandidates{{.node   = node,
+                                                    .applet = applet::power_applet.type}},
                                 keys, primary_buttons, defaults, path_context, {.min_size = 1},
                                 "Format: [keybindings...]");
 
@@ -84,8 +84,9 @@ keybindings KeysMapper::primaryButton(node_view node, const keybindings& default
         toml::array keys{};
         keybindings primary_button{};
 
-        Resolver::fromOrDefault<toml::array>({ResolverCandidate{.node = node,
-                                                                .applet = applet::power_applet.type}},
+        Resolver::fromOrDefault<toml::array>(ResolverCandidates{{.node   = node,
+                                                                 .applet = applet::power_applet
+                                                                                   .type}},
                                              keys, primary_button, defaults, path_context,
                                              {.min_size = 1}, "Format: [keybindings...]");
 

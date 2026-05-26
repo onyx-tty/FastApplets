@@ -6,6 +6,7 @@
 #include "Applets/Types/AppletType.h"
 #include "Config/Resolver/PathContext/PathContext.h"
 #include "Config/Resolver/Types/ResolverCandidate.h"
+#include "Config/Types/NodeView.h"
 #include "CppUtils/Log/QtLog.h"
 #include "KeysMapper.h"
 
@@ -23,13 +24,15 @@ TKeys KeysMapper::keys(const toml::table& power_applet, const toml::table& globa
         const auto& defaults = TKeys::getDefault();
         QStringView filename = u"keys.toml"_s;
 
-        TKeys keys{};
+        TKeys                    keys{};
+        const ResolverCandidates cands = {{.node   = node_view(power_applet),
+                                           .applet = applet::type::power_applet},
+                                          {.node   = node_view(global),
+                                           .applet = applet::type::global}};
 
         /* Quit Keys */
-        keys.quit = quit({ResolverCandidate{.node   = power_applet["quit"],
-                                            .applet = applet::type::power_applet},
-                          ResolverCandidate{.node = global["quit"], .applet = applet::type::global}},
-                         defaults.getQuit(), PathContext{filename, u"quit"_s});
+        keys.quit = quit(cands.makeExtended("quit"), defaults.getQuit(),
+                         PathContext{filename, u"quit"_s});
 
         /* Primary Button Keys */
         keys.primary_button = primaryButtons(power_applet["primary_buttons"],

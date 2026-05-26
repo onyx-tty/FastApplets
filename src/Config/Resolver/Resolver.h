@@ -5,14 +5,13 @@
 
 #include "TomlQt/ArrayBounds.h"
 
-#include <initializer_list>
 #include <optional>
 #include <toml++/toml.hpp>
 #include <QString>
 #include <Qt>
 
 class PathContext;
-class ResolverCandidate;
+class ResolverCandidates;
 class QSizePolicy;
 class QSize;
 
@@ -42,7 +41,8 @@ public:
         // On success: returns optional extracted value
         // On failure: returns std::nullopt
         template<typename T>
-        static std::optional<T> from(ResolverCandidates candidates, const PathContext& path_context,
+        static std::optional<T> from(const ResolverCandidates&  candidates,
+                                     const PathContext&         path_context,
                                      const tomlqt::ArrayBounds& arr_bounds = {},
                                      const QString&             arr_format = {});
 
@@ -54,7 +54,7 @@ public:
         // On failure: silently replaces entire object with object_defaults, with
         //             no partial state
         template<typename TAttribute, typename TObject>
-        static void fromOrDefault(ResolverCandidates candidates, TAttribute& attribute,
+        static void fromOrDefault(const ResolverCandidates& candidates, TAttribute& attribute,
                                   TObject& object, const TObject& object_defaults,
                                   const PathContext&         path_context,
                                   const tomlqt::ArrayBounds& arr_bounds = {},
@@ -69,9 +69,10 @@ public:
         // On failure: silently replaces entire object with object_defaults, with
         //             no partial state
         template<typename TRaw, typename TAttribute, typename TObject, typename Transform>
-        static void fromTransformOrDefault(ResolverCandidates candidates, TAttribute& attribute,
-                                           TObject& object, const TObject& object_defaults,
-                                           Transform&& transform, const PathContext& path_context);
+        static void fromTransformOrDefault(const ResolverCandidates& candidates,
+                                           TAttribute& attribute, TObject& object,
+                                           const TObject& object_defaults, Transform&& transform,
+                                           const PathContext& path_context);
 };
 
 #include "Resolver.tpp"

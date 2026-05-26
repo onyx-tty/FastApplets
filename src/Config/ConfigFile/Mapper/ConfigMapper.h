@@ -3,16 +3,15 @@
 
 #pragma once
 
-#include "Config/Resolver/Types/ResolverCandidate.h"
 #include "Config/Types/NodeView.h"
 
-#include <initializer_list>
 #include <optional>
 #include <toml++/toml.hpp>
 #include <vector>
 
 class GlobalConfig;
 class PathContext;
+class ResolverCandidates;
 class PowerButtonParams;
 class PrimaryButtonProperties;
 class WindowProperties;
@@ -40,9 +39,9 @@ private:
         //                  size (array of two integers)
         //
         // Assigned value: WindowProperties
-        static WindowProperties window(ResolverCandidates      candidates,
-                                       const WindowProperties& defaults,
-                                       const PathContext&      path_context);
+        static WindowProperties window(const ResolverCandidates& candidates,
+                                       const WindowProperties&   defaults,
+                                       const PathContext&        path_context);
 
         /* Primary Button Properties */
 
@@ -56,7 +55,7 @@ private:
         //                  and policy (string)
         //
         // Assigned value: PrimaryButtonProperties
-        static PrimaryButtonProperties primaryButton(ResolverCandidates             candidates,
+        static PrimaryButtonProperties primaryButton(const ResolverCandidates&      candidates,
                                                      const PrimaryButtonProperties& defaults,
                                                      const PathContext&             path_context);
 
