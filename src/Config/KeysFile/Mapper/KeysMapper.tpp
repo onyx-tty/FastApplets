@@ -26,7 +26,8 @@ TKeys KeysMapper::keys(const toml::table& power_applet, const toml::table& globa
 
         TKeys                    keys{};
         const ResolverCandidates cands = {{.node   = node_view(power_applet),
-                                           .applet = applet::type::power_applet},
+                                           .applet = applet::type::power_applet,
+                                           .quiet  = true},
                                           {.node   = node_view(global),
                                            .applet = applet::type::global}};
 
@@ -35,9 +36,10 @@ TKeys KeysMapper::keys(const toml::table& power_applet, const toml::table& globa
                          PathContext{filename, u"quit"_s});
 
         /* Primary Button Keys */
-        keys.primary_button = primaryButtons({cands.get()[0].makeExtended("primary_buttons")},
-                                             defaults.getPrimaryButton(),
-                                             PathContext{filename, u"primary_buttons"_s});
+        keys.primary_button =
+                primaryButtons({cands.get()[0].makeExtended("primary_buttons").makeQuiet(false)},
+                               defaults.getPrimaryButton(),
+                               PathContext{filename, u"primary_buttons"_s});
 
         return std::move(keys);
 }

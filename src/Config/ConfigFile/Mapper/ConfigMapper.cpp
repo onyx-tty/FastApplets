@@ -57,7 +57,8 @@ WindowProperties ConfigMapper::window(const ResolverCandidates& candidates,
                                                             path_context.getExtended("size"))
                                               .value_or(defaults.getSize());
 
-                        window.title = Resolver::from<QString>(candidates.makeExtended("title"),
+                        window.title = Resolver::from<QString>(candidates.makeExtended("title")
+                                                                       .makeQuiet(true, 1),
                                                                path_context.getExtended("title"))
                                                .value_or(defaults.getTitle());
                 });

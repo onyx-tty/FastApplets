@@ -27,11 +27,13 @@ TConfig ConfigMapper::config(const toml::table& power_applet, const toml::table&
         TConfig config{};
 
         ResolverCandidates cands = {{.node   = node_view(power_applet),
-                                     .applet = applet::type::power_applet},
+                                     .applet = applet::type::power_applet,
+                                     .quiet  = true},
                                     {.node = node_view(global), .applet = applet::type::global}};
 
         /* Window Properties */
-        config.window_properties = window(cands.makeExtended("window"),
+        // TODO: Use enum in .makeQuiet() to avoid magic numbers
+        config.window_properties = window(cands.makeExtended("window").makeQuiet(false, 0),
                                           defaults.getWindowProperties(),
                                           PathContext{filename, u"window"_s});
 
@@ -41,7 +43,7 @@ TConfig ConfigMapper::config(const toml::table& power_applet, const toml::table&
                                                          PathContext{filename, u"primary_button"_s});
 
         /* Layout Properties */
-        config.layout_properties = layout({cands.get()[0].makeExtended("layout")},
+        config.layout_properties = layout({cands.get()[0].makeExtended("layout").makeQuiet(false)},
                                           defaults.getLayoutProperties(),
                                           PathContext{filename, u"layout"_s});
 
