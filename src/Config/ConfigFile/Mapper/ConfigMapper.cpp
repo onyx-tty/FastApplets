@@ -94,17 +94,16 @@ PrimaryButtonProperties ConfigMapper::primaryButton(const ResolverCandidates&   
 }
 
 /* Layout Properties */
-LayoutProperties ConfigMapper::layout(node_view node, const LayoutProperties& defaults,
-                                      const PathContext& path_context) {
+LayoutProperties ConfigMapper::layout(const ResolverCandidates& candidates,
+                                      const LayoutProperties&   defaults,
+                                      const PathContext&        path_context) {
         LayoutProperties properties{};
 
-        const auto data = Resolver::from<toml::table>(
-                ResolverCandidates{{.node = node, .applet = applet::power_applet.type}},
-                path_context);
+        const auto data = Resolver::from<toml::table>(candidates, path_context);
         if (!data) { return defaults; }
 
         // Primary power buttons
-        properties.power_buttons = primaryButtons(data.value()["primary_buttons"],
+        properties.power_buttons = primaryButtons(candidates.makeExtended("primary_buttons"),
                                                   defaults.getPowerButtons(),
                                                   path_context.getExtended("primary_buttons"));
 
@@ -112,17 +111,16 @@ LayoutProperties ConfigMapper::layout(node_view node, const LayoutProperties& de
 }
 
 std::vector<PowerButtonParams> ConfigMapper::primaryButtons(
-        node_view node, const std::vector<PowerButtonParams>& defaults,
+        const ResolverCandidates& candidates, const std::vector<PowerButtonParams>& defaults,
         const PathContext& path_context) {
-        const auto arr = Resolver::from<toml::array>(
-                ResolverCandidates{{.node = node, .applet = applet::power_applet.type}},
-                path_context, {.min_size = 1}, "Format: [primary buttons...]");
+        const auto arr = Resolver::from<toml::array>(candidates, path_context, {.min_size = 1},
+                                                     "Format: [primary buttons...]");
         if (!arr) { return defaults; }
 
         std::vector<PowerButtonParams> found{};
 
         for (size_t i = 0; i != arr.value().size(); ++i) {
-                auto new_button = primaryButton(node_view(arr.value().at(i)),
+                auto new_button = primaryButton(candidates.makeExtended(i),
                                                 path_context.getExtended(i));
                 if (new_button) { found.push_back(std::move(new_button.value())); }
         }
@@ -136,17 +134,14 @@ std::vector<PowerButtonParams> ConfigMapper::primaryButtons(
         return std::move(found);
 }
 
-std::optional<PowerButtonParams> ConfigMapper::primaryButton(node_view          node,
+std::optional<PowerButtonParams> ConfigMapper::primaryButton(const ResolverCandidates& candidates,
                                                              const PathContext& path_context) {
-        const auto table = Resolver::from<toml::table>(
-                ResolverCandidates{{.node = node, .applet = applet::power_applet.type}},
-                path_context);
+        const auto table = Resolver::from<toml::table>(candidates, path_context);
         if (!table) { return {}; }
 
         PowerButtonParams new_button{};
 
-        auto type = Resolver::from<QString>(ResolverCandidates{{.node = table.value()["id"],
-                                                                .applet = applet::power_applet.type}},
+        auto type = Resolver::from<QString>(candidates.makeExtended("id"),
                                             path_context.getExtended("id"));
         if (!type) { return {}; }
 
@@ -154,17 +149,13 @@ std::optional<PowerButtonParams> ConfigMapper::primaryButton(node_view          
 
         if (new_button.type == power_button_type::none) { return {}; }
 
-        new_button.text =
-                Resolver::from<QString>(ResolverCandidates{{.node   = table.value()["text"],
-                                                            .applet = applet::power_applet.type}},
-                                        path_context.getExtended("text"))
-                        .value_or(textFor(new_button.type));
+        new_button.text = Resolver::from<QString>(candidates.makeExtended("text"),
+                                                  path_context.getExtended("text"))
+                                  .value_or(textFor(new_button.type));
 
-        new_button.command =
-                Resolver::from<QString>(ResolverCandidates{{.node   = table.value()["command"],
-                                                            .applet = applet::power_applet.type}},
-                                        path_context.getExtended("command"))
-                        .value_or(commandFor(new_button.type));
+        new_button.command = Resolver::from<QString>(candidates.makeExtended("command"),
+                                                     path_context.getExtended("command"))
+                                     .value_or(commandFor(new_button.type));
 
         new_button.icon = iconFor(new_button.type);
 

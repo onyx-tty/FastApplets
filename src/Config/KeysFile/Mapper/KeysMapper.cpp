@@ -56,22 +56,21 @@ keybindings KeysMapper::quit(const ResolverCandidates& candidates, const keybind
 }
 
 /* Power Applet Keys*/
-std::vector<keybindings> KeysMapper::primaryButtons(node_view                       node,
+std::vector<keybindings> KeysMapper::primaryButtons(const ResolverCandidates&       candidates,
                                                     const std::vector<keybindings>& defaults,
                                                     const PathContext&              path_context) {
         toml::array              keys{};
         std::vector<keybindings> primary_buttons{};
 
-        Resolver::fromOrDefault(ResolverCandidates{{.node   = node,
-                                                    .applet = applet::power_applet.type}},
-                                keys, primary_buttons, defaults, path_context, {.min_size = 1},
-                                "Format: [keybindings...]");
+        Resolver::fromOrDefault(candidates, keys, primary_buttons, defaults, path_context,
+                                {.min_size = 1}, "Format: [keybindings...]");
 
         if (keys.empty()) { return defaults; }
 
         std::vector<keybindings> found{};
         for (size_t i = 0; i != keys.size(); ++i) {
-                keybindings found_for_button = primaryButton(node[i], defaults[i],
+                keybindings found_for_button = primaryButton(candidates.makeExtended(i),
+                                                             defaults[i],
                                                              path_context.getExtended(i));
                 if (!keys.empty()) { found.push_back(std::move(found_for_button)); }
         };
@@ -79,16 +78,15 @@ std::vector<keybindings> KeysMapper::primaryButtons(node_view                   
         return std::move(found);
 }
 
-keybindings KeysMapper::primaryButton(node_view node, const keybindings& defaults,
-                                      const PathContext& path_context) {
+keybindings KeysMapper::primaryButton(const ResolverCandidates& candidates,
+                                      const keybindings&        defaults,
+                                      const PathContext&        path_context) {
         toml::array keys{};
         keybindings primary_button{};
 
-        Resolver::fromOrDefault<toml::array>(ResolverCandidates{{.node   = node,
-                                                                 .applet = applet::power_applet
-                                                                                   .type}},
-                                             keys, primary_button, defaults, path_context,
-                                             {.min_size = 1}, "Format: [keybindings...]");
+        Resolver::fromOrDefault<toml::array>(candidates, keys, primary_button, defaults,
+                                             path_context, {.min_size = 1},
+                                             "Format: [keybindings...]");
 
         if (keys.empty()) { return defaults; }
 

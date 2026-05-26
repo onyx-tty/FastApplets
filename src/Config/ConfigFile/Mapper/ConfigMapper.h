@@ -68,8 +68,9 @@ private:
         // Expected format: layout table containing primary_buttons (array of tables)
         //
         // Assigned value: LayoutProperties
-        static LayoutProperties layout(node_view node, const LayoutProperties& defaults,
-                                       const PathContext& path_context);
+        static LayoutProperties layout(const ResolverCandidates& candidates,
+                                       const LayoutProperties&   defaults,
+                                       const PathContext&        path_context);
 
         // Maps primary_buttons from a config source.
         //
@@ -81,8 +82,8 @@ private:
         //
         // Assigned value: vector of PowerButtonParams
         static std::vector<PowerButtonParams> primaryButtons(
-                node_view node, const std::vector<PowerButtonParams>& defaults,
-                const PathContext& path_context);
+                const ResolverCandidates&             candidates,
+                const std::vector<PowerButtonParams>& defaults, const PathContext& path_context);
 
         // Maps primary_button, including its attributes, from a config source.
         //
@@ -94,7 +95,7 @@ private:
         //                  text (string), command (string)
         //
         // Assigned value: PowerButtonParams
-        static std::optional<PowerButtonParams> primaryButton(node_view          node,
+        static std::optional<PowerButtonParams> primaryButton(const ResolverCandidates& candidates,
                                                               const PathContext& path_context);
 
 public:

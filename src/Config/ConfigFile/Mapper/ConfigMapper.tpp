@@ -41,7 +41,8 @@ TConfig ConfigMapper::config(const toml::table& power_applet, const toml::table&
                                                          PathContext{filename, u"primary_button"_s});
 
         /* Layout Properties */
-        config.layout_properties = layout(power_applet["layout"], defaults.getLayoutProperties(),
+        config.layout_properties = layout({cands.get()[0].makeExtended("layout")},
+                                          defaults.getLayoutProperties(),
                                           PathContext{filename, u"layout"_s});
 
         return std::move(config);

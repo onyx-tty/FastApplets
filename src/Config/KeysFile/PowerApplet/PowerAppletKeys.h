@@ -23,6 +23,7 @@ class PowerAppletKeys final : public GlobalKeys {
 private:
         friend class KeysMapper;
 
+        // TODO: Rename to primary_buttons
         std::vector<keybindings> primary_button;
 
 public:

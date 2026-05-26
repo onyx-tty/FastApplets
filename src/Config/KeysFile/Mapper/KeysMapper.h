@@ -56,7 +56,7 @@ private:
         //                  keybindings
         //
         // Assigned value: vector of keybindings (std::unordered_set<int>)
-        static std::vector<keybindings> primaryButtons(node_view                       node,
+        static std::vector<keybindings> primaryButtons(const ResolverCandidates&       candidates,
                                                        const std::vector<keybindings>& defaults,
                                                        const PathContext& path_context);
 
@@ -67,8 +67,9 @@ private:
         // Expected format: string representation of keybinding
         //
         // Assigned value: keybindings (std::unordered_set<int>)
-        static keybindings primaryButton(node_view node, const keybindings& defaults,
-                                         const PathContext& path_context);
+        static keybindings primaryButton(const ResolverCandidates& candidates,
+                                         const keybindings&        defaults,
+                                         const PathContext&        path_context);
 
 public:
         KeysMapper() = delete;

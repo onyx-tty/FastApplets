@@ -35,7 +35,7 @@ TKeys KeysMapper::keys(const toml::table& power_applet, const toml::table& globa
                          PathContext{filename, u"quit"_s});
 
         /* Primary Button Keys */
-        keys.primary_button = primaryButtons(power_applet["primary_buttons"],
+        keys.primary_button = primaryButtons({cands.get()[0].makeExtended("primary_buttons")},
                                              defaults.getPrimaryButton(),
                                              PathContext{filename, u"primary_buttons"_s});
 
