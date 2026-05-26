@@ -82,10 +82,6 @@ struct ResolverCandidate final {
 };
 
 // Stores a dynamic array of ResolverCandidate objects for use in Resolver.
-//
-// 'node' contains the toml::node_view with data for extraction.
-// 'type' is used for logging, to create QString path with PathContext.
-// 'quiet' disables logging if true.
 class ResolverCandidates final {
 private:
         std::vector<ResolverCandidate> candidates;
@@ -102,7 +98,7 @@ public:
         }
 
         // TODO: Consolidate repetitive logic
-        // Return a new dynamic array of candidates with ALL nodes extended by 'key'.
+        // Returns a new dynamic array of candidates with ALL nodes extended by 'key'.
         //
         // Replaces:
         //   auto new_cands{} = old_cands;
@@ -123,7 +119,7 @@ public:
                 return std::move(new_candidates);
         }
 
-        // Return a new dynamic array of candidates with ALL nodes extended by 'key'.
+        // Returns a new dynamic array of candidates with ALL nodes extended by 'key'.
         //
         // Replaces:
         //   auto new_cands{} = old_cands;
@@ -157,7 +153,6 @@ public:
         // TODO: Overload without cand_index to avoid confusion
         [[nodiscard]] inline ResolverCandidates makeQuiet(
                 bool quiet = true, std::optional<size_t> cand_index = std::nullopt) const {
-                // TODO: Always copies all elements,
                 ResolverCandidates new_candidates = {};
                 new_candidates.candidates.reserve(candidates.size());
 
