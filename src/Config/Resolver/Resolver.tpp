@@ -16,11 +16,10 @@
 #include <toml++/toml.hpp>
 #include <type_traits>
 #include <utility>
+#include <QSize>
+#include <QSizePolicy>
 #include <QString>
 #include <Qt>
-
-class QSizePolicy;
-class QSize;
 
 template<typename T>
 std::optional<T> Resolver::from(const ResolverCandidates&  candidates,
