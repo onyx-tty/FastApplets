@@ -13,21 +13,15 @@
 /* Candidate */
 
 ResolverCandidate ResolverCandidate::makeExtended(std::string_view key) const {
-        ResolverCandidate new_candidate{};
-
-        new_candidate.node   = node[key];
-        new_candidate.applet = applet;
-        new_candidate.quiet  = quiet;
+        ResolverCandidate new_candidate = *this;
+        new_candidate.node              = node[key];
 
         return new_candidate;
 }
 
 ResolverCandidate ResolverCandidate::makeExtended(size_t index) const {
-        ResolverCandidate new_candidate{};
-
-        new_candidate.node   = node[index];
-        new_candidate.applet = applet;
-        new_candidate.quiet  = quiet;
+        ResolverCandidate new_candidate = *this;
+        new_candidate.node              = node[index];
 
         return new_candidate;
 }
