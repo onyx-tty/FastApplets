@@ -41,10 +41,10 @@ public:
         // On success: returns optional extracted value
         // On failure: returns std::nullopt
         template<typename T>
-        static std::optional<T> from(const ResolverCandidates&  candidates,
-                                     const PathContext&         path_context,
-                                     const tomlqt::ArrayBounds& arr_bounds = {},
-                                     const QString&             arr_format = {});
+        [[nodiscard]] static std::optional<T> from(const ResolverCandidates&  candidates,
+                                                   const PathContext&         path_context,
+                                                   const tomlqt::ArrayBounds& arr_bounds = {},
+                                                   const QString&             arr_format = {});
 
         // Extraction that can fall back to replacing the entire parent object.
         //

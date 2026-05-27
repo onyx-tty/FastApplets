@@ -37,17 +37,17 @@ public:
         // path_context.
         //
         // Example: makePath("power_applet") -> "in config.toml, power_applet.window"
-        QString makePath(applet::type applet) const;
+        [[nodiscard]] QString makePath(applet::type applet) const;
 
         // Returns a new PathContext with an additional path segment appended.
         //
         // Example: context.getExtended("size") -> PathContext with ".window.size"
-        PathContext getExtended(std::string_view segment) const;
+        [[nodiscard]] PathContext getExtended(std::string_view segment) const;
 
         // Returns a new PathContext with an array index appended.
         //
         // Index is formatted with brackets, no separator is added.
         //
         // Example: ctx.getExtended(2) -> PathContext with ".window.size[2]"
-        PathContext getExtended(size_t index) const;
+        [[nodiscard]] PathContext getExtended(size_t index) const;
 };

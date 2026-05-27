@@ -36,7 +36,7 @@ struct ResolverCandidate final {
         //
         // With:
         //   auto new_cand = old_cand.makeExtended(key);
-        ResolverCandidate makeExtended(std::string_view key) const;
+        [[nodiscard]] ResolverCandidate makeExtended(std::string_view key) const;
 
         // Return a new candidate with node extended by 'index'.
         //
@@ -46,7 +46,7 @@ struct ResolverCandidate final {
         //
         // With:
         //   auto new_cand = old_cand.makeExtended(index);
-        ResolverCandidate makeExtended(size_t index) const;
+        [[nodiscard]] ResolverCandidate makeExtended(size_t index) const;
 
         // Returns a new candidate with quiet set to true/false.
         // Default is true.
