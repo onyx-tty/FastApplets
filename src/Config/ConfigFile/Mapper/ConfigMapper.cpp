@@ -31,7 +31,7 @@
 template<typename T>
 static T mapProperties(const ResolverCandidates& candidates, const T& defaults,
                        const PathContext& path_context, auto fill_fn) {
-        std::vector<toml::table> resolved{};
+        std::vector<toml::table> resolved = {};
 
         for (const auto& candidate : candidates.get()) {
                 if (auto result = Resolver::from<toml::table>({candidate}, path_context)) {
@@ -41,7 +41,7 @@ static T mapProperties(const ResolverCandidates& candidates, const T& defaults,
 
         if (resolved.empty()) { return defaults; }
 
-        T props{};
+        auto props = T{};
         fill_fn(props, path_context);
         return std::move(props);
 }
@@ -98,7 +98,7 @@ PrimaryButtonProperties ConfigMapper::primaryButton(const ResolverCandidates&   
 LayoutProperties ConfigMapper::layout(const ResolverCandidates& candidates,
                                       const LayoutProperties&   defaults,
                                       const PathContext&        path_context) {
-        LayoutProperties properties{};
+        auto properties = LayoutProperties{};
 
         const auto data = Resolver::from<toml::table>(candidates, path_context);
         if (!data) { return defaults; }
@@ -118,7 +118,7 @@ std::vector<PowerButtonParams> ConfigMapper::primaryButtons(
                                                      "Format: [primary buttons...]");
         if (!arr) { return defaults; }
 
-        std::vector<PowerButtonParams> found{};
+        std::vector<PowerButtonParams> found = {};
 
         for (size_t i = 0; i != arr.value().size(); ++i) {
                 auto new_button = primaryButton(candidates.makeExtended(i),
@@ -140,7 +140,7 @@ std::optional<PowerButtonParams> ConfigMapper::primaryButton(const ResolverCandi
         const auto table = Resolver::from<toml::table>(candidates, path_context);
         if (!table) { return {}; }
 
-        PowerButtonParams new_button{};
+        PowerButtonParams new_button = {};
 
         auto type = Resolver::from<QString>(candidates.makeExtended("id"),
                                             path_context.makeExtended("id"));

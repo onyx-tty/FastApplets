@@ -78,7 +78,7 @@ std::vector<PowerButton*> PowerCentralWidget::createButtons() {
                 return keybindings{Qt::Key_unknown};
         };
 
-        std::vector<PowerButton*> primary_buttons{};
+        std::vector<PowerButton*> primary_buttons = {};
         primary_buttons.reserve(primary_buttons_data.size());
 
         for (size_t i = 0; i != primary_buttons_data.size(); ++i) {

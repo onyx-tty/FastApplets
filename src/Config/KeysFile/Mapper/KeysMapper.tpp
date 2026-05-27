@@ -24,7 +24,7 @@ TKeys KeysMapper::keys(const toml::table& power_applet, const toml::table& globa
         const auto& defaults = TKeys::getDefault();
         QStringView filename = u"keys.toml"_s;
 
-        TKeys                    keys{};
+        TKeys                    keys  = TKeys{};
         const ResolverCandidates cands = {{.node   = node_view(power_applet),
                                            .applet = applet::type::power_applet,
                                            .quiet  = true},

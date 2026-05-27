@@ -24,7 +24,7 @@ TConfig ConfigMapper::config(const toml::table& power_applet, const toml::table&
         const auto& defaults = TConfig::getDefault();
         QStringView filename = u"config.toml"_s;
 
-        TConfig config{};
+        TConfig config = TConfig{};
 
         ResolverCandidates cands = {{.node   = node_view(power_applet),
                                      .applet = applet::type::power_applet,

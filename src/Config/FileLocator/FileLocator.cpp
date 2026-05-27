@@ -35,7 +35,7 @@ std::string findFile(QStringView filename, QStringView subdirectory) {
 }
 
 ConfigFiles FileLocator::configFiles(std::string_view applet_name) {
-        ConfigFiles files{};
+        ConfigFiles files = {};
 
         // Global config is in root, not in a separate directory. Redirect to root.
         if (applet_name == "global") { applet_name = ""; }

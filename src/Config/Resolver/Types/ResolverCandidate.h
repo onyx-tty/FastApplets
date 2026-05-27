@@ -31,7 +31,7 @@ struct ResolverCandidate final {
         // Return a new candidate with node extended by 'key'.
         //
         // Replaces:
-        //   ResolverCandidate new_cand{} = old_cand;
+        //   ResolverCandidate new_cand = old_cand;
         //   new_cand.node = old_cand.node[key];
         //
         // With:
@@ -41,7 +41,7 @@ struct ResolverCandidate final {
         // Return a new candidate with node extended by 'index'.
         //
         // Replaces:
-        //   auto new_cand{} = old_cand;
+        //   auto new_cand = old_cand;
         //   new_cand.node = old_cand.node[index];
         //
         // With:
@@ -78,7 +78,7 @@ public:
         // Returns a new dynamic array of candidates with ALL nodes extended by 'key'.
         //
         // Replaces:
-        //   auto new_cands{} = old_cands;
+        //   auto new_cands = old_cands;
         //   for (size_t i = 0; i != new_cands.size(); ++i) {
         //       new_cands[i].candidates.node = old_cands[i].candidates.node[key];
         //   }
@@ -90,7 +90,7 @@ public:
         // Returns a new dynamic array of candidates with ALL nodes extended by 'key'.
         //
         // Replaces:
-        //   auto new_cands{} = old_cands;
+        //   auto new_cands = old_cands;
         //   for (size_t i = 0; i != new_cands.size(); ++i) {
         //       new_cands[i].candidates.node = old_cands[i].candidates.node[key];
         //   }
@@ -121,6 +121,6 @@ public:
         //
         // With:
         //   auto new_cands = old_cands.makeQuiet(true/false);
-        [[nodiscard]] ResolverCandidates makeQuiet(
-                std::optional<size_t> cand_index, bool quiet = true) const;
+        [[nodiscard]] ResolverCandidates makeQuiet(std::optional<size_t> cand_index,
+                                                   bool                  quiet = true) const;
 };

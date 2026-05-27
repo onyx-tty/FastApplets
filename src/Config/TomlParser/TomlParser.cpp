@@ -10,7 +10,7 @@
 #include <QString>
 
 toml::table TomlParser::file(const std::string& filepath) {
-        toml::table file{};
+        toml::table file = {};
 
         if (!QFileInfo::exists(QString::fromStdString(filepath))) {
                 QWARNING() << "File not found!";
