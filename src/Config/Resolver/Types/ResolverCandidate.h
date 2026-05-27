@@ -36,15 +36,7 @@ struct ResolverCandidate final {
         //
         // With:
         //   auto new_cand = old_cand.makeExtended(key);
-        inline ResolverCandidate makeExtended(std::string_view key) const {
-                ResolverCandidate new_candidate{};
-
-                new_candidate.node   = node[key];
-                new_candidate.applet = applet;
-                new_candidate.quiet  = quiet;
-
-                return new_candidate;
-        }
+        ResolverCandidate makeExtended(std::string_view key) const;
 
         // Return a new candidate with node extended by 'index'.
         //
@@ -54,15 +46,7 @@ struct ResolverCandidate final {
         //
         // With:
         //   auto new_cand = old_cand.makeExtended(index);
-        inline ResolverCandidate makeExtended(size_t index) const {
-                ResolverCandidate new_candidate{};
-
-                new_candidate.node   = node[index];
-                new_candidate.applet = applet;
-                new_candidate.quiet  = quiet;
-
-                return new_candidate;
-        }
+        ResolverCandidate makeExtended(size_t index) const;
 
         // Returns a new candidate with quiet set to true/false.
         // Default is true.
@@ -73,12 +57,7 @@ struct ResolverCandidate final {
         //
         // With:
         //   auto new_cand = old_cand.makeQuiet(true/false);
-        [[nodiscard]] inline ResolverCandidate makeQuiet(bool quiet = true) const {
-                ResolverCandidate new_candidate = *this;
-                new_candidate.quiet             = quiet;
-
-                return new_candidate;
-        }
+        [[nodiscard]] ResolverCandidate makeQuiet(bool quiet = true) const;
 };
 
 // Stores a dynamic array of ResolverCandidate objects for use in Resolver.
@@ -93,9 +72,7 @@ public:
         ResolverCandidates(std::initializer_list<ResolverCandidate> candidates) :
                 candidates(candidates) {}
 
-        [[nodiscard]] inline const std::vector<ResolverCandidate>& get() const {
-                return candidates;
-        }
+        [[nodiscard]] const std::vector<ResolverCandidate>& get() const { return candidates; }
 
         // TODO: Consolidate repetitive logic
         // Returns a new dynamic array of candidates with ALL nodes extended by 'key'.
@@ -108,16 +85,7 @@ public:
         //
         // With:
         //   auto new_cands = old_cands.makeExtended(key);
-        [[nodiscard]] inline ResolverCandidates makeExtended(std::string_view key) const {
-                ResolverCandidates new_candidates{};
-                new_candidates.candidates.reserve(candidates.size());
-
-                for (const auto& candidate : candidates) {
-                        new_candidates.candidates.push_back(candidate.makeExtended(key));
-                }
-
-                return std::move(new_candidates);
-        }
+        [[nodiscard]] ResolverCandidates makeExtended(std::string_view key) const;
 
         // Returns a new dynamic array of candidates with ALL nodes extended by 'key'.
         //
@@ -129,16 +97,7 @@ public:
         //
         // With:
         //   auto new_cands = old_cands.makeExtended(key);
-        [[nodiscard]] inline ResolverCandidates makeExtended(size_t index) const {
-                ResolverCandidates new_candidates{};
-                new_candidates.candidates.reserve(candidates.size());
-
-                for (const auto& candidate : candidates) {
-                        new_candidates.candidates.push_back(candidate.makeExtended(index));
-                }
-
-                return std::move(new_candidates);
-        }
+        [[nodiscard]] ResolverCandidates makeExtended(size_t index) const;
 
         // Returns a new dynamic array of candidates with quiet bool(s) set to true/false.
         //
@@ -151,24 +110,6 @@ public:
         // With:
         //   auto new_cands = old_cands.makeQuiet(true/false);
         // TODO: Overload without cand_index to avoid confusion
-        [[nodiscard]] inline ResolverCandidates makeQuiet(
-                bool quiet = true, std::optional<size_t> cand_index = std::nullopt) const {
-                ResolverCandidates new_candidates = {};
-                new_candidates.candidates.reserve(candidates.size());
-
-                for (size_t i = 0; i != candidates.size(); ++i) {
-                        ResolverCandidate cand = candidates[i];
-
-                        // TODO: Simplify this chain
-                        if (!cand_index
-                            || cand_index && cand_index.value() == i
-                                       && cand_index.value() < candidates.size()) {
-                                cand.quiet = quiet;
-                        }
-
-                        new_candidates.candidates.push_back(cand);
-                }
-
-                return std::move(new_candidates);
-        }
+        [[nodiscard]] ResolverCandidates makeQuiet(
+                bool quiet = true, std::optional<size_t> cand_index = std::nullopt) const;
 };
