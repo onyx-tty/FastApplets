@@ -5,7 +5,9 @@
 
 #include "AppletType.h"
 
+#include <cassert>
 #include <string_view>
+#include <utility>
 
 namespace applet {
 
@@ -23,6 +25,7 @@ constexpr std::string_view toString(type applet_type) {
         switch (applet_type) {
         case type::global:       return global.name;
         case type::power_applet: return power_applet.name;
+        default:                 assert(false && "Passed unknown type"); std::unreachable();
         }
 }
 
