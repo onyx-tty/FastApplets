@@ -41,13 +41,13 @@ public:
 
         // Returns a new PathContext with an additional path segment appended.
         //
-        // Example: context.getExtended("size") -> PathContext with ".window.size"
-        [[nodiscard]] PathContext getExtended(std::string_view segment) const;
+        // Example: context.makeExtended("size") -> PathContext with ".window.size"
+        [[nodiscard]] PathContext makeExtended(std::string_view segment) const;
 
         // Returns a new PathContext with an array index appended.
         //
         // Index is formatted with brackets, no separator is added.
         //
-        // Example: ctx.getExtended(2) -> PathContext with ".window.size[2]"
-        [[nodiscard]] PathContext getExtended(size_t index) const;
+        // Example: ctx.makeExtended(2) -> PathContext with ".window.size[2]"
+        [[nodiscard]] PathContext makeExtended(size_t index) const;
 };

@@ -23,7 +23,7 @@ QString PathContext::makePath(applet::type applet) const {
                 .arg(path_context);
 }
 
-PathContext PathContext::getExtended(std::string_view segment) const {
+PathContext PathContext::makeExtended(std::string_view segment) const {
         return PathContext{filename,
                            QString("%1%2%3")
                                    .arg(path_context)
@@ -32,6 +32,6 @@ PathContext PathContext::getExtended(std::string_view segment) const {
                            separator};
 }
 
-PathContext PathContext::getExtended(size_t index) const {
+PathContext PathContext::makeExtended(size_t index) const {
         return PathContext{filename, QString("%1[%2]").arg(path_context).arg(index), separator};
 }

@@ -54,12 +54,12 @@ WindowProperties ConfigMapper::window(const ResolverCandidates& candidates,
                 candidates, defaults, path_context,
                 [&defaults, &candidates](WindowProperties& window, const PathContext& path_context) {
                         window.size = Resolver::from<QSize>(candidates.makeExtended("size"),
-                                                            path_context.getExtended("size"))
+                                                            path_context.makeExtended("size"))
                                               .value_or(defaults.getSize());
 
                         window.title = Resolver::from<QString>(candidates.makeExtended("title")
                                                                        .makeQuiet(true, 1),
-                                                               path_context.getExtended("title"))
+                                                               path_context.makeExtended("title"))
                                                .value_or(defaults.getTitle());
                 });
 }
@@ -74,22 +74,22 @@ PrimaryButtonProperties ConfigMapper::primaryButton(const ResolverCandidates&   
                                          const PathContext&       path_context) {
                         button.text_alignment = Resolver::from<Qt::Alignment>(
                                                         candidates.makeExtended("text_alignment"),
-                                                        path_context.getExtended("text_alignment"))
+                                                        path_context.makeExtended("text_alignment"))
                                                         .value_or(defaults.getTextAlignment());
 
                         button.icon_alignment = Resolver::from<Qt::Alignment>(
                                                         candidates.makeExtended("icon_alignment"),
-                                                        path_context.getExtended("icon_alignment"))
+                                                        path_context.makeExtended("icon_alignment"))
                                                         .value_or(defaults.getIconAlignment());
 
                         button.icon_size =
                                 Resolver::from<QSize>(candidates.makeExtended("icon_size"),
-                                                      path_context.getExtended("icon_size"))
+                                                      path_context.makeExtended("icon_size"))
                                         .value_or(defaults.getIconSize());
 
                         button.policy =
                                 Resolver::from<QSizePolicy>(candidates.makeExtended("policy"),
-                                                            path_context.getExtended("policy"))
+                                                            path_context.makeExtended("policy"))
                                         .value_or(defaults.getPolicy());
                 });
 }
@@ -106,7 +106,7 @@ LayoutProperties ConfigMapper::layout(const ResolverCandidates& candidates,
         // Primary power buttons
         properties.power_buttons = primaryButtons(candidates.makeExtended("primary_buttons"),
                                                   defaults.getPowerButtons(),
-                                                  path_context.getExtended("primary_buttons"));
+                                                  path_context.makeExtended("primary_buttons"));
 
         return std::move(properties);
 }
@@ -122,7 +122,7 @@ std::vector<PowerButtonParams> ConfigMapper::primaryButtons(
 
         for (size_t i = 0; i != arr.value().size(); ++i) {
                 auto new_button = primaryButton(candidates.makeExtended(i),
-                                                path_context.getExtended(i));
+                                                path_context.makeExtended(i));
                 if (new_button) { found.push_back(std::move(new_button.value())); }
         }
 
@@ -143,7 +143,7 @@ std::optional<PowerButtonParams> ConfigMapper::primaryButton(const ResolverCandi
         PowerButtonParams new_button{};
 
         auto type = Resolver::from<QString>(candidates.makeExtended("id"),
-                                            path_context.getExtended("id"));
+                                            path_context.makeExtended("id"));
         if (!type) { return {}; }
 
         new_button.type = toPowerButtonType(type.value());
@@ -151,11 +151,11 @@ std::optional<PowerButtonParams> ConfigMapper::primaryButton(const ResolverCandi
         if (new_button.type == power_button_type::none) { return {}; }
 
         new_button.text = Resolver::from<QString>(candidates.makeExtended("text"),
-                                                  path_context.getExtended("text"))
+                                                  path_context.makeExtended("text"))
                                   .value_or(textFor(new_button.type));
 
         new_button.command = Resolver::from<QString>(candidates.makeExtended("command"),
-                                                     path_context.getExtended("command"))
+                                                     path_context.makeExtended("command"))
                                      .value_or(commandFor(new_button.type));
 
         new_button.icon = iconFor(new_button.type);

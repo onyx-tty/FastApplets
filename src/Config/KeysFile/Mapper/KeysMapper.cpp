@@ -71,7 +71,7 @@ std::vector<keybindings> KeysMapper::primaryButtons(const ResolverCandidates&   
         for (size_t i = 0; i != keys.size(); ++i) {
                 keybindings found_for_button = primaryButton(candidates.makeExtended(i),
                                                              defaults[i],
-                                                             path_context.getExtended(i));
+                                                             path_context.makeExtended(i));
                 if (!keys.empty()) { found.push_back(std::move(found_for_button)); }
         };
 
