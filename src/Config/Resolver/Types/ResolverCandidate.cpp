@@ -36,7 +36,7 @@ ResolverCandidate ResolverCandidate::makeQuiet(bool quiet) const {
 /* Candidates */
 
 ResolverCandidates ResolverCandidates::makeExtended(std::string_view key) const {
-        ResolverCandidates new_candidates{};
+        ResolverCandidates new_candidates = {};
         new_candidates.candidates.reserve(candidates.size());
 
         for (const auto& candidate : candidates) {
@@ -47,7 +47,7 @@ ResolverCandidates ResolverCandidates::makeExtended(std::string_view key) const 
 }
 
 ResolverCandidates ResolverCandidates::makeExtended(size_t index) const {
-        ResolverCandidates new_candidates{};
+        ResolverCandidates new_candidates = {};
         new_candidates.candidates.reserve(candidates.size());
 
         for (const auto& candidate : candidates) {
