@@ -68,9 +68,7 @@ ResolverCandidates ResolverCandidates::makeQuiet(bool quiet) const {
         new_candidates.candidates.reserve(candidates.size());
 
         for (auto candidate : candidates) {
-                candidate.quiet = quiet;
-
-                new_candidates.candidates.push_back(candidate);
+                new_candidates.candidates.push_back(candidate.makeQuiet(quiet));
         }
 
         return std::move(new_candidates);
