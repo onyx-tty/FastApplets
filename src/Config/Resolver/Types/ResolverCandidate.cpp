@@ -2,11 +2,13 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 
 #include "ResolverCandidate.h"
+#include "CppUtils/Log/QtLog.h"
 
 #include <cstddef>
 #include <optional>
 #include <string_view>
 #include <utility>
+#include <QString>
 
 /* Candidate */
 
@@ -61,23 +63,32 @@ ResolverCandidates ResolverCandidates::makeExtended(size_t index) const {
         return std::move(new_candidates);
 }
 
-ResolverCandidates ResolverCandidates::makeQuiet(bool                  quiet,
-                                                 std::optional<size_t> cand_index) const {
+ResolverCandidates ResolverCandidates::makeQuiet(bool quiet) const {
         ResolverCandidates new_candidates = {};
         new_candidates.candidates.reserve(candidates.size());
 
-        for (size_t i = 0; i != candidates.size(); ++i) {
-                ResolverCandidate cand = candidates[i];
+        for (auto candidate : candidates) {
+                candidate.quiet = quiet;
 
-                // TODO: Simplify this chain
-                if (!cand_index
-                    || cand_index && cand_index.value() == i
-                               && cand_index.value() < candidates.size()) {
-                        cand.quiet = quiet;
-                }
-
-                new_candidates.candidates.push_back(cand);
+                new_candidates.candidates.push_back(candidate);
         }
+
+        return std::move(new_candidates);
+}
+
+ResolverCandidates ResolverCandidates::makeQuiet(std::optional<size_t> cand_index,
+                                                 bool                  quiet) const {
+        ResolverCandidates new_candidates = *this;
+        new_candidates.candidates.reserve(candidates.size());
+
+        if (!cand_index) { QWARNING() << "Passed std::nullopt, cannot make anything quiet!"; }
+
+        if (cand_index.value() > candidates.size()) {
+                QWARNING() << QString("Passed index (%1) exceeds candidates.size() (%2)")
+                                      .arg(cand_index.value(), candidates.size());
+        }
+
+        new_candidates.candidates[cand_index.value()].quiet = quiet;
 
         return std::move(new_candidates);
 }

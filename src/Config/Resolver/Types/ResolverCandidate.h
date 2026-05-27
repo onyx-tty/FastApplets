@@ -99,7 +99,7 @@ public:
         //   auto new_cands = old_cands.makeExtended(key);
         [[nodiscard]] ResolverCandidates makeExtended(size_t index) const;
 
-        // Returns a new dynamic array of candidates with quiet bool(s) set to true/false.
+        // Returns a new dynamic array of candidates, all set to QUIET.
         //
         // Replaces:
         //   auto new_cands = old_cands;
@@ -109,7 +109,18 @@ public:
         //
         // With:
         //   auto new_cands = old_cands.makeQuiet(true/false);
-        // TODO: Overload without cand_index to avoid confusion
+        [[nodiscard]] ResolverCandidates makeQuiet(bool quiet = true) const;
+
+        // Returns a new dynamic array of candidates, candidates[CAND_INDEX] set to QUIET.
+        //
+        // Replaces:
+        //   auto new_cands = old_cands;
+        //   for (size_t i = 0; i != new_cands.size(); ++i) {
+        //       new_cands[i].candidates.quiet = true/false;
+        //   }
+        //
+        // With:
+        //   auto new_cands = old_cands.makeQuiet(true/false);
         [[nodiscard]] ResolverCandidates makeQuiet(
-                bool quiet = true, std::optional<size_t> cand_index = std::nullopt) const;
+                std::optional<size_t> cand_index, bool quiet = true) const;
 };

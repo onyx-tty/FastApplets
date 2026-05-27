@@ -8,3 +8,7 @@ target_include_directories(Config_Resolver_Types PRIVATE
 
 target_link_libraries(Config_Resolver_Types PRIVATE
         Config::Types)
+
+target_link_libraries(Config_Resolver_Types PUBLIC
+        CppUtils::Log::Qt
+        Qt${QT_VERSION_MAJOR}::Core)
