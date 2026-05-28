@@ -11,18 +11,18 @@
 // For older Qt versions, fall back to the full <QtCore>.
 // <QtVersionChecks> didn't exist before Qt 6.5, so it can't be used either.
 #if __has_include(<QtLogging>) // Qt >=6.5
-#       include <QtLogging>
-#       include <QtVersion>
+        #include <QtLogging>
+        #include <QtVersion>
 #else
-#       include <QtGlobal> // Qt <6.5
+        #include <QtGlobal> // Qt <6.5
 #endif
 
 int main(int argc, char* argv[]) {
         // Setup log formatting
         qt::log::setupLogging();
 
-        QApplication application(argc, argv);
-        PowerMainWindow main_window;
+        auto application = QApplication(argc, argv);
+        auto main_window = PowerMainWindow();
 
         // Print application info
         qInfo() << "Applet resolution:" << main_window.size();
