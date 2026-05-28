@@ -10,7 +10,6 @@
 #include "Config/Resolver/Resolver.h"
 #include "Config/Resolver/Types/ResolverCandidate.h"
 #include "Config/Types/NodeView.h"
-#include "CppUtils/Log/QtLog.h"
 #include "UI/Types/ButtonType.h"
 #include "UI/Widgets/PowerButtonParams.h"
 
@@ -23,10 +22,12 @@
 #include <unordered_map>
 #include <utility>
 #include <vector>
+#include <QDebug>
 #include <QSize>
 #include <QSizePolicy>
 #include <QString>
 #include <Qt>
+#include <QtGlobal>
 
 template<typename T>
 static T mapProperties(const ResolverCandidates& candidates, const T& defaults,
@@ -127,7 +128,7 @@ std::vector<PowerButtonParams> ConfigMapper::primaryButtons(
         }
 
         if (found.empty()) {
-                QWARNING() << path_context.makePath(applet::power_applet.type)
+                qWarning() << path_context.makePath(applet::power_applet.type)
                                       + ", no enabled buttons found! Using defaults...";
                 return defaults;
         }

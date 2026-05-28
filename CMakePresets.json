@@ -10,8 +10,7 @@
                         "cacheVariables": {
                                 "CMAKE_BUILD_TYPE": "Debug",
                                 "CMAKE_INSTALL_PREFIX": "${sourceDir}/build/${presetName}/install",
-                                "ENABLE_UBSAN": "ON",
-                                "LOG_DEBUG": "ON"
+                                "ENABLE_UBSAN": "ON"
                         }
                 },
                 {
@@ -26,8 +25,7 @@
                                 "CMAKE_CXX_COMPILER": "clang++",
                                 "CMAKE_INSTALL_PREFIX": "${sourceDir}/build/${presetName}/install",
                                 "ENABLE_UBSAN": "ON",
-                                "ENABLE_CLANG_TIDY": "ON",
-                                "LOG_DEBUG": "ON"
+                                "ENABLE_CLANG_TIDY": "ON"
                         }
                 },
                 {

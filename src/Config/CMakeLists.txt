@@ -31,7 +31,6 @@ target_link_libraries(Config PRIVATE
         UI::Widgets)
 
 target_link_libraries(Config PUBLIC
-        CppUtils::Log::Qt
         CppUtils::String
         tomlplusplus::tomlplusplus
         Qt${QT_VERSION_MAJOR}::Widgets)

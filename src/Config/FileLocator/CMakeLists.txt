@@ -10,5 +10,4 @@ target_link_libraries(Config_FileLocator PRIVATE
         Config::Types)
 
 target_link_libraries(Config_FileLocator PUBLIC
-        CppUtils::Log::Qt
         Qt${QT_VERSION_MAJOR}::Core)

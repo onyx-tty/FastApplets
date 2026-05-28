@@ -5,7 +5,6 @@
 
 #include "Config/Resolver/Types/ResolverCandidate.h"
 #include "Config/Types/NodeView.h"
-#include "CppUtils/Log/QtLog.h"
 #include "PathContext/PathContext.h"
 #include "Resolver.h"
 #include "TomlQt/ArrayBounds.h"
@@ -16,10 +15,12 @@
 #include <toml++/toml.hpp>
 #include <type_traits>
 #include <utility>
+#include <QDebug>
 #include <QSize>
 #include <QSizePolicy>
 #include <QString>
 #include <Qt>
+#include <QtGlobal>
 
 template<typename T>
 std::optional<T> Resolver::from(const ResolverCandidates&  candidates,
@@ -56,7 +57,7 @@ std::optional<T> Resolver::from(const ResolverCandidates&  candidates,
 
                         auto res = arr_bounds.validate(arr.value());
                         if (res == result::min_size_fail) {
-                                QWARNING()
+                                qWarning()
                                         << QString("arr size < min_size! min_size: %1, arr size: %2")
                                                    .arg(QString::number(arr_bounds.min_size.value()),
                                                         QString::number(arr->size()));
@@ -64,7 +65,7 @@ std::optional<T> Resolver::from(const ResolverCandidates&  candidates,
                         }
 
                         if (res == result::max_size_fail) {
-                                QWARNING()
+                                qWarning()
                                         << QString("arr size > max_size! max_size: %1, arr size: %2")
                                                    .arg(QString::number(arr_bounds.max_size.value()),
                                                         QString::number(arr->size()));
@@ -87,15 +88,15 @@ std::optional<T> Resolver::from(const ResolverCandidates&  candidates,
         // Collapse logging message variants
         static auto log = [&](const QString& path) {
                 if constexpr (std::is_same_v<DT, toml::table>) {
-                        QWARNING()
+                        qWarning()
                                 << QString("%1, missing or wrong type! Using defaults...").arg(path);
                 } else if constexpr (std::is_same_v<DT, toml::array>) {
-                        QWARNING()
+                        qWarning()
                                 << QString("%1, missing or wrong type! Format: %2. Using defaults...")
                                            .arg(path, QString("must be an array! Format: %1")
                                                               .arg(arr_format));
                 } else {
-                        QWARNING()
+                        qWarning()
                                 << QString("%1, missing or wrong type! Using defaults...").arg(path);
                 }
         };
@@ -121,7 +122,7 @@ std::optional<T> Resolver::from(const ResolverCandidates&  candidates,
                         continue;
                 }
 
-                QDEBUG() << path_context.makePath(candidate.applet) << "found!";
+                qDebug() << path_context.makePath(candidate.applet) << "found!";
                 return *result;
         }
 

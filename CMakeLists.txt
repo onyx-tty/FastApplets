@@ -44,7 +44,7 @@ set(ROOT_DIR ${CMAKE_CURRENT_LIST_DIR})
 set(SRC_DIR ${ROOT_DIR}/src)
 
 # Third-party
-CPMAddPackage("gh:onyx-tty/CppUtils#fe014a8")
+CPMAddPackage("gh:onyx-tty/CppUtils#cef444b")
 CPMAddPackage("gh:onyx-tty/TomlQt#2cb232a")
 
 add_subdirectory(

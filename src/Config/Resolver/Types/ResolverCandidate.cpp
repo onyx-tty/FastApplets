@@ -2,13 +2,14 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 
 #include "ResolverCandidate.h"
-#include "CppUtils/Log/QtLog.h"
 
 #include <cstddef>
 #include <optional>
 #include <string_view>
 #include <utility>
+#include <QDebug>
 #include <QString>
+#include <QtGlobal>
 
 /* Candidate */
 
@@ -73,10 +74,10 @@ ResolverCandidates ResolverCandidates::makeQuiet(std::optional<size_t> cand_inde
         ResolverCandidates new_candidates = *this;
         new_candidates.candidates.reserve(candidates.size());
 
-        if (!cand_index) { QWARNING() << "Passed std::nullopt, cannot make anything quiet!"; }
+        if (!cand_index) { qWarning() << "Passed std::nullopt, cannot make anything quiet!"; }
 
         if (cand_index.value() > candidates.size()) {
-                QWARNING() << QString("Passed index (%1) exceeds candidates.size() (%2)")
+                qWarning() << QString("Passed index (%1) exceeds candidates.size() (%2)")
                                       .arg(cand_index.value(), candidates.size());
         }
 

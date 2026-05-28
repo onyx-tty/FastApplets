@@ -44,7 +44,7 @@ private:
         // 3. Qt::Key_unknown if the defaults are exhausted.
         //
         // Returns a vector containing every created button.
-        // Calls QFATAL if no buttons are found in config.
+        // Calls qFatal if no buttons are found in config.
         std::vector<PowerButton*> createButtons();
 
         std::vector<PowerButton*> buttons;

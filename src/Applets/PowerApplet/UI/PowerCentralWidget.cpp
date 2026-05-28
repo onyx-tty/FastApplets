@@ -5,7 +5,6 @@
 #include "Config/ConfigFile/PowerApplet/PowerAppletConfig.h"
 #include "Config/KeysFile/PowerApplet/PowerAppletKeys.h"
 #include "Config/KeysFile/Types/Keybindings.h"
-#include "CppUtils/Log/QtLog.h"
 #include "UI/Types/ButtonType.h"
 #include "Widgets/PowerButton.h"
 
@@ -14,6 +13,7 @@
 #include <vector>
 #include <QApplication>
 #include <QBoxLayout>
+#include <QDebug>
 #include <QHBoxLayout>
 #include <QIcon>
 #include <QKeyEvent>
@@ -21,6 +21,7 @@
 #include <QShowEvent>
 #include <QWidget>
 #include <Qt>
+#include <QtGlobal>
 
 namespace {
 
@@ -67,13 +68,13 @@ std::vector<PowerButton*> PowerCentralWidget::createButtons() {
                                  &default_primary_button_keys](size_t i) -> keybindings {
                 if (i < primary_button_keys.size()) { return primary_button_keys[i]; }
                 if (i < default_primary_button_keys.size()) {
-                        QWARNING()
+                        qWarning()
                                 << QString("Key for button %1 not found, applying default Qt_Key%1!")
                                            .arg(i + 1);
                         return default_primary_button_keys[i];
                 }
 
-                QCRITICAL() << "Number of buttons exceeds size of default keys! Buttons found:"
+                qCritical() << "Number of buttons exceeds size of default keys! Buttons found:"
                             << primary_buttons_data.size();
                 return keybindings{Qt::Key_unknown};
         };
@@ -93,7 +94,7 @@ std::vector<PowerButton*> PowerCentralWidget::createButtons() {
                 primary_buttons.push_back(power_button);
         }
 
-        if (primary_buttons.empty()) { QFATAL("No buttons found!"); }
+        if (primary_buttons.empty()) { qFatal("No buttons found!"); }
 
         return primary_buttons;
 }

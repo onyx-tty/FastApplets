@@ -4,16 +4,17 @@
 #include "PowerButton.h"
 #include "Config/ConfigFile/PowerApplet/PowerAppletConfig.h"
 #include "Config/KeysFile/Types/Keybindings.h"
-#include "CppUtils/Log/QtLog.h"
 #include "Shell/ShellRunner.h"
 #include "UI/Types/ButtonType.h"
 #include "UI/Widgets/PrimaryButton.h"
 
 #include <QBoxLayout>
+#include <QDebug>
 #include <QIcon>
 #include <QObject>
 #include <QString>
 #include <QWidget>
+#include <QtGlobal>
 
 PowerButton::PowerButton(power_button_type type, const QIcon& icon, const QString& text,
                          const keybindings& keys, const QString& command, QWidget* parent) :
@@ -21,7 +22,7 @@ PowerButton::PowerButton(power_button_type type, const QIcon& icon, const QStrin
         keys(keys), type(type) {
         connect(this, &PowerButton::clicked, [this, command]() { ShellRunner::command(command); });
 
-        QDEBUG() << QString("Created %1!").arg(text);
+        qDebug() << QString("Created %1!").arg(text);
 }
 
 power_button_type PowerButton::getType() const {

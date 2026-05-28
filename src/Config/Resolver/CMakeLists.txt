@@ -15,6 +15,5 @@ target_link_libraries(Config_Resolver INTERFACE
 
 target_link_libraries(Config_Resolver INTERFACE
         TomlQt
-        CppUtils::Log::Qt
         Qt${QT_VERSION_MAJOR}::Widgets
         tomlplusplus::tomlplusplus)

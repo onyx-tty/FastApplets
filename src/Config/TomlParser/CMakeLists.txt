@@ -7,6 +7,5 @@ target_include_directories(Config_TomlParser PRIVATE
         $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>)
 
 target_link_libraries(Config_TomlParser PUBLIC
-        CppUtils::Log::Qt
         tomlplusplus::tomlplusplus
         Qt${QT_VERSION_MAJOR}::Core)

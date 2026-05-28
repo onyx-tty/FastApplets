@@ -7,18 +7,19 @@
 #include "Config/Resolver/PathContext/PathContext.h"
 #include "Config/Resolver/Types/ResolverCandidate.h"
 #include "Config/Types/NodeView.h"
-#include "CppUtils/Log/QtLog.h"
 #include "KeysMapper.h"
 
 #include <toml++/toml.hpp>
 #include <QApplication>
+#include <QDebug>
 #include <QStringView>
 #include <Qt>
+#include <QtGlobal>
 
 template<typename TKeys>
 TKeys KeysMapper::keys(const toml::table& power_applet, const toml::table& global) {
         // Confirm that a QApplication instance exists
-        if (!QApplication::instance()) { QFATAL("QApplication has not been instantiated yet!"); }
+        if (!QApplication::instance()) { qFatal("QApplication has not been instantiated yet!"); }
 
         using namespace Qt::StringLiterals;
         const auto& defaults = TKeys::getDefault();

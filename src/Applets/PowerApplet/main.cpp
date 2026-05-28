@@ -21,13 +21,15 @@ int main(int argc, char* argv[]) {
         // Initialize QApplication
         QApplication application(argc, argv);
 
+        // Setup log formatting
+        qt::log::setupLogging();
+
         // Create main window
         PowerMainWindow main_window;
 
         // Print information
-        QINFO() << "Applet resolution:" << main_window.size();
-        QDEBUG() << "Qt Version:" << qVersion();
-        qInfo() << " ";
+        qInfo() << "Applet resolution:" << main_window.size();
+        qDebug() << "Qt Version:" << qVersion() << "\n";
 
         // Show main window
         main_window.show();
