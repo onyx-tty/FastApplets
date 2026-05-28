@@ -18,22 +18,18 @@
 #endif
 
 int main(int argc, char* argv[]) {
-        // Initialize QApplication
-        QApplication application(argc, argv);
-
         // Setup log formatting
         qt::log::setupLogging();
 
-        // Create main window
+        QApplication application(argc, argv);
         PowerMainWindow main_window;
 
-        // Print information
+        // Print application info
         qInfo() << "Applet resolution:" << main_window.size();
         qDebug() << "Qt Version:" << qVersion() << "\n";
 
-        // Show main window
         main_window.show();
 
-        // Start the Qt event loop and return its exit code upon termination
+        // Start the Qt event loop
         return application.exec();
 }
