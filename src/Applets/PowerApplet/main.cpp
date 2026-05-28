@@ -5,17 +5,8 @@
 #include "UI/PowerMainWindow.h"
 
 #include <QApplication>
-
-// Qt 6.5+ provides dedicated headers <QtLogging> and <QtVersion>.
-// Use them when possible to reduce compilation times.
-// For older Qt versions, fall back to the full <QtCore>.
-// <QtVersionChecks> didn't exist before Qt 6.5, so it can't be used either.
-#if __has_include(<QtLogging>) // Qt >=6.5
-        #include <QtLogging>
-        #include <QtVersion>
-#else
-        #include <QtGlobal> // Qt <6.5
-#endif
+#include <QDebug>
+#include <QtGlobal>
 
 int main(int argc, char* argv[]) {
         // Setup log formatting
