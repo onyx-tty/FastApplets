@@ -81,6 +81,7 @@ install(# Install compiled artifacts to correct destinations, register all targe
                 Config_KeysFile
                 Config_KeysFile_Global Config_KeysFile_PowerApplet
                 Config_KeysFile_Mapper Config_KeysFile_Types
+                Config_ConfigManager
                 Config_FileLocator
                 Config_TomlParser
                 Config_Resolver Config_Resolver_PathContext Config_Resolver_Types

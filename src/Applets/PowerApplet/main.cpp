@@ -1,6 +1,7 @@
 // SPDX-FileCopyrightText: 2026 Łukasz Wrodarczyk
 // SPDX-License-Identifier: GPL-3.0-or-later
 
+#include "Config/Manager/ConfigManager.h"
 #include "CppUtils/Log/QtLog.h"
 #include "UI/PowerMainWindow.h"
 
@@ -13,6 +14,10 @@ int main(int argc, char* argv[]) {
         qt::log::setupLogging();
 
         auto application = QApplication(argc, argv);
+
+        // Fetch configs
+        ConfigManager::init();
+
         auto main_window = PowerMainWindow();
 
         // Print application info

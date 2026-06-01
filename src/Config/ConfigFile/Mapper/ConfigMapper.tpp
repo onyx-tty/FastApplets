@@ -17,12 +17,12 @@
 #include <QtGlobal>
 
 template<typename TConfig>
-TConfig ConfigMapper::config(const toml::table& power_applet, const toml::table& global) {
+TConfig ConfigMapper::config(const toml::table& power_applet, const toml::table& global,
+                             const TConfig& defaults) {
         // Confirm that a QApplication instance exists
         if (!QApplication::instance()) { qFatal("QApplication has not been instantiated yet!"); }
 
         using namespace Qt::StringLiterals;
-        const auto& defaults = TConfig::getDefault();
         QStringView filename = u"config.toml"_s;
 
         TConfig config = TConfig{};

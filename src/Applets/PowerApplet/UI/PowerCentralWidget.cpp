@@ -2,9 +2,8 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 
 #include "PowerCentralWidget.h"
-#include "Config/ConfigFile/PowerApplet/PowerAppletConfig.h"
-#include "Config/KeysFile/PowerApplet/PowerAppletKeys.h"
 #include "Config/KeysFile/Types/Keybindings.h"
+#include "Config/Manager/ConfigManager.h"
 #include "UI/Types/ButtonType.h"
 #include "Widgets/PowerButton.h"
 
@@ -36,7 +35,7 @@ PowerButton* findPowerButton(int key, std::vector<PowerButton*> buttons) {
 }
 
 bool isPowerKey(int key) {
-        for (const auto& button_keys : PowerAppletKeys::get().getPrimaryButton()) {
+        for (const auto& button_keys : ConfigManager::getKeys().getPrimaryButton()) {
                 if (button_keys.contains(key)) { return true; }
         }
 
@@ -44,7 +43,7 @@ bool isPowerKey(int key) {
 }
 
 bool isQuitKey(int key) {
-        const auto& quit_keys = PowerAppletKeys::get().getQuit();
+        const auto& quit_keys = ConfigManager::getKeys().getQuit();
 
         return quit_keys.contains(key);
 }
@@ -53,11 +52,11 @@ bool isQuitKey(int key) {
 
 std::vector<PowerButton*> PowerCentralWidget::createButtons() {
         const auto& primary_buttons_data =
-                PowerAppletConfig::get().getLayoutProperties().getPowerButtons();
-        const std::vector<keybindings>  primary_button_keys         = PowerAppletKeys::get()
-                                                                              .getPrimaryButton();
-        const std::vector<keybindings>& default_primary_button_keys = PowerAppletKeys::getDefault()
-                                                                              .getPrimaryButton();
+                ConfigManager::getConfig().getLayoutProperties().getPowerButtons();
+        const std::vector<keybindings>  primary_button_keys = ConfigManager::getKeys()
+                                                                      .getPrimaryButton();
+        const std::vector<keybindings>& default_primary_button_keys =
+                ConfigManager::getDefaultKeys().getPrimaryButton();
 
         // TODO If applied key is already used elsewhere, there will be confusion
         //      For example if for some reason keybinding for primary button 3 is Qt_Key4 and

@@ -9,8 +9,7 @@ target_include_directories(PowerApplet_UI_Widgets PRIVATE
 target_link_libraries(PowerApplet_UI_Widgets PRIVATE
         UI::Widgets
         UI::Types
-        Config::ConfigFile::PowerApplet
-        Config::KeysFile::PowerApplet
+        Config::ConfigManager
         Shell)
 
 target_link_libraries(PowerApplet_UI_Widgets PUBLIC

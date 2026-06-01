@@ -116,7 +116,8 @@ public:
         // circular dependency between this header and PowerAppletConfig.h by deferring
         // the instantiation of PowerAppletConfig.
         template<typename TConfig>
-        static TConfig config(const toml::table& power_applet, const toml::table& global);
+        static TConfig config(const toml::table& power_applet, const toml::table& global,
+                              const TConfig& defaults);
 };
 
 #include "ConfigMapper.tpp"

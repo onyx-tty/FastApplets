@@ -11,9 +11,7 @@ target_include_directories(PowerApplet_UI PRIVATE
 
 target_link_libraries(PowerApplet_UI PRIVATE
         PowerApplet::UI::Widgets
-        Config::ConfigFile::PowerApplet
-        Config::KeysFile::PowerApplet
-        Config::KeysFile::Types
+        Config::ConfigManager
         UI
         UI::Widgets
         UI::Types)

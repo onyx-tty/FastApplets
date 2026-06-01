@@ -39,8 +39,8 @@ private:
         // implemented yet.
         //
         // Keybinding resolution order:
-        // 1. User-configured keys (PowerAppletKeys::get()).
-        // 2. Default keys (PowerAppletKeys::getDefault()).
+        // 1. User-configured keys (ConfigManager::getKeys()).
+        // 2. Default keys (ConfigManager::getDefaultKeys()).
         // 3. Qt::Key_unknown if the defaults are exhausted.
         //
         // Returns a vector containing every created button.

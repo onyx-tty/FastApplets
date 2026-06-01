@@ -9,11 +9,7 @@ target_include_directories(Config_KeysFile_PowerApplet PRIVATE
 target_link_libraries(Config_KeysFile_PowerApplet PRIVATE
         Config::KeysFile::Global
         Config::KeysFile::Mapper
-        Config::KeysFile::Types
-        Config::FileLocator
-        Config::TomlParser
-        Config::Types
-        AppletTypes)
+        Config::KeysFile::Types)
 
 target_link_libraries(Config_KeysFile_PowerApplet PUBLIC
         Qt${QT_VERSION_MAJOR}::Core)

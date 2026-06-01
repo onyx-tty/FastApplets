@@ -17,12 +17,12 @@
 #include <QtGlobal>
 
 template<typename TKeys>
-TKeys KeysMapper::keys(const toml::table& power_applet, const toml::table& global) {
+TKeys KeysMapper::keys(const toml::table& power_applet, const toml::table& global,
+                       const TKeys& defaults) {
         // Confirm that a QApplication instance exists
         if (!QApplication::instance()) { qFatal("QApplication has not been instantiated yet!"); }
 
         using namespace Qt::StringLiterals;
-        const auto& defaults = TKeys::getDefault();
         QStringView filename = u"keys.toml"_s;
 
         TKeys                    keys  = TKeys{};
