@@ -29,9 +29,11 @@
 #include <Qt>
 #include <QtGlobal>
 
+namespace {
+
 template<typename T>
-static T mapProperties(const ResolverCandidates& candidates, const T& defaults,
-                       const PathContext& path_context, auto fill_fn) {
+T mapProperties(const ResolverCandidates& candidates, const T& defaults,
+                const PathContext& path_context, auto fill_fn) {
         std::vector<toml::table> resolved = {};
 
         for (const auto& candidate : candidates.get()) {
@@ -46,6 +48,8 @@ static T mapProperties(const ResolverCandidates& candidates, const T& defaults,
         fill_fn(props, path_context);
         return std::move(props);
 }
+
+} // namespace
 
 /* Window Properties */
 WindowProperties ConfigMapper::window(const ResolverCandidates& candidates,
