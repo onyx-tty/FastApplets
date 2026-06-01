@@ -11,10 +11,6 @@
 
 class ConfigFiles;
 
-// Locates a file under $XDG_CONFIG_HOME/FastApplets/[subdirectory]/filename.
-// Returns the absolute path as std::string if found. Otherwise empty string.
-std::string findFile(QStringView filename, QStringView subdirectory = QStringLiteral(""));
-
 // Finds files in hardcoded locations.
 class FileLocator final {
 public:
@@ -22,4 +18,9 @@ public:
         // "global" maps to the root FastApplets/ config directory, as the global config
         // is stored there.
         static ConfigFiles configFiles(std::string_view applet_name);
+
+        // Locates a file under $XDG_CONFIG_HOME/FastApplets/[subdirectory]/filename.
+        // Returns the absolute path as std::string if found. Otherwise empty string.
+        static std::string findFile(QStringView filename,
+                                    QStringView subdirectory = QStringLiteral(""));
 };

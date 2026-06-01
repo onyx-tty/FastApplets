@@ -12,19 +12,6 @@
 #include <QStringView>
 #include <QtGlobal>
 
-std::string findFile(QStringView filename, QStringView subdirectory) {
-        QString subdir   = subdirectory.empty() ? subdirectory.toString()
-                                                : subdirectory.toString() + "/";
-        QString filepath = qEnvironmentVariable("XDG_CONFIG_HOME") + "/FastApplets/" + subdir
-                         + filename.toString();
-
-        // Returns empty string if file doesn't exist to avoid downstream errors,
-        // like parsing the wrong file by accident.
-        if (!QFileInfo::exists(filepath)) { return {}; }
-
-        return filepath.toStdString();
-}
-
 ConfigFiles FileLocator::configFiles(std::string_view applet_name) {
         ConfigFiles files = {};
 
@@ -37,4 +24,17 @@ ConfigFiles FileLocator::configFiles(std::string_view applet_name) {
                                 QString::fromStdString(std::string{applet_name}));
 
         return files;
+}
+
+std::string FileLocator::findFile(QStringView filename, QStringView subdirectory) {
+        QString subdir   = subdirectory.empty() ? subdirectory.toString()
+                                                : subdirectory.toString() + "/";
+        QString filepath = qEnvironmentVariable("XDG_CONFIG_HOME") + "/FastApplets/" + subdir
+                         + filename.toString();
+
+        // Returns empty string if file doesn't exist to avoid downstream errors,
+        // like parsing the wrong file by accident.
+        if (!QFileInfo::exists(filepath)) { return {}; }
+
+        return filepath.toStdString();
 }
