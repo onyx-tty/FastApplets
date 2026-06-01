@@ -21,6 +21,5 @@ public:
 
         // Locates a file under $XDG_CONFIG_HOME/FastApplets/[subdirectory]/filename.
         // Returns the absolute path as std::string if found. Otherwise empty string.
-        static std::string findFile(QStringView filename,
-                                    QStringView subdirectory = QStringLiteral(""));
+        static std::string file(QStringView filename, QStringView subdirectory = QStringLiteral(""));
 };
