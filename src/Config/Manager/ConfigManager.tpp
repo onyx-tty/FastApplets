@@ -81,7 +81,7 @@ ConfigManager<TApplet>::TConfig ConfigManager<TApplet>::makeDefaultConfig() {
                 layout = LayoutProperties(std::move(primary_buttons));
         }
 
-        return {std::move(window), std::move(button), std::move(layout)};
+        return TConfig{std::move(window), std::move(button), std::move(layout)};
 }
 
 template<applet::type TApplet>
@@ -94,7 +94,7 @@ ConfigManager<TApplet>::TKeys ConfigManager<TApplet>::makeDefaultKeys() {
                 keybindings{Qt::Key_7}, keybindings{Qt::Key_8}, keybindings{Qt::Key_9},
         };
 
-        return {std::move(quit), std::move(primary_button)};
+        return TKeys{std::move(quit), std::move(primary_button)};
 }
 
 template<applet::type TApplet>
