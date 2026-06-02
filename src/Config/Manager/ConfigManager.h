@@ -3,30 +3,34 @@
 
 #pragma once
 
-// TODO: Use templates instead
-#include "Config/ConfigFile/PowerApplet/PowerAppletConfig.h"
-#include "Config/KeysFile/PowerApplet/PowerAppletKeys.h"
+#include "Applets/Types/AppletTraits.h"
+#include "Applets/Types/AppletType.h"
+
+#include <toml++/toml.hpp>
+
+class ConfigFiles;
 
 // Stores instances of Config and Keys schemas.
 // Initializes instances from ConfigMapper and KeysMapper.
+template<applet::type TApplet>
 class ConfigManager final {
 private:
-        static PowerAppletConfig makeDefaultConfig();
-        static PowerAppletKeys   makeDefaultKeys();
+        using TConfig              = AppletTraits<TApplet>::TConfig;
+        using TKeys                = AppletTraits<TApplet>::TKeys;
+        using TPrimaryButton       = AppletTraits<TApplet>::TPrimaryButton;
+        using TPrimaryButtonParams = AppletTraits<TApplet>::TPrimaryButtonParams;
+        using TPrimaryButtonType   = AppletTraits<TApplet>::TPrimaryButtonType;
 
-        // TODO: Handle cert-err58-cpp
-        inline static PowerAppletConfig config         = PowerAppletConfig{};
-        inline static PowerAppletConfig default_config = PowerAppletConfig{};
-        inline static PowerAppletKeys   keys           = PowerAppletKeys{};
-        inline static PowerAppletKeys   default_keys   = PowerAppletKeys{};
-        inline static bool              initialized    = false;
+        static const ConfigFiles& configFilepaths(applet::type applet);
+        static TConfig            makeDefaultConfig();
+        static TKeys              makeDefaultKeys();
 
 public:
         ConfigManager() = delete;
-        // Finds all TOML config filepaths, parses them, and maps to instances.
-        static void                     init();
-        static const PowerAppletConfig& getConfig();
-        static const PowerAppletConfig& getDefaultConfig();
-        static const PowerAppletKeys&   getKeys();
-        static const PowerAppletKeys&   getDefaultKeys();
+        static const TConfig& getConfig();
+        static const TConfig& getDefaultConfig();
+        static const TKeys&   getKeys();
+        static const TKeys&   getDefaultKeys();
 };
+
+#include "ConfigManager.tpp"

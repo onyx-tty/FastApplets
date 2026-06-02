@@ -2,6 +2,10 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 
 #include "PowerCentralWidget.h"
+// Pull in definitions for ConfigManager<PowerApplet> overload
+#include "Applets/PowerApplet/Types/PowerAppletTraits.h"
+
+#include "Applets/Types/AppletType.h"
 #include "Config/KeysFile/Types/Keybindings.h"
 #include "Config/Manager/ConfigManager.h"
 #include "UI/Types/ButtonType.h"
@@ -35,7 +39,8 @@ PowerButton* findPowerButton(int key, std::vector<PowerButton*> buttons) {
 }
 
 bool isPowerKey(int key) {
-        for (const auto& button_keys : ConfigManager::getKeys().getPrimaryButton()) {
+        for (const auto& button_keys :
+             ConfigManager<applet::type::power_applet>::getKeys().getPrimaryButton()) {
                 if (button_keys.contains(key)) { return true; }
         }
 
@@ -43,7 +48,7 @@ bool isPowerKey(int key) {
 }
 
 bool isQuitKey(int key) {
-        const auto& quit_keys = ConfigManager::getKeys().getQuit();
+        const auto& quit_keys = ConfigManager<applet::type::power_applet>::getKeys().getQuit();
 
         return quit_keys.contains(key);
 }
@@ -51,12 +56,13 @@ bool isQuitKey(int key) {
 } // namespace
 
 std::vector<PowerButton*> PowerCentralWidget::createButtons() {
-        const auto& primary_buttons_data =
-                ConfigManager::getConfig().getLayoutProperties().getPowerButtons();
-        const std::vector<keybindings>  primary_button_keys = ConfigManager::getKeys()
-                                                                      .getPrimaryButton();
+        const auto& primary_buttons_data = ConfigManager<applet::type::power_applet>::getConfig()
+                                                   .getLayoutProperties()
+                                                   .getPowerButtons();
+        const std::vector<keybindings> primary_button_keys =
+                ConfigManager<applet::type::power_applet>::getKeys().getPrimaryButton();
         const std::vector<keybindings>& default_primary_button_keys =
-                ConfigManager::getDefaultKeys().getPrimaryButton();
+                ConfigManager<applet::type::power_applet>::getDefaultKeys().getPrimaryButton();
 
         // TODO If applied key is already used elsewhere, there will be confusion
         //      For example if for some reason keybinding for primary button 3 is Qt_Key4 and

@@ -3,6 +3,7 @@ cmake_minimum_required(VERSION 3.16)
 project(PowerApplet VERSION 0.23.15 LANGUAGES CXX)
 
 add_subdirectory(UI)
+add_subdirectory(Types)
 
 # Executables
 qt_add_executable(PowerApplet
@@ -15,7 +16,6 @@ target_include_directories(PowerApplet PRIVATE
         $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>)
 
 target_link_libraries(PowerApplet PRIVATE
-        Config::ConfigManager
         PowerApplet::UI)
 
 target_link_libraries(PowerApplet PUBLIC

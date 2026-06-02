@@ -2,6 +2,10 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 
 #include "PowerButton.h"
+// Pull in definitions for ConfigManager<PowerApplet> overload
+#include "Applets/PowerApplet/Types/PowerAppletTraits.h"
+
+#include "Applets/Types/AppletType.h"
 #include "Config/KeysFile/Types/Keybindings.h"
 #include "Config/Manager/ConfigManager.h"
 #include "Shell/ShellRunner.h"
@@ -18,7 +22,10 @@
 
 PowerButton::PowerButton(power_button_type type, const QIcon& icon, const QString& text,
                          const keybindings& keys, const QString& command, QWidget* parent) :
-        PrimaryButton(icon, text, ConfigManager::getConfig().getPrimaryButtonProperties(), parent),
+        PrimaryButton(icon, text,
+                      ConfigManager<applet::type::power_applet>::getConfig()
+                              .getPrimaryButtonProperties(),
+                      parent),
         keys(keys), type(type) {
         connect(this, &PowerButton::clicked, [this, command]() { ShellRunner::command(command); });
 

@@ -11,10 +11,12 @@ target_include_directories(PowerApplet_UI PRIVATE
 
 target_link_libraries(PowerApplet_UI PRIVATE
         PowerApplet::UI::Widgets
+        PowerApplet::Types
         Config::ConfigManager
         UI
         UI::Widgets
-        UI::Types)
+        UI::Types
+        AppletTypes)
 
 target_link_libraries(PowerApplet_UI PUBLIC
         Qt${QT_VERSION_MAJOR}::Widgets)

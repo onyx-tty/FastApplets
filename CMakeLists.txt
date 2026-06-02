@@ -102,6 +102,7 @@ if(BUILD_POWERAPPLET)
                 TARGETS PowerApplet
                         PowerApplet_UI
                         PowerApplet_UI_Widgets
+                        PowerApplet_Types
                 EXPORT FastApplets_export
                 ARCHIVE  DESTINATION ${CMAKE_INSTALL_LIBDIR}
                 LIBRARY  DESTINATION ${CMAKE_INSTALL_LIBDIR}
