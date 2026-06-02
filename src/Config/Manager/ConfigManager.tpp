@@ -42,7 +42,6 @@ const ConfigFiles& ConfigManager<TApplet>::configFilepaths(applet::type applet) 
         }
 }
 
-// TODO: Consider noexcept to avoid incomplete statics
 template<applet::type TApplet>
 ConfigManager<TApplet>::TConfig ConfigManager<TApplet>::makeDefaultConfig() {
         QSize   size  = {960, 220};
@@ -95,10 +94,7 @@ ConfigManager<TApplet>::TKeys ConfigManager<TApplet>::makeDefaultKeys() {
                 keybindings{Qt::Key_7}, keybindings{Qt::Key_8}, keybindings{Qt::Key_9},
         };
 
-        // TODO: Moving from static is dangerous, remove
-        static const TKeys keys{std::move(quit), std::move(primary_button)};
-
-        return std::move(keys);
+        return {std::move(quit), std::move(primary_button)};
 }
 
 template<applet::type TApplet>
