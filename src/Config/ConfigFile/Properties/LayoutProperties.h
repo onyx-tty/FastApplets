@@ -14,10 +14,8 @@ class QString;
 
 // Assign hardcoded icons associated with each button.
 // TODO: Auto-assign on parse
-QIcon iconFor(power_button_type type);
-
+QIcon   iconFor(power_button_type type);
 QString textFor(power_button_type type);
-
 QString commandFor(power_button_type type);
 
 // Stores properties describing the appearance of the layout.
