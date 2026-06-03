@@ -13,6 +13,7 @@
 
 QIcon iconFor(power_button_type type) {
         using enum power_button_type;
+
         Q_INIT_RESOURCE(Icons);
 
         switch (type) {
@@ -20,9 +21,8 @@ QIcon iconFor(power_button_type type) {
         case reboot:    return QIcon{":/Icons/Power/reboot.svg"};
         case suspend:   return QIcon{":/Icons/Power/suspend.svg"};
         case hibernate: return QIcon{":/Icons/Power/hibernate.svg"};
+        default:        return {};
         }
-
-        return {};
 }
 
 QString textFor(power_button_type type) {
@@ -33,9 +33,8 @@ QString textFor(power_button_type type) {
         case reboot:    return "Reboot";
         case suspend:   return "Suspend";
         case hibernate: return "Hibernate";
+        default:        return "";
         }
-
-        return "";
 }
 
 QString commandFor(power_button_type type) {
@@ -46,9 +45,8 @@ QString commandFor(power_button_type type) {
         case reboot:    return "systemctl reboot";
         case suspend:   return "systemctl suspend";
         case hibernate: return "systemctl hibernate";
+        default:        return "";
         }
-
-        return "";
 }
 
 LayoutProperties::LayoutProperties(std::vector<PowerButtonParams> primary_buttons) :
