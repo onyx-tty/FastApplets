@@ -8,13 +8,13 @@ target_include_directories(Config_KeysFile_Mapper PRIVATE
 
 target_link_libraries(Config_KeysFile_Mapper PRIVATE
         Config::KeysFile::Types
-        Config::Resolver
-        Config::Resolver::PathContext
-        Config::Resolver::Types
         Config::TomlParser
         Config::Types
         AppletTypes)
 
 target_link_libraries(Config_KeysFile_Mapper PUBLIC
+        Config::Resolver
+        Config::Resolver::PathContext
+        Config::Resolver::Types
         tomlplusplus::tomlplusplus
         Qt${QT_VERSION_MAJOR}::Widgets)

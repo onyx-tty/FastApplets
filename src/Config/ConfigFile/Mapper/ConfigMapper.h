@@ -3,7 +3,7 @@
 
 #pragma once
 
-#include "Config/Types/NodeView.h"
+#include "Config/ConfigFile/Properties/LayoutProperties.h"
 
 #include <optional>
 #include <toml++/toml.hpp>
@@ -15,7 +15,6 @@ class ResolverCandidates;
 class PowerButtonParams;
 class PrimaryButtonProperties;
 class WindowProperties;
-class LayoutProperties;
 class QString;
 class QSize;
 class QSizePolicy;
@@ -65,9 +64,10 @@ private:
         // Expected format: layout table containing primary_buttons (array of tables)
         //
         // Return value: LayoutProperties
-        static LayoutProperties layout(const ResolverCandidates& candidates,
-                                       const LayoutProperties&   defaults,
-                                       const PathContext&        path_context);
+        static LayoutProperties<PowerButtonParams> layout(
+                const ResolverCandidates&                  candidates,
+                const LayoutProperties<PowerButtonParams>& defaults,
+                const PathContext&                         path_context);
 
         // Maps primary_buttons from a config source.
         //

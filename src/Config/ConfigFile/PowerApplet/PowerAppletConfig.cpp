@@ -7,6 +7,7 @@
 #include "Config/ConfigFile/Properties/LayoutProperties.h"
 #include "Config/ConfigFile/Properties/PrimaryButtonProperties.h"
 #include "Config/ConfigFile/Properties/WindowProperties.h"
+#include "UI/Widgets/PowerButtonParams.h"
 
 #include <utility>
 #include <QSize>
@@ -14,12 +15,12 @@
 #include <QString>
 #include <Qt>
 
-PowerAppletConfig::PowerAppletConfig(WindowProperties        window,
-                                     PrimaryButtonProperties primary_button,
-                                     LayoutProperties        layout) :
+PowerAppletConfig::PowerAppletConfig(WindowProperties                    window,
+                                     PrimaryButtonProperties             primary_button,
+                                     LayoutProperties<PowerButtonParams> layout) :
         GlobalConfig(std::move(window), std::move(primary_button)),
         layout_properties(std::move(layout)) {}
 
-const LayoutProperties& PowerAppletConfig::getLayoutProperties() const {
+const LayoutProperties<PowerButtonParams>& PowerAppletConfig::getLayoutProperties() const {
         return layout_properties;
 }

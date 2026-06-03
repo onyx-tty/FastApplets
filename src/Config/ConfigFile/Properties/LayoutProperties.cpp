@@ -3,15 +3,13 @@
 
 #include "LayoutProperties.h"
 #include "UI/Types/ButtonType.h"
-#include "UI/Widgets/PowerButtonParams.h"
 
-#include <utility>
-#include <vector>
 #include <QIcon>
 #include <QResource>
 #include <QString>
 
-QIcon iconFor(power_button_type type) {
+template<>
+QIcon iconFor<power_button_type>(power_button_type type) {
         using enum power_button_type;
 
         Q_INIT_RESOURCE(Icons);
@@ -25,7 +23,8 @@ QIcon iconFor(power_button_type type) {
         }
 }
 
-QString textFor(power_button_type type) {
+template<>
+QString textFor<power_button_type>(power_button_type type) {
         using enum power_button_type;
 
         switch (type) {
@@ -37,7 +36,8 @@ QString textFor(power_button_type type) {
         }
 }
 
-QString commandFor(power_button_type type) {
+template<>
+QString commandFor<power_button_type>(power_button_type type) {
         using enum power_button_type;
 
         switch (type) {
@@ -47,11 +47,4 @@ QString commandFor(power_button_type type) {
         case hibernate: return "systemctl hibernate";
         default:        return "";
         }
-}
-
-LayoutProperties::LayoutProperties(std::vector<PowerButtonParams> primary_buttons) :
-        primary_buttons(std::move(primary_buttons)) {}
-
-const std::vector<PowerButtonParams>& LayoutProperties::getPrimaryButtons() const {
-        return primary_buttons;
 }

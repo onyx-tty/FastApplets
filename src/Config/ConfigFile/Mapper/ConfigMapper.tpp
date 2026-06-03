@@ -3,15 +3,19 @@
 
 #pragma once
 
-#include "Applets/Types/AppletType.h"
-#include "Config/Resolver/PathContext/PathContext.h"
-#include "Config/Resolver/Types/ResolverCandidate.h"
-#include "Config/Types/NodeView.h"
 #include "ConfigMapper.h"
 
+#include "Applets/Types/AppletType.h"
+#include "Config/Resolver/PathContext/PathContext.h"
+#include "Config/Resolver/Resolver.h"
+#include "Config/Resolver/Types/ResolverCandidate.h"
+#include "Config/Types/NodeView.h"
+
 #include <toml++/toml.hpp>
+#include <utility>
 #include <QApplication>
 #include <QDebug>
+#include <QString>
 #include <QStringView>
 #include <Qt>
 #include <QtGlobal>

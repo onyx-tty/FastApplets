@@ -7,6 +7,7 @@
 #include "Config/ConfigFile/Properties/LayoutProperties.h"
 #include "Config/ConfigFile/Properties/PrimaryButtonProperties.h"
 #include "Config/ConfigFile/Properties/WindowProperties.h"
+#include "UI/Widgets/PowerButtonParams.h"
 
 class ConfigMapper;
 
@@ -15,11 +16,12 @@ class PowerAppletConfig final : public GlobalConfig {
 private:
         friend class ConfigMapper;
 
-        LayoutProperties layout_properties;
+        LayoutProperties<PowerButtonParams> layout_properties;
 
 public:
-        PowerAppletConfig(WindowProperties        window         = WindowProperties{},
-                          PrimaryButtonProperties primary_button = PrimaryButtonProperties{},
-                          LayoutProperties        layout         = LayoutProperties{});
-        const LayoutProperties&         getLayoutProperties() const;
+        PowerAppletConfig(
+                WindowProperties                    window         = WindowProperties{},
+                PrimaryButtonProperties             primary_button = PrimaryButtonProperties{},
+                LayoutProperties<PowerButtonParams> layout = LayoutProperties<PowerButtonParams>{});
+        const LayoutProperties<PowerButtonParams>& getLayoutProperties() const;
 };

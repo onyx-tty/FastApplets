@@ -57,7 +57,7 @@ ConfigManager<TApplet>::TConfig ConfigManager<TApplet>::makeDefaultConfig() {
                                        std::move(icon_size), std::move(policy)};
 
         // TODO: At this point a builder class for config schemas would help a lot
-        auto layout = LayoutProperties{};
+        auto layout = LayoutProperties<TPrimaryButtonParams>{};
         if constexpr (TApplet == applet::power_applet.type) {
                 using enum power_button_type;
                 std::vector<TPrimaryButtonParams> primary_buttons =
@@ -78,7 +78,7 @@ ConfigManager<TApplet>::TConfig ConfigManager<TApplet>::makeDefaultConfig() {
                                               .command = commandFor(hibernate),
                                               .icon    = iconFor(hibernate)}};
 
-                layout = LayoutProperties(std::move(primary_buttons));
+                layout = LayoutProperties<TPrimaryButtonParams>(std::move(primary_buttons));
         }
 
         return TConfig{std::move(window), std::move(button), std::move(layout)};

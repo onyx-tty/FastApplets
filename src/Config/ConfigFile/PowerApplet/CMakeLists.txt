@@ -11,7 +11,8 @@ target_include_directories(Config_ConfigFile_PowerApplet PRIVATE
 target_link_libraries(Config_ConfigFile_PowerApplet PRIVATE
         Config::ConfigFile::Global
         Config::ConfigFile::Mapper
-        Config::ConfigFile::Properties)
+        Config::ConfigFile::Properties
+        UI::Widgets)
 
 target_link_libraries(Config_ConfigFile_PowerApplet PUBLIC
         Qt${QT_VERSION_MAJOR}::Widgets)

@@ -3,9 +3,6 @@
 
 #pragma once
 
-#include "UI/Types/ButtonType.h"
-#include "UI/Widgets/PowerButtonParams.h"
-
 #include <vector>
 
 class ConfigMapper;
@@ -13,22 +10,27 @@ class QIcon;
 class QString;
 
 // Assign hardcoded icons associated with each button.
-// TODO: Auto-assign on parse
-QIcon   iconFor(power_button_type type);
-QString textFor(power_button_type type);
-QString commandFor(power_button_type type);
+// TODO: Auto-assign on parse instead of here
+template<typename TPrimaryButtonType>
+QIcon iconFor(TPrimaryButtonType type);
+
+template<typename TPrimaryButtonType>
+QString textFor(TPrimaryButtonType type);
+
+template<typename TPrimaryButtonType>
+QString commandFor(TPrimaryButtonType type);
 
 // Stores properties describing the appearance of the layout.
-// TODO: Template overloads
+template<typename TPrimaryButtonParams>
 class LayoutProperties final {
 private:
         friend class ConfigMapper;
 
-        // TODO: template overload
-        std::vector<PowerButtonParams> primary_buttons;
+        std::vector<TPrimaryButtonParams> primary_buttons;
 
 public:
-        // TODO: rename to primary_buttons + template overload, for both
-        explicit LayoutProperties(std::vector<PowerButtonParams> primary_buttons = {});
-        const std::vector<PowerButtonParams>& getPrimaryButtons() const;
+        explicit LayoutProperties(std::vector<TPrimaryButtonParams> primary_buttons = {});
+        const std::vector<TPrimaryButtonParams>& getPrimaryButtons() const;
 };
+
+#include "LayoutProperties.tpp"

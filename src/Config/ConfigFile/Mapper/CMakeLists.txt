@@ -8,14 +8,14 @@ target_include_directories(Config_ConfigFile_Mapper PRIVATE
 
 target_link_libraries(Config_ConfigFile_Mapper PRIVATE
         Config::ConfigFile::Properties
-        Config::Resolver
-        Config::Resolver::PathContext
-        Config::Resolver::Types
         Config::Types
         UI::Widgets
-        UI::Types
+        UI::Types # TODO: Only for PowerButtonParams, move it elsewhere
         AppletTypes)
 
 target_link_libraries(Config_ConfigFile_Mapper PUBLIC
+        Config::Resolver
+        Config::Resolver::PathContext
+        Config::Resolver::Types
         tomlplusplus::tomlplusplus
         Qt${QT_VERSION_MAJOR}::Widgets)

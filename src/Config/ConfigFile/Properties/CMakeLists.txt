@@ -9,7 +9,6 @@ target_include_directories(Config_ConfigFile_Properties PRIVATE
         $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>)
 
 target_link_libraries(Config_ConfigFile_Properties PRIVATE
-        UI::Widgets # TODO: Only PowerButtonParams needed, move to types
         UI::Types
         Resources::Icons)
 

@@ -3,13 +3,13 @@
 
 #include "ConfigMapper.h"
 #include "Applets/Types/AppletRecord.h"
+#include "Applets/Types/AppletType.h"
 #include "Config/ConfigFile/Properties/LayoutProperties.h"
 #include "Config/ConfigFile/Properties/PrimaryButtonProperties.h"
 #include "Config/ConfigFile/Properties/WindowProperties.h"
 #include "Config/Resolver/PathContext/PathContext.h"
 #include "Config/Resolver/Resolver.h"
 #include "Config/Resolver/Types/ResolverCandidate.h"
-#include "Config/Types/NodeView.h"
 #include "UI/Types/ButtonType.h"
 #include "UI/Widgets/PowerButtonParams.h"
 
@@ -52,6 +52,7 @@ T mapProperties(const ResolverCandidates& candidates, const T& defaults,
 } // namespace
 
 /* Window Properties */
+
 WindowProperties ConfigMapper::window(const ResolverCandidates& candidates,
                                       const WindowProperties&   defaults,
                                       const PathContext&        path_context) {
@@ -70,6 +71,7 @@ WindowProperties ConfigMapper::window(const ResolverCandidates& candidates,
 }
 
 /* Primary Button Properties*/
+
 PrimaryButtonProperties ConfigMapper::primaryButton(const ResolverCandidates&      candidates,
                                                     const PrimaryButtonProperties& defaults,
                                                     const PathContext&             path_context) {
@@ -100,20 +102,21 @@ PrimaryButtonProperties ConfigMapper::primaryButton(const ResolverCandidates&   
 }
 
 /* Layout Properties */
-LayoutProperties ConfigMapper::layout(const ResolverCandidates& candidates,
-                                      const LayoutProperties&   defaults,
-                                      const PathContext&        path_context) {
-        auto properties = LayoutProperties{};
+LayoutProperties<PowerButtonParams> ConfigMapper::layout(
+        const ResolverCandidates& candidates, const LayoutProperties<PowerButtonParams>& defaults,
+        const PathContext& path_context) {
+        auto properties = LayoutProperties<PowerButtonParams>{};
 
         const auto data = Resolver::from<toml::table>(candidates, path_context);
         if (!data) { return defaults; }
 
         properties.primary_buttons = primaryButtons(candidates.makeExtended("primary_buttons"),
-                                                  defaults.getPrimaryButtons(),
-                                                  path_context.makeExtended("primary_buttons"));
+                                                    defaults.getPrimaryButtons(),
+                                                    path_context.makeExtended("primary_buttons"));
 
         return std::move(properties);
 }
+
 
 std::vector<PowerButtonParams> ConfigMapper::primaryButtons(
         const ResolverCandidates& candidates, const std::vector<PowerButtonParams>& defaults,
