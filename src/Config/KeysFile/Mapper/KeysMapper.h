@@ -23,10 +23,7 @@ keybindings keysFromText(const std::vector<std::string>& texts);
 // Extracts string elements from a toml::array, silently skipping non-string values.
 std::vector<std::string> textFromTomlArray(const toml::array& arr);
 
-// Maps TOML configuration to PowerAppletKeys structure.
-//
-// Note: This file only handles PowerAppletKeys mapping. GlobalKeys is only used
-//       as a fallback candidate but not mapped to any struct.
+// Maps TOML configuration to XAppletKeys structure.
 //
 // All mapping failures will fall back to defaults and log warnings.
 class KeysMapper final {
@@ -35,27 +32,27 @@ private:
 
         // Maps quit keybindings from config nodes.
         //
-        // Fallback priority: power_applet.quit -> global.quit -> hardcoded defaults
+        // Fallback priority: applet.quit -> global.quit -> hardcoded defaults
         //
         // Expected format: array of keybinding strings, minimum 1 element.
         //
-        // Assigned value: keybindings (std::unordered_set<int>)
+        // Return value: keybindings (std::unordered_set<int>)
         static keybindings quit(const ResolverCandidates& candidates, const keybindings& defaults,
                                 const PathContext& path_context);
 
-        /* Power Applet Keys*/
+        /* Applet Keys*/
 
         // Maps the entire primary_buttons array from config nodes.
         //
         // Length of the vector may differ from defaults if some buttons are omitted
         // from config. Omitted buttons are ignored silently.
         //
-        // Fallback priority: power_applet.primary_buttons -> hardcoded defaults
+        // Fallback priority: applet.primary_buttons -> hardcoded defaults
         //
         // Expected format: array of primary_buttons tables, each containing
         //                  keybindings
         //
-        // Assigned value: vector of keybindings (std::unordered_set<int>)
+        // Return value: std::vector<keybindings> (std::vector<std::unordered_set<int>>)
         static std::vector<keybindings> primaryButtons(const ResolverCandidates&       candidates,
                                                        const std::vector<keybindings>& defaults,
                                                        const PathContext& path_context);
@@ -66,7 +63,7 @@ private:
         //
         // Expected format: string representation of keybinding
         //
-        // Assigned value: keybindings (std::unordered_set<int>)
+        // Return value: keybindings (std::unordered_set<int>)
         static keybindings primaryButton(const ResolverCandidates& candidates,
                                          const keybindings&        defaults,
                                          const PathContext&        path_context);
@@ -74,20 +71,17 @@ private:
 public:
         KeysMapper() = delete;
 
-        // Parses power_applet and global tables into PowerAppletKeys.
+        // Parses applet and global tables into XAppletKeys.
         //
         // Usage:
-        //   PowerAppletKeys keys;
-        //   KeysMapper::keys(power_applet_table, global_table, keys);
+        //   XAppletKeys keys = KeysMapper::keys(applet, global, defaults);
         //
-        // The power_applet table supplies primary configuration and overrides, global
+        // The applet table supplies primary configuration and overrides, global
         // provides fallbacks.
         //
         // QApplication must exist before calling (initialized in main()).
         //
-        // Only PowerAppletKeys is supported. Template arg TKeys is used to break a
-        // circular dependency between this header and PowerAppletKeys.h by deferring
-        // the instantiation of PowerAppletKeys.
+        // Return value: TKeys
         template<typename TKeys>
         static TKeys keys(const toml::table& applet, const toml::table& global,
                           const TKeys& defaults);
