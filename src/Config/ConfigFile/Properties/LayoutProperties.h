@@ -26,11 +26,11 @@ class LayoutProperties final {
 private:
         friend class ConfigMapper;
 
-        // TODO: rename to primary_buttons + template overload
-        std::vector<PowerButtonParams> power_buttons;
+        // TODO: template overload
+        std::vector<PowerButtonParams> primary_buttons;
 
 public:
         // TODO: rename to primary_buttons + template overload, for both
-        explicit LayoutProperties(std::vector<PowerButtonParams> power_buttons = {});
-        const std::vector<PowerButtonParams>& getPowerButtons() const;
+        explicit LayoutProperties(std::vector<PowerButtonParams> primary_buttons = {});
+        const std::vector<PowerButtonParams>& getPrimaryButtons() const;
 };

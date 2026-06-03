@@ -108,9 +108,8 @@ LayoutProperties ConfigMapper::layout(const ResolverCandidates& candidates,
         const auto data = Resolver::from<toml::table>(candidates, path_context);
         if (!data) { return defaults; }
 
-        // Primary power buttons
-        properties.power_buttons = primaryButtons(candidates.makeExtended("primary_buttons"),
-                                                  defaults.getPowerButtons(),
+        properties.primary_buttons = primaryButtons(candidates.makeExtended("primary_buttons"),
+                                                  defaults.getPrimaryButtons(),
                                                   path_context.makeExtended("primary_buttons"));
 
         return std::move(properties);

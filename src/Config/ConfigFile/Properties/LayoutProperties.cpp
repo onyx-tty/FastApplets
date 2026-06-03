@@ -51,9 +51,9 @@ QString commandFor(power_button_type type) {
         return "";
 }
 
-LayoutProperties::LayoutProperties(std::vector<PowerButtonParams> power_buttons) :
-        power_buttons(std::move(power_buttons)) {}
+LayoutProperties::LayoutProperties(std::vector<PowerButtonParams> primary_buttons) :
+        primary_buttons(std::move(primary_buttons)) {}
 
-const std::vector<PowerButtonParams>& LayoutProperties::getPowerButtons() const {
-        return power_buttons;
+const std::vector<PowerButtonParams>& LayoutProperties::getPrimaryButtons() const {
+        return primary_buttons;
 }
