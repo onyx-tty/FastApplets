@@ -42,7 +42,7 @@ sudo apt install qt6-base-dev libqt6svg6 libtomlplusplus-dev cmake ninja-build c
 ### Build from source
 
 ``` sh
-# Configure (static linking recommended)
+# Configure (static linking by default)
 cmake --preset Release
 
 # Build
