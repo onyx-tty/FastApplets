@@ -89,7 +89,7 @@ public:
         // circular dependency between this header and PowerAppletKeys.h by deferring
         // the instantiation of PowerAppletKeys.
         template<typename TKeys>
-        static TKeys keys(const toml::table& power_applet, const toml::table& global,
+        static TKeys keys(const toml::table& applet, const toml::table& global,
                           const TKeys& defaults);
 };
 

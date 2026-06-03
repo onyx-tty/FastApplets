@@ -17,20 +17,17 @@
 #include <QtGlobal>
 
 template<typename TKeys>
-TKeys KeysMapper::keys(const toml::table& power_applet, const toml::table& global,
-                       const TKeys& defaults) {
+TKeys KeysMapper::keys(const toml::table& applet, const toml::table& global, const TKeys& defaults) {
         // Confirm that a QApplication instance exists
         if (!QApplication::instance()) { qFatal("QApplication has not been instantiated yet!"); }
 
         using namespace Qt::StringLiterals;
         QStringView filename = u"keys.toml"_s;
 
-        TKeys                    keys  = TKeys{};
-        const ResolverCandidates cands = {{.node   = node_view(power_applet),
-                                           .applet = applet::type::power_applet,
-                                           .quiet  = true},
-                                          {.node   = node_view(global),
-                                           .applet = applet::type::global}};
+        TKeys                    keys = TKeys{};
+        const ResolverCandidates cands =
+                {{.node = node_view(applet), .applet = applet::type::power_applet, .quiet = true},
+                 {.node = node_view(global), .applet = applet::type::global}};
 
         /* Quit Keys */
         keys.quit = quit(cands.makeExtended("quit"), defaults.getQuit(),

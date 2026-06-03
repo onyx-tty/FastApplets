@@ -17,7 +17,7 @@
 #include <QtGlobal>
 
 template<typename TConfig>
-TConfig ConfigMapper::config(const toml::table& power_applet, const toml::table& global,
+TConfig ConfigMapper::config(const toml::table& applet, const toml::table& global,
                              const TConfig& defaults) {
         // Confirm that a QApplication instance exists
         if (!QApplication::instance()) { qFatal("QApplication has not been instantiated yet!"); }
@@ -27,7 +27,7 @@ TConfig ConfigMapper::config(const toml::table& power_applet, const toml::table&
 
         TConfig config = TConfig{};
 
-        ResolverCandidates cands = {{.node   = node_view(power_applet),
+        ResolverCandidates cands = {{.node   = node_view(applet),
                                      .applet = applet::type::power_applet,
                                      .quiet  = true},
                                     {.node = node_view(global), .applet = applet::type::global}};
