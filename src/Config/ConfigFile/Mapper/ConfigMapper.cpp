@@ -117,7 +117,6 @@ LayoutProperties<PowerButtonParams> ConfigMapper::layout(
         return std::move(properties);
 }
 
-
 std::vector<PowerButtonParams> ConfigMapper::primaryButtons(
         const ResolverCandidates& candidates, const std::vector<PowerButtonParams>& defaults,
         const PathContext& path_context) {
@@ -153,7 +152,7 @@ std::optional<PowerButtonParams> ConfigMapper::primaryButton(const ResolverCandi
                                             path_context.makeExtended("id"));
         if (!type) { return {}; }
 
-        new_button.type = toPowerButtonType(type.value());
+        new_button.type = toPrimaryButtonType<power_button_type>(type.value());
 
         if (new_button.type == power_button_type::none) { return {}; }
 

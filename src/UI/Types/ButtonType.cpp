@@ -6,7 +6,8 @@
 #include <QHash>
 #include <QString>
 
-power_button_type toPowerButtonType(const QString& string) {
+template<>
+power_button_type toPrimaryButtonType<power_button_type>(const QString& string) {
         static const QHash<QString, power_button_type> map =
                 {{"poweroff", power_button_type::shutdown},
                  {"shutdown", power_button_type::shutdown},
