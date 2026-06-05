@@ -29,7 +29,7 @@ std::optional<T> Resolver::from(const ResolverCandidates&  candidates,
         using DT = std::decay_t<T>;
 
         // Convert pointers to std::optional
-        // TODO Eliminate this lambda, toml::array and toml::table should be pointers
+        // TODO Remove this lambda, toml::array and toml::table should be pointers
         //      But as long as the return type of resolve is stuck as std::optional,
         //      this cannot be done.
         static auto normalize = [&](auto&& raw) -> std::optional<T> {
@@ -136,7 +136,7 @@ void Resolver::fromOrDefault(const ResolverCandidates& candidates, TAttribute& a
                              const PathContext& path_context, const tomlqt::ArrayBounds& arr_bounds,
                              const QString& arr_format) {
         if (auto result = from<TAttribute>(candidates, path_context, arr_bounds, arr_format)) {
-                attribute = result.value();
+                attribute = std::move(result.value());
         } else {
                 object = object_defaults;
         }
