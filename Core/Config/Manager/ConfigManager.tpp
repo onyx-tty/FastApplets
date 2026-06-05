@@ -87,13 +87,9 @@ template<applet::type TApplet>
 ConfigManager<TApplet>::TKeys ConfigManager<TApplet>::makeDefaultKeys() {
         keybindings quit = {Qt::Key_Escape, Qt::Key_Q};
 
-        std::vector<keybindings> primary_button = {
-                keybindings{Qt::Key_1}, keybindings{Qt::Key_2}, keybindings{Qt::Key_3},
-                keybindings{Qt::Key_4}, keybindings{Qt::Key_5}, keybindings{Qt::Key_6},
-                keybindings{Qt::Key_7}, keybindings{Qt::Key_8}, keybindings{Qt::Key_9},
-        };
+        std::vector<keybindings> primary_buttons = makeKeyRange(Qt::Key_1, Qt::Key_9);
 
-        return TKeys{std::move(quit), std::move(primary_button)};
+        return TKeys{std::move(quit), std::move(primary_buttons)};
 }
 
 template<applet::type TApplet>
