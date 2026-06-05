@@ -9,6 +9,7 @@
 
 #include <QObject>
 
+class PrimaryButtonProperties;
 class QBoxLayout;
 class QIcon;
 class QString;
@@ -27,7 +28,8 @@ private:
 
 public:
         explicit PowerButton(power_button_type type, const QIcon& icon, const QString& text,
-                             keybindings keys, const QString& command, QWidget* parent);
+                             keybindings keys, const QString& command,
+                             const PrimaryButtonProperties& properties, QWidget* parent);
         power_button_type  getType() const;
         const keybindings& getKeys() const;
 };

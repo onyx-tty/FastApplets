@@ -59,6 +59,9 @@ bool isQuitKey(int key) {
 
 // TODO: Accept button as param for dependency injection
 std::vector<PowerButton*> PowerCentralWidget::createButtons() {
+        // TODO: Rename to power_button(s)_properties/data/keys
+        const auto& primary_button_properties =
+                ConfigManager<applet::type::power_applet>::getConfig().getPrimaryButtonProperties();
         const auto& primary_buttons_data = ConfigManager<applet::type::power_applet>::getConfig()
                                                    .getLayoutProperties()
                                                    .getPrimaryButtons();
@@ -96,7 +99,9 @@ std::vector<PowerButton*> PowerCentralWidget::createButtons() {
                 QString           text    = primary_buttons_data[i].text;
                 QString           command = primary_buttons_data[i].command;
                 keybindings       keys    = key_getter(i);
-                auto* power_button        = new PowerButton{type, icon, text, keys, command, this};
+                auto* power_button = new PowerButton{type, icon,    text,
+                                                     keys, command, primary_button_properties,
+                                                     this};
 
                 layout()->addWidget(power_button);
                 primary_buttons.push_back(power_button);
