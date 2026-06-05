@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 
 #include "FileLocator.h"
-#include "Core/Config/Types/ConfigFiles.h"
+#include "Core/Config/Types/ConfigFilepaths.h"
 
 #include <string>
 #include <string_view>
@@ -12,18 +12,18 @@
 #include <QStringView>
 #include <QtGlobal>
 
-ConfigFiles FileLocator::configFiles(std::string_view applet_name) {
-        ConfigFiles files = {};
+ConfigFilepaths FileLocator::configFiles(std::string_view applet_name) {
+        ConfigFilepaths filepaths = {};
 
         // Global config is in root, not in a separate directory. Redirect to root.
         if (applet_name == "global") { applet_name = ""; }
 
-        files.config = file(QStringLiteral("config.toml"),
+        filepaths.config = file(QStringLiteral("config.toml"),
                             QString::fromStdString(std::string{applet_name}));
-        files.keys   = file(QStringLiteral("keys.toml"),
+        filepaths.keys   = file(QStringLiteral("keys.toml"),
                             QString::fromStdString(std::string{applet_name}));
 
-        return files;
+        return filepaths;
 }
 
 std::string FileLocator::file(QStringView filename, QStringView subdirectory) {

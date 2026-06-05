@@ -3,6 +3,7 @@
 
 #pragma once
 
+#include "ConfigManager.h"
 #include "Core/Applets/Types/AppletRecord.h"
 #include "Core/Applets/Types/AppletTraits.h"
 #include "Core/Applets/Types/AppletType.h"
@@ -14,8 +15,7 @@
 #include "Core/Config/KeysFile/Mapper/KeysMapper.h"
 #include "Core/Config/KeysFile/Types/Keybindings.h"
 #include "Core/Config/TomlParser/TomlParser.h"
-#include "Core/Config/Types/ConfigFiles.h"
-#include "ConfigManager.h"
+#include "Core/Config/Types/ConfigFilepaths.h"
 #include "Core/UI/Types/ButtonType.h"
 
 #include <cassert>
@@ -30,13 +30,13 @@
 #include <QtGlobal>
 
 template<applet::type TApplet>
-const ConfigFiles& ConfigManager<TApplet>::configFilepaths(applet::type applet) {
+const ConfigFilepaths& ConfigManager<TApplet>::configFilepaths(applet::type applet) {
         switch (applet) {
         case applet::type::power_applet:
-                static const ConfigFiles power = FileLocator::configFiles(applet::toString(applet));
+                static const ConfigFilepaths power = FileLocator::configFiles(applet::toString(applet));
                 return power;
         case applet::type::global:
-                static const ConfigFiles global = FileLocator::configFiles(applet::toString(applet));
+                static const ConfigFilepaths global = FileLocator::configFiles(applet::toString(applet));
                 return global;
         default: assert(false && "Passed unknown type"); std::unreachable();
         }

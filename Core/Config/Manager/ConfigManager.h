@@ -8,7 +8,7 @@
 
 #include <toml++/toml.hpp>
 
-class ConfigFiles;
+class ConfigFilepaths;
 
 // Stores instances of Config and Keys schemas.
 // Initializes instances from ConfigMapper and KeysMapper.
@@ -21,9 +21,9 @@ private:
         using TPrimaryButtonParams = AppletTraits<TApplet>::TPrimaryButtonParams;
         using TPrimaryButtonType   = AppletTraits<TApplet>::TPrimaryButtonType;
 
-        static const ConfigFiles& configFilepaths(applet::type applet);
-        static TConfig            makeDefaultConfig();
-        static TKeys              makeDefaultKeys();
+        static const ConfigFilepaths& configFilepaths(applet::type applet);
+        static TConfig                makeDefaultConfig();
+        static TKeys                  makeDefaultKeys();
 
 public:
         ConfigManager() = delete;

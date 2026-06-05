@@ -9,7 +9,7 @@
 #include <QStringLiteral>
 #include <QStringView>
 
-class ConfigFiles;
+class ConfigFilepaths;
 
 // Finds files in hardcoded locations.
 class FileLocator final {
@@ -17,9 +17,10 @@ public:
         // Locates config.toml and keys.toml for the given applet.
         // "global" maps to the root FastApplets/ config directory, as the global config
         // is stored there.
-        static ConfigFiles configFiles(std::string_view applet_name);
+        static ConfigFilepaths configFiles(std::string_view applet_name);
 
         // Locates a file under $XDG_CONFIG_HOME/FastApplets/[subdirectory]/filename.
         // Returns the absolute path as std::string if found. Otherwise empty string.
+        // TODO: Return QString
         static std::string file(QStringView filename, QStringView subdirectory = QStringLiteral(""));
 };

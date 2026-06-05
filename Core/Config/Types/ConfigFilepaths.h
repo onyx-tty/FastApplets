@@ -5,9 +5,8 @@
 
 #include <string>
 
-// Stores absolute paths to config and keys
-// TODO Rename to emphasize these are file paths
-struct ConfigFiles final {
+// Stores filepaths to config and keys.
+struct ConfigFilepaths final {
         std::string config;
         std::string keys;
 };
