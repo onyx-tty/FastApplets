@@ -49,17 +49,14 @@ bool isQuitKey(int key) {
 } // namespace
 
 // TODO: Accept button as param for dependency injection
-std::vector<PowerButton*> PowerCentralWidget::createButtons() {
+std::vector<PowerButton*> PowerCentralWidget::createButtons(const PowerAppletConfig& config,
+                                                            const PowerAppletKeys&   keys,
+                                                            const PowerAppletKeys&   default_keys) {
         // TODO: Rename to power_button(s)_properties/data/keys
-        const auto& primary_button_properties =
-                ConfigManager<applet::type::power_applet>::getConfig().getPrimaryButtonProperties();
-        const auto& primary_buttons_data = ConfigManager<applet::type::power_applet>::getConfig()
-                                                   .getLayoutProperties()
-                                                   .getPrimaryButtons();
-        const std::vector<keybindings>& primary_button_keys =
-                ConfigManager<applet::type::power_applet>::getKeys().getPrimaryButton();
-        const std::vector<keybindings>& default_primary_button_keys =
-                ConfigManager<applet::type::power_applet>::getDefaultKeys().getPrimaryButton();
+        const auto& primary_button_properties = config.getPrimaryButtonProperties();
+        const auto& primary_buttons_data      = config.getLayoutProperties().getPrimaryButtons();
+        const std::vector<keybindings>& primary_button_keys = keys.getPrimaryButton();
+        const std::vector<keybindings>& default_primary_button_keys = default_keys.getPrimaryButton();
 
         // TODO If applied key is already used elsewhere, there will be confusion
         //      For example if for some reason keybinding for primary button 3 is Qt_Key4 and
@@ -104,9 +101,12 @@ std::vector<PowerButton*> PowerCentralWidget::createButtons() {
 }
 
 // TODO: Accept buttons as param for dependency injection
-PowerCentralWidget::PowerCentralWidget(QWidget* parent) : QWidget(parent) {
+
+PowerCentralWidget::PowerCentralWidget(const PowerAppletConfig& config, const PowerAppletKeys& keys,
+                                       const PowerAppletKeys& default_keys, QWidget* parent) :
+        QWidget(parent) {
         setLayout(new QHBoxLayout(this));
-        buttons = createButtons();
+        buttons = createButtons(config, keys, default_keys);
 }
 
 const std::vector<PowerButton*>& PowerCentralWidget::getButtons() const {

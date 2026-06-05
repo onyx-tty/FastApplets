@@ -8,6 +8,8 @@
 #include <QWidget>
 #include <Qt>
 
+class PowerAppletConfig;
+class PowerAppletKeys;
 class PowerButton;
 class QKeyEvent;
 class QShowEvent;
@@ -45,12 +47,15 @@ private:
         //
         // Returns a vector containing every created button.
         // Calls qFatal if no buttons are found in config.
-        std::vector<PowerButton*> createButtons();
+        std::vector<PowerButton*> createButtons(const PowerAppletConfig& config,
+                                                const PowerAppletKeys&   keys,
+                                                const PowerAppletKeys&   default_keys);
 
         std::vector<PowerButton*> buttons;
 
 public:
-        explicit PowerCentralWidget(QWidget* parent);
+        explicit PowerCentralWidget(const PowerAppletConfig& config, const PowerAppletKeys& keys,
+                                    const PowerAppletKeys& default_keys, QWidget* parent);
         const std::vector<PowerButton*>& getButtons() const;
         // Adds the stage-then-confirm keyboard navigation. See class doc for more.
         void                             keyPressEvent(QKeyEvent* event) override;

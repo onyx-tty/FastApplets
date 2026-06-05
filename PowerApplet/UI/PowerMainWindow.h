@@ -9,11 +9,13 @@
 #include <QWidget>
 
 class PowerCentralWidget;
-class WindowProperties;
+class PowerAppletConfig;
+class PowerAppletKeys;
 
 class PowerMainWindow final : public MainWindow {
         Q_OBJECT
 
 public:
-        explicit PowerMainWindow(const WindowProperties& properties, QWidget* parent = nullptr);
+        explicit PowerMainWindow(const PowerAppletConfig& config, const PowerAppletKeys& keys,
+                                 const PowerAppletKeys& default_keys, QWidget* parent = nullptr);
 };

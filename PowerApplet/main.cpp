@@ -16,13 +16,17 @@
 #include <QtGlobal>
 
 int main(int argc, char* argv[]) {
+        auto application = QApplication(argc, argv);
+
         // Setup log formatting
         qt::log::setupLogging();
 
-        auto application = QApplication(argc, argv);
+        // Config files
+        const auto& config       = ConfigManager<applet::type::power_applet>::getConfig();
+        const auto& keys         = ConfigManager<applet::type::power_applet>::getKeys();
+        const auto& default_keys = ConfigManager<applet::type::power_applet>::getDefaultKeys();
 
-        const auto& config      = ConfigManager<applet::type::power_applet>::getConfig();
-        auto        main_window = PowerMainWindow(config.getWindowProperties());
+        auto main_window = PowerMainWindow(config, keys, default_keys);
 
         // Print application info
         qInfo() << "Applet resolution:" << main_window.size();
