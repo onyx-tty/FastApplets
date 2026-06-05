@@ -16,9 +16,12 @@ class QString;
 class QWidget;
 
 // Power button with associated icon and keybindings.
-//   - type: Determines which icon to use and which keybindings can activate it.
-//   - command: The actual system action to execute (shutdown, reboot, etc.)
-//   - keys: Key combinations that trigger this button.
+//   type:       Determines which icon to use and which keybindings can activate it.
+//   icon:       Button icon (scaled to properties.getIconSize()).
+//   text:       Button label text.
+//   keys:       Key combinations that trigger this button.
+//   command:    The actual system action to execute (shutdown, reboot, etc.)
+//   properties: Visual properties (alignments, icon size, size policy).
 class PowerButton final : public PrimaryButton {
         Q_OBJECT
 

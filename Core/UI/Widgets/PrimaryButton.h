@@ -45,9 +45,9 @@ private:
 
 protected:
         // Parameters:
-        //   icon       - Button icon (scaled to properties.getIconSize())
-        //   text       - Button label text
-        //   properties - Visual properties (alignments, icon size, size policy)
+        //   icon:       Button icon (scaled to properties.getIconSize()).
+        //   text:       Button label text.
+        //   properties: Visual properties (alignments, icon size, size policy).
         explicit PrimaryButton(const QIcon& icon, const QString& text,
                                const PrimaryButtonProperties& properties, QWidget* parent);
         virtual ~PrimaryButton() = 0;

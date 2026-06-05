@@ -34,8 +34,8 @@ class PowerCentralWidget final : public QWidget {
 private:
         // Creates and registers all PowerButtons from Config and Keys.
         //
-        // Reads buttons and definitions from PowerAppletConfig and keybindings
-        // from PowerAppletKeys, constructs a PowerButton widget for each entry,
+        // Reads buttons and definitions from config and keybindings from
+        // PowerAppletKeys, constructs a PowerButton widget for each entry,
         // adds it to the layout, and returns a vector with every button found.
         //
         // WARNING: If a resolved key is already bound elsewhere, both buttons
@@ -43,8 +43,8 @@ private:
         // implemented yet.
         //
         // Keybinding resolution order:
-        // 1. User-configured keys (ConfigManager::getKeys()).
-        // 2. Default keys (ConfigManager::getDefaultKeys()).
+        // 1. User-configured keys (keys).
+        // 2. Default keys (default_keys).
         // 3. Qt::Key_unknown if the defaults are exhausted.
         //
         // Returns a vector containing every created button.

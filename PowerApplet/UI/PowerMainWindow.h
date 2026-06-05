@@ -12,6 +12,7 @@ class PowerCentralWidget;
 class PowerAppletConfig;
 class PowerAppletKeys;
 
+// Unpacks WindowProperties to set window size and title.
 class PowerMainWindow final : public MainWindow {
         Q_OBJECT
 
