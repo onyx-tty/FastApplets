@@ -1,0 +1,23 @@
+cmake_minimum_required(VERSION 3.16)
+
+project(UI VERSION 0.5.12 LANGUAGES CXX)
+
+add_subdirectory(Widgets)
+add_subdirectory(Types)
+
+# Internal structure
+add_library(Core_UI
+        MainWindow.cpp)
+add_library(Core::UI ALIAS Core_UI)
+
+target_include_directories(Core_UI PRIVATE
+        $<BUILD_INTERFACE:${ROOT_DIR}>
+        $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>)
+
+target_link_libraries(Core_UI PRIVATE
+        Core::UI::Types
+        Core::UI::Widgets
+        Core::Config::ConfigFile::Properties)
+
+target_link_libraries(Core_UI PUBLIC
+        Qt${QT_VERSION_MAJOR}::Widgets)

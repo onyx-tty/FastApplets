@@ -5,7 +5,7 @@ add_library(UnitTests::Config ALIAS UnitTests_Config)
 
 target_include_directories(UnitTests_Config INTERFACE
         ${UNIT_DIR}
-        ${SRC_DIR})
+        ${ROOT_DIR})
 
 target_link_libraries(UnitTests_Config INTERFACE
-        UnitTests::Config::TomlParser)
+        UnitTests::Core::Config::TomlParser)

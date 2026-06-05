@@ -1,7 +1,7 @@
 // SPDX-FileCopyrightText: 2026 Łukasz Wrodarczyk
 // SPDX-License-Identifier: GPL-3.0-or-later
 
-#include "Config/TomlParser/TomlParser.h"
+#include "Core/Config/TomlParser/TomlParser.h"
 
 #include <QDir>
 #include <QFile>

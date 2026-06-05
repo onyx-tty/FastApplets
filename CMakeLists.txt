@@ -41,30 +41,16 @@ option(BUILD_TESTS "Build unit tests" ON)
 set(CPPUTILS_ENABLE_QT ON)
 
 set(ROOT_DIR ${CMAKE_CURRENT_LIST_DIR})
-set(SRC_DIR ${ROOT_DIR}/src)
 
 # Third-party
 CPMAddPackage("gh:onyx-tty/CppUtils#cef444b")
 CPMAddPackage("gh:onyx-tty/TomlQt#2cb232a")
 
-add_subdirectory(
-        resources)
-
-add_subdirectory(
-        src/Config)
-
-add_subdirectory(
-        src/Shell)
-
-add_subdirectory(
-        src/UI)
-
-add_subdirectory(
-        src/Applets/Types)
+add_subdirectory(resources)
+add_subdirectory(Core)
 
 if(BUILD_POWERAPPLET)
-        add_subdirectory(
-                src/Applets/PowerApplet)
+        add_subdirectory(PowerApplet)
 endif()
 
 if(BUILD_TESTS)
@@ -74,22 +60,22 @@ endif()
 
 install(# Install compiled artifacts to correct destinations, register all targets
         # under the name FastApplets_export
-        TARGETS Config
-                Config_ConfigFile
-                Config_ConfigFile_Global Config_ConfigFile_PowerApplet
-                Config_ConfigFile_Mapper Config_ConfigFile_Properties
-                Config_KeysFile
-                Config_KeysFile_Global Config_KeysFile_PowerApplet
-                Config_KeysFile_Mapper Config_KeysFile_Types
-                Config_ConfigManager
-                Config_FileLocator
-                Config_TomlParser
-                Config_Resolver Config_Resolver_PathContext Config_Resolver_Types
-                Config_Types
-                Shell
-                UI
-                UI_Widgets UI_Types
-                AppletTypes
+        TARGETS Core_Config
+                Core_Config_ConfigFile
+                Core_Config_ConfigFile_Global Core_Config_ConfigFile_PowerApplet
+                Core_Config_ConfigFile_Mapper Core_Config_ConfigFile_Properties
+                Core_Config_KeysFile
+                Core_Config_KeysFile_Global Core_Config_KeysFile_PowerApplet
+                Core_Config_KeysFile_Mapper Core_Config_KeysFile_Types
+                Core_Config_ConfigManager
+                Core_Config_FileLocator
+                Core_Config_TomlParser
+                Core_Config_Resolver Core_Config_Resolver_PathContext Core_Config_Resolver_Types
+                Core_Config_Types
+                Core_Shell
+                Core_UI
+                Core_UI_Widgets Core_UI_Types
+                Core_AppletTypes
                 Resources_Icons
         EXPORT FastApplets_export
         ARCHIVE  DESTINATION ${CMAKE_INSTALL_LIBDIR}

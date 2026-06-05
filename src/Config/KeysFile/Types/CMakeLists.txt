@@ -1,6 +1,0 @@
-add_library(Config_KeysFile_Types INTERFACE)
-add_library(Config::KeysFile::Types ALIAS Config_KeysFile_Types)
-
-target_include_directories(Config_KeysFile_Types INTERFACE
-        $<BUILD_INTERFACE:${SRC_DIR}>
-        $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>)
