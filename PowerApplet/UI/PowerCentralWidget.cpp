@@ -40,15 +40,6 @@ PowerButton* findPowerButton(int key, std::vector<PowerButton*> buttons) {
         return iter != buttons.cend() ? *iter : nullptr;
 }
 
-bool isPowerKey(int key) {
-        for (const auto& button_keys :
-             ConfigManager<applet::type::power_applet>::getKeys().getPrimaryButton()) {
-                if (button_keys.contains(key)) { return true; }
-        }
-
-        return false;
-}
-
 bool isQuitKey(int key) {
         const auto& quit_keys = ConfigManager<applet::type::power_applet>::getKeys().getQuit();
 
