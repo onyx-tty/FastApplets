@@ -3,7 +3,6 @@
 
 #pragma once
 
-#include "Core/Applets/Types/AppletRecord.h"
 #include "Core/Applets/Types/AppletType.h"
 
 #include <cstddef>

@@ -4,7 +4,6 @@
 #pragma once
 
 #include "ConfigManager.h"
-#include "Core/Applets/Types/AppletRecord.h"
 #include "Core/Applets/Types/AppletTraits.h"
 #include "Core/Applets/Types/AppletType.h"
 #include "Core/Config/ConfigFile/Mapper/ConfigMapper.h"

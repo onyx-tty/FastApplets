@@ -2,7 +2,6 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 
 #include "PathContext.h"
-#include "Core/Applets/Types/AppletRecord.h"
 #include "Core/Applets/Types/AppletType.h"
 
 #include <cstddef>

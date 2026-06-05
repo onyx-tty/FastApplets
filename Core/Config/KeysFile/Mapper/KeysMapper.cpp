@@ -2,7 +2,6 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 
 #include "KeysMapper.h"
-#include "Core/Applets/Types/AppletRecord.h"
 #include "Core/Config/KeysFile/Types/Keybindings.h"
 #include "Core/Config/Resolver/PathContext/PathContext.h"
 #include "Core/Config/Resolver/Resolver.h"
