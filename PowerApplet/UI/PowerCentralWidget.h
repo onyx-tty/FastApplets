@@ -3,6 +3,8 @@
 
 #pragma once
 
+#include "Core/Config/KeysFile/Types/Keybindings.h"
+
 #include <vector>
 #include <QObject>
 #include <QWidget>
@@ -52,6 +54,7 @@ private:
                                                 const PowerAppletKeys&   default_keys);
 
         std::vector<PowerButton*> buttons;
+        const keybindings& quit_keys;
 
 public:
         explicit PowerCentralWidget(const PowerAppletConfig& config, const PowerAppletKeys& keys,

@@ -2,14 +2,9 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 
 #include "PowerCentralWidget.h"
-// TODO: Create a template specialization for AppletManager,
-//       removing the need for external includes
-// Pull in definitions for ConfigManager<PowerApplet> overload
-#include "PowerApplet/Types/PowerAppletTraits.h"
-
-#include "Core/Applets/Types/AppletType.h"
+#include "Core/Config/ConfigFile/PowerApplet/PowerAppletConfig.h"
+#include "Core/Config/KeysFile/PowerApplet/PowerAppletKeys.h"
 #include "Core/Config/KeysFile/Types/Keybindings.h"
-#include "Core/Config/Manager/ConfigManager.h"
 #include "Core/UI/Types/ButtonType.h"
 #include "Widgets/PowerButton.h"
 
@@ -40,9 +35,7 @@ PowerButton* findPowerButton(int key, std::vector<PowerButton*> buttons) {
         return iter != buttons.cend() ? *iter : nullptr;
 }
 
-bool isQuitKey(int key) {
-        const auto& quit_keys = ConfigManager<applet::type::power_applet>::getKeys().getQuit();
-
+bool isQuitKey(int key, const keybindings& quit_keys) {
         return quit_keys.contains(key);
 }
 
@@ -104,7 +97,7 @@ std::vector<PowerButton*> PowerCentralWidget::createButtons(const PowerAppletCon
 
 PowerCentralWidget::PowerCentralWidget(const PowerAppletConfig& config, const PowerAppletKeys& keys,
                                        const PowerAppletKeys& default_keys, QWidget* parent) :
-        QWidget(parent) {
+        QWidget(parent), quit_keys(keys.getQuit()) {
         setLayout(new QHBoxLayout(this));
         buttons = createButtons(config, keys, default_keys);
 }
@@ -117,7 +110,7 @@ void PowerCentralWidget::keyPressEvent(QKeyEvent* event) {
         int key = event->key();
 
         // Quit pressed
-        if (isQuitKey(key)) {
+        if (isQuitKey(key, quit_keys)) {
                 // Unselect if a button is focused
                 if (auto* focused = qobject_cast<PowerButton*>(QApplication::focusWidget())) {
                         focused->clearFocus();
