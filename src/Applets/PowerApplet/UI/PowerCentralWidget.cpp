@@ -2,6 +2,8 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 
 #include "PowerCentralWidget.h"
+// TODO: Create a template specialization for AppletManager,
+//       removing the need for external includes
 // Pull in definitions for ConfigManager<PowerApplet> overload
 #include "Applets/PowerApplet/Types/PowerAppletTraits.h"
 
@@ -55,6 +57,7 @@ bool isQuitKey(int key) {
 
 } // namespace
 
+// TODO: Accept button as param for dependency injection
 std::vector<PowerButton*> PowerCentralWidget::createButtons() {
         const auto& primary_buttons_data = ConfigManager<applet::type::power_applet>::getConfig()
                                                    .getLayoutProperties()
@@ -104,6 +107,7 @@ std::vector<PowerButton*> PowerCentralWidget::createButtons() {
         return primary_buttons;
 }
 
+// TODO: Accept buttons as param for dependency injection
 PowerCentralWidget::PowerCentralWidget(QWidget* parent) : QWidget(parent) {
         setLayout(new QHBoxLayout(this));
         buttons = createButtons();

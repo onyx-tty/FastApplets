@@ -89,7 +89,8 @@
 
 # Controls \[0/1\]
 
-1.  \[ \] Keychord system
+1.  \[ \] Option to disable button 'staging', single button presses
+    activate buttons
 
     <br>
 
@@ -122,8 +123,8 @@
 
     <br>
 
-# Style \[0/2\]
+# Style \[1/2\]
 
 1.  \[ \] nodiscard where applicable
 
-2.  \[ \] Standardize initialization style - always use '='
+2.  \[X\] Standardize initialization style - always use '='

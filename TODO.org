@@ -60,7 +60,7 @@
 <br>
 #+END_EXPORT
 * Controls [0/1]
-** [ ] Keychord system
+** [ ] Option to disable button 'staging', single button presses activate buttons
 #+BEGIN_EXPORT markdown
 <br>
 #+END_EXPORT
@@ -82,9 +82,9 @@
 #+BEGIN_EXPORT markdown
 <br>
 #+END_EXPORT
-* Style [0/2]
+* Style [1/2]
 ** [ ] nodiscard where applicable
-** [ ] Standardize initialization style - always use '='
+** [X] Standardize initialization style - always use '='
 
 #  LocalWords:  md SecurityApplet SystemApplet LauncherApplet JSON XDG GMock
 #  LocalWords:  WeatherApplet PowerActionManager GBenchmark PowerApplet
