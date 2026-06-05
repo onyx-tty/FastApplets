@@ -1,5 +1,3 @@
-cmake_minimum_required(VERSION 3.16)
-
 # Enable support for Qt's resource files
 set(CMAKE_AUTORCC ON)
 
