@@ -56,7 +56,7 @@ std::vector<PowerButton*> PowerCentralWidget::createButtons() {
         const auto& primary_buttons_data = ConfigManager<applet::type::power_applet>::getConfig()
                                                    .getLayoutProperties()
                                                    .getPrimaryButtons();
-        const std::vector<keybindings> primary_button_keys =
+        const std::vector<keybindings>& primary_button_keys =
                 ConfigManager<applet::type::power_applet>::getKeys().getPrimaryButton();
         const std::vector<keybindings>& default_primary_button_keys =
                 ConfigManager<applet::type::power_applet>::getDefaultKeys().getPrimaryButton();
