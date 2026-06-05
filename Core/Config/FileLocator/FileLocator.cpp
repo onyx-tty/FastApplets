@@ -8,7 +8,6 @@
 #include <string_view>
 #include <QFileInfo>
 #include <QString>
-#include <QStringLiteral>
 #include <QStringView>
 #include <QtGlobal>
 
@@ -18,10 +17,8 @@ ConfigFilepaths FileLocator::configFiles(std::string_view applet_name) {
         // Global config is in root, not in a separate directory. Redirect to root.
         if (applet_name == "global") { applet_name = ""; }
 
-        filepaths.config = file(QStringLiteral("config.toml"),
-                            QString::fromStdString(std::string{applet_name}));
-        filepaths.keys   = file(QStringLiteral("keys.toml"),
-                            QString::fromStdString(std::string{applet_name}));
+        filepaths.config = file(u"config.toml", QString::fromStdString(std::string{applet_name}));
+        filepaths.keys   = file(u"keys.toml", QString::fromStdString(std::string{applet_name}));
 
         return filepaths;
 }

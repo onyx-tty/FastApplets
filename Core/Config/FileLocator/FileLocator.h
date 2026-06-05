@@ -6,7 +6,6 @@
 #include <string>
 #include <string_view>
 #include <QString>
-#include <QStringLiteral>
 #include <QStringView>
 
 class ConfigFilepaths;
@@ -22,5 +21,5 @@ public:
         // Locates a file under $XDG_CONFIG_HOME/FastApplets/[subdirectory]/filename.
         // Returns the absolute path as std::string if found. Otherwise empty string.
         // TODO: Return QString
-        static std::string file(QStringView filename, QStringView subdirectory = QStringLiteral(""));
+        static std::string file(QStringView filename, QStringView subdirectory = {});
 };

@@ -22,7 +22,7 @@ TKeys KeysMapper::keys(const toml::table& applet, const toml::table& global, con
         if (!QApplication::instance()) { qFatal("QApplication has not been instantiated yet!"); }
 
         using namespace Qt::StringLiterals;
-        QStringView filename = u"keys.toml"_s;
+        QStringView filename = u"keys.toml";
 
         TKeys                    keys = TKeys{};
         const ResolverCandidates cands =
@@ -31,13 +31,13 @@ TKeys KeysMapper::keys(const toml::table& applet, const toml::table& global, con
 
         /* Quit Keys */
         keys.quit = quit(cands.makeExtended("quit"), defaults.getQuit(),
-                         PathContext{filename, u"quit"_s});
+                         PathContext{filename, u"quit"});
 
         /* Primary Button Keys */
         keys.primary_button =
                 primaryButtons({cands.get()[0].makeExtended("primary_buttons").makeQuiet(false)},
                                defaults.getPrimaryButton(),
-                               PathContext{filename, u"primary_buttons"_s});
+                               PathContext{filename, u"primary_buttons"});
 
         return std::move(keys);
 }

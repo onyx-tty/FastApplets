@@ -87,6 +87,9 @@ std::optional<T> Resolver::from(const ResolverCandidates&  candidates,
 
         // Collapse logging message variants
         static auto log = [&](QStringView path) {
+                if (path.isNull()) {
+                        qFatal("Passed null path!");
+                }
                 if constexpr (std::is_same_v<DT, toml::table>) {
                         qWarning()
                                 << QString("%1, missing or wrong type! Using defaults...").arg(path);

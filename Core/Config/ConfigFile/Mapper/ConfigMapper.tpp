@@ -14,7 +14,6 @@
 #include <toml++/toml.hpp>
 #include <utility>
 #include <QApplication>
-#include <QString>
 #include <QStringView>
 #include <Qt>
 #include <QtGlobal>
@@ -25,8 +24,7 @@ TConfig ConfigMapper::config(const toml::table& applet, const toml::table& globa
         // Confirm that a QApplication instance exists
         if (!QApplication::instance()) { qFatal("QApplication has not been instantiated yet!"); }
 
-        using namespace Qt::StringLiterals;
-        QStringView filename = u"config.toml"_s;
+        QStringView filename = u"config.toml";
 
         TConfig config = TConfig{};
 
@@ -39,17 +37,17 @@ TConfig ConfigMapper::config(const toml::table& applet, const toml::table& globa
         // TODO: Use enum in .makeQuiet() to avoid magic numbers
         config.window_properties = window(cands.makeExtended("window").makeQuiet(false, 0),
                                           defaults.getWindowProperties(),
-                                          PathContext{filename, u"window"_s});
+                                          PathContext{filename, u"window"});
 
         /* Primary Button Properties */
         config.primary_button_properties = primaryButton(cands.makeExtended("primary_button"),
                                                          defaults.getPrimaryButtonProperties(),
-                                                         PathContext{filename, u"primary_button"_s});
+                                                         PathContext{filename, u"primary_button"});
 
         /* Layout Properties */
         config.layout_properties = layout({cands.get()[0].makeExtended("layout").makeQuiet(false)},
                                           defaults.getLayoutProperties(),
-                                          PathContext{filename, u"layout"_s});
+                                          PathContext{filename, u"layout"});
 
         return std::move(config);
 }
