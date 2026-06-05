@@ -14,7 +14,6 @@
 #include <toml++/toml.hpp>
 #include <utility>
 #include <QApplication>
-#include <QDebug>
 #include <QString>
 #include <QStringView>
 #include <Qt>

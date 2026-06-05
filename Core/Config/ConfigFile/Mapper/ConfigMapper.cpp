@@ -12,16 +12,11 @@
 #include "Core/UI/Types/ButtonType.h"
 #include "Core/UI/Widgets/PowerButtonParams.h"
 
-#include <algorithm>
-#include <cstdint>
 #include <cstdlib>
-#include <initializer_list>
 #include <optional>
 #include <toml++/toml.hpp>
-#include <unordered_map>
 #include <utility>
 #include <vector>
-#include <QDebug>
 #include <QSize>
 #include <QSizePolicy>
 #include <QString>
