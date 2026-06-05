@@ -145,7 +145,7 @@ void Resolver::fromOrDefault(const ResolverCandidates& candidates, TAttribute& a
 template<typename TRaw, typename TAttribute, typename TObject, typename Transform>
 void Resolver::fromTransformOrDefault(const ResolverCandidates& candidates, TAttribute& attribute,
                                       TObject& object, const TObject& object_defaults,
-                                      Transform&& transform, const PathContext& path_context) {
+                                      Transform transform, const PathContext& path_context) {
         if (auto result = from<TRaw>(candidates, path_context)) {
                 attribute = transform(std::move(result.value()));
         } else {

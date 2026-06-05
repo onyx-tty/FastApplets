@@ -71,7 +71,7 @@ public:
         template<typename TRaw, typename TAttribute, typename TObject, typename Transform>
         static void fromTransformOrDefault(const ResolverCandidates& candidates,
                                            TAttribute& attribute, TObject& object,
-                                           const TObject& object_defaults, Transform&& transform,
+                                           const TObject& object_defaults, Transform transform,
                                            const PathContext& path_context);
 };
 
