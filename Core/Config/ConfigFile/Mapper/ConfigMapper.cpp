@@ -2,7 +2,6 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 
 #include "ConfigMapper.h"
-#include "Core/Applets/Types/AppletRecord.h"
 #include "Core/Applets/Types/AppletType.h"
 #include "Core/Config/ConfigFile/Properties/LayoutProperties.h"
 #include "Core/Config/ConfigFile/Properties/PrimaryButtonProperties.h"
@@ -133,7 +132,7 @@ std::vector<PowerButtonParams> ConfigMapper::primaryButtons(
         }
 
         if (found.empty()) {
-                qWarning() << path_context.makePath(applet::power_applet.type)
+                qWarning() << path_context.makePath(applet::type::power_applet)
                                       + ", no enabled buttons found! Using defaults...";
                 return defaults;
         }

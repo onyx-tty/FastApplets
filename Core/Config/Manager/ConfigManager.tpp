@@ -64,7 +64,7 @@ ConfigManager<TApplet>::TConfig ConfigManager<TApplet>::makeDefaultConfig() {
 
         // TODO: At this point a builder class for config schemas would help a lot
         auto layout = LayoutProperties<TPrimaryButtonParams>{};
-        if constexpr (TApplet == applet::power_applet.type) {
+        if constexpr (TApplet == applet::type::power_applet) {
                 using enum power_button_type;
 
                 const auto param = [](power_button_type type) -> TPrimaryButtonParams {
