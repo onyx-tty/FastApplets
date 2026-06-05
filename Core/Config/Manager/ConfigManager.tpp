@@ -19,6 +19,7 @@
 #include "Core/UI/Types/ButtonType.h"
 
 #include <cassert>
+#include <initializer_list>
 #include <string>
 #include <toml++/toml.hpp>
 #include <utility>
@@ -29,15 +30,20 @@
 #include <Qt>
 #include <QtGlobal>
 
+// TODO: TApplet is unused
+// TODO: Remove switch, rely on template, it will generate a static for each template overload
 template<applet::type TApplet>
 const ConfigFilepaths& ConfigManager<TApplet>::configFilepaths(applet::type applet) {
         switch (applet) {
         case applet::type::power_applet:
-                static const ConfigFilepaths power = FileLocator::configFiles(applet::toString(applet));
+                static const ConfigFilepaths power = FileLocator::configFiles(
+                        applet::toString(applet));
                 return power;
         case applet::type::global:
-                static const ConfigFilepaths global = FileLocator::configFiles(applet::toString(applet));
+                static const ConfigFilepaths global = FileLocator::configFiles(
+                        applet::toString(applet));
                 return global;
+        // TODO: Use qFatal instead
         default: assert(false && "Passed unknown type"); std::unreachable();
         }
 }
@@ -60,25 +66,18 @@ ConfigManager<TApplet>::TConfig ConfigManager<TApplet>::makeDefaultConfig() {
         auto layout = LayoutProperties<TPrimaryButtonParams>{};
         if constexpr (TApplet == applet::power_applet.type) {
                 using enum power_button_type;
-                std::vector<TPrimaryButtonParams> primary_buttons =
-                        {TPrimaryButtonParams{.type    = shutdown,
-                                              .text    = textFor(shutdown),
-                                              .command = commandFor(shutdown),
-                                              .icon    = iconFor(shutdown)},
-                         TPrimaryButtonParams{.type    = reboot,
-                                              .text    = textFor(reboot),
-                                              .command = commandFor(reboot),
-                                              .icon    = iconFor(reboot)},
-                         TPrimaryButtonParams{.type    = suspend,
-                                              .text    = textFor(suspend),
-                                              .command = commandFor(suspend),
-                                              .icon    = iconFor(suspend)},
-                         TPrimaryButtonParams{.type    = hibernate,
-                                              .text    = textFor(hibernate),
-                                              .command = commandFor(hibernate),
-                                              .icon    = iconFor(hibernate)}};
 
-                layout = LayoutProperties<TPrimaryButtonParams>(std::move(primary_buttons));
+                const auto param = [](power_button_type type) -> TPrimaryButtonParams {
+                        return {.type    = type,
+                                .text    = textFor(type),
+                                .command = commandFor(type),
+                                .icon    = iconFor(type)};
+                };
+
+                std::vector<TPrimaryButtonParams> params = {param(shutdown), param(reboot),
+                                                            param(suspend), param(hibernate)};
+
+                layout = LayoutProperties<TPrimaryButtonParams>(std::move(params));
         }
 
         return TConfig{std::move(window), std::move(button), std::move(layout)};
