@@ -49,7 +49,7 @@ keybindings KeysMapper::quit(const ResolverCandidates& candidates, const keybind
         toml::array keys = {};
         keybindings quit = {};
         Resolver::fromOrDefault<toml::array>(candidates, keys, quit, defaults, path_context,
-                                             {.min_size = 1}, "Format: [keybindings...]");
+                                             {.min_size = 1}, u"Format: [keybindings...]");
 
         if (keys.empty()) { return defaults; }
 
@@ -60,11 +60,11 @@ keybindings KeysMapper::quit(const ResolverCandidates& candidates, const keybind
 std::vector<keybindings> KeysMapper::primaryButtons(const ResolverCandidates&       candidates,
                                                     const std::vector<keybindings>& defaults,
                                                     const PathContext&              path_context) {
-        toml::array              keys = {};
+        toml::array              keys            = {};
         std::vector<keybindings> primary_buttons = {};
 
         Resolver::fromOrDefault(candidates, keys, primary_buttons, defaults, path_context,
-                                {.min_size = 1}, "Format: [keybindings...]");
+                                {.min_size = 1}, u"Format: [keybindings...]");
 
         if (keys.empty()) { return defaults; }
 
@@ -82,12 +82,12 @@ std::vector<keybindings> KeysMapper::primaryButtons(const ResolverCandidates&   
 keybindings KeysMapper::primaryButton(const ResolverCandidates& candidates,
                                       const keybindings&        defaults,
                                       const PathContext&        path_context) {
-        toml::array keys = {};
+        toml::array keys           = {};
         keybindings primary_button = {};
 
         Resolver::fromOrDefault<toml::array>(candidates, keys, primary_button, defaults,
                                              path_context, {.min_size = 1},
-                                             "Format: [keybindings...]");
+                                             u"Format: [keybindings...]");
 
         if (keys.empty()) { return defaults; }
 

@@ -115,7 +115,7 @@ std::vector<PowerButtonParams> ConfigMapper::primaryButtons(
         const ResolverCandidates& candidates, const std::vector<PowerButtonParams>& defaults,
         const PathContext& path_context) {
         const auto arr = Resolver::from<toml::array>(candidates, path_context, {.min_size = 1},
-                                                     "Format: [primary buttons...]");
+                                                     u"Format: [primary buttons...]");
         if (!arr) { return defaults; }
 
         std::vector<PowerButtonParams> found = {};

@@ -25,7 +25,7 @@
 template<typename T>
 std::optional<T> Resolver::from(const ResolverCandidates&  candidates,
                                 const PathContext&         path_context,
-                                const tomlqt::ArrayBounds& arr_bounds, const QString& arr_format) {
+                                const tomlqt::ArrayBounds& arr_bounds, QStringView arr_format) {
         using DT = std::decay_t<T>;
 
         // Convert pointers to std::optional
@@ -86,7 +86,7 @@ std::optional<T> Resolver::from(const ResolverCandidates&  candidates,
         };
 
         // Collapse logging message variants
-        static auto log = [&](const QString& path) {
+        static auto log = [&](QStringView path) {
                 if constexpr (std::is_same_v<DT, toml::table>) {
                         qWarning()
                                 << QString("%1, missing or wrong type! Using defaults...").arg(path);
@@ -134,7 +134,7 @@ template<typename TAttribute, typename TObject>
 void Resolver::fromOrDefault(const ResolverCandidates& candidates, TAttribute& attribute,
                              TObject& object, const TObject& object_defaults,
                              const PathContext& path_context, const tomlqt::ArrayBounds& arr_bounds,
-                             const QString& arr_format) {
+                             QStringView arr_format) {
         if (auto result = from<TAttribute>(candidates, path_context, arr_bounds, arr_format)) {
                 attribute = std::move(result.value());
         } else {

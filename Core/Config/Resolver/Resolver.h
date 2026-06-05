@@ -7,7 +7,7 @@
 
 #include <optional>
 #include <toml++/toml.hpp>
-#include <QString>
+#include <QStringView>
 #include <Qt>
 
 class PathContext;
@@ -23,7 +23,7 @@ class QSize;
 //
 // Extraction rules by type:
 //   - toml::table/array: direct node resolution
-//   - QSize, Qt::Alignment, QSizePolicy, QString: TomlQt converters
+//   - QSize, Qt::Alignment, QSizePolicy, QStringView: TomlQt converters
 //   - Other types: toml++ native value extraction
 //
 // Quick reference:
@@ -44,7 +44,7 @@ public:
         [[nodiscard]] static std::optional<T> from(const ResolverCandidates&  candidates,
                                                    const PathContext&         path_context,
                                                    const tomlqt::ArrayBounds& arr_bounds = {},
-                                                   const QString&             arr_format = {});
+                                                   QStringView                arr_format = {});
 
         // Extraction that can fall back to replacing the entire parent object.
         //
@@ -58,7 +58,7 @@ public:
                                   TObject& object, const TObject& object_defaults,
                                   const PathContext&         path_context,
                                   const tomlqt::ArrayBounds& arr_bounds = {},
-                                  const QString&             arr_format = {});
+                                  QStringView                arr_format = {});
 
         // Like fromOrDefault but with a transformation step before attribute assignment.
         //
