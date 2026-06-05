@@ -12,6 +12,7 @@
 #include "UI/Types/ButtonType.h"
 #include "UI/Widgets/PrimaryButton.h"
 
+#include <utility>
 #include <QBoxLayout>
 #include <QDebug>
 #include <QIcon>
@@ -21,12 +22,13 @@
 #include <QtGlobal>
 
 PowerButton::PowerButton(power_button_type type, const QIcon& icon, const QString& text,
-                         const keybindings& keys, const QString& command, QWidget* parent) :
+                         keybindings keys, const QString& command, QWidget* parent) :
         PrimaryButton(icon, text,
                       ConfigManager<applet::type::power_applet>::getConfig()
                               .getPrimaryButtonProperties(),
                       parent),
-        keys(keys), type(type) {
+        keys(std::move(keys)), type(type) {
+        // TODO: command gets copied thrice, fix that
         connect(this, &PowerButton::clicked, [this, command]() { ShellRunner::command(command); });
 
         qDebug() << QString("Created %1!").arg(text);

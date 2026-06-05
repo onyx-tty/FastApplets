@@ -27,7 +27,7 @@ private:
 
 public:
         explicit PowerButton(power_button_type type, const QIcon& icon, const QString& text,
-                             const keybindings& keys, const QString& command, QWidget* parent);
+                             keybindings keys, const QString& command, QWidget* parent);
         power_button_type  getType() const;
         const keybindings& getKeys() const;
 };

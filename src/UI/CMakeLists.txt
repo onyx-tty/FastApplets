@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.16)
 
-project(UI VERSION 0.5.11 LANGUAGES CXX)
+project(UI VERSION 0.5.12 LANGUAGES CXX)
 
 add_subdirectory(Widgets)
 add_subdirectory(Types)
