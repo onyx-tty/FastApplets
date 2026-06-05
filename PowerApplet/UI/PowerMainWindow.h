@@ -9,10 +9,11 @@
 #include <QWidget>
 
 class PowerCentralWidget;
+class WindowProperties;
 
 class PowerMainWindow final : public MainWindow {
         Q_OBJECT
 
 public:
-        explicit PowerMainWindow(QWidget* parent = nullptr);
+        explicit PowerMainWindow(const WindowProperties& properties, QWidget* parent = nullptr);
 };
