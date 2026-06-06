@@ -9,10 +9,10 @@ target_include_directories(Core_Config_ConfigFile_PowerApplet PRIVATE
 # TODO: This should explicitly get PowerButtonParams which is a part of
 #       UI instead of Core::UI::Types. Move PowerButtonParams to Core::UI::Types.
 target_link_libraries(Core_Config_ConfigFile_PowerApplet PRIVATE
-        Core::Config::ConfigFile::Global
         Core::Config::ConfigFile::Mapper
-        Core::Config::ConfigFile::Properties
-        Core::UI::Widgets)
+        Core::Config::ConfigFile::Properties)
 
 target_link_libraries(Core_Config_ConfigFile_PowerApplet PUBLIC
+        Core::Config::ConfigFile::Global
+        Core::UI::Widgets
         Qt${QT_VERSION_MAJOR}::Widgets)

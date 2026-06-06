@@ -6,8 +6,6 @@ target_include_directories(Core_Config_Resolver_PathContext PRIVATE
         $<BUILD_INTERFACE:${INCLUDE_DIR}>
         $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>)
 
-target_link_libraries(Core_Config_Resolver_PathContext PRIVATE
-        Core::AppletTypes)
-
 target_link_libraries(Core_Config_Resolver_PathContext PUBLIC
+        Core::AppletTypes
         Qt${QT_VERSION_MAJOR}::Core)

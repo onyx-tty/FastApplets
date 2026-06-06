@@ -7,8 +7,8 @@ target_include_directories(Core_UI_Widgets PRIVATE
         $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>)
 
 target_link_libraries(Core_UI_Widgets PRIVATE
-        Core::Config::ConfigFile::Properties
-        Core::UI::Types) # PowerButtonParams
+        Core::Config::ConfigFile::Properties)
 
 target_link_libraries(Core_UI_Widgets PUBLIC
+        Core::UI::Types # PowerButtonParams
         Qt${QT_VERSION_MAJOR}::Widgets)

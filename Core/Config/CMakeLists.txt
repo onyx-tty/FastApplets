@@ -12,23 +12,21 @@ add_subdirectory(TomlParser)
 add_subdirectory(Resolver)
 add_subdirectory(Types)
 
-add_library(Core_Config)
+add_library(Core_Config INTERFACE)
 add_library(Core::Config ALIAS Core_Config)
 
-target_include_directories(Core_Config PRIVATE
+target_include_directories(Core_Config INTERFACE
         $<BUILD_INTERFACE:${ROOT_DIR}>
         $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>)
 
-target_link_libraries(Core_Config PRIVATE
+target_link_libraries(Core_Config INTERFACE
         Core::Config::ConfigFile
         Core::Config::KeysFile
         Core::Config::FileLocator
         Core::Config::TomlParser
         Core::Config::Resolver
         Core::Config::Types
-        Core::UI::Widgets)
-
-target_link_libraries(Core_Config PUBLIC
+        Core::UI::Widgets
         CppUtils::String
         tomlplusplus::tomlplusplus
         Qt${QT_VERSION_MAJOR}::Widgets)

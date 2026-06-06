@@ -7,13 +7,13 @@ target_include_directories(Core_Config_ConfigFile_Mapper PRIVATE
         $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>)
 
 target_link_libraries(Core_Config_ConfigFile_Mapper PRIVATE
-        Core::Config::ConfigFile::Properties
         Core::Config::Types
         Core::UI::Widgets
         Core::UI::Types # TODO: Only for PowerButtonParams, move it elsewhere
         Core::AppletTypes)
 
 target_link_libraries(Core_Config_ConfigFile_Mapper PUBLIC
+        Core::Config::ConfigFile::Properties
         Core::Config::Resolver
         Core::Config::Resolver::PathContext
         Core::Config::Resolver::Types

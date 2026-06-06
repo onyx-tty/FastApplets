@@ -11,9 +11,7 @@ target_include_directories(Core_Config_Resolver INTERFACE
 target_link_libraries(Core_Config_Resolver INTERFACE
         Core::Config::Resolver::PathContext
         Core::Config::Resolver::Types
-        Core::Config::Types)
-
-target_link_libraries(Core_Config_Resolver INTERFACE
+        Core::Config::Types
         TomlQt
         Qt${QT_VERSION_MAJOR}::Widgets
         tomlplusplus::tomlplusplus)

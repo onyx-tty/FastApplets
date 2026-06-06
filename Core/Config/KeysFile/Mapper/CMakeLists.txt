@@ -7,14 +7,14 @@ target_include_directories(Core_Config_KeysFile_Mapper PRIVATE
         $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>)
 
 target_link_libraries(Core_Config_KeysFile_Mapper PRIVATE
-        Core::Config::KeysFile::Types
         Core::Config::TomlParser
-        Core::Config::Types
-        Core::AppletTypes)
+        Core::Config::Resolver)
 
 target_link_libraries(Core_Config_KeysFile_Mapper PUBLIC
-        Core::Config::Resolver
+        Core::Config::KeysFile::Types
         Core::Config::Resolver::PathContext
         Core::Config::Resolver::Types
+        Core::Config::Types
+        Core::AppletTypes
         tomlplusplus::tomlplusplus
         Qt${QT_VERSION_MAJOR}::Widgets)

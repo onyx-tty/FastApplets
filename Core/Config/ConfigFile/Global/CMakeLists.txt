@@ -6,5 +6,5 @@ target_include_directories(Core_Config_ConfigFile_Global PRIVATE
         $<BUILD_INTERFACE:${ROOT_DIR}>
         $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>)
 
-target_link_libraries(Core_Config_ConfigFile_Global PRIVATE
+target_link_libraries(Core_Config_ConfigFile_Global PUBLIC
         Core::Config::ConfigFile::Properties)

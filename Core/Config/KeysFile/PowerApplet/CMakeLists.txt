@@ -7,9 +7,9 @@ target_include_directories(Core_Config_KeysFile_PowerApplet PRIVATE
         $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>)
 
 target_link_libraries(Core_Config_KeysFile_PowerApplet PRIVATE
-        Core::Config::KeysFile::Global
-        Core::Config::KeysFile::Mapper
-        Core::Config::KeysFile::Types)
+        Core::Config::KeysFile::Mapper)
 
 target_link_libraries(Core_Config_KeysFile_PowerApplet PUBLIC
+        Core::Config::KeysFile::Global
+        Core::Config::KeysFile::Types
         Qt${QT_VERSION_MAJOR}::Core)
