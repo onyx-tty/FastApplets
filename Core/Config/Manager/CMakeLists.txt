@@ -14,5 +14,5 @@ target_link_libraries(Core_Config_ConfigManager INTERFACE
         Core::Config::TomlParser
         Core::Config::Types
         Core::UI::Types
-        Core::AppletTypes
+        Core::Applets::Types
         Qt${QT_VERSION_MAJOR}::Widgets)

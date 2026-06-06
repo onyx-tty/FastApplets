@@ -75,7 +75,7 @@ install(# Install compiled artifacts to correct destinations, register all targe
                 Core_Shell
                 Core_UI
                 Core_UI_Widgets Core_UI_Types
-                Core_AppletTypes
+                Core_Applets_Types
                 Resources_Icons
         EXPORT FastApplets_export
         ARCHIVE  DESTINATION ${CMAKE_INSTALL_LIBDIR}

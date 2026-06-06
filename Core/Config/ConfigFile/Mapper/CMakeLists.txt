@@ -10,7 +10,7 @@ target_link_libraries(Core_Config_ConfigFile_Mapper PRIVATE
         Core::Config::Types
         Core::UI::Widgets
         Core::UI::Types # TODO: Only for PowerButtonParams, move it elsewhere
-        Core::AppletTypes)
+        Core::Applets::Types)
 
 target_link_libraries(Core_Config_ConfigFile_Mapper PUBLIC
         Core::Config::ConfigFile::Properties

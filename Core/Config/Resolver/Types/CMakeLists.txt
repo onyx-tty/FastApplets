@@ -11,4 +11,4 @@ target_link_libraries(Core_Config_Resolver_Types PRIVATE
 
 target_link_libraries(Core_Config_Resolver_Types PUBLIC
         Core::Config::Types
-        Core::AppletTypes)
+        Core::Applets::Types)

@@ -11,4 +11,4 @@ target_link_libraries(PowerApplet_Types INTERFACE
         Core::Config::KeysFile::PowerApplet # PowerAppletKeys
         Core::UI::Widgets # PowerButtonParams
         Core::UI::Types # ButtonType
-        Core::AppletTypes) # AppletType & AppletTraits
+        Core::Applets::Types) # AppletType & AppletTraits
