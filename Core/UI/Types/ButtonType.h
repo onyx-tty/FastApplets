@@ -3,7 +3,7 @@
 
 #pragma once
 
-#include <QString>
+class QString;
 
 // 'none' represents empty state, e.g. no button selected, if used for that purpose
 enum class power_button_type { none, shutdown, reboot, suspend, hibernate };
