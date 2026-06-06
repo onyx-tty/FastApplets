@@ -6,5 +6,5 @@ target_include_directories(Core_UI_Types PRIVATE
         $<BUILD_INTERFACE:${ROOT_DIR}>
         $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>)
 
-target_link_libraries(Core_UI_Types PUBLIC
+target_link_libraries(Core_UI_Types PRIVATE
         Qt${QT_VERSION_MAJOR}::Core)
