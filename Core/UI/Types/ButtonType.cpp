@@ -4,16 +4,16 @@
 #include "ButtonType.h"
 
 #include <QHash>
-#include <QString>
+#include <QStringView>
 
 template<>
-power_button_type toPrimaryButtonType<power_button_type>(const QString& string) {
-        static const QHash<QString, power_button_type> map =
-                {{"poweroff", power_button_type::shutdown},
-                 {"shutdown", power_button_type::shutdown},
-                 {"reboot", power_button_type::reboot},
-                 {"suspend", power_button_type::suspend},
-                 {"hibernate", power_button_type::hibernate}};
+power_button_type toPrimaryButtonType<power_button_type>(QStringView string) {
+        static const QHash<QStringView, power_button_type> map =
+                {{u"poweroff", power_button_type::shutdown},
+                 {u"shutdown", power_button_type::shutdown},
+                 {u"reboot", power_button_type::reboot},
+                 {u"suspend", power_button_type::suspend},
+                 {u"hibernate", power_button_type::hibernate}};
 
         const auto iter = map.find(string);
         if (iter == map.cend()) { return power_button_type::none; }
