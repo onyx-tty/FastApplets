@@ -4,7 +4,6 @@
 #include "FileLocator.h"
 #include "Core/Config/Types/ConfigFilepaths.h"
 
-#include <string>
 #include <string_view>
 #include <QFileInfo>
 #include <QString>
@@ -17,21 +16,19 @@ ConfigFilepaths FileLocator::configFiles(std::string_view applet_name) {
         // Global config is in root, not in a separate directory. Redirect to root.
         if (applet_name == "global") { applet_name = ""; }
 
-        filepaths.config = file(u"config.toml", QString::fromStdString(std::string{applet_name}));
-        filepaths.keys   = file(u"keys.toml", QString::fromStdString(std::string{applet_name}));
+        QStringView applet_path = QString("%1/FastApplets/%2%3")
+                                          .arg(qEnvironmentVariable("XDG_CONFIG_HOME"),
+                                               QString::fromStdString(std::string(applet_name)),
+                                               applet_name.empty() ? "" : "/");
+
+        filepaths.config = QString("%1%2").arg(applet_path, u"config.toml").toStdString();
+        filepaths.keys   = QString("%1%2").arg(applet_path, u"keys.toml").toStdString();
+
+        // Validates filepaths, replaces with empty string if invalid
+        // TODO: Make ConfigFilepaths store paths as QString to remove the
+        //       QString::fromStdString() workaround
+        if (!QFileInfo::exists(QString::fromStdString(filepaths.config))) { filepaths.config = {}; }
+        if (!QFileInfo::exists(QString::fromStdString(filepaths.keys))) { filepaths.keys = {}; }
 
         return filepaths;
-}
-
-std::string FileLocator::file(QStringView filename, QStringView subdirectory) {
-        QString subdir   = subdirectory.empty() ? subdirectory.toString()
-                                                : subdirectory.toString() + "/";
-        QString filepath = qEnvironmentVariable("XDG_CONFIG_HOME") + "/FastApplets/" + subdir
-                         + filename.toString();
-
-        // Returns empty string if file doesn't exist to avoid downstream errors,
-        // like parsing the wrong file by accident.
-        if (!QFileInfo::exists(filepath)) { return {}; }
-
-        return filepath.toStdString();
 }

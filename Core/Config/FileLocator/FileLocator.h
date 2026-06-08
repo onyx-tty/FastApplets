@@ -3,10 +3,7 @@
 
 #pragma once
 
-#include <string>
 #include <string_view>
-#include <QString>
-#include <QStringView>
 
 class ConfigFilepaths;
 
@@ -17,9 +14,4 @@ public:
         // "global" maps to the root FastApplets/ config directory, as the global config
         // is stored there.
         static ConfigFilepaths configFiles(std::string_view applet_name);
-
-        // Locates a file under $XDG_CONFIG_HOME/FastApplets/[subdirectory]/filename.
-        // Returns the absolute path as std::string if found. Otherwise empty string.
-        // TODO: Return QString
-        static std::string file(QStringView filename, QStringView subdirectory = {});
 };
