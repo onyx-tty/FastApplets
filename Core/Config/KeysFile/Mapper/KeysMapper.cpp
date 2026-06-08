@@ -46,7 +46,7 @@ std::vector<std::string> textFromTomlArray(const toml::array& arr) {
 keybindings KeysMapper::quit(const ResolverCandidates& candidates, const keybindings& defaults,
                              const PathContext& path_context) {
         toml::array keys = Resolver::from<toml::array>(candidates, path_context, {.min_size = 1},
-                                                       u"Format: [keybindings...]")
+                                                       u"[keybindings...]")
                                    .value_or(toml::array());
 
         if (keys.empty()) { return defaults; }
@@ -59,7 +59,7 @@ std::vector<keybindings> KeysMapper::primaryButtons(const ResolverCandidates&   
                                                     const std::vector<keybindings>& defaults,
                                                     const PathContext&              path_context) {
         toml::array keys = Resolver::from<toml::array>(candidates, path_context, {.min_size = 1},
-                                                       u"Format: [keybindings...]")
+                                                       u"[keybindings...]")
                                    .value_or(toml::array());
 
         if (keys.empty()) { return defaults; }
@@ -80,7 +80,7 @@ keybindings KeysMapper::primaryButton(const ResolverCandidates& candidates,
                                       const keybindings&        defaults,
                                       const PathContext&        path_context) {
         toml::array keys = Resolver::from<toml::array>(candidates, path_context, {.min_size = 1},
-                                                       u"Format: [keybindings...]")
+                                                       u"[keybindings...]")
                                    .value_or(toml::array());
 
         if (keys.empty()) { return defaults; }
