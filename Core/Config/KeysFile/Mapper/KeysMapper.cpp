@@ -45,11 +45,9 @@ std::vector<std::string> textFromTomlArray(const toml::array& arr) {
 /* Global Keys */
 keybindings KeysMapper::quit(const ResolverCandidates& candidates, const keybindings& defaults,
                              const PathContext& path_context) {
-        toml::array keys = {};
-        keybindings quit = {};
-
-        Resolver::fromOrDefault<toml::array>(candidates, keys, quit, defaults, path_context,
-                                             {.min_size = 1}, u"Format: [keybindings...]");
+        toml::array keys = Resolver::from<toml::array>(candidates, path_context, {.min_size = 1},
+                                                       u"Format: [keybindings...]")
+                                   .value_or(toml::array());
 
         if (keys.empty()) { return defaults; }
 
@@ -60,21 +58,20 @@ keybindings KeysMapper::quit(const ResolverCandidates& candidates, const keybind
 std::vector<keybindings> KeysMapper::primaryButtons(const ResolverCandidates&       candidates,
                                                     const std::vector<keybindings>& defaults,
                                                     const PathContext&              path_context) {
-        toml::array              keys    = {};
-        std::vector<keybindings> buttons = {};
-
-        Resolver::fromOrDefault(candidates, keys, buttons, defaults, path_context, {.min_size = 1},
-                                u"Format: [keybindings...]");
+        toml::array keys = Resolver::from<toml::array>(candidates, path_context, {.min_size = 1},
+                                                       u"Format: [keybindings...]")
+                                   .value_or(toml::array());
 
         if (keys.empty()) { return defaults; }
 
+        std::vector<keybindings> buttons = {};
         buttons.reserve(keys.size());
         for (size_t i = 0; i != keys.size(); ++i) {
                 keybindings found_for_button = primaryButton(candidates.makeExtended(i),
                                                              defaults[i],
                                                              path_context.makeExtended(i));
                 if (!keys.empty()) { buttons.push_back(std::move(found_for_button)); }
-        };
+        }
 
         return std::move(buttons);
 }
@@ -82,12 +79,9 @@ std::vector<keybindings> KeysMapper::primaryButtons(const ResolverCandidates&   
 keybindings KeysMapper::primaryButton(const ResolverCandidates& candidates,
                                       const keybindings&        defaults,
                                       const PathContext&        path_context) {
-        toml::array keys           = {};
-        keybindings primary_button = {};
-
-        Resolver::fromOrDefault<toml::array>(candidates, keys, primary_button, defaults,
-                                             path_context, {.min_size = 1},
-                                             u"Format: [keybindings...]");
+        toml::array keys = Resolver::from<toml::array>(candidates, path_context, {.min_size = 1},
+                                                       u"Format: [keybindings...]")
+                                   .value_or(toml::array());
 
         if (keys.empty()) { return defaults; }
 
