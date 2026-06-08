@@ -20,7 +20,7 @@ inline std::vector<keybindings> makeKeyRange(Qt::Key first, Qt::Key last) {
         std::vector<keybindings> ret = {};
         ret.reserve(last - first + 1);
 
-        for (int i = first; i <= last; ++i) { ret.emplace_back(static_cast<Qt::Key>(i)); }
+        for (int key = first; key <= last; ++key) { ret.push_back(keybindings{key}); }
 
         return ret;
 }
