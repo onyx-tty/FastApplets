@@ -22,9 +22,10 @@ int main(int argc, char* argv[]) {
         qt::log::setupLogging();
 
         // Config files
-        const auto& config       = ConfigManager<applet::type::power_applet>::getConfig();
-        const auto& keys         = ConfigManager<applet::type::power_applet>::getKeys();
-        const auto& default_keys = ConfigManager<applet::type::power_applet>::getDefaultKeys();
+        using TConfigManager     = ConfigManager<applet::type::power_applet>;
+        const auto& config       = TConfigManager::getConfig();
+        const auto& keys         = TConfigManager::getKeys();
+        const auto& default_keys = TConfigManager::getDefaultKeys();
 
         auto main_window = PowerMainWindow(config, keys, default_keys);
 
