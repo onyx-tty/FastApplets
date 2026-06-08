@@ -85,13 +85,14 @@ private slots:
         }
 
         static void handlesInvalidToml() {
-                const auto invalid = QDir(test_dirpath).filePath(test_filename_invalid).toStdString();
+                const auto invalid = QDir(test_dirpath).filePath(test_filename_invalid);
+
                 QVERIFY2(TomlParser::file(invalid).empty(),
                          "File with invalid TOML must return empty toml::table");
         }
 
         static void handlesValidToml() {
-                const auto valid = QDir(test_dirpath).filePath(test_filename_valid).toStdString();
+                const auto valid = QDir(test_dirpath).filePath(test_filename_valid);
 
                 QVERIFY2(!TomlParser::file(valid).empty(),
                          "Failed to parse file with valid TOML, must return non-empty table");

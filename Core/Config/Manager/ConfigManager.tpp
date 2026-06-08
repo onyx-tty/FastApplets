@@ -36,11 +36,11 @@ const ConfigFilepaths& ConfigManager<TApplet>::configFilepaths(applet::type appl
         switch (applet) {
         case applet::type::power_applet:
                 static const ConfigFilepaths power = FileLocator::configFiles(
-                        applet::toString(applet));
+                        applet::toLatin1String(applet));
                 return power;
         case applet::type::global:
                 static const ConfigFilepaths global = FileLocator::configFiles(
-                        applet::toString(applet));
+                        applet::toLatin1String(applet));
                 return global;
         // TODO: Use qFatal instead
         default: assert(false && "Passed unknown type"); std::unreachable();

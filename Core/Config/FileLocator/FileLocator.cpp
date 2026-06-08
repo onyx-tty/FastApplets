@@ -4,31 +4,32 @@
 #include "FileLocator.h"
 #include "Core/Config/Types/ConfigFilepaths.h"
 
-#include <string_view>
 #include <QFileInfo>
+#include <QLatin1StringView>
 #include <QString>
 #include <QStringView>
+#include <Qt>
 #include <QtGlobal>
 
-ConfigFilepaths FileLocator::configFiles(std::string_view applet_name) {
+ConfigFilepaths FileLocator::configFiles(QLatin1StringView applet_name) {
+        using namespace Qt::StringLiterals;
+
         ConfigFilepaths filepaths = {};
 
         // Global config is in root, not in a separate directory. Redirect to root.
-        if (applet_name == "global") { applet_name = ""; }
+        if (applet_name == "global") { applet_name = ""_L1; }
 
-        QStringView applet_path = QString("%1/FastApplets/%2%3")
-                                          .arg(qEnvironmentVariable("XDG_CONFIG_HOME"),
-                                               QString::fromStdString(std::string(applet_name)),
-                                               applet_name.empty() ? "" : "/");
+        QString applet_path = QString("%1/FastApplets/%2%3")
+                                      .arg(qEnvironmentVariable("XDG_CONFIG_HOME"),
+                                           applet_name.toString(),
+                                           applet_name.isEmpty() ? u"" : u"/");
 
-        filepaths.config = QString("%1%2").arg(applet_path, u"config.toml").toStdString();
-        filepaths.keys   = QString("%1%2").arg(applet_path, u"keys.toml").toStdString();
+        filepaths.config = QString("%1%2").arg(applet_path, u"config.toml");
+        filepaths.keys   = QString("%1%2").arg(applet_path, u"keys.toml");
 
         // Validates filepaths, replaces with empty string if invalid
-        // TODO: Make ConfigFilepaths store paths as QString to remove the
-        //       QString::fromStdString() workaround
-        if (!QFileInfo::exists(QString::fromStdString(filepaths.config))) { filepaths.config = {}; }
-        if (!QFileInfo::exists(QString::fromStdString(filepaths.keys))) { filepaths.keys = {}; }
+        if (!QFileInfo::exists(filepaths.config)) { filepaths.config = {}; }
+        if (!QFileInfo::exists(filepaths.keys)) { filepaths.keys = {}; }
 
         return filepaths;
 }

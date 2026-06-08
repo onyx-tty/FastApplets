@@ -3,8 +3,9 @@
 
 #pragma once
 
-#include <string_view>
 #include <toml++/toml.hpp>
+
+class QString;
 
 // Parses TOML format.
 //
@@ -16,5 +17,5 @@ public:
         // Parses a single table at given filepath.
         // If file exists and is parsed successfully, returns a parsed table.
         // Otherwise returns an empty table and logs warnings.
-        static toml::table file(std::string_view filepath);
+        static toml::table file(const QString& filepath);
 };

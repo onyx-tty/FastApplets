@@ -16,8 +16,7 @@ PathContext::PathContext(QStringView filename, QStringView path_context, char se
 
 QString PathContext::makePath(applet::type applet) const {
         return QString("in %1, %2%3%4")
-                .arg(QString{filename},
-                     QString::fromStdString(std::string{applet::toString(applet)}))
+                .arg(QString{filename}, applet::toString(applet))
                 .arg(separator)
                 .arg(path_context);
 }

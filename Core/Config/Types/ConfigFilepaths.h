@@ -3,10 +3,10 @@
 
 #pragma once
 
-#include <string>
+#include <QString>
 
 // Stores filepaths to config and keys.
 struct ConfigFilepaths final {
-        std::string config;
-        std::string keys;
+        QString config;
+        QString keys;
 };

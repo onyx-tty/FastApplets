@@ -7,5 +7,7 @@ target_include_directories(Core_Config_FileLocator PRIVATE
         $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>)
 
 target_link_libraries(Core_Config_FileLocator PRIVATE
-        Core::Config::Types
+        Core::Config::Types)
+
+target_link_libraries(Core_Config_FileLocator PUBLIC
         Qt${QT_VERSION_MAJOR}::Core)

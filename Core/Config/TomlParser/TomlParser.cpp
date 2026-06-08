@@ -4,27 +4,26 @@
 #include "TomlParser.h"
 
 #include <string>
-#include <string_view>
 #include <toml++/toml.hpp>
 #include <QDebug>
 #include <QFileInfo>
 #include <QString>
 #include <QtGlobal>
 
-toml::table TomlParser::file(std::string_view filepath) {
+toml::table TomlParser::file(const QString& filepath) {
         toml::table file = {};
 
-        if (!QFileInfo::exists(QString::fromStdString(std::string{filepath}))) {
+        if (!QFileInfo::exists(filepath)) {
                 qWarning() << "File not found!";
                 return {};
         }
 
         try {
-                file = toml::parse_file(filepath);
-                qDebug() << "Parsed file" << QString::fromStdString(std::string{filepath});
+                file = toml::parse_file(filepath.toStdString());
+                qDebug() << "Parsed file" << filepath;
         } catch (const toml::parse_error& error) {
-                qWarning() << QString("%1:").arg(QString::fromStdString(std::string{filepath}))
-                           << QString::fromStdString(std::string{error.description()});
+                qWarning() << QString("%1: %2").arg(filepath).arg(
+                        QString::fromStdString(std::string(error.description())));
                 return {};
         }
 
