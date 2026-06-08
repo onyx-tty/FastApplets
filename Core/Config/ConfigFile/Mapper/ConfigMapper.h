@@ -3,6 +3,8 @@
 
 #pragma once
 
+#include "Core/Applets/Types/AppletTraits.h"
+#include "Core/Applets/Types/AppletType.h"
 #include "Core/Config/ConfigFile/Properties/LayoutProperties.h"
 
 #include <optional>
@@ -25,6 +27,12 @@ class QSizePolicy;
 // Malformed values (wrong type, out of range, etc.) are treated as failures.
 class ConfigMapper final {
 private:
+        /* Helpers */
+
+        template<typename T>
+        static T mapProperties(const ResolverCandidates& candidates, const T& defaults,
+                               const PathContext& path_context, auto fill_fn);
+
         /* Window Properties */
 
         // Maps window from config nodes.
@@ -59,30 +67,36 @@ private:
 
         // Maps layout from a config source.
         //
+        // applet::type must be specified due to differing TPrimaryButtonParams.
+        //
         // Fallback priority: applet.layout -> hardcoded defaults
         //
-        // Expected format: layout table containing primary_buttons (array of tables)
-        //
-        // Return value: LayoutProperties
-        static LayoutProperties<PowerButtonParams> layout(
-                const ResolverCandidates&                  candidates,
-                const LayoutProperties<PowerButtonParams>& defaults,
-                const PathContext&                         path_context);
+        // Return value: LayoutProperties<TPrimaryButtonParams>
+        template<applet::type TApplet>
+        static LayoutProperties<typename AppletTraits<TApplet>::TPrimaryButtonParams> layout(
+                const ResolverCandidates& candidates,
+                const LayoutProperties<typename AppletTraits<TApplet>::TPrimaryButtonParams>&
+                                   defaults,
+                const PathContext& path_context);
 
         // Maps primary_buttons from a config source.
+        //
+        // applet::type must be specified due to differing TPrimaryButtonParams.
         //
         // Defaults the buttons if none are found.
         //
         // Fallback priority: applet.layout.primary_buttons -> hardcoded defaults
         //
-        // Expected format: primary_buttons (array of tables)
-        //
-        // Return value: std::vector<PowerButtonParams>
-        static std::vector<PowerButtonParams> primaryButtons(
-                const ResolverCandidates&             candidates,
-                const std::vector<PowerButtonParams>& defaults, const PathContext& path_context);
+        // Return value: std::vector<TPrimaryButtonParams>
+        template<applet::type TApplet>
+        static std::vector<typename AppletTraits<TApplet>::TPrimaryButtonParams> primaryButtons(
+                const ResolverCandidates&                                                candidates,
+                const std::vector<typename AppletTraits<TApplet>::TPrimaryButtonParams>& defaults,
+                const PathContext& path_context);
 
         // Maps primary_button, including its attributes, from a config source.
+        //
+        // applet::type must be specified due to differing TPrimaryButtonParams.
         //
         // Buttons with invalid type are omitted with a warning.
         //
@@ -91,17 +105,20 @@ private:
         // Expected format: primary_buttons[index] table containing type (string),
         //                  text (string), command (string)
         //
-        // Return value: std::optional<PowerButtonParams>
-        static std::optional<PowerButtonParams> primaryButton(const ResolverCandidates& candidates,
-                                                              const PathContext& path_context);
+        // Return value: std::optional<TPrimaryButtonParams>
+        template<applet::type TApplet>
+        static std::optional<typename AppletTraits<TApplet>::TPrimaryButtonParams> primaryButton(
+                const ResolverCandidates& candidates, const PathContext& path_context);
 
 public:
         ConfigMapper() = delete;
 
         // Parses applet and global tables into XAppletConfig.
         //
+        // applet::type must be specified due to differing LayoutProperties.
+        //
         // Usage:
-        //   XAppletConfig config = ConfigMapper::config(applet, global, defaults);
+        //   XAppletConfig config = ConfigMapper::config<applet::type::x>(applet, global, defaults);
         //
         // The applet table supplies primary configuration and overrides, global
         // provides fallbacks.
@@ -109,9 +126,10 @@ public:
         // QApplication must exist before calling (initialized in main()).
         //
         // Return value: TConfig
-        template<typename TConfig>
-        static TConfig config(const toml::table& applet, const toml::table& global,
-                              const TConfig& defaults);
+        template<applet::type TApplet>
+        static AppletTraits<TApplet>::TConfig config(const toml::table& applet,
+                                                     const toml::table& global,
+                                                     const AppletTraits<TApplet>::TConfig& defaults);
 };
 
 #include "ConfigMapper.tpp"

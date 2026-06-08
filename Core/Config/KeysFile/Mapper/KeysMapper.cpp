@@ -54,7 +54,7 @@ keybindings KeysMapper::quit(const ResolverCandidates& candidates, const keybind
         return keysFromText(textFromTomlArray(keys));
 }
 
-/* Power Applet Keys*/
+/* Primary Applet Keys*/
 std::vector<keybindings> KeysMapper::primaryButtons(const ResolverCandidates&       candidates,
                                                     const std::vector<keybindings>& defaults,
                                                     const PathContext&              path_context) {

@@ -5,22 +5,127 @@
 
 #include "ConfigMapper.h"
 
+#include "Core/Applets/Types/AppletTraits.h"
 #include "Core/Applets/Types/AppletType.h"
+#include "Core/Config/ConfigFile/Properties/LayoutProperties.h"
 #include "Core/Config/Resolver/PathContext/PathContext.h"
 #include "Core/Config/Resolver/Resolver.h"
 #include "Core/Config/Resolver/Types/ResolverCandidate.h"
-#include "Core/Config/Types/NodeView.h"
 
+#include <optional>
 #include <toml++/toml.hpp>
 #include <utility>
+#include <vector>
 #include <QApplication>
 #include <QStringView>
 #include <Qt>
 #include <QtGlobal>
 
-template<typename TConfig>
-TConfig ConfigMapper::config(const toml::table& applet, const toml::table& global,
-                             const TConfig& defaults) {
+template<typename T>
+T ConfigMapper::mapProperties(const ResolverCandidates& candidates, const T& defaults,
+                              const PathContext& path_context, auto fill_fn) {
+        std::vector<toml::table> resolved = {};
+
+        for (const auto& candidate : candidates.get()) {
+                if (auto result = Resolver::from<toml::table>({candidate}, path_context)) {
+                        resolved.push_back(result.value());
+                }
+        }
+
+        if (resolved.empty()) { return defaults; }
+
+        auto props = T{};
+        fill_fn(props, path_context);
+        return std::move(props);
+}
+
+/* Layout Properties */
+template<applet::type TApplet>
+LayoutProperties<typename AppletTraits<TApplet>::TPrimaryButtonParams> ConfigMapper::layout(
+        const ResolverCandidates&                                                     candidates,
+        const LayoutProperties<typename AppletTraits<TApplet>::TPrimaryButtonParams>& defaults,
+        const PathContext& path_context) {
+        using TPrimaryButtonParams = AppletTraits<TApplet>::TPrimaryButtonParams;
+
+        auto properties = LayoutProperties<TPrimaryButtonParams>{};
+
+        const auto data = Resolver::from<toml::table>(candidates, path_context);
+        if (!data) { return defaults; }
+
+        properties.primary_buttons =
+                primaryButtons<TApplet>(candidates.makeExtended("primary_buttons"),
+                                        defaults.getPrimaryButtons(),
+                                        path_context.makeExtended("primary_buttons"));
+
+        return std::move(properties);
+}
+
+template<applet::type TApplet>
+std::vector<typename AppletTraits<TApplet>::TPrimaryButtonParams> ConfigMapper::primaryButtons(
+        const ResolverCandidates&                                                candidates,
+        const std::vector<typename AppletTraits<TApplet>::TPrimaryButtonParams>& defaults,
+        const PathContext&                                                       path_context) {
+        using TPrimaryButtonParams = AppletTraits<TApplet>::TPrimaryButtonParams;
+
+        const auto arr = Resolver::from<toml::array>(candidates, path_context, {.min_size = 1},
+                                                     u"Format: [primary buttons...]");
+        if (!arr) { return defaults; }
+
+        std::vector<TPrimaryButtonParams> found = {};
+
+        for (size_t i = 0; i != arr.value().size(); ++i) {
+                auto new_button = primaryButton<TApplet>(candidates.makeExtended(i),
+                                                         path_context.makeExtended(i));
+                if (new_button) { found.push_back(std::move(new_button.value())); }
+        }
+
+        if (found.empty()) {
+                qWarning() << path_context.makePath(TApplet)
+                                      + ", no enabled buttons found! Using defaults...";
+                return defaults;
+        }
+
+        return std::move(found);
+}
+
+template<applet::type TApplet>
+std::optional<typename AppletTraits<TApplet>::TPrimaryButtonParams> ConfigMapper::primaryButton(
+        const ResolverCandidates& candidates, const PathContext& path_context) {
+        using TPrimaryButtonParams = AppletTraits<TApplet>::TPrimaryButtonParams;
+        using TPrimaryButtonType   = AppletTraits<TApplet>::TPrimaryButtonType;
+
+        const auto table = Resolver::from<toml::table>(candidates, path_context);
+        if (!table) { return {}; }
+
+        TPrimaryButtonParams new_button = {};
+
+        auto type = Resolver::from<QString>(candidates.makeExtended("id"),
+                                            path_context.makeExtended("id"));
+        if (!type) { return {}; }
+
+        new_button.type = toPrimaryButtonType<TPrimaryButtonType>(type.value());
+
+        if (new_button.type == TPrimaryButtonType::none) { return {}; }
+
+        new_button.text = Resolver::from<QString>(candidates.makeExtended("text"),
+                                                  path_context.makeExtended("text"))
+                                  .value_or(textFor(new_button.type));
+
+        new_button.command = Resolver::from<QString>(candidates.makeExtended("command"),
+                                                     path_context.makeExtended("command"))
+                                     .value_or(commandFor(new_button.type));
+
+        new_button.icon = iconFor(new_button.type);
+
+        return std::move(new_button);
+}
+
+template<applet::type TApplet>
+AppletTraits<TApplet>::TConfig ConfigMapper::config(const toml::table& applet,
+                                                    const toml::table& global,
+                                                    const AppletTraits<TApplet>::TConfig& defaults) {
+        using TConfig = AppletTraits<TApplet>::TConfig;
+
         // Confirm that a QApplication instance exists
         if (!QApplication::instance()) { qFatal("QApplication has not been instantiated yet!"); }
 
@@ -28,9 +133,7 @@ TConfig ConfigMapper::config(const toml::table& applet, const toml::table& globa
 
         TConfig config = TConfig{};
 
-        ResolverCandidates cands = {{.node   = node_view(applet),
-                                     .applet = applet::type::power_applet,
-                                     .quiet  = true},
+        ResolverCandidates cands = {{.node = node_view(applet), .applet = TApplet, .quiet = true},
                                     {.node = node_view(global), .applet = applet::type::global}};
 
         /* Window Properties */
@@ -45,9 +148,10 @@ TConfig ConfigMapper::config(const toml::table& applet, const toml::table& globa
                                                          PathContext{filename, u"primary_button"});
 
         /* Layout Properties */
-        config.layout_properties = layout({cands.get()[0].makeExtended("layout").makeQuiet(false)},
-                                          defaults.getLayoutProperties(),
-                                          PathContext{filename, u"layout"});
+        config.layout_properties = layout<TApplet>({cands.get()[0].makeExtended("layout").makeQuiet(
+                                                           false)},
+                                                   defaults.getLayoutProperties(),
+                                                   PathContext{filename, u"layout"});
 
         return std::move(config);
 }

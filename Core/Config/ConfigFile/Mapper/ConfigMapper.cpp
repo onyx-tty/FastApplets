@@ -2,48 +2,18 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 
 #include "ConfigMapper.h"
-#include "Core/Applets/Types/AppletType.h"
-#include "Core/Config/ConfigFile/Properties/LayoutProperties.h"
 #include "Core/Config/ConfigFile/Properties/PrimaryButtonProperties.h"
 #include "Core/Config/ConfigFile/Properties/WindowProperties.h"
 #include "Core/Config/Resolver/PathContext/PathContext.h"
 #include "Core/Config/Resolver/Resolver.h"
 #include "Core/Config/Resolver/Types/ResolverCandidate.h"
-#include "Core/UI/Types/ButtonType.h"
-#include "Core/UI/Widgets/PowerButtonParams.h"
 
-#include <cstdlib>
-#include <optional>
 #include <toml++/toml.hpp>
-#include <utility>
-#include <vector>
 #include <QSize>
 #include <QSizePolicy>
 #include <QString>
 #include <Qt>
 #include <QtGlobal>
-
-namespace {
-
-template<typename T>
-T mapProperties(const ResolverCandidates& candidates, const T& defaults,
-                const PathContext& path_context, auto fill_fn) {
-        std::vector<toml::table> resolved = {};
-
-        for (const auto& candidate : candidates.get()) {
-                if (auto result = Resolver::from<toml::table>({candidate}, path_context)) {
-                        resolved.push_back(result.value());
-                }
-        }
-
-        if (resolved.empty()) { return defaults; }
-
-        auto props = T{};
-        fill_fn(props, path_context);
-        return std::move(props);
-}
-
-} // namespace
 
 /* Window Properties */
 
@@ -93,72 +63,4 @@ PrimaryButtonProperties ConfigMapper::primaryButton(const ResolverCandidates&   
                                                             path_context.makeExtended("policy"))
                                         .value_or(defaults.getPolicy());
                 });
-}
-
-/* Layout Properties */
-LayoutProperties<PowerButtonParams> ConfigMapper::layout(
-        const ResolverCandidates& candidates, const LayoutProperties<PowerButtonParams>& defaults,
-        const PathContext& path_context) {
-        auto properties = LayoutProperties<PowerButtonParams>{};
-
-        const auto data = Resolver::from<toml::table>(candidates, path_context);
-        if (!data) { return defaults; }
-
-        properties.primary_buttons = primaryButtons(candidates.makeExtended("primary_buttons"),
-                                                    defaults.getPrimaryButtons(),
-                                                    path_context.makeExtended("primary_buttons"));
-
-        return std::move(properties);
-}
-
-std::vector<PowerButtonParams> ConfigMapper::primaryButtons(
-        const ResolverCandidates& candidates, const std::vector<PowerButtonParams>& defaults,
-        const PathContext& path_context) {
-        const auto arr = Resolver::from<toml::array>(candidates, path_context, {.min_size = 1},
-                                                     u"Format: [primary buttons...]");
-        if (!arr) { return defaults; }
-
-        std::vector<PowerButtonParams> found = {};
-
-        for (size_t i = 0; i != arr.value().size(); ++i) {
-                auto new_button = primaryButton(candidates.makeExtended(i),
-                                                path_context.makeExtended(i));
-                if (new_button) { found.push_back(std::move(new_button.value())); }
-        }
-
-        if (found.empty()) {
-                qWarning() << path_context.makePath(applet::type::power_applet)
-                                      + ", no enabled buttons found! Using defaults...";
-                return defaults;
-        }
-
-        return std::move(found);
-}
-
-std::optional<PowerButtonParams> ConfigMapper::primaryButton(const ResolverCandidates& candidates,
-                                                             const PathContext& path_context) {
-        const auto table = Resolver::from<toml::table>(candidates, path_context);
-        if (!table) { return {}; }
-
-        PowerButtonParams new_button = {};
-
-        auto type = Resolver::from<QString>(candidates.makeExtended("id"),
-                                            path_context.makeExtended("id"));
-        if (!type) { return {}; }
-
-        new_button.type = toPrimaryButtonType<power_button_type>(type.value());
-
-        if (new_button.type == power_button_type::none) { return {}; }
-
-        new_button.text = Resolver::from<QString>(candidates.makeExtended("text"),
-                                                  path_context.makeExtended("text"))
-                                  .value_or(textFor(new_button.type));
-
-        new_button.command = Resolver::from<QString>(candidates.makeExtended("command"),
-                                                     path_context.makeExtended("command"))
-                                     .value_or(commandFor(new_button.type));
-
-        new_button.icon = iconFor(new_button.type);
-
-        return std::move(new_button);
 }

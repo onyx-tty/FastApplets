@@ -97,7 +97,7 @@ const ConfigManager<TApplet>::TConfig& ConfigManager<TApplet>::getConfig() {
         const auto& global_files = configFilepaths(applet::type::global);
 
         static const TConfig config =
-                ConfigMapper::config<TConfig>(TomlParser::file(applet_files.config),
+                ConfigMapper::config<TApplet>(TomlParser::file(applet_files.config),
                                               TomlParser::file(global_files.config),
                                               getDefaultConfig());
 

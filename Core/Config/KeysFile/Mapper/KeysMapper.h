@@ -4,7 +4,6 @@
 #pragma once
 
 #include "Core/Config/KeysFile/Types/Keybindings.h"
-#include "Core/Config/Types/NodeView.h"
 
 #include <string>
 #include <toml++/toml.hpp>
@@ -13,7 +12,6 @@
 class GlobalKeys;
 class PathContext;
 class ResolverCandidates;
-class PowerAppletKeys;
 class QString;
 
 // Parses key name strings (e.g. "Ctrl+A") into a keybindings set, stripped of
@@ -34,8 +32,6 @@ private:
         //
         // Fallback priority: applet.quit -> global.quit -> hardcoded defaults
         //
-        // Expected format: array of keybinding strings, minimum 1 element.
-        //
         // Return value: keybindings (std::unordered_set<int>)
         static keybindings quit(const ResolverCandidates& candidates, const keybindings& defaults,
                                 const PathContext& path_context);
@@ -49,9 +45,6 @@ private:
         //
         // Fallback priority: applet.primary_buttons -> hardcoded defaults
         //
-        // Expected format: array of primary_buttons tables, each containing
-        //                  keybindings
-        //
         // Return value: std::vector<keybindings> (std::vector<std::unordered_set<int>>)
         static std::vector<keybindings> primaryButtons(const ResolverCandidates&       candidates,
                                                        const std::vector<keybindings>& defaults,
@@ -59,9 +52,7 @@ private:
 
         // Maps a single button's keybindings from a config candidate.
         //
-        // Fallback priority: power_applet.primary_buttons[index] -> hardcoded defaults
-        //
-        // Expected format: string representation of keybinding
+        // Fallback priority: applet.primary_buttons[index] -> hardcoded defaults
         //
         // Return value: keybindings (std::unordered_set<int>)
         static keybindings primaryButton(const ResolverCandidates& candidates,
