@@ -47,6 +47,7 @@ keybindings KeysMapper::quit(const ResolverCandidates& candidates, const keybind
                              const PathContext& path_context) {
         toml::array keys = {};
         keybindings quit = {};
+
         Resolver::fromOrDefault<toml::array>(candidates, keys, quit, defaults, path_context,
                                              {.min_size = 1}, u"Format: [keybindings...]");
 
@@ -59,23 +60,23 @@ keybindings KeysMapper::quit(const ResolverCandidates& candidates, const keybind
 std::vector<keybindings> KeysMapper::primaryButtons(const ResolverCandidates&       candidates,
                                                     const std::vector<keybindings>& defaults,
                                                     const PathContext&              path_context) {
-        toml::array              keys            = {};
-        std::vector<keybindings> primary_buttons = {};
+        toml::array              keys    = {};
+        std::vector<keybindings> buttons = {};
 
-        Resolver::fromOrDefault(candidates, keys, primary_buttons, defaults, path_context,
-                                {.min_size = 1}, u"Format: [keybindings...]");
+        Resolver::fromOrDefault(candidates, keys, buttons, defaults, path_context, {.min_size = 1},
+                                u"Format: [keybindings...]");
 
         if (keys.empty()) { return defaults; }
 
-        std::vector<keybindings> found = {};
+        buttons.reserve(keys.size());
         for (size_t i = 0; i != keys.size(); ++i) {
                 keybindings found_for_button = primaryButton(candidates.makeExtended(i),
                                                              defaults[i],
                                                              path_context.makeExtended(i));
-                if (!keys.empty()) { found.push_back(std::move(found_for_button)); }
+                if (!keys.empty()) { buttons.push_back(std::move(found_for_button)); }
         };
 
-        return std::move(found);
+        return std::move(buttons);
 }
 
 keybindings KeysMapper::primaryButton(const ResolverCandidates& candidates,
