@@ -94,8 +94,7 @@ std::optional<T> Resolver::from(const ResolverCandidates&  candidates,
                 } else if constexpr (std::is_same_v<DT, toml::array>) {
                         qWarning()
                                 << QString("%1, missing or wrong type! Format: %2. Using defaults...")
-                                           .arg(path, QString("must be an array! Format: %1")
-                                                              .arg(arr_format));
+                                           .arg(path, arr_format.toString());
                 } else {
                         qWarning()
                                 << QString("%1, missing or wrong type! Using defaults...").arg(path);
