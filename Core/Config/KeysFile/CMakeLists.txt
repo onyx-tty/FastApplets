@@ -1,6 +1,7 @@
 add_subdirectory(Global)
 add_subdirectory(Mapper)
 add_subdirectory(PowerApplet)
+add_subdirectory(ActionApplet)
 add_subdirectory(Types)
 
 add_library(Core_Config_KeysFile INTERFACE)

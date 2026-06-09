@@ -38,6 +38,9 @@ const ConfigFilepaths& ConfigManager<TApplet>::configFilepaths(applet::type appl
                 static const ConfigFilepaths power = FileLocator::configFiles(
                         applet::toLatin1String(applet));
                 return power;
+        case applet::type::action_applet:
+                static const ConfigFilepaths action = FileLocator::configFiles(
+                        applet::toLatin1String(applet));
         case applet::type::global:
                 static const ConfigFilepaths global = FileLocator::configFiles(
                         applet::toLatin1String(applet));
@@ -62,6 +65,7 @@ ConfigManager<TApplet>::TConfig ConfigManager<TApplet>::makeDefaultConfig() {
                                        std::move(icon_size), std::move(policy)};
 
         // TODO: At this point a builder class for config schemas would help a lot
+        // TODO: Avoid repetition
         auto layout = LayoutProperties<TPrimaryButtonParams>{};
         if constexpr (TApplet == applet::type::power_applet) {
                 using enum power_button_type;
@@ -75,6 +79,22 @@ ConfigManager<TApplet>::TConfig ConfigManager<TApplet>::makeDefaultConfig() {
 
                 std::vector<TPrimaryButtonParams> params = {param(shutdown), param(reboot),
                                                             param(suspend), param(hibernate)};
+
+                layout = LayoutProperties<TPrimaryButtonParams>(std::move(params));
+        } else if constexpr (TApplet == applet::type::action_applet) {
+                using enum action_button_type;
+
+                const auto param = [](action_button_type type) -> TPrimaryButtonParams {
+                        return {.type    = type,
+                                .text    = textFor(type),
+                                .command = commandFor(type),
+                                .icon    = iconFor(type)};
+                };
+
+                // TODO: Create actual buttons here
+                // Creates 9 buttons with an empty value
+                // (for now, all values will result in empty icon, command, and name)
+                std::vector<TPrimaryButtonParams> params(9, param(static_cast<action_button_type>(0)));
 
                 layout = LayoutProperties<TPrimaryButtonParams>(std::move(params));
         }
