@@ -21,7 +21,7 @@
 PowerButton::PowerButton(power_button_type type, const QIcon& icon, const QString& text,
                          keybindings keys, const QString& command,
                          const PrimaryButtonProperties& properties, QWidget* parent) :
-        PrimaryButton(icon, text, properties, parent), keys(std::move(keys)), type(type) {
+        PrimaryButton(icon, text, std::move(keys), properties, parent), type(type) {
         // TODO: command gets copied thrice, fix that
         connect(this, &PowerButton::clicked, [this, command]() { ShellRunner::command(command); });
 
@@ -30,8 +30,4 @@ PowerButton::PowerButton(power_button_type type, const QIcon& icon, const QStrin
 
 power_button_type PowerButton::getType() const {
         return type;
-}
-
-const keybindings& PowerButton::getKeys() const {
-        return keys;
 }

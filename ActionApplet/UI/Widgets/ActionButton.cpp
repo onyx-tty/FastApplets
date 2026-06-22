@@ -17,16 +17,12 @@
 #include <QWidget>
 #include <QtGlobal>
 
-ActionButton::ActionButton(const QIcon& icon, const QString& text,
-                           keybindings keys, const QString& command,
-                           const PrimaryButtonProperties& properties, QWidget* parent) :
-        PrimaryButton(icon, text, properties, parent), keys(std::move(keys)) {
+ActionButton::ActionButton(const QIcon& icon, const QString& text, keybindings keys,
+                           const QString& command, const PrimaryButtonProperties& properties,
+                           QWidget* parent) :
+        PrimaryButton(icon, text, std::move(keys), properties, parent) {
         // TODO: command gets copied thrice, fix that
         connect(this, &ActionButton::clicked, [this, command]() { ShellRunner::command(command); });
 
         qDebug() << QString("Created %1!").arg(text);
-}
-
-const keybindings& ActionButton::getKeys() const {
-        return keys;
 }

@@ -7,6 +7,8 @@
 #include <QPushButton>
 #include <Qt>
 
+#include "Core/Config/KeysFile/Types/Keybindings.h"
+
 class PrimaryButtonProperties;
 class QIcon;
 class QLabel;
@@ -40,15 +42,17 @@ private:
         void setTextLabel(const QString& text, Qt::Alignment alignment);
         void setIconLabel(const QPixmap& pixmap, Qt::Alignment alignment, QSizePolicy size_policy);
 
-        QLabel* text_label = nullptr;
-        QLabel* icon_label = nullptr;
+        QLabel*           text_label = nullptr;
+        QLabel*           icon_label = nullptr;
+        const keybindings keys;
 
 protected:
         // Parameters:
         //   icon:       Button icon (scaled to properties.getIconSize()).
         //   text:       Button label text.
+        //   keys:       Key combinations that trigger this button.
         //   properties: Visual properties (alignments, icon size, size policy).
-        explicit PrimaryButton(const QIcon& icon, const QString& text,
+        explicit PrimaryButton(const QIcon& icon, const QString& text, keybindings keys,
                                const PrimaryButtonProperties& properties, QWidget* parent);
         virtual ~PrimaryButton() = 0;
 
@@ -60,4 +64,6 @@ public:
 
         // Returns text from the custom QLabel.
         QString text() const;
+
+        const keybindings& getKeys() const;
 };

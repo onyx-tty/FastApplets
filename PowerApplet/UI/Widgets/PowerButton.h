@@ -19,7 +19,6 @@ class QWidget;
 //   type:       Determines which icon to use and which keybindings can activate it.
 //   icon:       Button icon (scaled to properties.getIconSize()).
 //   text:       Button label text.
-//   keys:       Key combinations that trigger this button.
 //   command:    The actual system action to execute (shutdown, reboot, etc.)
 //   properties: Visual properties (alignments, icon size, size policy).
 class PowerButton final : public PrimaryButton {
@@ -27,12 +26,10 @@ class PowerButton final : public PrimaryButton {
 
 private:
         const power_button_type type;
-        const keybindings       keys;
 
 public:
         explicit PowerButton(power_button_type type, const QIcon& icon, const QString& text,
                              keybindings keys, const QString& command,
                              const PrimaryButtonProperties& properties, QWidget* parent);
-        power_button_type  getType() const;
-        const keybindings& getKeys() const;
+        power_button_type getType() const;
 };

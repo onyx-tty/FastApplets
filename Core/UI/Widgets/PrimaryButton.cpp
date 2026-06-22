@@ -3,7 +3,9 @@
 
 #include "PrimaryButton.h"
 #include "Core/Config/ConfigFile/Properties/PrimaryButtonProperties.h"
+#include "Core/Config/KeysFile/Types/Keybindings.h"
 
+#include <utility>
 #include <QLabel>
 #include <QPushButton>
 #include <QStackedLayout>
@@ -52,9 +54,9 @@ void PrimaryButton::setIconLabel(const QPixmap& pixmap, Qt::Alignment alignment,
         layout()->addWidget(icon_label);
 }
 
-PrimaryButton::PrimaryButton(const QIcon& icon, const QString& text,
+PrimaryButton::PrimaryButton(const QIcon& icon, const QString& text, keybindings keys,
                              const PrimaryButtonProperties& properties, QWidget* parent) :
-        QPushButton(parent) {
+        QPushButton(parent), keys(std::move(keys)) {
         auto* stacked = new QStackedLayout(this);
         stacked->setStackingMode(QStackedLayout::StackAll);
         setLayout(stacked);
@@ -72,4 +74,8 @@ PrimaryButton::~PrimaryButton() = default;
 QString PrimaryButton::text() const {
         if (!text_label) { return {}; };
         return text_label->text();
+}
+
+const keybindings& PrimaryButton::getKeys() const {
+        return keys;
 }
