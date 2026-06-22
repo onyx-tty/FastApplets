@@ -4,7 +4,6 @@
 #pragma once
 
 #include "Core/Config/KeysFile/Types/Keybindings.h"
-#include "Core/UI/Types/ButtonType.h"
 #include "Core/UI/Widgets/PrimaryButton.h"
 
 #include <QObject>

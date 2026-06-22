@@ -12,6 +12,5 @@ target_link_libraries(ActionApplet_UI_Widgets PRIVATE
 
 target_link_libraries(ActionApplet_UI_Widgets PUBLIC
         Core::UI::Widgets
-        Core::UI::Types
         Core::Config::KeysFile::Types
         Qt${QT_VERSION_MAJOR}::Core)
