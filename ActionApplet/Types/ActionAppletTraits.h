@@ -8,7 +8,6 @@
 #include "Core/Applets/Types/AppletType.h"
 #include "Core/Config/ConfigFile/ActionApplet/ActionAppletConfig.h"
 #include "Core/Config/KeysFile/ActionApplet/ActionAppletKeys.h"
-#include "Core/UI/Types/ButtonType.h"
 #include "Core/UI/Widgets/ActionButtonParams.h"
 
 #include <string_view>

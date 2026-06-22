@@ -11,8 +11,7 @@ target_include_directories(ActionApplet_UI PRIVATE
 
 target_link_libraries(ActionApplet_UI PRIVATE
         ActionApplet::UI::Widgets
-        Core::UI::Widgets
-        Core::UI::Types)
+        Core::UI::Widgets)
 
 target_link_libraries(ActionApplet_UI PUBLIC
         Core::UI

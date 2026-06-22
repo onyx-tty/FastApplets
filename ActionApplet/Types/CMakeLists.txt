@@ -10,5 +10,4 @@ target_link_libraries(PowerApplet_Types INTERFACE
         Core::Config::ConfigFile::ActionApplet # ActionAppletConfig
         Core::Config::KeysFile::ActionApplet # ActionAppletKeys
         Core::UI::Widgets # ActionButtonParams
-        Core::UI::Types # ButtonType
         Core::Applets::Types) # AppletType & AppletTraits

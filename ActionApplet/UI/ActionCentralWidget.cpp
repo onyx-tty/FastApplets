@@ -5,7 +5,6 @@
 #include "Core/Config/ConfigFile/ActionApplet/ActionAppletConfig.h"
 #include "Core/Config/KeysFile/ActionApplet/ActionAppletKeys.h"
 #include "Core/Config/KeysFile/Types/Keybindings.h"
-#include "Core/UI/Types/ButtonType.h"
 #include "Widgets/ActionButton.h"
 
 #include <algorithm>
