@@ -15,6 +15,7 @@ target_link_libraries(Core_Config_ConfigFile_Mapper PUBLIC
         Core::Config::Resolver
         Core::Config::Resolver::PathContext
         Core::Config::Resolver::Types
+        Core::Config::Types
         Core::Applets::Types
         tomlplusplus::tomlplusplus
         Qt${QT_VERSION_MAJOR}::Widgets)
