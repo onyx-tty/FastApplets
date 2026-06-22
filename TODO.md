@@ -113,6 +113,12 @@
 
     <br>
 
+# Shell \[0/1\]
+
+1.  \[ \] Support shell expansion
+
+    <br>
+
 # Resources \[1/3\]
 
 1.  \[X\] PowerButton icons

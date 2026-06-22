@@ -75,6 +75,11 @@
 #+BEGIN_EXPORT markdown
 <br>
 #+END_EXPORT
+* Shell [0/1]
+** [ ] Support shell expansion
+#+BEGIN_EXPORT markdown
+<br>
+#+END_EXPORT
 * Resources [1/3]
 ** [X] PowerButton icons
 ** [ ] Icons from current icon theme
