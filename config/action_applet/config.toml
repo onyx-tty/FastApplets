@@ -1,0 +1,46 @@
+## Settings applied to ActionApplet.
+##
+## Applet-specific settings and optional overrides for global defaults.
+## Any commented-out setting below inherits its value from "FastApplets/config.toml".
+##
+## Applet-specific:
+## - layout
+
+
+## Properties of the main window.
+[window]
+
+## Window title.
+##
+## Default: "ActionApplet"
+title = "ActionApplet"
+
+## Window size in pixels.
+## Uncomment to override global.
+#size = [960, 220]
+
+## Visual properties of primary buttons.
+## Uncomment any to override global.
+#[primary_button]
+#text_alignment = "top"
+#icon_alignment = "center"
+#icon_size = [64, 64]
+#policy = "expanding"
+
+## Primary buttons displayed in the applet.
+##
+## Each [[layout.primary_buttons]] entry defines one button.
+## Comment out the button if you want to disable it.
+##
+## Fields:
+## text    - label shown on the button, any string is valid
+## command - shell command run on button press; executed as-is
+##
+## Warning: commands are executed as-is with no sandboxing or confirmation prompt.
+##          Avoid destructive or irreversible commands (e.g. "rm -rf /") unless
+##          you are sure what you are doing. Commands requiring elevated access need
+##          permissions via sudoers (for sudo) or similar.
+
+[[layout.primary_buttons]]
+text = "Display greeting notification"
+command = "notify-send 'FastApplets' 'Hello!'"
