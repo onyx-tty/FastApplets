@@ -20,22 +20,3 @@ power_button_type toPrimaryButtonType<power_button_type>(QStringView string) {
 
         return *iter;
 }
-
-template<>
-action_button_type toPrimaryButtonType<action_button_type>(QStringView string) {
-        static const QHash<QStringView, action_button_type> map =
-                {{u"one", action_button_type::one},
-                 {u"two", action_button_type::two},
-                 {u"three", action_button_type::three},
-                 {u"four", action_button_type::four},
-                 {u"five", action_button_type::five},
-                 {u"six", action_button_type::six},
-                 {u"seven", action_button_type::seven},
-                 {u"eight", action_button_type::eight},
-                 {u"nine", action_button_type::nine}};
-
-        const auto iter = map.find(string);
-        if (iter == map.cend()) { return action_button_type::none; }
-
-        return *iter;
-}

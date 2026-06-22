@@ -52,22 +52,21 @@ const ConfigFilepaths& ConfigManager<TApplet>::configFilepaths(applet::type appl
 
 template<applet::type TApplet>
 ConfigManager<TApplet>::TConfig ConfigManager<TApplet>::makeDefaultConfig() {
-        QSize   size  = {960, 220};
-        QString title = QString::fromStdString(std::string(AppletTraits<TApplet>::title));
+        QSize   size   = {960, 220};
+        QString title  = QString::fromStdString(std::string(AppletTraits<TApplet>::title));
+        auto    window = WindowProperties(std::move(size), std::move(title));
 
-        WindowProperties window = WindowProperties{std::move(size), std::move(title)};
-
-        Qt::Alignment           text_alignment = {Qt::AlignHCenter, Qt::AlignTop};
-        Qt::Alignment           icon_alignment = {Qt::AlignHCenter, Qt::AlignVCenter};
-        QSize                   icon_size      = {64, 64};
-        QSizePolicy             policy         = {QSizePolicy::Expanding, QSizePolicy::Expanding};
-        PrimaryButtonProperties button{std::move(text_alignment), std::move(icon_alignment),
-                                       std::move(icon_size), std::move(policy)};
+        Qt::Alignment text_alignment = {Qt::AlignHCenter, Qt::AlignTop};
+        Qt::Alignment icon_alignment = {Qt::AlignHCenter, Qt::AlignVCenter};
+        QSize         icon_size      = {64, 64};
+        QSizePolicy   policy         = {QSizePolicy::Expanding, QSizePolicy::Expanding};
+        auto button = PrimaryButtonProperties(std::move(text_alignment), std::move(icon_alignment),
+                                              std::move(icon_size), std::move(policy));
 
         // TODO: At this point a builder class for config schemas would help a lot
-        // TODO: Avoid repetition
-        auto layout = LayoutProperties<TPrimaryButtonParams>{};
         if constexpr (TApplet == applet::type::power_applet) {
+                // This has to be moved outside if more applets with primary button type
+                // are created.
                 using enum power_button_type;
 
                 const auto param = [](power_button_type type) -> TPrimaryButtonParams {
@@ -80,26 +79,13 @@ ConfigManager<TApplet>::TConfig ConfigManager<TApplet>::makeDefaultConfig() {
                 std::vector<TPrimaryButtonParams> params = {param(shutdown), param(reboot),
                                                             param(suspend), param(hibernate)};
 
-                layout = LayoutProperties<TPrimaryButtonParams>(std::move(params));
-        } else if constexpr (TApplet == applet::type::action_applet) {
-                using enum action_button_type;
+                auto layout = LayoutProperties<typename AppletTraits<TApplet>::TPrimaryButtonParams>(
+                        std::move(params));
 
-                const auto param = [](action_button_type type) -> TPrimaryButtonParams {
-                        return {.type    = type,
-                                .text    = textFor(type),
-                                .command = commandFor(type),
-                                .icon    = iconFor(type)};
-                };
-
-                // TODO: Create actual buttons here
-                // Creates 9 buttons with an empty value
-                // (for now, all values will result in empty icon, command, and name)
-                std::vector<TPrimaryButtonParams> params(9, param(static_cast<action_button_type>(0)));
-
-                layout = LayoutProperties<TPrimaryButtonParams>(std::move(params));
+                return TConfig{window, button, layout};
         }
 
-        return TConfig{std::move(window), std::move(button), std::move(layout)};
+        return TConfig{window, button};
 }
 
 template<applet::type TApplet>

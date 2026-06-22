@@ -11,6 +11,7 @@
 #include "Core/Config/Resolver/PathContext/PathContext.h"
 #include "Core/Config/Resolver/Resolver.h"
 #include "Core/Config/Resolver/Types/ResolverCandidate.h"
+#include "Core/Config/Types/NodeView.h"
 
 #include <optional>
 #include <toml++/toml.hpp>
@@ -92,30 +93,39 @@ template<applet::type TApplet>
 std::optional<typename AppletTraits<TApplet>::TPrimaryButtonParams> ConfigMapper::primaryButton(
         const ResolverCandidates& candidates, const PathContext& path_context) {
         using TPrimaryButtonParams = AppletTraits<TApplet>::TPrimaryButtonParams;
-        using TPrimaryButtonType   = AppletTraits<TApplet>::TPrimaryButtonType;
 
         const auto table = Resolver::from<toml::table>(candidates, path_context);
         if (!table) { return {}; }
 
-        TPrimaryButtonParams new_button = {};
+        TPrimaryButtonParams new_button      = {};
+        QString              default_text    = {};
+        QString              default_command = {};
+        QIcon                default_icon    = {};
 
-        auto type = Resolver::from<QString>(candidates.makeExtended("id"),
-                                            path_context.makeExtended("id"));
-        if (!type) { return {}; }
+        if constexpr (TApplet != applet::type::action_applet) {
+                using TPrimaryButtonType = AppletTraits<TApplet>::TPrimaryButtonType;
 
-        new_button.type = toPrimaryButtonType<TPrimaryButtonType>(type.value());
+                auto type = Resolver::from<QString>(candidates.makeExtended("id"),
+                                                    path_context.makeExtended("id"));
+                if (!type) { return {}; }
 
-        if (new_button.type == TPrimaryButtonType::none) { return {}; }
+                new_button.type = toPrimaryButtonType<TPrimaryButtonType>(type.value());
+                if (new_button.type == TPrimaryButtonType::none) { return {}; }
+
+                default_text    = textFor(new_button.type);
+                default_command = commandFor(new_button.type);
+                default_icon    = iconFor(new_button.type);
+        }
 
         new_button.text = Resolver::from<QString>(candidates.makeExtended("text"),
                                                   path_context.makeExtended("text"))
-                                  .value_or(textFor(new_button.type));
+                                  .value_or(std::move(default_text));
 
         new_button.command = Resolver::from<QString>(candidates.makeExtended("command"),
                                                      path_context.makeExtended("command"))
-                                     .value_or(commandFor(new_button.type));
+                                     .value_or(std::move(default_command));
 
-        new_button.icon = iconFor(new_button.type);
+        new_button.icon = std::move(default_icon);
 
         return std::move(new_button);
 }

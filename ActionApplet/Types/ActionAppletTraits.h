@@ -19,6 +19,5 @@ struct AppletTraits<applet::type::action_applet> final {
         using TKeys                          = ActionAppletKeys;
         using TPrimaryButton                 = ActionButton;
         using TPrimaryButtonParams           = ActionButtonParams;
-        using TPrimaryButtonType             = action_button_type;
         inline static std::string_view title = "ActionApplet";
 };

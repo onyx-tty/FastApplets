@@ -18,18 +18,14 @@
 #include <QWidget>
 #include <QtGlobal>
 
-ActionButton::ActionButton(action_button_type type, const QIcon& icon, const QString& text,
+ActionButton::ActionButton(const QIcon& icon, const QString& text,
                            keybindings keys, const QString& command,
                            const PrimaryButtonProperties& properties, QWidget* parent) :
-        PrimaryButton(icon, text, properties, parent), keys(std::move(keys)), type(type) {
+        PrimaryButton(icon, text, properties, parent), keys(std::move(keys)) {
         // TODO: command gets copied thrice, fix that
         connect(this, &ActionButton::clicked, [this, command]() { ShellRunner::command(command); });
 
         qDebug() << QString("Created %1!").arg(text);
-}
-
-action_button_type ActionButton::getType() const {
-        return type;
 }
 
 const keybindings& ActionButton::getKeys() const {

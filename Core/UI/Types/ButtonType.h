@@ -8,7 +8,5 @@ class QStringView;
 // 'none' represents empty state, e.g. no button selected, if used for that purpose
 enum class power_button_type { none, shutdown, reboot, suspend, hibernate };
 
-enum class action_button_type { none, one, two, three, four, five, six, seven, eight, nine };
-
 template<typename TPrimaryButtonType>
 TPrimaryButtonType toPrimaryButtonType(QStringView string);

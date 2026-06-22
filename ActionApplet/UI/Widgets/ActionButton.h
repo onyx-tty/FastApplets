@@ -26,13 +26,11 @@ class ActionButton final : public PrimaryButton {
         Q_OBJECT
 
 private:
-        const action_button_type type;
-        const keybindings        keys;
+        const keybindings keys;
 
 public:
-        explicit ActionButton(action_button_type type, const QIcon& icon, const QString& text,
-                              keybindings keys, const QString& command,
-                              const PrimaryButtonProperties& properties, QWidget* parent);
-        action_button_type getType() const;
+        explicit ActionButton(const QIcon& icon, const QString& text, keybindings keys,
+                              const QString& command, const PrimaryButtonProperties& properties,
+                              QWidget* parent);
         const keybindings& getKeys() const;
 };

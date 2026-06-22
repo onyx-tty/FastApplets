@@ -75,14 +75,16 @@ std::vector<ActionButton*> ActionCentralWidget::createButtons(const ActionApplet
         primary_buttons.reserve(primary_buttons_data.size());
 
         for (size_t i = 0; i != primary_buttons_data.size(); ++i) {
-                action_button_type type    = primary_buttons_data[i].type;
-                QIcon              icon    = primary_buttons_data[i].icon;
-                QString            text    = primary_buttons_data[i].text;
-                QString            command = primary_buttons_data[i].command;
-                keybindings        keys    = key_getter(i);
-                auto* action_button = new ActionButton{type, icon,    text,
-                                                       keys, command, primary_button_properties,
-                                                       this};
+                QIcon       icon          = primary_buttons_data[i].icon;
+                QString     text          = primary_buttons_data[i].text;
+                QString     command       = primary_buttons_data[i].command;
+                keybindings keys          = key_getter(i);
+                auto*       action_button = new ActionButton{icon,
+                                                             text,
+                                                             keys,
+                                                             command,
+                                                             primary_button_properties,
+                                                             this};
 
                 layout()->addWidget(action_button);
                 primary_buttons.push_back(action_button);

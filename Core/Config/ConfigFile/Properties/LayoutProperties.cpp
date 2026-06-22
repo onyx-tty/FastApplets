@@ -50,20 +50,3 @@ QString commandFor<power_button_type>(power_button_type type) {
         default:        return "";
         }
 }
-
-/* ActionApplet */
-
-template<>
-QIcon iconFor<action_button_type>(action_button_type type) {
-        return {};
-}
-
-template<>
-QString textFor<action_button_type>(action_button_type type) {
-        return {};
-}
-
-template<>
-QString commandFor<action_button_type>(action_button_type type) {
-        return {};
-}

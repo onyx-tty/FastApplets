@@ -34,7 +34,6 @@ private:
         using TKeys                = AppletTraits<TApplet>::TKeys;
         using TPrimaryButton       = AppletTraits<TApplet>::TPrimaryButton;
         using TPrimaryButtonParams = AppletTraits<TApplet>::TPrimaryButtonParams;
-        using TPrimaryButtonType   = AppletTraits<TApplet>::TPrimaryButtonType;
 
         static const ConfigFilepaths& configFilepaths(applet::type applet);
         static TConfig                makeDefaultConfig();
