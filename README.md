@@ -2,7 +2,7 @@
 
 A collection of lightweight applets for system management, written in Qt6/C++
 
-Currently only PowerApplet - more coming soon!
+Currently only PowerApplet and ActionApplet - more coming soon!
 
 ## Description
 
@@ -11,6 +11,10 @@ The applets are designed with focus on keyboard-first controls, but have full mo
 ### PowerApplet
 
 Provides shutdown, reboot, suspend, and hibernate controls with customizable shell command passing.
+
+### ActionApplet
+
+Provides a full environment for the creation of custom shell commands.
 
 ## Who is this for?
 
@@ -65,12 +69,15 @@ cmake --install build/Release --prefix /your/installation/path
 ``` sh
 # If installed directory is in $PATH (e.g. /usr/bin)
 PowerApplet
+ActionApplet
 
 # Or with explicit path
 /your/installation/path/bin/PowerApplet
+/your/installation/path/bin/ActionApplet
 
 # Or directly from build directory
 ./build/Release/src/Applets/PowerApplet/PowerApplet
+./build/Release/src/Applets/ActionApplet/ActionApplet
 ```
 
 ### Test
