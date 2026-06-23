@@ -56,12 +56,14 @@ ConfigManager<TApplet>::TConfig ConfigManager<TApplet>::makeDefaultConfig() {
         QString title  = QString::fromStdString(std::string(AppletTraits<TApplet>::title));
         auto    window = WindowProperties(std::move(size), std::move(title));
 
-        Qt::Alignment text_alignment = {Qt::AlignHCenter, Qt::AlignTop};
-        Qt::Alignment icon_alignment = {Qt::AlignHCenter, Qt::AlignVCenter};
-        QSize         icon_size      = {64, 64};
-        QSizePolicy   policy         = {QSizePolicy::Expanding, QSizePolicy::Expanding};
-        auto button = PrimaryButtonProperties(std::move(text_alignment), std::move(icon_alignment),
-                                              std::move(icon_size), std::move(policy));
+        constexpr bool double_key_press = true;
+        Qt::Alignment  text_alignment   = {Qt::AlignHCenter, Qt::AlignTop};
+        Qt::Alignment  icon_alignment   = {Qt::AlignHCenter, Qt::AlignVCenter};
+        QSize          icon_size        = {64, 64};
+        QSizePolicy    policy           = {QSizePolicy::Expanding, QSizePolicy::Expanding};
+        auto button = PrimaryButtonProperties(double_key_press, std::move(text_alignment),
+                                              std::move(icon_alignment), std::move(icon_size),
+                                              std::move(policy));
 
         // TODO: At this point a builder class for config schemas would help a lot
         if constexpr (TApplet == applet::type::power_applet) {

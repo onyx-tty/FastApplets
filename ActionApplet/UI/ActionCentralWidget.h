@@ -55,6 +55,7 @@ private:
 
         std::vector<ActionButton*> buttons;
         const keybindings&         quit_keys;
+        bool                       double_key_press;
 
 public:
         explicit ActionCentralWidget(const ActionAppletConfig& config, const ActionAppletKeys& keys,

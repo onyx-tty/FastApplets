@@ -97,7 +97,8 @@ std::vector<PowerButton*> PowerCentralWidget::createButtons(const PowerAppletCon
 
 PowerCentralWidget::PowerCentralWidget(const PowerAppletConfig& config, const PowerAppletKeys& keys,
                                        const PowerAppletKeys& default_keys, QWidget* parent) :
-        QWidget(parent), quit_keys(keys.getQuit()) {
+        QWidget(parent), quit_keys(keys.getQuit()),
+        double_key_press(config.getPrimaryButtonProperties().getDoubleKeyPress()) {
         setLayout(new QHBoxLayout(this));
         buttons = createButtons(config, keys, default_keys);
 }
@@ -109,27 +110,37 @@ const std::vector<PowerButton*>& PowerCentralWidget::getButtons() const {
 void PowerCentralWidget::keyPressEvent(QKeyEvent* event) {
         int key = event->key();
 
-        // Quit pressed
-        if (isQuitKey(key, quit_keys)) {
-                // Unselect if a button is focused
-                if (auto* focused = qobject_cast<PowerButton*>(QApplication::focusWidget())) {
-                        focused->clearFocus();
-                        this->setFocus();
-                } else { // Quit if not
-                        QApplication::quit();
-                }
-        } else if (auto* power_button = findPowerButton(key, buttons)) { // PowerButton pressed
-                // Click if already focused
-                if (power_button->hasFocus()) {
-                        power_button->animateClick();
-                        power_button->clearFocus();
-                        this->setFocus();
-                } else { // Re-focus if not
+        if (double_key_press) {
+                // Quit pressed
+                if (isQuitKey(key, quit_keys)) {
+                        // Unselect if a button is focused
                         if (auto* focused = qobject_cast<PowerButton*>(
                                     QApplication::focusWidget())) {
                                 focused->clearFocus();
+                                this->setFocus();
+                        } else { // Quit if not
+                                QApplication::quit();
                         }
-                        power_button->setFocus(Qt::FocusReason::MouseFocusReason);
+                } else if (auto* power_button = findPowerButton(key,
+                                                                buttons)) { // PowerButton pressed
+                        // Click if already focused
+                        if (power_button->hasFocus()) {
+                                power_button->animateClick();
+                                power_button->clearFocus();
+                                this->setFocus();
+                        } else { // Re-focus if not
+                                if (auto* focused = qobject_cast<PowerButton*>(
+                                            QApplication::focusWidget())) {
+                                        focused->clearFocus();
+                                }
+                                power_button->setFocus(Qt::FocusReason::MouseFocusReason);
+                        }
+                }
+        } else {
+                if (isQuitKey(key, quit_keys)) {
+                        QApplication::quit();
+                } else if (auto* power_button = findPowerButton(key, buttons)) {
+                        power_button->animateClick();
                 }
         }
 }

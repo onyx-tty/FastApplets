@@ -43,6 +43,11 @@ PrimaryButtonProperties ConfigMapper::primaryButton(const ResolverCandidates&   
                 candidates, defaults, path_context,
                 [&defaults, &candidates](PrimaryButtonProperties& button,
                                          const PathContext&       path_context) {
+                        button.double_key_press =
+                                Resolver::from<bool>(candidates.makeExtended("double_key_press"),
+                                                     path_context.makeExtended("double_key_press"))
+                                        .value_or(defaults.getDoubleKeyPress());
+
                         button.text_alignment = Resolver::from<Qt::Alignment>(
                                                         candidates.makeExtended("text_alignment"),
                                                         path_context.makeExtended("text_alignment"))

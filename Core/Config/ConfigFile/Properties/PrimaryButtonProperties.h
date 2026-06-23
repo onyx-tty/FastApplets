@@ -13,15 +13,18 @@ class PrimaryButtonProperties final {
 private:
         friend class ConfigMapper;
 
+        bool          double_key_press;
         Qt::Alignment text_alignment;
         Qt::Alignment icon_alignment;
         QSize         icon_size;
         QSizePolicy   policy;
 
 public:
-        explicit PrimaryButtonProperties(Qt::Alignment text_alignment = {},
+        explicit PrimaryButtonProperties(bool          double_key_press = {},
+                                         Qt::Alignment text_alignment   = {},
                                          Qt::Alignment icon_alignment = {}, QSize icon_size = {},
                                          QSizePolicy policy = {});
+        bool                 getDoubleKeyPress() const;
         const Qt::Alignment& getTextAlignment() const;
         const Qt::Alignment& getIconAlignment() const;
         const QSize&         getIconSize() const;

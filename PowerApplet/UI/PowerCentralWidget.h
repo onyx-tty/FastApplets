@@ -55,6 +55,7 @@ private:
 
         std::vector<PowerButton*> buttons;
         const keybindings& quit_keys;
+        bool double_key_press;
 
 public:
         explicit PowerCentralWidget(const PowerAppletConfig& config, const PowerAppletKeys& keys,

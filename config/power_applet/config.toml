@@ -22,6 +22,22 @@ title = "PowerApplet"
 ## Visual properties of primary buttons.
 ## Uncomment any to override global.
 #[primary_button]
+
+## Behavior for primary button keyboard controls.
+## Used to decide whether button click is performed with double key press.
+## Created to avoid accidental button presses by requiring double press.
+##
+## 'true':  Press the key corresponding to a button once to mark it as "staged",
+##          then press the key again to click the button.
+##          Quit key cancels selection by terminating "staging", when any button
+##          is staged. Pressing a key corresponding to another button stages that
+##          button instead, and unstages the previous one.
+##
+## 'false': Click a button with a single key press.
+##
+## Default: true
+#double_key_press = true
+
 #text_alignment = "top"
 #icon_alignment = "center"
 #icon_size = [64, 64]
