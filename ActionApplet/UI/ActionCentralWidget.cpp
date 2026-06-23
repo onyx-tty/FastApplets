@@ -5,45 +5,22 @@
 #include "Core/Config/ConfigFile/ActionApplet/ActionAppletConfig.h"
 #include "Core/Config/KeysFile/ActionApplet/ActionAppletKeys.h"
 #include "Core/Config/KeysFile/Types/Keybindings.h"
+#include "Core/UI/CentralWidget.h"
 #include "Widgets/ActionButton.h"
 
-#include <algorithm>
 #include <cstddef>
 #include <vector>
-#include <QApplication>
-#include <QBoxLayout>
 #include <QDebug>
 #include <QHBoxLayout>
 #include <QIcon>
-#include <QKeyEvent>
-#include <QObject>
-#include <QShowEvent>
 #include <QWidget>
 #include <Qt>
 #include <QtGlobal>
 
-namespace {
-
-ActionButton* findActionButton(int key, std::vector<ActionButton*> buttons) {
-        const auto iter = std::find_if(buttons.cbegin(), buttons.cend(),
-                                       [key](const ActionButton* button) -> bool {
-                                               if (!button) { return false; }
-                                               return button->getKeys().contains(key);
-                                       });
-
-        return iter != buttons.cend() ? *iter : nullptr;
-}
-
-bool isQuitKey(int key, const keybindings& quit_keys) {
-        return quit_keys.contains(key);
-}
-
-} // namespace
-
 // TODO: Accept button as param for dependency injection
-std::vector<ActionButton*> ActionCentralWidget::createButtons(const ActionAppletConfig& config,
-                                                              const ActionAppletKeys&   keys,
-                                                              const ActionAppletKeys& default_keys) {
+std::vector<PrimaryButton*> ActionCentralWidget::createButtons(const ActionAppletConfig& config,
+                                                               const ActionAppletKeys&   keys,
+                                                               const ActionAppletKeys& default_keys) {
         // TODO: Rename to action_button(s)_properties/data/keys
         const auto& primary_button_properties = config.getPrimaryButtonProperties();
         const auto& primary_buttons_data      = config.getLayoutProperties().getPrimaryButtons();
@@ -70,7 +47,9 @@ std::vector<ActionButton*> ActionCentralWidget::createButtons(const ActionApplet
                 return keybindings{Qt::Key_unknown};
         };
 
-        std::vector<ActionButton*> primary_buttons = {};
+        // TODO: PowerCentralWidget.h should not be linking against PrimaryButton.
+        //       Solve this by creating a factory/builder for buttons.
+        std::vector<PrimaryButton*> primary_buttons = {};
         primary_buttons.reserve(primary_buttons_data.size());
 
         for (size_t i = 0; i != primary_buttons_data.size(); ++i) {
@@ -99,59 +78,19 @@ std::vector<ActionButton*> ActionCentralWidget::createButtons(const ActionApplet
 ActionCentralWidget::ActionCentralWidget(const ActionAppletConfig& config,
                                          const ActionAppletKeys&   keys,
                                          const ActionAppletKeys& default_keys, QWidget* parent) :
-        QWidget(parent), quit_keys(keys.getQuit()),
-        double_key_press(config.getPrimaryButtonProperties().getDoubleKeyPress()) {
-        setLayout(new QHBoxLayout(this));
-        buttons = createButtons(config, keys, default_keys);
+        CentralWidget({}, keys.getQuit(), config.getPrimaryButtonProperties().getDoubleKeyPress(),
+                      parent) {
+        CentralWidget::buttons = createButtons(config, keys, default_keys);
+
+        // Caches pointers to ActionButtons stored in CentralWidget
+        buttons.reserve(CentralWidget::buttons.size());
+        for (auto* button : CentralWidget::buttons) {
+                if (auto* action = dynamic_cast<ActionButton*>(button)) {
+                        buttons.push_back(action);
+                }
+        }
 }
 
 const std::vector<ActionButton*>& ActionCentralWidget::getButtons() const {
         return buttons;
-}
-
-void ActionCentralWidget::keyPressEvent(QKeyEvent* event) {
-        int key = event->key();
-
-        if (double_key_press) {
-                // Quit pressed
-                if (isQuitKey(key, quit_keys)) {
-                        // Unselect if a button is focused
-                        if (auto* focused = qobject_cast<ActionButton*>(
-                                    QApplication::focusWidget())) {
-                                focused->clearFocus();
-                                this->setFocus();
-                        } else { // Quit if not
-                                QApplication::quit();
-                        }
-                } else if (auto* action_button = findActionButton(key,
-                                                                  buttons)) { // ActionButton pressed
-                        // Click if already focused
-                        if (action_button->hasFocus()) {
-                                action_button->animateClick();
-                                action_button->clearFocus();
-                                this->setFocus();
-                        } else { // Re-focus if not
-                                if (auto* focused = qobject_cast<ActionButton*>(
-                                            QApplication::focusWidget())) {
-                                        focused->clearFocus();
-                                }
-                                action_button->setFocus(Qt::FocusReason::MouseFocusReason);
-                        }
-                }
-        } else {
-                if (isQuitKey(key, quit_keys)) {
-                        QApplication::quit();
-                } else if (auto* action_button = findActionButton(key, buttons)) {
-                        action_button->animateClick();
-                }
-        }
-}
-
-void ActionCentralWidget::showEvent(QShowEvent* event) {
-        QWidget::showEvent(event);
-
-        if (auto* focused = qobject_cast<ActionButton*>(QApplication::focusWidget())) {
-                focused->clearFocus();
-        }
-        this->setFocus();
 }

@@ -3,32 +3,21 @@
 
 #pragma once
 
-#include "Core/Config/KeysFile/Types/Keybindings.h"
+#include "Core/UI/CentralWidget.h"
 
 #include <vector>
 #include <QObject>
-#include <QWidget>
 #include <Qt>
 
 class PowerAppletConfig;
 class PowerAppletKeys;
 class PowerButton;
+class PrimaryButton;
 class QKeyEvent;
 class QShowEvent;
+class QWidget;
 
-// Keyboard navigation follows a two-press "stage-then-confirm" pattern to
-// prevent accidental triggers of destructive actions (shutdown, reboot, etc.):
-//
-//   First press -> focuses ("stages") the matching button; visible via highlights.
-//   Second pres -> animates and triggers the click, then clears focus.
-//   Quit key    -> clears focus if a button is staged, otherwise quits the app.
-//
-// Key:Button mapping is loaded from keys.toml via createButtons().
-// Default mapping: Key_1->button 1, Key_2->button 2, and so on.
-//
-// BUG: Mouse clicks trigger the sunken visual effect that can only be disabled
-//      by pressing the quit key.
-class PowerCentralWidget final : public QWidget {
+class PowerCentralWidget final : public CentralWidget {
         Q_OBJECT
 
 private:
@@ -49,21 +38,14 @@ private:
         //
         // Returns a vector containing every created button.
         // Calls qFatal if no buttons are found in config.
-        std::vector<PowerButton*> createButtons(const PowerAppletConfig& config,
-                                                const PowerAppletKeys&   keys,
-                                                const PowerAppletKeys&   default_keys);
+        std::vector<PrimaryButton*> createButtons(const PowerAppletConfig& config,
+                                                  const PowerAppletKeys&   keys,
+                                                  const PowerAppletKeys&   default_keys);
 
         std::vector<PowerButton*> buttons;
-        const keybindings& quit_keys;
-        bool double_key_press;
 
 public:
         explicit PowerCentralWidget(const PowerAppletConfig& config, const PowerAppletKeys& keys,
                                     const PowerAppletKeys& default_keys, QWidget* parent);
-        const std::vector<PowerButton*>& getButtons() const;
-        // Adds the stage-then-confirm keyboard navigation. See class doc for more.
-        void                             keyPressEvent(QKeyEvent* event) override;
-        // Clears button focus on show so no button starts pre-staged, keeping the
-        // stage-then-confirm flow consistent from the first keypress.
-        void                             showEvent(QShowEvent* event) override;
+        [[nodiscard]] const std::vector<PowerButton*>& getButtons() const;
 };

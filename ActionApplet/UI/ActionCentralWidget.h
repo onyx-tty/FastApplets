@@ -3,32 +3,21 @@
 
 #pragma once
 
-#include "Core/Config/KeysFile/Types/Keybindings.h"
+#include "Core/UI/CentralWidget.h"
 
 #include <vector>
 #include <QObject>
-#include <QWidget>
 #include <Qt>
 
 class ActionAppletConfig;
 class ActionAppletKeys;
 class ActionButton;
+class PrimaryButton;
 class QKeyEvent;
 class QShowEvent;
+class QWidget;
 
-// Keyboard navigation follows a two-press "stage-then-confirm" pattern to
-// prevent accidental triggers of destructive actions (shutdown, reboot, etc.):
-//
-//   First press  -> focuses ("stages") the matching button; visible via highlights.
-//   Second press -> animates and triggers the click, then clears focus.
-//   Quit key     -> clears focus if a button is staged, otherwise quits the app.
-//
-// Key:Button mapping is loaded from keys.toml via createButtons().
-// Default mapping: Key_1->button 1, Key_2->button 2, and so on.
-//
-// BUG: Mouse clicks trigger the sunken visual effect that can only be disabled
-//      by pressing the quit key.
-class ActionCentralWidget final : public QWidget {
+class ActionCentralWidget final : public CentralWidget {
         Q_OBJECT
 
 private:
@@ -49,21 +38,14 @@ private:
         //
         // Returns a vector containing every created button.
         // Calls qFatal if no buttons are found in config.
-        [[nodiscard]] std::vector<ActionButton*> createButtons(const ActionAppletConfig& config,
-                                                               const ActionAppletKeys&   keys,
-                                                               const ActionAppletKeys& default_keys);
+        [[nodiscard]] std::vector<PrimaryButton*> createButtons(
+                const ActionAppletConfig& config, const ActionAppletKeys& keys,
+                const ActionAppletKeys& default_keys);
 
         std::vector<ActionButton*> buttons;
-        const keybindings&         quit_keys;
-        bool                       double_key_press;
 
 public:
         explicit ActionCentralWidget(const ActionAppletConfig& config, const ActionAppletKeys& keys,
                                      const ActionAppletKeys& default_keys, QWidget* parent);
         [[nodiscard]] const std::vector<ActionButton*>& getButtons() const;
-        // Adds the stage-then-confirm keyboard navigation. See class doc for more.
-        void                                            keyPressEvent(QKeyEvent* event) override;
-        // Clears button focus on show so no button starts pre-staged, keeping the
-        // stage-then-confirm flow consistent from the first keypress.
-        void                                            showEvent(QShowEvent* event) override;
 };

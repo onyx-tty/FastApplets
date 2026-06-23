@@ -18,5 +18,6 @@ target_link_libraries(PowerApplet_UI PRIVATE
 
 target_link_libraries(PowerApplet_UI PUBLIC
         Core::UI
+        Core::UI::Widgets # TODO: Temporary until PrimaryButton doesn't need to be included
         Core::Config::KeysFile::Types
         Qt${QT_VERSION_MAJOR}::Widgets)
