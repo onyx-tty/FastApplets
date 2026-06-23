@@ -3,6 +3,7 @@
 
 #pragma once
 
+#include "Core/Applets/Types/AppletTraits.h"
 #include "Core/Applets/Types/AppletType.h"
 #include "Core/Config/Resolver/PathContext/PathContext.h"
 #include "Core/Config/Resolver/Types/ResolverCandidate.h"
@@ -16,8 +17,11 @@
 #include <Qt>
 #include <QtGlobal>
 
-template<typename TKeys>
-TKeys KeysMapper::keys(const toml::table& applet, const toml::table& global, const TKeys& defaults) {
+template<applet::type TApplet>
+AppletTraits<TApplet>::TKeys KeysMapper::keys(const toml::table& applet, const toml::table& global,
+                                              const AppletTraits<TApplet>::TKeys& defaults) {
+        using TKeys = AppletTraits<TApplet>::TKeys;
+
         // Confirm that a QApplication instance exists
         if (!QApplication::instance()) { qFatal("QApplication has not been instantiated yet!"); }
 
@@ -26,7 +30,7 @@ TKeys KeysMapper::keys(const toml::table& applet, const toml::table& global, con
 
         TKeys                    keys = TKeys{};
         const ResolverCandidates cands =
-                {{.node = node_view(applet), .applet = applet::type::power_applet, .quiet = true},
+                {{.node = node_view(applet), .applet = TApplet, .quiet = true},
                  {.node = node_view(global), .applet = applet::type::global}};
 
         /* Quit Keys */

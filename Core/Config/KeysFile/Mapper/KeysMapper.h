@@ -3,6 +3,8 @@
 
 #pragma once
 
+#include "Core/Applets/Types/AppletTraits.h"
+#include "Core/Applets/Types/AppletType.h"
 #include "Core/Config/KeysFile/Types/Keybindings.h"
 
 #include <string>
@@ -73,9 +75,10 @@ public:
         // QApplication must exist before calling (initialized in main()).
         //
         // Return value: TKeys
-        template<typename TKeys>
-        static TKeys keys(const toml::table& applet, const toml::table& global,
-                          const TKeys& defaults);
+        template<applet::type TApplet>
+        static AppletTraits<TApplet>::TKeys keys(const toml::table&                  applet,
+                                                 const toml::table&                  global,
+                                                 const AppletTraits<TApplet>::TKeys& defaults);
 };
 
 #include "KeysMapper.tpp"

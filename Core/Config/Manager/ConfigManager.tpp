@@ -122,9 +122,9 @@ const ConfigManager<TApplet>::TKeys& ConfigManager<TApplet>::getKeys() {
         const auto& applet_files = configFilepaths(TApplet);
         const auto& global_files = configFilepaths(applet::type::global);
 
-        static TKeys keys = KeysMapper::keys<TKeys>(TomlParser::file(applet_files.keys),
-                                                    TomlParser::file(global_files.keys),
-                                                    getDefaultKeys());
+        static TKeys keys = KeysMapper::keys<TApplet>(TomlParser::file(applet_files.keys),
+                                                      TomlParser::file(global_files.keys),
+                                                      getDefaultKeys());
 
         return keys;
 }
