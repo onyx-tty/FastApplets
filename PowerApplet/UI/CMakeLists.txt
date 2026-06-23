@@ -12,7 +12,9 @@ target_include_directories(PowerApplet_UI PRIVATE
 target_link_libraries(PowerApplet_UI PRIVATE
         PowerApplet::UI::Widgets
         Core::UI::Widgets
-        Core::UI::Types)
+        Core::UI::Types
+        Core::Config::ConfigFile::PowerApplet
+        Core::Config::KeysFile::PowerApplet)
 
 target_link_libraries(PowerApplet_UI PUBLIC
         Core::UI

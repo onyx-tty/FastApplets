@@ -13,7 +13,8 @@ target_include_directories(Core_UI PRIVATE
 target_link_libraries(Core_UI PRIVATE
         Core::UI::Types
         Core::UI::Widgets
-        Core::Config::ConfigFile::Properties)
+        Core::Config::ConfigFile::Properties
+        Core::Config::KeysFile::Types)
 
 target_link_libraries(Core_UI PUBLIC
         Qt${QT_VERSION_MAJOR}::Widgets)
