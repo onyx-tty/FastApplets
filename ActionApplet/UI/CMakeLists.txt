@@ -11,13 +11,10 @@ target_include_directories(ActionApplet_UI PRIVATE
 
 target_link_libraries(ActionApplet_UI PRIVATE
         ActionApplet::UI::Widgets
-        Core::UI::Widgets
-        Core::UI::Types
         Core::Config::ConfigFile::ActionApplet
         Core::Config::KeysFile::ActionApplet)
 
 target_link_libraries(ActionApplet_UI PUBLIC
+        ActionApplet::Types
         Core::UI
-        Core::UI::Widgets # TODO: Temporary until PrimaryButton doesn't need to be included
-        Core::Config::KeysFile::Types
         Qt${QT_VERSION_MAJOR}::Widgets)

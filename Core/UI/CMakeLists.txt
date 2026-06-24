@@ -15,7 +15,8 @@ target_link_libraries(Core_UI PRIVATE
         Core::UI::Types
         Core::UI::Widgets
         Core::Config::ConfigFile::Properties
-        Core::Config::KeysFile::Types)
+        Core::Config::KeysFile::Types
+        Core::Applets::Types)
 
 target_link_libraries(Core_UI PUBLIC
         Qt${QT_VERSION_MAJOR}::Widgets)
