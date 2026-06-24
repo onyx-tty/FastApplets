@@ -5,25 +5,10 @@
 
 #include "Core/Applets/Types/AppletTraits.h"
 #include "Core/Applets/Types/AppletType.h"
-#include "Core/Config/KeysFile/Types/Keybindings.h"
 
 #include <toml++/toml.hpp>
-#include <vector>
-#include <Qt>
-#include <QtGlobal>
 
 class ConfigFilepaths;
-
-inline std::vector<keybindings> makeKeyRange(Qt::Key first, Qt::Key last) {
-        if (first > last) { qFatal("First must come before last"); }
-
-        std::vector<keybindings> ret = {};
-        ret.reserve(last - first + 1);
-
-        for (int key = first; key <= last; ++key) { ret.push_back(keybindings{key}); }
-
-        return ret;
-}
 
 // Stores instances of Config and Keys schemas.
 // Initializes instances from ConfigMapper and KeysMapper.

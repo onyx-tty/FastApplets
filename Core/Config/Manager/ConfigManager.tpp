@@ -4,30 +4,16 @@
 #pragma once
 
 #include "ConfigManager.h"
-#include "Core/Applets/Types/AppletTraits.h"
 #include "Core/Applets/Types/AppletType.h"
 #include "Core/Config/ConfigFile/Mapper/ConfigMapper.h"
-#include "Core/Config/ConfigFile/Properties/LayoutProperties.h"
-#include "Core/Config/ConfigFile/Properties/PrimaryButtonProperties.h"
-#include "Core/Config/ConfigFile/Properties/WindowProperties.h"
+#include "Core/Config/Factory/ConfigFactory.h"
 #include "Core/Config/FileLocator/FileLocator.h"
 #include "Core/Config/KeysFile/Mapper/KeysMapper.h"
-#include "Core/Config/KeysFile/Types/Keybindings.h"
 #include "Core/Config/TomlParser/TomlParser.h"
 #include "Core/Config/Types/ConfigFilepaths.h"
-#include "Core/UI/Types/ButtonType.h"
 
 #include <cassert>
-#include <initializer_list>
-#include <string>
-#include <toml++/toml.hpp>
 #include <utility>
-#include <vector>
-#include <QSize>
-#include <QSizePolicy>
-#include <QString>
-#include <Qt>
-#include <QtGlobal>
 
 // TODO: TApplet is unused
 // TODO: Remove switch, rely on template, it will generate a static for each template overload
@@ -51,55 +37,6 @@ const ConfigFilepaths& ConfigManager<TApplet>::configFilepaths(applet::type appl
 }
 
 template<applet::type TApplet>
-ConfigManager<TApplet>::TConfig ConfigManager<TApplet>::makeDefaultConfig() {
-        QSize   size   = {960, 220};
-        QString title  = QString::fromStdString(std::string(AppletTraits<TApplet>::title));
-        auto    window = WindowProperties(std::move(size), std::move(title));
-
-        constexpr bool double_key_press = true;
-        Qt::Alignment  text_alignment   = {Qt::AlignHCenter, Qt::AlignTop};
-        Qt::Alignment  icon_alignment   = {Qt::AlignHCenter, Qt::AlignVCenter};
-        QSize          icon_size        = {64, 64};
-        QSizePolicy    policy           = {QSizePolicy::Expanding, QSizePolicy::Expanding};
-        auto button = PrimaryButtonProperties(double_key_press, std::move(text_alignment),
-                                              std::move(icon_alignment), std::move(icon_size),
-                                              std::move(policy));
-
-        // TODO: At this point a builder class for config schemas would help a lot
-        if constexpr (TApplet == applet::type::power_applet) {
-                // This has to be moved outside if more applets with primary button type
-                // are created.
-                using enum power_button_type;
-
-                const auto param = [](power_button_type type) -> TPrimaryButtonParams {
-                        return {.type    = type,
-                                .text    = textFor(type),
-                                .command = commandFor(type),
-                                .icon    = iconFor(type)};
-                };
-
-                std::vector<TPrimaryButtonParams> params = {param(shutdown), param(reboot),
-                                                            param(suspend), param(hibernate)};
-
-                auto layout = LayoutProperties<typename AppletTraits<TApplet>::TPrimaryButtonParams>(
-                        std::move(params));
-
-                return TConfig{window, button, layout};
-        }
-
-        return TConfig{window, button};
-}
-
-template<applet::type TApplet>
-ConfigManager<TApplet>::TKeys ConfigManager<TApplet>::makeDefaultKeys() {
-        keybindings quit = {Qt::Key_Escape, Qt::Key_Q};
-
-        std::vector<keybindings> primary_buttons = makeKeyRange(Qt::Key_1, Qt::Key_9);
-
-        return TKeys{std::move(quit), std::move(primary_buttons)};
-}
-
-template<applet::type TApplet>
 const ConfigManager<TApplet>::TConfig& ConfigManager<TApplet>::getConfig() {
         const auto& applet_files = configFilepaths(TApplet);
         const auto& global_files = configFilepaths(applet::type::global);
@@ -114,7 +51,7 @@ const ConfigManager<TApplet>::TConfig& ConfigManager<TApplet>::getConfig() {
 
 template<applet::type TApplet>
 const ConfigManager<TApplet>::TConfig& ConfigManager<TApplet>::getDefaultConfig() {
-        static const TConfig default_config = makeDefaultConfig();
+        static const TConfig default_config = ConfigFactory<TApplet>::createDefaultConfig();
 
         return default_config;
 }
@@ -133,7 +70,7 @@ const ConfigManager<TApplet>::TKeys& ConfigManager<TApplet>::getKeys() {
 
 template<applet::type TApplet>
 const ConfigManager<TApplet>::TKeys& ConfigManager<TApplet>::getDefaultKeys() {
-        static const TKeys default_keys = makeDefaultKeys();
+        static const TKeys default_keys = ConfigFactory<TApplet>::createDefaultKeys();
 
         return default_keys;
 }

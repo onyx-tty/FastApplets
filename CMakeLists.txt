@@ -75,6 +75,7 @@ install(# Install compiled artifacts to correct destinations, register all targe
                 Core_Config_KeysFile_ActionApplet
                 Core_Config_KeysFile_Mapper Core_Config_KeysFile_Types
                 Core_Config_ConfigManager
+                Core_Config_Factory
                 Core_Config_FileLocator
                 Core_Config_TomlParser
                 Core_Config_Resolver Core_Config_Resolver_PathContext Core_Config_Resolver_Types

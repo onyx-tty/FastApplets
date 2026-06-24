@@ -6,6 +6,7 @@ find_package(tomlplusplus REQUIRED)
 
 add_subdirectory(ConfigFile)
 add_subdirectory(KeysFile)
+add_subdirectory(Factory)
 add_subdirectory(Manager)
 add_subdirectory(FileLocator)
 add_subdirectory(TomlParser)
@@ -23,6 +24,7 @@ target_link_libraries(Core_Config INTERFACE
         Core::Config::ConfigFile
         Core::Config::KeysFile
         Core::Config::Manager
+        Core::Config::Factory
         Core::Config::FileLocator
         Core::Config::TomlParser
         Core::Config::Resolver
