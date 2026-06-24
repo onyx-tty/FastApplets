@@ -15,7 +15,6 @@ class QString;
 class QWidget;
 
 // Action button with associated icon and keybindings.
-//   type:       Determines which icon to use and which keybindings can activate it.
 //   icon:       Button icon (scaled to properties.getIconSize()).
 //   text:       Button label text.
 //   keys:       Key combinations that trigger this button.
