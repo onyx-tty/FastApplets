@@ -11,6 +11,7 @@
 class PrimaryButton;
 class QWidget;
 
+// TODO: Document
 template<applet::type TApplet>
 class PrimaryButtonsFactory final {
 private:

@@ -23,6 +23,7 @@ private:
         std::vector<PowerButton*> buttons;
 
 public:
+        // TODO: Inject as buttons param instead of constructing inside
         explicit PowerCentralWidget(const PowerAppletConfig& config, const PowerAppletKeys& keys,
                                     const PowerAppletKeys& default_keys, QWidget* parent);
         [[nodiscard]] const std::vector<PowerButton*>& getButtons() const;

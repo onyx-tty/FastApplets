@@ -23,6 +23,7 @@ private:
         std::vector<ActionButton*> buttons;
 
 public:
+        // TODO: Inject as buttons param instead of constructing inside
         explicit ActionCentralWidget(const ActionAppletConfig& config, const ActionAppletKeys& keys,
                                      const ActionAppletKeys& default_keys, QWidget* parent);
         [[nodiscard]] const std::vector<ActionButton*>& getButtons() const;

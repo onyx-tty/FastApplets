@@ -17,8 +17,6 @@
 #include <Qt>
 #include <QtGlobal>
 
-// TODO: Accept button as param for dependency injection
-
 ActionCentralWidget::ActionCentralWidget(const ActionAppletConfig& config,
                                          const ActionAppletKeys&   keys,
                                          const ActionAppletKeys& default_keys, QWidget* parent) :

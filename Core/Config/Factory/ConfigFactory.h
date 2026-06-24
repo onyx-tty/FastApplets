@@ -23,6 +23,7 @@ inline std::vector<keybindings> makeKeyRange(Qt::Key first, Qt::Key last) {
         return ret;
 }
 
+// TODO: Document
 template<applet::type TApplet>
 class ConfigFactory final {
 private:

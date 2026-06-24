@@ -17,8 +17,6 @@
 #include <Qt>
 #include <QtGlobal>
 
-// TODO: Accept button as param for dependency injection
-
 PowerCentralWidget::PowerCentralWidget(const PowerAppletConfig& config, const PowerAppletKeys& keys,
                                        const PowerAppletKeys& default_keys, QWidget* parent) :
         CentralWidget({}, keys.getQuit(), config.getPrimaryButtonProperties().getDoubleKeyPress(),
