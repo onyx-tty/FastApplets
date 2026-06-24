@@ -22,6 +22,7 @@ target_include_directories(Core_Config INTERFACE
 target_link_libraries(Core_Config INTERFACE
         Core::Config::ConfigFile
         Core::Config::KeysFile
+        Core::Config::Manager
         Core::Config::FileLocator
         Core::Config::TomlParser
         Core::Config::Resolver
