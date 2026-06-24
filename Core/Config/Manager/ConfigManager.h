@@ -10,6 +10,9 @@
 
 class ConfigFilepaths;
 
+template<applet::type TApplet>
+static const ConfigFilepaths& configFilepaths();
+
 // Stores instances of Config and Keys schemas.
 // Initializes instances from ConfigMapper and KeysMapper.
 template<applet::type TApplet>
@@ -20,7 +23,6 @@ private:
         using TPrimaryButton       = AppletTraits<TApplet>::TPrimaryButton;
         using TPrimaryButtonParams = AppletTraits<TApplet>::TPrimaryButtonParams;
 
-        static const ConfigFilepaths& configFilepaths(applet::type applet);
         static TConfig                makeDefaultConfig();
         static TKeys                  makeDefaultKeys();
 
