@@ -3,17 +3,11 @@
 
 #pragma once
 
-#include "Core/Config/KeysFile/Types/Keybindings.h"
 #include "Core/UI/MainWindow.h"
 
-#include <vector>
 #include <QObject>
 #include <QWidget>
 
-class PowerCentralWidget;
-class PowerButton;
-class PowerAppletConfig;
-class PowerAppletKeys;
 class QString;
 class QSize;
 
@@ -22,7 +16,6 @@ class PowerMainWindow final : public MainWindow {
         Q_OBJECT
 
 public:
-        explicit PowerMainWindow(const QString& title, QSize size,
-                                 std::vector<PowerButton*> buttons, const keybindings& quit_keys,
-                                 bool double_key_press, QWidget* parent = nullptr);
+        explicit PowerMainWindow(const QString& title, QSize size, QWidget* central_widget,
+                                 QWidget* parent = nullptr);
 };

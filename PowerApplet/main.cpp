@@ -11,6 +11,7 @@
 #include "Core/Config/Types/ConfigType.h"
 #include "Core/UI/PrimaryButtonsFactory.h"
 #include "CppUtils/Log/QtLog.h"
+#include "UI/PowerCentralWidget.h"
 #include "UI/PowerMainWindow.h"
 
 #include <QApplication>
@@ -29,15 +30,19 @@ int main(int argc, char* argv[]) {
         const auto& keys         = TConfigManager::get<config::type::keys>();
         const auto& default_keys = TConfigManager::getDefault<config::type::keys>();
 
+        // GUI
+        auto* central_widget =
+                new PowerCentralWidget(PrimaryButtonsFactory<applet::type::power_applet>::create(
+                                               config.getLayoutProperties().getPrimaryButtons(),
+                                               config.getPrimaryButtonProperties(),
+                                               keys.getPrimaryButton(),
+                                               default_keys.getPrimaryButton(), nullptr),
+                                       keys.getQuit(),
+                                       config.getPrimaryButtonProperties().getDoubleKeyPress(),
+                                       nullptr);
+
         auto main_window = PowerMainWindow(config.getWindowProperties().getTitle(),
-                                           config.getWindowProperties().getSize(),
-                                           PrimaryButtonsFactory<applet::type::power_applet>::create(
-                                                   config.getLayoutProperties().getPrimaryButtons(),
-                                                   config.getPrimaryButtonProperties(),
-                                                   keys.getPrimaryButton(),
-                                                   default_keys.getPrimaryButton(), nullptr),
-                                           keys.getQuit(),
-                                           config.getPrimaryButtonProperties().getDoubleKeyPress());
+                                           config.getWindowProperties().getSize(), central_widget);
 
         // Print application info
         qInfo() << "Applet resolution:" << main_window.size();
