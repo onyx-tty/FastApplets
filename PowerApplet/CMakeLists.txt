@@ -1,4 +1,4 @@
-project(PowerApplet VERSION 0.33.0 LANGUAGES CXX)
+project(PowerApplet VERSION 0.34.0 LANGUAGES CXX)
 
 add_subdirectory(UI)
 add_subdirectory(Types)
@@ -14,8 +14,8 @@ target_include_directories(PowerApplet PRIVATE
         $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>)
 
 target_link_libraries(PowerApplet PRIVATE
-        PowerApplet::UI
         PowerApplet::Types
+        Core::UI
         Core::Config::ConfigManager
         Core::Config::Types
         Core::Applets::Types)

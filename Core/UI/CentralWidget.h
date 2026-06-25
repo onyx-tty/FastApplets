@@ -30,20 +30,20 @@ class QKeyEvent;
 class CentralWidget : public QWidget {
         Q_OBJECT
 
-protected:
+public:
         explicit CentralWidget(std::vector<PrimaryButton*> buttons, const keybindings& quit_keys,
                                bool double_key_press, QWidget* parent);
-        virtual ~CentralWidget() = 0;
+
         // Adds the stage-then-confirm keyboard navigation. See class doc for more.
         void keyPressEvent(QKeyEvent* event) override;
+
         // Clears button focus on show so no button starts pre-staged, keeping the
         // stage-then-confirm flow consistent from the first keypress.
         void showEvent(QShowEvent* event) override;
 
+        [[nodiscard]] const std::vector<PrimaryButton*>& getButtons() const;
+
         std::vector<PrimaryButton*> buttons;
         const keybindings&          quit_keys;
         bool                        double_key_press;
-
-public:
-        [[nodiscard]] const std::vector<PrimaryButton*>& getButtons() const;
 };

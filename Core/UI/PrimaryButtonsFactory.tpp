@@ -7,6 +7,7 @@
 #include "Core/Applets/Types/AppletType.h"
 #include "Core/Config/ConfigFile/Properties/PrimaryButtonProperties.h"
 #include "Core/Config/KeysFile/Types/Keybindings.h"
+#include "Core/UI/Widgets/PrimaryButton.h"
 #include "PrimaryButtonsFactory.h"
 
 #include <cstddef>
@@ -18,7 +19,7 @@
 #include <QtGlobal>
 
 template<applet::type TApplet>
-std::vector<typename AppletTraits<TApplet>::TPrimaryButton*> PrimaryButtonsFactory<TApplet>::create(
+std::vector<PrimaryButton*> PrimaryButtonsFactory<TApplet>::create(
         const std::vector<TPrimaryButtonParams>& params, const PrimaryButtonProperties& properties,
         const std::vector<keybindings>& keys, const std::vector<keybindings>& default_keys,
         QWidget* parent) {
@@ -41,15 +42,15 @@ std::vector<typename AppletTraits<TApplet>::TPrimaryButton*> PrimaryButtonsFacto
                 return keybindings{Qt::Key_unknown};
         };
 
-        std::vector<TPrimaryButton*> buttons = {};
+        std::vector<PrimaryButton*> buttons = {};
         buttons.reserve(params.size());
 
         for (size_t i = 0; i != params.size(); ++i) {
-                TPrimaryButton* button  = nullptr;
-                QIcon           icon    = params[i].icon;
-                QString         text    = params[i].text;
-                QString         command = params[i].command;
-                keybindings     keys    = key_getter(i);
+                PrimaryButton* button  = nullptr;
+                QIcon          icon    = params[i].icon;
+                QString        text    = params[i].text;
+                QString        command = params[i].command;
+                keybindings    keys    = key_getter(i);
                 if constexpr (TApplet == applet::type::power_applet) {
                         auto type = params[i].type;
 

@@ -9,10 +9,10 @@
 #include "Core/Applets/Types/AppletType.h"
 #include "Core/Config/Manager/ConfigManager.h"
 #include "Core/Config/Types/ConfigType.h"
+#include "Core/UI/CentralWidget.h"
 #include "Core/UI/MainWindow.h"
 #include "Core/UI/PrimaryButtonsFactory.h"
 #include "CppUtils/Log/QtLog.h"
-#include "UI/ActionCentralWidget.h"
 
 #include <QApplication>
 #include <QDebug>
@@ -32,14 +32,13 @@ int main(int argc, char* argv[]) {
 
         // GUI
         auto* central_widget =
-                new ActionCentralWidget(PrimaryButtonsFactory<applet::type::action_applet>::create(
-                                                config.getLayoutProperties().getPrimaryButtons(),
-                                                config.getPrimaryButtonProperties(),
-                                                keys.getPrimaryButton(),
-                                                default_keys.getPrimaryButton(), nullptr),
-                                        keys.getQuit(),
-                                        config.getPrimaryButtonProperties().getDoubleKeyPress(),
-                                        nullptr);
+                new CentralWidget(PrimaryButtonsFactory<applet::type::action_applet>::create(
+                                          config.getLayoutProperties().getPrimaryButtons(),
+                                          config.getPrimaryButtonProperties(),
+                                          keys.getPrimaryButton(), default_keys.getPrimaryButton(),
+                                          nullptr),
+                                  keys.getQuit(),
+                                  config.getPrimaryButtonProperties().getDoubleKeyPress(), nullptr);
 
         auto main_window = MainWindow(config.getWindowProperties().getTitle(),
                                       config.getWindowProperties().getSize(), central_widget);

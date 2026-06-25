@@ -1,4 +1,4 @@
-project(ActionApplet VERSION 0.8.0 LANGUAGES CXX)
+project(ActionApplet VERSION 0.9.0 LANGUAGES CXX)
 
 add_subdirectory(UI)
 add_subdirectory(Types)
@@ -14,8 +14,8 @@ target_include_directories(ActionApplet PRIVATE
         $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>)
 
 target_link_libraries(ActionApplet PRIVATE
-        ActionApplet::UI
         ActionApplet::Types
+        Core::UI
         Core::Config::ConfigManager
         Core::Config::Types
         Core::Applets::Types)

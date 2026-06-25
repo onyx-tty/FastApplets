@@ -38,9 +38,10 @@ CentralWidget::CentralWidget(std::vector<PrimaryButton*> buttons, const keybindi
         QWidget(parent), buttons(std::move(buttons)), quit_keys(quit_keys),
         double_key_press(double_key_press) {
         setLayout(new QHBoxLayout(this));
-}
 
-CentralWidget::~CentralWidget() = default;
+        // Makes CentralWidget the parent of each button and adds them to the layout.
+        for (auto* button : this->buttons) { layout()->addWidget(button); }
+}
 
 void CentralWidget::keyPressEvent(QKeyEvent* event) {
         int key = event->key();
