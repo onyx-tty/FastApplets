@@ -40,8 +40,8 @@ public:
         // Returns a vector containing every created button.
         // Calls qFatal if no buttons are found in config.
         // TODO: Accept button as param for dependency injection
-        static std::vector<PrimaryButton*> create(const TConfig& config, const TKeys& keys,
-                                                  const TKeys& default_keys, QWidget* parent);
+        static std::vector<TPrimaryButton*> create(const TConfig& config, const TKeys& keys,
+                                                   const TKeys& default_keys, QWidget* parent);
 };
 
 #include "PrimaryButtonsFactory.tpp"

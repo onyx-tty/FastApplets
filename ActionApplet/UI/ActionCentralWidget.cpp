@@ -2,14 +2,12 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 
 #include "ActionCentralWidget.h"
-#include "ActionApplet/Types/ActionAppletTraits.h"
-#include "Core/Applets/Types/AppletType.h"
-#include "Core/Config/ConfigFile/ActionApplet/ActionAppletConfig.h"
-#include "Core/Config/KeysFile/ActionApplet/ActionAppletKeys.h"
+#include "Core/Config/KeysFile/Types/Keybindings.h"
 #include "Core/UI/CentralWidget.h"
-#include "Core/UI/PrimaryButtonsFactory.h"
+#include "Core/UI/Widgets/PrimaryButton.h"
 #include "Widgets/ActionButton.h"
 
+#include <utility>
 #include <vector>
 #include <QDebug>
 #include <QHBoxLayout>
@@ -17,22 +15,19 @@
 #include <Qt>
 #include <QtGlobal>
 
-ActionCentralWidget::ActionCentralWidget(const ActionAppletConfig& config,
-                                         const ActionAppletKeys&   keys,
-                                         const ActionAppletKeys& default_keys, QWidget* parent) :
-        CentralWidget({}, keys.getQuit(), config.getPrimaryButtonProperties().getDoubleKeyPress(),
-                      parent) {
-        CentralWidget::buttons =
-                PrimaryButtonsFactory<applet::type::action_applet>::create(config, keys,
-                                                                           default_keys, this);
-
-        // Caches pointers to ActionButtons stored in CentralWidget.
-        buttons.reserve(CentralWidget::buttons.size());
-        for (auto* button : CentralWidget::buttons) {
+ActionCentralWidget::ActionCentralWidget(std::vector<ActionButton*> buttons,
+                                         const keybindings& quit_keys, bool double_key_press,
+                                         QWidget* parent) :
+        CentralWidget({}, quit_keys, double_key_press, parent), buttons(std::move(buttons)) {
+        // Fills PrimaryButton pointers in CentralWidget for polymorphism.
+        // It's a temporary solution to code repetition between central widgets.
+        CentralWidget::buttons.reserve(buttons.size());
+        for (auto* button : this->buttons) {
+                // Adds each button to the layout.
                 layout()->addWidget(button);
 
-                if (auto* action = dynamic_cast<ActionButton*>(button)) {
-                        buttons.push_back(action);
+                if (auto* action = dynamic_cast<PrimaryButton*>(button)) {
+                        CentralWidget::buttons.push_back(action);
                 }
         }
 }

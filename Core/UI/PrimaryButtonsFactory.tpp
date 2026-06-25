@@ -3,6 +3,7 @@
 
 #pragma once
 
+#include "Core/Applets/Types/AppletTraits.h"
 #include "Core/Applets/Types/AppletType.h"
 #include "Core/Config/KeysFile/Types/Keybindings.h"
 #include "PrimaryButtonsFactory.h"
@@ -15,13 +16,9 @@
 #include <Qt>
 #include <QtGlobal>
 
-class PrimaryButton;
-
 template<applet::type TApplet>
-std::vector<PrimaryButton*> PrimaryButtonsFactory<TApplet>::create(const TConfig& config,
-                                                                   const TKeys&   keys,
-                                                                   const TKeys&   default_keys,
-                                                                   QWidget*       parent) {
+std::vector<typename AppletTraits<TApplet>::TPrimaryButton*> PrimaryButtonsFactory<TApplet>::create(
+        const TConfig& config, const TKeys& keys, const TKeys& default_keys, QWidget* parent) {
         const auto& properties          = config.getPrimaryButtonProperties();
         const auto& params              = config.getLayoutProperties().getPrimaryButtons();
         const auto& button_keys         = keys.getPrimaryButton();
@@ -47,15 +44,15 @@ std::vector<PrimaryButton*> PrimaryButtonsFactory<TApplet>::create(const TConfig
                 return keybindings{Qt::Key_unknown};
         };
 
-        std::vector<PrimaryButton*> buttons = {};
+        std::vector<TPrimaryButton*> buttons = {};
         buttons.reserve(params.size());
 
         for (size_t i = 0; i != params.size(); ++i) {
-                PrimaryButton* button  = nullptr;
-                QIcon          icon    = params[i].icon;
-                QString        text    = params[i].text;
-                QString        command = params[i].command;
-                keybindings    keys    = key_getter(i);
+                TPrimaryButton* button  = nullptr;
+                QIcon           icon    = params[i].icon;
+                QString         text    = params[i].text;
+                QString         command = params[i].command;
+                keybindings     keys    = key_getter(i);
                 if constexpr (TApplet == applet::type::power_applet) {
                         auto type = params[i].type;
 

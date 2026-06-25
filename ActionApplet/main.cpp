@@ -9,6 +9,7 @@
 #include "Core/Applets/Types/AppletType.h"
 #include "Core/Config/Manager/ConfigManager.h"
 #include "Core/Config/Types/ConfigType.h"
+#include "Core/UI/PrimaryButtonsFactory.h"
 #include "CppUtils/Log/QtLog.h"
 #include "UI/ActionMainWindow.h"
 
@@ -28,7 +29,10 @@ int main(int argc, char* argv[]) {
         const auto& keys         = TConfigManager::get<config::type::keys>();
         const auto& default_keys = TConfigManager::getDefault<config::type::keys>();
 
-        auto main_window = ActionMainWindow(config, keys, default_keys);
+        auto main_window = ActionMainWindow(
+                PrimaryButtonsFactory<applet::type::action_applet>::create(config, keys,
+                                                                           default_keys, nullptr),
+                config, keys, default_keys);
 
         // Print application info
         qInfo() << "Applet resolution:" << main_window.size();

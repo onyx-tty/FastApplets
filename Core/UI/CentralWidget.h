@@ -41,8 +41,8 @@ protected:
         void showEvent(QShowEvent* event) override;
 
         std::vector<PrimaryButton*> buttons;
-        const keybindings& quit_keys;
-        bool               double_key_press;
+        const keybindings&          quit_keys;
+        bool                        double_key_press;
 
 public:
         [[nodiscard]] const std::vector<PrimaryButton*>& getButtons() const;

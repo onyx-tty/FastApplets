@@ -17,4 +17,5 @@ target_link_libraries(PowerApplet_UI PRIVATE
 target_link_libraries(PowerApplet_UI PUBLIC
         PowerApplet::Types
         Core::UI
+        Core::Config::KeysFile::Types
         Qt${QT_VERSION_MAJOR}::Widgets)

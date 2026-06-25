@@ -5,10 +5,12 @@
 
 #include "Core/UI/MainWindow.h"
 
+#include <vector>
 #include <QObject>
 #include <QWidget>
 
 class ActionCentralWidget;
+class ActionButton;
 class ActionAppletConfig;
 class ActionAppletKeys;
 
@@ -17,6 +19,7 @@ class ActionMainWindow final : public MainWindow {
         Q_OBJECT
 
 public:
-        explicit ActionMainWindow(const ActionAppletConfig& config, const ActionAppletKeys& keys,
+        explicit ActionMainWindow(std::vector<ActionButton*> buttons,
+                                  const ActionAppletConfig& config, const ActionAppletKeys& keys,
                                   const ActionAppletKeys& default_keys, QWidget* parent = nullptr);
 };

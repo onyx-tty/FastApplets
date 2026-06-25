@@ -3,17 +3,14 @@
 
 #pragma once
 
+#include "Core/Config/KeysFile/Types/Keybindings.h"
 #include "Core/UI/CentralWidget.h"
 
 #include <vector>
 #include <QObject>
 #include <Qt>
 
-class ActionAppletConfig;
-class ActionAppletKeys;
 class ActionButton;
-class QKeyEvent;
-class QShowEvent;
 class QWidget;
 
 class ActionCentralWidget final : public CentralWidget {
@@ -23,8 +20,8 @@ private:
         std::vector<ActionButton*> buttons;
 
 public:
-        // TODO: Inject as buttons param instead of constructing inside
-        explicit ActionCentralWidget(const ActionAppletConfig& config, const ActionAppletKeys& keys,
-                                     const ActionAppletKeys& default_keys, QWidget* parent);
+        explicit ActionCentralWidget(std::vector<ActionButton*> buttons,
+                                     const keybindings& quit_keys, bool double_key_press,
+                                     QWidget* parent);
         [[nodiscard]] const std::vector<ActionButton*>& getButtons() const;
 };
