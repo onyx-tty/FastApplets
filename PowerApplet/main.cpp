@@ -8,6 +8,7 @@
 
 #include "Core/Applets/Types/AppletType.h"
 #include "Core/Config/Manager/ConfigManager.h"
+#include "Core/Config/Types/ConfigType.h"
 #include "CppUtils/Log/QtLog.h"
 #include "UI/PowerMainWindow.h"
 
@@ -23,9 +24,9 @@ int main(int argc, char* argv[]) {
 
         // Config files
         using TConfigManager     = ConfigManager<applet::type::power_applet>;
-        const auto& config       = TConfigManager::getConfig();
-        const auto& keys         = TConfigManager::getKeys();
-        const auto& default_keys = TConfigManager::getDefaultKeys();
+        const auto& config       = TConfigManager::get<config::type::config>();
+        const auto& keys         = TConfigManager::get<config::type::keys>();
+        const auto& default_keys = TConfigManager::getDefault<config::type::keys>();
 
         auto main_window = PowerMainWindow(config, keys, default_keys);
 

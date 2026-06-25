@@ -17,6 +17,7 @@ target_link_libraries(ActionApplet PRIVATE
         ActionApplet::UI
         ActionApplet::Types
         Core::Config::ConfigManager
+        Core::Config::Types
         Core::Applets::Types)
 
 target_link_libraries(ActionApplet PUBLIC

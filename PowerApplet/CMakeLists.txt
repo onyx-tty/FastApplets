@@ -17,6 +17,7 @@ target_link_libraries(PowerApplet PRIVATE
         PowerApplet::UI
         PowerApplet::Types
         Core::Config::ConfigManager
+        Core::Config::Types
         Core::Applets::Types)
 
 target_link_libraries(PowerApplet PUBLIC

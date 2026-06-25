@@ -5,6 +5,7 @@
 
 #include "Core/Applets/Types/AppletTraits.h"
 #include "Core/Applets/Types/AppletType.h"
+#include "Core/Config/Types/ConfigType.h"
 
 #include <toml++/toml.hpp>
 
@@ -25,10 +26,12 @@ private:
 
 public:
         ConfigManager() = delete;
-        static const TConfig& getConfig();
-        static const TConfig& getDefaultConfig();
-        static const TKeys&   getKeys();
-        static const TKeys&   getDefaultKeys();
+
+        template<config::type TConfigFile>
+        static const auto& get();
+
+        template<config::type TConfigFile>
+        static const auto& getDefault();
 };
 
 #include "ConfigManager.tpp"
