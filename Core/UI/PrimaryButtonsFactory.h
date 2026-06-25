@@ -5,19 +5,20 @@
 
 #include "Core/Applets/Types/AppletTraits.h"
 #include "Core/Applets/Types/AppletType.h"
+#include "Core/Config/KeysFile/Types/Keybindings.h"
 
 #include <vector>
 
 class PrimaryButton;
+class PrimaryButtonProperties;
 class QWidget;
 
 // TODO: Document
 template<applet::type TApplet>
 class PrimaryButtonsFactory final {
 private:
-        using TConfig        = AppletTraits<TApplet>::TConfig;
-        using TKeys          = AppletTraits<TApplet>::TKeys;
-        using TPrimaryButton = AppletTraits<TApplet>::TPrimaryButton;
+        using TPrimaryButton       = AppletTraits<TApplet>::TPrimaryButton;
+        using TPrimaryButtonParams = AppletTraits<TApplet>::TPrimaryButtonParams;
 
 public:
         PrimaryButtonsFactory() = delete;
@@ -39,9 +40,11 @@ public:
         //
         // Returns a vector containing every created button.
         // Calls qFatal if no buttons are found in config.
-        // TODO: Accept button as param for dependency injection
-        static std::vector<TPrimaryButton*> create(const TConfig& config, const TKeys& keys,
-                                                   const TKeys& default_keys, QWidget* parent);
+        static std::vector<TPrimaryButton*> create(const std::vector<TPrimaryButtonParams>& params,
+                                                   const PrimaryButtonProperties&  properties,
+                                                   const std::vector<keybindings>& keys,
+                                                   const std::vector<keybindings>& default_keys,
+                                                   QWidget*                        parent);
 };
 
 #include "PrimaryButtonsFactory.tpp"

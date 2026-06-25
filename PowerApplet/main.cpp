@@ -29,11 +29,15 @@ int main(int argc, char* argv[]) {
         const auto& keys         = TConfigManager::get<config::type::keys>();
         const auto& default_keys = TConfigManager::getDefault<config::type::keys>();
 
-        auto main_window = PowerMainWindow(
-                config.getWindowProperties().getTitle(), config.getWindowProperties().getSize(),
-                PrimaryButtonsFactory<applet::type::power_applet>::create(config, keys,
-                                                                          default_keys, nullptr),
-                keys.getQuit(), config.getPrimaryButtonProperties().getDoubleKeyPress());
+        auto main_window = PowerMainWindow(config.getWindowProperties().getTitle(),
+                                           config.getWindowProperties().getSize(),
+                                           PrimaryButtonsFactory<applet::type::power_applet>::create(
+                                                   config.getLayoutProperties().getPrimaryButtons(),
+                                                   config.getPrimaryButtonProperties(),
+                                                   keys.getPrimaryButton(),
+                                                   default_keys.getPrimaryButton(), nullptr),
+                                           keys.getQuit(),
+                                           config.getPrimaryButtonProperties().getDoubleKeyPress());
 
         // Print application info
         qInfo() << "Applet resolution:" << main_window.size();
