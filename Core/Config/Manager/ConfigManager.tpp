@@ -20,7 +20,10 @@ const ConfigFilepaths& configFilepaths() {
 
 template<applet::type TApplet>
 const ConfigManager<TApplet>::TConfig& ConfigManager<TApplet>::getConfig() {
-        // FIXME: There should be a guard against TApplet = applet::type::global
+        static_assert(
+                TApplet != applet::type::global,
+                "Passing applet::type::global is an error! It will result in duplicate global nodes!");
+
         const auto& applet_files = configFilepaths<TApplet>();
         const auto& global_files = configFilepaths<applet::type::global>();
 
@@ -41,7 +44,10 @@ const ConfigManager<TApplet>::TConfig& ConfigManager<TApplet>::getDefaultConfig(
 
 template<applet::type TApplet>
 const ConfigManager<TApplet>::TKeys& ConfigManager<TApplet>::getKeys() {
-        // FIXME: There should be a guard against TApplet = applet::type::global
+        static_assert(
+                TApplet != applet::type::global,
+                "Passing applet::type::global is an error! It will result in duplicate global nodes!");
+
         const auto& applet_files = configFilepaths<TApplet>();
         const auto& global_files = configFilepaths<applet::type::global>();
 
