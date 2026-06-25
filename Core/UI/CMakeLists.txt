@@ -12,11 +12,10 @@ target_include_directories(Core_UI PRIVATE
         $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>)
 
 target_link_libraries(Core_UI PRIVATE
-        Core::UI::Types
-        Core::UI::Widgets
-        Core::Config::ConfigFile::Properties
-        Core::Config::KeysFile::Types
-        Core::Applets::Types)
+        Core::UI::Widgets)
 
 target_link_libraries(Core_UI PUBLIC
+        Core::UI::Types
+        Core::Applets::Types
+        Core::Config::KeysFile::Types
         Qt${QT_VERSION_MAJOR}::Widgets)

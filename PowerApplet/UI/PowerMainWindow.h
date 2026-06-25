@@ -3,6 +3,7 @@
 
 #pragma once
 
+#include "Core/Config/KeysFile/Types/Keybindings.h"
 #include "Core/UI/MainWindow.h"
 
 #include <vector>
@@ -13,13 +14,15 @@ class PowerCentralWidget;
 class PowerButton;
 class PowerAppletConfig;
 class PowerAppletKeys;
+class QString;
+class QSize;
 
 // Unpacks WindowProperties to set window size and title.
 class PowerMainWindow final : public MainWindow {
         Q_OBJECT
 
 public:
-        explicit PowerMainWindow(std::vector<PowerButton*> buttons, const PowerAppletConfig& config,
-                                 const PowerAppletKeys& keys, const PowerAppletKeys& default_keys,
-                                 QWidget* parent = nullptr);
+        explicit PowerMainWindow(const QString& title, QSize size,
+                                 std::vector<PowerButton*> buttons, const keybindings& quit_keys,
+                                 bool double_key_press, QWidget* parent = nullptr);
 };

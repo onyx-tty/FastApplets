@@ -4,21 +4,19 @@
 #include "ActionMainWindow.h"
 #include "ActionApplet/UI/Widgets/ActionButton.h"
 #include "ActionCentralWidget.h"
-#include "Core/Config/ConfigFile/ActionApplet/ActionAppletConfig.h"
-#include "Core/Config/KeysFile/ActionApplet/ActionAppletKeys.h"
+#include "Core/Config/KeysFile/Types/Keybindings.h"
 #include "Core/UI/MainWindow.h"
 
 #include <utility>
 #include <vector>
+#include <QSize>
 #include <QWidget>
 
-ActionMainWindow::ActionMainWindow(std::vector<ActionButton*> buttons,
-                                   const ActionAppletConfig& config, const ActionAppletKeys& keys,
-                                   const ActionAppletKeys& default_keys, QWidget* parent) :
-        MainWindow(config.getWindowProperties(), parent) {
-        resize(config.getWindowProperties().getSize());
+ActionMainWindow::ActionMainWindow(const QString& title, QSize size,
+                                   std::vector<ActionButton*> buttons, const keybindings& quit_keys,
+                                   bool double_key_press, QWidget* parent) :
+        MainWindow(title, size, parent) {
+        resize(size);
         setCentralWidget(
-                new ActionCentralWidget(std::move(buttons), keys.getQuit(),
-                                        config.getPrimaryButtonProperties().getDoubleKeyPress(),
-                                        this));
+                new ActionCentralWidget(std::move(buttons), quit_keys, double_key_press, this));
 }

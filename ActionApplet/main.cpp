@@ -30,9 +30,10 @@ int main(int argc, char* argv[]) {
         const auto& default_keys = TConfigManager::getDefault<config::type::keys>();
 
         auto main_window = ActionMainWindow(
+                config.getWindowProperties().getTitle(), config.getWindowProperties().getSize(),
                 PrimaryButtonsFactory<applet::type::action_applet>::create(config, keys,
                                                                            default_keys, nullptr),
-                config, keys, default_keys);
+                keys.getQuit(), config.getPrimaryButtonProperties().getDoubleKeyPress());
 
         // Print application info
         qInfo() << "Applet resolution:" << main_window.size();

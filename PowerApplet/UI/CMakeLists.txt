@@ -11,11 +11,9 @@ target_include_directories(PowerApplet_UI PRIVATE
 
 target_link_libraries(PowerApplet_UI PRIVATE
         PowerApplet::UI::Widgets
-        Core::Config::ConfigFile::PowerApplet
-        Core::Config::KeysFile::PowerApplet)
+        Core::UI::Widgets) # TODO: Temporary until PrimaryButtons declarations are removed
 
 target_link_libraries(PowerApplet_UI PUBLIC
-        PowerApplet::Types
         Core::UI
         Core::Config::KeysFile::Types
         Qt${QT_VERSION_MAJOR}::Widgets)

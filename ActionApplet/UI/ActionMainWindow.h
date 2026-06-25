@@ -3,6 +3,7 @@
 
 #pragma once
 
+#include "Core/Config/KeysFile/Types/Keybindings.h"
 #include "Core/UI/MainWindow.h"
 
 #include <vector>
@@ -13,13 +14,15 @@ class ActionCentralWidget;
 class ActionButton;
 class ActionAppletConfig;
 class ActionAppletKeys;
+class QString;
+class QSize;
 
 // Unpacks WindowProperties to set window size and title.
 class ActionMainWindow final : public MainWindow {
         Q_OBJECT
 
 public:
-        explicit ActionMainWindow(std::vector<ActionButton*> buttons,
-                                  const ActionAppletConfig& config, const ActionAppletKeys& keys,
-                                  const ActionAppletKeys& default_keys, QWidget* parent = nullptr);
+        explicit ActionMainWindow(const QString& title, QSize size,
+                                  std::vector<ActionButton*> buttons, const keybindings& quit_keys,
+                                  bool double_key_press, QWidget* parent = nullptr);
 };

@@ -1,4 +1,4 @@
-project(ActionApplet VERSION 0.5.0 LANGUAGES CXX)
+project(ActionApplet VERSION 0.6.0 LANGUAGES CXX)
 
 add_subdirectory(UI)
 add_subdirectory(Types)

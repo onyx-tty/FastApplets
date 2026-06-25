@@ -2,13 +2,14 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 
 #include "MainWindow.h"
-#include "Core/Config/ConfigFile/Properties/WindowProperties.h"
 
 #include <QMainWindow>
+#include <QSize>
+#include <QString>
 
-MainWindow::MainWindow(const WindowProperties& properties, QWidget* parent) : QMainWindow(parent) {
-        resize(properties.getSize());
-        setWindowTitle(properties.getTitle());
+MainWindow::MainWindow(const QString& title, QSize size, QWidget* parent) : QMainWindow(parent) {
+        setWindowTitle(title);
+        resize(size);
 }
 
 MainWindow::~MainWindow() = default;
