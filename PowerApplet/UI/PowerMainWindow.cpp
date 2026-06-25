@@ -16,7 +16,6 @@ PowerMainWindow::PowerMainWindow(const QString& title, QSize size,
                                  std::vector<PowerButton*> buttons, const keybindings& quit_keys,
                                  bool double_key_press, QWidget* parent) :
         MainWindow(title, size, parent) {
-        resize(size);
         setCentralWidget(
                 new PowerCentralWidget(std::move(buttons), quit_keys, double_key_press, this));
 }
