@@ -6,10 +6,13 @@
 #include <QMainWindow>
 #include <QSize>
 #include <QString>
+#include <QWidget>
 
-MainWindow::MainWindow(const QString& title, QSize size, QWidget* parent) : QMainWindow(parent) {
+MainWindow::MainWindow(const QString& title, QSize size, QWidget* central_widget, QWidget* parent) :
+        QMainWindow(parent) {
         setWindowTitle(title);
         resize(size);
+        setCentralWidget(central_widget);
 }
 
 MainWindow::~MainWindow() = default;

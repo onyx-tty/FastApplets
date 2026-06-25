@@ -9,6 +9,5 @@
 #include <QWidget>
 
 ActionMainWindow::ActionMainWindow(const QString& title, QSize size, QWidget* central_widget,
-                                   QWidget* parent) : MainWindow(title, size, parent) {
-        setCentralWidget(central_widget);
-}
+                                   QWidget* parent) :
+        MainWindow(title, size, central_widget, parent) {}

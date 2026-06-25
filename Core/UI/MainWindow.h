@@ -15,6 +15,7 @@ class MainWindow : public QMainWindow {
         Q_OBJECT
 
 protected:
-        explicit MainWindow(const QString& title, QSize size, QWidget* parent);
+        explicit MainWindow(const QString& title, QSize size, QWidget* central_widget,
+                            QWidget* parent);
         virtual ~MainWindow() = 0;
 };
