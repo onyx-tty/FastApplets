@@ -23,9 +23,6 @@ private:
         using TPrimaryButton       = AppletTraits<TApplet>::TPrimaryButton;
         using TPrimaryButtonParams = AppletTraits<TApplet>::TPrimaryButtonParams;
 
-        static TConfig                makeDefaultConfig();
-        static TKeys                  makeDefaultKeys();
-
 public:
         ConfigManager() = delete;
         static const TConfig& getConfig();
