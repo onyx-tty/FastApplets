@@ -5,8 +5,8 @@
 
 #include <QMainWindow>
 #include <QObject>
+#include <QWidget>
 
-class QWidget;
 class QString;
 class QSize;
 
@@ -14,8 +14,7 @@ class QSize;
 class MainWindow : public QMainWindow {
         Q_OBJECT
 
-protected:
+public:
         explicit MainWindow(const QString& title, QSize size, QWidget* central_widget,
-                            QWidget* parent);
-        virtual ~MainWindow() = 0;
+                            QWidget* parent = nullptr);
 };

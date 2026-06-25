@@ -1,7 +1,6 @@
 add_subdirectory(Widgets)
 
 add_library(ActionApplet_UI
-        ActionMainWindow.cpp
         ActionCentralWidget.cpp)
 add_library(ActionApplet::UI ALIAS ActionApplet_UI)
 

@@ -9,10 +9,10 @@
 #include "Core/Applets/Types/AppletType.h"
 #include "Core/Config/Manager/ConfigManager.h"
 #include "Core/Config/Types/ConfigType.h"
+#include "Core/UI/MainWindow.h"
 #include "Core/UI/PrimaryButtonsFactory.h"
 #include "CppUtils/Log/QtLog.h"
 #include "UI/PowerCentralWidget.h"
-#include "UI/PowerMainWindow.h"
 
 #include <QApplication>
 #include <QDebug>
@@ -41,8 +41,8 @@ int main(int argc, char* argv[]) {
                                        config.getPrimaryButtonProperties().getDoubleKeyPress(),
                                        nullptr);
 
-        auto main_window = PowerMainWindow(config.getWindowProperties().getTitle(),
-                                           config.getWindowProperties().getSize(), central_widget);
+        auto main_window = MainWindow(config.getWindowProperties().getTitle(),
+                                      config.getWindowProperties().getSize(), central_widget);
 
         // Print application info
         qInfo() << "Applet resolution:" << main_window.size();

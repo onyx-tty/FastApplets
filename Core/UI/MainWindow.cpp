@@ -14,5 +14,3 @@ MainWindow::MainWindow(const QString& title, QSize size, QWidget* central_widget
         resize(size);
         setCentralWidget(central_widget);
 }
-
-MainWindow::~MainWindow() = default;
