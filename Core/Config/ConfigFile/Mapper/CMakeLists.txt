@@ -7,8 +7,7 @@ target_include_directories(Core_Config_ConfigFile_Mapper PRIVATE
         $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>)
 
 target_link_libraries(Core_Config_ConfigFile_Mapper PRIVATE
-        Core::UI::Widgets
-        Core::UI::Types) # TODO: Only for PowerButtonParams, move it elsewhere
+        Core::UI::Widgets)
 
 target_link_libraries(Core_Config_ConfigFile_Mapper PUBLIC
         Core::Config::ConfigFile::Properties
@@ -16,6 +15,7 @@ target_link_libraries(Core_Config_ConfigFile_Mapper PUBLIC
         Core::Config::Resolver::PathContext
         Core::Config::Resolver::Types
         Core::Config::Types
+        Core::UI::Types # TODO: Only for PowerButtonParams, move it elsewhere
         Core::Applets::Types
         tomlplusplus::tomlplusplus
         Qt${QT_VERSION_MAJOR}::Widgets)
