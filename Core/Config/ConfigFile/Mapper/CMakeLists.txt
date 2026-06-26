@@ -15,7 +15,7 @@ target_link_libraries(Core_Config_ConfigFile_Mapper PUBLIC
         Core::Config::Resolver::PathContext
         Core::Config::Resolver::Types
         Core::Config::Types
-        Core::UI::Types # TODO: Only for Power/ActionButtonParams, move it elsewhere
+        Core::UI::Types # TODO: Only for Power/PrimaryButtonParams, move it elsewhere
         Core::Applets::Types
         tomlplusplus::tomlplusplus
         Qt${QT_VERSION_MAJOR}::Widgets)

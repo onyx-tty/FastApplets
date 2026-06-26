@@ -12,5 +12,5 @@ target_link_libraries(Core_UI_Widgets PRIVATE
         Core::Shell)
 
 target_link_libraries(Core_UI_Widgets PUBLIC
-        Core::UI::Types # Power/ActionButtonParams
+        Core::UI::Types # PrimaryButtonParams
         Qt${QT_VERSION_MAJOR}::Widgets)

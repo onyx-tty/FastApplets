@@ -14,7 +14,7 @@
 class GlobalConfig;
 class PathContext;
 class ResolverCandidates;
-class PowerButtonParams;
+class PrimaryButtonParams;
 class PrimaryButtonProperties;
 class WindowProperties;
 class QString;

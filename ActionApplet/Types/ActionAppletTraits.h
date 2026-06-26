@@ -7,7 +7,7 @@
 #include "Core/Applets/Types/AppletType.h"
 #include "Core/Config/ConfigFile/ActionApplet/ActionAppletConfig.h"
 #include "Core/Config/KeysFile/ActionApplet/ActionAppletKeys.h"
-#include "Core/UI/Widgets/ActionButtonParams.h"
+#include "Core/UI/Widgets/PrimaryButtonParams.h"
 
 #include <string_view>
 
@@ -15,6 +15,6 @@ template<>
 struct AppletTraits<applet::type::action_applet> final {
         using TConfig                        = ActionAppletConfig;
         using TKeys                          = ActionAppletKeys;
-        using TPrimaryButtonParams           = ActionButtonParams;
+        using TPrimaryButtonParams           = PrimaryButtonParams;
         inline static std::string_view title = "ActionApplet";
 };
