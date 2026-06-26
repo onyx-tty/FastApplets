@@ -94,8 +94,6 @@ install(# Install compiled artifacts to correct destinations, register all targe
 if(BUILD_POWERAPPLET)
         install(
                 TARGETS PowerApplet
-                        PowerApplet_UI
-                        PowerApplet_UI_Widgets
                         PowerApplet_Types
                 EXPORT FastApplets_export
                 ARCHIVE  DESTINATION ${CMAKE_INSTALL_LIBDIR}
@@ -107,8 +105,6 @@ endif()
 if(BUILD_ACTIONAPPLET)
         install(
                 TARGETS ActionApplet
-                        ActionApplet_UI
-                        ActionApplet_UI_Widgets
                         ActionApplet_Types
                 EXPORT FastApplets_export
                 ARCHIVE  DESTINATION ${CMAKE_INSTALL_LIBDIR}

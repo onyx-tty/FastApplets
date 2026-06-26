@@ -5,9 +5,8 @@ target_include_directories(ActionApplet_Types INTERFACE
         $<BUILD_INTERFACE:${ROOT_DIR}>
         $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>)
 
-        ActionApplet::UI::Widgets # ActionButton
 target_link_libraries(ActionApplet_Types INTERFACE
+        Core::UI::Widgets # ActionButtonParams
         Core::Config::ConfigFile::ActionApplet # ActionAppletConfig
         Core::Config::KeysFile::ActionApplet # ActionAppletKeys
-        Core::UI::Widgets # ActionButtonParams
         Core::Applets::Types) # AppletType & AppletTraits

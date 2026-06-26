@@ -7,6 +7,7 @@
 #include "Core/Applets/Types/AppletType.h"
 #include "Core/Config/ConfigFile/Properties/PrimaryButtonProperties.h"
 #include "Core/Config/KeysFile/Types/Keybindings.h"
+#include "Core/UI/Types/ButtonType.h"
 #include "Core/UI/Widgets/PrimaryButton.h"
 #include "PrimaryButtonsFactory.h"
 
@@ -46,20 +47,12 @@ std::vector<PrimaryButton*> PrimaryButtonsFactory<TApplet>::create(
         buttons.reserve(params.size());
 
         for (size_t i = 0; i != params.size(); ++i) {
-                PrimaryButton* button  = nullptr;
+                ButtonType     type    = params[i].type;
                 QIcon          icon    = params[i].icon;
                 QString        text    = params[i].text;
                 QString        command = params[i].command;
                 keybindings    keys    = key_getter(i);
-                if constexpr (TApplet == applet::type::power_applet) {
-                        auto type = params[i].type;
-
-                        button = new TPrimaryButton(type, icon, text, keys, command, properties,
-                                                    parent);
-                } else {
-                        button = new TPrimaryButton(icon, text, keys, command, properties, parent);
-                }
-
+                auto* button = new PrimaryButton(type, icon, text, keys, command, properties, parent); 
                 buttons.push_back(button);
         }
 

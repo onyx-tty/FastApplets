@@ -8,8 +8,9 @@ target_include_directories(Core_UI_Widgets PRIVATE
 
 target_link_libraries(Core_UI_Widgets PRIVATE
         Core::Config::ConfigFile::Properties
-        Core::Config::KeysFile::Types)
+        Core::Config::KeysFile::Types
+        Core::Shell)
 
 target_link_libraries(Core_UI_Widgets PUBLIC
-        Core::UI::Types # PowerButtonParams
+        Core::UI::Types # Power/ActionButtonParams
         Qt${QT_VERSION_MAJOR}::Widgets)

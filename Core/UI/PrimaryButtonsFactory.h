@@ -17,7 +17,6 @@ class QWidget;
 template<applet::type TApplet>
 class PrimaryButtonsFactory final {
 private:
-        using TPrimaryButton       = AppletTraits<TApplet>::TPrimaryButton;
         using TPrimaryButtonParams = AppletTraits<TApplet>::TPrimaryButtonParams;
 
 public:

@@ -1,6 +1,5 @@
-project(PowerApplet VERSION 0.34.0 LANGUAGES CXX)
+project(PowerApplet VERSION 0.35.0 LANGUAGES CXX)
 
-add_subdirectory(UI)
 add_subdirectory(Types)
 
 # Executables

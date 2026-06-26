@@ -3,7 +3,6 @@
 
 #pragma once
 
-#include "PowerApplet/UI/Widgets/PowerButton.h"
 #include "Core/Applets/Types/AppletTraits.h"
 #include "Core/Applets/Types/AppletType.h"
 #include "Core/Config/ConfigFile/PowerApplet/PowerAppletConfig.h"
@@ -17,7 +16,6 @@ template<>
 struct AppletTraits<applet::type::power_applet> final {
         using TConfig                        = PowerAppletConfig;
         using TKeys                          = PowerAppletKeys;
-        using TPrimaryButton                 = PowerButton;
         using TPrimaryButtonParams           = PowerButtonParams;
         using TPrimaryButtonType             = power_button_type;
         inline static std::string_view title = "PowerApplet";

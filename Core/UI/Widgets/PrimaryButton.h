@@ -8,6 +8,7 @@
 #include <Qt>
 
 #include "Core/Config/KeysFile/Types/Keybindings.h"
+#include "Core/UI/Types/ButtonType.h"
 
 class PrimaryButtonProperties;
 class QIcon;
@@ -23,8 +24,6 @@ class QWidget;
 // Staging: a safety mechanism requiring two key presses to activate destructive actions
 //          (e.g. shutdown). First press stages the button (visual focus), second
 //          activates it. Quit key cancels staging.
-//          TODO: The keyPressEvent override is in PowerCentralWidget, which should have
-//                a base class to store staging and their docs in one place.
 //          TODO: All other keys should cancel staging, not just quit key
 class PrimaryButton : public QPushButton {
         Q_OBJECT
@@ -42,21 +41,23 @@ private:
         void setTextLabel(const QString& text, Qt::Alignment alignment);
         void setIconLabel(const QPixmap& pixmap, Qt::Alignment alignment, QSizePolicy size_policy);
 
-        QLabel*           text_label = nullptr;
-        QLabel*           icon_label = nullptr;
+        const ButtonType  type;
         const keybindings keys;
+        const QString     command;
 
-protected:
+        QLabel* text_label = nullptr;
+        QLabel* icon_label = nullptr;
+
+public:
         // Parameters:
         //   icon:       Button icon (scaled to properties.getIconSize()).
         //   text:       Button label text.
         //   keys:       Key combinations that trigger this button.
         //   properties: Visual properties (alignments, icon size, size policy).
-        explicit PrimaryButton(const QIcon& icon, const QString& text, keybindings keys,
+        explicit PrimaryButton(ButtonType type, const QIcon& icon, const QString& text,
+                               keybindings keys, QString command,
                                const PrimaryButtonProperties& properties, QWidget* parent);
-        virtual ~PrimaryButton() = 0;
 
-public:
         // QPushButton::icon() would return garbage because the inherited icon
         // storage is not used, and a separate QLabel is used instead. Deleted
         // to prevent misuse.
@@ -66,4 +67,5 @@ public:
         QString text() const;
 
         const keybindings& getKeys() const;
+        ButtonType         getType() const;
 };

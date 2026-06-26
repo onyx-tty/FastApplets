@@ -12,6 +12,7 @@
 #include "Core/Config/Resolver/Resolver.h"
 #include "Core/Config/Resolver/Types/ResolverCandidate.h"
 #include "Core/Config/Types/NodeView.h"
+#include "Core/UI/Types/ButtonType.h"
 
 #include <optional>
 #include <toml++/toml.hpp>
@@ -102,19 +103,20 @@ std::optional<typename AppletTraits<TApplet>::TPrimaryButtonParams> ConfigMapper
         QString              default_command = {};
         QIcon                default_icon    = {};
 
-        if constexpr (TApplet != applet::type::action_applet) {
-                using TPrimaryButtonType = AppletTraits<TApplet>::TPrimaryButtonType;
-
+        if constexpr (TApplet == applet::type::power_applet) {
                 auto type = Resolver::from<QString>(candidates.makeExtended("id"),
                                                     path_context.makeExtended("id"));
                 if (!type) { return {}; }
+                new_button.type = toPrimaryButtonType<power_button_type>(type.value());
+                if (new_button.type) {
+                        auto t = std::get<power_button_type>(new_button.type.value());
 
-                new_button.type = toPrimaryButtonType<TPrimaryButtonType>(type.value());
-                if (new_button.type == TPrimaryButtonType::none) { return {}; }
+                        if (t == power_button_type::none) { return {}; }
 
-                default_text    = textFor(new_button.type);
-                default_command = commandFor(new_button.type);
-                default_icon    = iconFor(new_button.type);
+                        default_text    = textFor(t);
+                        default_command = commandFor(t);
+                        default_icon    = iconFor(t);
+                }
         }
 
         new_button.text = Resolver::from<QString>(candidates.makeExtended("text"),

@@ -4,6 +4,8 @@
 #include "PrimaryButton.h"
 #include "Core/Config/ConfigFile/Properties/PrimaryButtonProperties.h"
 #include "Core/Config/KeysFile/Types/Keybindings.h"
+#include "Core/Shell/ShellRunner.h"
+#include "Core/UI/Types/ButtonType.h"
 
 #include <utility>
 #include <QLabel>
@@ -54,9 +56,13 @@ void PrimaryButton::setIconLabel(const QPixmap& pixmap, Qt::Alignment alignment,
         layout()->addWidget(icon_label);
 }
 
-PrimaryButton::PrimaryButton(const QIcon& icon, const QString& text, keybindings keys,
+// TODO: command gets copied thrice, fix that
+PrimaryButton::PrimaryButton(ButtonType type, const QIcon& icon, const QString& text,
+                             keybindings keys, QString command,
                              const PrimaryButtonProperties& properties, QWidget* parent) :
-        QPushButton(parent), keys(std::move(keys)) {
+        QPushButton(parent), type(type), keys(std::move(keys)), command(command) {
+        connect(this, &PrimaryButton::clicked, [this, command]() { ShellRunner::command(command); });
+
         auto* stacked = new QStackedLayout(this);
         stacked->setStackingMode(QStackedLayout::StackAll);
         setLayout(stacked);
@@ -69,8 +75,6 @@ PrimaryButton::PrimaryButton(const QIcon& icon, const QString& text, keybindings
                      properties.getPolicy());
 }
 
-PrimaryButton::~PrimaryButton() = default;
-
 QString PrimaryButton::text() const {
         if (!text_label) { return {}; };
         return text_label->text();
@@ -78,4 +82,8 @@ QString PrimaryButton::text() const {
 
 const keybindings& PrimaryButton::getKeys() const {
         return keys;
+}
+
+ButtonType PrimaryButton::getType() const {
+        return type;
 }

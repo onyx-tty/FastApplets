@@ -1,6 +1,5 @@
-project(ActionApplet VERSION 0.9.0 LANGUAGES CXX)
+project(ActionApplet VERSION 0.10.0 LANGUAGES CXX)
 
-add_subdirectory(UI)
 add_subdirectory(Types)
 
 # Executables
