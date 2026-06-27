@@ -6,16 +6,14 @@ target_include_directories(Core_Config_ConfigFile_Mapper PRIVATE
         $<BUILD_INTERFACE:${ROOT_DIR}>
         $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>)
 
-target_link_libraries(Core_Config_ConfigFile_Mapper PRIVATE
-        Core::UI::Widgets)
-
 target_link_libraries(Core_Config_ConfigFile_Mapper PUBLIC
         Core::Config::ConfigFile::Properties
         Core::Config::Resolver
         Core::Config::Resolver::PathContext
         Core::Config::Resolver::Types
         Core::Config::Types
-        Core::UI::Types # TODO: Only for Power/PrimaryButtonParams, move it elsewhere
+        Core::UI::Widgets
+        Core::UI::Types
         Core::Applets::Types
         tomlplusplus::tomlplusplus
         Qt${QT_VERSION_MAJOR}::Widgets)

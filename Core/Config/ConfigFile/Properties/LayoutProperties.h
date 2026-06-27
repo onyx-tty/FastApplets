@@ -3,6 +3,8 @@
 
 #pragma once
 
+#include "Core/UI/Widgets/PrimaryButtonParams.h"
+
 #include <vector>
 
 class ConfigMapper;
@@ -21,16 +23,13 @@ template<typename TPrimaryButtonType>
 QString commandFor(TPrimaryButtonType type);
 
 // Stores properties describing the appearance of the layout.
-template<typename TPrimaryButtonParams>
 class LayoutProperties final {
 private:
         friend class ConfigMapper;
 
-        std::vector<TPrimaryButtonParams> primary_buttons;
+        std::vector<PrimaryButtonParams> primary_buttons;
 
 public:
-        explicit LayoutProperties(std::vector<TPrimaryButtonParams> primary_buttons = {});
-        const std::vector<TPrimaryButtonParams>& getPrimaryButtons() const;
+        explicit LayoutProperties(std::vector<PrimaryButtonParams> primary_buttons = {});
+        const std::vector<PrimaryButtonParams>& getPrimaryButtons() const;
 };
-
-#include "LayoutProperties.tpp"

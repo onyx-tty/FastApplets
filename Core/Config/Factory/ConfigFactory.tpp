@@ -9,8 +9,8 @@
 #include "Core/Config/ConfigFile/Properties/LayoutProperties.h"
 #include "Core/Config/ConfigFile/Properties/PrimaryButtonProperties.h"
 #include "Core/Config/ConfigFile/Properties/WindowProperties.h"
-#include "Core/UI/Types/ButtonType.h"
 #include "Core/Config/KeysFile/Types/Keybindings.h"
+#include "Core/UI/Types/ButtonType.h"
 
 #include <string>
 #include <utility>
@@ -51,7 +51,7 @@ AppletTraits<TApplet>::TConfig ConfigFactory<TApplet>::createDefaultConfig() {
                 std::vector<TPrimaryButtonParams> params = {param(shutdown), param(reboot),
                                                             param(suspend), param(hibernate)};
 
-                auto layout = LayoutProperties<TPrimaryButtonParams>(std::move(params));
+                auto layout = LayoutProperties(std::move(params));
 
                 return TConfig(window, button, layout);
         }

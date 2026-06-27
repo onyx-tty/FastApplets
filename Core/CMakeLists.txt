@@ -1,4 +1,4 @@
-project(Core VERSION 0.16.0 LANGUAGES CXX)
+project(Core VERSION 0.17.0 LANGUAGES CXX)
 
 add_subdirectory(Config)
 

@@ -14,5 +14,4 @@ target_link_libraries(Core_Config_ConfigFile_ActionApplet PRIVATE
         Qt${QT_VERSION_MAJOR}::Widgets)
 
 target_link_libraries(Core_Config_ConfigFile_ActionApplet PUBLIC
-        Core::Config::ConfigFile::Global
-        Core::UI::Widgets)
+        Core::Config::ConfigFile::Global)

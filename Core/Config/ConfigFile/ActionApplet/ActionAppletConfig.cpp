@@ -7,7 +7,6 @@
 #include "Core/Config/ConfigFile/Properties/LayoutProperties.h"
 #include "Core/Config/ConfigFile/Properties/PrimaryButtonProperties.h"
 #include "Core/Config/ConfigFile/Properties/WindowProperties.h"
-#include "Core/UI/Widgets/PrimaryButtonParams.h"
 
 #include <utility>
 #include <QSize>
@@ -15,12 +14,12 @@
 #include <QString>
 #include <Qt>
 
-ActionAppletConfig::ActionAppletConfig(WindowProperties                      window,
-                                       PrimaryButtonProperties               primary_button,
-                                       LayoutProperties<PrimaryButtonParams> layout) :
+ActionAppletConfig::ActionAppletConfig(WindowProperties        window,
+                                       PrimaryButtonProperties primary_button,
+                                       LayoutProperties        layout) :
         GlobalConfig(std::move(window), std::move(primary_button)),
         layout_properties(std::move(layout)) {}
 
-const LayoutProperties<PrimaryButtonParams>& ActionAppletConfig::getLayoutProperties() const {
+const LayoutProperties& ActionAppletConfig::getLayoutProperties() const {
         return layout_properties;
 }

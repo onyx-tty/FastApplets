@@ -13,6 +13,7 @@
 #include "Core/Config/Resolver/Types/ResolverCandidate.h"
 #include "Core/Config/Types/NodeView.h"
 #include "Core/UI/Types/ButtonType.h"
+#include "Core/UI/Widgets/PrimaryButtonParams.h"
 
 #include <optional>
 #include <toml++/toml.hpp>
@@ -42,14 +43,12 @@ T ConfigMapper::mapProperties(const ResolverCandidates& candidates, const T& def
 }
 
 /* Layout Properties */
-template<applet::type TApplet>
-LayoutProperties<typename AppletTraits<TApplet>::TPrimaryButtonParams> ConfigMapper::layout(
-        const ResolverCandidates&                                                     candidates,
-        const LayoutProperties<typename AppletTraits<TApplet>::TPrimaryButtonParams>& defaults,
-        const PathContext& path_context) {
-        using TPrimaryButtonParams = AppletTraits<TApplet>::TPrimaryButtonParams;
 
-        auto properties = LayoutProperties<TPrimaryButtonParams>{};
+template<applet::type TApplet>
+LayoutProperties ConfigMapper::layout(const ResolverCandidates& candidates,
+                                      const LayoutProperties&   defaults,
+                                      const PathContext&        path_context) {
+        auto properties = LayoutProperties{};
 
         const auto data = Resolver::from<toml::table>(candidates, path_context);
         if (!data) { return defaults; }

@@ -5,7 +5,6 @@
 
 #include "Core/Applets/Types/AppletTraits.h"
 #include "Core/Applets/Types/AppletType.h"
-#include "Core/Config/ConfigFile/Properties/LayoutProperties.h"
 
 #include <optional>
 #include <toml++/toml.hpp>
@@ -14,9 +13,10 @@
 class GlobalConfig;
 class PathContext;
 class ResolverCandidates;
-class PrimaryButtonParams;
-class PrimaryButtonProperties;
 class WindowProperties;
+class LayoutProperties;
+class PrimaryButtonProperties;
+class PrimaryButtonParams;
 class QString;
 class QSize;
 class QSizePolicy;
@@ -67,17 +67,13 @@ private:
 
         // Maps layout from a config source.
         //
-        // applet::type must be specified due to differing TPrimaryButtonParams.
-        //
         // Fallback priority: applet.layout -> hardcoded defaults
         //
-        // Return value: LayoutProperties<TPrimaryButtonParams>
+        // Return value: LayoutProperties
         template<applet::type TApplet>
-        static LayoutProperties<typename AppletTraits<TApplet>::TPrimaryButtonParams> layout(
-                const ResolverCandidates& candidates,
-                const LayoutProperties<typename AppletTraits<TApplet>::TPrimaryButtonParams>&
-                                   defaults,
-                const PathContext& path_context);
+        static LayoutProperties layout(const ResolverCandidates& candidates,
+                                       const LayoutProperties&   defaults,
+                                       const PathContext&        path_context);
 
         // Maps primary_buttons from a config source.
         //

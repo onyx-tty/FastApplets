@@ -3,7 +3,10 @@
 
 #include "LayoutProperties.h"
 #include "Core/UI/Types/ButtonType.h"
+#include "Core/UI/Widgets/PrimaryButtonParams.h"
 
+#include <utility>
+#include <vector>
 #include <QIcon>
 #include <QResource>
 #include <QString>
@@ -49,4 +52,11 @@ QString commandFor<power_button_type>(power_button_type type) {
         case hibernate: return "systemctl hibernate";
         default:        return "";
         }
+}
+
+LayoutProperties::LayoutProperties(std::vector<PrimaryButtonParams> primary_buttons) :
+        primary_buttons(std::move(primary_buttons)) {}
+
+const std::vector<PrimaryButtonParams>& LayoutProperties::getPrimaryButtons() const {
+        return primary_buttons;
 }
