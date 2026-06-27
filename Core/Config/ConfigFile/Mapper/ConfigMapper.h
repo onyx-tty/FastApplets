@@ -77,22 +77,19 @@ private:
 
         // Maps primary_buttons from a config source.
         //
-        // applet::type must be specified due to differing TPrimaryButtonParams.
+        // applet::type must be specified due to differing PrimaryButtonParams.
         //
         // Defaults the buttons if none are found.
         //
         // Fallback priority: applet.layout.primary_buttons -> hardcoded defaults
         //
-        // Return value: std::vector<TPrimaryButtonParams>
+        // Return value: std::vector<PrimaryButtonParams>
         template<applet::type TApplet>
-        static std::vector<typename AppletTraits<TApplet>::TPrimaryButtonParams> primaryButtons(
-                const ResolverCandidates&                                                candidates,
-                const std::vector<typename AppletTraits<TApplet>::TPrimaryButtonParams>& defaults,
-                const PathContext& path_context);
+        static std::vector<PrimaryButtonParams> primaryButtons(
+                const ResolverCandidates&               candidates,
+                const std::vector<PrimaryButtonParams>& defaults, const PathContext& path_context);
 
         // Maps primary_button, including its attributes, from a config source.
-        //
-        // applet::type must be specified due to differing TPrimaryButtonParams.
         //
         // Buttons with invalid type are omitted with a warning.
         //
@@ -101,17 +98,15 @@ private:
         // Expected format: primary_buttons[index] table containing type (string),
         //                  text (string), command (string)
         //
-        // Return value: std::optional<TPrimaryButtonParams>
+        // Return value: std::optional<PrimaryButtonParams>
         template<applet::type TApplet>
-        static std::optional<typename AppletTraits<TApplet>::TPrimaryButtonParams> primaryButton(
-                const ResolverCandidates& candidates, const PathContext& path_context);
+        static std::optional<PrimaryButtonParams> primaryButton(const ResolverCandidates& candidates,
+                                                                const PathContext& path_context);
 
 public:
         ConfigMapper() = delete;
 
         // Parses applet and global tables into XAppletConfig.
-        //
-        // applet::type must be specified due to differing LayoutProperties.
         //
         // Usage:
         //   XAppletConfig config = ConfigMapper::config<applet::type::x>(applet, global, defaults);

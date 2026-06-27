@@ -9,6 +9,7 @@ target_link_libraries(Core_Config_Factory INTERFACE
         Core::Config::ConfigFile::Properties
         Core::Config::KeysFile::Types
         Core::Config::Types
+        Core::UI::Widgets
         Core::UI::Types
         Core::Applets::Types
         Qt${QT_VERSION_MAJOR}::Widgets)

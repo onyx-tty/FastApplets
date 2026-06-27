@@ -1,15 +1,12 @@
 // SPDX-FileCopyrightText: 2026 Łukasz Wrodarczyk
 // SPDX-License-Identifier: GPL-3.0-or-later
 
-#pragma once
-
-#include "Core/Applets/Types/AppletTraits.h"
-#include "Core/Applets/Types/AppletType.h"
+#include "PrimaryButtonsFactory.h"
 #include "Core/Config/ConfigFile/Properties/PrimaryButtonProperties.h"
 #include "Core/Config/KeysFile/Types/Keybindings.h"
 #include "Core/UI/Types/ButtonType.h"
 #include "Core/UI/Widgets/PrimaryButton.h"
-#include "PrimaryButtonsFactory.h"
+#include "Core/UI/Widgets/PrimaryButtonParams.h"
 
 #include <cstddef>
 #include <vector>
@@ -19,9 +16,8 @@
 #include <Qt>
 #include <QtGlobal>
 
-template<applet::type TApplet>
-std::vector<PrimaryButton*> PrimaryButtonsFactory<TApplet>::create(
-        const std::vector<TPrimaryButtonParams>& params, const PrimaryButtonProperties& properties,
+std::vector<PrimaryButton*> PrimaryButtonsFactory::create(
+        const std::vector<PrimaryButtonParams>& params, const PrimaryButtonProperties& properties,
         const std::vector<keybindings>& keys, const std::vector<keybindings>& default_keys,
         QWidget* parent) {
         // TODO If applied key is already used elsewhere, the keybindings will be unpredictable.
@@ -47,12 +43,13 @@ std::vector<PrimaryButton*> PrimaryButtonsFactory<TApplet>::create(
         buttons.reserve(params.size());
 
         for (size_t i = 0; i != params.size(); ++i) {
-                ButtonType     type    = params[i].type;
-                QIcon          icon    = params[i].icon;
-                QString        text    = params[i].text;
-                QString        command = params[i].command;
-                keybindings    keys    = key_getter(i);
-                auto* button = new PrimaryButton(type, icon, text, keys, command, properties, parent); 
+                ButtonType  type    = params[i].type;
+                QIcon       icon    = params[i].icon;
+                QString     text    = params[i].text;
+                QString     command = params[i].command;
+                keybindings keys    = key_getter(i);
+                auto*       button  = new PrimaryButton(type, icon, text, keys, command, properties,
+                                                        parent);
                 buttons.push_back(button);
         }
 

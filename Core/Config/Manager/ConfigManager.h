@@ -21,7 +21,6 @@ class ConfigManager final {
 private:
         using TConfig              = AppletTraits<TApplet>::TConfig;
         using TKeys                = AppletTraits<TApplet>::TKeys;
-        using TPrimaryButtonParams = AppletTraits<TApplet>::TPrimaryButtonParams;
 
 public:
         ConfigManager() = delete;

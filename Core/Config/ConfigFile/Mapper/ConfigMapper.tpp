@@ -62,17 +62,14 @@ LayoutProperties ConfigMapper::layout(const ResolverCandidates& candidates,
 }
 
 template<applet::type TApplet>
-std::vector<typename AppletTraits<TApplet>::TPrimaryButtonParams> ConfigMapper::primaryButtons(
-        const ResolverCandidates&                                                candidates,
-        const std::vector<typename AppletTraits<TApplet>::TPrimaryButtonParams>& defaults,
-        const PathContext&                                                       path_context) {
-        using TPrimaryButtonParams = AppletTraits<TApplet>::TPrimaryButtonParams;
-
+std::vector<PrimaryButtonParams> ConfigMapper::primaryButtons(
+        const ResolverCandidates& candidates, const std::vector<PrimaryButtonParams>& defaults,
+        const PathContext& path_context) {
         const auto arr = Resolver::from<toml::array>(candidates, path_context, {.min_size = 1},
                                                      u"Format: [primary buttons...]");
         if (!arr) { return defaults; }
 
-        std::vector<TPrimaryButtonParams> found = {};
+        std::vector<PrimaryButtonParams> found = {};
 
         for (size_t i = 0; i != arr.value().size(); ++i) {
                 auto new_button = primaryButton<TApplet>(candidates.makeExtended(i),
@@ -81,8 +78,7 @@ std::vector<typename AppletTraits<TApplet>::TPrimaryButtonParams> ConfigMapper::
         }
 
         if (found.empty()) {
-                qWarning() << path_context.makePath(TApplet)
-                                      + ", no enabled buttons found! Using defaults...";
+                qWarning() << "No enabled buttons found! Using defaults...";
                 return defaults;
         }
 
@@ -90,27 +86,29 @@ std::vector<typename AppletTraits<TApplet>::TPrimaryButtonParams> ConfigMapper::
 }
 
 template<applet::type TApplet>
-std::optional<typename AppletTraits<TApplet>::TPrimaryButtonParams> ConfigMapper::primaryButton(
-        const ResolverCandidates& candidates, const PathContext& path_context) {
-        using TPrimaryButtonParams = AppletTraits<TApplet>::TPrimaryButtonParams;
-
+std::optional<PrimaryButtonParams> ConfigMapper::primaryButton(const ResolverCandidates& candidates,
+                                                               const PathContext& path_context) {
         const auto table = Resolver::from<toml::table>(candidates, path_context);
-        if (!table) { return {}; }
+        if (!table) { return std::nullopt; }
 
-        TPrimaryButtonParams new_button      = {};
-        QString              default_text    = {};
-        QString              default_command = {};
-        QIcon                default_icon    = {};
+        PrimaryButtonParams new_button      = {};
+        QString             default_text    = {};
+        QString             default_command = {};
+        QIcon               default_icon    = {};
 
         if constexpr (TApplet == applet::type::power_applet) {
                 auto type = Resolver::from<QString>(candidates.makeExtended("id"),
                                                     path_context.makeExtended("id"));
-                if (!type) { return {}; }
-                new_button.type = toPrimaryButtonType<power_button_type>(type.value());
+                if (!type) { return std::nullopt; }
+
+                new_button.type =
+                        toPrimaryButtonType<typename AppletTraits<TApplet>::TPrimaryButtonType>(
+                                type.value());
+
                 if (new_button.type) {
                         auto t = std::get<power_button_type>(new_button.type.value());
 
-                        if (t == power_button_type::none) { return {}; }
+                        if (t == power_button_type::none) { return std::nullopt; }
 
                         default_text    = textFor(t);
                         default_command = commandFor(t);

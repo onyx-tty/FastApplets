@@ -3,6 +3,7 @@
 
 #include "ButtonType.h"
 
+#include <optional>
 #include <QHash>
 #include <QStringView>
 
@@ -19,4 +20,12 @@ power_button_type toPrimaryButtonType<power_button_type>(QStringView string) {
         if (iter == map.cend()) { return power_button_type::none; }
 
         return *iter;
+}
+
+// Returns nullopt for any other type.
+// T and QStringView are unused, they are only there to match
+// the number of params in other specializations.
+template<>
+std::nullopt_t toPrimaryButtonType<std::nullopt_t>(QStringView string) {
+        return std::nullopt;
 }

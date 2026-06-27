@@ -6,7 +6,6 @@ target_include_directories(PowerApplet_Types INTERFACE
         $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>)
 
 target_link_libraries(PowerApplet_Types INTERFACE
-        Core::UI::Widgets # PrimaryButtonParams
         Core::UI::Types # ButtonType
         Core::Config::ConfigFile::PowerApplet # PowerAppletConfig
         Core::Config::KeysFile::PowerApplet # PowerAppletKeys

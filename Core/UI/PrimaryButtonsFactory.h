@@ -3,9 +3,8 @@
 
 #pragma once
 
-#include "Core/Applets/Types/AppletTraits.h"
-#include "Core/Applets/Types/AppletType.h"
 #include "Core/Config/KeysFile/Types/Keybindings.h"
+#include "Core/UI/Widgets/PrimaryButtonParams.h"
 
 #include <vector>
 
@@ -14,11 +13,7 @@ class PrimaryButtonProperties;
 class QWidget;
 
 // TODO: Document
-template<applet::type TApplet>
 class PrimaryButtonsFactory final {
-private:
-        using TPrimaryButtonParams = AppletTraits<TApplet>::TPrimaryButtonParams;
-
 public:
         PrimaryButtonsFactory() = delete;
 
@@ -39,11 +34,9 @@ public:
         //
         // Returns a vector containing every created button.
         // Calls qFatal if no buttons are found in config.
-        static std::vector<PrimaryButton*> create(const std::vector<TPrimaryButtonParams>& params,
+        static std::vector<PrimaryButton*> create(const std::vector<PrimaryButtonParams>& params,
                                                   const PrimaryButtonProperties&  properties,
                                                   const std::vector<keybindings>& keys,
                                                   const std::vector<keybindings>& default_keys,
                                                   QWidget*                        parent);
 };
-
-#include "PrimaryButtonsFactory.tpp"

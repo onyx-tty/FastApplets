@@ -31,14 +31,12 @@ int main(int argc, char* argv[]) {
         const auto& default_keys = TConfigManager::getDefault<config::type::keys>();
 
         // GUI
-        auto* central_widget =
-                new CentralWidget(PrimaryButtonsFactory<applet::type::action_applet>::create(
-                                          config.getLayoutProperties().getPrimaryButtons(),
-                                          config.getPrimaryButtonProperties(),
-                                          keys.getPrimaryButton(), default_keys.getPrimaryButton(),
-                                          nullptr),
-                                  keys.getQuit(),
-                                  config.getPrimaryButtonProperties().getDoubleKeyPress(), nullptr);
+        auto* central_widget = new CentralWidget(
+                PrimaryButtonsFactory::create(config.getLayoutProperties().getPrimaryButtons(),
+                                              config.getPrimaryButtonProperties(),
+                                              keys.getPrimaryButton(),
+                                              default_keys.getPrimaryButton(), nullptr),
+                keys.getQuit(), config.getPrimaryButtonProperties().getDoubleKeyPress(), nullptr);
 
         auto main_window = MainWindow(config.getWindowProperties().getTitle(),
                                       config.getWindowProperties().getSize(), central_widget);

@@ -11,6 +11,7 @@
 #include "Core/Config/ConfigFile/Properties/WindowProperties.h"
 #include "Core/Config/KeysFile/Types/Keybindings.h"
 #include "Core/UI/Types/ButtonType.h"
+#include "Core/UI/Widgets/PrimaryButtonParams.h"
 
 #include <string>
 #include <utility>
@@ -35,28 +36,28 @@ AppletTraits<TApplet>::TConfig ConfigFactory<TApplet>::createDefaultConfig() {
                                               std::move(icon_alignment), std::move(icon_size),
                                               std::move(policy));
 
+        auto layout = LayoutProperties();
+
         // TODO: At this point a builder class for config schemas would help a lot
         if constexpr (TApplet == applet::type::power_applet) {
                 // This has to be moved outside if more applets with primary button type
                 // are created.
                 using enum power_button_type;
 
-                const auto param = [](power_button_type type) -> TPrimaryButtonParams {
+                const auto param = [](power_button_type type) -> PrimaryButtonParams {
                         return {.type    = type,
                                 .text    = textFor(type),
                                 .command = commandFor(type),
                                 .icon    = iconFor(type)};
                 };
 
-                std::vector<TPrimaryButtonParams> params = {param(shutdown), param(reboot),
-                                                            param(suspend), param(hibernate)};
+                std::vector<PrimaryButtonParams> params = {param(shutdown), param(reboot),
+                                                           param(suspend), param(hibernate)};
 
-                auto layout = LayoutProperties(std::move(params));
-
-                return TConfig(window, button, layout);
+                layout = LayoutProperties(std::move(params));
         }
 
-        return TConfig(window, button);
+        return TConfig(window, button, layout);
 }
 
 template<applet::type TApplet>
@@ -65,5 +66,5 @@ AppletTraits<TApplet>::TKeys ConfigFactory<TApplet>::createDefaultKeys() {
 
         std::vector<keybindings> primary_buttons = makeKeyRange(Qt::Key_1, Qt::Key_9);
 
-        return TKeys{std::move(quit), std::move(primary_buttons)};
+        return TKeys(std::move(quit), std::move(primary_buttons));
 }
