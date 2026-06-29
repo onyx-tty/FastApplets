@@ -10,7 +10,7 @@
 class QString;
 class QSize;
 
-// Unpacks WindowProperties to set window size and title.
+// Sets title, size, and central_widget during construction.
 class MainWindow : public QMainWindow {
         Q_OBJECT
 
