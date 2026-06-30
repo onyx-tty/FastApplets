@@ -10,7 +10,7 @@
 class QString;
 class QSize;
 
-// Sets title, size, and central_widget during construction.
+// Wrapper around QMainWindow that sets title, size, and central_widget during construction.
 class MainWindow : public QMainWindow {
         Q_OBJECT
 

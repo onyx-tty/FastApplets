@@ -19,12 +19,9 @@ class QSizePolicy;
 class QString;
 class QWidget;
 
-// Base class for applet buttons with custom icon/text positioning and keyboard staging.
-//
-// Staging: a safety mechanism requiring two key presses to activate destructive actions
-//          (e.g. shutdown). First press stages the button (visual focus), second
-//          activates it. Quit key cancels staging.
-//          TODO: All other keys should cancel staging, not just quit key
+// Main button widget used for core functionality.
+// It sets given text and icon, and aligns them according to alignments passed in
+// PrimaryButtonProperties. It also sets passed 'command' argument to execute on button click.
 class PrimaryButton : public QPushButton {
         Q_OBJECT
 
@@ -50,6 +47,7 @@ private:
 
 public:
         // Parameters:
+        //   type:       Determines icon, as well as fallback text, keys, and command.
         //   icon:       Button icon (scaled to properties.getIconSize()).
         //   text:       Button label text.
         //   keys:       Key combinations that trigger this button.

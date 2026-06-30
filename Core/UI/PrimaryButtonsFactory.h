@@ -17,23 +17,19 @@ class PrimaryButtonsFactory final {
 public:
         PrimaryButtonsFactory() = delete;
 
-        // Creates and registers all PrimaryButtons from Config and Keys.
-        //
-        // Reads buttons and definitions from config and keybindings from
-        // Keys, constructs a PrimaryButton widget for each entry,
-        // adds it to the layout, and returns a vector with every button found.
-        //
-        // WARNING: If a resolved key is already bound elsewhere, both buttons
-        // will share it silently. A global keybinding validation pass is not
-        // implemented yet.
+        // Creates PrimaryButtons from given params, sets properties and keys.
         //
         // Keybinding resolution order:
         // 1. User-configured keys (keys).
         // 2. Default keys (default_keys).
         // 3. Qt::Key_unknown if the defaults are exhausted.
         //
+        // WARNING: If a resolved key is already bound elsewhere, both buttons
+        //          will share it silently. A global keybinding validation pass is not
+        //          implemented yet.
+        //
         // Returns a vector containing every created button.
-        // Calls qFatal if no buttons are found in config.
+        // Calls qFatal if no button params are found.
         static std::vector<PrimaryButton*> create(const std::vector<PrimaryButtonParams>& params,
                                                   const PrimaryButtonProperties&  properties,
                                                   const std::vector<keybindings>& keys,
