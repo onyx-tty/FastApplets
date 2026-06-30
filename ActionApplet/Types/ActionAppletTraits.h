@@ -8,13 +8,13 @@
 #include "Core/Config/ConfigFile/ActionApplet/ActionAppletConfig.h"
 #include "Core/Config/KeysFile/ActionApplet/ActionAppletKeys.h"
 
-#include <optional>
 #include <string_view>
+#include <variant>
 
 template<>
 struct AppletTraits<applet::type::action_applet> final {
         using TConfig                        = ActionAppletConfig;
         using TKeys                          = ActionAppletKeys;
-        using TPrimaryButtonType             = std::nullopt_t;
+        using TPrimaryButtonType             = std::monostate;
         inline static std::string_view title = "ActionApplet";
 };

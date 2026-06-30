@@ -5,13 +5,13 @@
 
 #include "Core/UI/Types/ButtonType.h"
 
-#include <optional>
+#include <variant>
 #include <QIcon>
 #include <QString>
 
 // Parameters required to construct a PrimaryButton.
 struct PrimaryButtonParams final {
-        ButtonType type = std::nullopt;
+        ButtonType type = std::monostate{};
         QString    text;
         QString    command;
         QIcon      icon;

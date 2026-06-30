@@ -3,7 +3,7 @@
 
 #include "ButtonType.h"
 
-#include <optional>
+#include <variant>
 #include <QHash>
 #include <QStringView>
 
@@ -22,10 +22,10 @@ power_button_type toPrimaryButtonType<power_button_type>(QStringView string) {
         return *iter;
 }
 
-// Returns nullopt for any other type.
+// Returns monostate for any other type.
 // T and QStringView are unused, they are only there to match
-// the number of params in other specializations.
+// the number of params defined in the template.
 template<>
-std::nullopt_t toPrimaryButtonType<std::nullopt_t>(QStringView string) {
-        return std::nullopt;
+std::monostate toPrimaryButtonType<std::monostate>(QStringView string) {
+        return std::monostate{};
 }

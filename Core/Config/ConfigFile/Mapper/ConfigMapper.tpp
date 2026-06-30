@@ -105,15 +105,13 @@ std::optional<PrimaryButtonParams> ConfigMapper::primaryButton(const ResolverCan
                         toPrimaryButtonType<typename AppletTraits<TApplet>::TPrimaryButtonType>(
                                 type.value());
 
-                if (new_button.type) {
-                        auto t = std::get<power_button_type>(new_button.type.value());
+                auto t = std::get<power_button_type>(new_button.type);
 
-                        if (t == power_button_type::none) { return std::nullopt; }
+                if (t == power_button_type::none) { return std::nullopt; }
 
-                        default_text    = textFor(t);
-                        default_command = commandFor(t);
-                        default_icon    = iconFor(t);
-                }
+                default_text    = textFor(t);
+                default_command = commandFor(t);
+                default_icon    = iconFor(t);
         }
 
         new_button.text = Resolver::from<QString>(candidates.makeExtended("text"),

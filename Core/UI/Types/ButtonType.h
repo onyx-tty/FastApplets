@@ -3,7 +3,6 @@
 
 #pragma once
 
-#include <optional>
 #include <variant>
 
 class QStringView;
@@ -23,4 +22,4 @@ TPrimaryButtonType toPrimaryButtonType(QStringView string);
 // This is essentially an alternative to making button type-dependent classes generic,
 // as Q_OBJECT doesn't support templated classes. It also avoids an unnecessary
 // inheritance hierarchy.
-using ButtonType = std::optional<std::variant<power_button_type>>;
+using ButtonType = std::variant<std::monostate, power_button_type>;
