@@ -12,12 +12,14 @@ class PrimaryButton;
 class PrimaryButtonProperties;
 class QWidget;
 
-// TODO: Document
+// Constructs a vector of PrimaryButtons from passed PrimaryButtonParams, assigns
+// visual properties from PrimaryButtonProperties, and keybindings from keys, with
+// default_keys for fallback behavior.
 class PrimaryButtonsFactory final {
 public:
         PrimaryButtonsFactory() = delete;
 
-        // Creates PrimaryButtons from given params, sets properties and keys.
+        // Creates PrimaryButtons from given params, sets given properties and keys.
         //
         // Keybinding resolution order:
         // 1. User-configured keys (keys).
@@ -29,7 +31,7 @@ public:
         //          implemented yet.
         //
         // Returns a vector containing every created button.
-        // Calls qFatal if no button params are found.
+        // Calls qFatal instead if no button params are found.
         static std::vector<PrimaryButton*> create(const std::vector<PrimaryButtonParams>& params,
                                                   const PrimaryButtonProperties&  properties,
                                                   const std::vector<keybindings>& keys,
