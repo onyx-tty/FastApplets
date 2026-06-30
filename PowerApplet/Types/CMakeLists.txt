@@ -7,6 +7,4 @@ target_include_directories(PowerApplet_Types INTERFACE
 
 target_link_libraries(PowerApplet_Types INTERFACE
         Core::UI::Types # button_type
-        Core::Config::ConfigFile::PowerApplet # PowerAppletConfig
-        Core::Config::KeysFile::PowerApplet # PowerAppletKeys
         Core::Applets::Types) # AppletType & AppletTraits

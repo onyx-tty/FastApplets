@@ -5,6 +5,7 @@
 
 #include "Core/Applets/Types/AppletTraits.h"
 #include "Core/Applets/Types/AppletType.h"
+#include "Core/Config/KeysFile/Keys/Keys.h"
 #include "Core/Config/Resolver/PathContext/PathContext.h"
 #include "Core/Config/Resolver/Types/ResolverCandidate.h"
 #include "Core/Config/Types/NodeView.h"
@@ -18,17 +19,14 @@
 #include <QtGlobal>
 
 template<applet::type TApplet>
-AppletTraits<TApplet>::TKeys KeysMapper::keys(const toml::table& applet, const toml::table& global,
-                                              const AppletTraits<TApplet>::TKeys& defaults) {
-        using TKeys = AppletTraits<TApplet>::TKeys;
-
+Keys KeysMapper::keys(const toml::table& applet, const toml::table& global, const Keys& defaults) {
         // Confirm that a QApplication instance exists
         if (!QApplication::instance()) { qFatal("QApplication has not been instantiated yet!"); }
 
         using namespace Qt::StringLiterals;
         QStringView filename = u"keys.toml";
 
-        TKeys                    keys = TKeys{};
+        Keys                     keys = Keys{};
         const ResolverCandidates cands =
                 {{.node = node_view(applet), .applet = TApplet, .quiet = true},
                  {.node = node_view(global), .applet = applet::type::global}};
@@ -38,9 +36,9 @@ AppletTraits<TApplet>::TKeys KeysMapper::keys(const toml::table& applet, const t
                          PathContext{filename, u"quit"});
 
         /* Primary Button Keys */
-        keys.primary_button =
+        keys.primary_buttons =
                 primaryButtons({cands.get()[0].makeExtended("primary_buttons").makeQuiet(false)},
-                               defaults.getPrimaryButton(),
+                               defaults.getPrimaryButtons(),
                                PathContext{filename, u"primary_buttons"});
 
         return std::move(keys);

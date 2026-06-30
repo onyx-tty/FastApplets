@@ -6,9 +6,11 @@
 #include "ConfigFactory.h"
 #include "Core/Applets/Types/AppletTraits.h"
 #include "Core/Applets/Types/AppletType.h"
+#include "Core/Config/ConfigFile/Config/Config.h"
 #include "Core/Config/ConfigFile/Properties/LayoutProperties.h"
 #include "Core/Config/ConfigFile/Properties/PrimaryButtonProperties.h"
 #include "Core/Config/ConfigFile/Properties/WindowProperties.h"
+#include "Core/Config/KeysFile/Keys/Keys.h"
 #include "Core/Config/KeysFile/Types/Keybindings.h"
 #include "Core/UI/Types/ButtonType.h"
 #include "Core/UI/Widgets/PrimaryButtonParams.h"
@@ -22,7 +24,7 @@
 #include <Qt>
 
 template<applet::type TApplet>
-AppletTraits<TApplet>::TConfig ConfigFactory<TApplet>::createDefaultConfig() {
+Config ConfigFactory<TApplet>::createDefaultConfig() {
         QSize   size   = {960, 220};
         QString title  = QString::fromStdString(std::string(AppletTraits<TApplet>::title));
         auto    window = WindowProperties(std::move(size), std::move(title));
@@ -57,14 +59,14 @@ AppletTraits<TApplet>::TConfig ConfigFactory<TApplet>::createDefaultConfig() {
                 layout = LayoutProperties(std::move(params));
         }
 
-        return TConfig(window, button, layout);
+        return Config(window, button, layout);
 }
 
 template<applet::type TApplet>
-AppletTraits<TApplet>::TKeys ConfigFactory<TApplet>::createDefaultKeys() {
+Keys ConfigFactory<TApplet>::createDefaultKeys() {
         keybindings quit = {Qt::Key_Escape, Qt::Key_Q};
 
         std::vector<keybindings> primary_buttons = makeKeyRange(Qt::Key_1, Qt::Key_9);
 
-        return TKeys(std::move(quit), std::move(primary_buttons));
+        return Keys(std::move(quit), std::move(primary_buttons));
 }

@@ -1,7 +1,5 @@
-add_subdirectory(Global)
+add_subdirectory(Keys)
 add_subdirectory(Mapper)
-add_subdirectory(PowerApplet)
-add_subdirectory(ActionApplet)
 add_subdirectory(Types)
 
 add_library(Core_Config_KeysFile INTERFACE)
@@ -12,7 +10,6 @@ target_include_directories(Core_Config_KeysFile INTERFACE
         $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>)
 
 target_link_libraries(Core_Config_KeysFile INTERFACE
-        Core::Config::KeysFile::Global
+        Core::Config::KeysFile::Keys
         Core::Config::KeysFile::Mapper
-        Core::Config::KeysFile::PowerApplet
         Core::Config::KeysFile::Types)

@@ -5,9 +5,11 @@
 
 #include "ConfigManager.h"
 #include "Core/Applets/Types/AppletType.h"
+#include "Core/Config/ConfigFile/Config/Config.h"
 #include "Core/Config/ConfigFile/Mapper/ConfigMapper.h"
 #include "Core/Config/Factory/ConfigFactory.h"
 #include "Core/Config/FileLocator/FileLocator.h"
+#include "Core/Config/KeysFile/Keys/Keys.h"
 #include "Core/Config/KeysFile/Mapper/KeysMapper.h"
 #include "Core/Config/TomlParser/TomlParser.h"
 #include "Core/Config/Types/ConfigFilepaths.h"
@@ -32,15 +34,15 @@ const auto& ConfigManager<TApplet>::get() {
         const auto& global_files = configFilepaths<applet::type::global>();
 
         if constexpr (TConfigFile == config::type::config) {
-                static const TConfig config =
+                static const Config config =
                         ConfigMapper::config<TApplet>(TomlParser::file(applet_files.config),
                                                       TomlParser::file(global_files.config),
                                                       getDefault<TConfigFile>());
                 return config;
         } else {
-                static TKeys keys = KeysMapper::keys<TApplet>(TomlParser::file(applet_files.keys),
-                                                              TomlParser::file(global_files.keys),
-                                                              getDefault<TConfigFile>());
+                static Keys keys = KeysMapper::keys<TApplet>(TomlParser::file(applet_files.keys),
+                                                             TomlParser::file(global_files.keys),
+                                                             getDefault<TConfigFile>());
                 return keys;
         }
 }
@@ -51,10 +53,10 @@ template<applet::type TApplet>
 template<config::type TConfigFile>
 const auto& ConfigManager<TApplet>::getDefault() {
         if constexpr (TConfigFile == config::type::config) {
-                static const TConfig default_config = ConfigFactory<TApplet>::createDefaultConfig();
+                static const Config default_config = ConfigFactory<TApplet>::createDefaultConfig();
                 return default_config;
         } else {
-                static const TKeys default_keys = ConfigFactory<TApplet>::createDefaultKeys();
+                static const Keys default_keys = ConfigFactory<TApplet>::createDefaultKeys();
                 return default_keys;
         }
 }

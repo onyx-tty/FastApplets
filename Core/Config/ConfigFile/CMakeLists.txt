@@ -1,7 +1,5 @@
-add_subdirectory(Global)
+add_subdirectory(Config)
 add_subdirectory(Mapper)
-add_subdirectory(PowerApplet)
-add_subdirectory(ActionApplet)
 add_subdirectory(Properties)
 
 add_library(Core_Config_ConfigFile INTERFACE)
@@ -12,7 +10,6 @@ target_include_directories(Core_Config_ConfigFile INTERFACE
         $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>)
 
 target_link_libraries(Core_Config_ConfigFile INTERFACE
-        Core::Config::ConfigFile::Global
+        Core::Config::ConfigFile::Config
         Core::Config::ConfigFile::Mapper
-        Core::Config::ConfigFile::PowerApplet
         Core::Config::ConfigFile::Properties)

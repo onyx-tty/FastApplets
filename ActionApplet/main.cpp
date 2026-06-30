@@ -34,8 +34,8 @@ int main(int argc, char* argv[]) {
         auto* central_widget = new CentralWidget(
                 PrimaryButtonsFactory::create(config.getLayoutProperties().getPrimaryButtons(),
                                               config.getPrimaryButtonProperties(),
-                                              keys.getPrimaryButton(),
-                                              default_keys.getPrimaryButton(), nullptr),
+                                              keys.getPrimaryButtons(),
+                                              default_keys.getPrimaryButtons(), nullptr),
                 keys.getQuit(), config.getPrimaryButtonProperties().getDoubleKeyPress(), nullptr);
 
         auto main_window = MainWindow(config.getWindowProperties().getTitle(),

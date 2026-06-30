@@ -19,10 +19,6 @@ static const ConfigFilepaths& configFilepaths();
 // Initializes instances from ConfigMapper and KeysMapper.
 template<applet::type TApplet>
 class ConfigManager final {
-private:
-        using TConfig              = AppletTraits<TApplet>::TConfig;
-        using TKeys                = AppletTraits<TApplet>::TKeys;
-
 public:
         ConfigManager() = delete;
 

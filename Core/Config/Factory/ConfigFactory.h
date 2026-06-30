@@ -5,6 +5,8 @@
 
 #include "Core/Applets/Types/AppletTraits.h"
 #include "Core/Applets/Types/AppletType.h"
+#include "Core/Config/ConfigFile/Config/Config.h"
+#include "Core/Config/KeysFile/Keys/Keys.h"
 #include "Core/Config/KeysFile/Types/Keybindings.h"
 
 #include <vector>
@@ -26,14 +28,10 @@ inline std::vector<keybindings> makeKeyRange(Qt::Key first, Qt::Key last) {
 // Returns constructed default config and keys associated with given applet.
 template<applet::type TApplet>
 class ConfigFactory final {
-private:
-        using TConfig              = AppletTraits<TApplet>::TConfig;
-        using TKeys                = AppletTraits<TApplet>::TKeys;
-
 public:
         ConfigFactory() = delete;
-        static TConfig createDefaultConfig();
-        static TKeys   createDefaultKeys();
+        static Config createDefaultConfig();
+        static Keys   createDefaultKeys();
 };
 
 #include "ConfigFactory.tpp"

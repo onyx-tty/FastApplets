@@ -6,10 +6,10 @@
 #include "Core/Config/Resolver/PathContext/PathContext.h"
 #include "Core/Config/Resolver/Resolver.h"
 #include "Core/Config/Resolver/Types/ResolverCandidate.h"
+// TODO: Remove unused include
 #include "Core/Config/Types/NodeView.h"
 
 #include <cstddef>
-#include <initializer_list>
 #include <string>
 #include <toml++/toml.hpp>
 #include <utility>

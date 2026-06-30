@@ -5,13 +5,13 @@
 
 #include "Core/Applets/Types/AppletTraits.h"
 #include "Core/Applets/Types/AppletType.h"
+#include "Core/Config/KeysFile/Keys/Keys.h"
 #include "Core/Config/KeysFile/Types/Keybindings.h"
 
 #include <string>
 #include <toml++/toml.hpp>
 #include <vector>
 
-class GlobalKeys;
 class PathContext;
 class ResolverCandidates;
 class QString;
@@ -23,7 +23,7 @@ keybindings keysFromText(const std::vector<std::string>& texts);
 // Extracts string elements from a toml::array, silently skipping non-string values.
 std::vector<std::string> textFromTomlArray(const toml::array& arr);
 
-// Maps TOML configuration to XAppletKeys structure.
+// Maps TOML configuration to Keys structure.
 //
 // All mapping failures will fall back to defaults and log warnings.
 class KeysMapper final {
@@ -64,21 +64,19 @@ private:
 public:
         KeysMapper() = delete;
 
-        // Parses applet and global tables into XAppletKeys.
+        // Parses applet and global tables into Keys.
         //
         // Usage:
-        //   XAppletKeys keys = KeysMapper::keys(applet, global, defaults);
+        //   Keys keys = KeysMapper::keys(applet, global, defaults);
         //
         // The applet table supplies primary configuration and overrides, global
         // provides fallbacks.
         //
         // QApplication must exist before calling (initialized in main()).
         //
-        // Return value: TKeys
+        // Return value: Keys
         template<applet::type TApplet>
-        static AppletTraits<TApplet>::TKeys keys(const toml::table&                  applet,
-                                                 const toml::table&                  global,
-                                                 const AppletTraits<TApplet>::TKeys& defaults);
+        static Keys keys(const toml::table& applet, const toml::table& global, const Keys& defaults);
 };
 
 #include "KeysMapper.tpp"

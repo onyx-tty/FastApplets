@@ -7,6 +7,7 @@
 
 #include "Core/Applets/Types/AppletTraits.h"
 #include "Core/Applets/Types/AppletType.h"
+#include "Core/Config/ConfigFile/Config/Config.h"
 #include "Core/Config/ConfigFile/Properties/LayoutProperties.h"
 #include "Core/Config/Resolver/PathContext/PathContext.h"
 #include "Core/Config/Resolver/Resolver.h"
@@ -15,6 +16,7 @@
 #include "Core/UI/Types/ButtonType.h"
 #include "Core/UI/Widgets/PrimaryButtonParams.h"
 
+#include <cstddef>
 #include <optional>
 #include <toml++/toml.hpp>
 #include <utility>
@@ -93,7 +95,7 @@ std::optional<PrimaryButtonParams> ConfigMapper::primaryButton(const ResolverCan
         const auto table = Resolver::from<toml::table>(candidates, path_context);
         if (!table) { return std::nullopt; }
 
-        PrimaryButtonParams new_button      = {};
+        PrimaryButtonParams new_button = {};
 
         auto type_str = Resolver::from<QString>(candidates.makeExtended("id"),
                                                 path_context.makeExtended("id"));
@@ -118,17 +120,14 @@ std::optional<PrimaryButtonParams> ConfigMapper::primaryButton(const ResolverCan
 }
 
 template<applet::type TApplet>
-AppletTraits<TApplet>::TConfig ConfigMapper::config(const toml::table& applet,
-                                                    const toml::table& global,
-                                                    const AppletTraits<TApplet>::TConfig& defaults) {
-        using TConfig = AppletTraits<TApplet>::TConfig;
-
+Config ConfigMapper::config(const toml::table& applet, const toml::table& global,
+                            const Config& defaults) {
         // Confirm that a QApplication instance exists
         if (!QApplication::instance()) { qFatal("QApplication has not been instantiated yet!"); }
 
         QStringView filename = u"config.toml";
 
-        TConfig config = TConfig{};
+        Config config = Config{};
 
         ResolverCandidates cands = {{.node = node_view(applet), .applet = TApplet, .quiet = true},
                                     {.node = node_view(global), .applet = applet::type::global}};

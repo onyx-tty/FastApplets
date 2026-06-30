@@ -5,12 +5,12 @@
 
 #include "Core/Applets/Types/AppletTraits.h"
 #include "Core/Applets/Types/AppletType.h"
+#include "Core/Config/ConfigFile/Config/Config.h"
 
 #include <optional>
 #include <toml++/toml.hpp>
 #include <vector>
 
-class GlobalConfig;
 class PathContext;
 class ResolverCandidates;
 class WindowProperties;
@@ -116,11 +116,10 @@ public:
         //
         // QApplication must exist before calling (initialized in main()).
         //
-        // Return value: TConfig
+        // Return value: Config
         template<applet::type TApplet>
-        static AppletTraits<TApplet>::TConfig config(const toml::table& applet,
-                                                     const toml::table& global,
-                                                     const AppletTraits<TApplet>::TConfig& defaults);
+        static Config config(const toml::table& applet, const toml::table& global,
+                             const Config& defaults);
 };
 
 #include "ConfigMapper.tpp"
