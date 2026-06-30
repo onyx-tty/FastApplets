@@ -21,7 +21,7 @@ class QString;
 class QSize;
 class QSizePolicy;
 
-// Maps TOML configuration to XAppletConfig structure.
+// Maps TOML configuration to Config structure.
 //
 // All mapping failures will fall back to hardcoded defaults and log warnings.
 // Malformed values (wrong type, out of range, etc.) are treated as failures.
@@ -77,7 +77,7 @@ private:
 
         // Maps primary_buttons from a config source.
         //
-        // applet::type must be specified due to differing PrimaryButtonParams.
+        // applet::type must be specified due to differences in type enums.
         //
         // Defaults the buttons if none are found.
         //
@@ -109,7 +109,7 @@ public:
         // Parses applet and global tables into XAppletConfig.
         //
         // Usage:
-        //   XAppletConfig config = ConfigMapper::config<applet::type::x>(applet, global, defaults);
+        //   Config config = ConfigMapper::config<applet::type::x>(applet, global, defaults);
         //
         // The applet table supplies primary configuration and overrides, global
         // provides fallbacks.

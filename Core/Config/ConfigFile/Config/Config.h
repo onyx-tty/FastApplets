@@ -9,9 +9,7 @@
 
 class ConfigMapper;
 
-// Base config holding properties common to all applets.
-//
-// Derive from this and extend with applet-specific properties.
+// Holds user-configured properties used by an applet.
 class Config {
 private:
         friend class ConfigMapper;

@@ -9,9 +9,7 @@
 
 class KeysMapper;
 
-// Base keys holding properties common to all applets.
-//
-// Derive from this and extend with applet-specific keybindings.
+// Holds user-configured keys used by an applet.
 class Keys {
 private:
         friend class KeysMapper;
