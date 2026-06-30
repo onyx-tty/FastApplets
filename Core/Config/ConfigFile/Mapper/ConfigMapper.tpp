@@ -88,41 +88,31 @@ std::vector<PrimaryButtonParams> ConfigMapper::primaryButtons(
 template<applet::type TApplet>
 std::optional<PrimaryButtonParams> ConfigMapper::primaryButton(const ResolverCandidates& candidates,
                                                                const PathContext& path_context) {
+        using TPrimaryButtonType = AppletTraits<TApplet>::TPrimaryButtonType;
+
         const auto table = Resolver::from<toml::table>(candidates, path_context);
         if (!table) { return std::nullopt; }
 
         PrimaryButtonParams new_button      = {};
-        QString             default_text    = {};
-        QString             default_command = {};
-        QIcon               default_icon    = {};
 
-        if constexpr (TApplet == applet::type::power_applet) {
-                auto type = Resolver::from<QString>(candidates.makeExtended("id"),
-                                                    path_context.makeExtended("id"));
-                if (!type) { return std::nullopt; }
+        auto type_str = Resolver::from<QString>(candidates.makeExtended("id"),
+                                                path_context.makeExtended("id"));
 
-                new_button.type =
-                        toPrimaryButtonType<typename AppletTraits<TApplet>::TPrimaryButtonType>(
-                                type.value());
+        new_button.type = toPrimaryButtonType<TPrimaryButtonType>(type_str.value_or(""));
 
-                auto t = std::get<power_button_type>(new_button.type);
+        if (isNone<TPrimaryButtonType>(new_button.type)) { return std::nullopt; }
 
-                if (t == power_button_type::none) { return std::nullopt; }
-
-                default_text    = textFor(t);
-                default_command = commandFor(t);
-                default_icon    = iconFor(t);
-        }
+        auto t = std::get<TPrimaryButtonType>(new_button.type);
 
         new_button.text = Resolver::from<QString>(candidates.makeExtended("text"),
                                                   path_context.makeExtended("text"))
-                                  .value_or(std::move(default_text));
+                                  .value_or(textFor(t));
 
         new_button.command = Resolver::from<QString>(candidates.makeExtended("command"),
                                                      path_context.makeExtended("command"))
-                                     .value_or(std::move(default_command));
+                                     .value_or(commandFor(t));
 
-        new_button.icon = std::move(default_icon);
+        new_button.icon = std::move(iconFor(t));
 
         return std::move(new_button);
 }

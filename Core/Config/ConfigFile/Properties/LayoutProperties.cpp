@@ -6,6 +6,7 @@
 #include "Core/UI/Widgets/PrimaryButtonParams.h"
 
 #include <utility>
+#include <variant>
 #include <vector>
 #include <QIcon>
 #include <QResource>
@@ -53,6 +54,19 @@ QString commandFor<power_button_type>(power_button_type type) {
         default:        return "";
         }
 }
+
+/* ActionApplet */
+
+template<>
+QIcon iconFor<std::monostate>(std::monostate type) { return {}; }
+
+template<>
+QString textFor<std::monostate>(std::monostate type) { return {}; }
+
+template<>
+QString commandFor<std::monostate>(std::monostate type) { return {}; }
+
+/* Layout Properties */
 
 LayoutProperties::LayoutProperties(std::vector<PrimaryButtonParams> primary_buttons) :
         primary_buttons(std::move(primary_buttons)) {}
