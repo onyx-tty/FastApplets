@@ -23,7 +23,7 @@ inline std::vector<keybindings> makeKeyRange(Qt::Key first, Qt::Key last) {
         return ret;
 }
 
-// TODO: Document
+// Returns constructed default config and keys associated with given applet.
 template<applet::type TApplet>
 class ConfigFactory final {
 private:
