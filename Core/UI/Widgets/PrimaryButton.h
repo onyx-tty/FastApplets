@@ -41,7 +41,7 @@ private:
         void setTextLabel(const QString& text, Qt::Alignment alignment);
         void setIconLabel(const QPixmap& pixmap, Qt::Alignment alignment, QSizePolicy size_policy);
 
-        const ButtonType  type;
+        const button_type type;
         const keybindings keys;
         const QString     command;
 
@@ -54,7 +54,7 @@ public:
         //   text:       Button label text.
         //   keys:       Key combinations that trigger this button.
         //   properties: Visual properties (alignments, icon size, size policy).
-        explicit PrimaryButton(ButtonType type, const QIcon& icon, const QString& text,
+        explicit PrimaryButton(button_type type, const QIcon& icon, const QString& text,
                                keybindings keys, QString command,
                                const PrimaryButtonProperties& properties, QWidget* parent);
 
@@ -67,5 +67,5 @@ public:
         QString text() const;
 
         const keybindings& getKeys() const;
-        ButtonType         getType() const;
+        button_type        getType() const;
 };

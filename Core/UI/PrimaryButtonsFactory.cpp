@@ -43,7 +43,7 @@ std::vector<PrimaryButton*> PrimaryButtonsFactory::create(
         buttons.reserve(params.size());
 
         for (size_t i = 0; i != params.size(); ++i) {
-                ButtonType  type    = params[i].type;
+                button_type type    = params[i].type;
                 QIcon       icon    = params[i].icon;
                 QString     text    = params[i].text;
                 QString     command = params[i].command;

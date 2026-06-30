@@ -57,7 +57,7 @@ void PrimaryButton::setIconLabel(const QPixmap& pixmap, Qt::Alignment alignment,
 }
 
 // TODO: command gets copied thrice, fix that
-PrimaryButton::PrimaryButton(ButtonType type, const QIcon& icon, const QString& text,
+PrimaryButton::PrimaryButton(button_type type, const QIcon& icon, const QString& text,
                              keybindings keys, QString command,
                              const PrimaryButtonProperties& properties, QWidget* parent) :
         QPushButton(parent), type(type), keys(std::move(keys)), command(command) {
@@ -84,6 +84,6 @@ const keybindings& PrimaryButton::getKeys() const {
         return keys;
 }
 
-ButtonType PrimaryButton::getType() const {
+button_type PrimaryButton::getType() const {
         return type;
 }

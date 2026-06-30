@@ -11,8 +11,8 @@
 
 // Parameters required to construct a PrimaryButton.
 struct PrimaryButtonParams final {
-        ButtonType type = std::monostate{};
-        QString    text;
-        QString    command;
-        QIcon      icon;
+        button_type type = std::monostate{};
+        QString     text;
+        QString     command;
+        QIcon       icon;
 };
