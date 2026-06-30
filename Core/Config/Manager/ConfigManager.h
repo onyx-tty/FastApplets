@@ -11,10 +11,11 @@
 
 class ConfigFilepaths;
 
+// Returns cached locations of each config.
 template<applet::type TApplet>
 static const ConfigFilepaths& configFilepaths();
 
-// Stores instances of Config and Keys schemas.
+// Stores instances of Config and Keys schemas for each applet called.
 // Initializes instances from ConfigMapper and KeysMapper.
 template<applet::type TApplet>
 class ConfigManager final {
