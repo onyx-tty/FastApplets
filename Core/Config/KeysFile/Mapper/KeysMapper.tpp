@@ -3,7 +3,6 @@
 
 #pragma once
 
-#include "Core/Applets/Types/AppletTraits.h"
 #include "Core/Applets/Types/AppletType.h"
 #include "Core/Config/KeysFile/Keys/Keys.h"
 #include "Core/Config/Resolver/PathContext/PathContext.h"
@@ -12,6 +11,7 @@
 #include "KeysMapper.h"
 
 #include <toml++/toml.hpp>
+#include <utility>
 #include <QApplication>
 #include <QDebug>
 #include <QStringView>
