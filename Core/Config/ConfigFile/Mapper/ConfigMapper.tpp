@@ -114,6 +114,11 @@ std::optional<PrimaryButtonParams> ConfigMapper::primaryButton(const ResolverCan
                                                      path_context.makeExtended("command"))
                                      .value_or(commandFor(t));
 
+        // QProcess::splitCommand treats single quotes as regular characters, breaking
+        // shell commands that rely on them.
+        // To get them to work as they should, reinterpret single quotes as double quotes.
+        new_button.command.replace("'", "\"");
+
         new_button.icon = std::move(iconFor(t));
 
         return std::move(new_button);

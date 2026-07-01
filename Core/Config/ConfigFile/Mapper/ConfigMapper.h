@@ -78,6 +78,10 @@ private:
         //
         // applet::type must be specified due to differences in type enums.
         //
+        // Regarding PrimaryButtonParams::command: QProcess::splitCommand() does not
+        // interpret single quotes as quotes, but as regular characters. This function
+        // converts single quotes to double quotes to work around that limitation.
+        //
         // Defaults the buttons if none are found.
         //
         // Fallback priority: applet.layout.primary_buttons -> hardcoded defaults
