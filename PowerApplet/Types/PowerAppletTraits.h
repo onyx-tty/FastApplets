@@ -11,6 +11,6 @@
 
 template<>
 struct AppletTraits<applet::type::power_applet> final {
-        using TPrimaryButtonType        = power_button_type;
-        inline static QStringView title = u"PowerApplet";
+        using TPrimaryButtonType           = power_button_type;
+        constexpr static QStringView title = u"PowerApplet";
 };

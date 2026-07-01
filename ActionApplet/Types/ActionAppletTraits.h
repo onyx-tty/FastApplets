@@ -11,6 +11,6 @@
 
 template<>
 struct AppletTraits<applet::type::action_applet> final {
-        using TPrimaryButtonType        = std::monostate;
-        inline static QStringView title = u"ActionApplet";
+        using TPrimaryButtonType           = std::monostate;
+        constexpr static QStringView title = u"ActionApplet";
 };
