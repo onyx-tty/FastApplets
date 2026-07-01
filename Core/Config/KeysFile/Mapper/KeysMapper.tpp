@@ -24,7 +24,7 @@ Keys KeysMapper::keys(const toml::table& applet, const toml::table& global, cons
         if (!QApplication::instance()) { qFatal("QApplication has not been instantiated yet!"); }
 
         using namespace Qt::StringLiterals;
-        QStringView filename = u"keys.toml";
+        constexpr QStringView filename = u"keys.toml";
 
         Keys                     keys = Keys{};
         const ResolverCandidates cands =

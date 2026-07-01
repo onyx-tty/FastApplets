@@ -125,7 +125,7 @@ Config ConfigMapper::config(const toml::table& applet, const toml::table& global
         // Confirm that a QApplication instance exists
         if (!QApplication::instance()) { qFatal("QApplication has not been instantiated yet!"); }
 
-        QStringView filename = u"config.toml";
+        constexpr QStringView filename = u"config.toml";
 
         Config config = Config{};
 
