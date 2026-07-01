@@ -14,7 +14,7 @@ toml::table TomlParser::file(const QString& filepath) {
         toml::table file = {};
 
         if (!QFileInfo::exists(filepath)) {
-                qWarning() << "File not found!";
+                qWarning() << "Nothing to parse";
                 return {};
         }
 
