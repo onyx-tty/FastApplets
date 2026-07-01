@@ -25,6 +25,8 @@
 
 template<applet::type TApplet>
 Config ConfigFactory<TApplet>::createDefaultConfig() {
+        using TPrimaryButtonType = AppletTraits<TApplet>::TPrimaryButtonType;
+
         QSize   size   = {960, 220};
         QString title  = QString::fromStdString(std::string(AppletTraits<TApplet>::title));
         auto    window = WindowProperties(std::move(size), std::move(title));
@@ -40,24 +42,21 @@ Config ConfigFactory<TApplet>::createDefaultConfig() {
 
         auto layout = LayoutProperties();
 
-        // TODO: At this point a builder class for config schemas would help a lot
+        const auto param = [](TPrimaryButtonType type) -> PrimaryButtonParams {
+                return {.type    = type,
+                        .text    = textFor(type),
+                        .command = commandFor(type),
+                        .icon    = iconFor(type)};
+        };
+
+        std::vector<PrimaryButtonParams> params = {};
         if constexpr (TApplet == applet::type::power_applet) {
-                // This has to be moved outside if more applets with primary button type
-                // are created.
                 using enum power_button_type;
 
-                const auto param = [](power_button_type type) -> PrimaryButtonParams {
-                        return {.type    = type,
-                                .text    = textFor(type),
-                                .command = commandFor(type),
-                                .icon    = iconFor(type)};
-                };
-
-                std::vector<PrimaryButtonParams> params = {param(shutdown), param(reboot),
-                                                           param(suspend), param(hibernate)};
-
-                layout = LayoutProperties(std::move(params));
+                params = {param(shutdown), param(reboot), param(suspend), param(hibernate)};
         }
+
+        layout = LayoutProperties(std::move(params));
 
         return Config(window, button, layout);
 }
