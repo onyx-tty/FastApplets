@@ -27,22 +27,21 @@ template<applet::type TApplet>
 Config ConfigFactory<TApplet>::createDefaultConfig() {
         using TPrimaryButtonType = AppletTraits<TApplet>::TPrimaryButtonType;
 
-        QSize   size   = {960, 220};
-        QString title  = QString::fromStdString(std::string(AppletTraits<TApplet>::title));
-        auto    window = WindowProperties(std::move(size), std::move(title));
+        constexpr QSize size   = {960, 220};
+        QString         title  = QString::fromStdString(std::string(AppletTraits<TApplet>::title));
+        auto            window = WindowProperties(size, std::move(title));
 
-        constexpr bool double_key_press = true;
-        Qt::Alignment  text_alignment   = {Qt::AlignHCenter, Qt::AlignTop};
-        Qt::Alignment  icon_alignment   = {Qt::AlignHCenter, Qt::AlignVCenter};
-        QSize          icon_size        = {64, 64};
-        QSizePolicy    policy           = {QSizePolicy::Expanding, QSizePolicy::Expanding};
-        auto button = PrimaryButtonProperties(double_key_press, std::move(text_alignment),
-                                              std::move(icon_alignment), std::move(icon_size),
-                                              std::move(policy));
+        constexpr bool          double_key_press = true;
+        constexpr Qt::Alignment text_alignment   = {Qt::AlignHCenter, Qt::AlignTop};
+        constexpr Qt::Alignment icon_alignment   = {Qt::AlignHCenter, Qt::AlignVCenter};
+        constexpr QSize         icon_size        = {64, 64};
+        constexpr QSizePolicy   policy           = {QSizePolicy::Expanding, QSizePolicy::Expanding};
+        auto button = PrimaryButtonProperties(double_key_press, text_alignment, icon_alignment,
+                                              icon_size, policy);
 
         auto layout = LayoutProperties();
 
-        const auto param = [](TPrimaryButtonType type) -> PrimaryButtonParams {
+        constexpr auto param = [](TPrimaryButtonType type) -> PrimaryButtonParams {
                 return {.type    = type,
                         .text    = textFor(type),
                         .command = commandFor(type),
