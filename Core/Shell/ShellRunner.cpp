@@ -3,13 +3,19 @@
 
 #include "Core/Shell/ShellRunner.h"
 
+#include <QDebug>
 #include <QProcess>
 #include <QString>
 #include <QStringList>
+#include <QtGlobal>
 
-// TODO: Quit and warn if empty
-// FIXME: Splitting command into QStringList is a fatal QList error if command is empty!
 void ShellRunner::command(QString command) {
+        // Avoids splitting empty command into QStringList, which is a fatal QList error
+        if (command.isEmpty()) {
+                qWarning() << "Passed empty command!";
+                return;
+        }
+
         QStringList parts   = QProcess::splitCommand(command);
         QString     program = parts.takeFirst();
 

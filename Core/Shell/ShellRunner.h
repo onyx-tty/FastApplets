@@ -5,12 +5,13 @@
 
 class QString;
 
-// Handles shell command execution (fire-and-forget, no output capture)
+// Handles shell command execution (no output capture).
 class ShellRunner final {
 public:
         ShellRunner() = delete;
 
-        // Run a string shell command
+        // Runs a string shell command.
+        // It immediately returns and warns if passed command is empty, to avoid errors.
         //
         // Example: "hyprshutdown -t 'Shutting down...' -p 'systemctl poweroff'"
         //   "hyprshutdown" = program, rest = arguments
