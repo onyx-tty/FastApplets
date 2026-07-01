@@ -12,13 +12,14 @@ class QIcon;
 class QString;
 
 // Assign hardcoded icons associated with each button.
-// TODO: Auto-assign on parse instead of here
 template<typename TPrimaryButtonType>
 QIcon iconFor(TPrimaryButtonType type);
 
+// Assign hardcoded text associated with each button.
 template<typename TPrimaryButtonType>
 QString textFor(TPrimaryButtonType type);
 
+// Assign hardcoded command associated with each button.
 template<typename TPrimaryButtonType>
 QString commandFor(TPrimaryButtonType type);
 
