@@ -28,8 +28,15 @@ ConfigFilepaths FileLocator::configFiles(QLatin1StringView applet_name) {
         filepaths.keys   = QString("%1%2").arg(applet_path, u"keys.toml");
 
         // Validates filepaths, replaces with empty string if invalid
-        if (!QFileInfo::exists(filepaths.config)) { filepaths.config = {}; }
-        if (!QFileInfo::exists(filepaths.keys)) { filepaths.keys = {}; }
+        if (!QFileInfo::exists(filepaths.config)) {
+                qWarning() << "File" << filepaths.config << "not found";
+                filepaths.config = {};
+        }
+
+        if (!QFileInfo::exists(filepaths.keys)) {
+                qWarning() << "File" << filepaths.keys << "not found";
+                filepaths.keys = {};
+        }
 
         return filepaths;
 }
