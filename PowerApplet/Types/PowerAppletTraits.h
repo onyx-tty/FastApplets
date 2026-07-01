@@ -7,10 +7,10 @@
 #include "Core/Applets/Types/AppletType.h"
 #include "Core/UI/Types/ButtonType.h"
 
-#include <string_view>
+#include <QStringView>
 
 template<>
 struct AppletTraits<applet::type::power_applet> final {
-        using TPrimaryButtonType             = power_button_type;
-        inline static std::string_view title = "PowerApplet";
+        using TPrimaryButtonType        = power_button_type;
+        inline static QStringView title = u"PowerApplet";
 };

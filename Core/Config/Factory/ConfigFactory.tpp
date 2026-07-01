@@ -15,7 +15,6 @@
 #include "Core/UI/Types/ButtonType.h"
 #include "Core/UI/Widgets/PrimaryButtonParams.h"
 
-#include <string>
 #include <utility>
 #include <vector>
 #include <QSize>
@@ -28,7 +27,7 @@ Config ConfigFactory<TApplet>::createDefaultConfig() {
         using TPrimaryButtonType = AppletTraits<TApplet>::TPrimaryButtonType;
 
         constexpr QSize size   = {960, 220};
-        QString         title  = QString::fromStdString(std::string(AppletTraits<TApplet>::title));
+        QString         title  = AppletTraits<TApplet>::title.toString();
         auto            window = WindowProperties(size, std::move(title));
 
         constexpr bool          double_key_press = true;
