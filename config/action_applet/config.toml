@@ -60,3 +60,7 @@ title = "ActionApplet"
 [[layout.primary_buttons]]
 text = "Display greeting notification"
 command = "notify-send 'FastApplets' 'Hello!'"
+
+[[layout.primary_buttons]]
+text = "Display current date"
+command = "notify-send 'Current date:' \"$(date +'%F %H:%M')\""
