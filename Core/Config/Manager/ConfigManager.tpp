@@ -21,6 +21,35 @@ const ConfigFilepaths& configFilepaths() {
         return filepaths;
 }
 
+template<applet::type TApplet>
+ConfigManager<TApplet>::Data::Data() :
+        config(Config{}), default_config(Config{}), keys(Keys{}), default_keys(Keys{}),
+        is_setup(false) {}
+
+template<applet::type TApplet>
+ConfigManager<TApplet>::Data& ConfigManager<TApplet>::getData() {
+        static Data instance = {};
+        return instance;
+}
+
+template<applet::type TApplet>
+void ConfigManager<TApplet>::setup() {
+        const auto& applet_files = configFilepaths<TApplet>();
+        const auto& global_files = configFilepaths<applet::type::global>();
+
+        getData().default_config = ConfigFactory<TApplet>::createDefaultConfig();
+        getData().config = ConfigMapper::config<TApplet>(TomlParser::file(applet_files.config),
+                                                         TomlParser::file(global_files.config),
+                                                         getData().default_config);
+
+        getData().default_keys = ConfigFactory<TApplet>::createDefaultKeys();
+        getData().keys         = KeysMapper::keys<TApplet>(TomlParser::file(applet_files.keys),
+                                                           TomlParser::file(global_files.keys),
+                                                           getData().default_keys);
+
+        getData().is_setup = true;
+}
+
 // TODO: Collapse the if chain by creating ConfigTraits
 // TODO: Return type deduction prevents optimizations
 template<applet::type TApplet>
@@ -30,20 +59,12 @@ const auto& ConfigManager<TApplet>::get() {
                 TApplet != applet::type::global,
                 "Passing applet::type::global is an error! It will result in duplicate global nodes!");
 
-        const auto& applet_files = configFilepaths<TApplet>();
-        const auto& global_files = configFilepaths<applet::type::global>();
+        if (!getData().is_setup) { setup(); }
 
         if constexpr (TConfigFile == config::type::config) {
-                static const Config config =
-                        ConfigMapper::config<TApplet>(TomlParser::file(applet_files.config),
-                                                      TomlParser::file(global_files.config),
-                                                      getDefault<TConfigFile>());
-                return config;
+                return getData().config;
         } else {
-                static Keys keys = KeysMapper::keys<TApplet>(TomlParser::file(applet_files.keys),
-                                                             TomlParser::file(global_files.keys),
-                                                             getDefault<TConfigFile>());
-                return keys;
+                return getData().keys;
         }
 }
 
@@ -52,11 +73,11 @@ const auto& ConfigManager<TApplet>::get() {
 template<applet::type TApplet>
 template<config::type TConfigFile>
 const auto& ConfigManager<TApplet>::getDefault() {
+        if (!getData().is_setup) { setup(); }
+
         if constexpr (TConfigFile == config::type::config) {
-                static const Config default_config = ConfigFactory<TApplet>::createDefaultConfig();
-                return default_config;
+                return getData().default_config;
         } else {
-                static const Keys default_keys = ConfigFactory<TApplet>::createDefaultKeys();
-                return default_keys;
+                return getData().default_keys;
         }
 }

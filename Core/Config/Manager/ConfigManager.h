@@ -4,6 +4,8 @@
 #pragma once
 
 #include "Core/Applets/Types/AppletType.h"
+#include "Core/Config/ConfigFile/Config/Config.h"
+#include "Core/Config/KeysFile/Keys/Keys.h"
 #include "Core/Config/Types/ConfigType.h"
 
 #include <toml++/toml.hpp>
@@ -18,6 +20,20 @@ static const ConfigFilepaths& configFilepaths();
 // Initializes instances from ConfigMapper and KeysMapper.
 template<applet::type TApplet>
 class ConfigManager final {
+private:
+        struct Data {
+                Config config;
+                Config default_config;
+                Keys   keys;
+                Keys   default_keys;
+                bool   is_setup;
+
+                Data();
+        };
+
+        static void  setup();
+        static Data& getData();
+
 public:
         ConfigManager() = delete;
 
