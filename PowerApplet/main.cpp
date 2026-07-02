@@ -26,9 +26,9 @@ int main(int argc, char* argv[]) {
 
         // Config files
         using TConfigManager     = ConfigManager<applet::type::power_applet>;
-        const auto& config       = TConfigManager::get<config::type::config>();
-        const auto& keys         = TConfigManager::get<config::type::keys>();
-        const auto& default_keys = TConfigManager::getDefault<config::type::keys>();
+        const auto& config       = TConfigManager::get<config::type::config>({.defaults = false});
+        const auto& keys         = TConfigManager::get<config::type::keys>({.defaults = false});
+        const auto& default_keys = TConfigManager::get<config::type::keys>({.defaults = true});
 
         // GUI
         auto* central_widget = new CentralWidget(

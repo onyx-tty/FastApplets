@@ -54,7 +54,7 @@ void ConfigManager<TApplet>::setup() {
 // TODO: Return type deduction prevents optimizations
 template<applet::type TApplet>
 template<config::type TConfigFile>
-const auto& ConfigManager<TApplet>::get() {
+const auto& ConfigManager<TApplet>::get(Defaults defaults) {
         static_assert(
                 TApplet != applet::type::global,
                 "Passing applet::type::global is an error! It will result in duplicate global nodes!");
@@ -62,22 +62,16 @@ const auto& ConfigManager<TApplet>::get() {
         if (!getData().is_setup) { setup(); }
 
         if constexpr (TConfigFile == config::type::config) {
+                if (defaults.defaults) {
+                        return getData().default_config;
+                }
+
                 return getData().config;
         } else {
+                if (defaults.defaults) {
+                        return getData().default_keys;
+                }
+
                 return getData().keys;
-        }
-}
-
-// TODO: Collapse the if chain by creating ConfigTraits
-// TODO: Return type deduction prevents optimizations
-template<applet::type TApplet>
-template<config::type TConfigFile>
-const auto& ConfigManager<TApplet>::getDefault() {
-        if (!getData().is_setup) { setup(); }
-
-        if constexpr (TConfigFile == config::type::config) {
-                return getData().default_config;
-        } else {
-                return getData().default_keys;
         }
 }

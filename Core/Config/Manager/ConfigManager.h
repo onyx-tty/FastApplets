@@ -37,11 +37,12 @@ private:
 public:
         ConfigManager() = delete;
 
-        template<config::type TConfigFile>
-        static const auto& get();
+        struct Defaults final {
+                bool defaults = false;
+        };
 
         template<config::type TConfigFile>
-        static const auto& getDefault();
+        static const auto& get(Defaults defaults);
 };
 
 #include "ConfigManager.tpp"
