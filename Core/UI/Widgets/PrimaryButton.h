@@ -55,6 +55,7 @@ public:
         //   text:       Button label text.
         //   keys:       Key combinations that trigger this button.
         //   properties: Visual properties (alignments, icon size, size policy).
+        // TODO: Pass a single PrimaryButtonParams argument
         explicit PrimaryButton(button_type type, const QIcon& icon, const QString& text,
                                keybindings keys, QString command,
                                const PrimaryButtonProperties& properties, QWidget* parent);
