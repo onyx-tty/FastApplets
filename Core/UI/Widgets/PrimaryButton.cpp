@@ -10,6 +10,7 @@
 #include <utility>
 #include <QFocusEvent>
 #include <QLabel>
+#include <QObject>
 #include <QPaintEvent>
 #include <QPushButton>
 #include <QStackedLayout>
@@ -77,6 +78,12 @@ PrimaryButton::PrimaryButton(button_type type, const QIcon& icon, const QString&
                              const PrimaryButtonProperties& properties, QWidget* parent) :
         QPushButton(parent), type(type), keys(std::move(keys)), command(command) {
         connect(this, &PrimaryButton::clicked, [this, command]() { ShellRunner::command(command); });
+        connect(this, &PrimaryButton::clicked, [this, command]() {
+                clearFocus();
+                if (auto* parent = this->parentWidget()) {
+                        parent->setFocus(Qt::FocusReason::OtherFocusReason);
+                }
+        });
 
         auto* stacked = new QStackedLayout(this);
         stacked->setStackingMode(QStackedLayout::StackAll);
