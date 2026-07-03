@@ -8,7 +8,9 @@
 #include "Core/UI/Types/ButtonType.h"
 
 #include <utility>
+#include <QFocusEvent>
 #include <QLabel>
+#include <QPaintEvent>
 #include <QPushButton>
 #include <QStackedLayout>
 #include <QStyle>
@@ -24,13 +26,26 @@ void PrimaryButton::paintEvent(QPaintEvent*) {
         // Disable Qt's hover effect
         option.state &= ~QStyle::State_MouseOver;
 
-        // Visualize the state of focus, apply sunken to increase visibility
         if (hasFocus()) {
-                option.state |= QStyle::State_HasFocus;
-                option.state |= QStyle::State_Sunken;
+                // Apply State_HasFocus and State_Sunken for key press
+                switch (focus_reason) {
+                case Qt::FocusReason::OtherFocusReason:
+                        option.state |= QStyle::State_HasFocus;
+                        option.state |= QStyle::State_Sunken;
+                        break;
+                // For anything else, do nothing
+                default: break;
+                }
         } else {
-                option.state &= ~QStyle::State_HasFocus;
-                option.state &= ~QStyle::State_Sunken;
+                // Remove State_HasFocus and State_Sunken for key press
+                switch (focus_reason) {
+                case Qt::FocusReason::OtherFocusReason:
+                        option.state &= ~QStyle::State_HasFocus;
+                        option.state &= ~QStyle::State_Sunken;
+                        break;
+                // For anything else, do nothing
+                default: break;
+                }
         }
 
         QStylePainter painter(this);
@@ -73,6 +88,16 @@ PrimaryButton::PrimaryButton(button_type type, const QIcon& icon, const QString&
         setTextLabel(text, properties.getTextAlignment());
         setIconLabel(icon.pixmap(properties.getIconSize()), properties.getIconAlignment(),
                      properties.getPolicy());
+}
+
+void PrimaryButton::focusInEvent(QFocusEvent* event) {
+        QPushButton::focusInEvent(event);
+        focus_reason = event->reason();
+}
+
+void PrimaryButton::focusOutEvent(QFocusEvent* event) {
+        QPushButton::focusOutEvent(event);
+        focus_reason = event->reason();
 }
 
 QString PrimaryButton::text() const {

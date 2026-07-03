@@ -17,6 +17,7 @@ class QPaintEvent;
 class QPixmap;
 class QSizePolicy;
 class QString;
+class QFocusEvent;
 class QWidget;
 
 // Main button widget used for core functionality.
@@ -38,6 +39,8 @@ private:
         void setTextLabel(const QString& text, Qt::Alignment alignment);
         void setIconLabel(const QPixmap& pixmap, Qt::Alignment alignment, QSizePolicy size_policy);
 
+        // Remembers focus reason for use by paintEvent.
+        Qt::FocusReason   focus_reason;
         const button_type type;
         const keybindings keys;
         const QString     command;
@@ -55,6 +58,12 @@ public:
         explicit PrimaryButton(button_type type, const QIcon& icon, const QString& text,
                                keybindings keys, QString command,
                                const PrimaryButtonProperties& properties, QWidget* parent);
+
+        // Remembers focus reason for use by paintEvent.
+        void focusInEvent(QFocusEvent* event) override;
+
+        // Remembers focus reason for use by paintEvent.
+        void focusOutEvent(QFocusEvent* event) override;
 
         // QPushButton::icon() would return garbage because the inherited icon
         // storage is not used, and a separate QLabel is used instead. Deleted

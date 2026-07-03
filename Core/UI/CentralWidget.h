@@ -25,8 +25,7 @@ class QKeyEvent;
 // Key:Button mapping is loaded from keys.toml via createButtons().
 // Default mapping: Key_1->button 1, Key_2->button 2, and so on.
 //
-// BUG: Mouse clicks trigger the sunken visual effect that can only be disabled
-//      by pressing the quit key.
+// BUG: Mouse click sets focus to true, requiring double escape press to exit
 class CentralWidget : public QWidget {
         Q_OBJECT
 

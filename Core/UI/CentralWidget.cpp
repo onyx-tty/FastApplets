@@ -53,7 +53,7 @@ void CentralWidget::keyPressEvent(QKeyEvent* event) {
                         if (auto* focused = qobject_cast<PrimaryButton*>(
                                     QApplication::focusWidget())) {
                                 focused->clearFocus();
-                                this->setFocus();
+                                this->setFocus(Qt::FocusReason::OtherFocusReason);
                         } else { // Quit if not
                                 QApplication::quit();
                         }
@@ -62,13 +62,13 @@ void CentralWidget::keyPressEvent(QKeyEvent* event) {
                         if (primary_button->hasFocus()) {
                                 primary_button->animateClick();
                                 primary_button->clearFocus();
-                                this->setFocus();
+                                this->setFocus(Qt::FocusReason::OtherFocusReason);
                         } else { // Re-focus if not
                                 if (auto* focused = qobject_cast<PrimaryButton*>(
                                             QApplication::focusWidget())) {
                                         focused->clearFocus();
                                 }
-                                primary_button->setFocus(Qt::FocusReason::MouseFocusReason);
+                                primary_button->setFocus(Qt::FocusReason::OtherFocusReason);
                         }
                 }
         } else {
@@ -86,7 +86,7 @@ void CentralWidget::showEvent(QShowEvent* event) {
         if (auto* focused = qobject_cast<PrimaryButton*>(QApplication::focusWidget())) {
                 focused->clearFocus();
         }
-        this->setFocus();
+        this->setFocus(Qt::FocusReason::OtherFocusReason);
 }
 
 const std::vector<PrimaryButton*>& CentralWidget::getButtons() const {
