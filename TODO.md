@@ -1,16 +1,19 @@
-# PROJ PowerApplet \[3/4\]
+# PROJ PowerApplet \[0/2\]
 
-1.  \[X\] Keybindings
+1.  \[ \] Display logs in a separate window on power action
 
-2.  \[X\] DBus client class for PowerActionManager
-
-3.  \[X\] Shell command mode
-
-4.  \[ \] Mouse controls
+2.  \[ \] Exclude hibernate from a list of buttons if hibernation is not
+    supported
 
     <br>
 
-# PROJ WeatherApplet \[4/6\]
+# PROJ ActionApplet \[0/1\]
+
+1.  \[ \] Notify about missing buttons instead of quitting with qFatal
+
+    <br>
+
+# PROJ WeatherApplet \[4/7\]
 
 1.  \[X\] Curl
 
@@ -20,13 +23,15 @@
 
 4.  \[X\] UI skeleton
 
-5.  \[ \] UI layout
+5.  \[ \] Add WeatherApplet under current design
 
-6.  \[ \] Clean UI
+6.  \[ \] UI layout
+
+7.  \[ \] Clean UI
 
     <br>
 
-# <span class="todo TODO">TODO</span> VolumeApplet
+# <span class="todo TODO">TODO</span> VolumeApplet \[0/0\]
 
 <br>
 
@@ -46,7 +51,7 @@
 
     <br>
 
-# Infrastructure \[9/10\]
+# Infrastructure \[11/17\]
 
 1.  \[X\] CMake presets
 
@@ -82,19 +87,46 @@
 
     2.  \[X\] Extract TomlQt
 
-10. \[ \] Extract src/Applets/PowerApplet into PowerApplet/, replace
+10. \[X\] Extract src/Applets/PowerApplet into PowerApplet/, replace
     src/ with Core/
 
+11. \[X\] Add 'develop' branch
+
+12. \[ \] Support CPack
+
+13. \[ \] Add unit tests for all Config libraries
+
+14. \[ \] Git tags and releases
+
+15. \[ \] Improve template safety with constraints
+
+16. \[ \] Transition TODOs entirely to markdown format
+
+17. \[ \] Remove clang and ninja as recommended dependencies
+
     <br>
 
-# Controls \[0/1\]
+# UI \[0/2\]
 
-1.  \[ \] Option to disable button 'staging', single button presses
+1.  \[ \] Generic MainWindow, CentralWidget, and PrimaryButton
+
+2.  \[ \] Support different layouts
+
+    <br>
+
+# Controls \[2/3\]
+
+1.  \[X\] Keybindings
+
+2.  \[X\] Option to disable button 'staging', single button presses
     activate buttons
 
+3.  \[ \] Make mouse controls work well alongside 'staging', prevent
+    sunken state on mouse click
+
     <br>
 
-# Config \[5/7\]
+# Config \[8/10\]
 
 1.  \[X\] Standardized window class and title
 
@@ -106,16 +138,25 @@
 
 5.  \[X\] \$XDG<sub>CONFIGHOME</sub> for config
 
-6.  \[ \] Template overloads for Config/Keys mappers to avoid duplicate
+6.  \[X\] Template overloads for Config/Keys mappers to avoid duplicate
     logic between applets
 
-7.  \[ \] Separate Config/Keys schema from instances
+7.  \[X\] Separate Config/Keys schema from instances
+
+8.  \[X\] Make config schemas generic
+
+9.  \[ \] Support args
+
+10. \[ \] Add fallback \$HOME/.config/FastApplets if
+    \$XDG<sub>CONFIGHOME</sub> envvar is missing/empty/wrong
 
     <br>
 
-# Shell \[0/1\]
+# Shell \[2/2\]
 
-1.  \[ \] Support shell expansion
+1.  \[X\] Shell command mode
+
+2.  \[X\] Support shell expansion
 
     <br>
 
@@ -134,3 +175,10 @@
 1.  \[ \] nodiscard where applicable
 
 2.  \[X\] Standardize initialization style - always use '='
+
+    <br>
+
+# Other \[0/1\]
+
+1.  \[ \] Consider 'notify-send' for warnings and similar, disable in
+    config
