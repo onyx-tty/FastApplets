@@ -76,7 +76,8 @@ void PrimaryButton::setIconLabel(const QPixmap& pixmap, Qt::Alignment alignment,
 PrimaryButton::PrimaryButton(button_type type, const QIcon& icon, const QString& text,
                              keybindings keys, QString command,
                              const PrimaryButtonProperties& properties, QWidget* parent) :
-        QPushButton(parent), type(type), keys(std::move(keys)), command(command) {
+        QPushButton(parent), type(type), keys(std::move(keys)), command(command),
+        focus_reason(Qt::FocusReason::NoFocusReason) {
         connect(this, &PrimaryButton::clicked, [this, command]() { ShellRunner::command(command); });
         connect(this, &PrimaryButton::clicked, [this, command]() {
                 clearFocus();
