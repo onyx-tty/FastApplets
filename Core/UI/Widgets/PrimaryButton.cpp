@@ -72,14 +72,13 @@ void PrimaryButton::setIconLabel(const QPixmap& pixmap, Qt::Alignment alignment,
         layout()->addWidget(icon_label);
 }
 
-// TODO: command gets copied thrice, fix that
 PrimaryButton::PrimaryButton(button_type type, const QIcon& icon, const QString& text,
                              keybindings keys, QString command,
                              const PrimaryButtonProperties& properties, QWidget* parent) :
-        QPushButton(parent), type(type), keys(std::move(keys)), command(command),
+        QPushButton(parent), type(type), keys(std::move(keys)), command(std::move(command)),
         focus_reason(Qt::FocusReason::NoFocusReason) {
-        connect(this, &PrimaryButton::clicked, [this, command]() { ShellRunner::command(command); });
-        connect(this, &PrimaryButton::clicked, [this, command]() {
+        connect(this, &PrimaryButton::clicked, [this]() { ShellRunner::command(this->command); });
+        connect(this, &PrimaryButton::clicked, [this]() {
                 clearFocus();
                 if (auto* parent = this->parentWidget()) {
                         parent->setFocus(Qt::FocusReason::OtherFocusReason);
