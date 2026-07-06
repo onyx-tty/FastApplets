@@ -6,6 +6,7 @@
 #include "Core/Applets/Types/AppletType.h"
 
 #include <array>
+#include <stdexcept>
 #include <string_view>
 #include <QString>
 
@@ -17,6 +18,13 @@ void printArgs(int argc, char* argv[]);
 struct CmdArgs {
         QString config_path;
         QString keys_path;
+};
+
+// Expects the program to print out the help menu and terminate right away.
+// TODO: Carry the specific error message, handle in main().
+class HelpMenuRequested final : public std::runtime_error {
+public:
+        HelpMenuRequested() : std::runtime_error("Help menu requested") {};
 };
 
 // Manages parsing of passed raw command-line arguments.

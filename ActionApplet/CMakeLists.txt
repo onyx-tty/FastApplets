@@ -1,4 +1,4 @@
-project(ActionApplet VERSION 0.11.1 LANGUAGES CXX)
+project(ActionApplet VERSION 0.11.2 LANGUAGES CXX)
 
 add_subdirectory(Types)
 

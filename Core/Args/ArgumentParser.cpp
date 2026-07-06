@@ -74,17 +74,12 @@ void ArgumentParser::parseFlag(std::array<std::string_view, 2> flag, CmdArgs& pa
         } else if (flag[0] == "-k" || flag[0] == "--keys") {
                 parsed.keys_path = QString::fromStdString(std::string(flag[1]));
         } else if (flag[0] == "-?" || flag[0] == "-h" || flag[0] == "--help") {
-                printHelpMenu(type);
-
-                // TODO Throw an exception instead and use QApplication::quit
-                qFatal("Quitting...");
+                throw HelpMenuRequested();
         } else {
                 qInfo() << "Unrecognized flag" << QString::fromStdString(std::string(flag[0]))
                         << QString::fromStdString(std::string(flag[1]));
-                printHelpMenu(type);
 
-                // TODO Throw an exception instead and use QApplication::quit
-                qFatal("Quitting...");
+                throw HelpMenuRequested();
         }
 }
 
@@ -117,18 +112,14 @@ CmdArgs ArgumentParser::parse(int argc, char* argv[], applet::type type) {
                         } else { // Last argument but also a flag name - likely a stray flag name
                                 qWarning() << "Stray flag name" << arg
                                            << "is missing an associated flag value";
-                                printHelpMenu(type);
 
-                                // TODO Throw an exception instead and use QApplication::quit
-                                qFatal("Quitting...");
+                                throw HelpMenuRequested();
                         }
                 } else { // Flag values should've been handled by the last if, this must be a stray
                         qWarning() << "Stray flag value" << arg
                                    << "is not associated with any flag name";
-                        printHelpMenu(type);
 
-                        // TODO Throw an exception instead and use QApplication::quit
-                        qFatal("Quitting...");
+                        throw HelpMenuRequested();
                 }
 
                 parseFlag(flag, flags, type, is_single_flag);

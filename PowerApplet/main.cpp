@@ -20,6 +20,7 @@
 #include <QApplication>
 #include <QDebug>
 #include <QFileInfo>
+#include <QTimer>
 #include <QtGlobal>
 
 namespace {
@@ -61,8 +62,15 @@ int main(int argc, char* argv[]) {
         qt::log::setupLogging();
 
         // Parse args
-        printArgs(argc, argv);
-        CmdArgs args = ArgumentParser::parse(argc, argv, applet::type::power_applet);
+        CmdArgs args = {};
+        try {
+                printArgs(argc, argv);
+                args = ArgumentParser::parse(argc, argv, applet::type::power_applet);
+        } catch (const HelpMenuRequested&) {
+                printHelpMenu(applet::type::power_applet);
+                QTimer::singleShot(0, &application, &QApplication::quit);
+                return application.exec();
+        }
 
         // Find config files
         ConfigFilepaths applet_filepaths = FileLocator::configFiles(
