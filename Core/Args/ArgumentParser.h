@@ -9,6 +9,7 @@
 #include <stdexcept>
 #include <string_view>
 #include <QString>
+#include <string>
 
 void printHelpMenu(applet::type type);
 void printArgs(int argc, char* argv[]);
@@ -21,10 +22,9 @@ struct CmdArgs {
 };
 
 // Expects the program to print out the help menu and terminate right away.
-// TODO: Carry the specific error message, handle in main().
 class HelpMenuRequested final : public std::runtime_error {
 public:
-        HelpMenuRequested() : std::runtime_error("Help menu requested") {};
+        HelpMenuRequested(const std::string& error) : std::runtime_error(error) {};
 };
 
 // Manages parsing of passed raw command-line arguments.

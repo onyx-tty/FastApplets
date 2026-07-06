@@ -6,6 +6,7 @@
 
 #include <array>
 #include <cstddef>
+#include <format>
 #include <iostream>
 #include <string>
 #include <string_view>
@@ -74,12 +75,9 @@ void ArgumentParser::parseFlag(std::array<std::string_view, 2> flag, CmdArgs& pa
         } else if (flag[0] == "-k" || flag[0] == "--keys") {
                 parsed.keys_path = QString::fromStdString(std::string(flag[1]));
         } else if (flag[0] == "-?" || flag[0] == "-h" || flag[0] == "--help") {
-                throw HelpMenuRequested();
+                throw HelpMenuRequested("");
         } else {
-                qInfo() << "Unrecognized flag" << QString::fromStdString(std::string(flag[0]))
-                        << QString::fromStdString(std::string(flag[1]));
-
-                throw HelpMenuRequested();
+                throw HelpMenuRequested(std::format("Unrecognized flag {} {}", flag[0], flag[1]));
         }
 }
 
@@ -95,7 +93,7 @@ CmdArgs ArgumentParser::parse(int argc, char* argv[], applet::type type) {
                 std::array<std::string_view, 2> flag           = {};
                 bool                            is_single_flag = false;
 
-                QString arg = argv[i] ? QString::fromStdString(std::string(argv[i])) : "NULL";
+                std::string_view arg = argv[i] ? argv[i] : "NULL";
 
                 if (isFlagName(argv[i])) {
                         if (isSingleFlag(argv[i])) {
@@ -110,16 +108,13 @@ CmdArgs ArgumentParser::parse(int argc, char* argv[], applet::type type) {
                                 // Moves beyond this pair
                                 i = i + 2;
                         } else { // Last argument but also a flag name - likely a stray flag name
-                                qWarning() << "Stray flag name" << arg
-                                           << "is missing an associated flag value";
-
-                                throw HelpMenuRequested();
+                                throw HelpMenuRequested(std::format(
+                                        "Stray flag name {} is missing an associated flag value",
+                                        arg));
                         }
                 } else { // Flag values should've been handled by the last if, this must be a stray
-                        qWarning() << "Stray flag value" << arg
-                                   << "is not associated with any flag name";
-
-                        throw HelpMenuRequested();
+                        throw HelpMenuRequested(std::format(
+                                "Stray flag value {} is not associated with any flag name", arg));
                 }
 
                 parseFlag(flag, flags, type, is_single_flag);

@@ -20,6 +20,7 @@
 #include <QApplication>
 #include <QDebug>
 #include <QFileInfo>
+#include <QLatin1StringView>
 #include <QTimer>
 #include <QtGlobal>
 
@@ -66,8 +67,12 @@ int main(int argc, char* argv[]) {
         try {
                 printArgs(argc, argv);
                 args = ArgumentParser::parse(argc, argv, applet::type::action_applet);
-        } catch (const HelpMenuRequested&) {
+        } catch (const HelpMenuRequested& e) {
+                QLatin1StringView msg(e.what());
+                if (!msg.empty()) { qWarning() << msg; }
+
                 printHelpMenu(applet::type::action_applet);
+
                 QTimer::singleShot(0, &application, &QApplication::quit);
                 return application.exec();
         }
