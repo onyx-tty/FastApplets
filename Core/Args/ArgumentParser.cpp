@@ -75,7 +75,7 @@ void ArgumentParser::parseFlag(std::array<std::string_view, 2> flag, CmdArgs& pa
         } else if (flag[0] == "-k" || flag[0] == "--keys") {
                 parsed.keys_path = QString::fromStdString(std::string(flag[1]));
         } else if (flag[0] == "-?" || flag[0] == "-h" || flag[0] == "--help") {
-                throw HelpMenuRequested("");
+                throw HelpMenuRequested();
         } else {
                 throw HelpMenuRequested(std::format("Unrecognized flag {} {}", flag[0], flag[1]));
         }
