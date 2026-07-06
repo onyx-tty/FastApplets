@@ -66,7 +66,7 @@ int main(int argc, char* argv[]) {
         CmdArgs args = {};
         try {
                 printArgs(argc, argv);
-                args = ArgumentParser::parse(argc, argv, applet::type::power_applet);
+                args = ArgumentParser::parse(argc, argv);
         } catch (const HelpMenuRequested& e) {
                 QLatin1StringView msg(e.what());
                 if (!msg.empty()) { qWarning() << msg; }

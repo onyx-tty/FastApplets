@@ -53,7 +53,7 @@ private:
         //
         // Currently supports config, keys, and help.
         static void parseFlag(std::array<std::string_view, 2> flag, CmdArgs& parsed,
-                              applet::type type, bool is_single_flag = false);
+                              bool is_single_flag = false);
 
 public:
         ArgumentParser() = delete;
@@ -68,5 +68,5 @@ public:
         // - An unrecognized flag name.
         //
         // Calls qFatal if argc is less than 1, indicating corruption.
-        static CmdArgs parse(int argc, char* argv[], applet::type type);
+        static CmdArgs parse(int argc, char* argv[]);
 };

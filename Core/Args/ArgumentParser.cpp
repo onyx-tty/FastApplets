@@ -58,7 +58,7 @@ bool ArgumentParser::isSingleFlag(std::string_view arg) {
 }
 
 void ArgumentParser::parseFlag(std::array<std::string_view, 2> flag, CmdArgs& parsed,
-                               applet::type type, bool is_single_flag) {
+                               bool is_single_flag) {
         // Checks if both flags are valid before trying to dereference them.
         for (size_t i = 0; i != flag.size(); ++i) {
                 if (!flag[i].data()) {
@@ -81,7 +81,7 @@ void ArgumentParser::parseFlag(std::array<std::string_view, 2> flag, CmdArgs& pa
         }
 }
 
-CmdArgs ArgumentParser::parse(int argc, char* argv[], applet::type type) {
+CmdArgs ArgumentParser::parse(int argc, char* argv[]) {
         // Under normal circumstances, argc should always be at least 1, because program name is a
         // part of the argv array. Something must have gone wrong along the way if this executed.
         if (argc < 1) { qFatal("argc should always be at least 1, but here it's %i", argc); }
@@ -117,7 +117,7 @@ CmdArgs ArgumentParser::parse(int argc, char* argv[], applet::type type) {
                                 "Stray flag value {} is not associated with any flag name", arg));
                 }
 
-                parseFlag(flag, flags, type, is_single_flag);
+                parseFlag(flag, flags, is_single_flag);
         }
 
         return std::move(flags);
