@@ -7,7 +7,9 @@
 #include "ActionApplet/Types/ActionAppletTraits.h"
 
 #include "Core/Applets/Types/AppletType.h"
+#include "Core/Config/FileLocator/FileLocator.h"
 #include "Core/Config/Manager/ConfigManager.h"
+#include "Core/Config/Types/ConfigFilepaths.h"
 #include "Core/Config/Types/ConfigType.h"
 #include "Core/UI/CentralWidget.h"
 #include "Core/UI/MainWindow.h"
@@ -24,8 +26,15 @@ int main(int argc, char* argv[]) {
         // Setup log formatting
         qt::log::setupLogging();
 
+        // Find config files
+        const ConfigFilepaths applet_filepaths = FileLocator::configFiles(
+                applet::toLatin1String(applet::type::action_applet));
+        const ConfigFilepaths global_filepaths = FileLocator::configFiles(
+                applet::toLatin1String(applet::type::global));
+
         // Config files
-        using TConfigManager     = ConfigManager<applet::type::action_applet>;
+        using TConfigManager = ConfigManager<applet::type::action_applet>;
+        TConfigManager::setup(applet_filepaths, global_filepaths);
         const auto& config       = TConfigManager::get<config::type::config>({.defaults = false});
         const auto& keys         = TConfigManager::get<config::type::keys>({.defaults = false});
         const auto& default_keys = TConfigManager::get<config::type::keys>({.defaults = true});

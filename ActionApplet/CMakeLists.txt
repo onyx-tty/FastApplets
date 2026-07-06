@@ -16,6 +16,7 @@ target_link_libraries(ActionApplet PRIVATE
         ActionApplet::Types
         Core::UI
         Core::Config::ConfigManager
+        Core::Config::FileLocator
         Core::Config::Types
         Core::Applets::Types)
 

@@ -12,10 +12,6 @@
 
 class ConfigFilepaths;
 
-// Returns cached locations of each config.
-template<applet::type TApplet>
-static const ConfigFilepaths& configFilepaths();
-
 // Stores instances of Config and Keys schemas for each applet called.
 // Initializes instances from ConfigMapper and KeysMapper.
 template<applet::type TApplet>
@@ -31,7 +27,6 @@ private:
                 Data();
         };
 
-        static void  setup();
         static Data& getData();
 
 public:
@@ -40,6 +35,8 @@ public:
         struct Defaults final {
                 bool defaults = false;
         };
+
+        static void setup(const ConfigFilepaths& applet_filepaths, const ConfigFilepaths& global_filepaths);
 
         template<config::type TConfigFile>
         static const auto& get(Defaults defaults);

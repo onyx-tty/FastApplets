@@ -8,18 +8,14 @@
 #include "Core/Config/ConfigFile/Config/Config.h"
 #include "Core/Config/ConfigFile/Mapper/ConfigMapper.h"
 #include "Core/Config/Factory/ConfigFactory.h"
-#include "Core/Config/FileLocator/FileLocator.h"
 #include "Core/Config/KeysFile/Keys/Keys.h"
 #include "Core/Config/KeysFile/Mapper/KeysMapper.h"
 #include "Core/Config/TomlParser/TomlParser.h"
 #include "Core/Config/Types/ConfigFilepaths.h"
 #include "Core/Config/Types/ConfigType.h"
 
-template<applet::type TApplet>
-const ConfigFilepaths& configFilepaths() {
-        static ConfigFilepaths filepaths = FileLocator::configFiles(applet::toLatin1String(TApplet));
-        return filepaths;
-}
+#include <QDebug>
+#include <QtGlobal>
 
 template<applet::type TApplet>
 ConfigManager<TApplet>::Data::Data() :
@@ -33,18 +29,16 @@ ConfigManager<TApplet>::Data& ConfigManager<TApplet>::getData() {
 }
 
 template<applet::type TApplet>
-void ConfigManager<TApplet>::setup() {
-        const auto& applet_files = configFilepaths<TApplet>();
-        const auto& global_files = configFilepaths<applet::type::global>();
-
+void ConfigManager<TApplet>::setup(const ConfigFilepaths& applet_filepaths,
+                                   const ConfigFilepaths& global_filepaths) {
         getData().default_config = ConfigFactory<TApplet>::createDefaultConfig();
-        getData().config = ConfigMapper::config<TApplet>(TomlParser::file(applet_files.config),
-                                                         TomlParser::file(global_files.config),
+        getData().config = ConfigMapper::config<TApplet>(TomlParser::file(applet_filepaths.config),
+                                                         TomlParser::file(global_filepaths.config),
                                                          getData().default_config);
 
         getData().default_keys = ConfigFactory<TApplet>::createDefaultKeys();
-        getData().keys         = KeysMapper::keys<TApplet>(TomlParser::file(applet_files.keys),
-                                                           TomlParser::file(global_files.keys),
+        getData().keys         = KeysMapper::keys<TApplet>(TomlParser::file(applet_filepaths.keys),
+                                                           TomlParser::file(global_filepaths.keys),
                                                            getData().default_keys);
 
         getData().is_setup = true;
@@ -59,18 +53,14 @@ const auto& ConfigManager<TApplet>::get(Defaults defaults) {
                 TApplet != applet::type::global,
                 "Passing applet::type::global is an error! It will result in duplicate global nodes!");
 
-        if (!getData().is_setup) { setup(); }
+        if (!getData().is_setup) { qFatal("ConfigManager is not set up yet"); }
 
         if constexpr (TConfigFile == config::type::config) {
-                if (defaults.defaults) {
-                        return getData().default_config;
-                }
+                if (defaults.defaults) { return getData().default_config; }
 
                 return getData().config;
         } else {
-                if (defaults.defaults) {
-                        return getData().default_keys;
-                }
+                if (defaults.defaults) { return getData().default_keys; }
 
                 return getData().keys;
         }

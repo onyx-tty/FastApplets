@@ -11,7 +11,6 @@ target_link_libraries(Core_Config_ConfigManager INTERFACE
         Core::Config::KeysFile::Keys
         Core::Config::KeysFile::Mapper
         Core::Config::Factory
-        Core::Config::FileLocator
         Core::Config::TomlParser
         Core::Config::Types
         Core::Applets::Types
