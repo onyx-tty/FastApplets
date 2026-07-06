@@ -79,7 +79,8 @@ void ArgumentParser::parseFlag(std::array<std::string_view, 2> flag, CmdArgs& pa
                 // TODO Throw an exception instead and use QApplication::quit
                 qFatal("Quitting...");
         } else {
-                qInfo() << "Unrecognized flag" << flag[0] << flag[1];
+                qInfo() << "Unrecognized flag" << QString::fromStdString(std::string(flag[0]))
+                        << QString::fromStdString(std::string(flag[1]));
                 printHelpMenu(type);
 
                 // TODO Throw an exception instead and use QApplication::quit
