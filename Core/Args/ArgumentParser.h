@@ -24,7 +24,7 @@ struct CmdArgs {
 // Expects the program to print out the help menu and terminate right away.
 class HelpMenuRequested final : public std::runtime_error {
 public:
-        explicit HelpMenuRequested(const std::string& error) : std::runtime_error(error) {};
+        explicit HelpMenuRequested(const std::string& reason) : std::runtime_error(reason) {};
 };
 
 // Manages parsing of passed raw command-line arguments.
