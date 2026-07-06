@@ -1,4 +1,4 @@
-project(PowerApplet VERSION 0.36.0 LANGUAGES CXX)
+project(PowerApplet VERSION 0.36.1 LANGUAGES CXX)
 
 add_subdirectory(Types)
 

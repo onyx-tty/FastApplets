@@ -22,6 +22,38 @@
 #include <QFileInfo>
 #include <QtGlobal>
 
+namespace {
+
+// Inject config filepath and keys filepath if they are valid
+void injectArgs(CmdArgs& args, ConfigFilepaths& filepaths) {
+        // TODO: This is a workaround. Ideally, valid args should be assigned prior to FileLocator
+        //       lookups. Currently that's not possible without collapsing FileLocator::configFiles
+        //       and separating the lookups of config and keys; paths for each have to be injected
+        //       in separation for that to work
+        // TODO: Create a validator class
+        QFileInfo file = QFileInfo(args.config_path);
+        if (file.exists() && file.isFile() && file.isReadable()) {
+                qDebug() << QString("Found file %1, it was passed as a config cmd argument, injecting")
+                                    .arg(args.config_path);
+                filepaths.config = args.config_path;
+        } else if (!args.config_path.isEmpty()) {
+                qWarning() << "File" << args.config_path
+                           << "not found, it was passed as a config cmd argument";
+        }
+
+        file = QFileInfo(args.keys_path);
+        if (file.exists() && file.isFile() && file.isReadable()) {
+                qDebug() << QString("Found file %1, it was passed as a keys cmd argument, injecting")
+                                    .arg(args.keys_path);
+                filepaths.keys = args.keys_path;
+        } else if (!args.keys_path.isEmpty()) {
+                qWarning() << "File" << args.keys_path
+                           << "not found, it was passed as a keys cmd argument";
+        }
+}
+
+} // namespace
+
 int main(int argc, char* argv[]) {
         auto application = QApplication(argc, argv);
 
@@ -39,30 +71,7 @@ int main(int argc, char* argv[]) {
                 applet::toLatin1String(applet::type::global));
 
         // Inject config filepath and keys filepath if they are valid
-        // TODO: This is a workaround. Ideally, valid args should be assigned prior to FileLocator
-        //       lookups. Currently that's not possible without collapsing FileLocator::configFiles
-        //       and separating the lookups of config and keys; paths for each have to be injected
-        //       in separation for that to work
-        // TODO: Create a validator class
-        QFileInfo file = QFileInfo(args.config_path);
-        if (file.exists() && file.isFile() && file.isReadable()) {
-                qDebug() << QString("Found file %1, it was passed as a config cmd argument, injecting")
-                                    .arg(args.config_path);
-                applet_filepaths.config = args.config_path;
-        } else if (!args.config_path.isEmpty()) {
-                qWarning() << "File" << args.config_path
-                           << "not found, it was passed as a config cmd argument";
-        }
-
-        file = QFileInfo(args.keys_path);
-        if (file.exists() && file.isFile() && file.isReadable()) {
-                qDebug() << QString("Found file %1, it was passed as a keys cmd argument, injecting")
-                                    .arg(args.keys_path);
-                applet_filepaths.keys = args.keys_path;
-        } else if (!args.keys_path.isEmpty()) {
-                qWarning() << "File" << args.keys_path
-                           << "not found, it was passed as a keys cmd argument";
-        }
+        injectArgs(args, applet_filepaths);
 
         // Config files
         using TConfigManager = ConfigManager<applet::type::action_applet>;
