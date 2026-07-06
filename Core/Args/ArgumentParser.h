@@ -41,14 +41,17 @@ private:
         // Terminates with qFatal if arg is invalid or is just one character.
         static bool isSingleFlag(std::string_view arg);
 
-        // Parses a 'flag' by finding it on the list and the assigning it to 'parsed'.
-        // The single exception to that is 'help', which prints the help menu instead.
-        // Currently supports config, keys, and help.
+        // Parses a 'flag' by finding flag[0] on the list and the assigning flag[1] to 'parsed'.
+        // Exceptions to that rule:
+        // - Passed -?/-h/--help, which throws an empty HelpMenuRequested instead.
+        // - Passed an unrecognized flag, which throws a non-empty HelpMenuRequested instead.
         //
         // Terminates with qFatal if the flag fails a null check for either part.
         // The only exception is flag[1] if is_single_flag = true, because that means
-        // only flag[0] matters.
+        // only flag[0] will be used.
         // TODO: Create an overload for single flags instead.
+        //
+        // Currently supports config, keys, and help.
         static void parseFlag(std::array<std::string_view, 2> flag, CmdArgs& parsed,
                               applet::type type, bool is_single_flag = false);
 
@@ -57,16 +60,13 @@ public:
 
         // Parses raw argc and argv into CmdArgs.
         //
-        // Calls qFatal if anything goes wrong, namely:
-        // - A stray flag name is found without an associated value.
-        // - A stray flag value is found without an associated name.
-        // - An unrecognized flag name is found.
-        // - argc is less than 1, indicating corruption.
+        // Throws empty HelpMenuRequested if -?/-h/--help was explicitly called as a flag.
         //
-        // It also calls qFatal if help menu has been requested. This is temporary until
-        // control flow is refactored so that QApplication::quit can be called instead
-        // of qFatal().
-        // FIXME: QApplication::quit doesn't work if QApplication::exec() has not
-        //        returned from the main function.
+        // Additionally, throws HelpMenuRequested with a non-empty reason if found:
+        // - A stray flag name without an associated value.
+        // - A stray flag value without an associated name.
+        // - An unrecognized flag name.
+        //
+        // Calls qFatal if argc is less than 1, indicating corruption.
         static CmdArgs parse(int argc, char* argv[], applet::type type);
 };
