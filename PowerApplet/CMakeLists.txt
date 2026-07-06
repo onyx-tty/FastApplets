@@ -1,4 +1,4 @@
-project(PowerApplet VERSION 0.35.0 LANGUAGES CXX)
+project(PowerApplet VERSION 0.36.0 LANGUAGES CXX)
 
 add_subdirectory(Types)
 
@@ -15,6 +15,7 @@ target_include_directories(PowerApplet PRIVATE
 target_link_libraries(PowerApplet PRIVATE
         PowerApplet::Types
         Core::UI
+        Core::Args
         Core::Config::ConfigManager
         Core::Config::FileLocator
         Core::Config::Types

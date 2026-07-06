@@ -1,4 +1,4 @@
-project(ActionApplet VERSION 0.10.0 LANGUAGES CXX)
+project(ActionApplet VERSION 0.11.0 LANGUAGES CXX)
 
 add_subdirectory(Types)
 
@@ -15,6 +15,7 @@ target_include_directories(ActionApplet PRIVATE
 target_link_libraries(ActionApplet PRIVATE
         ActionApplet::Types
         Core::UI
+        Core::Args
         Core::Config::ConfigManager
         Core::Config::FileLocator
         Core::Config::Types

@@ -34,4 +34,13 @@ constexpr QLatin1StringView toLatin1String(type applet_type) {
         }
 }
 
+constexpr QStringView toTitle(type applet_type) {
+        switch (applet_type) {
+        case type::global:        return u"FastApplets";
+        case type::power_applet:  return u"PowerApplet";
+        case type::action_applet: return u"ActionApplet";
+        default:                  qFatal("Passed unknown type");
+        }
+}
+
 } // namespace applet
