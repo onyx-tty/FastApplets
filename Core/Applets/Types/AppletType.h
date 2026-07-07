@@ -34,6 +34,7 @@ constexpr QLatin1StringView toLatin1String(type applet_type) {
         }
 }
 
+// Obtains title associated with applet::type.
 constexpr QStringView toTitle(type applet_type) {
         switch (applet_type) {
         case type::global:        return u"FastApplets";

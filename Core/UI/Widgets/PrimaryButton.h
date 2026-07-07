@@ -37,7 +37,9 @@ private:
         void setTextLabel(const QString& text, Qt::Alignment alignment);
         void setIconLabel(const QPixmap& pixmap, Qt::Alignment alignment, QSizePolicy size_policy);
 
-        // Remembers focus reason for use by paintEvent.
+        // Caches latest encountered focus reason for use by paintEvent.
+        // It exists so that paintEvent can discern between key and mouse and
+        // apply the style appropriate for each.
         Qt::FocusReason   focus_reason;
         const button_type type;
         const keybindings keys;
@@ -58,10 +60,10 @@ public:
                                keybindings keys, QString command,
                                const PrimaryButtonProperties& properties, QWidget* parent);
 
-        // Remembers focus reason for use by paintEvent.
+        // Wrapper propagating event->reason() to focus_reason for use by paintEvent.
         void focusInEvent(QFocusEvent* event) override;
 
-        // Remembers focus reason for use by paintEvent.
+        // Wrapper propagating event->reason() to focus_reason for use by paintEvent.
         void focusOutEvent(QFocusEvent* event) override;
 
         // QPushButton::icon() would return garbage because the inherited icon
