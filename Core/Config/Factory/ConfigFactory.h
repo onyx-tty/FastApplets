@@ -29,6 +29,9 @@ template<applet::type TApplet>
 class ConfigFactory final {
 public:
         ConfigFactory() = delete;
+
+        // TODO: rename method names from create* to make* to match project style
+
         static Config createDefaultConfig();
         static Keys   createDefaultKeys();
 };

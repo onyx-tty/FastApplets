@@ -25,6 +25,7 @@ void PrimaryButton::paintEvent(QPaintEvent*) {
         initStyleOption(&option);
 
         // Disable Qt's hover effect
+        // TODO: Re-implement
         option.state &= ~QStyle::State_MouseOver;
 
         if (hasFocus()) {
