@@ -11,7 +11,7 @@ class ConfigMapper;
 class QIcon;
 class QString;
 
-// Assign hardcoded icons associated with each button.
+// Assign hardcoded icon associated with each button.
 template<typename TPrimaryButtonType>
 QIcon iconFor(TPrimaryButtonType type);
 
