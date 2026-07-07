@@ -12,9 +12,8 @@
 #include "Core/Config/Manager/ConfigManager.h"
 #include "Core/Config/Types/ConfigFilepaths.h"
 #include "Core/Config/Types/ConfigType.h"
-#include "Core/UI/CentralWidget.h"
+#include "Core/UI/AppletUIFactory.h"
 #include "Core/UI/MainWindow.h"
-#include "Core/UI/PrimaryButtonsFactory.h"
 #include "CppUtils/Log/QtLog.h"
 
 #include <QApplication>
@@ -94,15 +93,7 @@ int main(int argc, char* argv[]) {
         const auto& default_keys = TConfigManager::get<config::type::keys>({.defaults = true});
 
         // GUI
-        auto* central_widget = new CentralWidget(
-                PrimaryButtonsFactory::create(config.getLayoutProperties().getPrimaryButtons(),
-                                              config.getPrimaryButtonProperties(),
-                                              keys.getPrimaryButtons(),
-                                              default_keys.getPrimaryButtons(), nullptr),
-                keys.getQuit(), config.getPrimaryButtonProperties().getDoubleKeyPress(), nullptr);
-
-        auto main_window = MainWindow(config.getWindowProperties().getTitle(),
-                                      config.getWindowProperties().getSize(), central_widget);
+        MainWindow main_window = AppletUIFactory::make(config, keys, default_keys);
 
         // Print application info
         qInfo() << "Applet resolution:" << main_window.size();
