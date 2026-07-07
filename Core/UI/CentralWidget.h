@@ -29,6 +29,11 @@ class QKeyEvent;
 class CentralWidget : public QWidget {
         Q_OBJECT
 
+private:
+        std::vector<PrimaryButton*> buttons;
+        const keybindings&          quit_keys;
+        bool                        double_key_press;
+
 public:
         explicit CentralWidget(std::vector<PrimaryButton*> buttons, const keybindings& quit_keys,
                                bool double_key_press, QWidget* parent);
@@ -41,8 +46,4 @@ public:
         void showEvent(QShowEvent* event) override;
 
         [[nodiscard]] const std::vector<PrimaryButton*>& getButtons() const;
-
-        std::vector<PrimaryButton*> buttons;
-        const keybindings&          quit_keys;
-        bool                        double_key_press;
 };
