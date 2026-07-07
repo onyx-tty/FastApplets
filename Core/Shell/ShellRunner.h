@@ -12,8 +12,8 @@ public:
 
         // Runs a string shell command.
         // It immediately returns and warns if passed command is empty, to avoid errors.
+        // The command is executed by passing it to '/bin/sh -c'.
         //
         // Example: "hyprshutdown -t 'Shutting down...' -p 'systemctl poweroff'"
-        //   "hyprshutdown" = program, rest = arguments
         static void command(QString command);
 };

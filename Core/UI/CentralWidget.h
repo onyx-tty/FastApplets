@@ -22,9 +22,6 @@ class QKeyEvent;
 // 'primary_button.double_key_press = false' in config.toml disables this, making
 // each key press instantly trigger button click.
 //
-// Key:Button mapping is loaded from keys.toml via createButtons().
-// Default mapping: Key_1->button 1, Key_2->button 2, and so on.
-//
 // TODO: Add staging for mouse
 class CentralWidget : public QWidget {
         Q_OBJECT

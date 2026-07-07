@@ -30,8 +30,6 @@ private:
         // Custom paint to visualize staging (keyboard focus) and disable hover.
         // Staged buttons show as sunken/focused. Mouse hover is disabled to avoid
         // interfering with keyboard navigation.
-        //
-        // Bug: Mouse click sets State_Sunken that persists until quit key is pressed.
         void paintEvent(QPaintEvent*) override;
 
         // QPushButton forces icon and text to share alignment. To position them
