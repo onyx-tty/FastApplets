@@ -31,14 +31,13 @@ Keys KeysMapper::keys(const toml::table& applet, const toml::table& global, cons
                  {.node = node_view(global), .applet = applet::type::global}};
 
         /* Quit Keys */
-        keys.quit = quit(cands.makeExtended("quit"), defaults.getQuit(),
+        keys.quit = quit(cands.makeCopy().withExtension("quit"), defaults.getQuit(),
                          PathContext{filename, u"quit"});
 
         /* Primary Button Keys */
-        keys.primary_buttons =
-                primaryButtons({cands.get()[0].makeExtended("primary_buttons").makeQuiet(false)},
-                               defaults.getPrimaryButtons(),
-                               PathContext{filename, u"primary_buttons"});
+        keys.primary_buttons = primaryButtons(
+                {cands.get()[0].makeCopy().withExtension("primary_buttons").withQuiet(false)},
+                defaults.getPrimaryButtons(), PathContext{filename, u"primary_buttons"});
 
         return std::move(keys);
 }

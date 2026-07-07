@@ -23,12 +23,14 @@ WindowProperties ConfigMapper::window(const ResolverCandidates& candidates,
         return mapProperties(
                 candidates, defaults, path_context,
                 [&defaults, &candidates](WindowProperties& window, const PathContext& path_context) {
-                        window.size = Resolver::from<QSize>(candidates.makeExtended("size"),
+                        window.size = Resolver::from<QSize>(candidates.makeCopy().withExtension(
+                                                                    "size"),
                                                             path_context.makeExtended("size"))
                                               .value_or(defaults.getSize());
 
-                        window.title = Resolver::from<QString>(candidates.makeExtended("title")
-                                                                       .makeQuiet(true, 1),
+                        window.title = Resolver::from<QString>(candidates.makeCopy()
+                                                                       .withExtension("title")
+                                                                       .withQuiet(true, 1),
                                                                path_context.makeExtended("title"))
                                                .value_or(defaults.getTitle());
                 });
@@ -44,27 +46,34 @@ PrimaryButtonProperties ConfigMapper::primaryButton(const ResolverCandidates&   
                 [&defaults, &candidates](PrimaryButtonProperties& button,
                                          const PathContext&       path_context) {
                         button.double_key_press =
-                                Resolver::from<bool>(candidates.makeExtended("double_key_press"),
+                                Resolver::from<bool>(candidates.makeCopy().withExtension(
+                                                             "double_key_press"),
                                                      path_context.makeExtended("double_key_press"))
                                         .value_or(defaults.getDoubleKeyPress());
 
-                        button.text_alignment = Resolver::from<Qt::Alignment>(
-                                                        candidates.makeExtended("text_alignment"),
-                                                        path_context.makeExtended("text_alignment"))
-                                                        .value_or(defaults.getTextAlignment());
+                        button.text_alignment =
+                                Resolver::from<Qt::Alignment>(candidates.makeCopy().withExtension(
+                                                                      "text_alignment"),
+                                                              path_context.makeExtended(
+                                                                      "text_alignment"))
+                                        .value_or(defaults.getTextAlignment());
 
-                        button.icon_alignment = Resolver::from<Qt::Alignment>(
-                                                        candidates.makeExtended("icon_alignment"),
-                                                        path_context.makeExtended("icon_alignment"))
-                                                        .value_or(defaults.getIconAlignment());
+                        button.icon_alignment =
+                                Resolver::from<Qt::Alignment>(candidates.makeCopy().withExtension(
+                                                                      "icon_alignment"),
+                                                              path_context.makeExtended(
+                                                                      "icon_alignment"))
+                                        .value_or(defaults.getIconAlignment());
 
-                        button.icon_size =
-                                Resolver::from<QSize>(candidates.makeExtended("icon_size"),
-                                                      path_context.makeExtended("icon_size"))
-                                        .value_or(defaults.getIconSize());
+                        button.icon_size = Resolver::from<QSize>(candidates.makeCopy().withExtension(
+                                                                         "icon_size"),
+                                                                 path_context.makeExtended(
+                                                                         "icon_size"))
+                                                   .value_or(defaults.getIconSize());
 
                         button.policy =
-                                Resolver::from<QSizePolicy>(candidates.makeExtended("policy"),
+                                Resolver::from<QSizePolicy>(candidates.makeCopy().withExtension(
+                                                                    "policy"),
                                                             path_context.makeExtended("policy"))
                                         .value_or(defaults.getPolicy());
                 });

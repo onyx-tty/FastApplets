@@ -27,37 +27,41 @@ struct ResolverCandidate final {
         applet::type applet;
         bool         quiet = false;
 
+        // Creates a copy of ResolverCandidate. An alternative to ResolverCandidate(old)
+        // that makes the intention clearer when chaining.
+        [[nodiscard]] ResolverCandidate makeCopy() const;
+
         // TODO: Consolidate repetitive logic
-        // Return a new candidate with node extended by 'key'.
+        // Extends CANDIDATE by KEY.
         //
         // Replaces:
         //   ResolverCandidate new_cand = old_cand;
         //   new_cand.node = old_cand.node[key];
         //
         // With:
-        //   auto new_cand = old_cand.makeExtended(key);
-        [[nodiscard]] ResolverCandidate makeExtended(std::string_view key) const;
+        //   auto new_cand = old_cand.withExtension(key);
+        [[nodiscard]] ResolverCandidate& withExtension(std::string_view key);
 
-        // Return a new candidate with node extended by 'index'.
+        // Extends CANDIDATE by INDEX.
         //
         // Replaces:
         //   auto new_cand = old_cand;
         //   new_cand.node = old_cand.node[index];
         //
         // With:
-        //   auto new_cand = old_cand.makeExtended(index);
-        [[nodiscard]] ResolverCandidate makeExtended(size_t index) const;
+        //   auto new_cand = old_cand.withExtension(index);
+        [[nodiscard]] ResolverCandidate& withExtension(size_t index);
 
-        // Returns a new candidate with quiet set to true/false.
-        // Default is true.
+        // Sets .quiet to QUIET.
+        // True by default.
         //
         // Replaces:
         //   auto new_cand = old_cand;
         //   new_cand.quiet = true/false;
         //
         // With:
-        //   auto new_cand = old_cand.makeQuiet(true/false);
-        [[nodiscard]] ResolverCandidate makeQuiet(bool quiet = true) const;
+        //   auto new_cand = old_cand.withQuiet(true/false);
+        [[nodiscard]] ResolverCandidate& withQuiet(bool quiet = true);
 };
 
 // Stores a dynamic array of ResolverCandidate objects for use in Resolver.
@@ -74,8 +78,12 @@ public:
 
         [[nodiscard]] const std::vector<ResolverCandidate>& get() const { return candidates; }
 
+        // Creates a copy of ResolverCandidates. An alternative to ResolverCandidates(old)
+        // that makes the intention clearer when chaining.
+        [[nodiscard]] ResolverCandidates makeCopy() const;
+
         // TODO: Consolidate repetitive logic
-        // Returns a new dynamic array of candidates with ALL nodes extended by 'key'.
+        // Extends ALL CANDIDATES by KEY.
         //
         // Replaces:
         //   auto new_cands = old_cands;
@@ -84,10 +92,10 @@ public:
         //   }
         //
         // With:
-        //   auto new_cands = old_cands.makeExtended(key);
-        [[nodiscard]] ResolverCandidates makeExtended(std::string_view key) const;
+        //   auto new_cands = old_cands.withExtension(key);
+        [[nodiscard]] ResolverCandidates& withExtension(std::string_view key);
 
-        // Returns a new dynamic array of candidates with ALL nodes extended by 'key'.
+        // Extends ALL CANDIDATES by KEY.
         //
         // Replaces:
         //   auto new_cands = old_cands;
@@ -96,10 +104,10 @@ public:
         //   }
         //
         // With:
-        //   auto new_cands = old_cands.makeExtended(key);
-        [[nodiscard]] ResolverCandidates makeExtended(size_t index) const;
+        //   auto new_cands = old_cands.withExtension(key);
+        [[nodiscard]] ResolverCandidates& withExtension(size_t index);
 
-        // Returns a new dynamic array of candidates, all set to QUIET.
+        // Sets .quiet in ALL CANDIDATES to QUIET.
         //
         // Replaces:
         //   auto new_cands = old_cands;
@@ -108,10 +116,10 @@ public:
         //   }
         //
         // With:
-        //   auto new_cands = old_cands.makeQuiet(true/false);
-        [[nodiscard]] ResolverCandidates makeQuiet(bool quiet = true) const;
+        //   auto new_cands = old_cands.withQuiet(true/false);
+        [[nodiscard]] ResolverCandidates& withQuiet(bool quiet = true);
 
-        // Returns a new dynamic array of candidates, candidates[CAND_INDEX] set to QUIET.
+        // Sets .quiet in CANDIDATES[CAND_INDEX] to QUIET.
         //
         // Replaces:
         //   auto new_cands = old_cands;
@@ -120,7 +128,7 @@ public:
         //   }
         //
         // With:
-        //   auto new_cands = old_cands.makeQuiet(true/false);
-        [[nodiscard]] ResolverCandidates makeQuiet(std::optional<size_t> cand_index,
-                                                   bool                  quiet = true) const;
+        //   auto new_cands = old_cands.withQuiet(index, true/false);
+        [[nodiscard]] ResolverCandidates& withQuiet(std::optional<size_t> cand_index,
+                                                    bool                  quiet = true);
 };
