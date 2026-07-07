@@ -88,9 +88,7 @@ int main(int argc, char* argv[]) {
         // Config files
         using TConfigManager = ConfigManager<applet::type::power_applet>;
         TConfigManager::setup(applet_filepaths, global_filepaths);
-        const auto& config       = TConfigManager::get<config::type::config>({.defaults = false});
-        const auto& keys         = TConfigManager::get<config::type::keys>({.defaults = false});
-        const auto& default_keys = TConfigManager::get<config::type::keys>({.defaults = true});
+        const auto& [config, keys, default_keys] = TConfigManager::getAll();
 
         // GUI
         MainWindow main_window = AppletUIFactory::make(config, keys, default_keys);

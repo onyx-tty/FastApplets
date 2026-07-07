@@ -36,10 +36,12 @@ public:
                 bool defaults = false;
         };
 
-        static void setup(const ConfigFilepaths& applet_filepaths, const ConfigFilepaths& global_filepaths);
+        static void setup(const ConfigFilepaths& applet_filepaths,
+                          const ConfigFilepaths& global_filepaths);
 
         template<config::type TConfigFile>
         static const auto& get(Defaults defaults);
+        static auto        getAll();
 };
 
 #include "ConfigManager.tpp"

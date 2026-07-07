@@ -14,6 +14,7 @@
 #include "Core/Config/Types/ConfigFilepaths.h"
 #include "Core/Config/Types/ConfigType.h"
 
+#include <tuple>
 #include <QDebug>
 #include <QtGlobal>
 
@@ -68,4 +69,11 @@ const auto& ConfigManager<TApplet>::get(Defaults defaults) {
 
                 return data.keys;
         }
+}
+
+template<applet::type TApplet>
+auto ConfigManager<TApplet>::getAll() {
+        return std::forward_as_tuple(get<config::type::config>({.defaults = false}),
+                                     get<config::type::keys>({.defaults = false}),
+                                     get<config::type::keys>({.defaults = true}));
 }
