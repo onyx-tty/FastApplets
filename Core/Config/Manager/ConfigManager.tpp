@@ -31,17 +31,19 @@ ConfigManager<TApplet>::Data& ConfigManager<TApplet>::getData() {
 template<applet::type TApplet>
 void ConfigManager<TApplet>::setup(const ConfigFilepaths& applet_filepaths,
                                    const ConfigFilepaths& global_filepaths) {
-        getData().default_config = ConfigFactory<TApplet>::createDefaultConfig();
-        getData().config = ConfigMapper::config<TApplet>(TomlParser::file(applet_filepaths.config),
-                                                         TomlParser::file(global_filepaths.config),
-                                                         getData().default_config);
+        auto& data = getData();
 
-        getData().default_keys = ConfigFactory<TApplet>::createDefaultKeys();
-        getData().keys         = KeysMapper::keys<TApplet>(TomlParser::file(applet_filepaths.keys),
-                                                           TomlParser::file(global_filepaths.keys),
-                                                           getData().default_keys);
+        data.default_config = ConfigFactory<TApplet>::createDefaultConfig();
+        data.config = ConfigMapper::config<TApplet>(TomlParser::file(applet_filepaths.config),
+                                                    TomlParser::file(global_filepaths.config),
+                                                    data.default_config);
 
-        getData().is_setup = true;
+        data.default_keys = ConfigFactory<TApplet>::createDefaultKeys();
+        data.keys         = KeysMapper::keys<TApplet>(TomlParser::file(applet_filepaths.keys),
+                                                      TomlParser::file(global_filepaths.keys),
+                                                      data.default_keys);
+
+        data.is_setup = true;
 }
 
 // TODO: Collapse the if chain by creating ConfigTraits
@@ -53,15 +55,17 @@ const auto& ConfigManager<TApplet>::get(Defaults defaults) {
                 TApplet != applet::type::global,
                 "Passing applet::type::global is an error! It will result in duplicate global nodes!");
 
-        if (!getData().is_setup) { qFatal("ConfigManager is not set up yet"); }
+        auto& data = getData();
+
+        if (!data.is_setup) { qFatal("ConfigManager is not set up yet"); }
 
         if constexpr (TConfigFile == config::type::config) {
-                if (defaults.defaults) { return getData().default_config; }
+                if (defaults.defaults) { return data.default_config; }
 
-                return getData().config;
+                return data.config;
         } else {
-                if (defaults.defaults) { return getData().default_keys; }
+                if (defaults.defaults) { return data.default_keys; }
 
-                return getData().keys;
+                return data.keys;
         }
 }
