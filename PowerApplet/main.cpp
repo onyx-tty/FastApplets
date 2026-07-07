@@ -26,6 +26,7 @@
 namespace {
 
 // Inject config filepath and keys filepath if they are valid
+// TODO: Collapse into separate functions
 void injectArgs(CmdArgs& args, ConfigFilepaths& filepaths) {
         // TODO: This is a workaround. Ideally, valid args should be assigned prior to FileLocator
         //       lookups. Currently that's not possible without collapsing FileLocator::configFiles
