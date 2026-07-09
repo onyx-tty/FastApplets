@@ -34,7 +34,7 @@ void printHelpMenu(applet::type type) {
         std::cout << help_menu;
 }
 
-void printArgs(int argc, char* argv[]) {
+void printArgs(int argc, const char* const argv[]) {
         QString formatted = {};
 
         for (int i = 0; i != argc; ++i) {
@@ -81,7 +81,7 @@ void ArgumentParser::parseFlag(std::array<std::string_view, 2> flag, CmdArgs& pa
         }
 }
 
-CmdArgs ArgumentParser::parse(int argc, char* argv[]) {
+CmdArgs ArgumentParser::parse(int argc, const char* const argv[]) {
         // Under normal circumstances, argc should always be at least 1, because program name is a
         // part of the argv array. Something must have gone wrong along the way if this executed.
         if (argc < 1) { qFatal("argc should always be at least 1, but here it's %i", argc); }

@@ -12,7 +12,7 @@
 #include <QString>
 
 void printHelpMenu(applet::type type);
-void printArgs(int argc, char* argv[]);
+void printArgs(int argc, const char* const argv[]);
 
 // Stores a list of parsed command-line arguments.
 // TODO: Move to Args/Types.
@@ -68,5 +68,5 @@ public:
         // - An unrecognized flag name.
         //
         // Calls qFatal if argc is less than 1, indicating corruption.
-        static CmdArgs parse(int argc, char* argv[]);
+        static CmdArgs parse(int argc, const char* const argv[]);
 };
