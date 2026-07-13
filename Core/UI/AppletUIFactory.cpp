@@ -6,7 +6,6 @@
 #include "Core/Config/KeysFile/Keys/Keys.h"
 #include "Core/UI/CentralWidget.h"
 #include "Core/UI/MainWindow.h"
-#include "Core/UI/PrimaryButtonsFactory.h"
 #include "Core/UI/Widgets/PrimaryButton.h"
 
 #include <utility>

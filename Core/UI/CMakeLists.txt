@@ -5,8 +5,7 @@ add_subdirectory(Types)
 add_library(Core_UI
         AppletUIFactory.cpp
         CentralWidget.cpp
-        MainWindow.cpp
-        PrimaryButtonsFactory.cpp)
+        MainWindow.cpp)
 add_library(Core::UI ALIAS Core_UI)
 
 target_include_directories(Core_UI PRIVATE
