@@ -27,8 +27,8 @@ class QWidget;
 // Returns a vector containing every created button.
 // Calls qFatal instead if no button params are found.
 // TODO: This function does too much. It should not resolve keys on top of button construction.
-std::vector<PrimaryButton*> createPrimaryButtons(const std::vector<PrimaryButtonParams>& params,
-                                                 const PrimaryButtonProperties&          properties,
-                                                 const std::vector<keybindings>&         keys,
-                                                 const std::vector<keybindings>& default_keys,
-                                                 QWidget*                        parent);
+std::vector<PrimaryButton*> makePrimaryButtons(const std::vector<PrimaryButtonParams>& params,
+                                               const PrimaryButtonProperties&          properties,
+                                               const std::vector<keybindings>&         keys,
+                                               const std::vector<keybindings>&         default_keys,
+                                               QWidget*                                parent);

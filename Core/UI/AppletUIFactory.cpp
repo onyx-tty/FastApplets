@@ -12,10 +12,10 @@
 #include <utility>
 
 MainWindow makeMainWindow(const Config& config, const Keys& keys, const Keys& default_keys) {
-        auto primary_buttons = createPrimaryButtons(config.getLayoutProperties().getPrimaryButtons(),
-                                                    config.getPrimaryButtonProperties(),
-                                                    keys.getPrimaryButtons(),
-                                                    default_keys.getPrimaryButtons(), nullptr);
+        auto primary_buttons = makePrimaryButtons(config.getLayoutProperties().getPrimaryButtons(),
+                                                  config.getPrimaryButtonProperties(),
+                                                  keys.getPrimaryButtons(),
+                                                  default_keys.getPrimaryButtons(), nullptr);
 
         auto* central_widget =
                 new CentralWidget(std::move(primary_buttons), keys.getQuit(),
