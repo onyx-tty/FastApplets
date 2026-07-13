@@ -3,17 +3,16 @@
 
 #pragma once
 
-namespace config {
-class Filepaths;
-} // namespace config
-
 #include <QLatin1StringView>
 
-// Finds files in hardcoded locations.
-class FileLocator final {
-public:
-        // Locates config.toml and keys.toml for the given applet.
-        // "global" maps to the root FastApplets/ config directory, as the global config
-        // is stored there.
-        static config::Filepaths configFiles(QLatin1StringView applet_name);
-};
+namespace config {
+
+class Filepaths;
+
+// Locates config.toml and keys.toml for the given applet.
+//
+// "global" maps to the root FastApplets/ config directory, as the global config
+// is stored there.
+config::Filepaths locateFiles(QLatin1StringView applet_name);
+
+} // namespace config

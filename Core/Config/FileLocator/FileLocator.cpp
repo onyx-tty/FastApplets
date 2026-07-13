@@ -11,7 +11,7 @@
 #include <Qt>
 #include <QtGlobal>
 
-config::Filepaths FileLocator::configFiles(QLatin1StringView applet_name) {
+config::Filepaths config::locateFiles(QLatin1StringView applet_name) {
         using namespace Qt::StringLiterals;
 
         config::Filepaths filepaths = {};
