@@ -45,20 +45,20 @@ void printArgs(int argc, const char* const argv[]) {
         qDebug().noquote() << "Passed args:" << formatted;
 }
 
-bool ArgumentParser::isFlagName(std::string_view arg) {
+bool arg::isFlagName(std::string_view arg) {
         if (!arg.data() || arg.size() == 0) { qFatal("Received empty arg!"); }
 
         return arg[0] == '-';
 }
 
-bool ArgumentParser::isSingleFlag(std::string_view arg) {
+bool arg::isSingleFlag(std::string_view arg) {
         if (!arg.data() || arg.size() == 0) { qFatal("Received empty arg!"); }
 
         return arg == "-?" || arg == "-h" || arg == "--help";
 }
 
-void ArgumentParser::parseFlag(std::array<std::string_view, 2> flag, CmdArgs& parsed,
-                               bool is_single_flag) {
+void arg::parseFlag(std::array<std::string_view, 2> flag, arg::CmdArgs& parsed,
+                    bool is_single_flag) {
         // Checks if both flags are valid before trying to dereference them.
         for (size_t i = 0; i != flag.size(); ++i) {
                 if (!flag[i].data()) {
@@ -81,12 +81,12 @@ void ArgumentParser::parseFlag(std::array<std::string_view, 2> flag, CmdArgs& pa
         }
 }
 
-CmdArgs ArgumentParser::parse(int argc, const char* const argv[]) {
+arg::CmdArgs arg::parse(int argc, const char* const argv[]) {
         // Under normal circumstances, argc should always be at least 1, because program name is a
         // part of the argv array. Something must have gone wrong along the way if this executed.
         if (argc < 1) { qFatal("argc should always be at least 1, but here it's %i", argc); }
 
-        CmdArgs flags = {};
+        arg::CmdArgs flags = {};
 
         // Starts from 1 because argv[0] is the name of the program
         for (int i = 1; i != argc;) {

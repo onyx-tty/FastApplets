@@ -25,7 +25,7 @@ namespace {
 
 // Inject config filepath and keys filepath if they are valid
 // TODO: Collapse into separate functions
-void injectArgs(CmdArgs& args, ConfigFilepaths& filepaths) {
+void injectArgs(arg::CmdArgs& args, ConfigFilepaths& filepaths) {
         // TODO: This is a workaround. Ideally, valid args should be assigned prior to FileLocator
         //       lookups. Currently that's not possible without collapsing FileLocator::configFiles
         //       and separating the lookups of config and keys; paths for each have to be injected
@@ -61,10 +61,10 @@ int main(int argc, char* argv[]) {
         qt::log::setupLogging();
 
         // Parse args
-        CmdArgs args = {};
+        arg::CmdArgs args = {};
         try {
                 printArgs(argc, argv);
-                args = ArgumentParser::parse(argc, argv);
+                args = arg::parse(argc, argv);
         } catch (const HelpMenuRequested& e) {
                 QLatin1StringView msg(e.what());
                 if (!msg.empty()) { qWarning() << msg; }
