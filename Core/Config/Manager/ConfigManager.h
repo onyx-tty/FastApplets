@@ -11,13 +11,13 @@
 #include <toml++/toml.hpp>
 
 namespace config {
+
 class Filepaths;
-} // namespace config
 
 // Stores instances of Config and Keys schemas for each applet called.
 // Initializes instances from ConfigMapper and KeysMapper.
 template<applet::type TApplet>
-class ConfigManager final {
+class Manager final {
 private:
         struct Data {
                 Config config;
@@ -32,7 +32,7 @@ private:
         static Data& getData();
 
 public:
-        ConfigManager() = delete;
+        Manager() = delete;
 
         struct Defaults final {
                 bool defaults = false;
@@ -45,5 +45,7 @@ public:
         static const auto& get(Defaults defaults);
         static auto        getAll();
 };
+
+} // namespace config
 
 #include "ConfigManager.tpp"

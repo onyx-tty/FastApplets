@@ -3,7 +3,7 @@
 
 // TODO: Create a template specialization for AppletManager,
 //       removing the need for external includes
-// Pull in definitions for ConfigManager<ActionApplet> overload
+// Pull in definitions for config::Manager<ActionApplet> overload
 #include "ActionApplet/Types/ActionAppletTraits.h"
 
 #include "Core/Applets/Types/AppletType.h"
@@ -85,7 +85,7 @@ int main(int argc, char* argv[]) {
         injectArgs(args, applet_filepaths);
 
         // Config files
-        using TConfigManager = ConfigManager<applet::type::action_applet>;
+        using TConfigManager = config::Manager<applet::type::action_applet>;
         TConfigManager::setup(applet_filepaths, global_filepaths);
         const auto& [config, keys, default_keys] = TConfigManager::getAll();
 

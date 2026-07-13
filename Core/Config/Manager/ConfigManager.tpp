@@ -19,19 +19,19 @@
 #include <QtGlobal>
 
 template<applet::type TApplet>
-ConfigManager<TApplet>::Data::Data() :
+config::Manager<TApplet>::Data::Data() :
         config(Config{}), default_config(Config{}), keys(Keys{}), default_keys(Keys{}),
         is_setup(false) {}
 
 template<applet::type TApplet>
-ConfigManager<TApplet>::Data& ConfigManager<TApplet>::getData() {
+config::Manager<TApplet>::Data& config::Manager<TApplet>::getData() {
         static Data instance = {};
         return instance;
 }
 
 template<applet::type TApplet>
-void ConfigManager<TApplet>::setup(const config::Filepaths& applet_filepaths,
-                                   const config::Filepaths& global_filepaths) {
+void config::Manager<TApplet>::setup(const config::Filepaths& applet_filepaths,
+                                     const config::Filepaths& global_filepaths) {
         auto& data = getData();
 
         data.default_config = ConfigFactory<TApplet>::makeDefaultConfig();
@@ -51,14 +51,14 @@ void ConfigManager<TApplet>::setup(const config::Filepaths& applet_filepaths,
 // TODO: Return type deduction prevents optimizations
 template<applet::type TApplet>
 template<config::type TConfigFile>
-const auto& ConfigManager<TApplet>::get(Defaults defaults) {
+const auto& config::Manager<TApplet>::get(Defaults defaults) {
         static_assert(
                 TApplet != applet::type::global,
                 "Passing applet::type::global is an error! It will result in duplicate global nodes!");
 
         auto& data = getData();
 
-        if (!data.is_setup) { qFatal("ConfigManager is not set up yet"); }
+        if (!data.is_setup) { qFatal("config::Manager is not set up yet"); }
 
         if constexpr (TConfigFile == config::type::config) {
                 if (defaults.defaults) { return data.default_config; }
@@ -72,7 +72,7 @@ const auto& ConfigManager<TApplet>::get(Defaults defaults) {
 }
 
 template<applet::type TApplet>
-auto ConfigManager<TApplet>::getAll() {
+auto config::Manager<TApplet>::getAll() {
         return std::forward_as_tuple(get<config::type::config>({.defaults = false}),
                                      get<config::type::keys>({.defaults = false}),
                                      get<config::type::keys>({.defaults = true}));
