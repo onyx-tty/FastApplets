@@ -3,7 +3,6 @@ add_subdirectory(Types)
 
 # Internal structure
 add_library(Core_UI
-        AppletUIFactory.cpp
         CentralWidget.cpp
         MainWindow.cpp)
 add_library(Core::UI ALIAS Core_UI)

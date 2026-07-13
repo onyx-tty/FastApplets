@@ -11,7 +11,6 @@
 #include "Core/Config/FileLocator/FileLocator.h"
 #include "Core/Config/Manager/ConfigManager.h"
 #include "Core/Config/Types/ConfigFilepaths.h"
-#include "Core/UI/AppletUIFactory.h"
 #include "Core/UI/MainWindow.h"
 #include "CppUtils/Log/QtLog.h"
 
