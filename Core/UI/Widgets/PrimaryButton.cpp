@@ -4,7 +4,7 @@
 #include "PrimaryButton.h"
 #include "Core/Config/ConfigFile/Properties/PrimaryButtonProperties.h"
 #include "Core/Config/KeysFile/Types/Keybindings.h"
-#include "Core/Shell/ShellRunner.h"
+#include "Core/Shell/Shell.h"
 #include "Core/UI/Types/ButtonType.h"
 #include "Core/UI/Widgets/PrimaryButtonParams.h"
 

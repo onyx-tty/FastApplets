@@ -1,5 +1,5 @@
 add_library(Core_Shell
-        ShellRunner.cpp)
+        Shell.cpp)
 add_library(Core::Shell ALIAS Core_Shell)
 
 target_include_directories(Core_Shell PRIVATE

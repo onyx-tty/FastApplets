@@ -1,7 +1,7 @@
 // SPDX-FileCopyrightText: 2026 Łukasz Wrodarczyk
 // SPDX-License-Identifier: GPL-3.0-or-later
 
-#include "Core/Shell/ShellRunner.h"
+#include "Core/Shell/Shell.h"
 
 #include <utility>
 #include <QDebug>
