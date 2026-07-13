@@ -7,15 +7,14 @@
 
 class QString;
 
-// Parses TOML format.
+namespace config {
+
+// Parses a single TOML table at given filepath.
+//
+// If file exists and is parsed successfully, returns a parsed table.
+// Otherwise returns an empty table and logs warnings.
 //
 // This is a low-level file parser used to obtain toml::tables for mapping.
-class TomlParser final {
-public:
-        TomlParser() = delete;
+toml::table parseTomlFile(const QString& filepath);
 
-        // Parses a single table at given filepath.
-        // If file exists and is parsed successfully, returns a parsed table.
-        // Otherwise returns an empty table and logs warnings.
-        static toml::table file(const QString& filepath);
-};
+} // namespace config

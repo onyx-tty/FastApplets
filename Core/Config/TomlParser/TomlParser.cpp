@@ -10,7 +10,7 @@
 #include <QString>
 #include <QtGlobal>
 
-toml::table TomlParser::file(const QString& filepath) {
+toml::table config::parseTomlFile(const QString& filepath) {
         toml::table file = {};
 
         if (!QFileInfo::exists(filepath)) {

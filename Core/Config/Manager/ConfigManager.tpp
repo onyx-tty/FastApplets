@@ -35,13 +35,13 @@ void ConfigManager<TApplet>::setup(const config::Filepaths& applet_filepaths,
         auto& data = getData();
 
         data.default_config = ConfigFactory<TApplet>::makeDefaultConfig();
-        data.config = ConfigMapper::config<TApplet>(TomlParser::file(applet_filepaths.config),
-                                                    TomlParser::file(global_filepaths.config),
+        data.config = ConfigMapper::config<TApplet>(config::parseTomlFile(applet_filepaths.config),
+                                                    config::parseTomlFile(global_filepaths.config),
                                                     data.default_config);
 
         data.default_keys = ConfigFactory<TApplet>::makeDefaultKeys();
-        data.keys         = KeysMapper::keys<TApplet>(TomlParser::file(applet_filepaths.keys),
-                                                      TomlParser::file(global_filepaths.keys),
+        data.keys         = KeysMapper::keys<TApplet>(config::parseTomlFile(applet_filepaths.keys),
+                                                      config::parseTomlFile(global_filepaths.keys),
                                                       data.default_keys);
 
         data.is_setup = true;
