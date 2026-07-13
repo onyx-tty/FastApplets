@@ -123,7 +123,7 @@ PrimaryButton::PrimaryButton(button_type type, const QIcon& icon, const QString&
                              const PrimaryButtonProperties& properties, QWidget* parent) :
         QPushButton(parent), type(type), keys(std::move(keys)), command(std::move(command)),
         focus_reason(Qt::FocusReason::NoFocusReason) {
-        connect(this, &PrimaryButton::clicked, [this]() { ShellRunner::command(this->command); });
+        connect(this, &PrimaryButton::clicked, [this]() { runCommand(this->command); });
         connect(this, &PrimaryButton::clicked, [this]() {
                 clearFocus();
                 if (auto* parent = this->parentWidget()) {

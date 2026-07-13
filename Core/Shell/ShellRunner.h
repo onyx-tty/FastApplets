@@ -5,15 +5,9 @@
 
 class QString;
 
-// Handles shell command execution (no output capture).
-class ShellRunner final {
-public:
-        ShellRunner() = delete;
-
-        // Runs a string shell command.
-        // It immediately returns and warns if passed command is empty, to avoid errors.
-        // The command is executed by passing it to '/bin/sh -c'.
-        //
-        // Example: "hyprshutdown -t 'Shutting down...' -p 'systemctl poweroff'"
-        static void command(QString command);
-};
+// Runs a string shell command without output capture.
+// It immediately returns and warns if passed command is empty, to avoid errors.
+// The command is executed by passing it to '/bin/sh -c'.
+//
+// Example: "hyprshutdown -t 'Shutting down...' -p 'systemctl poweroff'"
+void runCommand(QString command);

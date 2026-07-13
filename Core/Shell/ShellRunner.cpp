@@ -9,7 +9,7 @@
 #include <QString>
 #include <QtGlobal>
 
-void ShellRunner::command(QString command) {
+void runCommand(QString command) {
         // Avoids passing empty command to shell, which does nothing.
         if (command.isEmpty()) {
                 qWarning() << "Passed empty command!";
