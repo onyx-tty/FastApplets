@@ -7,7 +7,7 @@
 #include "ActionApplet/Types/ActionAppletTraits.h"
 
 #include "Core/Applets/Types/AppletType.h"
-#include "Core/Args/ArgumentParser.h"
+#include "Core/Args/Args.h"
 #include "Core/Config/FileLocator/FileLocator.h"
 #include "Core/Config/Manager/ConfigManager.h"
 #include "Core/Config/Types/ConfigFilepaths.h"

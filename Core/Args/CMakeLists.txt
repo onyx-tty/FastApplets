@@ -1,5 +1,5 @@
 add_library(Core_Args
-        ArgumentParser.cpp)
+        Args.cpp)
 add_library(Core::Args ALIAS Core_Args)
 
 target_include_directories(Core_Args PRIVATE

@@ -1,7 +1,7 @@
 // SPDX-FileCopyrightText: 2026 Łukasz Wrodarczyk
 // SPDX-License-Identifier: GPL-3.0-or-later
 
-#include "ArgumentParser.h"
+#include "Args.h"
 #include "Core/Applets/Types/AppletType.h"
 
 #include <array>
