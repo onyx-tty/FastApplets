@@ -6,7 +6,11 @@
 #include <QString>
 
 // Stores filepaths to config and keys.
-struct ConfigFilepaths final {
+namespace config {
+
+struct Filepaths final {
         QString config;
         QString keys;
 };
+
+} // namespace config

@@ -11,10 +11,10 @@
 #include <Qt>
 #include <QtGlobal>
 
-ConfigFilepaths FileLocator::configFiles(QLatin1StringView applet_name) {
+config::Filepaths FileLocator::configFiles(QLatin1StringView applet_name) {
         using namespace Qt::StringLiterals;
 
-        ConfigFilepaths filepaths = {};
+        config::Filepaths filepaths = {};
 
         // Global config is in root, not in a separate directory. Redirect to root.
         if (applet_name == "global") { applet_name = ""_L1; }

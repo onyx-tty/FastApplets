@@ -30,8 +30,8 @@ ConfigManager<TApplet>::Data& ConfigManager<TApplet>::getData() {
 }
 
 template<applet::type TApplet>
-void ConfigManager<TApplet>::setup(const ConfigFilepaths& applet_filepaths,
-                                   const ConfigFilepaths& global_filepaths) {
+void ConfigManager<TApplet>::setup(const config::Filepaths& applet_filepaths,
+                                   const config::Filepaths& global_filepaths) {
         auto& data = getData();
 
         data.default_config = ConfigFactory<TApplet>::createDefaultConfig();

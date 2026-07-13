@@ -3,7 +3,9 @@
 
 #pragma once
 
-class ConfigFilepaths;
+namespace config {
+class Filepaths;
+} // namespace config
 
 #include <QLatin1StringView>
 
@@ -13,5 +15,5 @@ public:
         // Locates config.toml and keys.toml for the given applet.
         // "global" maps to the root FastApplets/ config directory, as the global config
         // is stored there.
-        static ConfigFilepaths configFiles(QLatin1StringView applet_name);
+        static config::Filepaths configFiles(QLatin1StringView applet_name);
 };

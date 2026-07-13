@@ -10,7 +10,9 @@
 
 #include <toml++/toml.hpp>
 
-class ConfigFilepaths;
+namespace config {
+class Filepaths;
+} // namespace config
 
 // Stores instances of Config and Keys schemas for each applet called.
 // Initializes instances from ConfigMapper and KeysMapper.
@@ -36,8 +38,8 @@ public:
                 bool defaults = false;
         };
 
-        static void setup(const ConfigFilepaths& applet_filepaths,
-                          const ConfigFilepaths& global_filepaths);
+        static void setup(const config::Filepaths& applet_filepaths,
+                          const config::Filepaths& global_filepaths);
 
         template<config::type TConfigFile>
         static const auto& get(Defaults defaults);

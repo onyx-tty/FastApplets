@@ -25,7 +25,7 @@ namespace {
 
 // Inject config filepath and keys filepath if they are valid
 // TODO: Collapse into separate functions
-void injectArgs(arg::CmdArgs& args, ConfigFilepaths& filepaths) {
+void injectArgs(arg::CmdArgs& args, config::Filepaths& filepaths) {
         // TODO: This is a workaround. Ideally, valid args should be assigned prior to FileLocator
         //       lookups. Currently that's not possible without collapsing FileLocator::configFiles
         //       and separating the lookups of config and keys; paths for each have to be injected
@@ -76,9 +76,9 @@ int main(int argc, char* argv[]) {
         }
 
         // Find config files
-        ConfigFilepaths applet_filepaths = FileLocator::configFiles(
+        config::Filepaths applet_filepaths = FileLocator::configFiles(
                 applet::toLatin1String(applet::type::action_applet));
-        const ConfigFilepaths global_filepaths = FileLocator::configFiles(
+        const config::Filepaths global_filepaths = FileLocator::configFiles(
                 applet::toLatin1String(applet::type::global));
 
         // Inject config filepath and keys filepath if they are valid
