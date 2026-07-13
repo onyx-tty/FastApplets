@@ -32,8 +32,8 @@ public:
 
         // TODO: rename method names from create* to make* to match project style
 
-        static Config createDefaultConfig();
-        static Keys   createDefaultKeys();
+        static Config makeDefaultConfig();
+        static Keys   makeDefaultKeys();
 };
 
 #include "ConfigFactory.tpp"
