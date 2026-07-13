@@ -41,8 +41,9 @@ std::vector<std::string> textFromTomlArray(const toml::array& arr) {
 }
 
 /* Global Keys */
-keybindings KeysMapper::quit(const ResolverCandidates& candidates, const keybindings& defaults,
-                             const PathContext& path_context) {
+keybindings KeysMapper::quit(const config::resolve::Candidates&  candidates,
+                             const keybindings&                  defaults,
+                             const config::resolve::PathContext& path_context) {
         toml::array keys = config::resolve::from<toml::array>(candidates, path_context,
                                                               {.min_size = 1}, u"[keybindings...]")
                                    .value_or(toml::array());
@@ -53,9 +54,9 @@ keybindings KeysMapper::quit(const ResolverCandidates& candidates, const keybind
 }
 
 /* Primary Applet Keys*/
-std::vector<keybindings> KeysMapper::primaryButtons(const ResolverCandidates&       candidates,
-                                                    const std::vector<keybindings>& defaults,
-                                                    const PathContext&              path_context) {
+std::vector<keybindings> KeysMapper::primaryButtons(
+        const config::resolve::Candidates& candidates, const std::vector<keybindings>& defaults,
+        const config::resolve::PathContext& path_context) {
         toml::array keys = config::resolve::from<toml::array>(candidates, path_context,
                                                               {.min_size = 1}, u"[keybindings...]")
                                    .value_or(toml::array());
@@ -74,9 +75,9 @@ std::vector<keybindings> KeysMapper::primaryButtons(const ResolverCandidates&   
         return std::move(buttons);
 }
 
-keybindings KeysMapper::primaryButton(const ResolverCandidates& candidates,
-                                      const keybindings&        defaults,
-                                      const PathContext&        path_context) {
+keybindings KeysMapper::primaryButton(const config::resolve::Candidates&  candidates,
+                                      const keybindings&                  defaults,
+                                      const config::resolve::PathContext& path_context) {
         toml::array keys = config::resolve::from<toml::array>(candidates, path_context,
                                                               {.min_size = 1}, u"[keybindings...]")
                                    .value_or(toml::array());

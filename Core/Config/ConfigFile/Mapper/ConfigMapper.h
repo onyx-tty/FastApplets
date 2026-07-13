@@ -10,8 +10,11 @@
 #include <toml++/toml.hpp>
 #include <vector>
 
+namespace config::resolve {
+class Candidates;
 class PathContext;
-class ResolverCandidates;
+} // namespace config::resolve
+
 class WindowProperties;
 class LayoutProperties;
 class PrimaryButtonProperties;
@@ -29,8 +32,8 @@ private:
         /* Helpers */
 
         template<typename T>
-        static T mapProperties(const ResolverCandidates& candidates, const T& defaults,
-                               const PathContext& path_context, auto fill_fn);
+        static T mapProperties(const config::resolve::Candidates& candidates, const T& defaults,
+                               const config::resolve::PathContext& path_context, auto fill_fn);
 
         /* Window Properties */
 
@@ -42,9 +45,9 @@ private:
         //                  size (array of two integers)
         //
         // Return value: WindowProperties
-        static WindowProperties window(const ResolverCandidates& candidates,
-                                       const WindowProperties&   defaults,
-                                       const PathContext&        path_context);
+        static WindowProperties window(const config::resolve::Candidates&  candidates,
+                                       const WindowProperties&             defaults,
+                                       const config::resolve::PathContext& path_context);
 
         /* Primary Button Properties */
 
@@ -58,9 +61,10 @@ private:
         //                  and policy (string)
         //
         // Return value: PrimaryButtonProperties
-        static PrimaryButtonProperties primaryButton(const ResolverCandidates&      candidates,
-                                                     const PrimaryButtonProperties& defaults,
-                                                     const PathContext&             path_context);
+        static PrimaryButtonProperties primaryButton(
+                const config::resolve::Candidates&  candidates,
+                const PrimaryButtonProperties&      defaults,
+                const config::resolve::PathContext& path_context);
 
         /* Layout Properties */
 
@@ -70,9 +74,9 @@ private:
         //
         // Return value: LayoutProperties
         template<applet::type TApplet>
-        static LayoutProperties layout(const ResolverCandidates& candidates,
-                                       const LayoutProperties&   defaults,
-                                       const PathContext&        path_context);
+        static LayoutProperties layout(const config::resolve::Candidates&  candidates,
+                                       const LayoutProperties&             defaults,
+                                       const config::resolve::PathContext& path_context);
 
         // Maps primary_buttons from a config source.
         //
@@ -89,8 +93,9 @@ private:
         // Return value: std::vector<PrimaryButtonParams>
         template<applet::type TApplet>
         static std::vector<PrimaryButtonParams> primaryButtons(
-                const ResolverCandidates&               candidates,
-                const std::vector<PrimaryButtonParams>& defaults, const PathContext& path_context);
+                const config::resolve::Candidates&      candidates,
+                const std::vector<PrimaryButtonParams>& defaults,
+                const config::resolve::PathContext&     path_context);
 
         // Maps primary_button, including its attributes, from a config source.
         //
@@ -103,8 +108,9 @@ private:
         //
         // Return value: std::optional<PrimaryButtonParams>
         template<applet::type TApplet>
-        static std::optional<PrimaryButtonParams> primaryButton(const ResolverCandidates& candidates,
-                                                                const PathContext& path_context);
+        static std::optional<PrimaryButtonParams> primaryButton(
+                const config::resolve::Candidates&  candidates,
+                const config::resolve::PathContext& path_context);
 
 public:
         ConfigMapper() = delete;

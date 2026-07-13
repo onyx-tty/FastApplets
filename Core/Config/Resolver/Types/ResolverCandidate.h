@@ -13,34 +13,36 @@
 #include <utility>
 #include <vector>
 
-// TODO: Remove inlines for both; create dedicated ResolverCandidate.cpp
+// TODO: Remove inlines for both; create dedicated Candidate.cpp
 // TODO: Consistent behaviors in chaining methods, separate overloads for ALL and index
 // TODO: Docs should explain what role these classes play in Resolver.h
+
+namespace config::resolve {
 
 // Stores a node with required metadata for use in Resolver method calls.
 //
 // 'node' contains the toml::node_view with data for extraction.
-// 'type' is used for logging, to create QString path with PathContext.
+// 'type' is used for logging, to create QString path with config::resolve::PathContext.
 // 'quiet' disables logging if true.
-struct ResolverCandidate final {
+struct Candidate final {
         node_view    node;
         applet::type applet;
         bool         quiet = false;
 
-        // Creates a copy of ResolverCandidate. An alternative to ResolverCandidate(old)
+        // Creates a copy of Candidate. An alternative to Candidate(old)
         // that makes the intention clearer when chaining.
-        [[nodiscard]] ResolverCandidate makeCopy() const;
+        [[nodiscard]] Candidate makeCopy() const;
 
         // TODO: Consolidate repetitive logic
         // Extends CANDIDATE by KEY.
         //
         // Replaces:
-        //   ResolverCandidate new_cand = old_cand;
+        //   Candidate new_cand = old_cand;
         //   new_cand.node = old_cand.node[key];
         //
         // With:
         //   auto new_cand = old_cand.withExtension(key);
-        [[nodiscard]] ResolverCandidate& withExtension(std::string_view key);
+        [[nodiscard]] Candidate& withExtension(std::string_view key);
 
         // Extends CANDIDATE by INDEX.
         //
@@ -50,7 +52,7 @@ struct ResolverCandidate final {
         //
         // With:
         //   auto new_cand = old_cand.withExtension(index);
-        [[nodiscard]] ResolverCandidate& withExtension(size_t index);
+        [[nodiscard]] Candidate& withExtension(size_t index);
 
         // Sets .quiet to QUIET.
         // True by default.
@@ -61,26 +63,24 @@ struct ResolverCandidate final {
         //
         // With:
         //   auto new_cand = old_cand.withQuiet(true/false);
-        [[nodiscard]] ResolverCandidate& withQuiet(bool quiet = true);
+        [[nodiscard]] Candidate& withQuiet(bool quiet = true);
 };
 
-// Stores a dynamic array of ResolverCandidate objects for use in Resolver.
-class ResolverCandidates final {
+// Stores a dynamic array of Candidate objects for use in Resolver.
+class Candidates final {
 private:
-        std::vector<ResolverCandidate> candidates;
+        std::vector<Candidate> candidates;
 
 public:
-        ResolverCandidates() : candidates({}) {}
-        ResolverCandidates(std::vector<ResolverCandidate> candidates) :
-                candidates(std::move(candidates)) {}
-        ResolverCandidates(std::initializer_list<ResolverCandidate> candidates) :
-                candidates(candidates) {}
+        Candidates() : candidates({}) {}
+        Candidates(std::vector<Candidate> candidates) : candidates(std::move(candidates)) {}
+        Candidates(std::initializer_list<Candidate> candidates) : candidates(candidates) {}
 
-        [[nodiscard]] const std::vector<ResolverCandidate>& get() const { return candidates; }
+        [[nodiscard]] const std::vector<Candidate>& get() const { return candidates; }
 
-        // Creates a copy of ResolverCandidates. An alternative to ResolverCandidates(old)
+        // Creates a copy of Candidates. An alternative to Candidates(old)
         // that makes the intention clearer when chaining.
-        [[nodiscard]] ResolverCandidates makeCopy() const;
+        [[nodiscard]] Candidates makeCopy() const;
 
         // TODO: Consolidate repetitive logic
         // Extends ALL CANDIDATES by KEY.
@@ -93,7 +93,7 @@ public:
         //
         // With:
         //   auto new_cands = old_cands.withExtension(key);
-        [[nodiscard]] ResolverCandidates& withExtension(std::string_view key);
+        [[nodiscard]] Candidates& withExtension(std::string_view key);
 
         // Extends ALL CANDIDATES by KEY.
         //
@@ -105,7 +105,7 @@ public:
         //
         // With:
         //   auto new_cands = old_cands.withExtension(key);
-        [[nodiscard]] ResolverCandidates& withExtension(size_t index);
+        [[nodiscard]] Candidates& withExtension(size_t index);
 
         // Sets .quiet in ALL CANDIDATES to QUIET.
         //
@@ -117,7 +117,7 @@ public:
         //
         // With:
         //   auto new_cands = old_cands.withQuiet(true/false);
-        [[nodiscard]] ResolverCandidates& withQuiet(bool quiet = true);
+        [[nodiscard]] Candidates& withQuiet(bool quiet = true);
 
         // Sets .quiet in CANDIDATES[CAND_INDEX] to QUIET.
         //
@@ -129,6 +129,7 @@ public:
         //
         // With:
         //   auto new_cands = old_cands.withQuiet(index, true/false);
-        [[nodiscard]] ResolverCandidates& withQuiet(std::optional<size_t> cand_index,
-                                                    bool                  quiet = true);
+        [[nodiscard]] Candidates& withQuiet(std::optional<size_t> cand_index, bool quiet = true);
 };
+
+} // namespace config::resolve

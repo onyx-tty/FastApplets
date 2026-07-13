@@ -11,6 +11,8 @@
 
 class QStringView;
 
+namespace config::resolve {
+
 // Builds logging paths with dynamic applet name substitution.
 //
 // PathContext stores a filename and a navigation path (e.g. ".window.size").
@@ -50,3 +52,5 @@ public:
         // Example: ctx.makeExtended(2) -> PathContext with ".window.size[2]"
         [[nodiscard]] PathContext makeExtended(size_t index) const;
 };
+
+} // namespace config::resolve

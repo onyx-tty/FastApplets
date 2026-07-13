@@ -10,14 +10,17 @@
 #include <QStringView>
 #include <Qt>
 
+namespace config::resolve {
+class Candidates;
 class PathContext;
-class ResolverCandidates;
+} // namespace config::resolve
+
 class QSizePolicy;
 class QSize;
 
 // Extracts typed values from TOML nodes with fallback chains and error handling.
 //
-// All methods accept multiple ResolverCandidates (priority ordered). The first candidate that
+// All methods accept multiple config::resolve::Candidates (priority ordered). The first candidate that
 // provides a valid value wins. Invalid values (incorrect type, bound failures)
 // are treated as missing.
 //
@@ -39,10 +42,10 @@ namespace config::resolve {
 // On success: returns optional extracted value
 // On failure: returns std::nullopt
 template<typename T>
-[[nodiscard]] static std::optional<T> from(const ResolverCandidates&  candidates,
-                                           const PathContext&         path_context,
-                                           const tomlqt::ArrayBounds& arr_bounds = {},
-                                           QStringView                arr_format = {});
+[[nodiscard]] static std::optional<T> from(const config::resolve::Candidates&  candidates,
+                                           const config::resolve::PathContext& path_context,
+                                           const tomlqt::ArrayBounds&          arr_bounds = {},
+                                           QStringView                         arr_format = {});
 
 // Extraction that can fall back to replacing the entire parent object.
 //
@@ -52,9 +55,9 @@ template<typename T>
 // On failure: silently replaces entire object with object_defaults, with
 //             no partial state
 template<typename TAttribute, typename TObject>
-static void fromOrDefault(const ResolverCandidates& candidates, TAttribute& attribute,
+static void fromOrDefault(const config::resolve::Candidates& candidates, TAttribute& attribute,
                           TObject& object, const TObject& object_defaults,
-                          const PathContext&         path_context,
+                          const config::resolve::PathContext& path_context,
                           const tomlqt::ArrayBounds& arr_bounds = {}, QStringView arr_format = {});
 
 // Like fromOrDefault but with a transformation step before attribute assignment.
@@ -66,9 +69,10 @@ static void fromOrDefault(const ResolverCandidates& candidates, TAttribute& attr
 // On failure: silently replaces entire object with object_defaults, with
 //             no partial state
 template<typename TRaw, typename TAttribute, typename TObject, typename Transform>
-static void fromTransformOrDefault(const ResolverCandidates& candidates, TAttribute& attribute,
-                                   TObject& object, const TObject& object_defaults,
-                                   Transform transform, const PathContext& path_context);
+static void fromTransformOrDefault(const config::resolve::Candidates& candidates,
+                                   TAttribute& attribute, TObject& object,
+                                   const TObject& object_defaults, Transform transform,
+                                   const config::resolve::PathContext& path_context);
 
 } // namespace config::resolve
 

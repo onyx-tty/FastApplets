@@ -17,12 +17,13 @@
 
 /* Window Properties */
 
-WindowProperties ConfigMapper::window(const ResolverCandidates& candidates,
-                                      const WindowProperties&   defaults,
-                                      const PathContext&        path_context) {
+WindowProperties ConfigMapper::window(const config::resolve::Candidates&  candidates,
+                                      const WindowProperties&             defaults,
+                                      const config::resolve::PathContext& path_context) {
         return mapProperties(
                 candidates, defaults, path_context,
-                [&defaults, &candidates](WindowProperties& window, const PathContext& path_context) {
+                [&defaults, &candidates](WindowProperties&                   window,
+                                         const config::resolve::PathContext& path_context) {
                         window.size = config::resolve::from<QSize>(candidates.makeCopy()
                                                                            .withExtension("size"),
                                                                    path_context.makeExtended("size"))
@@ -39,13 +40,13 @@ WindowProperties ConfigMapper::window(const ResolverCandidates& candidates,
 
 /* Primary Button Properties*/
 
-PrimaryButtonProperties ConfigMapper::primaryButton(const ResolverCandidates&      candidates,
-                                                    const PrimaryButtonProperties& defaults,
-                                                    const PathContext&             path_context) {
+PrimaryButtonProperties ConfigMapper::primaryButton(
+        const config::resolve::Candidates& candidates, const PrimaryButtonProperties& defaults,
+        const config::resolve::PathContext& path_context) {
         return mapProperties(
                 candidates, defaults, path_context,
-                [&defaults, &candidates](PrimaryButtonProperties& button,
-                                         const PathContext&       path_context) {
+                [&defaults, &candidates](PrimaryButtonProperties&            button,
+                                         const config::resolve::PathContext& path_context) {
                         button.double_key_press =
                                 config::resolve::from<bool>(candidates.makeCopy().withExtension(
                                                                     "double_key_press"),

@@ -10,18 +10,20 @@
 #include <QString>
 #include <QStringView>
 
-PathContext::PathContext(QStringView filename, QStringView path_context, char separator) :
+config::resolve::PathContext::PathContext(QStringView filename, QStringView path_context,
+                                          char separator) :
         filename(filename.toString()), path_context(path_context.toString()), separator(separator) {
 }
 
-QString PathContext::makePath(applet::type applet) const {
+QString config::resolve::PathContext::makePath(applet::type applet) const {
         return QString("in %1, %2%3%4")
                 .arg(QString{filename}, applet::toString(applet))
                 .arg(separator)
                 .arg(path_context);
 }
 
-PathContext PathContext::makeExtended(std::string_view segment) const {
+config::resolve::PathContext config::resolve::PathContext::makeExtended(
+        std::string_view segment) const {
         return PathContext{filename,
                            QString("%1%2%3")
                                    .arg(path_context)
@@ -30,6 +32,6 @@ PathContext PathContext::makeExtended(std::string_view segment) const {
                            separator};
 }
 
-PathContext PathContext::makeExtended(size_t index) const {
+config::resolve::PathContext config::resolve::PathContext::makeExtended(size_t index) const {
         return PathContext{filename, QString("%1[%2]").arg(path_context).arg(index), separator};
 }
