@@ -16,10 +16,11 @@
 #include <Qt>
 #include <QtGlobal>
 
-std::vector<PrimaryButton*> PrimaryButtonsFactory::create(
-        const std::vector<PrimaryButtonParams>& params, const PrimaryButtonProperties& properties,
-        const std::vector<keybindings>& keys, const std::vector<keybindings>& default_keys,
-        QWidget* parent) {
+std::vector<PrimaryButton*> createPrimaryButtons(const std::vector<PrimaryButtonParams>& params,
+                                                 const PrimaryButtonProperties&          properties,
+                                                 const std::vector<keybindings>&         keys,
+                                                 const std::vector<keybindings>& default_keys,
+                                                 QWidget*                        parent) {
         // TODO If applied key is already used elsewhere, the keybindings will be unpredictable.
         //      For example if for some reason keybinding for primary button 3 is Qt_Key4 and
         //      primary button 4 has missing keybinding, both buttons will be assigned to Qt_Key4.

@@ -11,12 +11,11 @@
 
 #include <utility>
 
-MainWindow AppletUIFactory::make(const Config& config, const Keys& keys, const Keys& default_keys) {
-        auto primary_buttons =
-                PrimaryButtonsFactory::create(config.getLayoutProperties().getPrimaryButtons(),
-                                              config.getPrimaryButtonProperties(),
-                                              keys.getPrimaryButtons(),
-                                              default_keys.getPrimaryButtons(), nullptr);
+MainWindow makeMainWindow(const Config& config, const Keys& keys, const Keys& default_keys) {
+        auto primary_buttons = createPrimaryButtons(config.getLayoutProperties().getPrimaryButtons(),
+                                                    config.getPrimaryButtonProperties(),
+                                                    keys.getPrimaryButtons(),
+                                                    default_keys.getPrimaryButtons(), nullptr);
 
         auto* central_widget =
                 new CentralWidget(std::move(primary_buttons), keys.getQuit(),

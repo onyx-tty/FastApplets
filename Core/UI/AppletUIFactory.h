@@ -7,11 +7,6 @@ class MainWindow;
 class Config;
 class Keys;
 
-// Builds applet UI from scratch, including PrimaryButtons, CentralWidget, and MainWindow.
-class AppletUIFactory final {
-public:
-        AppletUIFactory() = delete;
-
-        // Builds MainWindow from provided config, keys, and default_keys.
-        static MainWindow make(const Config& config, const Keys& keys, const Keys& default_keys);
-};
+// Initializes applet UI from scratch, including PrimaryButtons, CentralWidget, and MainWindow.
+// MainWindow is constructed from provided config, keys, and default_keys.
+MainWindow makeMainWindow(const Config& config, const Keys& keys, const Keys& default_keys);

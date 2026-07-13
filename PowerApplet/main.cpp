@@ -91,7 +91,7 @@ int main(int argc, char* argv[]) {
         const auto& [config, keys, default_keys] = TConfigManager::getAll();
 
         // GUI
-        MainWindow main_window = AppletUIFactory::make(config, keys, default_keys);
+        MainWindow main_window = makeMainWindow(config, keys, default_keys);
 
         // Print application info
         qInfo() << "Applet resolution:" << main_window.size();

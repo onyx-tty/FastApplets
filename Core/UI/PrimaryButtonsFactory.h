@@ -12,29 +12,23 @@ class PrimaryButton;
 class PrimaryButtonProperties;
 class QWidget;
 
-// Constructs a vector of PrimaryButtons from passed PrimaryButtonParams, assigns
-// visual properties from PrimaryButtonProperties, and keybindings from keys, with
-// default_keys for fallback behavior.
-class PrimaryButtonsFactory final {
-public:
-        PrimaryButtonsFactory() = delete;
-
-        // Creates PrimaryButtons from given params, sets given properties and keys.
-        //
-        // Keybinding resolution order:
-        // 1. User-configured keys (keys).
-        // 2. Default keys (default_keys).
-        // 3. Qt::Key_unknown if the defaults are exhausted.
-        //
-        // WARNING: If a resolved key is already bound elsewhere, both buttons
-        //          will share it silently. A global keybinding validation pass is not
-        //          implemented yet.
-        //
-        // Returns a vector containing every created button.
-        // Calls qFatal instead if no button params are found.
-        static std::vector<PrimaryButton*> create(const std::vector<PrimaryButtonParams>& params,
-                                                  const PrimaryButtonProperties&  properties,
-                                                  const std::vector<keybindings>& keys,
-                                                  const std::vector<keybindings>& default_keys,
-                                                  QWidget*                        parent);
-};
+// Constructs PrimaryButtons from given PrimaryButtonParams, assigns visual properties from
+// PrimaryButtonProperties, and keybindings from keys, with fallback default_keys
+//
+// Keybinding resolution order:
+// 1. User-configured keys (keys).
+// 2. Default keys (default_keys).
+// 3. Qt::Key_unknown if the defaults are exhausted.
+//
+// WARNING: If a resolved key is already bound elsewhere, both buttons
+//          will share it silently. A global keybinding validation pass is not
+//          implemented yet.
+//
+// Returns a vector containing every created button.
+// Calls qFatal instead if no button params are found.
+// TODO: This function does too much. It should not resolve keys on top of button construction.
+std::vector<PrimaryButton*> createPrimaryButtons(const std::vector<PrimaryButtonParams>& params,
+                                                 const PrimaryButtonProperties&          properties,
+                                                 const std::vector<keybindings>&         keys,
+                                                 const std::vector<keybindings>& default_keys,
+                                                 QWidget*                        parent);
