@@ -23,7 +23,7 @@
 #include <Qt>
 
 template<applet::type TApplet>
-Config ConfigFactory<TApplet>::makeDefaultConfig() {
+Config config::makeDefaultConfig() {
         using TPrimaryButtonType = AppletTraits<TApplet>::TPrimaryButtonType;
 
         constexpr QSize size   = {960, 220};
@@ -60,7 +60,7 @@ Config ConfigFactory<TApplet>::makeDefaultConfig() {
 }
 
 template<applet::type TApplet>
-Keys ConfigFactory<TApplet>::makeDefaultKeys() {
+Keys config::makeDefaultKeys() {
         keybindings quit = {Qt::Key_Escape, Qt::Key_Q};
 
         std::vector<keybindings> primary_buttons = makeKeyRange(Qt::Key_1, Qt::Key_9);

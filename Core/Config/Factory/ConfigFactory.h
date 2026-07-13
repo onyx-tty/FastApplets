@@ -24,16 +24,16 @@ inline std::vector<keybindings> makeKeyRange(Qt::Key first, Qt::Key last) {
         return ret;
 }
 
-// Returns constructed default config and keys associated with given applet.
+namespace config {
+
+// Construct default config for applet TApplet.
 template<applet::type TApplet>
-class ConfigFactory final {
-public:
-        ConfigFactory() = delete;
+Config makeDefaultConfig();
 
-        // TODO: rename method names from create* to make* to match project style
+// Construct default keys for applet TKeys.
+template<applet::type TApplet>
+Keys makeDefaultKeys();
 
-        static Config makeDefaultConfig();
-        static Keys   makeDefaultKeys();
-};
+} // namespace config
 
 #include "ConfigFactory.tpp"
