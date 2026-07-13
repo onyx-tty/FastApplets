@@ -7,4 +7,5 @@ target_include_directories(Core_Config_KeysFile_Keys PRIVATE
         $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>)
 
 target_link_libraries(Core_Config_KeysFile_Keys PRIVATE
-        Core::Config::KeysFile::Types)
+        Core::Config::KeysFile::Types
+        Core::Applets::Types)

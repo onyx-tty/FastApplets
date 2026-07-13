@@ -7,4 +7,5 @@ target_include_directories(Core_Config_ConfigFile_Config PRIVATE
         $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>)
 
 target_link_libraries(Core_Config_ConfigFile_Config PUBLIC
-        Core::Config::ConfigFile::Properties)
+        Core::Config::ConfigFile::Properties
+        Core::Applets::Types)

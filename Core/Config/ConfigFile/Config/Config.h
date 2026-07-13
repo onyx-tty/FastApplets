@@ -3,16 +3,19 @@
 
 #pragma once
 
+#include "Core/Applets/Types/AppletType.h"
 #include "Core/Config/ConfigFile/Properties/LayoutProperties.h"
 #include "Core/Config/ConfigFile/Properties/PrimaryButtonProperties.h"
 #include "Core/Config/ConfigFile/Properties/WindowProperties.h"
 
 class ConfigMapper;
 
+namespace config::schema {
+
 // Holds user-configured properties used by an applet.
 class Config {
 private:
-        friend class ConfigMapper;
+        friend class ::ConfigMapper;
 
         WindowProperties        window_properties;
         PrimaryButtonProperties primary_button_properties;
@@ -26,3 +29,5 @@ public:
         const PrimaryButtonProperties& getPrimaryButtonProperties() const;
         const LayoutProperties&        getLayoutProperties() const;
 };
+
+} // namespace config::schema

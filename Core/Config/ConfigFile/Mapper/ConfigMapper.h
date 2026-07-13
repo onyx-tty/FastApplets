@@ -23,7 +23,7 @@ class QString;
 class QSize;
 class QSizePolicy;
 
-// Maps TOML configuration to Config structure.
+// Maps TOML configuration to config::schema::Config structure.
 //
 // All mapping failures will fall back to hardcoded defaults and log warnings.
 // Malformed values (wrong type, out of range, etc.) are treated as failures.
@@ -115,20 +115,20 @@ private:
 public:
         ConfigMapper() = delete;
 
-        // Parses applet and global tables into XAppletConfig.
+        // Parses applet and global tables into config::schema::Config.
         //
         // Usage:
-        //   Config config = ConfigMapper::config<applet::type::x>(applet, global, defaults);
+        //   auto config = ConfigMapper::config<applet::type::x>(applet, global, defaults);
         //
         // The applet table supplies primary configuration and overrides, global
         // provides fallbacks.
         //
         // QApplication must exist before calling (initialized in main()).
         //
-        // Return value: Config
+        // Return value: config::schema::Config
         template<applet::type TApplet>
-        static Config config(const toml::table& applet, const toml::table& global,
-                             const Config& defaults);
+        static config::schema::Config config(const toml::table& applet, const toml::table& global,
+                                             const config::schema::Config& defaults);
 };
 
 #include "ConfigMapper.tpp"

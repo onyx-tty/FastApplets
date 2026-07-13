@@ -3,16 +3,19 @@
 
 #pragma once
 
+#include "Core/Applets/Types/AppletType.h"
 #include "Core/Config/KeysFile/Types/Keybindings.h"
 
 #include <vector>
 
 class KeysMapper;
 
+namespace config::schema {
+
 // Holds user-configured keys used by an applet.
 class Keys {
 private:
-        friend class KeysMapper;
+        friend class ::KeysMapper;
 
         keybindings              quit;
         std::vector<keybindings> primary_buttons;
@@ -22,3 +25,5 @@ public:
         const keybindings&              getQuit() const;
         const std::vector<keybindings>& getPrimaryButtons() const;
 };
+
+} // namespace config::schema

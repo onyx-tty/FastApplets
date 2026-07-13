@@ -40,7 +40,6 @@ std::vector<std::string> textFromTomlArray(const toml::array& arr) {
         return texts;
 }
 
-/* Global Keys */
 keybindings KeysMapper::quit(const config::resolve::Candidates&  candidates,
                              const keybindings&                  defaults,
                              const config::resolve::PathContext& path_context) {
@@ -53,7 +52,6 @@ keybindings KeysMapper::quit(const config::resolve::Candidates&  candidates,
         return keysFromText(textFromTomlArray(keys));
 }
 
-/* Primary Applet Keys*/
 std::vector<keybindings> KeysMapper::primaryButtons(
         const config::resolve::Candidates& candidates, const std::vector<keybindings>& defaults,
         const config::resolve::PathContext& path_context) {

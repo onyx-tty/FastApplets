@@ -23,7 +23,7 @@
 #include <Qt>
 
 template<applet::type TApplet>
-Config config::makeDefaultConfig() {
+config::schema::Config config::makeDefaultConfig() {
         using TPrimaryButtonType = AppletTraits<TApplet>::TPrimaryButtonType;
 
         constexpr QSize size   = {960, 220};
@@ -56,14 +56,14 @@ Config config::makeDefaultConfig() {
 
         layout = LayoutProperties(std::move(params));
 
-        return Config(window, button, layout);
+        return config::schema::Config(window, button, layout);
 }
 
 template<applet::type TApplet>
-Keys config::makeDefaultKeys() {
+config::schema::Keys config::makeDefaultKeys() {
         keybindings quit = {Qt::Key_Escape, Qt::Key_Q};
 
         std::vector<keybindings> primary_buttons = makeKeyRange(Qt::Key_1, Qt::Key_9);
 
-        return Keys(std::move(quit), std::move(primary_buttons));
+        return config::schema::Keys(std::move(quit), std::move(primary_buttons));
 }

@@ -26,13 +26,11 @@ keybindings keysFromText(const std::vector<std::string>& texts);
 // Extracts string elements from a toml::array, silently skipping non-string values.
 std::vector<std::string> textFromTomlArray(const toml::array& arr);
 
-// Maps TOML configuration to Keys structure.
+// Maps TOML configuration to config::schema::Keys structure.
 //
 // All mapping failures will fall back to defaults and log warnings.
 class KeysMapper final {
 private:
-        /* Global Keys */
-
         // Maps quit keybindings from config nodes.
         //
         // Fallback priority: applet.quit -> global.quit -> hardcoded defaults
@@ -41,8 +39,6 @@ private:
         static keybindings quit(const config::resolve::Candidates&  candidates,
                                 const keybindings&                  defaults,
                                 const config::resolve::PathContext& path_context);
-
-        /* Applet Keys*/
 
         // Maps the entire primary_buttons array from config nodes.
         //
@@ -72,16 +68,17 @@ public:
         // Parses applet and global tables into Keys.
         //
         // Usage:
-        //   Keys keys = KeysMapper::keys(applet, global, defaults);
+        //   auto keys = KeysMapper::keys(applet, global, defaults);
         //
         // The applet table supplies primary configuration and overrides, global
         // provides fallbacks.
         //
         // QApplication must exist before calling (initialized in main()).
         //
-        // Return value: Keys
+        // Return value: config::schema::Keys
         template<applet::type TApplet>
-        static Keys keys(const toml::table& applet, const toml::table& global, const Keys& defaults);
+        static config::schema::Keys keys(const toml::table& applet, const toml::table& global,
+                                         const config::schema::Keys& defaults);
 };
 
 #include "KeysMapper.tpp"

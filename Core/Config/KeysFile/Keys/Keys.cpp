@@ -7,13 +7,13 @@
 #include <utility>
 #include <vector>
 
-Keys::Keys(keybindings quit, std::vector<keybindings> primary_buttons) :
+config::schema::Keys::Keys(keybindings quit, std::vector<keybindings> primary_buttons) :
         quit(std::move(quit)), primary_buttons(std::move(primary_buttons)) {}
 
-const keybindings& Keys::getQuit() const {
+const keybindings& config::schema::Keys::getQuit() const {
         return quit;
 }
 
-const std::vector<keybindings>& Keys::getPrimaryButtons() const {
+const std::vector<keybindings>& config::schema::Keys::getPrimaryButtons() const {
         return primary_buttons;
 }

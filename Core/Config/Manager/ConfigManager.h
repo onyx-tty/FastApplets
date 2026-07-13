@@ -20,11 +20,11 @@ template<applet::type TApplet>
 class Manager final {
 private:
         struct Data {
-                Config config;
-                Config default_config;
-                Keys   keys;
-                Keys   default_keys;
-                bool   is_setup;
+                config::schema::Config config;
+                config::schema::Config default_config;
+                config::schema::Keys   keys;
+                config::schema::Keys   default_keys;
+                bool                   is_setup;
 
                 Data();
         };
