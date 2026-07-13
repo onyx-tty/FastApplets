@@ -43,8 +43,8 @@ std::vector<std::string> textFromTomlArray(const toml::array& arr) {
 /* Global Keys */
 keybindings KeysMapper::quit(const ResolverCandidates& candidates, const keybindings& defaults,
                              const PathContext& path_context) {
-        toml::array keys = Resolver::from<toml::array>(candidates, path_context, {.min_size = 1},
-                                                       u"[keybindings...]")
+        toml::array keys = config::resolve::from<toml::array>(candidates, path_context,
+                                                              {.min_size = 1}, u"[keybindings...]")
                                    .value_or(toml::array());
 
         if (keys.empty()) { return defaults; }
@@ -56,8 +56,8 @@ keybindings KeysMapper::quit(const ResolverCandidates& candidates, const keybind
 std::vector<keybindings> KeysMapper::primaryButtons(const ResolverCandidates&       candidates,
                                                     const std::vector<keybindings>& defaults,
                                                     const PathContext&              path_context) {
-        toml::array keys = Resolver::from<toml::array>(candidates, path_context, {.min_size = 1},
-                                                       u"[keybindings...]")
+        toml::array keys = config::resolve::from<toml::array>(candidates, path_context,
+                                                              {.min_size = 1}, u"[keybindings...]")
                                    .value_or(toml::array());
 
         if (keys.empty()) { return defaults; }
@@ -77,8 +77,8 @@ std::vector<keybindings> KeysMapper::primaryButtons(const ResolverCandidates&   
 keybindings KeysMapper::primaryButton(const ResolverCandidates& candidates,
                                       const keybindings&        defaults,
                                       const PathContext&        path_context) {
-        toml::array keys = Resolver::from<toml::array>(candidates, path_context, {.min_size = 1},
-                                                       u"[keybindings...]")
+        toml::array keys = config::resolve::from<toml::array>(candidates, path_context,
+                                                              {.min_size = 1}, u"[keybindings...]")
                                    .value_or(toml::array());
 
         if (keys.empty()) { return defaults; }

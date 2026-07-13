@@ -23,9 +23,10 @@
 #include <QtGlobal>
 
 template<typename T>
-std::optional<T> Resolver::from(const ResolverCandidates&  candidates,
-                                const PathContext&         path_context,
-                                const tomlqt::ArrayBounds& arr_bounds, QStringView arr_format) {
+std::optional<T> config::resolve::from(const ResolverCandidates&  candidates,
+                                       const PathContext&         path_context,
+                                       const tomlqt::ArrayBounds& arr_bounds,
+                                       QStringView                arr_format) {
         using DT = std::decay_t<T>;
 
         // Convert pointers to std::optional
@@ -129,10 +130,10 @@ std::optional<T> Resolver::from(const ResolverCandidates&  candidates,
 }
 
 template<typename TAttribute, typename TObject>
-void Resolver::fromOrDefault(const ResolverCandidates& candidates, TAttribute& attribute,
-                             TObject& object, const TObject& object_defaults,
-                             const PathContext& path_context, const tomlqt::ArrayBounds& arr_bounds,
-                             QStringView arr_format) {
+void config::resolve::fromOrDefault(const ResolverCandidates& candidates, TAttribute& attribute,
+                                    TObject& object, const TObject& object_defaults,
+                                    const PathContext&         path_context,
+                                    const tomlqt::ArrayBounds& arr_bounds, QStringView arr_format) {
         if (auto result = from<TAttribute>(candidates, path_context, arr_bounds, arr_format)) {
                 attribute = std::move(result.value());
         } else {
@@ -141,9 +142,10 @@ void Resolver::fromOrDefault(const ResolverCandidates& candidates, TAttribute& a
 }
 
 template<typename TRaw, typename TAttribute, typename TObject, typename Transform>
-void Resolver::fromTransformOrDefault(const ResolverCandidates& candidates, TAttribute& attribute,
-                                      TObject& object, const TObject& object_defaults,
-                                      Transform transform, const PathContext& path_context) {
+void config::resolve::fromTransformOrDefault(const ResolverCandidates& candidates,
+                                             TAttribute& attribute, TObject& object,
+                                             const TObject& object_defaults, Transform transform,
+                                             const PathContext& path_context) {
         if (auto result = from<TRaw>(candidates, path_context)) {
                 attribute = transform(std::move(result.value()));
         } else {

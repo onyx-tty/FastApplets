@@ -32,7 +32,7 @@ T ConfigMapper::mapProperties(const ResolverCandidates& candidates, const T& def
         std::vector<toml::table> resolved = {};
 
         for (const auto& candidate : candidates.get()) {
-                if (auto result = Resolver::from<toml::table>({candidate}, path_context)) {
+                if (auto result = config::resolve::from<toml::table>({candidate}, path_context)) {
                         resolved.push_back(result.value());
                 }
         }
@@ -52,7 +52,7 @@ LayoutProperties ConfigMapper::layout(const ResolverCandidates& candidates,
                                       const PathContext&        path_context) {
         auto properties = LayoutProperties{};
 
-        const auto data = Resolver::from<toml::table>(candidates, path_context);
+        const auto data = config::resolve::from<toml::table>(candidates, path_context);
         if (!data) { return defaults; }
 
         properties.primary_buttons =
@@ -67,7 +67,7 @@ template<applet::type TApplet>
 std::vector<PrimaryButtonParams> ConfigMapper::primaryButtons(
         const ResolverCandidates& candidates, const std::vector<PrimaryButtonParams>& defaults,
         const PathContext& path_context) {
-        const auto arr = Resolver::from<toml::array>(candidates, path_context, {.min_size = 1},
+        const auto arr = config::resolve::from<toml::array>(candidates, path_context, {.min_size = 1},
                                                      u"Format: [primary buttons...]");
         if (!arr) { return defaults; }
 
@@ -92,12 +92,12 @@ std::optional<PrimaryButtonParams> ConfigMapper::primaryButton(const ResolverCan
                                                                const PathContext& path_context) {
         using TPrimaryButtonType = AppletTraits<TApplet>::TPrimaryButtonType;
 
-        const auto table = Resolver::from<toml::table>(candidates, path_context);
+        const auto table = config::resolve::from<toml::table>(candidates, path_context);
         if (!table) { return std::nullopt; }
 
         PrimaryButtonParams new_button = {};
 
-        auto type_str = Resolver::from<QString>(candidates.makeCopy().withExtension("id"),
+        auto type_str = config::resolve::from<QString>(candidates.makeCopy().withExtension("id"),
                                                 path_context.makeExtended("id"));
 
         new_button.type = toPrimaryButtonType<TPrimaryButtonType>(type_str.value_or(""));
@@ -106,11 +106,11 @@ std::optional<PrimaryButtonParams> ConfigMapper::primaryButton(const ResolverCan
 
         auto t = std::get<TPrimaryButtonType>(new_button.type);
 
-        new_button.text = Resolver::from<QString>(candidates.makeCopy().withExtension("text"),
+        new_button.text = config::resolve::from<QString>(candidates.makeCopy().withExtension("text"),
                                                   path_context.makeExtended("text"))
                                   .value_or(textFor(t));
 
-        new_button.command = Resolver::from<QString>(candidates.makeCopy().withExtension("command"),
+        new_button.command = config::resolve::from<QString>(candidates.makeCopy().withExtension("command"),
                                                      path_context.makeExtended("command"))
                                      .value_or(commandFor(t));
 
