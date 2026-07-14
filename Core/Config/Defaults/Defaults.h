@@ -39,4 +39,4 @@ Keys makeDefaultKeys();
 
 } // namespace config
 
-#include "ConfigFactory.tpp"
+#include "Defaults.tpp"

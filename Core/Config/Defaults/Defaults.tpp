@@ -3,7 +3,6 @@
 
 #pragma once
 
-#include "ConfigFactory.h"
 #include "Core/Applets/Types/AppletTraits.h"
 #include "Core/Applets/Types/AppletType.h"
 #include "Core/Config/ConfigFile/Config/Config.h"
@@ -14,6 +13,7 @@
 #include "Core/Config/KeysFile/Types/Keybindings.h"
 #include "Core/UI/Types/ButtonType.h"
 #include "Core/UI/Widgets/PrimaryButtonParams.h"
+#include "Defaults.h"
 
 #include <utility>
 #include <vector>

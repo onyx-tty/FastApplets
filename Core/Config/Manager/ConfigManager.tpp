@@ -7,7 +7,7 @@
 #include "Core/Applets/Types/AppletType.h"
 #include "Core/Config/ConfigFile/Config/Config.h"
 #include "Core/Config/ConfigFile/Mapper/ConfigMapper.h"
-#include "Core/Config/Factory/ConfigFactory.h"
+#include "Core/Config/Defaults/Defaults.h"
 #include "Core/Config/KeysFile/Keys/Keys.h"
 #include "Core/Config/KeysFile/Mapper/KeysMapper.h"
 #include "Core/Config/TomlParser/TomlParser.h"
