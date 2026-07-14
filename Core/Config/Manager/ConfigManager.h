@@ -19,8 +19,8 @@ class Filepaths;
 template<applet::type TApplet>
 class Manager final {
 private:
-        using Config = config::schema::Config;
-        using Keys   = config::schema::Keys;
+        using Config = schema::Config;
+        using Keys   = schema::Keys;
 
         struct Data {
                 Config config;
@@ -41,10 +41,9 @@ public:
                 bool defaults = false;
         };
 
-        static void setup(const config::Filepaths& applet_filepaths,
-                          const config::Filepaths& global_filepaths);
+        static void setup(const Filepaths& applet_filepaths, const Filepaths& global_filepaths);
 
-        template<config::type TConfigFile>
+        template<type TConfigFile>
         static const auto& get(Defaults defaults);
         static auto        getAll();
 };

@@ -13,6 +13,6 @@ class Filepaths;
 //
 // "global" maps to the root FastApplets/ config directory, as the global config
 // is stored there.
-config::Filepaths locateFiles(QLatin1StringView applet_name);
+Filepaths locateFiles(QLatin1StringView applet_name);
 
 } // namespace config

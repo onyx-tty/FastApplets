@@ -30,18 +30,18 @@ config::Manager<TApplet>::Data& config::Manager<TApplet>::getData() {
 }
 
 template<applet::type TApplet>
-void config::Manager<TApplet>::setup(const config::Filepaths& applet_filepaths,
-                                     const config::Filepaths& global_filepaths) {
+void config::Manager<TApplet>::setup(const Filepaths& applet_filepaths,
+                                     const Filepaths& global_filepaths) {
         auto& data = getData();
 
-        data.default_config = config::makeDefaultConfig<TApplet>();
-        data.config = ConfigMapper::config<TApplet>(config::parseTomlFile(applet_filepaths.config),
-                                                    config::parseTomlFile(global_filepaths.config),
-                                                    data.default_config);
+        data.default_config = makeDefaultConfig<TApplet>();
+        data.config         = ConfigMapper::config<TApplet>(parseTomlFile(applet_filepaths.config),
+                                                            parseTomlFile(global_filepaths.config),
+                                                            data.default_config);
 
-        data.default_keys = config::makeDefaultKeys<TApplet>();
-        data.keys         = KeysMapper::keys<TApplet>(config::parseTomlFile(applet_filepaths.keys),
-                                                      config::parseTomlFile(global_filepaths.keys),
+        data.default_keys = makeDefaultKeys<TApplet>();
+        data.keys         = KeysMapper::keys<TApplet>(parseTomlFile(applet_filepaths.keys),
+                                                      parseTomlFile(global_filepaths.keys),
                                                       data.default_keys);
 
         data.is_setup = true;
@@ -60,7 +60,7 @@ const auto& config::Manager<TApplet>::get(Defaults defaults) {
 
         if (!data.is_setup) { qFatal("config::Manager is not set up yet"); }
 
-        if constexpr (TConfigFile == config::type::config) {
+        if constexpr (TConfigFile == type::config) {
                 if (defaults.defaults) { return data.default_config; }
 
                 return data.config;
@@ -73,7 +73,7 @@ const auto& config::Manager<TApplet>::get(Defaults defaults) {
 
 template<applet::type TApplet>
 auto config::Manager<TApplet>::getAll() {
-        return std::forward_as_tuple(get<config::type::config>({.defaults = false}),
-                                     get<config::type::keys>({.defaults = false}),
-                                     get<config::type::keys>({.defaults = true}));
+        return std::forward_as_tuple(get<type::config>({.defaults = false}),
+                                     get<type::keys>({.defaults = false}),
+                                     get<type::keys>({.defaults = true}));
 }
