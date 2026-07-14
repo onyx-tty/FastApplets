@@ -1,7 +1,7 @@
 // SPDX-FileCopyrightText: 2026 Łukasz Wrodarczyk
 // SPDX-License-Identifier: GPL-3.0-or-later
 
-#include "Core/Config/TomlParser/TomlParser.h"
+#include "Core/Config/Toml/Parse.h"
 
 #include <QDir>
 #include <QFile>
@@ -13,12 +13,12 @@
 
 using namespace Qt::Literals::StringLiterals;
 
-class TomlParserTest final : public QObject {
+class ParseTomlTest final : public QObject {
         Q_OBJECT
 
         static constexpr QLatin1StringView test_dirpath          = "/tmp/FastAppletsTests"_L1;
-        static constexpr QLatin1StringView test_filename_valid   = "TomlParserTestOK.toml"_L1;
-        static constexpr QLatin1StringView test_filename_invalid = "TomlParserTestBAD.toml"_L1;
+        static constexpr QLatin1StringView test_filename_valid   = "ParseTomlTestOK.toml"_L1;
+        static constexpr QLatin1StringView test_filename_invalid = "ParseTomlTestBAD.toml"_L1;
         static constexpr const char*       test_contents_valid   = R"(
                 [table]
                 name = "FastApplets"
@@ -99,5 +99,5 @@ private slots:
         }
 };
 
-QTEST_MAIN(TomlParserTest)
-#include "TomlParserTest.moc"
+QTEST_MAIN(ParseTomlTest)
+#include "ParseTomlTest.moc"

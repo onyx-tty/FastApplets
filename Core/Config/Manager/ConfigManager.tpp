@@ -10,7 +10,7 @@
 #include "Core/Config/Defaults/Defaults.h"
 #include "Core/Config/KeysFile/Keys/Keys.h"
 #include "Core/Config/KeysFile/Mapper/KeysMapper.h"
-#include "Core/Config/TomlParser/TomlParser.h"
+#include "Core/Config/Toml/Parse.h"
 #include "Core/Config/Types/ConfigFilepaths.h"
 #include "Core/Config/Types/ConfigType.h"
 

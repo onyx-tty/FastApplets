@@ -7,10 +7,10 @@ find_package(tomlplusplus REQUIRED)
 add_subdirectory(ConfigFile)
 add_subdirectory(KeysFile)
 add_subdirectory(Defaults)
-add_subdirectory(Manager)
 add_subdirectory(Locate)
-add_subdirectory(TomlParser)
+add_subdirectory(Manager)
 add_subdirectory(Resolver)
+add_subdirectory(Toml)
 add_subdirectory(Types)
 
 add_library(Core_Config INTERFACE)
@@ -26,7 +26,7 @@ target_link_libraries(Core_Config INTERFACE
         Core::Config::Manager
         Core::Config::Defaults
         Core::Config::Locate
-        Core::Config::TomlParser
+        Core::Config::Toml
         Core::Config::Resolver
         Core::Config::Types
         Core::UI::Widgets

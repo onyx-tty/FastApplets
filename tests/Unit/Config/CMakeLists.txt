@@ -1,4 +1,4 @@
-add_subdirectory(TomlParser)
+add_subdirectory(Toml)
 
 add_library(UnitTests_Config INTERFACE)
 add_library(UnitTests::Config ALIAS UnitTests_Config)
@@ -8,4 +8,4 @@ target_include_directories(UnitTests_Config INTERFACE
         ${ROOT_DIR})
 
 target_link_libraries(UnitTests_Config INTERFACE
-        UnitTests::Core::Config::TomlParser)
+        UnitTests::Core::Config::Toml)

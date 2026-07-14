@@ -75,7 +75,7 @@ install(# Install compiled artifacts to correct destinations, register all targe
                 Core_Config_ConfigManager
                 Core_Config_Defaults
                 Core_Config_Locate
-                Core_Config_TomlParser
+                Core_Config_Toml
                 Core_Config_Resolver Core_Config_Resolver_PathContext Core_Config_Resolver_Types
                 Core_Config_Types
                 Core_Shell

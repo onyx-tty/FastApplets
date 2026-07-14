@@ -7,7 +7,7 @@ target_include_directories(Core_Config_KeysFile_Mapper PRIVATE
         $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>)
 
 target_link_libraries(Core_Config_KeysFile_Mapper PRIVATE
-        Core::Config::TomlParser
+        Core::Config::Toml
         Core::Config::Resolver)
 
 target_link_libraries(Core_Config_KeysFile_Mapper PUBLIC

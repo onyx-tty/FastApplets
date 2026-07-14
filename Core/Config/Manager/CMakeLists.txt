@@ -11,7 +11,7 @@ target_link_libraries(Core_Config_ConfigManager INTERFACE
         Core::Config::KeysFile::Keys
         Core::Config::KeysFile::Mapper
         Core::Config::Defaults
-        Core::Config::TomlParser
+        Core::Config::Toml
         Core::Config::Types
         Core::Applets::Types
         Qt${QT_VERSION_MAJOR}::Widgets)
