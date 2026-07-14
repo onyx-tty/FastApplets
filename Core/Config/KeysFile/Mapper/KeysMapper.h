@@ -26,6 +26,8 @@ keybindings keysFromText(const std::vector<std::string>& texts);
 // Extracts string elements from a toml::array, silently skipping non-string values.
 std::vector<std::string> textFromTomlArray(const toml::array& arr);
 
+namespace config {
+
 // Maps TOML configuration to config::schema::Keys structure.
 //
 // All mapping failures will fall back to defaults and log warnings.
@@ -80,5 +82,7 @@ public:
         template<applet::type TApplet>
         static Keys keys(const toml::table& applet, const toml::table& global, const Keys& defaults);
 };
+
+} // namespace config
 
 #include "KeysMapper.tpp"

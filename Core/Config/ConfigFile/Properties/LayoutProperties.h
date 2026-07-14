@@ -7,7 +7,10 @@
 
 #include <vector>
 
+namespace config {
 class ConfigMapper;
+} // namespace config
+
 class QIcon;
 class QString;
 
@@ -28,7 +31,7 @@ namespace config::schema::properties {
 // Stores properties describing the appearance of the layout.
 class Layout final {
 private:
-        friend class ::ConfigMapper;
+        friend class config::ConfigMapper;
 
         std::vector<PrimaryButtonParams> primary_buttons;
 

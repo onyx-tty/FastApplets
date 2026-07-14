@@ -8,14 +8,18 @@
 
 #include <vector>
 
+namespace config {
+
 class KeysMapper;
+
+} // namespace config
 
 namespace config::schema {
 
 // Holds user-configured keys used by an applet.
 class Keys {
 private:
-        friend class ::KeysMapper;
+        friend class config::KeysMapper;
 
         keybindings              quit;
         std::vector<keybindings> primary_buttons;

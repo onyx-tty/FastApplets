@@ -19,8 +19,10 @@ class Filepaths;
 template<applet::type TApplet>
 class Manager final {
 private:
-        using Config = schema::Config;
-        using Keys   = schema::Keys;
+        using Config       = schema::Config;
+        using ConfigMapper = config::ConfigMapper;
+        using Keys         = schema::Keys;
+        using KeysMapper   = config::KeysMapper;
 
         struct Data {
                 Config config;

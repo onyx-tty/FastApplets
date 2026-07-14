@@ -6,14 +6,16 @@
 #include <QSize>
 #include <QString>
 
+namespace config {
 class ConfigMapper;
+} // namespace config
 
 namespace config::schema::properties {
 
 // Stores properties used by MainWindow.
 class Window final {
 private:
-        friend class ::ConfigMapper;
+        friend class config::ConfigMapper;
 
         QSize   size;
         QString title;

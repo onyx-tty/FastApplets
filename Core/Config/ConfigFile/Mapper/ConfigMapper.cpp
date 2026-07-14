@@ -15,17 +15,16 @@
 #include <Qt>
 #include <QtGlobal>
 
-using namespace config;
-using Window        = schema::properties::Window;
-using PrimaryButton = schema::properties::PrimaryButton;
-using Layout        = schema::properties::Layout;
-using Candidates    = resolve::Candidates;
-using PathContext   = resolve::PathContext;
+using Window        = config::schema::properties::Window;
+using PrimaryButton = config::schema::properties::PrimaryButton;
+using Layout        = config::schema::properties::Layout;
+using Candidates    = config::resolve::Candidates;
+using PathContext   = config::resolve::PathContext;
 
 /* Window Properties */
 
-Window ConfigMapper::window(const Candidates& candidates, const Window& defaults,
-                            const PathContext& path_context) {
+Window config::ConfigMapper::window(const Candidates& candidates, const Window& defaults,
+                                    const PathContext& path_context) {
         return mapProperties(
                 candidates, defaults, path_context,
                 [&defaults, &candidates](Window& window, const PathContext& path_context) {
@@ -44,9 +43,9 @@ Window ConfigMapper::window(const Candidates& candidates, const Window& defaults
 
 /* Primary Button Properties*/
 
-PrimaryButton ConfigMapper::primaryButton(const Candidates&    candidates,
-                                          const PrimaryButton& defaults,
-                                          const PathContext&   path_context) {
+PrimaryButton config::ConfigMapper::primaryButton(const Candidates&    candidates,
+                                                  const PrimaryButton& defaults,
+                                                  const PathContext&   path_context) {
         return mapProperties(
                 candidates, defaults, path_context,
                 [&defaults, &candidates](PrimaryButton& button, const PathContext& path_context) {

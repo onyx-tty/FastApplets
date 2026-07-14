@@ -26,6 +26,8 @@ class QString;
 class QSize;
 class QSizePolicy;
 
+namespace config {
+
 // Maps TOML configuration to config::schema::Config structure.
 //
 // All mapping failures will fall back to hardcoded defaults and log warnings.
@@ -135,5 +137,7 @@ public:
         static Config config(const toml::table& applet, const toml::table& global,
                              const Config& defaults);
 };
+
+} // namespace config
 
 #include "ConfigMapper.tpp"

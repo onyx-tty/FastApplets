@@ -19,8 +19,8 @@
 #include <QtGlobal>
 
 template<applet::type TApplet>
-config::schema::Keys KeysMapper::keys(const toml::table& applet, const toml::table& global,
-                                      const Keys& defaults) {
+config::schema::Keys config::KeysMapper::keys(const toml::table& applet, const toml::table& global,
+                                              const Keys& defaults) {
         // Confirm that a QApplication instance exists
         if (!QApplication::instance()) { qFatal("QApplication has not been instantiated yet!"); }
 

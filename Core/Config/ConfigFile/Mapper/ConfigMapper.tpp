@@ -27,8 +27,8 @@
 #include <QtGlobal>
 
 template<typename T>
-T ConfigMapper::mapProperties(const Candidates& candidates, const T& defaults,
-                              const PathContext& path_context, auto fill_fn) {
+T config::ConfigMapper::mapProperties(const Candidates& candidates, const T& defaults,
+                                      const PathContext& path_context, auto fill_fn) {
         using namespace config;
 
         std::vector<toml::table> resolved = {};
@@ -49,9 +49,9 @@ T ConfigMapper::mapProperties(const Candidates& candidates, const T& defaults,
 /* Layout Properties */
 
 template<applet::type TApplet>
-config::schema::properties::Layout ConfigMapper::layout(const Candidates&  candidates,
-                                                        const Layout&      defaults,
-                                                        const PathContext& path_context) {
+config::schema::properties::Layout config::ConfigMapper::layout(const Candidates&  candidates,
+                                                                const Layout&      defaults,
+                                                                const PathContext& path_context) {
         using namespace config;
 
         auto properties = Layout{};
@@ -68,7 +68,7 @@ config::schema::properties::Layout ConfigMapper::layout(const Candidates&  candi
 }
 
 template<applet::type TApplet>
-std::vector<PrimaryButtonParams> ConfigMapper::primaryButtons(
+std::vector<PrimaryButtonParams> config::ConfigMapper::primaryButtons(
         const Candidates& candidates, const std::vector<PrimaryButtonParams>& defaults,
         const PathContext& path_context) {
         using namespace config;
@@ -94,8 +94,8 @@ std::vector<PrimaryButtonParams> ConfigMapper::primaryButtons(
 }
 
 template<applet::type TApplet>
-std::optional<PrimaryButtonParams> ConfigMapper::primaryButton(const Candidates&  candidates,
-                                                               const PathContext& path_context) {
+std::optional<PrimaryButtonParams> config::ConfigMapper::primaryButton(
+        const Candidates& candidates, const PathContext& path_context) {
         using namespace config;
 
         using TPrimaryButtonType = AppletTraits<TApplet>::TPrimaryButtonType;
@@ -128,8 +128,9 @@ std::optional<PrimaryButtonParams> ConfigMapper::primaryButton(const Candidates&
 }
 
 template<applet::type TApplet>
-config::schema::Config ConfigMapper::config(const toml::table& applet, const toml::table& global,
-                                            const Config& defaults) {
+config::schema::Config config::ConfigMapper::config(const toml::table& applet,
+                                                    const toml::table& global,
+                                                    const Config&      defaults) {
         // Confirm that a QApplication instance exists
         if (!QApplication::instance()) { qFatal("QApplication has not been instantiated yet!"); }
 

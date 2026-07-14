@@ -8,7 +8,9 @@
 #include "Core/Config/ConfigFile/Properties/PrimaryButtonProperties.h"
 #include "Core/Config/ConfigFile/Properties/WindowProperties.h"
 
+namespace config {
 class ConfigMapper;
+} // namespace config
 
 namespace config::schema {
 
@@ -19,7 +21,7 @@ using properties::Window;
 // Holds user-configured properties used by an applet.
 class Config {
 private:
-        friend class ::ConfigMapper;
+        friend class config::ConfigMapper;
 
         Window        window_properties;
         PrimaryButton primary_button_properties;

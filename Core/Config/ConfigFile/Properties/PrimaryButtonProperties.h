@@ -8,14 +8,16 @@
 #include <QSizePolicy>
 #include <Qt>
 
+namespace config {
 class ConfigMapper;
+} // namespace config
 
 namespace config::schema::properties {
 
 // Stores data used to style each PrimaryButton.
 class PrimaryButton final {
 private:
-        friend class ::ConfigMapper;
+        friend class config::ConfigMapper;
 
         bool          double_key_press;
         Qt::Alignment text_alignment;
