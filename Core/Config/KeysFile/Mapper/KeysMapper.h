@@ -31,6 +31,7 @@ std::vector<std::string> textFromTomlArray(const toml::array& arr);
 // All mapping failures will fall back to defaults and log warnings.
 class KeysMapper final {
 private:
+        using Keys        = config::schema::Keys;
         using Candidates  = config::resolve::Candidates;
         using PathContext = config::resolve::PathContext;
 
@@ -77,8 +78,7 @@ public:
         //
         // Return value: config::schema::Keys
         template<applet::type TApplet>
-        static config::schema::Keys keys(const toml::table& applet, const toml::table& global,
-                                         const config::schema::Keys& defaults);
+        static Keys keys(const toml::table& applet, const toml::table& global, const Keys& defaults);
 };
 
 #include "KeysMapper.tpp"

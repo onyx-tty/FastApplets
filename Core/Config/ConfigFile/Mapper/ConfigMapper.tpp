@@ -129,13 +129,13 @@ std::optional<PrimaryButtonParams> ConfigMapper::primaryButton(const Candidates&
 
 template<applet::type TApplet>
 config::schema::Config ConfigMapper::config(const toml::table& applet, const toml::table& global,
-                                            const config::schema::Config& defaults) {
+                                            const Config& defaults) {
         // Confirm that a QApplication instance exists
         if (!QApplication::instance()) { qFatal("QApplication has not been instantiated yet!"); }
 
         constexpr QStringView filename = u"config.toml";
 
-        config::schema::Config config = config::schema::Config{};
+        Config config = Config{};
 
         Candidates cands = {{.node = node_view(applet), .applet = TApplet, .quiet = true},
                             {.node = node_view(global), .applet = applet::type::global}};

@@ -59,7 +59,7 @@ config::schema::Config config::makeDefaultConfig() {
 
         layout = Layout(std::move(params));
 
-        return config::schema::Config(window, button, layout);
+        return Config(window, button, layout);
 }
 
 template<applet::type TApplet>
@@ -68,5 +68,5 @@ config::schema::Keys config::makeDefaultKeys() {
 
         std::vector<keybindings> primary_buttons = makeKeyRange(Qt::Key_1, Qt::Key_9);
 
-        return config::schema::Keys(std::move(quit), std::move(primary_buttons));
+        return Keys(std::move(quit), std::move(primary_buttons));
 }

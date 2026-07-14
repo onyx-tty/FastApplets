@@ -20,8 +20,8 @@
 
 template<applet::type TApplet>
 config::Manager<TApplet>::Data::Data() :
-        config(config::schema::Config{}), default_config(config::schema::Config{}),
-        keys(config::schema::Keys{}), default_keys(config::schema::Keys{}), is_setup(false) {}
+        config(Config{}), default_config(Config{}), keys(Keys{}), default_keys(Keys{}),
+        is_setup(false) {}
 
 template<applet::type TApplet>
 config::Manager<TApplet>::Data& config::Manager<TApplet>::getData() {

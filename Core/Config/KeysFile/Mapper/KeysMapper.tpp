@@ -20,15 +20,15 @@
 
 template<applet::type TApplet>
 config::schema::Keys KeysMapper::keys(const toml::table& applet, const toml::table& global,
-                                      const config::schema::Keys& defaults) {
+                                      const Keys& defaults) {
         // Confirm that a QApplication instance exists
         if (!QApplication::instance()) { qFatal("QApplication has not been instantiated yet!"); }
 
         constexpr QStringView filename = u"keys.toml";
 
-        config::schema::Keys keys  = config::schema::Keys{};
-        const Candidates     cands = {{.node = node_view(applet), .applet = TApplet, .quiet = true},
-                                      {.node = node_view(global), .applet = applet::type::global}};
+        Keys             keys  = Keys{};
+        const Candidates cands = {{.node = node_view(applet), .applet = TApplet, .quiet = true},
+                                  {.node = node_view(global), .applet = applet::type::global}};
 
         /* Quit Keys */
         keys.quit = quit(cands.makeCopy().withExtension("quit"), defaults.getQuit(),

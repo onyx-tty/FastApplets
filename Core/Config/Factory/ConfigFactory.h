@@ -26,13 +26,16 @@ inline std::vector<keybindings> makeKeyRange(Qt::Key first, Qt::Key last) {
 
 namespace config {
 
+using Config = schema::Config;
+using Keys   = schema::Keys;
+
 // Construct default Config for applet TApplet.
 template<applet::type TApplet>
-config::schema::Config makeDefaultConfig();
+Config makeDefaultConfig();
 
 // Construct default config::schema::Keys for applet TApplet.
 template<applet::type TApplet>
-config::schema::Keys makeDefaultKeys();
+Keys makeDefaultKeys();
 
 } // namespace config
 

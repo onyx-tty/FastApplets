@@ -19,12 +19,15 @@ class Filepaths;
 template<applet::type TApplet>
 class Manager final {
 private:
+        using Config = config::schema::Config;
+        using Keys   = config::schema::Keys;
+
         struct Data {
-                config::schema::Config config;
-                config::schema::Config default_config;
-                config::schema::Keys   keys;
-                config::schema::Keys   default_keys;
-                bool                   is_setup;
+                Config config;
+                Config default_config;
+                Keys   keys;
+                Keys   default_keys;
+                bool   is_setup;
 
                 Data();
         };

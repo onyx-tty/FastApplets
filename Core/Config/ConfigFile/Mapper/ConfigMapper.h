@@ -32,6 +32,7 @@ class QSizePolicy;
 // Malformed values (wrong type, out of range, etc.) are treated as failures.
 class ConfigMapper final {
 private:
+        using Config        = config::schema::Config;
         using Window        = config::schema::properties::Window;
         using PrimaryButton = config::schema::properties::PrimaryButton;
         using Layout        = config::schema::properties::Layout;
@@ -131,8 +132,8 @@ public:
         //
         // Return value: config::schema::Config
         template<applet::type TApplet>
-        static config::schema::Config config(const toml::table& applet, const toml::table& global,
-                                             const config::schema::Config& defaults);
+        static Config config(const toml::table& applet, const toml::table& global,
+                             const Config& defaults);
 };
 
 #include "ConfigMapper.tpp"
