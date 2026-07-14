@@ -10,7 +10,7 @@
 #include "Core/Args/Args.h"
 #include "Core/Config/Locate/Locate.h"
 #include "Core/Config/Manager/Manager.h"
-#include "Core/Config/Types/ConfigFilepaths.h"
+#include "Core/Config/Types/Filepaths.h"
 #include "Core/UI/MainWindow.h"
 #include "CppUtils/Log/QtLog.h"
 

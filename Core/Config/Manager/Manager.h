@@ -6,7 +6,7 @@
 #include "Core/Applets/Types/AppletType.h"
 #include "Core/Config/ConfigFile/Config/Config.h"
 #include "Core/Config/KeysFile/Keys/Keys.h"
-#include "Core/Config/Types/ConfigType.h"
+#include "Core/Config/Types/Type.h"
 
 #include <toml++/toml.hpp>
 

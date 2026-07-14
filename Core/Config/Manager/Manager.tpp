@@ -11,8 +11,8 @@
 #include "Core/Config/KeysFile/Keys/Keys.h"
 #include "Core/Config/KeysFile/Mapper/KeysMapper.h"
 #include "Core/Config/Toml/Parse.h"
-#include "Core/Config/Types/ConfigFilepaths.h"
-#include "Core/Config/Types/ConfigType.h"
+#include "Core/Config/Types/Filepaths.h"
+#include "Core/Config/Types/Type.h"
 
 #include <tuple>
 #include <QDebug>

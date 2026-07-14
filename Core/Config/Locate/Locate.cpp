@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 
 #include "Locate.h"
-#include "Core/Config/Types/ConfigFilepaths.h"
+#include "Core/Config/Types/Filepaths.h"
 
 #include <QFileInfo>
 #include <QLatin1StringView>
