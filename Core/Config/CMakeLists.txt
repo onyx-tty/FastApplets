@@ -8,7 +8,7 @@ add_subdirectory(ConfigFile)
 add_subdirectory(KeysFile)
 add_subdirectory(Defaults)
 add_subdirectory(Manager)
-add_subdirectory(FileLocator)
+add_subdirectory(Locate)
 add_subdirectory(TomlParser)
 add_subdirectory(Resolver)
 add_subdirectory(Types)
@@ -25,7 +25,7 @@ target_link_libraries(Core_Config INTERFACE
         Core::Config::KeysFile
         Core::Config::Manager
         Core::Config::Defaults
-        Core::Config::FileLocator
+        Core::Config::Locate
         Core::Config::TomlParser
         Core::Config::Resolver
         Core::Config::Types

@@ -8,7 +8,7 @@
 
 #include "Core/Applets/Types/AppletType.h"
 #include "Core/Args/Args.h"
-#include "Core/Config/FileLocator/FileLocator.h"
+#include "Core/Config/Locate/Locate.h"
 #include "Core/Config/Manager/ConfigManager.h"
 #include "Core/Config/Types/ConfigFilepaths.h"
 #include "Core/UI/MainWindow.h"
@@ -26,7 +26,7 @@ namespace {
 // Inject config filepath and keys filepath if they are valid
 // TODO: Collapse into separate functions
 void injectArgs(arg::CmdArgs& args, config::Filepaths& filepaths) {
-        // TODO: This is a workaround. Ideally, valid args should be assigned prior to FileLocator
+        // TODO: This is a workaround. Ideally, valid args should be assigned prior to config::locateFiles
         //       lookups. Currently that's not possible without collapsing config::locateFiles
         //       and separating the lookups of config and keys; paths for each have to be injected
         //       in separation for that to work

@@ -1,7 +1,7 @@
 // SPDX-FileCopyrightText: 2026 Łukasz Wrodarczyk
 // SPDX-License-Identifier: GPL-3.0-or-later
 
-#include "FileLocator.h"
+#include "Locate.h"
 #include "Core/Config/Types/ConfigFilepaths.h"
 
 #include <QFileInfo>
