@@ -72,12 +72,17 @@ QString commandFor<std::monostate>(std::monostate type) {
         return {};
 }
 
+namespace {
+
+using Layout = config::schema::properties::Layout;
+
+} // namespace
+
 /* Layout Properties */
 
-config::schema::properties::Layout::Layout(std::vector<PrimaryButtonParams> primary_buttons) :
+Layout::Layout(std::vector<PrimaryButtonParams> primary_buttons) :
         primary_buttons(std::move(primary_buttons)) {}
 
-const std::vector<PrimaryButtonParams>& config::schema::properties::Layout::getPrimaryButtons()
-        const {
+const std::vector<PrimaryButtonParams>& Layout::getPrimaryButtons() const {
         return primary_buttons;
 }

@@ -7,13 +7,18 @@
 #include <QSize>
 #include <QString>
 
-config::schema::properties::Window::Window(QSize size, QString title) :
-        size(std::move(size)), title(std::move(title)) {}
+namespace {
 
-const QString& config::schema::properties::Window::getTitle() const {
+using Window = config::schema::properties::Window;
+
+} // namespace
+
+Window::Window(QSize size, QString title) : size(std::move(size)), title(std::move(title)) {}
+
+const QString& Window::getTitle() const {
         return title;
 }
 
-const QSize& config::schema::properties::Window::getSize() const {
+const QSize& Window::getSize() const {
         return size;
 }
