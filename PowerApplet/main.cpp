@@ -9,7 +9,7 @@
 #include "Core/Applets/Types/AppletType.h"
 #include "Core/Args/Args.h"
 #include "Core/Config/Locate/Locate.h"
-#include "Core/Config/Manager/ConfigManager.h"
+#include "Core/Config/Manager/Manager.h"
 #include "Core/Config/Types/ConfigFilepaths.h"
 #include "Core/UI/MainWindow.h"
 #include "CppUtils/Log/QtLog.h"
@@ -85,9 +85,9 @@ int main(int argc, char* argv[]) {
         injectArgs(args, applet_filepaths);
 
         // Config files
-        using TConfigManager = config::Manager<applet::type::power_applet>;
-        TConfigManager::setup(applet_filepaths, global_filepaths);
-        const auto& [config, keys, default_keys] = TConfigManager::getAll();
+        using TManager = config::Manager<applet::type::power_applet>;
+        TManager::setup(applet_filepaths, global_filepaths);
+        const auto& [config, keys, default_keys] = TManager::getAll();
 
         // GUI
         MainWindow main_window = makeMainWindow(config, keys, default_keys);

@@ -52,4 +52,4 @@ public:
 
 } // namespace config
 
-#include "ConfigManager.tpp"
+#include "Manager.tpp"

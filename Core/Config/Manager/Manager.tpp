@@ -3,7 +3,7 @@
 
 #pragma once
 
-#include "ConfigManager.h"
+#include "Manager.h"
 #include "Core/Applets/Types/AppletType.h"
 #include "Core/Config/ConfigFile/Config/Config.h"
 #include "Core/Config/ConfigFile/Mapper/ConfigMapper.h"
