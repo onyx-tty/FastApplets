@@ -9,7 +9,7 @@ add_subdirectory(KeysFile)
 add_subdirectory(Defaults)
 add_subdirectory(Locate)
 add_subdirectory(Manager)
-add_subdirectory(Resolver)
+add_subdirectory(Resolve)
 add_subdirectory(Toml)
 add_subdirectory(Types)
 
@@ -27,7 +27,7 @@ target_link_libraries(Core_Config INTERFACE
         Core::Config::Defaults
         Core::Config::Locate
         Core::Config::Toml
-        Core::Config::Resolver
+        Core::Config::Resolve
         Core::Config::Types
         Core::UI::Widgets
         CppUtils::String

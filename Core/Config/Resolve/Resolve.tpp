@@ -3,10 +3,10 @@
 
 #pragma once
 
-#include "Core/Config/Resolver/Types/ResolverCandidate.h"
+#include "Core/Config/Resolve/Types/ResolverCandidate.h"
 #include "Core/Config/Types/NodeView.h"
 #include "PathContext/PathContext.h"
-#include "Resolver.h"
+#include "Resolve.h"
 #include "TomlQt/ArrayBounds.h"
 #include "TomlQt/TomlQt.h"
 

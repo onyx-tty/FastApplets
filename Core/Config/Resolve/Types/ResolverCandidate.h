@@ -15,11 +15,11 @@
 
 // TODO: Remove inlines for both; create dedicated Candidate.cpp
 // TODO: Consistent behaviors in chaining methods, separate overloads for ALL and index
-// TODO: Docs should explain what role these classes play in Resolver.h
+// TODO: Docs should explain what role these classes play in Resolve.h
 
 namespace config::resolve {
 
-// Stores a node with required metadata for use in Resolver method calls.
+// Stores a node with required metadata for use in Resolve method calls.
 //
 // 'node' contains the toml::node_view with data for extraction.
 // 'type' is used for logging, to create QString path with config::resolve::PathContext.
@@ -66,7 +66,7 @@ struct Candidate final {
         [[nodiscard]] Candidate& withQuiet(bool quiet = true);
 };
 
-// Stores a dynamic array of Candidate objects for use in Resolver.
+// Stores a dynamic array of Candidate objects for use in Resolve.
 class Candidates final {
 private:
         std::vector<Candidate> candidates;

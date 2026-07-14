@@ -5,8 +5,8 @@
 
 #include "Core/Applets/Types/AppletType.h"
 #include "Core/Config/KeysFile/Keys/Keys.h"
-#include "Core/Config/Resolver/PathContext/PathContext.h"
-#include "Core/Config/Resolver/Types/ResolverCandidate.h"
+#include "Core/Config/Resolve/PathContext/PathContext.h"
+#include "Core/Config/Resolve/Types/ResolverCandidate.h"
 #include "Core/Config/Types/NodeView.h"
 #include "KeysMapper.h"
 

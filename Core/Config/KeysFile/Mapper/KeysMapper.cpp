@@ -3,9 +3,9 @@
 
 #include "KeysMapper.h"
 #include "Core/Config/KeysFile/Types/Keybindings.h"
-#include "Core/Config/Resolver/PathContext/PathContext.h"
-#include "Core/Config/Resolver/Resolver.h"
-#include "Core/Config/Resolver/Types/ResolverCandidate.h"
+#include "Core/Config/Resolve/PathContext/PathContext.h"
+#include "Core/Config/Resolve/Resolve.h"
+#include "Core/Config/Resolve/Types/ResolverCandidate.h"
 
 #include <cstddef>
 #include <string>

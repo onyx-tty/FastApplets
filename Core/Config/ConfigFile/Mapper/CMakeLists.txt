@@ -9,9 +9,9 @@ target_include_directories(Core_Config_ConfigFile_Mapper PRIVATE
 target_link_libraries(Core_Config_ConfigFile_Mapper PUBLIC
         Core::Config::ConfigFile::Config
         Core::Config::ConfigFile::Properties
-        Core::Config::Resolver
-        Core::Config::Resolver::PathContext
-        Core::Config::Resolver::Types
+        Core::Config::Resolve
+        Core::Config::Resolve::PathContext
+        Core::Config::Resolve::Types
         Core::Config::Types
         Core::UI::Widgets
         Core::UI::Types

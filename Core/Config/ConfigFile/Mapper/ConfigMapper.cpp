@@ -4,9 +4,9 @@
 #include "ConfigMapper.h"
 #include "Core/Config/ConfigFile/Properties/PrimaryButtonProperties.h"
 #include "Core/Config/ConfigFile/Properties/WindowProperties.h"
-#include "Core/Config/Resolver/PathContext/PathContext.h"
-#include "Core/Config/Resolver/Resolver.h"
-#include "Core/Config/Resolver/Types/ResolverCandidate.h"
+#include "Core/Config/Resolve/PathContext/PathContext.h"
+#include "Core/Config/Resolve/Resolve.h"
+#include "Core/Config/Resolve/Types/ResolverCandidate.h"
 
 #include <toml++/toml.hpp>
 #include <QSize>

@@ -8,13 +8,13 @@ target_include_directories(Core_Config_KeysFile_Mapper PRIVATE
 
 target_link_libraries(Core_Config_KeysFile_Mapper PRIVATE
         Core::Config::Toml
-        Core::Config::Resolver)
+        Core::Config::Resolve)
 
 target_link_libraries(Core_Config_KeysFile_Mapper PUBLIC
         Core::Config::KeysFile::Keys
         Core::Config::KeysFile::Types
-        Core::Config::Resolver::PathContext
-        Core::Config::Resolver::Types
+        Core::Config::Resolve::PathContext
+        Core::Config::Resolve::Types
         Core::Config::Types
         Core::Applets::Types
         tomlplusplus::tomlplusplus
