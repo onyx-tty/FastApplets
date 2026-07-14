@@ -15,14 +15,21 @@
 #include <Qt>
 #include <QtGlobal>
 
+namespace {
+
+using Window        = config::schema::properties::Window;
+using PrimaryButton = config::schema::properties::PrimaryButton;
+using Layout        = config::schema::properties::Layout;
+
+} // namespace
+
 /* Window Properties */
 
-WindowProperties ConfigMapper::window(const config::resolve::Candidates&  candidates,
-                                      const WindowProperties&             defaults,
-                                      const config::resolve::PathContext& path_context) {
+Window ConfigMapper::window(const config::resolve::Candidates& candidates, const Window& defaults,
+                            const config::resolve::PathContext& path_context) {
         return mapProperties(
                 candidates, defaults, path_context,
-                [&defaults, &candidates](WindowProperties&                   window,
+                [&defaults, &candidates](Window&                             window,
                                          const config::resolve::PathContext& path_context) {
                         window.size = config::resolve::from<QSize>(candidates.makeCopy()
                                                                            .withExtension("size"),
@@ -40,12 +47,12 @@ WindowProperties ConfigMapper::window(const config::resolve::Candidates&  candid
 
 /* Primary Button Properties*/
 
-PrimaryButtonProperties ConfigMapper::primaryButton(
-        const config::resolve::Candidates& candidates, const PrimaryButtonProperties& defaults,
-        const config::resolve::PathContext& path_context) {
+PrimaryButton ConfigMapper::primaryButton(const config::resolve::Candidates&  candidates,
+                                          const PrimaryButton&                defaults,
+                                          const config::resolve::PathContext& path_context) {
         return mapProperties(
                 candidates, defaults, path_context,
-                [&defaults, &candidates](PrimaryButtonProperties&            button,
+                [&defaults, &candidates](PrimaryButton&                      button,
                                          const config::resolve::PathContext& path_context) {
                         button.double_key_press =
                                 config::resolve::from<bool>(candidates.makeCopy().withExtension(

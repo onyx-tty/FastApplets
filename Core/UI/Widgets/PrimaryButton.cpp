@@ -22,11 +22,11 @@
 #include <QWidget>
 #include <Qt>
 
-std::vector<PrimaryButton*> makePrimaryButtons(const std::vector<PrimaryButtonParams>& params,
-                                               const PrimaryButtonProperties&          properties,
-                                               const std::vector<keybindings>&         keys,
-                                               const std::vector<keybindings>&         default_keys,
-                                               QWidget*                                parent) {
+std::vector<PrimaryButton*> makePrimaryButtons(
+        const std::vector<PrimaryButtonParams>&          params,
+        const config::schema::properties::PrimaryButton& properties,
+        const std::vector<keybindings>& keys, const std::vector<keybindings>& default_keys,
+        QWidget* parent) {
         // TODO If applied key is already used elsewhere, the keybindings will be unpredictable.
         //      For example if for some reason keybinding for primary button 3 is Qt_Key4 and
         //      primary button 4 has missing keybinding, both buttons will be assigned to Qt_Key4.
@@ -120,7 +120,8 @@ void PrimaryButton::setIconLabel(const QPixmap& pixmap, Qt::Alignment alignment,
 
 PrimaryButton::PrimaryButton(button_type type, const QIcon& icon, const QString& text,
                              keybindings keys, QString command,
-                             const PrimaryButtonProperties& properties, QWidget* parent) :
+                             const config::schema::properties::PrimaryButton& properties,
+                             QWidget*                                         parent) :
         QPushButton(parent), type(type), keys(std::move(keys)), command(std::move(command)),
         focus_reason(Qt::FocusReason::NoFocusReason) {
         connect(this, &PrimaryButton::clicked, [this]() { runCommand(this->command); });

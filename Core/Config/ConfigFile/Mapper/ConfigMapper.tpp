@@ -47,10 +47,10 @@ T ConfigMapper::mapProperties(const config::resolve::Candidates& candidates, con
 /* Layout Properties */
 
 template<applet::type TApplet>
-LayoutProperties ConfigMapper::layout(const config::resolve::Candidates& candidates,
-                                      const LayoutProperties&   defaults,
-                                      const config::resolve::PathContext&        path_context) {
-        auto properties = LayoutProperties{};
+config::schema::properties::Layout ConfigMapper::layout(
+        const config::resolve::Candidates& candidates, const Layout& defaults,
+        const config::resolve::PathContext& path_context) {
+        auto properties = Layout{};
 
         const auto data = config::resolve::from<toml::table>(candidates, path_context);
         if (!data) { return defaults; }
@@ -65,10 +65,12 @@ LayoutProperties ConfigMapper::layout(const config::resolve::Candidates& candida
 
 template<applet::type TApplet>
 std::vector<PrimaryButtonParams> ConfigMapper::primaryButtons(
-        const config::resolve::Candidates& candidates, const std::vector<PrimaryButtonParams>& defaults,
-        const config::resolve::PathContext& path_context) {
-        const auto arr = config::resolve::from<toml::array>(candidates, path_context, {.min_size = 1},
-                                                     u"Format: [primary buttons...]");
+        const config::resolve::Candidates&      candidates,
+        const std::vector<PrimaryButtonParams>& defaults,
+        const config::resolve::PathContext&     path_context) {
+        const auto arr = config::resolve::from<toml::array>(candidates, path_context,
+                                                            {.min_size = 1},
+                                                            u"Format: [primary buttons...]");
         if (!arr) { return defaults; }
 
         std::vector<PrimaryButtonParams> found = {};
@@ -88,8 +90,9 @@ std::vector<PrimaryButtonParams> ConfigMapper::primaryButtons(
 }
 
 template<applet::type TApplet>
-std::optional<PrimaryButtonParams> ConfigMapper::primaryButton(const config::resolve::Candidates& candidates,
-                                                               const config::resolve::PathContext& path_context) {
+std::optional<PrimaryButtonParams> ConfigMapper::primaryButton(
+        const config::resolve::Candidates&  candidates,
+        const config::resolve::PathContext& path_context) {
         using TPrimaryButtonType = AppletTraits<TApplet>::TPrimaryButtonType;
 
         const auto table = config::resolve::from<toml::table>(candidates, path_context);
@@ -98,7 +101,7 @@ std::optional<PrimaryButtonParams> ConfigMapper::primaryButton(const config::res
         PrimaryButtonParams new_button = {};
 
         auto type_str = config::resolve::from<QString>(candidates.makeCopy().withExtension("id"),
-                                                path_context.makeExtended("id"));
+                                                       path_context.makeExtended("id"));
 
         new_button.type = toPrimaryButtonType<TPrimaryButtonType>(type_str.value_or(""));
 
@@ -107,11 +110,12 @@ std::optional<PrimaryButtonParams> ConfigMapper::primaryButton(const config::res
         auto t = std::get<TPrimaryButtonType>(new_button.type);
 
         new_button.text = config::resolve::from<QString>(candidates.makeCopy().withExtension("text"),
-                                                  path_context.makeExtended("text"))
+                                                         path_context.makeExtended("text"))
                                   .value_or(textFor(t));
 
-        new_button.command = config::resolve::from<QString>(candidates.makeCopy().withExtension("command"),
-                                                     path_context.makeExtended("command"))
+        new_button.command = config::resolve::from<QString>(candidates.makeCopy().withExtension(
+                                                                    "command"),
+                                                            path_context.makeExtended("command"))
                                      .value_or(commandFor(t));
 
         new_button.icon = std::move(iconFor(t));
@@ -121,7 +125,7 @@ std::optional<PrimaryButtonParams> ConfigMapper::primaryButton(const config::res
 
 template<applet::type TApplet>
 config::schema::Config ConfigMapper::config(const toml::table& applet, const toml::table& global,
-                            const config::schema::Config& defaults) {
+                                            const config::schema::Config& defaults) {
         // Confirm that a QApplication instance exists
         if (!QApplication::instance()) { qFatal("QApplication has not been instantiated yet!"); }
 
@@ -129,8 +133,9 @@ config::schema::Config ConfigMapper::config(const toml::table& applet, const tom
 
         config::schema::Config config = config::schema::Config{};
 
-        config::resolve::Candidates cands = {{.node = node_view(applet), .applet = TApplet, .quiet = true},
-                                    {.node = node_view(global), .applet = applet::type::global}};
+        config::resolve::Candidates cands =
+                {{.node = node_view(applet), .applet = TApplet, .quiet = true},
+                 {.node = node_view(global), .applet = applet::type::global}};
 
         /* Window Properties */
         // TODO: Use enum in .withQuiet() to avoid magic numbers
@@ -140,15 +145,16 @@ config::schema::Config ConfigMapper::config(const toml::table& applet, const tom
                                           config::resolve::PathContext{filename, u"window"});
 
         /* Primary Button Properties */
-        config.primary_button_properties = primaryButton(cands.makeCopy().withExtension(
-                                                                 "primary_button"),
-                                                         defaults.getPrimaryButtonProperties(),
-                                                         config::resolve::PathContext{filename, u"primary_button"});
+        config.primary_button_properties =
+                primaryButton(cands.makeCopy().withExtension("primary_button"),
+                              defaults.getPrimaryButtonProperties(),
+                              config::resolve::PathContext{filename, u"primary_button"});
 
         /* Layout Properties */
         config.layout_properties =
                 layout<TApplet>({cands.get()[0].makeCopy().withExtension("layout").withQuiet(false)},
-                                defaults.getLayoutProperties(), config::resolve::PathContext{filename, u"layout"});
+                                defaults.getLayoutProperties(),
+                                config::resolve::PathContext{filename, u"layout"});
 
         return std::move(config);
 }

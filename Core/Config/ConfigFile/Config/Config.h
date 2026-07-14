@@ -12,22 +12,25 @@ class ConfigMapper;
 
 namespace config::schema {
 
+using properties::Layout;
+using properties::PrimaryButton;
+using properties::Window;
+
 // Holds user-configured properties used by an applet.
 class Config {
 private:
         friend class ::ConfigMapper;
 
-        WindowProperties        window_properties;
-        PrimaryButtonProperties primary_button_properties;
-        LayoutProperties        layout_properties;
+        Window        window_properties;
+        PrimaryButton primary_button_properties;
+        Layout        layout_properties;
 
 public:
-        explicit Config(WindowProperties        window         = WindowProperties{},
-                        PrimaryButtonProperties primary_button = PrimaryButtonProperties{},
-                        LayoutProperties        layout         = LayoutProperties{});
-        const WindowProperties&        getWindowProperties() const;
-        const PrimaryButtonProperties& getPrimaryButtonProperties() const;
-        const LayoutProperties&        getLayoutProperties() const;
+        explicit Config(Window window = Window{}, PrimaryButton primary_button = PrimaryButton{},
+                        Layout layout = Layout{});
+        const Window&        getWindowProperties() const;
+        const PrimaryButton& getPrimaryButtonProperties() const;
+        const Layout&        getLayoutProperties() const;
 };
 
 } // namespace config::schema

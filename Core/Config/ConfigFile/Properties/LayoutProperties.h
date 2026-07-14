@@ -23,14 +23,18 @@ QString textFor(TPrimaryButtonType type);
 template<typename TPrimaryButtonType>
 QString commandFor(TPrimaryButtonType type);
 
+namespace config::schema::properties {
+
 // Stores properties describing the appearance of the layout.
-class LayoutProperties final {
+class Layout final {
 private:
-        friend class ConfigMapper;
+        friend class ::ConfigMapper;
 
         std::vector<PrimaryButtonParams> primary_buttons;
 
 public:
-        explicit LayoutProperties(std::vector<PrimaryButtonParams> primary_buttons = {});
+        explicit Layout(std::vector<PrimaryButtonParams> primary_buttons = {});
         const std::vector<PrimaryButtonParams>& getPrimaryButtons() const;
 };
+
+} // namespace config::schema::properties

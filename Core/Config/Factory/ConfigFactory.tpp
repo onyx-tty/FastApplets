@@ -24,21 +24,24 @@
 
 template<applet::type TApplet>
 config::schema::Config config::makeDefaultConfig() {
+        using Window             = config::schema::properties::Window;
+        using PrimaryButton      = config::schema::properties::PrimaryButton;
+        using Layout             = config::schema::properties::Layout;
         using TPrimaryButtonType = AppletTraits<TApplet>::TPrimaryButtonType;
 
         constexpr QSize size   = {960, 220};
         QString         title  = AppletTraits<TApplet>::title.toString();
-        auto            window = WindowProperties(size, std::move(title));
+        auto            window = Window(size, std::move(title));
 
         constexpr bool          double_key_press = true;
         constexpr Qt::Alignment text_alignment   = {Qt::AlignHCenter, Qt::AlignTop};
         constexpr Qt::Alignment icon_alignment   = {Qt::AlignHCenter, Qt::AlignVCenter};
         constexpr QSize         icon_size        = {64, 64};
         constexpr QSizePolicy   policy           = {QSizePolicy::Expanding, QSizePolicy::Expanding};
-        auto button = PrimaryButtonProperties(double_key_press, text_alignment, icon_alignment,
-                                              icon_size, policy);
+        auto button = PrimaryButton(double_key_press, text_alignment, icon_alignment, icon_size,
+                                    policy);
 
-        auto layout = LayoutProperties();
+        auto layout = Layout();
 
         constexpr auto param = [](TPrimaryButtonType type) -> PrimaryButtonParams {
                 return {.type    = type,
@@ -54,7 +57,7 @@ config::schema::Config config::makeDefaultConfig() {
                 params = {param(shutdown), param(reboot), param(suspend), param(hibernate)};
         }
 
-        layout = LayoutProperties(std::move(params));
+        layout = Layout(std::move(params));
 
         return config::schema::Config(window, button, layout);
 }

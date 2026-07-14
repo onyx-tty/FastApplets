@@ -8,16 +8,20 @@
 
 class ConfigMapper;
 
+namespace config::schema::properties {
+
 // Stores properties used by MainWindow.
-class WindowProperties final {
+class Window final {
 private:
-        friend class ConfigMapper;
+        friend class ::ConfigMapper;
 
         QSize   size;
         QString title;
 
 public:
-        explicit WindowProperties(QSize size = {}, QString title = {});
+        explicit Window(QSize size = {}, QString title = {});
         const QSize&   getSize() const;
         const QString& getTitle() const;
 };
+
+} // namespace config::schema::properties

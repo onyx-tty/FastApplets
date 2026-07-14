@@ -15,9 +15,12 @@ class Candidates;
 class PathContext;
 } // namespace config::resolve
 
-class WindowProperties;
-class LayoutProperties;
-class PrimaryButtonProperties;
+namespace config::schema::properties {
+class Window;
+class Layout;
+class PrimaryButton;
+} // namespace config::schema::properties
+
 class PrimaryButtonParams;
 class QString;
 class QSize;
@@ -29,6 +32,10 @@ class QSizePolicy;
 // Malformed values (wrong type, out of range, etc.) are treated as failures.
 class ConfigMapper final {
 private:
+        using Window        = config::schema::properties::Window;
+        using PrimaryButton = config::schema::properties::PrimaryButton;
+        using Layout        = config::schema::properties::Layout;
+
         /* Helpers */
 
         template<typename T>
@@ -44,10 +51,9 @@ private:
         // Expected format: window table containing title (string) and
         //                  size (array of two integers)
         //
-        // Return value: WindowProperties
-        static WindowProperties window(const config::resolve::Candidates&  candidates,
-                                       const WindowProperties&             defaults,
-                                       const config::resolve::PathContext& path_context);
+        // Return value: config::schema::properties::Window
+        static Window window(const config::resolve::Candidates& candidates, const Window& defaults,
+                             const config::resolve::PathContext& path_context);
 
         /* Primary Button Properties */
 
@@ -60,11 +66,10 @@ private:
         //                  icon_alignment (string), icon_size (array of two integers),
         //                  and policy (string)
         //
-        // Return value: PrimaryButtonProperties
-        static PrimaryButtonProperties primaryButton(
-                const config::resolve::Candidates&  candidates,
-                const PrimaryButtonProperties&      defaults,
-                const config::resolve::PathContext& path_context);
+        // Return value: config::schema::properties::PrimaryButton
+        static PrimaryButton primaryButton(const config::resolve::Candidates&  candidates,
+                                           const PrimaryButton&                defaults,
+                                           const config::resolve::PathContext& path_context);
 
         /* Layout Properties */
 
@@ -72,11 +77,10 @@ private:
         //
         // Fallback priority: applet.layout -> hardcoded defaults
         //
-        // Return value: LayoutProperties
+        // Return value: config::schema::properties::Layout
         template<applet::type TApplet>
-        static LayoutProperties layout(const config::resolve::Candidates&  candidates,
-                                       const LayoutProperties&             defaults,
-                                       const config::resolve::PathContext& path_context);
+        static Layout layout(const config::resolve::Candidates& candidates, const Layout& defaults,
+                             const config::resolve::PathContext& path_context);
 
         // Maps primary_buttons from a config source.
         //

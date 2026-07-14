@@ -8,19 +8,25 @@
 
 #include <utility>
 
-config::schema::Config::Config(WindowProperties window, PrimaryButtonProperties primary_button,
-                               LayoutProperties layout) :
+namespace {
+
+using namespace config::schema;
+using namespace config::schema::properties;
+
+} // namespace
+
+Config::Config(Window window, PrimaryButton primary_button, Layout layout) :
         window_properties(std::move(window)), primary_button_properties(std::move(primary_button)),
         layout_properties(std::move(layout)) {}
 
-const WindowProperties& config::schema::Config::getWindowProperties() const {
+const Window& Config::getWindowProperties() const {
         return window_properties;
 }
 
-const PrimaryButtonProperties& config::schema::Config::getPrimaryButtonProperties() const {
+const PrimaryButton& Config::getPrimaryButtonProperties() const {
         return primary_button_properties;
 }
 
-const LayoutProperties& config::schema::Config::getLayoutProperties() const {
+const Layout& Config::getLayoutProperties() const {
         return layout_properties;
 }

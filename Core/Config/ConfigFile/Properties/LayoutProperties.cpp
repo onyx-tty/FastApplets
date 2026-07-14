@@ -58,19 +58,26 @@ QString commandFor<power_button_type>(power_button_type type) {
 /* ActionApplet */
 
 template<>
-QIcon iconFor<std::monostate>(std::monostate type) { return {}; }
+QIcon iconFor<std::monostate>(std::monostate type) {
+        return {};
+}
 
 template<>
-QString textFor<std::monostate>(std::monostate type) { return {}; }
+QString textFor<std::monostate>(std::monostate type) {
+        return {};
+}
 
 template<>
-QString commandFor<std::monostate>(std::monostate type) { return {}; }
+QString commandFor<std::monostate>(std::monostate type) {
+        return {};
+}
 
 /* Layout Properties */
 
-LayoutProperties::LayoutProperties(std::vector<PrimaryButtonParams> primary_buttons) :
+config::schema::properties::Layout::Layout(std::vector<PrimaryButtonParams> primary_buttons) :
         primary_buttons(std::move(primary_buttons)) {}
 
-const std::vector<PrimaryButtonParams>& LayoutProperties::getPrimaryButtons() const {
+const std::vector<PrimaryButtonParams>& config::schema::properties::Layout::getPrimaryButtons()
+        const {
         return primary_buttons;
 }

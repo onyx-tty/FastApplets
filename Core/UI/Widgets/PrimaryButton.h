@@ -11,9 +11,12 @@
 #include "Core/Config/KeysFile/Types/Keybindings.h"
 #include "Core/UI/Types/ButtonType.h"
 
+namespace config::schema::properties {
+class PrimaryButton;
+} // namespace config::schema::properties
+
 class PrimaryButton;
 class PrimaryButtonParams;
-class PrimaryButtonProperties;
 class QIcon;
 class QLabel;
 class QPaintEvent;
@@ -24,7 +27,7 @@ class QFocusEvent;
 class QWidget;
 
 // Constructs PrimaryButtons from given PrimaryButtonParams, assigns visual properties from
-// PrimaryButtonProperties, and keybindings from keys, with fallback default_keys
+// config::schema::properties::PrimaryButton, and keybindings from keys, with fallback default_keys
 //
 // Keybinding resolution order:
 // 1. User-configured keys (keys).
@@ -38,15 +41,15 @@ class QWidget;
 // Returns a vector containing every created button.
 // Calls qFatal instead if no button params are found.
 // TODO: This function does too much. It should not resolve keys on top of button construction.
-std::vector<PrimaryButton*> makePrimaryButtons(const std::vector<PrimaryButtonParams>& params,
-                                               const PrimaryButtonProperties&          properties,
-                                               const std::vector<keybindings>&         keys,
-                                               const std::vector<keybindings>&         default_keys,
-                                               QWidget*                                parent);
+std::vector<PrimaryButton*> makePrimaryButtons(
+        const std::vector<PrimaryButtonParams>&          params,
+        const config::schema::properties::PrimaryButton& properties,
+        const std::vector<keybindings>& keys, const std::vector<keybindings>& default_keys,
+        QWidget* parent);
 
 // Main button widget used for core functionality.
 // It sets given text and icon, and aligns them according to alignments passed in
-// PrimaryButtonProperties. It also sets passed 'command' argument to execute on button click.
+// config::schema::properties::PrimaryButton. It also sets passed 'command' argument to execute on button click.
 class PrimaryButton : public QPushButton {
         Q_OBJECT
 
@@ -82,7 +85,8 @@ public:
         // TODO: Pass a single PrimaryButtonParams argument
         explicit PrimaryButton(button_type type, const QIcon& icon, const QString& text,
                                keybindings keys, QString command,
-                               const PrimaryButtonProperties& properties, QWidget* parent);
+                               const config::schema::properties::PrimaryButton& properties,
+                               QWidget*                                         parent);
 
         // Wrapper propagating event->reason() to focus_reason for use by paintEvent.
         void focusInEvent(QFocusEvent* event) override;

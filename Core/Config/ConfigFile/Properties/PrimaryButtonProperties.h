@@ -8,10 +8,14 @@
 #include <QSizePolicy>
 #include <Qt>
 
+class ConfigMapper;
+
+namespace config::schema::properties {
+
 // Stores data used to style each PrimaryButton.
-class PrimaryButtonProperties final {
+class PrimaryButton final {
 private:
-        friend class ConfigMapper;
+        friend class ::ConfigMapper;
 
         bool          double_key_press;
         Qt::Alignment text_alignment;
@@ -20,13 +24,14 @@ private:
         QSizePolicy   policy;
 
 public:
-        explicit PrimaryButtonProperties(bool          double_key_press = {},
-                                         Qt::Alignment text_alignment   = {},
-                                         Qt::Alignment icon_alignment = {}, QSize icon_size = {},
-                                         QSizePolicy policy = {});
+        explicit PrimaryButton(bool double_key_press = {}, Qt::Alignment text_alignment = {},
+                               Qt::Alignment icon_alignment = {}, QSize icon_size = {},
+                               QSizePolicy policy = {});
         bool                 getDoubleKeyPress() const;
         const Qt::Alignment& getTextAlignment() const;
         const Qt::Alignment& getIconAlignment() const;
         const QSize&         getIconSize() const;
         const QSizePolicy&   getPolicy() const;
 };
+
+} // namespace config::schema::properties
