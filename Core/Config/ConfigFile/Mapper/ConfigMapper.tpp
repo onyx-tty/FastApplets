@@ -8,7 +8,7 @@
 #include "Core/Applets/Types/AppletTraits.h"
 #include "Core/Applets/Types/AppletType.h"
 #include "Core/Config/ConfigFile/Config/Config.h"
-#include "Core/Config/ConfigFile/Properties/LayoutProperties.h"
+#include "Core/Config/ConfigFile/Properties/Layout.h"
 #include "Core/Config/Resolve/PathContext/PathContext.h"
 #include "Core/Config/Resolve/Resolve.h"
 #include "Core/Config/Resolve/Types/ResolverCandidate.h"

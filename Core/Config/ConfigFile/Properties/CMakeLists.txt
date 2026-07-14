@@ -1,7 +1,7 @@
 add_library(Core_Config_ConfigFile_Properties
-        WindowProperties.cpp
-        PrimaryButtonProperties.cpp
-        LayoutProperties.cpp)
+        Window.cpp
+        PrimaryButton.cpp
+        Layout.cpp)
 add_library(Core::Config::ConfigFile::Properties ALIAS Core_Config_ConfigFile_Properties)
 
 target_include_directories(Core_Config_ConfigFile_Properties PRIVATE

@@ -2,9 +2,9 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 
 #include "Config.h"
-#include "Core/Config/ConfigFile/Properties/LayoutProperties.h"
-#include "Core/Config/ConfigFile/Properties/PrimaryButtonProperties.h"
-#include "Core/Config/ConfigFile/Properties/WindowProperties.h"
+#include "Core/Config/ConfigFile/Properties/Layout.h"
+#include "Core/Config/ConfigFile/Properties/PrimaryButton.h"
+#include "Core/Config/ConfigFile/Properties/Window.h"
 
 #include <utility>
 

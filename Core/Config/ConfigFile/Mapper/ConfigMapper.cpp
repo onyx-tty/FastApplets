@@ -2,8 +2,8 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 
 #include "ConfigMapper.h"
-#include "Core/Config/ConfigFile/Properties/PrimaryButtonProperties.h"
-#include "Core/Config/ConfigFile/Properties/WindowProperties.h"
+#include "Core/Config/ConfigFile/Properties/PrimaryButton.h"
+#include "Core/Config/ConfigFile/Properties/Window.h"
 #include "Core/Config/Resolve/PathContext/PathContext.h"
 #include "Core/Config/Resolve/Resolve.h"
 #include "Core/Config/Resolve/Types/ResolverCandidate.h"

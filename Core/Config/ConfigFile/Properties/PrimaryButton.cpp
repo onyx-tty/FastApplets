@@ -1,7 +1,7 @@
 // SPDX-FileCopyrightText: 2026 Łukasz Wrodarczyk
 // SPDX-License-Identifier: GPL-3.0-or-later
 
-#include "PrimaryButtonProperties.h"
+#include "PrimaryButton.h"
 
 #include <toml++/toml.hpp>
 #include <QSize>
