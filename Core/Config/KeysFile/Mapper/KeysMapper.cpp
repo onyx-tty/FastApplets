@@ -16,6 +16,12 @@
 #include <QKeySequence>
 #include <QString>
 
+namespace {
+
+using namespace config;
+
+} // namespace
+
 keybindings keysFromText(const std::vector<std::string>& texts) {
         keybindings keys = {};
         keys.reserve(texts.size());
@@ -40,11 +46,10 @@ std::vector<std::string> textFromTomlArray(const toml::array& arr) {
         return texts;
 }
 
-keybindings KeysMapper::quit(const config::resolve::Candidates&  candidates,
-                             const keybindings&                  defaults,
-                             const config::resolve::PathContext& path_context) {
-        toml::array keys = config::resolve::from<toml::array>(candidates, path_context,
-                                                              {.min_size = 1}, u"[keybindings...]")
+keybindings KeysMapper::quit(const Candidates& candidates, const keybindings& defaults,
+                             const PathContext& path_context) {
+        toml::array keys = resolve::from<toml::array>(candidates, path_context, {.min_size = 1},
+                                                      u"[keybindings...]")
                                    .value_or(toml::array());
 
         if (keys.empty()) { return defaults; }
@@ -52,11 +57,11 @@ keybindings KeysMapper::quit(const config::resolve::Candidates&  candidates,
         return keysFromText(textFromTomlArray(keys));
 }
 
-std::vector<keybindings> KeysMapper::primaryButtons(
-        const config::resolve::Candidates& candidates, const std::vector<keybindings>& defaults,
-        const config::resolve::PathContext& path_context) {
-        toml::array keys = config::resolve::from<toml::array>(candidates, path_context,
-                                                              {.min_size = 1}, u"[keybindings...]")
+std::vector<keybindings> KeysMapper::primaryButtons(const Candidates&               candidates,
+                                                    const std::vector<keybindings>& defaults,
+                                                    const PathContext&              path_context) {
+        toml::array keys = resolve::from<toml::array>(candidates, path_context, {.min_size = 1},
+                                                      u"[keybindings...]")
                                    .value_or(toml::array());
 
         if (keys.empty()) { return defaults; }
@@ -73,11 +78,10 @@ std::vector<keybindings> KeysMapper::primaryButtons(
         return std::move(buttons);
 }
 
-keybindings KeysMapper::primaryButton(const config::resolve::Candidates&  candidates,
-                                      const keybindings&                  defaults,
-                                      const config::resolve::PathContext& path_context) {
-        toml::array keys = config::resolve::from<toml::array>(candidates, path_context,
-                                                              {.min_size = 1}, u"[keybindings...]")
+keybindings KeysMapper::primaryButton(const Candidates& candidates, const keybindings& defaults,
+                                      const PathContext& path_context) {
+        toml::array keys = resolve::from<toml::array>(candidates, path_context, {.min_size = 1},
+                                                      u"[keybindings...]")
                                    .value_or(toml::array());
 
         if (keys.empty()) { return defaults; }

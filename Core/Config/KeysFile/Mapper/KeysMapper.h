@@ -31,14 +31,16 @@ std::vector<std::string> textFromTomlArray(const toml::array& arr);
 // All mapping failures will fall back to defaults and log warnings.
 class KeysMapper final {
 private:
+        using Candidates  = config::resolve::Candidates;
+        using PathContext = config::resolve::PathContext;
+
         // Maps quit keybindings from config nodes.
         //
         // Fallback priority: applet.quit -> global.quit -> hardcoded defaults
         //
         // Return value: keybindings (std::unordered_set<int>)
-        static keybindings quit(const config::resolve::Candidates&  candidates,
-                                const keybindings&                  defaults,
-                                const config::resolve::PathContext& path_context);
+        static keybindings quit(const Candidates& candidates, const keybindings& defaults,
+                                const PathContext& path_context);
 
         // Maps the entire primary_buttons array from config nodes.
         //
@@ -48,19 +50,17 @@ private:
         // Fallback priority: applet.primary_buttons -> hardcoded defaults
         //
         // Return value: std::vector<keybindings> (std::vector<std::unordered_set<int>>)
-        static std::vector<keybindings> primaryButtons(
-                const config::resolve::Candidates&  candidates,
-                const std::vector<keybindings>&     defaults,
-                const config::resolve::PathContext& path_context);
+        static std::vector<keybindings> primaryButtons(const Candidates&               candidates,
+                                                       const std::vector<keybindings>& defaults,
+                                                       const PathContext& path_context);
 
         // Maps a single button's keybindings from a config candidate.
         //
         // Fallback priority: applet.primary_buttons[index] -> hardcoded defaults
         //
         // Return value: keybindings (std::unordered_set<int>)
-        static keybindings primaryButton(const config::resolve::Candidates&  candidates,
-                                         const keybindings&                  defaults,
-                                         const config::resolve::PathContext& path_context);
+        static keybindings primaryButton(const Candidates& candidates, const keybindings& defaults,
+                                         const PathContext& path_context);
 
 public:
         KeysMapper() = delete;

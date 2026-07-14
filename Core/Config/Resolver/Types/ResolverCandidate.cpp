@@ -10,25 +10,32 @@
 #include <QString>
 #include <QtGlobal>
 
+namespace {
+
+using Candidate  = config::resolve::Candidate;
+using Candidates = config::resolve::Candidates;
+
+} // namespace
+
 /* Candidate */
 
-config::resolve::Candidate config::resolve::Candidate::makeCopy() const {
+Candidate Candidate::makeCopy() const {
         return *this;
 }
 
-config::resolve::Candidate& config::resolve::Candidate::withExtension(std::string_view key) {
+Candidate& Candidate::withExtension(std::string_view key) {
         node = node[key];
 
         return *this;
 }
 
-config::resolve::Candidate& config::resolve::Candidate::withExtension(size_t index) {
+Candidate& Candidate::withExtension(size_t index) {
         node = node[index];
 
         return *this;
 }
 
-config::resolve::Candidate& config::resolve::Candidate::withQuiet(bool quiet) {
+Candidate& Candidate::withQuiet(bool quiet) {
         this->quiet = quiet;
 
         return *this;
@@ -36,30 +43,29 @@ config::resolve::Candidate& config::resolve::Candidate::withQuiet(bool quiet) {
 
 /* Candidates */
 
-config::resolve::Candidates config::resolve::Candidates::makeCopy() const {
+Candidates Candidates::makeCopy() const {
         return *this;
 }
 
-config::resolve::Candidates& config::resolve::Candidates::withExtension(std::string_view key) {
+Candidates& Candidates::withExtension(std::string_view key) {
         for (auto& candidate : candidates) { candidate.node = candidate.node[key]; }
 
         return *this;
 }
 
-config::resolve::Candidates& config::resolve::Candidates::withExtension(size_t index) {
+Candidates& Candidates::withExtension(size_t index) {
         for (auto& candidate : candidates) { candidate.node = candidate.node[index]; }
 
         return *this;
 }
 
-config::resolve::Candidates& config::resolve::Candidates::withQuiet(bool quiet) {
+Candidates& Candidates::withQuiet(bool quiet) {
         for (auto& candidate : candidates) { candidate.quiet = quiet; }
 
         return *this;
 }
 
-config::resolve::Candidates& config::resolve::Candidates::withQuiet(std::optional<size_t> cand_index,
-                                                                    bool quiet) {
+Candidates& Candidates::withQuiet(std::optional<size_t> cand_index, bool quiet) {
         if (!cand_index) { qWarning() << "Passed std::nullopt, cannot make anything quiet!"; }
 
         if (cand_index.value() > candidates.size()) {

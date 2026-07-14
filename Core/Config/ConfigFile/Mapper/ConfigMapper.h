@@ -35,12 +35,14 @@ private:
         using Window        = config::schema::properties::Window;
         using PrimaryButton = config::schema::properties::PrimaryButton;
         using Layout        = config::schema::properties::Layout;
+        using Candidates    = config::resolve::Candidates;
+        using PathContext   = config::resolve::PathContext;
 
         /* Helpers */
 
         template<typename T>
-        static T mapProperties(const config::resolve::Candidates& candidates, const T& defaults,
-                               const config::resolve::PathContext& path_context, auto fill_fn);
+        static T mapProperties(const Candidates& candidates, const T& defaults,
+                               const PathContext& path_context, auto fill_fn);
 
         /* Window Properties */
 
@@ -52,8 +54,8 @@ private:
         //                  size (array of two integers)
         //
         // Return value: config::schema::properties::Window
-        static Window window(const config::resolve::Candidates& candidates, const Window& defaults,
-                             const config::resolve::PathContext& path_context);
+        static Window window(const Candidates& candidates, const Window& defaults,
+                             const PathContext& path_context);
 
         /* Primary Button Properties */
 
@@ -67,9 +69,9 @@ private:
         //                  and policy (string)
         //
         // Return value: config::schema::properties::PrimaryButton
-        static PrimaryButton primaryButton(const config::resolve::Candidates&  candidates,
-                                           const PrimaryButton&                defaults,
-                                           const config::resolve::PathContext& path_context);
+        static PrimaryButton primaryButton(const Candidates&    candidates,
+                                           const PrimaryButton& defaults,
+                                           const PathContext&   path_context);
 
         /* Layout Properties */
 
@@ -79,8 +81,8 @@ private:
         //
         // Return value: config::schema::properties::Layout
         template<applet::type TApplet>
-        static Layout layout(const config::resolve::Candidates& candidates, const Layout& defaults,
-                             const config::resolve::PathContext& path_context);
+        static Layout layout(const Candidates& candidates, const Layout& defaults,
+                             const PathContext& path_context);
 
         // Maps primary_buttons from a config source.
         //
@@ -97,9 +99,8 @@ private:
         // Return value: std::vector<PrimaryButtonParams>
         template<applet::type TApplet>
         static std::vector<PrimaryButtonParams> primaryButtons(
-                const config::resolve::Candidates&      candidates,
-                const std::vector<PrimaryButtonParams>& defaults,
-                const config::resolve::PathContext&     path_context);
+                const Candidates& candidates, const std::vector<PrimaryButtonParams>& defaults,
+                const PathContext& path_context);
 
         // Maps primary_button, including its attributes, from a config source.
         //
@@ -112,9 +113,8 @@ private:
         //
         // Return value: std::optional<PrimaryButtonParams>
         template<applet::type TApplet>
-        static std::optional<PrimaryButtonParams> primaryButton(
-                const config::resolve::Candidates&  candidates,
-                const config::resolve::PathContext& path_context);
+        static std::optional<PrimaryButtonParams> primaryButton(const Candidates&  candidates,
+                                                                const PathContext& path_context);
 
 public:
         ConfigMapper() = delete;

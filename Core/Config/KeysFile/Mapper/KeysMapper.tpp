@@ -19,25 +19,25 @@
 #include <QtGlobal>
 
 template<applet::type TApplet>
-config::schema::Keys KeysMapper::keys(const toml::table& applet, const toml::table& global, const config::schema::Keys& defaults) {
+config::schema::Keys KeysMapper::keys(const toml::table& applet, const toml::table& global,
+                                      const config::schema::Keys& defaults) {
         // Confirm that a QApplication instance exists
         if (!QApplication::instance()) { qFatal("QApplication has not been instantiated yet!"); }
 
         constexpr QStringView filename = u"keys.toml";
 
-        config::schema::Keys                     keys = config::schema::Keys{};
-        const config::resolve::Candidates cands =
-                {{.node = node_view(applet), .applet = TApplet, .quiet = true},
-                 {.node = node_view(global), .applet = applet::type::global}};
+        config::schema::Keys keys  = config::schema::Keys{};
+        const Candidates     cands = {{.node = node_view(applet), .applet = TApplet, .quiet = true},
+                                      {.node = node_view(global), .applet = applet::type::global}};
 
         /* Quit Keys */
         keys.quit = quit(cands.makeCopy().withExtension("quit"), defaults.getQuit(),
-                         config::resolve::PathContext{filename, u"quit"});
+                         PathContext{filename, u"quit"});
 
         /* Primary Button Keys */
         keys.primary_buttons = primaryButtons(
                 {cands.get()[0].makeCopy().withExtension("primary_buttons").withQuiet(false)},
-                defaults.getPrimaryButtons(), config::resolve::PathContext{filename, u"primary_buttons"});
+                defaults.getPrimaryButtons(), PathContext{filename, u"primary_buttons"});
 
         return std::move(keys);
 }

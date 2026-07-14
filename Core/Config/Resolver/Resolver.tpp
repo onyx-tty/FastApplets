@@ -23,8 +23,8 @@
 #include <QtGlobal>
 
 template<typename T>
-std::optional<T> config::resolve::from(const config::resolve::Candidates&  candidates,
-                                       const config::resolve::PathContext&         path_context,
+std::optional<T> config::resolve::from(const Candidates&          candidates,
+                                       const PathContext&         path_context,
                                        const tomlqt::ArrayBounds& arr_bounds,
                                        QStringView                arr_format) {
         using DT = std::decay_t<T>;
@@ -130,9 +130,9 @@ std::optional<T> config::resolve::from(const config::resolve::Candidates&  candi
 }
 
 template<typename TAttribute, typename TObject>
-void config::resolve::fromOrDefault(const config::resolve::Candidates& candidates, TAttribute& attribute,
+void config::resolve::fromOrDefault(const Candidates& candidates, TAttribute& attribute,
                                     TObject& object, const TObject& object_defaults,
-                                    const config::resolve::PathContext&         path_context,
+                                    const PathContext&         path_context,
                                     const tomlqt::ArrayBounds& arr_bounds, QStringView arr_format) {
         if (auto result = from<TAttribute>(candidates, path_context, arr_bounds, arr_format)) {
                 attribute = std::move(result.value());
@@ -142,10 +142,9 @@ void config::resolve::fromOrDefault(const config::resolve::Candidates& candidate
 }
 
 template<typename TRaw, typename TAttribute, typename TObject, typename Transform>
-void config::resolve::fromTransformOrDefault(const config::resolve::Candidates& candidates,
-                                             TAttribute& attribute, TObject& object,
-                                             const TObject& object_defaults, Transform transform,
-                                             const config::resolve::PathContext& path_context) {
+void config::resolve::fromTransformOrDefault(const Candidates& candidates, TAttribute& attribute,
+                                             TObject& object, const TObject& object_defaults,
+                                             Transform transform, const PathContext& path_context) {
         if (auto result = from<TRaw>(candidates, path_context)) {
                 attribute = transform(std::move(result.value()));
         } else {
