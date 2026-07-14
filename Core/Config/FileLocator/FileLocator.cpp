@@ -11,11 +11,7 @@
 #include <Qt>
 #include <QtGlobal>
 
-namespace {
-
 using config::Filepaths;
-
-} // namespace
 
 Filepaths config::locateFiles(QLatin1StringView applet_name) {
         using namespace Qt::StringLiterals;

@@ -8,11 +8,7 @@
 #include <QSizePolicy>
 #include <Qt>
 
-namespace {
-
 using PrimaryButton = config::schema::properties::PrimaryButton;
-
-} // namespace
 
 PrimaryButton::PrimaryButton(bool double_key_press, Qt::Alignment text_alignment,
                              Qt::Alignment icon_alignment, QSize icon_size, QSizePolicy policy) :

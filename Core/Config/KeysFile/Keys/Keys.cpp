@@ -7,11 +7,7 @@
 #include <utility>
 #include <vector>
 
-namespace {
-
 using config::schema::Keys;
-
-} // namespace
 
 Keys::Keys(keybindings quit, std::vector<keybindings> primary_buttons) :
         quit(std::move(quit)), primary_buttons(std::move(primary_buttons)) {}

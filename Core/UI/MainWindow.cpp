@@ -12,12 +12,8 @@
 #include <QString>
 #include <QWidget>
 
-namespace {
-
 using Config = config::schema::Config;
 using Keys   = config::schema::Keys;
-
-} // namespace
 
 MainWindow makeMainWindow(const Config& config, const Keys& keys, const Keys& default_keys) {
         auto primary_buttons = makePrimaryButtons(config.getLayoutProperties().getPrimaryButtons(),

@@ -10,12 +10,8 @@
 #include <QString>
 #include <QtGlobal>
 
-namespace {
-
 using Candidate  = config::resolve::Candidate;
 using Candidates = config::resolve::Candidates;
-
-} // namespace
 
 /* Candidate */
 

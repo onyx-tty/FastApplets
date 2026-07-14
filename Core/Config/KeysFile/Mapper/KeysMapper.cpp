@@ -16,11 +16,7 @@
 #include <QKeySequence>
 #include <QString>
 
-namespace {
-
 using namespace config;
-
-} // namespace
 
 keybindings keysFromText(const std::vector<std::string>& texts) {
         keybindings keys = {};

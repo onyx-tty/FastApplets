@@ -22,11 +22,7 @@
 #include <QWidget>
 #include <Qt>
 
-namespace {
-
 using namespace config::schema;
-
-}
 
 std::vector<PrimaryButton*> makePrimaryButtons(const std::vector<PrimaryButtonParams>& params,
                                                const properties::PrimaryButton&        properties,

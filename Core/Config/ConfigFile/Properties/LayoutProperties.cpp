@@ -72,11 +72,7 @@ QString commandFor<std::monostate>(std::monostate type) {
         return {};
 }
 
-namespace {
-
 using Layout = config::schema::properties::Layout;
-
-} // namespace
 
 /* Layout Properties */
 

@@ -7,11 +7,7 @@
 #include <QSize>
 #include <QString>
 
-namespace {
-
 using Window = config::schema::properties::Window;
-
-} // namespace
 
 Window::Window(QSize size, QString title) : size(std::move(size)), title(std::move(title)) {}
 

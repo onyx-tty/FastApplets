@@ -8,12 +8,8 @@
 
 #include <utility>
 
-namespace {
-
 using namespace config::schema;
 using namespace config::schema::properties;
-
-} // namespace
 
 Config::Config(Window window, PrimaryButton primary_button, Layout layout) :
         window_properties(std::move(window)), primary_button_properties(std::move(primary_button)),

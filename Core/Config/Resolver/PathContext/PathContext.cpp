@@ -10,11 +10,7 @@
 #include <QString>
 #include <QStringView>
 
-namespace {
-
 using PathContext = config::resolve::PathContext;
-
-} // namespace
 
 PathContext::PathContext(QStringView filename, QStringView path_context, char separator) :
         filename(filename.toString()), path_context(path_context.toString()), separator(separator) {

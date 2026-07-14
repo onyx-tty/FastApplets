@@ -15,16 +15,12 @@
 #include <Qt>
 #include <QtGlobal>
 
-namespace {
-
 using namespace config;
 using Window        = schema::properties::Window;
 using PrimaryButton = schema::properties::PrimaryButton;
 using Layout        = schema::properties::Layout;
 using Candidates    = resolve::Candidates;
 using PathContext   = resolve::PathContext;
-
-} // namespace
 
 /* Window Properties */
 
