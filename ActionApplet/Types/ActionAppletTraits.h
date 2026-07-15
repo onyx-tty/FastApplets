@@ -9,8 +9,12 @@
 #include <variant>
 #include <QStringView>
 
+namespace applet {
+
 template<>
-struct AppletTraits<applet::type::action> final {
+struct Traits<applet::type::action> final {
         using TPrimaryButtonType           = std::monostate;
         constexpr static QStringView title = u"ActionApplet";
 };
+
+} // namespace applet

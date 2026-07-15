@@ -9,8 +9,12 @@
 
 #include <QStringView>
 
+namespace applet {
+
 template<>
-struct AppletTraits<applet::type::power> final {
+struct Traits<applet::type::power> final {
         using TPrimaryButtonType           = power_button_type;
         constexpr static QStringView title = u"PowerApplet";
 };
+
+} // namespace applet

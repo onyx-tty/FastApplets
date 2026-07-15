@@ -6,5 +6,5 @@ target_include_directories(ActionApplet_Types INTERFACE
         $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>)
 
 target_link_libraries(ActionApplet_Types INTERFACE
-        Core::Applets::Types # AppletType & AppletTraits
+        Core::Applets::Types # type & Traits
         Qt${QT_VERSION_MAJOR}::Core)

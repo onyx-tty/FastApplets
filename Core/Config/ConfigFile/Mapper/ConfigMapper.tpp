@@ -98,7 +98,7 @@ std::optional<PrimaryButtonParams> config::ConfigMapper::primaryButton(
         const Candidates& candidates, const PathContext& path_context) {
         using namespace config;
 
-        using TPrimaryButtonType = AppletTraits<TApplet>::TPrimaryButtonType;
+        using TPrimaryButtonType = applet::Traits<TApplet>::TPrimaryButtonType;
 
         const auto table = resolve::from<toml::table>(candidates, path_context);
         if (!table) { return std::nullopt; }

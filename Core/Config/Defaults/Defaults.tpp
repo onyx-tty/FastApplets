@@ -27,10 +27,10 @@ config::schema::Config config::makeDefaultConfig() {
         using Window             = config::schema::properties::Window;
         using PrimaryButton      = config::schema::properties::PrimaryButton;
         using Layout             = config::schema::properties::Layout;
-        using TPrimaryButtonType = AppletTraits<TApplet>::TPrimaryButtonType;
+        using TPrimaryButtonType = applet::Traits<TApplet>::TPrimaryButtonType;
 
         constexpr QSize size   = {960, 220};
-        QString         title  = AppletTraits<TApplet>::title.toString();
+        QString         title  = applet::Traits<TApplet>::title.toString();
         auto            window = Window(size, std::move(title));
 
         constexpr bool          double_key_press = true;

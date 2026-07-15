@@ -5,9 +5,13 @@
 
 #include "AppletType.h"
 
+namespace applet {
+
 // Stores generic types required for use in Core classes and functions.
 //
-// To work, each applet must include its own AppletTraits template specializations
+// To work, each applet must include its own Traits template specializations
 // before including the classes requiring them.
 template<applet::type T>
-struct AppletTraits;
+struct Traits;
+
+} // namespace applet
