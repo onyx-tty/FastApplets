@@ -1,15 +1,13 @@
 // SPDX-FileCopyrightText: 2026 Łukasz Wrodarczyk
 // SPDX-License-Identifier: GPL-3.0-or-later
 
-// TODO: Create a template specialization for AppletManager,
-//       removing the need for external includes
-// Pull in definitions for config::Manager<ActionApplet> overload
+// Pull in definitions required by the generics.
 #include "ActionApplet/Types/ActionAppletTraits.h"
 
 #include "Core/Applets/Types/AppletType.h"
 #include "Core/Args/Args.h"
+#include "Core/Config/AppletConfig/AppletConfig.h"
 #include "Core/Config/Locate/Locate.h"
-#include "Core/Config/Manager/Manager.h"
 #include "Core/Config/Types/Filepaths.h"
 #include "Core/UI/MainWindow.h"
 #include "CppUtils/Log/QtLog.h"

@@ -28,4 +28,4 @@ auto makeAppletConfigTuple(const Filepaths& applet, const Filepaths& global);
 
 } // namespace config
 
-#include "Manager.tpp"
+#include "AppletConfig.tpp"

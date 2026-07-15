@@ -1,11 +1,11 @@
-add_library(Core_Config_Manager INTERFACE)
-add_library(Core::Config::Manager ALIAS Core_Config_Manager)
+add_library(Core_Config_AppletConfig INTERFACE)
+add_library(Core::Config::AppletConfig ALIAS Core_Config_AppletConfig)
 
-target_include_directories(Core_Config_Manager INTERFACE
+target_include_directories(Core_Config_AppletConfig INTERFACE
         $<BUILD_INTERFACE:${ROOT_DIR}>
         $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>)
 
-target_link_libraries(Core_Config_Manager INTERFACE
+target_link_libraries(Core_Config_AppletConfig INTERFACE
         Core::Config::ConfigFile::Config
         Core::Config::ConfigFile::Mapper
         Core::Config::KeysFile::Keys

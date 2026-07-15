@@ -4,11 +4,11 @@ set(CMAKE_AUTORCC ON)
 # Requirements
 find_package(tomlplusplus REQUIRED)
 
+add_subdirectory(AppletConfig)
 add_subdirectory(ConfigFile)
 add_subdirectory(KeysFile)
 add_subdirectory(Defaults)
 add_subdirectory(Locate)
-add_subdirectory(Manager)
 add_subdirectory(Resolve)
 add_subdirectory(Toml)
 add_subdirectory(Types)
@@ -23,7 +23,7 @@ target_include_directories(Core_Config INTERFACE
 target_link_libraries(Core_Config INTERFACE
         Core::Config::ConfigFile
         Core::Config::KeysFile
-        Core::Config::Manager
+        Core::Config::AppletConfig
         Core::Config::Defaults
         Core::Config::Locate
         Core::Config::Toml

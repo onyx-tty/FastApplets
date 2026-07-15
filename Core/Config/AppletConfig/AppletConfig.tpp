@@ -3,13 +3,13 @@
 
 #pragma once
 
+#include "AppletConfig.h"
 #include "Core/Applets/Types/AppletType.h"
 #include "Core/Config/ConfigFile/Mapper/ConfigMapper.h"
 #include "Core/Config/Defaults/Defaults.h"
 #include "Core/Config/KeysFile/Mapper/KeysMapper.h"
 #include "Core/Config/Toml/Parse.h"
 #include "Core/Config/Types/Filepaths.h"
-#include "Manager.h"
 
 #include <tuple>
 #include <QDebug>
