@@ -10,7 +10,7 @@
 #include <QStringView>
 
 template<>
-struct AppletTraits<applet::type::action_applet> final {
+struct AppletTraits<applet::type::action> final {
         using TPrimaryButtonType           = std::monostate;
         constexpr static QStringView title = u"ActionApplet";
 };

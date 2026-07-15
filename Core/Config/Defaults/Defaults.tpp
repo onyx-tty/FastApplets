@@ -51,7 +51,7 @@ config::schema::Config config::makeDefaultConfig() {
         };
 
         std::vector<PrimaryButtonParams> params = {};
-        if constexpr (TApplet == applet::type::power_applet) {
+        if constexpr (TApplet == applet::type::power) {
                 using enum power_button_type;
 
                 params = {param(shutdown), param(reboot), param(suspend), param(hibernate)};
