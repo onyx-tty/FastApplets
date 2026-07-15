@@ -3,8 +3,8 @@
 
 #pragma once
 
-#include "Core/Applets/Types/AppletTraits.h"
-#include "Core/Applets/Types/AppletType.h"
+#include "Core/Applets/Types/Traits.h"
+#include "Core/Applets/Types/Type.h"
 #include "Core/Config/ConfigFile/Config/Config.h"
 #include "Core/Config/ConfigFile/Properties/Layout.h"
 #include "Core/Config/ConfigFile/Properties/PrimaryButton.h"

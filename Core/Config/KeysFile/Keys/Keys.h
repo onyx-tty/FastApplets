@@ -3,7 +3,7 @@
 
 #pragma once
 
-#include "Core/Applets/Types/AppletType.h"
+#include "Core/Applets/Types/Type.h"
 #include "Core/Config/KeysFile/Types/Keybindings.h"
 
 #include <vector>

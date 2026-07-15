@@ -3,8 +3,8 @@
 
 #pragma once
 
-#include "Core/Applets/Types/AppletTraits.h"
-#include "Core/Applets/Types/AppletType.h"
+#include "Core/Applets/Types/Traits.h"
+#include "Core/Applets/Types/Type.h"
 
 #include <variant>
 #include <QStringView>

@@ -3,7 +3,7 @@
 
 #pragma once
 
-#include "AppletType.h"
+#include "Type.h"
 
 namespace applet {
 

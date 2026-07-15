@@ -2,9 +2,9 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 
 // Pull in definitions required by the generics.
-#include "PowerApplet/Types/PowerAppletTraits.h"
+#include "PowerApplet/Types/Traits.h"
 
-#include "Core/Applets/Types/AppletType.h"
+#include "Core/Applets/Types/Type.h"
 #include "Core/Args/Args.h"
 #include "Core/Config/AppletConfig/AppletConfig.h"
 #include "Core/Config/Locate/Locate.h"

@@ -3,7 +3,7 @@
 
 #pragma once
 
-#include "Core/Applets/Types/AppletType.h"
+#include "Core/Applets/Types/Type.h"
 
 #include <array>
 #include <stdexcept>
