@@ -85,9 +85,10 @@ int main(int argc, char* argv[]) {
         injectArgs(args, applet_filepaths);
 
         // Config files
-        using TManager = config::Manager<applet::type::power_applet>;
-        TManager::setup(applet_filepaths, global_filepaths);
-        const auto& [config, keys, default_keys] = TManager::getAll();
+        constexpr applet::type type = applet::type::power_applet;
+        const auto [config, _, keys,
+                    default_keys]   = config::makeAppletConfigTuple<type>(applet_filepaths,
+                                                                          global_filepaths);
 
         // GUI
         MainWindow main_window = makeMainWindow(config, keys, default_keys);
