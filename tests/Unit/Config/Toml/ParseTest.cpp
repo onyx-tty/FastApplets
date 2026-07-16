@@ -13,7 +13,7 @@
 
 using namespace Qt::Literals::StringLiterals;
 
-class ParseTomlTest final : public QObject {
+class ParseTomlFileTest final : public QObject {
         Q_OBJECT
 
         static constexpr QLatin1StringView test_dirpath          = "/tmp/FastAppletsTests"_L1;
@@ -99,5 +99,5 @@ private slots:
         }
 };
 
-QTEST_MAIN(ParseTomlTest)
+QTEST_MAIN(ParseTomlFileTest)
 #include "ParseTest.moc"
