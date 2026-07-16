@@ -100,4 +100,4 @@ private slots:
 };
 
 QTEST_MAIN(ParseTomlTest)
-#include "ParseTomlTest.moc"
+#include "ParseTest.moc"

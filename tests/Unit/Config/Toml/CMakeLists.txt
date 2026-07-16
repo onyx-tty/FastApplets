@@ -1,5 +1,5 @@
 add_library(UnitTests_Core_Config_Toml
-        ParseTomlTest.cpp)
+        ParseTest.cpp)
 add_library(UnitTests::Core::Config::Toml ALIAS UnitTests_Core_Config_Toml)
 
 target_include_directories(UnitTests_Core_Config_Toml PRIVATE
