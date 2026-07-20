@@ -16,10 +16,10 @@ using namespace Qt::Literals::StringLiterals;
 class ParseTest final : public QObject {
         Q_OBJECT
 
-        static constexpr QLatin1StringView test_dirpath          = "/tmp/FastAppletsTests"_L1;
-        static constexpr QLatin1StringView test_filename_valid   = "ParseTomlTestOK.toml"_L1;
-        static constexpr QLatin1StringView test_filename_invalid = "ParseTomlTestBAD.toml"_L1;
-        static constexpr const char*       test_contents_valid   = R"(
+        static constexpr QLatin1StringView dirpath          = "/tmp/FastAppletsTests"_L1;
+        static constexpr QLatin1StringView filename_valid   = "ParseTomlTestOK.toml"_L1;
+        static constexpr QLatin1StringView filename_invalid = "ParseTomlTestBAD.toml"_L1;
+        static constexpr const char*       contents_valid   = R"(
                 [table]
                 name = "FastApplets"
                 year = 2026
@@ -27,7 +27,7 @@ class ParseTest final : public QObject {
                 applets = ["PowerApplet"]
                 half = 0.5
                 )";
-        static constexpr const char*       test_contents_invalid = R"(
+        static constexpr const char*       contents_invalid = R"(
                 [wrong syntax
                 abc = 5
                 = 1)";
@@ -36,41 +36,40 @@ private slots:
         static void initTestCase() {
                 // Verify that /tmp and test directory are accessible
                 // before writing anything
-                QDir test_parentdir("/tmp");
-                QVERIFY2(test_parentdir.exists() && test_parentdir.isReadable()
-                                 && QFileInfo(test_parentdir.path()).isWritable(),
+                QDir parentdir("/tmp");
+                QVERIFY2(parentdir.exists() && parentdir.isReadable()
+                                 && QFileInfo(parentdir.path()).isWritable(),
                          "No access to /tmp");
 
-                QVERIFY2(test_parentdir.mkdir("FastAppletsTests"),
-                         "Failed to create test directory");
+                QVERIFY2(parentdir.mkdir("FastAppletsTests"), "Failed to create test directory");
 
                 // Write minimal valid and invalid TOML files for parser tests
-                QFile valid(QDir(test_dirpath).filePath(test_filename_valid));
+                QFile valid(QDir(dirpath).filePath(filename_valid));
                 QVERIFY2(valid.open(QIODevice::WriteOnly | QIODevice::Text),
                          "Failed to create test valid TOML file");
 
                 // Valid
                 QTextStream writer(&valid);
-                writer << test_contents_valid;
+                writer << contents_valid;
                 valid.close();
                 writer.flush();
 
                 // Invalid
-                QFile invalid(QDir(test_dirpath).filePath(test_filename_invalid));
+                QFile invalid(QDir(dirpath).filePath(filename_invalid));
                 QVERIFY2(invalid.open(QIODevice::WriteOnly | QIODevice::Text),
                          "Failed to create test invalid TOML file");
                 writer.setDevice(&invalid);
-                writer << test_contents_invalid;
+                writer << contents_invalid;
                 invalid.close();
         }
 
         static void cleanupTestCase() {
                 // Double-check to guard against path corruption
-                QVERIFY2(test_dirpath.startsWith("/tmp/"_L1), "Test directory must be under /tmp/");
+                QVERIFY2(dirpath.startsWith("/tmp/"_L1), "Test directory must be under /tmp/");
 
-                QDir test_dir(test_dirpath);
-                if (test_dir.exists()) {
-                        QVERIFY2(test_dir.removeRecursively(), "Failed to remove test directory");
+                QDir dir(dirpath);
+                if (dir.exists()) {
+                        QVERIFY2(dir.removeRecursively(), "Failed to remove test directory");
                 }
         }
 
@@ -85,14 +84,14 @@ private slots:
         }
 
         static void handlesInvalidToml() {
-                const auto invalid = QDir(test_dirpath).filePath(test_filename_invalid);
+                const auto invalid = QDir(dirpath).filePath(filename_invalid);
 
                 QVERIFY2(config::parseTomlFile(invalid).empty(),
                          "File with invalid TOML must return empty toml::table");
         }
 
         static void handlesValidToml() {
-                const auto valid = QDir(test_dirpath).filePath(test_filename_valid);
+                const auto valid = QDir(dirpath).filePath(filename_valid);
 
                 QVERIFY2(!config::parseTomlFile(valid).empty(),
                          "Failed to parse file with valid TOML, must return non-empty table");
