@@ -125,11 +125,6 @@ arg::CmdArgs arg::parse(int argc, const char* const argv[]) {
         return std::move(flags);
 }
 
-// Inject config filepath and keys filepath if they are valid
-// TODO: This is a workaround. Ideally, valid args should be assigned prior to config::locateFiles
-//       lookups. Currently that's not possible without collapsing config::locateFiles
-//       and separating the lookups of config and keys; paths for each have to be injected
-//       in separation for that to work
 void arg::injectArgs(arg::CmdArgs& args, config::Filepaths& filepaths) {
         const auto injector = [](QString& target, QString& source, QStringView source_name) {
                 QFileInfo file = QFileInfo(source);

@@ -64,8 +64,15 @@ void parseFlag(std::array<std::string_view, 2> flag, CmdArgs& parsed, bool is_si
 // - An unrecognized flag name.
 //
 // Calls qFatal if argc is less than 1, indicating corruption.
+// TODO: Locator should be used to try to find the config/keys file if passed.
+//       If the path is invalid, the program should warn the user and throw HelpMenuRequested.
 CmdArgs parse(int argc, const char* const argv[]);
 
+// Inject config filepath and keys filepath if they are valid
+// TODO: This is a workaround. Ideally, valid args should be assigned prior to config::locateFiles
+//       lookups. Currently that's not possible without collapsing config::locateFiles
+//       and separating the lookups of config and keys; paths for each have to be injected
+//       in separation for that to work
 void injectArgs(arg::CmdArgs& args, config::Filepaths& filepaths);
 
 } // namespace arg
