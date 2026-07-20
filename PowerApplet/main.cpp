@@ -18,36 +18,31 @@
 #include <QLatin1StringView>
 #include <QTimer>
 #include <QtGlobal>
+#include <QStringView>
 
 namespace {
 
 // Inject config filepath and keys filepath if they are valid
-// TODO: Collapse into separate functions
+// TODO: This is a workaround. Ideally, valid args should be assigned prior to config::locateFiles
+//       lookups. Currently that's not possible without collapsing config::locateFiles
+//       and separating the lookups of config and keys; paths for each have to be injected
+//       in separation for that to work
 void injectArgs(arg::CmdArgs& args, config::Filepaths& filepaths) {
-        // TODO: This is a workaround. Ideally, valid args should be assigned prior to config::locateFiles
-        //       lookups. Currently that's not possible without collapsing config::locateFiles
-        //       and separating the lookups of config and keys; paths for each have to be injected
-        //       in separation for that to work
-        // TODO: Create a validator class
-        QFileInfo file = QFileInfo(args.config_path);
-        if (file.exists() && file.isFile() && file.isReadable()) {
-                qDebug() << QString("Found file %1, it was passed as a config cmd argument, injecting")
-                                    .arg(args.config_path);
-                filepaths.config = args.config_path;
-        } else if (!args.config_path.isEmpty()) {
-                qWarning() << "File" << args.config_path
-                           << "not found, it was passed as a config cmd argument";
-        }
+        const auto injector = [](QString& target, QString& source, QStringView source_name) {
+                QFileInfo file = QFileInfo(source);
+                if (file.exists() && file.isFile() && file.isReadable()) {
+                        qDebug() << QString("Found file %1, it was passed as a %2 cmd argument, injecting")
+                                            .arg(source).arg(source_name);
+                        target = source;
+                } else if (!source.isEmpty()) {
+                        qWarning()
+                                << QString("File %1 not found, it was passed as a %2 cmd argument")
+                                           .arg(source).arg(source_name);
+                }
+        };
 
-        file = QFileInfo(args.keys_path);
-        if (file.exists() && file.isFile() && file.isReadable()) {
-                qDebug() << QString("Found file %1, it was passed as a keys cmd argument, injecting")
-                                    .arg(args.keys_path);
-                filepaths.keys = args.keys_path;
-        } else if (!args.keys_path.isEmpty()) {
-                qWarning() << "File" << args.keys_path
-                           << "not found, it was passed as a keys cmd argument";
-        }
+        injector(filepaths.config, args.config_path, u"config");
+        injector(filepaths.keys, args.keys_path, u"keys");
 }
 
 } // namespace
