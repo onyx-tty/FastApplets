@@ -10,4 +10,5 @@ target_link_libraries(Core_Args PRIVATE
         Qt${QT_VERSION_MAJOR}::Widgets)
 
 target_link_libraries(Core_Args PUBLIC
-        Core::Applets::Types)
+        Core::Applets::Types
+        Core::Config::Types) # Only needed for injectArgs

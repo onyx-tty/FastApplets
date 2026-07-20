@@ -3,6 +3,7 @@
 
 #include "Args.h"
 #include "Core/Applets/Types/Type.h"
+#include "Core/Config/Types/Filepaths.h" // Only needed for injectArgs
 
 #include <array>
 #include <cstddef>
@@ -13,6 +14,7 @@
 #include <utility>
 #include <QApplication>
 #include <QDebug>
+#include <QFileInfo>
 #include <QString>
 #include <QStringView>
 #include <QtGlobal>
@@ -121,4 +123,29 @@ arg::CmdArgs arg::parse(int argc, const char* const argv[]) {
         }
 
         return std::move(flags);
+}
+
+// Inject config filepath and keys filepath if they are valid
+// TODO: This is a workaround. Ideally, valid args should be assigned prior to config::locateFiles
+//       lookups. Currently that's not possible without collapsing config::locateFiles
+//       and separating the lookups of config and keys; paths for each have to be injected
+//       in separation for that to work
+void arg::injectArgs(arg::CmdArgs& args, config::Filepaths& filepaths) {
+        const auto injector = [](QString& target, QString& source, QStringView source_name) {
+                QFileInfo file = QFileInfo(source);
+                if (file.exists() && file.isFile() && file.isReadable()) {
+                        qDebug() << QString("Found file %1, it was passed as a %2 cmd argument, injecting")
+                                            .arg(source)
+                                            .arg(source_name);
+                        target = source;
+                } else if (!source.isEmpty()) {
+                        qWarning()
+                                << QString("File %1 not found, it was passed as a %2 cmd argument")
+                                           .arg(source)
+                                           .arg(source_name);
+                }
+        };
+
+        injector(filepaths.config, args.config_path, u"config");
+        injector(filepaths.keys, args.keys_path, u"keys");
 }

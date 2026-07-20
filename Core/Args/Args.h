@@ -4,6 +4,7 @@
 #pragma once
 
 #include "Core/Applets/Types/Type.h"
+#include "Core/Config/Types/Filepaths.h" // Only needed for injectArgs
 
 #include <array>
 #include <stdexcept>
@@ -64,5 +65,7 @@ void parseFlag(std::array<std::string_view, 2> flag, CmdArgs& parsed, bool is_si
 //
 // Calls qFatal if argc is less than 1, indicating corruption.
 CmdArgs parse(int argc, const char* const argv[]);
+
+void injectArgs(arg::CmdArgs& args, config::Filepaths& filepaths);
 
 } // namespace arg

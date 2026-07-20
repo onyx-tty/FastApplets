@@ -14,40 +14,9 @@
 
 #include <QApplication>
 #include <QDebug>
-#include <QFileInfo>
 #include <QLatin1StringView>
-#include <QStringView>
 #include <QTimer>
 #include <QtGlobal>
-
-namespace {
-
-// Inject config filepath and keys filepath if they are valid
-// TODO: This is a workaround. Ideally, valid args should be assigned prior to config::locateFiles
-//       lookups. Currently that's not possible without collapsing config::locateFiles
-//       and separating the lookups of config and keys; paths for each have to be injected
-//       in separation for that to work
-void injectArgs(arg::CmdArgs& args, config::Filepaths& filepaths) {
-        const auto injector = [](QString& target, QString& source, QStringView source_name) {
-                QFileInfo file = QFileInfo(source);
-                if (file.exists() && file.isFile() && file.isReadable()) {
-                        qDebug() << QString("Found file %1, it was passed as a %2 cmd argument, injecting")
-                                            .arg(source)
-                                            .arg(source_name);
-                        target = source;
-                } else if (!source.isEmpty()) {
-                        qWarning()
-                                << QString("File %1 not found, it was passed as a %2 cmd argument")
-                                           .arg(source)
-                                           .arg(source_name);
-                }
-        };
-
-        injector(filepaths.config, args.config_path, u"config");
-        injector(filepaths.keys, args.keys_path, u"keys");
-}
-
-} // namespace
 
 int main(int argc, char* argv[]) {
         auto application = QApplication(argc, argv);
@@ -77,7 +46,7 @@ int main(int argc, char* argv[]) {
                 applet::toLatin1String(applet::type::global));
 
         // Inject config filepath and keys filepath if they are valid
-        injectArgs(args, applet_filepaths);
+        arg::injectArgs(args, applet_filepaths);
 
         // Config files
         constexpr auto type       = applet::type::action;
