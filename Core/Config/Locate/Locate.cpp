@@ -16,6 +16,8 @@ using config::Filepaths;
 Filepaths config::locateFiles(QLatin1StringView applet_name) {
         using namespace Qt::StringLiterals;
 
+        if (applet_name.empty()) { return {}; }
+
         Filepaths filepaths = {};
 
         // Global config is in root, not in a separate directory. Redirect to root.
