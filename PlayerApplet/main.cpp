@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 
 // Pull in definitions required by the generics.
-#include "VolumeApplet/Types/Traits.h"
+#include "PlayerApplet/Types/Traits.h"
 
 #include "Core/Applets/Types/Type.h"
 #include "Core/Args/Args.h"
@@ -33,7 +33,7 @@ int main(int argc, char* argv[]) {
                 QLatin1StringView msg(e.what());
                 if (!msg.empty()) { qWarning() << msg; }
 
-                printHelpMenu(applet::type::volume);
+                printHelpMenu(applet::type::player);
 
                 QTimer::singleShot(0, &application, &QApplication::quit);
                 return application.exec();
@@ -41,7 +41,7 @@ int main(int argc, char* argv[]) {
 
         // Find config files
         config::Filepaths applet_filepaths = config::locateFiles(
-                applet::toLatin1String(applet::type::volume));
+                applet::toLatin1String(applet::type::player));
         const config::Filepaths global_filepaths = config::locateFiles(
                 applet::toLatin1String(applet::type::global));
 
@@ -49,7 +49,7 @@ int main(int argc, char* argv[]) {
         arg::injectArgs(args, applet_filepaths);
 
         // Config files
-        constexpr auto type       = applet::type::volume;
+        constexpr auto type       = applet::type::player;
         const auto [config, _, keys,
                     default_keys] = config::makeAppletConfigTuple<type>(applet_filepaths,
                                                                         global_filepaths);

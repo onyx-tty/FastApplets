@@ -27,7 +27,7 @@
 #+BEGIN_EXPORT markdown
 <br>
 #+END_EXPORT
-* PROJ VolumeApplet [0/0]
+* PROJ PlayerApplet [0/0]
 #+BEGIN_EXPORT markdown
 <br>
 #+END_EXPORT
@@ -121,4 +121,4 @@
 
 #  LocalWords:  md SecurityApplet SystemApplet LauncherApplet JSON XDG GMock
 #  LocalWords:  WeatherApplet PowerActionManager GBenchmark PowerApplet
-#  LocalWords:  VolumeApplet
+#  LocalWords:  PlayerApplet

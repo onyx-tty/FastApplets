@@ -31,7 +31,7 @@
 
     <br>
 
-# PROJ VolumeApplet \[0/0\]
+# PROJ PlayerApplet \[0/0\]
 
 <br>
 

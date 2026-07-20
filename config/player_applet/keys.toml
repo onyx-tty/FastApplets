@@ -1,4 +1,4 @@
-## VolumeApplet keybindings.
+## PlayerApplet keybindings.
 ##
 ## Applet-specific keybindings and optional overrides for global defaults.
 ## Any commented-out setting below inherits its value from "FastApplets/keys.toml".

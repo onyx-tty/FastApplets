@@ -1,4 +1,4 @@
-## Settings applied to VolumeApplet.
+## Settings applied to PlayerApplet.
 ##
 ## Applet-specific settings and optional overrides for global defaults.
 ## Any commented-out setting below inherits its value from "FastApplets/config.toml".
@@ -12,8 +12,8 @@
 
 ## Window title.
 ##
-## Default: "VolumeApplet"
-title = "VolumeApplet"
+## Default: "PlayerApplet"
+title = "PlayerApplet"
 
 ## Window size in pixels.
 ## Uncomment to override global.

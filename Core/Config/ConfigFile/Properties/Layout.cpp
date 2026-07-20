@@ -55,7 +55,7 @@ QString commandFor<power_button_type>(power_button_type type) {
         }
 }
 
-/* VolumeApplet */
+/* PlayerApplet */
 
 template<>
 QIcon iconFor<volume_button_type>(volume_button_type type) {

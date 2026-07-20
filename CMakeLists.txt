@@ -5,7 +5,7 @@ project(FastApplets VERSION 1.0.0)
 # Applets for building
 option(BUILD_POWERAPPLET "Include PowerApplet in the building process" ON)
 option(BUILD_ACTIONAPPLET "Include ActionApplet in the building process" ON)
-option(BUILD_VOLUMEAPPLET "Include VolumeApplet in the building process" ON)
+option(BUILD_PLAYERAPPLET "Include PlayerApplet in the building process" ON)
 
 set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -59,8 +59,8 @@ if(BUILD_ACTIONAPPLET)
         add_subdirectory(ActionApplet)
 endif()
 
-if(BUILD_VOLUMEAPPLET)
-        add_subdirectory(VolumeApplet)
+if(BUILD_PLAYERAPPLET)
+        add_subdirectory(PlayerApplet)
 endif()
 
 if(BUILD_TESTS)
@@ -116,10 +116,10 @@ if(BUILD_ACTIONAPPLET)
                 INCLUDES DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
 endif()
 
-if(BUILD_VOLUMEAPPLET)
+if(BUILD_PLAYERAPPLET)
         install(
-                TARGETS VolumeApplet
-                        VolumeApplet_Types
+                TARGETS PlayerApplet
+                        PlayerApplet_Types
                 EXPORT FastApplets_export
                 ARCHIVE  DESTINATION ${CMAKE_INSTALL_LIBDIR}
                 LIBRARY  DESTINATION ${CMAKE_INSTALL_LIBDIR}

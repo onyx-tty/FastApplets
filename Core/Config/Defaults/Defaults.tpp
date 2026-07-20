@@ -55,7 +55,7 @@ config::schema::Config config::makeDefaultConfig() {
                 using enum power_button_type;
 
                 params = {param(shutdown), param(reboot), param(suspend), param(hibernate)};
-        } else if constexpr (TApplet == applet::type::volume) {
+        } else if constexpr (TApplet == applet::type::player) {
                 using enum volume_button_type;
 
                 params = {param(play_pause), param(next),        param(previous),
