@@ -22,6 +22,23 @@ power_button_type toPrimaryButtonType<power_button_type>(QStringView string) {
         return *iter;
 }
 
+template<>
+volume_button_type toPrimaryButtonType<volume_button_type>(QStringView string) {
+        static const QHash<QStringView, volume_button_type> map =
+                {{u"play_pause", volume_button_type::play_pause},
+                 {u"next", volume_button_type::next},
+                 {u"previous", volume_button_type::previous},
+                 {u"volume_up", volume_button_type::volume_up},
+                 {u"volume_down", volume_button_type::volume_down},
+                 {u"volume_mute_output", volume_button_type::volume_mute_output},
+                 {u"volume_mute_input", volume_button_type::volume_mute_input}};
+
+        const auto iter = map.find(string);
+        if (iter == map.cend()) { return volume_button_type::none; }
+
+        return *iter;
+}
+
 // Returns monostate for any other type.
 // T and QStringView are unused, they are only there to match
 // the number of params defined in the template.

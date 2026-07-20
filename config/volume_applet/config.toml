@@ -1,0 +1,97 @@
+## Settings applied to VolumeApplet.
+##
+## Applet-specific settings and optional overrides for global defaults.
+## Any commented-out setting below inherits its value from "FastApplets/config.toml".
+##
+## Applet-specific:
+## - layout
+
+
+## Properties of the main window.
+[window]
+
+## Window title.
+##
+## Default: "VolumeApplet"
+title = "VolumeApplet"
+
+## Window size in pixels.
+## Uncomment to override global.
+#size = [960, 220]
+
+## Visual properties of primary buttons.
+## Uncomment any to override global.
+#[primary_button]
+
+## Behavior for primary button keyboard controls.
+## Used to decide whether button click is performed with double key press.
+## Created to avoid accidental button presses by requiring double press.
+##
+## 'true':  Press the key corresponding to a button once to mark it as "staged",
+##          then press the key again to click the button.
+##          Quit key cancels selection by terminating "staging", when any button
+##          is staged. Pressing a key corresponding to another button stages that
+##          button instead, and unstages the previous one.
+##
+## 'false': Click a button with a single key press.
+##
+## Default: true
+#double_key_press = true
+
+#text_alignment = "top"
+#icon_alignment = "center"
+#icon_size = [64, 64]
+#policy = "expanding"
+
+## Primary buttons displayed in the applet.
+##
+## Each [[layout.primary_buttons]] entry defines one button.
+## Comment out the button if you want to disable it.
+##
+## Fields:
+## id      - internal identifier, determines the icon and keys used.
+##           Supported values: "play_pause", "next", "previous",
+##                             "volume_up", "volume_down",
+##                             "volume_mute_output", "volume_mute_input"
+## text    - label shown on the button, any string is valid
+## command - shell command run on button press; executed as-is
+##
+## Warning: commands are executed as-is with no sandboxing or confirmation prompt.
+##          Avoid destructive or irreversible commands (e.g. "rm -rf /") unless
+##          you are sure what you are doing. Commands requiring elevated access need
+##          permissions via sudoers (for sudo) or similar.
+
+[[layout.primary_buttons]]
+id = "play_pause"
+text = "Play/Pause"
+command = "playerctl play-pause"
+
+[[layout.primary_buttons]]
+id = "next"
+text = "Next"
+command = "playerctl next"
+
+[[layout.primary_buttons]]
+id = "previous"
+text = "Previous"
+command = "playerctl previous"
+
+[[layout.primary_buttons]]
+id = "volume_up"
+text = "Volume Up"
+command = "playerctl volume 0.1+"
+
+[[layout.primary_buttons]]
+id = "volume_down"
+text = "Volume Down"
+command = "playerctl volume 0.1-"
+
+[[layout.primary_buttons]]
+id = "volume_mute_output"
+text = "Mute Output"
+command = "noctalia msg volume-mute"
+
+#[[layout.primary_buttons]]
+#id = "volume_mute_input"
+#text = "Mute Input"
+#command = ""

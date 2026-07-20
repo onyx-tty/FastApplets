@@ -27,7 +27,7 @@
 #+BEGIN_EXPORT markdown
 <br>
 #+END_EXPORT
-* TODO VolumeApplet [0/0]
+* PROJ VolumeApplet [0/0]
 #+BEGIN_EXPORT markdown
 <br>
 #+END_EXPORT

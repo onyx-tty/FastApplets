@@ -31,7 +31,7 @@
 
     <br>
 
-# <span class="todo TODO">TODO</span> VolumeApplet \[0/0\]
+# PROJ VolumeApplet \[0/0\]
 
 <br>
 

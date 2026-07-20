@@ -11,6 +11,18 @@ class QStringView;
 // 'none' represents empty state, e.g. no button selected, if used for that purpose
 enum class power_button_type { none, shutdown, reboot, suspend, hibernate };
 
+// 'none' represents empty state, e.g. no button selected, if used for that purpose
+enum class volume_button_type {
+        none,
+        play_pause,
+        next,
+        previous,
+        volume_up,
+        volume_down,
+        volume_mute_output,
+        volume_mute_input
+};
+
 template<typename TPrimaryButtonType>
 TPrimaryButtonType toPrimaryButtonType(QStringView string);
 
@@ -23,7 +35,7 @@ TPrimaryButtonType toPrimaryButtonType(QStringView string);
 // This is essentially an alternative to making button type-dependent classes generic,
 // as Q_OBJECT doesn't support templated classes. It also avoids an unnecessary
 // inheritance hierarchy.
-using button_type = std::variant<std::monostate, power_button_type>;
+using button_type = std::variant<std::monostate, power_button_type, volume_button_type>;
 
 // Returns true if std::get on button_type is ::none, otherwise false.
 // Returns false if enum value in the button_type is not ::none, or if there's no way to obtain

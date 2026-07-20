@@ -55,6 +55,57 @@ QString commandFor<power_button_type>(power_button_type type) {
         }
 }
 
+/* VolumeApplet */
+
+template<>
+QIcon iconFor<volume_button_type>(volume_button_type type) {
+        using enum volume_button_type;
+
+        Q_INIT_RESOURCE(Icons);
+
+        switch (type) {
+        case play_pause:         return {};
+        case next:               return {};
+        case previous:           return {};
+        case volume_up:          return {};
+        case volume_down:        return {};
+        case volume_mute_output: return {};
+        case volume_mute_input:  return {};
+        default:                 return {};
+        }
+}
+
+template<>
+QString textFor<volume_button_type>(volume_button_type type) {
+        using enum volume_button_type;
+
+        switch (type) {
+        case play_pause:         return "Play/Pause";
+        case next:               return "Next";
+        case previous:           return "Previous";
+        case volume_up:          return "Volume Up";
+        case volume_down:        return "Volume Down";
+        case volume_mute_output: return "Mute Output";
+        case volume_mute_input:  return "Mute Input";
+        default:                 return {};
+        }
+}
+
+template<>
+QString commandFor<volume_button_type>(volume_button_type type) {
+        using enum volume_button_type;
+
+        switch (type) {
+        case play_pause:         return "playerctl play-pause";
+        case next:               return "playerctl next";
+        case previous:           return "playerctl previous";
+        case volume_up:          return "playerctl volume 0.1+";
+        case volume_down:        return "playerctl volume 0.1-";
+        case volume_mute_output: return "noctalia msg volume-mute";
+        default:                 return {};
+        }
+}
+
 /* ActionApplet */
 
 template<>

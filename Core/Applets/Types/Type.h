@@ -10,7 +10,7 @@
 
 namespace applet {
 
-enum class type { global, power, action };
+enum class type { global, power, action, volume };
 
 // Serializes string for applet::type.
 constexpr QStringView toString(type applet_type) {
@@ -18,6 +18,7 @@ constexpr QStringView toString(type applet_type) {
         case type::global: return u"global";
         case type::power:  return u"power_applet";
         case type::action: return u"action_applet";
+        case type::volume: return u"volume_applet";
         default:           qFatal("Passed unknown type");
         }
 }
@@ -30,6 +31,7 @@ constexpr QLatin1StringView toLatin1String(type applet_type) {
         case type::global: return "global"_L1;
         case type::power:  return "power_applet"_L1;
         case type::action: return "action_applet"_L1;
+        case type::volume: return "volume_applet"_L1;
         default:           qFatal("Passed unknown type");
         }
 }
@@ -40,6 +42,7 @@ constexpr QStringView toTitle(type applet_type) {
         case type::global: return u"FastApplets";
         case type::power:  return u"PowerApplet";
         case type::action: return u"ActionApplet";
+        case type::volume: return u"VolumeApplet";
         default:           qFatal("Passed unknown type");
         }
 }

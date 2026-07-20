@@ -55,6 +55,11 @@ config::schema::Config config::makeDefaultConfig() {
                 using enum power_button_type;
 
                 params = {param(shutdown), param(reboot), param(suspend), param(hibernate)};
+        } else if constexpr (TApplet == applet::type::volume) {
+                using enum volume_button_type;
+
+                params = {param(play_pause), param(next),        param(previous),
+                          param(volume_up),  param(volume_down), param(volume_mute_output)};
         }
 
         layout = Layout(std::move(params));
