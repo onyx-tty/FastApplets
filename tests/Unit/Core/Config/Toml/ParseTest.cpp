@@ -23,8 +23,8 @@ class ParseTest final : public QObject {
                 [table]
                 name = "FastApplets"
                 year = 2026
-                status = true
-                applets = ["PowerApplet"]
+                wip = true
+                applets = ["PowerApplet", "ActionApplet"]
                 half = 0.5
                 )";
         static constexpr const char*       contents_invalid = R"(
