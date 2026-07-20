@@ -3,7 +3,7 @@
 
 #pragma once
 
-class QString;
+#include <QString>
 
 // Runs a string shell command without output capture.
 // It immediately returns and warns if passed command is empty, to avoid errors.

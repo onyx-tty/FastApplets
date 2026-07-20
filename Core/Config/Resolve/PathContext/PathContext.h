@@ -8,8 +8,7 @@
 #include <cstddef>
 #include <string_view>
 #include <QString>
-
-class QStringView;
+#include <QStringView>
 
 namespace config::resolve {
 

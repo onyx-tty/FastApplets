@@ -15,9 +15,6 @@ class Candidates;
 class PathContext;
 } // namespace config::resolve
 
-class QSizePolicy;
-class QSize;
-
 // Extracts typed values from TOML nodes with fallback chains and error handling.
 //
 // All methods accept multiple config::resolve::Candidates (priority ordered). The first candidate that

@@ -3,11 +3,11 @@
 
 #pragma once
 
+#include "Core/Config/Types/Filepaths.h"
+
 #include <QLatin1StringView>
 
 namespace config {
-
-class Filepaths;
 
 // Locates config.toml and keys.toml for the given applet.
 //
