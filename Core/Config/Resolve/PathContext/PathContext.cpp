@@ -18,18 +18,18 @@ PathContext::PathContext(QStringView filename, QStringView path_context, char se
 
 QString PathContext::makePath(applet::type applet) const {
         return QString("in %1, %2%3%4")
-                .arg(QString{filename}, applet::toString(applet))
+                .arg(QString(filename), applet::toString(applet))
                 .arg(separator)
                 .arg(path_context);
 }
 
 PathContext PathContext::makeExtended(std::string_view segment) const {
-        return PathContext{filename,
+        return PathContext(filename,
                            QString("%1%2%3")
                                    .arg(path_context)
                                    .arg(separator)
-                                   .arg(QString::fromStdString(std::string{segment})),
-                           separator};
+                                   .arg(QString::fromStdString(std::string(segment))),
+                           separator);
 }
 
 PathContext PathContext::makeExtended(size_t index) const {

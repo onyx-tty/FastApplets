@@ -41,7 +41,7 @@ T config::ConfigMapper::mapProperties(const Candidates& candidates, const T& def
 
         if (resolved.empty()) { return defaults; }
 
-        auto props = T{};
+        auto props = T();
         fill_fn(props, path_context);
         return std::move(props);
 }
@@ -136,7 +136,7 @@ config::schema::Config config::ConfigMapper::config(const toml::table& applet,
 
         constexpr QStringView filename = u"config.toml";
 
-        Config config = Config{};
+        auto config = Config();
 
         Candidates cands = {{.node = node_view(applet), .applet = TApplet, .quiet = true},
                             {.node = node_view(global), .applet = applet::type::global}};
@@ -146,18 +146,18 @@ config::schema::Config config::ConfigMapper::config(const toml::table& applet,
         config.window_properties = window(cands.makeCopy().withExtension("window").withQuiet(false,
                                                                                              0),
                                           defaults.getWindowProperties(),
-                                          PathContext{filename, u"window"});
+                                          PathContext(filename, u"window"));
 
         /* Primary Button Properties */
         config.primary_button_properties = primaryButton(cands.makeCopy().withExtension(
                                                                  "primary_button"),
                                                          defaults.getPrimaryButtonProperties(),
-                                                         PathContext{filename, u"primary_button"});
+                                                         PathContext(filename, u"primary_button"));
 
         /* Layout Properties */
         config.layout_properties =
                 layout<TApplet>({cands.get()[0].makeCopy().withExtension("layout").withQuiet(false)},
-                                defaults.getLayoutProperties(), PathContext{filename, u"layout"});
+                                defaults.getLayoutProperties(), PathContext(filename, u"layout"));
 
         return std::move(config);
 }

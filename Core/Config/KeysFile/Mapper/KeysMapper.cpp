@@ -25,7 +25,7 @@ keybindings keysFromText(const std::vector<std::string>& texts) {
         keys.reserve(texts.size());
 
         for (const std::string& text : texts) {
-                keys.insert(QKeySequence{QString::fromStdString(text)}[0].key());
+                keys.insert(QKeySequence(QString::fromStdString(text))[0].key());
         }
 
         return keys;

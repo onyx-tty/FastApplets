@@ -21,10 +21,10 @@ QIcon iconFor<power_button_type>(power_button_type type) {
         Q_INIT_RESOURCE(Icons);
 
         switch (type) {
-        case shutdown:  return QIcon{":/Icons/Power/shutdown.svg"};
-        case reboot:    return QIcon{":/Icons/Power/reboot.svg"};
-        case suspend:   return QIcon{":/Icons/Power/suspend.svg"};
-        case hibernate: return QIcon{":/Icons/Power/hibernate.svg"};
+        case shutdown:  return QIcon(":/Icons/Power/shutdown.svg");
+        case reboot:    return QIcon(":/Icons/Power/reboot.svg");
+        case suspend:   return QIcon(":/Icons/Power/suspend.svg");
+        case hibernate: return QIcon(":/Icons/Power/hibernate.svg");
         default:        return {};
         }
 }
@@ -64,13 +64,13 @@ QIcon iconFor<volume_button_type>(volume_button_type type) {
         Q_INIT_RESOURCE(Icons);
 
         switch (type) {
-        case play_pause:         return QIcon{":/Icons/Player/play.svg"};
-        case next:               return QIcon{":/Icons/Player/next.svg"};
-        case previous:           return QIcon{":/Icons/Player/back.svg"};
-        case volume_up:          return QIcon{":/Icons/Player/volume3.svg"};
-        case volume_down:        return QIcon{":/Icons/Player/volume1.svg"};
-        case volume_mute_output: return QIcon{":/Icons/Player/mute.svg"};
-        case volume_mute_input:  return QIcon{":/Icons/Player/microphone.svg"};
+        case play_pause:         return QIcon(":/Icons/Player/play.svg");
+        case next:               return QIcon(":/Icons/Player/next.svg");
+        case previous:           return QIcon(":/Icons/Player/back.svg");
+        case volume_up:          return QIcon(":/Icons/Player/volume3.svg");
+        case volume_down:        return QIcon(":/Icons/Player/volume1.svg");
+        case volume_mute_output: return QIcon(":/Icons/Player/mute.svg");
+        case volume_mute_input:  return QIcon(":/Icons/Player/microphone.svg");
         default:                 return {};
         }
 }
@@ -87,7 +87,7 @@ QString textFor<volume_button_type>(volume_button_type type) {
         case volume_down:        return "Volume Down";
         case volume_mute_output: return "Mute Output";
         case volume_mute_input:  return "Mute Input";
-        default:                 return {};
+        default:                 return "";
         }
 }
 
@@ -102,7 +102,7 @@ QString commandFor<volume_button_type>(volume_button_type type) {
         case volume_up:          return "playerctl volume 0.1+";
         case volume_down:        return "playerctl volume 0.1-";
         case volume_mute_output: return "noctalia msg volume-mute";
-        default:                 return {};
+        default:                 return "";
         }
 }
 

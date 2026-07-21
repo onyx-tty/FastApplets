@@ -26,18 +26,18 @@ config::schema::Keys config::KeysMapper::keys(const toml::table& applet, const t
 
         constexpr QStringView filename = u"keys.toml";
 
-        Keys             keys  = Keys{};
+        auto             keys  = Keys();
         const Candidates cands = {{.node = node_view(applet), .applet = TApplet, .quiet = true},
                                   {.node = node_view(global), .applet = applet::type::global}};
 
         /* Quit Keys */
         keys.quit = quit(cands.makeCopy().withExtension("quit"), defaults.getQuit(),
-                         PathContext{filename, u"quit"});
+                         PathContext(filename, u"quit"));
 
         /* Primary Button Keys */
         keys.primary_buttons = primaryButtons(
                 {cands.get()[0].makeCopy().withExtension("primary_buttons").withQuiet(false)},
-                defaults.getPrimaryButtons(), PathContext{filename, u"primary_buttons"});
+                defaults.getPrimaryButtons(), PathContext(filename, u"primary_buttons"));
 
         return std::move(keys);
 }
