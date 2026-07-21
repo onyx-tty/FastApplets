@@ -13,5 +13,6 @@
         <file>Icons/Player/volume1.svg</file>
         <file>Icons/Player/volume2.svg</file>
         <file>Icons/Player/volume3.svg</file>
+        <file>Icons/missing.svg</file>
     </qresource>
 </RCC>

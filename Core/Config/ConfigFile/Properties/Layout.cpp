@@ -25,7 +25,7 @@ QIcon iconFor<power_button_type>(power_button_type type) {
         case reboot:    return QIcon(":/Icons/Power/reboot.svg");
         case suspend:   return QIcon(":/Icons/Power/suspend.svg");
         case hibernate: return QIcon(":/Icons/Power/hibernate.svg");
-        default:        return {};
+        default:        return QIcon(":/Icons/missing.svg");
         }
 }
 
@@ -71,7 +71,7 @@ QIcon iconFor<volume_button_type>(volume_button_type type) {
         case volume_down:        return QIcon(":/Icons/Player/volume1.svg");
         case volume_mute_output: return QIcon(":/Icons/Player/mute.svg");
         case volume_mute_input:  return QIcon(":/Icons/Player/microphone.svg");
-        default:                 return {};
+        default:                 return QIcon(":/Icons/missing.svg");
         }
 }
 
@@ -110,7 +110,9 @@ QString commandFor<volume_button_type>(volume_button_type type) {
 
 template<>
 QIcon iconFor<std::monostate>(std::monostate type) {
-        return {};
+        Q_INIT_RESOURCE(Icons);
+
+        return QIcon(":/Icons/missing.svg");
 }
 
 template<>
