@@ -4,5 +4,14 @@
         <file>Icons/Power/reboot.svg</file>
         <file>Icons/Power/shutdown.svg</file>
         <file>Icons/Power/suspend.svg</file>
+        <file>Icons/Player/back.svg</file>
+        <file>Icons/Player/microphone.svg</file>
+        <file>Icons/Player/mute.svg</file>
+        <file>Icons/Player/next.svg</file>
+        <file>Icons/Player/pause.svg</file>
+        <file>Icons/Player/play.svg</file>
+        <file>Icons/Player/volume1.svg</file>
+        <file>Icons/Player/volume2.svg</file>
+        <file>Icons/Player/volume3.svg</file>
     </qresource>
 </RCC>

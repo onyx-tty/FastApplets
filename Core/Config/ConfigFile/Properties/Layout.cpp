@@ -64,13 +64,13 @@ QIcon iconFor<volume_button_type>(volume_button_type type) {
         Q_INIT_RESOURCE(Icons);
 
         switch (type) {
-        case play_pause:         return {};
-        case next:               return {};
-        case previous:           return {};
-        case volume_up:          return {};
-        case volume_down:        return {};
-        case volume_mute_output: return {};
-        case volume_mute_input:  return {};
+        case play_pause:         return QIcon{":/Icons/Player/play.svg"};
+        case next:               return QIcon{":/Icons/Player/next.svg"};
+        case previous:           return QIcon{":/Icons/Player/back.svg"};
+        case volume_up:          return QIcon{":/Icons/Player/volume3.svg"};
+        case volume_down:        return QIcon{":/Icons/Player/volume1.svg"};
+        case volume_mute_output: return QIcon{":/Icons/Player/mute.svg"};
+        case volume_mute_input:  return QIcon{":/Icons/Player/microphone.svg"};
         default:                 return {};
         }
 }
