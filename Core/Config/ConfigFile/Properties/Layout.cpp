@@ -101,7 +101,6 @@ QString commandFor<volume_button_type>(volume_button_type type) {
         case previous:           return "playerctl previous";
         case volume_up:          return "playerctl volume 0.1+";
         case volume_down:        return "playerctl volume 0.1-";
-        case volume_mute_output: return "noctalia msg volume-mute";
         default:                 return "";
         }
 }
