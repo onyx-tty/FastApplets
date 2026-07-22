@@ -2,28 +2,21 @@ project(PowerApplet VERSION 0.36.7 LANGUAGES CXX)
 
 add_subdirectory(Types)
 
-# Executables
-qt_add_executable(PowerApplet
+add_applet_qt_executable(PowerApplet
         MANUAL_FINALIZATION
-        main.cpp)
 
-# Target linking and configuration
-target_include_directories(PowerApplet PRIVATE
-        $<BUILD_INTERFACE:${ROOT_DIR}>
-        $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>)
+        SOURCES main.cpp
 
-target_link_libraries(PowerApplet PRIVATE
-        PowerApplet::Types
-        Core::UI
-        Core::Args
-        Core::Config::AppletConfig
-        Core::Config::Locate
-        Core::Config::Types
-        Core::Applets::Types)
+        PRIVATE_DEPS PowerApplet::Types
+                     Core::UI
+                     Core::Args
+                     Core::Config::AppletConfig
+                     Core::Config::Locate
+                     Core::Config::Types
+                     Core::Applets::Types
 
-target_link_libraries(PowerApplet PUBLIC
-        CppUtils::Log::Qt
-        Qt${QT_VERSION_MAJOR}::Widgets)
+        PUBLIC_DEPS CppUtils::Log::Qt
+                    Qt${QT_VERSION_MAJOR}::Widgets)
 
 if(ENABLE_UBSAN)
         target_compile_options(PowerApplet PRIVATE -fno-omit-frame-pointer -g -fsanitize=undefined)
