@@ -1,2 +1,1 @@
-add_subdirectory(Locate)
-add_subdirectory(Toml)
+add_subdirectories(Locate Toml)

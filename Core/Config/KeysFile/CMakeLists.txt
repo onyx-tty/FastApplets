@@ -1,6 +1,4 @@
-add_subdirectory(Keys)
-add_subdirectory(Mapper)
-add_subdirectory(Types)
+add_subdirectories(Keys Mapper Types)
 
 add_applet_library(Core_Config_KeysFile
         TYPE INTERFACE

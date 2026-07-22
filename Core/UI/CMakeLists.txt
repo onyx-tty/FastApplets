@@ -1,5 +1,4 @@
-add_subdirectory(Widgets)
-add_subdirectory(Types)
+add_subdirectories(Widgets Types)
 
 add_applet_library(Core_UI
         SOURCES CentralWidget.cpp

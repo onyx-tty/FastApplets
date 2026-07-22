@@ -1,5 +1,4 @@
-add_subdirectory(PathContext)
-add_subdirectory(Types)
+add_subdirectories(PathContext Types)
 
 add_applet_library(Core_Config_Resolve
         TYPE INTERFACE

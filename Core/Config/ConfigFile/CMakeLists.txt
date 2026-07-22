@@ -1,6 +1,4 @@
-add_subdirectory(Config)
-add_subdirectory(Mapper)
-add_subdirectory(Properties)
+add_subdirectories(Config Mapper Properties)
 
 add_applet_library(Core_Config_ConfigFile
         TYPE INTERFACE

@@ -1,11 +1,3 @@
 project(Core VERSION 0.32.1 LANGUAGES CXX)
 
-add_subdirectory(Config)
-
-add_subdirectory(Shell)
-
-add_subdirectory(UI)
-
-add_subdirectory(Applets/Types)
-
-add_subdirectory(Args)
+add_subdirectories(Config Shell UI Applets/Types Args)

@@ -17,6 +17,7 @@ include(GNUInstallDirs)
 include(CMakePackageConfigHelpers)
 
 include(cmake/AddTarget.cmake)
+include(cmake/Subdirectory.cmake)
 
 # Install and use CPM to resolve conflicting and duplicated CppUtils which has
 # been included in TomlQt as well
@@ -50,8 +51,7 @@ CPMAddPackage("gh:onyx-tty/TomlQt#2cb232a")
 
 set(ROOT_DIR ${CMAKE_CURRENT_LIST_DIR})
 
-add_subdirectory(resources)
-add_subdirectory(Core)
+add_subdirectories(resources Core)
 
 if(BUILD_POWERAPPLET)
         add_subdirectory(PowerApplet)

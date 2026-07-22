@@ -4,14 +4,7 @@ set(CMAKE_AUTORCC ON)
 # Requirements
 find_package(tomlplusplus REQUIRED)
 
-add_subdirectory(AppletConfig)
-add_subdirectory(ConfigFile)
-add_subdirectory(KeysFile)
-add_subdirectory(Defaults)
-add_subdirectory(Locate)
-add_subdirectory(Resolve)
-add_subdirectory(Toml)
-add_subdirectory(Types)
+add_subdirectories(AppletConfig ConfigFile KeysFile Defaults Locate Resolve Toml Types)
 
 add_applet_library(Core_Config INTERFACE
         TYPE INTERFACE
