@@ -16,7 +16,7 @@ set(QT_VERSION_MAJOR 6)
 include(GNUInstallDirs)
 include(CMakePackageConfigHelpers)
 
-include(cmake/AddAppletLibrary.cmake)
+include(cmake/AddTarget.cmake)
 
 # Install and use CPM to resolve conflicting and duplicated CppUtils which has
 # been included in TomlQt as well
