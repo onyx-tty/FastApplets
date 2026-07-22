@@ -9,7 +9,7 @@ function(add_applet_library NAME)
                                   "${SINGLE_VALUE_ARGS}" "${MULTI_VALUE_ARGS}"
                                   ${ARGN})
 
-        if (NOT ROOT_DIR)
+        if(NOT ROOT_DIR)
                 message(FATAL_ERROR "ROOT_DIR has not been defined")
         endif()
 
@@ -19,20 +19,20 @@ function(add_applet_library NAME)
         add_library(${NAME} ${ARG_TYPE} ${ARG_SOURCES})
         add_library(${ALIAS_NAME} ALIAS ${NAME})
 
-        if (ARG_TYPE STREQUAL "INTERFACE")
+        if(ARG_TYPE STREQUAL "INTERFACE")
                 target_include_directories(${NAME} INTERFACE
                         $<BUILD_INTERFACE:${ROOT_DIR}>
                         $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>)
 
-                if (ARG_INTERFACE_DEPS)
+                if(ARG_INTERFACE_DEPS)
                         target_link_libraries(${NAME} INTERFACE ${ARG_INTERFACE_DEPS})
                 endif()
 
-                if (ARG_PRIVATE_DEPS)
+                if(ARG_PRIVATE_DEPS)
                         message(FATAL_ERROR "PRIVATE deps are not allowed in INTERFACE libraries")
                 endif()
 
-                if (ARG_PUBLIC_DEPS)
+                if(ARG_PUBLIC_DEPS)
                         message(FATAL_ERROR "PUBLIC deps are not allowed in INTERFACE libraries")
                 endif()
 
@@ -43,15 +43,15 @@ function(add_applet_library NAME)
                 $<BUILD_INTERFACE:${ROOT_DIR}>
                 $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>)
 
-        if (ARG_INTERFACE_DEPS)
+        if(ARG_INTERFACE_DEPS)
                 message(FATAL_ERROR "INTERFACE deps are not allowed in non-INTERFACE libraries")
         endif()
 
-        if (ARG_PRIVATE_DEPS)
+        if(ARG_PRIVATE_DEPS)
                 target_link_libraries(${NAME} PRIVATE ${ARG_PRIVATE_DEPS})
         endif()
 
-        if (ARG_PUBLIC_DEPS)
+        if(ARG_PUBLIC_DEPS)
                 target_link_libraries(${NAME} PUBLIC ${ARG_PUBLIC_DEPS})
         endif()
 endfunction()
