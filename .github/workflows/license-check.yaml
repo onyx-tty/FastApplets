@@ -33,6 +33,5 @@ jobs:
             -ignore "**/*.qrc" \
             -ignore "**/*.toml" \
             -ignore "**/*.yaml" \
-            -ignore "**/*.yml" \
             -ignore "Dockerfile" \
             .
