@@ -29,5 +29,4 @@ install(TARGETS PowerApplet
         LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
         RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})
 
-# Finalization
 qt_finalize_executable(PowerApplet)
