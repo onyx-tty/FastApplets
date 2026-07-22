@@ -1,0 +1,38 @@
+name: License Check
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  check-licenses:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: 'stable'
+
+      - name: Install addlicense
+        run: go install github.com/google/addlicense@latest
+
+      - name: Run addlicense for C++ files
+        run: |
+          addlicense -v -check -f LICENSE_TEMPLATE.txt \
+            -ignore ".**" \
+            -ignore "build/**" \
+            -ignore "cmake/**" \
+            -ignore "config/**" \
+            -ignore "resources/**" \
+            -ignore "**/*.cmake*" \
+            -ignore "**/*.txt" \
+            -ignore "**/*.qrc" \
+            -ignore "**/*.toml" \
+            -ignore "**/*.yaml" \
+            -ignore "**/*.yml" \
+            -ignore "Dockerfile" \
+            .
