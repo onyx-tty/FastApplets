@@ -1,5 +1,9 @@
 include(CMakeParseArguments)
 
+# TODO: Document these functions
+# TODO: Add option for target_include_directories() scope
+# TODO: Add option for BUILD_INTERFACE dir, right now ROOT_DIR is hardcoded
+
 function(add_applet_library NAME)
         set(OPTIONS)
         set(SINGLE_VALUE_ARGS TYPE)
@@ -84,6 +88,7 @@ function(add_applet_executable NAME)
         endif()
 endfunction()
 
+# TODO: Qt must be found for this to work
 function(add_applet_qt_executable NAME)
         set(OPTIONS MANUAL_FINALIZATION)
         set(SINGLE_VALUE_ARGS)
