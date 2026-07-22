@@ -2,15 +2,17 @@
 
 A collection of lightweight applets for system management, written in Qt6/C++
 
-Currently only PowerApplet and ActionApplet - more coming soon!
-
 ## Description
 
-The applets are designed with focus on keyboard-first controls, but have full mouse support. To prevent accidental destructive actions, like shutdown or reboot, controlling buttons with keyboard requires pressing a button twice. Mouse presses don't have the same limitation.
+The applets are designed with focus on keyboard-first controls, but have full mouse support. To prevent accidental destructive actions, like shutdown or reboot, controlling buttons with keyboard requires pressing a button twice. Mouse presses don't have the same limitation. Each applet supports customizable shell command passing.
 
 ### PowerApplet
 
-Provides shutdown, reboot, suspend, and hibernate controls with customizable shell command passing.
+Provides shutdown, reboot, suspend, and hibernate controls.
+
+### PlayerApplet
+
+Supports play/pause, next, previous, volume up, volume down, mute output, and mute input controls.
 
 ### ActionApplet
 
