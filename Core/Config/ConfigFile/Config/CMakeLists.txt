@@ -1,11 +1,5 @@
-add_library(Core_Config_ConfigFile_Config
-        Config.cpp)
-add_library(Core::Config::ConfigFile::Config ALIAS Core_Config_ConfigFile_Config)
+add_applet_library(Core_Config_ConfigFile_Config
+        SOURCES Config.cpp
 
-target_include_directories(Core_Config_ConfigFile_Config PRIVATE
-        $<BUILD_INTERFACE:${ROOT_DIR}>
-        $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>)
-
-target_link_libraries(Core_Config_ConfigFile_Config PUBLIC
-        Core::Config::ConfigFile::Properties
-        Core::Applets::Types)
+        PUBLIC_DEPS Core::Config::ConfigFile::Properties
+                    Core::Applets::Types)

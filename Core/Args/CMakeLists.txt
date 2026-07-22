@@ -1,14 +1,7 @@
-add_library(Core_Args
-        Args.cpp)
-add_library(Core::Args ALIAS Core_Args)
+add_applet_library(Core_Args
+        SOURCES Args.cpp
 
-target_include_directories(Core_Args PRIVATE
-        $<BUILD_INTERFACE:${ROOT_DIR}>
-        $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>)
+        PRIVATE_DEPS Qt${QT_VERSION_MAJOR}::Widgets
 
-target_link_libraries(Core_Args PRIVATE
-        Qt${QT_VERSION_MAJOR}::Widgets)
-
-target_link_libraries(Core_Args PUBLIC
-        Core::Applets::Types
-        Core::Config::Types) # Only needed for injectArgs
+        PUBLIC_DEPS Core::Applets::Types
+                    Core::Config::Types) # Only needed for injectArgs

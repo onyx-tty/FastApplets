@@ -1,10 +1,4 @@
-add_library(Core_UI_Types
-        ButtonType.cpp)
-add_library(Core::UI::Types ALIAS Core_UI_Types)
+add_applet_library(Core_UI_Types
+        SOURCES ButtonType.cpp
 
-target_include_directories(Core_UI_Types PRIVATE
-        $<BUILD_INTERFACE:${ROOT_DIR}>
-        $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>)
-
-target_link_libraries(Core_UI_Types PRIVATE
-        Qt${QT_VERSION_MAJOR}::Core)
+        PRIVATE_DEPS Qt${QT_VERSION_MAJOR}::Core)

@@ -1,11 +1,6 @@
-add_library(PowerApplet_Types INTERFACE)
-add_library(PowerApplet::Types ALIAS PowerApplet_Types)
+add_applet_library(PowerApplet_Types
+        TYPE INTERFACE
 
-target_include_directories(PowerApplet_Types INTERFACE
-        $<BUILD_INTERFACE:${ROOT_DIR}>
-        $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>)
-
-target_link_libraries(PowerApplet_Types INTERFACE
-        Core::UI::Types # button_type
-        Core::Applets::Types # type & Traits
-        Qt${QT_VERSION_MAJOR}::Core)
+        INTERFACE_DEPS Core::UI::Types # button_type
+                       Core::Applets::Types # type & Traits
+                       Qt${QT_VERSION_MAJOR}::Core)

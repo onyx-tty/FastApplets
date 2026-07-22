@@ -1,10 +1,4 @@
-add_library(Core_Shell
-        Shell.cpp)
-add_library(Core::Shell ALIAS Core_Shell)
+add_applet_library(Core_Shell
+        SOURCES Shell.cpp
 
-target_include_directories(Core_Shell PRIVATE
-        $<BUILD_INTERFACE:${ROOT_DIR}>
-        $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>)
-
-target_link_libraries(Core_Shell PUBLIC
-        Qt${QT_VERSION_MAJOR}::Core)
+        PUBLIC_DEPS Qt${QT_VERSION_MAJOR}::Core)

@@ -1,24 +1,16 @@
 add_subdirectory(Widgets)
 add_subdirectory(Types)
 
-# Internal structure
-add_library(Core_UI
-        CentralWidget.cpp
-        MainWindow.cpp)
-add_library(Core::UI ALIAS Core_UI)
+add_applet_library(Core_UI
+        SOURCES CentralWidget.cpp
+                MainWindow.cpp
 
-target_include_directories(Core_UI PRIVATE
-        $<BUILD_INTERFACE:${ROOT_DIR}>
-        $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>)
+        PRIVATE_DEPS Core::Config::ConfigFile::Config
+                     Core::Config::KeysFile::Keys
 
-target_link_libraries(Core_UI PRIVATE
-        Core::Config::ConfigFile::Config
-        Core::Config::KeysFile::Keys)
-
-target_link_libraries(Core_UI PUBLIC
-        Core::UI::Widgets
-        Core::UI::Types
-        Core::Config::ConfigFile::Properties
-        Core::Config::KeysFile::Types
-        Core::Applets::Types
-        Qt${QT_VERSION_MAJOR}::Widgets)
+        PUBLIC_DEPS Core::UI::Widgets
+                    Core::UI::Types
+                    Core::Config::ConfigFile::Properties
+                    Core::Config::KeysFile::Types
+                    Core::Applets::Types
+                    Qt${QT_VERSION_MAJOR}::Widgets)

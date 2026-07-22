@@ -1,20 +1,14 @@
-add_library(Core_Config_ConfigFile_Mapper
-        ConfigMapper.cpp)
-add_library(Core::Config::ConfigFile::Mapper ALIAS Core_Config_ConfigFile_Mapper)
+add_applet_library(Core_Config_ConfigFile_Mapper
+        SOURCES ConfigMapper.cpp
 
-target_include_directories(Core_Config_ConfigFile_Mapper PRIVATE
-        $<BUILD_INTERFACE:${ROOT_DIR}>
-        $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>)
-
-target_link_libraries(Core_Config_ConfigFile_Mapper PUBLIC
-        Core::Config::ConfigFile::Config
-        Core::Config::ConfigFile::Properties
-        Core::Config::Resolve
-        Core::Config::Resolve::PathContext
-        Core::Config::Resolve::Types
-        Core::Config::Types
-        Core::UI::Widgets
-        Core::UI::Types
-        Core::Applets::Types
-        tomlplusplus::tomlplusplus
-        Qt${QT_VERSION_MAJOR}::Widgets)
+        PUBLIC_DEPS Core::Config::ConfigFile::Config
+                    Core::Config::ConfigFile::Properties
+                    Core::Config::Resolve
+                    Core::Config::Resolve::PathContext
+                    Core::Config::Resolve::Types
+                    Core::Config::Types
+                    Core::UI::Widgets
+                    Core::UI::Types
+                    Core::Applets::Types
+                    tomlplusplus::tomlplusplus
+                    Qt${QT_VERSION_MAJOR}::Widgets)

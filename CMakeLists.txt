@@ -16,6 +16,8 @@ set(QT_VERSION_MAJOR 6)
 include(GNUInstallDirs)
 include(CMakePackageConfigHelpers)
 
+include(cmake/AddAppletLibrary.cmake)
+
 # Install and use CPM to resolve conflicting and duplicated CppUtils which has
 # been included in TomlQt as well
 file(
@@ -42,11 +44,11 @@ option(BUILD_SHARED_LIBS "Build using shared libraries" OFF)
 option(BUILD_TESTS "Build unit tests" ON)
 set(CPPUTILS_ENABLE_QT ON)
 
-set(ROOT_DIR ${CMAKE_CURRENT_LIST_DIR})
-
 # Third-party
 CPMAddPackage("gh:onyx-tty/CppUtils#cef444b")
 CPMAddPackage("gh:onyx-tty/TomlQt#2cb232a")
+
+set(ROOT_DIR ${CMAKE_CURRENT_LIST_DIR})
 
 add_subdirectory(resources)
 add_subdirectory(Core)

@@ -1,16 +1,9 @@
-add_library(Core_UI_Widgets
-        PrimaryButton.cpp)
-add_library(Core::UI::Widgets ALIAS Core_UI_Widgets)
+add_applet_library(Core_UI_Widgets
+        SOURCES PrimaryButton.cpp
 
-target_include_directories(Core_UI_Widgets PRIVATE
-        $<BUILD_INTERFACE:${ROOT_DIR}>
-        $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>)
+        PRIVATE_DEPS Core::Config::ConfigFile::Properties
+                     Core::Config::KeysFile::Types
+                     Core::Shell
 
-target_link_libraries(Core_UI_Widgets PRIVATE
-        Core::Config::ConfigFile::Properties
-        Core::Config::KeysFile::Types
-        Core::Shell)
-
-target_link_libraries(Core_UI_Widgets PUBLIC
-        Core::UI::Types # PrimaryButtonParams
-        Qt${QT_VERSION_MAJOR}::Widgets)
+        PUBLIC_DEPS Core::UI::Types # PrimaryButtonParams
+                    Qt${QT_VERSION_MAJOR}::Widgets)
