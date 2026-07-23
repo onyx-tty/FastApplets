@@ -30,17 +30,18 @@ Tiling window manager users who want lightweight utilities that complement their
 * `qt6-svg`
 * `tomlplusplus`
 * `cmake`
+* `git`
 
 #### Arch Linux
 
 ``` sh
-sudo pacman -Sy qt6-base qt6-svg tomlplusplus cmake
+sudo pacman -Sy qt6-base qt6-svg tomlplusplus cmake git
 ```
 
 #### Ubuntu
 
 ``` sh
-sudo apt install qt6-base-dev libqt6svg6 libtomlplusplus-dev cmake
+sudo apt install qt6-base-dev libqt6svg6 libtomlplusplus-dev cmake git
 ```
 
 ### Build from source
