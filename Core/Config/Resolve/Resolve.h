@@ -38,7 +38,8 @@ class QString;
 // - fromTransformOrDefault() -> sets transformed attribute OR overwrites entire object
 namespace config::resolve {
 
-using result = tomlqt::ArrayBounds::validation_result;
+using ArrayBounds = tomlqt::ArrayBounds;
+using result      = ArrayBounds::validation_result;
 
 // Pure extraction with no side effects.
 //
@@ -61,8 +62,7 @@ requires(!std::is_same_v<std::decay_t<T>, QSize> && !std::is_same_v<std::decay_t
          && !std::is_same_v<std::decay_t<T>, QSizePolicy>
          && !std::is_same_v<std::decay_t<T>, QString>)
 [[nodiscard]] const T* fromAs(const Candidates& candidates, const PathContext& path_context,
-                              const tomlqt::ArrayBounds& arr_bounds = {},
-                              QStringView                arr_format = {});
+                              const ArrayBounds& arr_bounds = {}, QStringView arr_format = {});
 
 // Extraction that can fall back to replacing the entire parent object.
 //
@@ -74,7 +74,7 @@ requires(!std::is_same_v<std::decay_t<T>, QSize> && !std::is_same_v<std::decay_t
 template<typename TAttribute, typename TObject>
 void fromOrDefault(const Candidates& candidates, TAttribute& attribute, TObject& object,
                    const TObject& object_defaults, const PathContext& path_context,
-                   const tomlqt::ArrayBounds& arr_bounds = {}, QStringView arr_format = {});
+                   const ArrayBounds& arr_bounds = {}, QStringView arr_format = {});
 
 // Like fromOrDefault but with a transformation step before attribute assignment.
 //

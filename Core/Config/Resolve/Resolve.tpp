@@ -7,7 +7,6 @@
 #include "Core/Config/Types/NodeView.h"
 #include "PathContext/PathContext.h"
 #include "Resolve.h"
-#include "TomlQt/ArrayBounds.h"
 #include "TomlQt/TomlQt.h"
 
 #include <cstddef>
@@ -85,12 +84,11 @@ requires(!std::is_same_v<std::decay_t<T>, QSize> && !std::is_same_v<std::decay_t
          && !std::is_same_v<std::decay_t<T>, QSizePolicy>
          && !std::is_same_v<std::decay_t<T>, QString>)
 const T* config::resolve::fromAs(const Candidates& candidates, const PathContext& path_context,
-                                 const tomlqt::ArrayBounds& arr_bounds, QStringView arr_format) {
+                                 const ArrayBounds& arr_bounds, QStringView arr_format) {
         using DT = const std::decay_t<T>;
 
         // Collapse extraction logic into that of a corresponding type
-        static auto extract = [&](node_view                  node,
-                                  const tomlqt::ArrayBounds& arr_bounds = {}) -> DT* {
+        static auto extract = [&](node_view node, const ArrayBounds& arr_bounds = {}) -> DT* {
                 if constexpr (std::is_same_v<DT, toml::table>) {
                         return node.as_table();
                 } else if constexpr (std::is_same_v<DT, toml::array>) {
@@ -169,8 +167,8 @@ const T* config::resolve::fromAs(const Candidates& candidates, const PathContext
 template<typename TAttribute, typename TObject>
 void config::resolve::fromOrDefault(const Candidates& candidates, TAttribute& attribute,
                                     TObject& object, const TObject& object_defaults,
-                                    const PathContext&         path_context,
-                                    const tomlqt::ArrayBounds& arr_bounds, QStringView arr_format) {
+                                    const PathContext& path_context, const ArrayBounds& arr_bounds,
+                                    QStringView arr_format) {
         if (auto res = from<TAttribute>(candidates, path_context, arr_bounds, arr_format)) {
                 attribute = std::move(res.value());
         } else {
