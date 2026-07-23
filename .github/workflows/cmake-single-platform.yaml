@@ -24,8 +24,8 @@ jobs:
     - name: Cache apt packages
       uses: awalsh128/cache-apt-pkgs-action@latest
       with:
-        packages: qt6-base-dev libtomlplusplus-dev cmake git g++ ninja-build clang ccache
-        version: 1.0
+        packages: qt6-base-dev libtomlplusplus-dev cmake git g++ ninja-build ccache
+        version: 1.1
 
     - name: ccache
       uses: hendrikmuhs/ccache-action@v1.2
