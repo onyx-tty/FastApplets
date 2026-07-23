@@ -103,6 +103,10 @@ void PrimaryButton::paintEvent(QPaintEvent*) {
 
 void PrimaryButton::setLabel(QLabel* label, const QString& text, const QPixmap& pixmap,
                              Qt::Alignment alignment, QSizePolicy size_policy) {
+        // If layout is somehow invalid then something in the initialization logic went
+        // very wrong. Instability in the application is guaranteed at that point.
+        if (!layout()) { qFatal("Called with no layout"); }
+
         if (label) {
                 layout()->removeWidget(label);
                 label->deleteLater();
