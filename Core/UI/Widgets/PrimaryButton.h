@@ -60,9 +60,9 @@ private:
         void paintEvent(QPaintEvent*) override;
 
         // QPushButton forces icon and text to share alignment. To position them
-        // independently, this class uses QLabels instead of complete text().
-        void setTextLabel(const QString& text, Qt::Alignment alignment);
-        void setIconLabel(const QPixmap& pixmap, Qt::Alignment alignment, QSizePolicy size_policy);
+        // independently, this class uses QLabels instead of complete text() and icon().
+        void setLabel(QLabel* label, const QString& text, const QPixmap& pixmap,
+                      Qt::Alignment alignment, QSizePolicy size_policy);
 
         // Caches latest encountered focus reason for use by paintEvent.
         // It exists so that paintEvent can discern between key and mouse and

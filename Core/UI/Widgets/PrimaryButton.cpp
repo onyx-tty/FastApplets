@@ -101,23 +101,18 @@ void PrimaryButton::paintEvent(QPaintEvent*) {
         style()->drawControl(QStyle::CE_PushButton, &option, &painter, this);
 }
 
-void PrimaryButton::setTextLabel(const QString& text, Qt::Alignment alignment) {
-        if (text_label) { text_label->deleteLater(); }
-        text_label = new QLabel(text, this);
-        text_label->setAlignment(alignment);
-        text_label->setAttribute(Qt::WA_TransparentForMouseEvents, true);
-        layout()->addWidget(text_label);
-}
+void PrimaryButton::setLabel(QLabel* label, const QString& text, const QPixmap& pixmap,
+                             Qt::Alignment alignment, QSizePolicy size_policy) {
+        if (label) { label->deleteLater(); }
+        label = new QLabel(this);
 
-void PrimaryButton::setIconLabel(const QPixmap& pixmap, Qt::Alignment alignment,
-                                 QSizePolicy size_policy) {
-        if (icon_label) { icon_label->deleteLater(); }
-        icon_label = new QLabel("", this);
-        icon_label->setAlignment(alignment);
-        icon_label->setSizePolicy(size_policy);
-        icon_label->setAttribute(Qt::WA_TransparentForMouseEvents, true);
-        icon_label->setPixmap(pixmap);
-        layout()->addWidget(icon_label);
+        label->setText(text);
+        if (!pixmap.isNull()) { label->setPixmap(pixmap); }
+        label->setAlignment(alignment);
+        label->setSizePolicy(size_policy);
+        label->setAttribute(Qt::WA_TransparentForMouseEvents, true);
+
+        layout()->addWidget(label);
 }
 
 PrimaryButton::PrimaryButton(button_type type, const QIcon& icon, const QString& text,
@@ -140,9 +135,9 @@ PrimaryButton::PrimaryButton(button_type type, const QIcon& icon, const QString&
         setIconSize(properties.getIconSize());
         setSizePolicy(properties.getPolicy());
         setAutoDefault(false);
-        setTextLabel(text, properties.getTextAlignment());
-        setIconLabel(icon.pixmap(properties.getIconSize()), properties.getIconAlignment(),
-                     properties.getPolicy());
+        setLabel(text_label, text, {}, properties.getTextAlignment(), properties.getPolicy());
+        setLabel(icon_label, {}, icon.pixmap(properties.getIconSize()),
+                 properties.getIconAlignment(), properties.getPolicy());
 }
 
 void PrimaryButton::focusInEvent(QFocusEvent* event) {
