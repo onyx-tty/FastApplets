@@ -70,20 +70,20 @@
 #+BEGIN_EXPORT markdown
 <br>
 #+END_EXPORT
-* UI [0/2]
-** [ ] Generic MainWindow, CentralWidget, and PrimaryButton
+* UI [1/2]
+** [X] Generic MainWindow, CentralWidget, and PrimaryButton
 ** [ ] Support different layouts
 #+BEGIN_EXPORT markdown
 <br>
 #+END_EXPORT
-* Controls [2/3]
+* Controls [3/3]
 ** [X] Keybindings
 ** [X] Option to disable button 'staging', single button presses activate buttons
-** [ ] Make mouse controls work well alongside 'staging', prevent sunken state on mouse click
+** [X] Make mouse controls work well alongside 'staging', prevent sunken state on mouse click
 #+BEGIN_EXPORT markdown
 <br>
 #+END_EXPORT
-* Config [8/10]
+* Config [9/10]
 ** [X] Standardized window class and title
 ** [X] Config error handling
 ** [X] Config value validation
@@ -92,7 +92,7 @@
 ** [X] Template overloads for Config/Keys mappers to avoid duplicate logic between applets
 ** [X] Separate Config/Keys schema from instances
 ** [X] Make config schemas generic
-** [ ] Support args
+** [X] Support args
 ** [ ] Add fallback $HOME/.config/FastApplets if $XDG_CONFIG_HOME envvar is missing/empty/wrong
 #+BEGIN_EXPORT markdown
 <br>

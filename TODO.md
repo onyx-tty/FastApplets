@@ -106,27 +106,27 @@
 
     <br>
 
-# UI \[0/2\]
+# UI \[1/2\]
 
-1.  \[ \] Generic MainWindow, CentralWidget, and PrimaryButton
+1.  \[X\] Generic MainWindow, CentralWidget, and PrimaryButton
 
 2.  \[ \] Support different layouts
 
     <br>
 
-# Controls \[2/3\]
+# Controls \[3/3\]
 
 1.  \[X\] Keybindings
 
 2.  \[X\] Option to disable button 'staging', single button presses
     activate buttons
 
-3.  \[ \] Make mouse controls work well alongside 'staging', prevent
+3.  \[X\] Make mouse controls work well alongside 'staging', prevent
     sunken state on mouse click
 
     <br>
 
-# Config \[8/10\]
+# Config \[9/10\]
 
 1.  \[X\] Standardized window class and title
 
@@ -145,7 +145,7 @@
 
 8.  \[X\] Make config schemas generic
 
-9.  \[ \] Support args
+9.  \[X\] Support args
 
 10. \[ \] Add fallback \$HOME/.config/FastApplets if
     \$XDG<sub>CONFIGHOME</sub> envvar is missing/empty/wrong
