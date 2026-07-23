@@ -39,10 +39,9 @@ namespace config::resolve {
 // On success: returns optional extracted value
 // On failure: returns std::nullopt
 template<typename T>
-[[nodiscard]] static std::optional<T> from(const Candidates&          candidates,
-                                           const PathContext&         path_context,
-                                           const tomlqt::ArrayBounds& arr_bounds = {},
-                                           QStringView                arr_format = {});
+[[nodiscard]] std::optional<T> from(const Candidates& candidates, const PathContext& path_context,
+                                    const tomlqt::ArrayBounds& arr_bounds = {},
+                                    QStringView                arr_format = {});
 
 // Extraction that can fall back to replacing the entire parent object.
 //
@@ -52,9 +51,9 @@ template<typename T>
 // On failure: silently replaces entire object with object_defaults, with
 //             no partial state
 template<typename TAttribute, typename TObject>
-static void fromOrDefault(const Candidates& candidates, TAttribute& attribute, TObject& object,
-                          const TObject& object_defaults, const PathContext& path_context,
-                          const tomlqt::ArrayBounds& arr_bounds = {}, QStringView arr_format = {});
+void fromOrDefault(const Candidates& candidates, TAttribute& attribute, TObject& object,
+                   const TObject& object_defaults, const PathContext& path_context,
+                   const tomlqt::ArrayBounds& arr_bounds = {}, QStringView arr_format = {});
 
 // Like fromOrDefault but with a transformation step before attribute assignment.
 //
@@ -65,9 +64,9 @@ static void fromOrDefault(const Candidates& candidates, TAttribute& attribute, T
 // On failure: silently replaces entire object with object_defaults, with
 //             no partial state
 template<typename TRaw, typename TAttribute, typename TObject, typename Transform>
-static void fromTransformOrDefault(const Candidates& candidates, TAttribute& attribute,
-                                   TObject& object, const TObject& object_defaults,
-                                   Transform transform, const PathContext& path_context);
+void fromTransformOrDefault(const Candidates& candidates, TAttribute& attribute, TObject& object,
+                            const TObject& object_defaults, Transform transform,
+                            const PathContext& path_context);
 
 } // namespace config::resolve
 
