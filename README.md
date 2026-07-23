@@ -69,16 +69,13 @@ cmake --install build/Release --prefix /your/installation/path
 
 ``` sh
 # If installed directory is in $PATH (e.g. /usr/bin)
-PowerApplet
-ActionApplet
+AppletName
 
 # Or with explicit path
-/your/installation/path/bin/PowerApplet
-/your/installation/path/bin/ActionApplet
+/your/installation/path/bin/AppletName
 
 # Or directly from build directory
-./build/Release/src/Applets/PowerApplet/PowerApplet
-./build/Release/src/Applets/ActionApplet/ActionApplet
+./build/Release/AppletName/AppletName
 ```
 
 ### Test
