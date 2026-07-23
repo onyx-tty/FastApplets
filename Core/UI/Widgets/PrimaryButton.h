@@ -100,8 +100,8 @@ public:
         QIcon icon() = delete;
 
         // Returns text from the custom QLabel.
-        QString text() const;
+        [[nodiscard]] QString text() const;
 
-        const keybindings& getKeys() const;
-        button_type        getType() const;
+        [[nodiscard]] const keybindings& getKeys() const;
+        [[nodiscard]] button_type        getType() const;
 };

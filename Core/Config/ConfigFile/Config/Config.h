@@ -30,9 +30,9 @@ private:
 public:
         explicit Config(Window window = Window{}, PrimaryButton primary_button = PrimaryButton{},
                         Layout layout = Layout{});
-        const Window&        getWindowProperties() const;
-        const PrimaryButton& getPrimaryButtonProperties() const;
-        const Layout&        getLayoutProperties() const;
+        [[nodiscard]] const Window&        getWindowProperties() const;
+        [[nodiscard]] const PrimaryButton& getPrimaryButtonProperties() const;
+        [[nodiscard]] const Layout&        getLayoutProperties() const;
 };
 
 } // namespace config::schema

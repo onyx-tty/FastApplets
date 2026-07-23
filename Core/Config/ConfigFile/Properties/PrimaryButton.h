@@ -29,11 +29,11 @@ public:
         explicit PrimaryButton(bool double_key_press = {}, Qt::Alignment text_alignment = {},
                                Qt::Alignment icon_alignment = {}, QSize icon_size = {},
                                QSizePolicy policy = {});
-        bool                 getDoubleKeyPress() const;
-        const Qt::Alignment& getTextAlignment() const;
-        const Qt::Alignment& getIconAlignment() const;
-        const QSize&         getIconSize() const;
-        const QSizePolicy&   getPolicy() const;
+        [[nodiscard]] bool                 getDoubleKeyPress() const;
+        [[nodiscard]] const Qt::Alignment& getTextAlignment() const;
+        [[nodiscard]] const Qt::Alignment& getIconAlignment() const;
+        [[nodiscard]] const QSize&         getIconSize() const;
+        [[nodiscard]] const QSizePolicy&   getPolicy() const;
 };
 
 } // namespace config::schema::properties

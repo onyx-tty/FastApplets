@@ -170,9 +170,9 @@
 
     <br>
 
-# Style \[1/2\]
+# Style \[2/2\]
 
-1.  \[ \] nodiscard where applicable
+1.  \[X\] nodiscard where applicable
 
 2.  \[X\] Standardize initialization style - always use '='
 

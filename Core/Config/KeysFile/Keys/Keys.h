@@ -9,9 +9,7 @@
 #include <vector>
 
 namespace config {
-
 class KeysMapper;
-
 } // namespace config
 
 namespace config::schema {
@@ -26,8 +24,8 @@ private:
 
 public:
         explicit Keys(keybindings quit = {}, std::vector<keybindings> primary_buttons = {});
-        const keybindings&              getQuit() const;
-        const std::vector<keybindings>& getPrimaryButtons() const;
+        [[nodiscard]] const keybindings&              getQuit() const;
+        [[nodiscard]] const std::vector<keybindings>& getPrimaryButtons() const;
 };
 
 } // namespace config::schema

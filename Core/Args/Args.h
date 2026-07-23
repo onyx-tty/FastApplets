@@ -24,7 +24,6 @@ public:
 namespace arg {
 
 // Stores a list of parsed command-line arguments.
-// TODO: Move to Args/Types.
 struct CmdArgs {
         QString config_path;
         QString keys_path;
@@ -33,13 +32,13 @@ struct CmdArgs {
 // Checks if passed arg starts with '-'.
 //
 // Terminates with qFatal if arg is invalid or is just one character.
-bool isFlagName(std::string_view arg);
+[[nodiscard]] bool isFlagName(std::string_view arg);
 
 // Checks if passed args qualifies as a single flag.
 // Currently only 'help'.
 //
 // Terminates with qFatal if arg is invalid or is just one character.
-bool isSingleFlag(std::string_view arg);
+[[nodiscard]] bool isSingleFlag(std::string_view arg);
 
 // Parses a 'flag' by finding flag[0] on the list and the assigning flag[1] to 'parsed'.
 // Exceptions to that rule:
@@ -66,7 +65,7 @@ void parseFlag(std::array<std::string_view, 2> flag, CmdArgs& parsed, bool is_si
 // Calls qFatal if argc is less than 1, indicating corruption.
 // TODO: Locator should be used to try to find the config/keys file if passed.
 //       If the path is invalid, the program should warn the user and throw HelpMenuRequested.
-CmdArgs parse(int argc, const char* const argv[]);
+[[nodiscard]] CmdArgs parse(int argc, const char* const argv[]);
 
 // Inject config filepath and keys filepath if they are valid
 // TODO: This is a workaround. Ideally, valid args should be assigned prior to config::locateFiles

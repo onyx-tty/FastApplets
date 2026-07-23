@@ -16,15 +16,15 @@ class QString;
 
 // Assign hardcoded icon associated with each button.
 template<typename TPrimaryButtonType>
-QIcon iconFor(TPrimaryButtonType type);
+[[nodiscard]] QIcon iconFor(TPrimaryButtonType type);
 
 // Assign hardcoded text associated with each button.
 template<typename TPrimaryButtonType>
-QString textFor(TPrimaryButtonType type);
+[[nodiscard]] QString textFor(TPrimaryButtonType type);
 
 // Assign hardcoded command associated with each button.
 template<typename TPrimaryButtonType>
-QString commandFor(TPrimaryButtonType type);
+[[nodiscard]] QString commandFor(TPrimaryButtonType type);
 
 namespace config::schema::properties {
 
@@ -37,7 +37,7 @@ private:
 
 public:
         explicit Layout(std::vector<PrimaryButtonParams> primary_buttons = {});
-        const std::vector<PrimaryButtonParams>& getPrimaryButtons() const;
+        [[nodiscard]] const std::vector<PrimaryButtonParams>& getPrimaryButtons() const;
 };
 
 } // namespace config::schema::properties

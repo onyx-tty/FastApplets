@@ -18,7 +18,8 @@ namespace {
 
 // TODO: This function is overcomplicated
 // TODO: Single flag should be a separate overload, both in arg:: and here
-bool parseFlag_hasThrownHelp(std::array<std::string_view, 2> flag, bool is_single_flag) {
+[[nodiscard]] bool parseFlag_hasThrownHelp(std::array<std::string_view, 2> flag,
+                                           bool                            is_single_flag) {
         // Flags must be valid before dereferencing
         for (size_t i = 0; i != flag.size(); ++i) {
                 if (!flag[i].data()) {
@@ -38,7 +39,7 @@ bool parseFlag_hasThrownHelp(std::array<std::string_view, 2> flag, bool is_singl
         return false;
 }
 
-bool parseFlag_hasThrownHelp(std::string_view single_flag) {
+[[nodiscard]] bool parseFlag_hasThrownHelp(std::string_view single_flag) {
         constexpr bool is_single_flag = true;
         return parseFlag_hasThrownHelp({single_flag, {}}, is_single_flag);
 };
@@ -123,7 +124,7 @@ private slots:
                 // The only usable single flag at the moment is the help flag
                 // so it's the only one
                 try {
-                        arg::CmdArgs args = arg::parse(2, argv);
+                        arg::CmdArgs _ = arg::parse(2, argv);
                 } catch (const HelpMenuRequested&) { handled_single_flag = true; }
 
                 QVERIFY2(handled_single_flag, "Must handle single flags");
@@ -150,7 +151,7 @@ private slots:
                 constexpr const char* argv[] = {"FastApplet", "--stray-name"};
 
                 try {
-                        arg::parse(2, argv);
+                        auto _ = arg::parse(2, argv);
                 } catch (const HelpMenuRequested&) { has_thrown_help = true; }
 
                 QVERIFY2(has_thrown_help, "Must throw on stray flag names");
@@ -163,7 +164,7 @@ private slots:
                 constexpr const char* argv[] = {"FastApplet", "stray_value"};
 
                 try {
-                        arg::parse(2, argv);
+                        auto _ = arg::parse(2, argv);
                 } catch (const HelpMenuRequested&) { has_thrown_help = true; }
 
                 QVERIFY2(has_thrown_help, "Must throw on stray flag values");

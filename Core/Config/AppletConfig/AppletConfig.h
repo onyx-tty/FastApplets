@@ -21,10 +21,10 @@ struct AppletConfig final {
 };
 
 template<applet::type TApplet>
-AppletConfig makeAppletConfig(const Filepaths& applet, const Filepaths& global);
+[[nodiscard]] AppletConfig makeAppletConfig(const Filepaths& applet, const Filepaths& global);
 
 template<applet::type TApplet>
-auto makeAppletConfigTuple(const Filepaths& applet, const Filepaths& global);
+[[nodiscard]] auto makeAppletConfigTuple(const Filepaths& applet, const Filepaths& global);
 
 } // namespace config
 

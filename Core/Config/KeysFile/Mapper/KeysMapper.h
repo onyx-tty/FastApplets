@@ -21,10 +21,10 @@ class QString;
 
 // Parses key name strings (e.g. "Ctrl+A") into a keybindings set, stripped of
 // modifiers.
-keybindings keysFromText(const std::vector<std::string>& texts);
+[[nodiscard]] keybindings keysFromText(const std::vector<std::string>& texts);
 
 // Extracts string elements from a toml::array, silently skipping non-string values.
-std::vector<std::string> textFromTomlArray(const toml::array& arr);
+[[nodiscard]] std::vector<std::string> textFromTomlArray(const toml::array& arr);
 
 namespace config {
 
@@ -42,8 +42,9 @@ private:
         // Fallback priority: applet.quit -> global.quit -> hardcoded defaults
         //
         // Return value: keybindings (std::unordered_set<int>)
-        static keybindings quit(const Candidates& candidates, const keybindings& defaults,
-                                const PathContext& path_context);
+        [[nodiscard]] static keybindings quit(const Candidates&  candidates,
+                                              const keybindings& defaults,
+                                              const PathContext& path_context);
 
         // Maps the entire primary_buttons array from config nodes.
         //
@@ -53,17 +54,18 @@ private:
         // Fallback priority: applet.primary_buttons -> hardcoded defaults
         //
         // Return value: std::vector<keybindings> (std::vector<std::unordered_set<int>>)
-        static std::vector<keybindings> primaryButtons(const Candidates&               candidates,
-                                                       const std::vector<keybindings>& defaults,
-                                                       const PathContext& path_context);
+        [[nodiscard]] static std::vector<keybindings> primaryButtons(
+                const Candidates& candidates, const std::vector<keybindings>& defaults,
+                const PathContext& path_context);
 
         // Maps a single button's keybindings from a config candidate.
         //
         // Fallback priority: applet.primary_buttons[index] -> hardcoded defaults
         //
         // Return value: keybindings (std::unordered_set<int>)
-        static keybindings primaryButton(const Candidates& candidates, const keybindings& defaults,
-                                         const PathContext& path_context);
+        [[nodiscard]] static keybindings primaryButton(const Candidates&  candidates,
+                                                       const keybindings& defaults,
+                                                       const PathContext& path_context);
 
 public:
         KeysMapper() = delete;
@@ -80,7 +82,8 @@ public:
         //
         // Return value: config::schema::Keys
         template<applet::type TApplet>
-        static Keys keys(const toml::table& applet, const toml::table& global, const Keys& defaults);
+        [[nodiscard]] static Keys keys(const toml::table& applet, const toml::table& global,
+                                       const Keys& defaults);
 };
 
 } // namespace config

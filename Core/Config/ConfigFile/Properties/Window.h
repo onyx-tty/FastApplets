@@ -22,8 +22,8 @@ private:
 
 public:
         explicit Window(QSize size = {}, QString title = {});
-        const QSize&   getSize() const;
-        const QString& getTitle() const;
+        [[nodiscard]] const QSize&   getSize() const;
+        [[nodiscard]] const QString& getTitle() const;
 };
 
 } // namespace config::schema::properties

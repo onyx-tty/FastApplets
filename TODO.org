@@ -110,8 +110,8 @@
 #+BEGIN_EXPORT markdown
 <br>
 #+END_EXPORT
-* Style [1/2]
-** [ ] nodiscard where applicable
+* Style [2/2]
+** [X] nodiscard where applicable
 ** [X] Standardize initialization style - always use '='
 #+BEGIN_EXPORT markdown
 <br>

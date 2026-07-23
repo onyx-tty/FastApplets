@@ -13,7 +13,7 @@
 #include <QtGlobal>
 
 // TODO: Move elsewhere
-inline std::vector<keybindings> makeKeyRange(Qt::Key first, Qt::Key last) {
+[[nodiscard]] inline std::vector<keybindings> makeKeyRange(Qt::Key first, Qt::Key last) {
         if (first > last) { qFatal("First must come before last"); }
 
         std::vector<keybindings> ret = {};
@@ -31,11 +31,11 @@ using Keys   = schema::Keys;
 
 // Construct default Config for applet TApplet.
 template<applet::type TApplet>
-Config makeDefaultConfig();
+[[nodiscard]] Config makeDefaultConfig();
 
 // Construct default config::schema::Keys for applet TApplet.
 template<applet::type TApplet>
-Keys makeDefaultKeys();
+[[nodiscard]] Keys makeDefaultKeys();
 
 } // namespace config
 

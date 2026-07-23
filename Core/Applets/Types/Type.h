@@ -13,7 +13,7 @@ namespace applet {
 enum class type { global, power, action, player };
 
 // Serializes string for applet::type.
-constexpr QStringView toString(type applet_type) {
+[[nodiscard]] constexpr QStringView toString(type applet_type) {
         switch (applet_type) {
         case type::global: return u"global";
         case type::power:  return u"power_applet";
@@ -24,7 +24,7 @@ constexpr QStringView toString(type applet_type) {
 }
 
 // Serializes Latin1 string for applet::type.
-constexpr QLatin1StringView toLatin1String(type applet_type) {
+[[nodiscard]] constexpr QLatin1StringView toLatin1String(type applet_type) {
         using namespace Qt::StringLiterals;
 
         switch (applet_type) {
@@ -37,7 +37,7 @@ constexpr QLatin1StringView toLatin1String(type applet_type) {
 }
 
 // Obtains title associated with applet::type.
-constexpr QStringView toTitle(type applet_type) {
+[[nodiscard]] constexpr QStringView toTitle(type applet_type) {
         switch (applet_type) {
         case type::global: return u"FastApplets";
         case type::power:  return u"PowerApplet";

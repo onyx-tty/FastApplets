@@ -17,7 +17,7 @@
 
 namespace {
 
-PrimaryButton* findPrimaryButton(int key, std::vector<PrimaryButton*> buttons) {
+[[nodiscard]] PrimaryButton* findPrimaryButton(int key, std::vector<PrimaryButton*> buttons) {
         const auto iter = std::find_if(buttons.cbegin(), buttons.cend(),
                                        [key](const PrimaryButton* button) -> bool {
                                                if (!button) { return false; }
@@ -27,7 +27,7 @@ PrimaryButton* findPrimaryButton(int key, std::vector<PrimaryButton*> buttons) {
         return iter != buttons.cend() ? *iter : nullptr;
 }
 
-bool isQuitKey(int key, const keybindings& quit_keys) {
+[[nodiscard]] bool isQuitKey(int key, const keybindings& quit_keys) {
         return quit_keys.contains(key);
 }
 

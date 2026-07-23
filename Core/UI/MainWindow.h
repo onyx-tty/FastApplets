@@ -18,8 +18,9 @@ class QSize;
 
 // Initializes applet UI from scratch, including PrimaryButtons, CentralWidget, and MainWindow.
 // MainWindow is constructed from provided config, keys, and default_keys.
-MainWindow makeMainWindow(const config::schema::Config& config, const config::schema::Keys& keys,
-                          const config::schema::Keys& default_keys);
+[[nodiscard]] MainWindow makeMainWindow(const config::schema::Config& config,
+                                        const config::schema::Keys&   keys,
+                                        const config::schema::Keys&   default_keys);
 
 // Wrapper around QMainWindow that sets title, size, and central_widget during construction.
 class MainWindow : public QMainWindow {

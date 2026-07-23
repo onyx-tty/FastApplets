@@ -15,6 +15,6 @@ namespace config {
 // Otherwise returns an empty table and logs warnings.
 //
 // This is a low-level file parser used to obtain toml::tables for mapping.
-toml::table parseTomlFile(const QString& filepath);
+[[nodiscard]] toml::table parseTomlFile(const QString& filepath);
 
 } // namespace config

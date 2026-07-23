@@ -15,6 +15,6 @@ namespace config {
 //
 // "global" maps to the root FastApplets/ config directory, as the global config
 // is stored there.
-Filepaths locateFiles(QLatin1StringView applet_name);
+[[nodiscard]] Filepaths locateFiles(QLatin1StringView applet_name);
 
 } // namespace config
