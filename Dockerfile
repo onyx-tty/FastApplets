@@ -2,7 +2,7 @@ FROM ubuntu:latest AS builder
 
 RUN set -ex;                                                                             \
     apt-get update;                                                                      \
-    apt-get install -y cmake ninja-build g++ git clang qt6-base-dev libtomlplusplus-dev;
+    apt-get install -y qt6-base-dev libtomlplusplus-dev cmake git g++ ninja-build clang;
 
 COPY . /app
 WORKDIR /app
@@ -21,7 +21,7 @@ FROM ubuntu:latest AS runner
 
 RUN set -ex;                                                             \
     apt-get update;                                                      \
-    apt-get install -y cmake qt6-base-dev libtomlplusplus-dev libqt6svg6
+    apt-get install -y qt6-base-dev libqt6svg6 libtomlplusplus-dev cmake
 
 COPY --from=builder /FastApplets /FastApplets
 
