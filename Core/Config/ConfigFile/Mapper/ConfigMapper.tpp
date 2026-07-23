@@ -31,11 +31,11 @@ T config::ConfigMapper::mapProperties(const Candidates& candidates, const T& def
                                       const PathContext& path_context, auto fill_fn) {
         using namespace config;
 
-        std::vector<toml::table> resolved = {};
+        std::vector<const toml::table*> resolved = {};
 
         for (const auto& candidate : candidates.get()) {
-                if (auto result = resolve::from<toml::table>({candidate}, path_context)) {
-                        resolved.push_back(result.value());
+                if (const auto* result = resolve::fromAs<toml::table>({candidate}, path_context)) {
+                        resolved.push_back(result);
                 }
         }
 
@@ -56,7 +56,7 @@ config::schema::properties::Layout config::ConfigMapper::layout(const Candidates
 
         auto properties = Layout{};
 
-        const auto data = resolve::from<toml::table>(candidates, path_context);
+        const auto* data = resolve::fromAs<toml::table>(candidates, path_context);
         if (!data) { return defaults; }
 
         properties.primary_buttons =
@@ -73,13 +73,13 @@ std::vector<PrimaryButtonParams> config::ConfigMapper::primaryButtons(
         const PathContext& path_context) {
         using namespace config;
 
-        const auto arr = resolve::from<toml::array>(candidates, path_context, {.min_size = 1},
-                                                    u"Format: [primary buttons...]");
+        const auto* arr = resolve::fromAs<toml::array>(candidates, path_context, {.min_size = 1},
+                                                     u"Format: [primary buttons...]");
         if (!arr) { return defaults; }
 
         std::vector<PrimaryButtonParams> found = {};
 
-        for (size_t i = 0; i != arr.value().size(); ++i) {
+        for (size_t i = 0; i != arr->size(); ++i) {
                 auto new_button = primaryButton<TApplet>(candidates.makeCopy().withExtension(i),
                                                          path_context.makeExtended(i));
                 if (new_button) { found.push_back(std::move(new_button.value())); }
@@ -100,7 +100,7 @@ std::optional<PrimaryButtonParams> config::ConfigMapper::primaryButton(
 
         using TPrimaryButtonType = applet::Traits<TApplet>::TPrimaryButtonType;
 
-        const auto table = resolve::from<toml::table>(candidates, path_context);
+        const auto* table = resolve::fromAs<toml::table>(candidates, path_context);
         if (!table) { return std::nullopt; }
 
         PrimaryButtonParams new_button = {};

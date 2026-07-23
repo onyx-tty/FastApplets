@@ -7,6 +7,7 @@
 
 #include <optional>
 #include <toml++/toml.hpp>
+#include <type_traits>
 #include <QStringView>
 #include <Qt>
 
@@ -14,6 +15,10 @@ namespace config::resolve {
 class Candidates;
 class PathContext;
 } // namespace config::resolve
+
+class QSize;
+class QSizePolicy;
+class QString;
 
 // Extracts typed values from TOML nodes with fallback chains and error handling.
 //
@@ -28,6 +33,7 @@ class PathContext;
 //
 // Quick reference:
 // - from()          -> returns optional<T>, manual error handling
+// - fromAs()        -> returns T*, manual error handling
 // - fromOrDefault() -> sets attribute OR overwrites entire object
 // - fromTransformOrDefault() -> sets transformed attribute OR overwrites entire object
 namespace config::resolve {
@@ -36,12 +42,25 @@ namespace config::resolve {
 //
 // Requires a manual std::nullopt check.
 //
-// On success: returns optional extracted value
+// On success: returns std::optional<T>
 // On failure: returns std::nullopt
 template<typename T>
-[[nodiscard]] std::optional<T> from(const Candidates& candidates, const PathContext& path_context,
-                                    const tomlqt::ArrayBounds& arr_bounds = {},
-                                    QStringView                arr_format = {});
+requires(!std::is_same_v<T, toml::table> && !std::is_same_v<T, toml::array>)
+[[nodiscard]] std::optional<T> from(const Candidates& candidates, const PathContext& path_context);
+
+// Pure extraction with no side effects.
+//
+// Requires a manual nullptr check.
+//
+// On success: returns T*
+// On failure: returns nullptr
+template<typename T>
+requires(!std::is_same_v<std::decay_t<T>, QSize> && !std::is_same_v<std::decay_t<T>, Qt::Alignment>
+         && !std::is_same_v<std::decay_t<T>, QSizePolicy>
+         && !std::is_same_v<std::decay_t<T>, QString>)
+[[nodiscard]] const T* fromAs(const Candidates& candidates, const PathContext& path_context,
+                              const tomlqt::ArrayBounds& arr_bounds = {},
+                              QStringView                arr_format = {});
 
 // Extraction that can fall back to replacing the entire parent object.
 //

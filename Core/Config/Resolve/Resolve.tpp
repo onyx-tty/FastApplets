@@ -19,50 +19,96 @@
 #include <QSize>
 #include <QSizePolicy>
 #include <QString>
+#include <QStringView>
 #include <Qt>
 #include <QtGlobal>
 
 template<typename T>
-std::optional<T> config::resolve::from(const Candidates&          candidates,
-                                       const PathContext&         path_context,
-                                       const tomlqt::ArrayBounds& arr_bounds,
-                                       QStringView                arr_format) {
+requires(!std::is_same_v<T, toml::table> && !std::is_same_v<T, toml::array>)
+std::optional<T> config::resolve::from(const Candidates&  candidates,
+                                       const PathContext& path_context) {
         using DT = std::decay_t<T>;
 
-        // Convert pointers to std::optional
-        // TODO Remove this lambda, toml::array and toml::table should be pointers
-        //      But as long as the return type of resolve is stuck as std::optional,
-        //      this cannot be done.
-        static auto normalize = [&](auto&& raw) -> std::optional<T> {
-                using R = std::decay_t<decltype(raw)>;
-                if constexpr (std::is_same_v<R, std::optional<DT>>) {
-                        return raw;
-                } else if constexpr (std::is_pointer_v<R>) {
-                        return raw ? std::optional<DT>(*raw) : std::nullopt;
+        // Collapse extraction logic into that of a corresponding type
+        static auto extract = [&](node_view node) -> std::optional<DT> {
+                if constexpr (std::is_same_v<DT, QSize>) {
+                        return tomlqt::value<QSize>(node);
+                } else if constexpr (std::is_same_v<DT, Qt::Alignment>) {
+                        return tomlqt::value<Qt::Alignment>(node);
+                } else if constexpr (std::is_same_v<DT, QSizePolicy>) {
+                        return tomlqt::value<QSizePolicy>(node);
+                } else if constexpr (std::is_same_v<DT, QString>) {
+                        return tomlqt::value<QString>(node);
                 } else {
-                        static_assert(false, "Unknown accessor return type!");
+                        return node.value<DT>();
                 }
         };
 
+        // Collapse logging message variants
+        static auto log = [&](QStringView path) {
+                if (path.isNull()) { qFatal("Passed null path!"); }
+
+                qWarning() << QString("%1, missing or wrong type! Using defaults...").arg(path);
+        };
+
+        // Validate and attempt extraction of each passed candidate, prioritizing earliest ones
+        const auto candidate_ptr = candidates.get().begin();
+        for (size_t i = 0; i != candidates.get().size(); ++i) {
+                const auto& candidate = candidate_ptr[i];
+
+                // If 'i' is not the last index, then candidates[i] is an override
+                // TODO If primary candidate is valid and fallback is not then quiet on
+                //      primary candidate will result in no logs being printed at all
+                //      Iteration over candidates should probably be done in reverse to
+                //      track if fallback is missing, and if it is then quiet should
+                //      likely be ignored.
+                bool is_override  = (i != candidates.get().size() - 1);
+                // If override or explicitly marked "quiet", don't log anything
+                bool silence_logs = is_override || candidate.quiet;
+
+                auto result = extract(candidate.node);
+                if (!result) {
+                        if (!silence_logs) { log(path_context.makePath(candidate.applet)); }
+                        continue;
+                }
+
+                qDebug() << path_context.makePath(candidate.applet) << "found!";
+                return *result;
+        }
+
+        // Use hardcoded defaults if extraction failed
+        return std::nullopt;
+}
+
+template<typename T>
+requires(!std::is_same_v<std::decay_t<T>, QSize> && !std::is_same_v<std::decay_t<T>, Qt::Alignment>
+         && !std::is_same_v<std::decay_t<T>, QSizePolicy>
+         && !std::is_same_v<std::decay_t<T>, QString>)
+const T* config::resolve::fromAs(const Candidates& candidates, const PathContext& path_context,
+                                 const tomlqt::ArrayBounds& arr_bounds, QStringView arr_format) {
+        using DT = const std::decay_t<T>;
+
         // Collapse extraction logic into that of a corresponding type
         static auto extract = [&](node_view                  node,
-                                  const tomlqt::ArrayBounds& arr_bounds = {}) -> std::optional<DT> {
+                                  const tomlqt::ArrayBounds& arr_bounds = {}) -> DT* {
                 if constexpr (std::is_same_v<DT, toml::table>) {
-                        return normalize(node.as_table());
+                        return node.as_table();
                 } else if constexpr (std::is_same_v<DT, toml::array>) {
                         // TODO Extract as a separate function
                         using result = tomlqt::ArrayBounds::validation_result;
 
-                        std::optional<toml::array> arr = normalize(node.as_array());
-                        if (!arr) { return std::nullopt; }
+                        const toml::array* arr = node.as_array();
+                        if (!arr) { return nullptr; }
 
-                        auto res = arr_bounds.validate(arr.value());
+                        // TODO: T* overload for .validate()
+                        // TODO: Continue here
+                        auto res = arr_bounds.validate(arr);
                         if (res == result::min_size_fail) {
                                 qWarning()
                                         << QString("arr size < min_size! min_size: %1, arr size: %2")
                                                    .arg(QString::number(arr_bounds.min_size.value()),
                                                         QString::number(arr->size()));
-                                return std::nullopt;
+                                return nullptr;
                         }
 
                         if (res == result::max_size_fail) {
@@ -70,19 +116,12 @@ std::optional<T> config::resolve::from(const Candidates&          candidates,
                                         << QString("arr size > max_size! max_size: %1, arr size: %2")
                                                    .arg(QString::number(arr_bounds.max_size.value()),
                                                         QString::number(arr->size()));
-                                return std::nullopt;
+                                return nullptr;
                         }
-                        return std::move(arr);
-                } else if constexpr (std::is_same_v<DT, QSize>) {
-                        return normalize(tomlqt::value<QSize>(node));
-                } else if constexpr (std::is_same_v<DT, Qt::Alignment>) {
-                        return normalize(tomlqt::value<Qt::Alignment>(node));
-                } else if constexpr (std::is_same_v<DT, QSizePolicy>) {
-                        return normalize(tomlqt::value<QSizePolicy>(node));
-                } else if constexpr (std::is_same_v<DT, QString>) {
-                        return normalize(tomlqt::value<QString>(node));
+
+                        return arr;
                 } else {
-                        return normalize(node.value<DT>());
+                        return node.as<DT>();
                 }
         };
 
@@ -115,18 +154,18 @@ std::optional<T> config::resolve::from(const Candidates&          candidates,
                 // If override or explicitly marked "quiet", don't log anything
                 bool silence_logs = is_override || candidate.quiet;
 
-                auto result = extract(candidate.node, arr_bounds);
+                auto* result = extract(candidate.node, arr_bounds);
                 if (!result) {
                         if (!silence_logs) { log(path_context.makePath(candidate.applet)); }
                         continue;
                 }
 
                 qDebug() << path_context.makePath(candidate.applet) << "found!";
-                return *result;
+                return result;
         }
 
         // Use hardcoded defaults if extraction failed
-        return std::nullopt;
+        return nullptr;
 }
 
 template<typename TAttribute, typename TObject>

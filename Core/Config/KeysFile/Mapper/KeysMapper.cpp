@@ -31,12 +31,14 @@ keybindings keysFromText(const std::vector<std::string>& texts) {
         return keys;
 }
 
-std::vector<std::string> textFromTomlArray(const toml::array& arr) {
-        std::vector<std::string> texts = {};
-        texts.reserve(arr.size());
+std::vector<std::string> textFromTomlArray(const toml::array* arr) {
+        if (!arr) { qFatal("Passed null arr"); }
 
-        for (const auto& element : arr) {
-                if (const auto& str_element = element.as_string()) {
+        std::vector<std::string> texts = {};
+        texts.reserve(arr->size());
+
+        for (const auto& element : *arr) {
+                if (const auto* str_element = element.as_string()) {
                         texts.push_back(str_element->get());
                 }
         }
@@ -46,11 +48,10 @@ std::vector<std::string> textFromTomlArray(const toml::array& arr) {
 
 keybindings config::KeysMapper::quit(const Candidates& candidates, const keybindings& defaults,
                                      const PathContext& path_context) {
-        toml::array keys = resolve::from<toml::array>(candidates, path_context, {.min_size = 1},
-                                                      u"[keybindings...]")
-                                   .value_or(toml::array());
+        const auto* keys = resolve::fromAs<toml::array>(candidates, path_context, {.min_size = 1},
+                                                      u"[keybindings...]");
 
-        if (keys.empty()) { return defaults; }
+        if (!keys || keys->empty()) { return defaults; }
 
         return keysFromText(textFromTomlArray(keys));
 }
@@ -58,19 +59,18 @@ keybindings config::KeysMapper::quit(const Candidates& candidates, const keybind
 std::vector<keybindings> config::KeysMapper::primaryButtons(const Candidates& candidates,
                                                             const std::vector<keybindings>& defaults,
                                                             const PathContext& path_context) {
-        toml::array keys = resolve::from<toml::array>(candidates, path_context, {.min_size = 1},
-                                                      u"[keybindings...]")
-                                   .value_or(toml::array());
+        const auto* keys = resolve::fromAs<toml::array>(candidates, path_context, {.min_size = 1},
+                                                      u"[keybindings...]");
 
-        if (keys.empty()) { return defaults; }
+        if (!keys || keys->empty()) { return defaults; }
 
         std::vector<keybindings> buttons = {};
-        buttons.reserve(keys.size());
-        for (size_t i = 0; i != keys.size(); ++i) {
+        buttons.reserve(keys->size());
+        for (size_t i = 0; i != keys->size(); ++i) {
                 keybindings found_for_button = primaryButton(candidates.makeCopy().withExtension(i),
                                                              defaults[i],
                                                              path_context.makeExtended(i));
-                if (!keys.empty()) { buttons.push_back(std::move(found_for_button)); }
+                if (!keys->empty()) { buttons.push_back(std::move(found_for_button)); }
         }
 
         return std::move(buttons);
@@ -79,11 +79,10 @@ std::vector<keybindings> config::KeysMapper::primaryButtons(const Candidates& ca
 keybindings config::KeysMapper::primaryButton(const Candidates&  candidates,
                                               const keybindings& defaults,
                                               const PathContext& path_context) {
-        toml::array keys = resolve::from<toml::array>(candidates, path_context, {.min_size = 1},
-                                                      u"[keybindings...]")
-                                   .value_or(toml::array());
+        const auto* keys = resolve::fromAs<toml::array>(candidates, path_context, {.min_size = 1},
+                                                      u"[keybindings...]");
 
-        if (keys.empty()) { return defaults; }
+        if (keys->empty()) { return defaults; }
 
         return keysFromText(textFromTomlArray(keys));
 }
