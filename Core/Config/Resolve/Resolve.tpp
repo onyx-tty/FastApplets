@@ -66,14 +66,14 @@ std::optional<T> config::resolve::from(const Candidates&  candidates,
                 // If override or explicitly marked "quiet", don't log anything
                 bool silence_logs = is_override || candidate.quiet;
 
-                auto result = extract(candidate.node);
-                if (!result) {
+                auto res = extract(candidate.node);
+                if (!res) {
                         if (!silence_logs) { log(path_context.makePath(candidate.applet)); }
                         continue;
                 }
 
                 qDebug() << path_context.makePath(candidate.applet) << "found!";
-                return *result;
+                return *res;
         }
 
         // Use hardcoded defaults if extraction failed
@@ -95,8 +95,6 @@ const T* config::resolve::fromAs(const Candidates& candidates, const PathContext
                         return node.as_table();
                 } else if constexpr (std::is_same_v<DT, toml::array>) {
                         // TODO Extract as a separate function
-                        using result = tomlqt::ArrayBounds::validation_result;
-
                         const toml::array* arr = node.as_array();
                         if (!arr) { return nullptr; }
 
@@ -154,14 +152,14 @@ const T* config::resolve::fromAs(const Candidates& candidates, const PathContext
                 // If override or explicitly marked "quiet", don't log anything
                 bool silence_logs = is_override || candidate.quiet;
 
-                auto* result = extract(candidate.node, arr_bounds);
-                if (!result) {
+                auto* res = extract(candidate.node, arr_bounds);
+                if (!res) {
                         if (!silence_logs) { log(path_context.makePath(candidate.applet)); }
                         continue;
                 }
 
                 qDebug() << path_context.makePath(candidate.applet) << "found!";
-                return result;
+                return res;
         }
 
         // Use hardcoded defaults if extraction failed
@@ -173,8 +171,8 @@ void config::resolve::fromOrDefault(const Candidates& candidates, TAttribute& at
                                     TObject& object, const TObject& object_defaults,
                                     const PathContext&         path_context,
                                     const tomlqt::ArrayBounds& arr_bounds, QStringView arr_format) {
-        if (auto result = from<TAttribute>(candidates, path_context, arr_bounds, arr_format)) {
-                attribute = std::move(result.value());
+        if (auto res = from<TAttribute>(candidates, path_context, arr_bounds, arr_format)) {
+                attribute = std::move(res.value());
         } else {
                 object = object_defaults;
         }
@@ -184,8 +182,8 @@ template<typename TRaw, typename TAttribute, typename TObject, typename Transfor
 void config::resolve::fromTransformOrDefault(const Candidates& candidates, TAttribute& attribute,
                                              TObject& object, const TObject& object_defaults,
                                              Transform transform, const PathContext& path_context) {
-        if (auto result = from<TRaw>(candidates, path_context)) {
-                attribute = transform(std::move(result.value()));
+        if (auto res = from<TRaw>(candidates, path_context)) {
+                attribute = transform(std::move(res.value()));
         } else {
                 object = object_defaults;
         }
