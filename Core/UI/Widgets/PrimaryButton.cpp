@@ -103,7 +103,12 @@ void PrimaryButton::paintEvent(QPaintEvent*) {
 
 void PrimaryButton::setLabel(QLabel* label, const QString& text, const QPixmap& pixmap,
                              Qt::Alignment alignment, QSizePolicy size_policy) {
-        if (label) { label->deleteLater(); }
+        if (label) {
+                layout()->removeWidget(label);
+                label->deleteLater();
+                label = nullptr;
+        }
+
         label = new QLabel(this);
 
         label->setText(text);
