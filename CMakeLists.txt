@@ -47,7 +47,7 @@ set(CPPUTILS_ENABLE_QT ON)
 
 # Third-party
 CPMAddPackage("gh:onyx-tty/CppUtils#cef444b")
-CPMAddPackage("gh:onyx-tty/TomlQt#2cb232a")
+CPMAddPackage("gh:onyx-tty/TomlQt#0c67f62")
 
 set(ROOT_DIR ${CMAKE_CURRENT_LIST_DIR})
 

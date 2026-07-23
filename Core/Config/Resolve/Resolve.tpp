@@ -74,13 +74,13 @@ std::optional<T> config::resolve::from(const Candidates&          candidates,
                         }
                         return std::move(arr);
                 } else if constexpr (std::is_same_v<DT, QSize>) {
-                        return normalize(tomlqt::tryGetQSize(node));
+                        return normalize(tomlqt::value<QSize>(node));
                 } else if constexpr (std::is_same_v<DT, Qt::Alignment>) {
-                        return normalize(tomlqt::tryGetQtAlignment(node));
+                        return normalize(tomlqt::value<Qt::Alignment>(node));
                 } else if constexpr (std::is_same_v<DT, QSizePolicy>) {
-                        return normalize(tomlqt::tryGetQSizePolicy(node));
+                        return normalize(tomlqt::value<QSizePolicy>(node));
                 } else if constexpr (std::is_same_v<DT, QString>) {
-                        return normalize(tomlqt::tryGetQString(node));
+                        return normalize(tomlqt::value<QString>(node));
                 } else {
                         return normalize(node.value<DT>());
                 }
