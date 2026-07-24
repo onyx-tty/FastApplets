@@ -96,8 +96,6 @@ const T* config::resolve::fromAs(const Candidates& candidates, const PathContext
                         const toml::array* arr = node.as_array();
                         if (!arr) { return nullptr; }
 
-                        // TODO: T* overload for .validate()
-                        // TODO: Continue here
                         auto res = arr_bounds.validate(arr);
                         if (res == result::min_size_fail) {
                                 qWarning()
