@@ -10,8 +10,8 @@
 #include "Core/Config/Locate/Locate.h"
 #include "Core/Config/Types/Filepaths.h"
 #include "Core/UI/MainWindow.h"
-#include "CppUtils/Log/QtLog.h"
 
+#include <CppUtils/Log/QtLog.h>
 #include <QApplication>
 #include <QDebug>
 #include <QLatin1StringView>

@@ -3,8 +3,7 @@
 
 #pragma once
 
-#include "TomlQt/ArrayBounds.h"
-
+#include <TomlQt/ArrayBounds.h>
 #include <optional>
 #include <toml++/toml.hpp>
 #include <type_traits>

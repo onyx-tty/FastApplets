@@ -7,8 +7,8 @@
 #include "Core/Config/Types/NodeView.h"
 #include "PathContext/PathContext.h"
 #include "Resolve.h"
-#include "TomlQt/TomlQt.h"
 
+#include <TomlQt/TomlQt.h>
 #include <cstddef>
 #include <optional>
 #include <toml++/toml.hpp>
