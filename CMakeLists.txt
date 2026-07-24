@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.16)
 
-project(FastApplets VERSION 1.0.0)
+project(FastApplets VERSION 3.0.0)
 
 option(BUILD_POWER_APPLET "Include PowerApplet in the building process" ON)
 option(BUILD_ACTION_APPLET "Include ActionApplet in the building process" ON)
