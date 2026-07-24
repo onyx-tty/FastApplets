@@ -2,10 +2,9 @@ cmake_minimum_required(VERSION 3.16)
 
 project(FastApplets VERSION 1.0.0)
 
-# Applets for building
-option(BUILD_POWERAPPLET "Include PowerApplet in the building process" ON)
-option(BUILD_ACTIONAPPLET "Include ActionApplet in the building process" ON)
-option(BUILD_PLAYERAPPLET "Include PlayerApplet in the building process" ON)
+option(BUILD_POWER_APPLET "Include PowerApplet in the building process" ON)
+option(BUILD_ACTION_APPLET "Include ActionApplet in the building process" ON)
+option(BUILD_PLAYER_APPLET "Include PlayerApplet in the building process" ON)
 
 set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -53,15 +52,15 @@ set(ROOT_DIR ${CMAKE_CURRENT_LIST_DIR})
 
 add_subdirectories(resources Core)
 
-if(BUILD_POWERAPPLET)
+if(BUILD_POWER_APPLET)
         add_subdirectory(PowerApplet)
 endif()
 
-if(BUILD_ACTIONAPPLET)
+if(BUILD_ACTION_APPLET)
         add_subdirectory(ActionApplet)
 endif()
 
-if(BUILD_PLAYERAPPLET)
+if(BUILD_PLAYER_APPLET)
         add_subdirectory(PlayerApplet)
 endif()
 
@@ -96,7 +95,7 @@ install(# Install compiled artifacts to correct destinations, register all targe
         RUNTIME  DESTINATION ${CMAKE_INSTALL_BINDIR}
         INCLUDES DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
 
-if(BUILD_POWERAPPLET)
+if(BUILD_POWER_APPLET)
         install(
                 TARGETS PowerApplet
                         PowerApplet_Types
@@ -107,7 +106,7 @@ if(BUILD_POWERAPPLET)
                 INCLUDES DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
 endif()
 
-if(BUILD_ACTIONAPPLET)
+if(BUILD_ACTION_APPLET)
         install(
                 TARGETS ActionApplet
                         ActionApplet_Types
@@ -118,7 +117,7 @@ if(BUILD_ACTIONAPPLET)
                 INCLUDES DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
 endif()
 
-if(BUILD_PLAYERAPPLET)
+if(BUILD_PLAYER_APPLET)
         install(
                 TARGETS PlayerApplet
                         PlayerApplet_Types
