@@ -30,17 +30,7 @@ std::optional<T> config::resolve::from(const Candidates&  candidates,
 
         // Collapse extraction logic into that of a corresponding type
         static auto extract = [&](node_view node) -> std::optional<DT> {
-                if constexpr (std::is_same_v<DT, QSize>) {
-                        return tomlqt::value<QSize>(node);
-                } else if constexpr (std::is_same_v<DT, Qt::Alignment>) {
-                        return tomlqt::value<Qt::Alignment>(node);
-                } else if constexpr (std::is_same_v<DT, QSizePolicy>) {
-                        return tomlqt::value<QSizePolicy>(node);
-                } else if constexpr (std::is_same_v<DT, QString>) {
-                        return tomlqt::value<QString>(node);
-                } else {
-                        return node.value<DT>();
-                }
+                return tomlqt::value<DT>(node);
         };
 
         // Collapse logging message variants
