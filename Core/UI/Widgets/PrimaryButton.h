@@ -10,6 +10,7 @@
 
 #include "Core/Config/KeysFile/Types/Keybindings.h"
 #include "Core/UI/Types/ButtonType.h"
+#include "Core/UI/Types/PrimaryButtons.h"
 
 namespace config::schema::properties {
 class PrimaryButton;
@@ -41,11 +42,10 @@ class QWidget;
 // Returns a vector containing every created button.
 // Calls qFatal instead if no button params are found.
 // TODO: This function does too much. It should not resolve keys on top of button construction.
-std::vector<PrimaryButton*> makePrimaryButtons(
-        const std::vector<PrimaryButtonParams>&          params,
-        const config::schema::properties::PrimaryButton& properties,
-        const std::vector<keybindings>& keys, const std::vector<keybindings>& default_keys,
-        QWidget* parent);
+PrimaryButtons makePrimaryButtons(const std::vector<PrimaryButtonParams>&          params,
+                                  const config::schema::properties::PrimaryButton& properties,
+                                  const std::vector<keybindings>&                  keys,
+                                  const std::vector<keybindings>& default_keys, QWidget* parent);
 
 // Main button widget used for core functionality.
 // It sets given text and icon, and aligns them according to alignments passed in

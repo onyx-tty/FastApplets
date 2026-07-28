@@ -3,6 +3,7 @@
 
 #include "CentralWidget.h"
 #include "Core/Config/KeysFile/Types/Keybindings.h"
+#include "Core/UI/Types/PrimaryButtons.h"
 #include "Widgets/PrimaryButton.h"
 
 #include <algorithm>
@@ -17,7 +18,7 @@
 
 namespace {
 
-[[nodiscard]] PrimaryButton* findPrimaryButton(int key, std::vector<PrimaryButton*> buttons) {
+[[nodiscard]] PrimaryButton* findPrimaryButton(int key, PrimaryButtons buttons) {
         const auto iter = std::find_if(buttons.cbegin(), buttons.cend(),
                                        [key](const PrimaryButton* button) -> bool {
                                                if (!button) { return false; }
@@ -33,7 +34,7 @@ namespace {
 
 } // namespace
 
-CentralWidget::CentralWidget(std::vector<PrimaryButton*> buttons, const keybindings& quit_keys,
+CentralWidget::CentralWidget(PrimaryButtons buttons, const keybindings& quit_keys,
                              bool double_key_press, QWidget* parent) :
         QWidget(parent), buttons(std::move(buttons)), quit_keys(quit_keys),
         double_key_press(double_key_press) {
@@ -96,6 +97,6 @@ void CentralWidget::showEvent(QShowEvent* event) {
         this->setFocus(Qt::FocusReason::OtherFocusReason);
 }
 
-const std::vector<PrimaryButton*>& CentralWidget::getButtons() const {
+const PrimaryButtons& CentralWidget::getButtons() const {
         return buttons;
 }

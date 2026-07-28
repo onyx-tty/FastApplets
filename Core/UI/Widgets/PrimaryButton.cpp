@@ -6,6 +6,7 @@
 #include "Core/Config/KeysFile/Types/Keybindings.h"
 #include "Core/Shell/Shell.h"
 #include "Core/UI/Types/ButtonType.h"
+#include "Core/UI/Types/PrimaryButtons.h"
 #include "Core/UI/Widgets/PrimaryButtonParams.h"
 
 #include <utility>
@@ -24,11 +25,10 @@
 
 using namespace config::schema;
 
-std::vector<PrimaryButton*> makePrimaryButtons(const std::vector<PrimaryButtonParams>& params,
-                                               const properties::PrimaryButton&        properties,
-                                               const std::vector<keybindings>&         keys,
-                                               const std::vector<keybindings>&         default_keys,
-                                               QWidget*                                parent) {
+PrimaryButtons makePrimaryButtons(const std::vector<PrimaryButtonParams>& params,
+                                  const properties::PrimaryButton&        properties,
+                                  const std::vector<keybindings>&         keys,
+                                  const std::vector<keybindings>& default_keys, QWidget* parent) {
         // TODO If applied key is already used elsewhere, the keybindings will be unpredictable.
         //      For example if for some reason keybinding for primary button 3 is Qt_Key4 and
         //      primary button 4 has missing keybinding, both buttons will be assigned to Qt_Key4.
@@ -48,7 +48,7 @@ std::vector<PrimaryButton*> makePrimaryButtons(const std::vector<PrimaryButtonPa
                 return keybindings{Qt::Key_unknown};
         };
 
-        std::vector<PrimaryButton*> buttons = {};
+        PrimaryButtons buttons = {};
         buttons.reserve(params.size());
 
         for (size_t i = 0; i != params.size(); ++i) {

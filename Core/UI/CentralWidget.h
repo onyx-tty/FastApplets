@@ -4,6 +4,7 @@
 #pragma once
 
 #include "Core/Config/KeysFile/Types/Keybindings.h"
+#include "Core/UI/Types/PrimaryButtons.h"
 
 #include <vector>
 #include <QObject>
@@ -27,12 +28,12 @@ class CentralWidget : public QWidget {
         Q_OBJECT
 
 private:
-        std::vector<PrimaryButton*> buttons;
-        const keybindings&          quit_keys;
-        bool                        double_key_press;
+        PrimaryButtons     buttons;
+        const keybindings& quit_keys;
+        bool               double_key_press;
 
 public:
-        explicit CentralWidget(std::vector<PrimaryButton*> buttons, const keybindings& quit_keys,
+        explicit CentralWidget(PrimaryButtons buttons, const keybindings& quit_keys,
                                bool double_key_press, QWidget* parent);
 
         // Adds the stage-then-confirm keyboard navigation. See class doc for more.
@@ -42,5 +43,5 @@ public:
         // stage-then-confirm flow consistent from the first keypress.
         void showEvent(QShowEvent* event) override;
 
-        [[nodiscard]] const std::vector<PrimaryButton*>& getButtons() const;
+        [[nodiscard]] const PrimaryButtons& getButtons() const;
 };
