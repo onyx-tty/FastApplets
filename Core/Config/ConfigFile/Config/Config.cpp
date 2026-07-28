@@ -2,27 +2,28 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 
 #include "Config.h"
-#include "Core/Config/ConfigFile/Properties/Layout.h"
-#include "Core/Config/ConfigFile/Properties/PrimaryButton.h"
-#include "Core/Config/ConfigFile/Properties/Window.h"
+#include "Core/UI/Types/LayoutProperties.h"
+#include "Core/UI/Types/PrimaryButtonStyle.h"
+#include "Core/UI/Types/WindowParams.h"
 
 #include <utility>
 
 using namespace config::schema;
-using namespace config::schema::properties;
 
-Config::Config(Window window, PrimaryButton primary_button, Layout layout) :
-        window_properties(std::move(window)), primary_button_properties(std::move(primary_button)),
-        layout_properties(std::move(layout)) {}
+Config::Config(WindowParams window_params, PrimaryButtonStyle primary_button_style,
+               LayoutProperties layout_properties) :
+        window_params(std::move(window_params)),
+        primary_button_style(std::move(primary_button_style)),
+        layout_properties(std::move(layout_properties)) {}
 
-const Window& Config::getWindowProperties() const {
-        return window_properties;
+const WindowParams& Config::getWindowParams() const {
+        return window_params;
 }
 
-const PrimaryButton& Config::getPrimaryButtonProperties() const {
-        return primary_button_properties;
+const PrimaryButtonStyle& Config::getPrimaryButtonStyle() const {
+        return primary_button_style;
 }
 
-const Layout& Config::getLayoutProperties() const {
+const LayoutProperties& Config::getLayoutProperties() const {
         return layout_properties;
 }

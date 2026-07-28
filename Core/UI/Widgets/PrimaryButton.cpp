@@ -2,11 +2,11 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 
 #include "PrimaryButton.h"
-#include "Core/Config/ConfigFile/Properties/PrimaryButton.h"
 #include "Core/Config/KeysFile/Types/Keybindings.h"
 #include "Core/Shell/Shell.h"
 #include "Core/UI/Types/ButtonType.h"
 #include "Core/UI/Types/PrimaryButtonParams.h"
+#include "Core/UI/Types/PrimaryButtonStyle.h"
 #include "Core/UI/Types/PrimaryButtons.h"
 
 #include <utility>
@@ -23,10 +23,8 @@
 #include <QWidget>
 #include <Qt>
 
-using namespace config::schema;
-
 PrimaryButtons makePrimaryButtons(const std::vector<PrimaryButtonParams>& params,
-                                  const properties::PrimaryButton&        properties,
+                                  const PrimaryButtonStyle&               style,
                                   const std::vector<keybindings>&         keys,
                                   const std::vector<keybindings>& default_keys, QWidget* parent) {
         // TODO If applied key is already used elsewhere, the keybindings will be unpredictable.
@@ -57,8 +55,7 @@ PrimaryButtons makePrimaryButtons(const std::vector<PrimaryButtonParams>& params
                 QString     text    = params[i].text;
                 QString     command = params[i].command;
                 keybindings keys    = key_getter(i);
-                auto*       button  = new PrimaryButton(type, icon, text, keys, command, properties,
-                                                        parent);
+                auto* button = new PrimaryButton(type, icon, text, keys, command, style, parent);
                 buttons.push_back(button);
         }
 
@@ -125,8 +122,8 @@ void PrimaryButton::setLabel(QLabel* label, const QString& text, const QPixmap& 
 }
 
 PrimaryButton::PrimaryButton(button_type type, const QIcon& icon, const QString& text,
-                             keybindings keys, QString command,
-                             const properties::PrimaryButton& properties, QWidget* parent) :
+                             keybindings keys, QString command, const PrimaryButtonStyle& style,
+                             QWidget* parent) :
         QPushButton(parent), type(type), keys(std::move(keys)), command(std::move(command)),
         focus_reason(Qt::FocusReason::NoFocusReason) {
         connect(this, &PrimaryButton::clicked, [this]() { runCommand(this->command); });
@@ -141,12 +138,11 @@ PrimaryButton::PrimaryButton(button_type type, const QIcon& icon, const QString&
         stacked->setStackingMode(QStackedLayout::StackAll);
         setLayout(stacked);
 
-        setIconSize(properties.getIconSize());
-        setSizePolicy(properties.getPolicy());
+        setIconSize(style.icon_size);
+        setSizePolicy(style.policy);
         setAutoDefault(false);
-        setLabel(text_label, text, {}, properties.getTextAlignment(), properties.getPolicy());
-        setLabel(icon_label, {}, icon.pixmap(properties.getIconSize()),
-                 properties.getIconAlignment(), properties.getPolicy());
+        setLabel(text_label, text, {}, style.text_alignment, style.policy);
+        setLabel(icon_label, {}, icon.pixmap(style.icon_size), style.icon_alignment, style.policy);
 }
 
 void PrimaryButton::focusInEvent(QFocusEvent* event) {

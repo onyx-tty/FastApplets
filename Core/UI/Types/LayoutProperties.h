@@ -7,10 +7,6 @@
 
 #include <vector>
 
-namespace config {
-class ConfigMapper;
-} // namespace config
-
 class QIcon;
 class QString;
 
@@ -26,18 +22,7 @@ template<typename TPrimaryButtonType>
 template<typename TPrimaryButtonType>
 [[nodiscard]] QString commandFor(TPrimaryButtonType type);
 
-namespace config::schema::properties {
-
 // Stores properties describing the appearance of the layout.
-class Layout final {
-private:
-        friend class config::ConfigMapper;
-
+struct LayoutProperties final {
         std::vector<PrimaryButtonParams> primary_buttons;
-
-public:
-        explicit Layout(std::vector<PrimaryButtonParams> primary_buttons = {});
-        [[nodiscard]] const std::vector<PrimaryButtonParams>& getPrimaryButtons() const;
 };
-
-} // namespace config::schema::properties

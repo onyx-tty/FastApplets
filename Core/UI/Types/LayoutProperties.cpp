@@ -1,13 +1,10 @@
 // SPDX-FileCopyrightText: 2026 Łukasz Wrodarczyk
 // SPDX-License-Identifier: GPL-3.0-or-later
 
-#include "Layout.h"
+#include "LayoutProperties.h"
 #include "Core/UI/Types/ButtonType.h"
-#include "Core/UI/Types/PrimaryButtonParams.h"
 
-#include <utility>
 #include <variant>
-#include <vector>
 #include <QIcon>
 #include <QResource>
 #include <QString>
@@ -122,15 +119,4 @@ QString textFor<std::monostate>(std::monostate type) {
 template<>
 QString commandFor<std::monostate>(std::monostate type) {
         return {};
-}
-
-using Layout = config::schema::properties::Layout;
-
-/* Layout Properties */
-
-Layout::Layout(std::vector<PrimaryButtonParams> primary_buttons) :
-        primary_buttons(std::move(primary_buttons)) {}
-
-const std::vector<PrimaryButtonParams>& Layout::getPrimaryButtons() const {
-        return primary_buttons;
 }

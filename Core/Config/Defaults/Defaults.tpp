@@ -6,13 +6,13 @@
 #include "Core/Applets/Types/Traits.h"
 #include "Core/Applets/Types/Type.h"
 #include "Core/Config/ConfigFile/Config/Config.h"
-#include "Core/Config/ConfigFile/Properties/Layout.h"
-#include "Core/Config/ConfigFile/Properties/PrimaryButton.h"
-#include "Core/Config/ConfigFile/Properties/Window.h"
 #include "Core/Config/KeysFile/Keys/Keys.h"
 #include "Core/Config/KeysFile/Types/Keybindings.h"
 #include "Core/UI/Types/ButtonType.h"
+#include "Core/UI/Types/LayoutProperties.h"
 #include "Core/UI/Types/PrimaryButtonParams.h"
+#include "Core/UI/Types/PrimaryButtonStyle.h"
+#include "Core/UI/Types/WindowParams.h"
 #include "Defaults.h"
 
 #include <utility>
@@ -24,24 +24,21 @@
 
 template<applet::type TApplet>
 config::schema::Config config::makeDefaultConfig() {
-        using Window             = config::schema::properties::Window;
-        using PrimaryButton      = config::schema::properties::PrimaryButton;
-        using Layout             = config::schema::properties::Layout;
         using TPrimaryButtonType = applet::Traits<TApplet>::TPrimaryButtonType;
 
         constexpr QSize size   = {960, 220};
         QString         title  = applet::Traits<TApplet>::title.toString();
-        auto            window = Window(size, std::move(title));
+        auto            window = WindowParams(size, std::move(title));
 
         constexpr bool          double_key_press = true;
         constexpr Qt::Alignment text_alignment   = {Qt::AlignHCenter, Qt::AlignTop};
         constexpr Qt::Alignment icon_alignment   = {Qt::AlignHCenter, Qt::AlignVCenter};
         constexpr QSize         icon_size        = {64, 64};
         constexpr QSizePolicy   policy           = {QSizePolicy::Expanding, QSizePolicy::Expanding};
-        auto button = PrimaryButton(double_key_press, text_alignment, icon_alignment, icon_size,
-                                    policy);
+        auto button = PrimaryButtonStyle(text_alignment, icon_alignment, icon_size, policy,
+                                         double_key_press);
 
-        auto layout = Layout();
+        auto layout = LayoutProperties();
 
         constexpr auto param = [](TPrimaryButtonType type) -> PrimaryButtonParams {
                 return {.type    = type,
@@ -67,7 +64,7 @@ config::schema::Config config::makeDefaultConfig() {
                           param(volume_up),  param(volume_down), param(volume_mute_output)};
         }
 
-        layout = Layout(std::move(params));
+        layout = LayoutProperties(std::move(params));
 
         return Config(window, button, layout);
 }

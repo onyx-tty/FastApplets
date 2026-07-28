@@ -1,4 +1,9 @@
 add_applet_library(Core_UI_Types
-        SOURCES ButtonType.cpp
+        SOURCES ButtonType.cpp LayoutProperties.cpp
 
-        PRIVATE_DEPS Qt${QT_VERSION_MAJOR}::Gui)
+        PUBLIC_DEPS Core::UI::Types
+                    Qt${QT_VERSION_MAJOR}::Widgets
+
+        PRIVATE_DEPS Core::UI::Types
+                     Resources::Icons
+                     tomlplusplus::tomlplusplus)

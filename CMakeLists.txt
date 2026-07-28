@@ -75,7 +75,6 @@ install(# Install compiled artifacts to correct destinations, register all targe
         TARGETS Core_Config
                 Core_Config_ConfigFile
                 Core_Config_ConfigFile_Config Core_Config_ConfigFile_Mapper
-                Core_Config_ConfigFile_Properties
                 Core_Config_KeysFile
                 Core_Config_KeysFile_Keys Core_Config_KeysFile_Mapper
                 Core_Config_KeysFile_Types

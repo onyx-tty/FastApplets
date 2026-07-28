@@ -3,10 +3,9 @@
 
 #pragma once
 
-#include "Core/Applets/Types/Type.h"
-#include "Core/Config/ConfigFile/Properties/Layout.h"
-#include "Core/Config/ConfigFile/Properties/PrimaryButton.h"
-#include "Core/Config/ConfigFile/Properties/Window.h"
+#include "Core/UI/Types/LayoutProperties.h"
+#include "Core/UI/Types/PrimaryButtonStyle.h"
+#include "Core/UI/Types/WindowParams.h"
 
 namespace config {
 class ConfigMapper;
@@ -14,25 +13,22 @@ class ConfigMapper;
 
 namespace config::schema {
 
-using properties::Layout;
-using properties::PrimaryButton;
-using properties::Window;
-
-// Holds user-configured properties used by an applet.
+// Holds user configuration used by the applets.
 class Config {
 private:
         friend class config::ConfigMapper;
 
-        Window        window_properties;
-        PrimaryButton primary_button_properties;
-        Layout        layout_properties;
+        WindowParams       window_params;
+        PrimaryButtonStyle primary_button_style;
+        LayoutProperties   layout_properties;
 
 public:
-        explicit Config(Window window = Window{}, PrimaryButton primary_button = PrimaryButton{},
-                        Layout layout = Layout{});
-        [[nodiscard]] const Window&        getWindowProperties() const;
-        [[nodiscard]] const PrimaryButton& getPrimaryButtonProperties() const;
-        [[nodiscard]] const Layout&        getLayoutProperties() const;
+        explicit Config(WindowParams       window_params        = WindowParams(),
+                        PrimaryButtonStyle primary_button_style = PrimaryButtonStyle(),
+                        LayoutProperties   layout_properties    = LayoutProperties());
+        [[nodiscard]] const WindowParams&       getWindowParams() const;
+        [[nodiscard]] const PrimaryButtonStyle& getPrimaryButtonStyle() const;
+        [[nodiscard]] const LayoutProperties&   getLayoutProperties() const;
 };
 
 } // namespace config::schema
