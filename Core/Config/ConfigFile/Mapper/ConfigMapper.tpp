@@ -14,7 +14,7 @@
 #include "Core/Config/Resolve/Types/ResolverCandidate.h"
 #include "Core/Config/Types/NodeView.h"
 #include "Core/UI/Types/ButtonType.h"
-#include "Core/UI/Widgets/PrimaryButtonParams.h"
+#include "Core/UI/Types/PrimaryButtonParams.h"
 
 #include <cstddef>
 #include <optional>
@@ -74,7 +74,7 @@ std::vector<PrimaryButtonParams> config::ConfigMapper::primaryButtons(
         using namespace config;
 
         const auto* arr = resolve::fromAs<toml::array>(candidates, path_context, {.min_size = 1},
-                                                     u"Format: [primary buttons...]");
+                                                       u"Format: [primary buttons...]");
         if (!arr) { return defaults; }
 
         std::vector<PrimaryButtonParams> found = {};

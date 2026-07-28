@@ -5,5 +5,5 @@ add_applet_library(Core_UI_Widgets
                      Core::Config::KeysFile::Types
                      Core::Shell
 
-        PUBLIC_DEPS Core::UI::Types # PrimaryButtonParams
+        PUBLIC_DEPS Core::UI::Types
                     Qt${QT_VERSION_MAJOR}::Widgets)

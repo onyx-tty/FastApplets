@@ -12,7 +12,7 @@
 #include "Core/Config/KeysFile/Keys/Keys.h"
 #include "Core/Config/KeysFile/Types/Keybindings.h"
 #include "Core/UI/Types/ButtonType.h"
-#include "Core/UI/Widgets/PrimaryButtonParams.h"
+#include "Core/UI/Types/PrimaryButtonParams.h"
 #include "Defaults.h"
 
 #include <utility>

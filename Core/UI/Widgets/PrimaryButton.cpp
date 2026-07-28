@@ -6,8 +6,8 @@
 #include "Core/Config/KeysFile/Types/Keybindings.h"
 #include "Core/Shell/Shell.h"
 #include "Core/UI/Types/ButtonType.h"
+#include "Core/UI/Types/PrimaryButtonParams.h"
 #include "Core/UI/Types/PrimaryButtons.h"
-#include "Core/UI/Widgets/PrimaryButtonParams.h"
 
 #include <utility>
 #include <vector>

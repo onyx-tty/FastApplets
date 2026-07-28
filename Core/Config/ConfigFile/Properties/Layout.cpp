@@ -3,7 +3,7 @@
 
 #include "Layout.h"
 #include "Core/UI/Types/ButtonType.h"
-#include "Core/UI/Widgets/PrimaryButtonParams.h"
+#include "Core/UI/Types/PrimaryButtonParams.h"
 
 #include <utility>
 #include <variant>
@@ -96,12 +96,12 @@ QString commandFor<volume_button_type>(volume_button_type type) {
         using enum volume_button_type;
 
         switch (type) {
-        case play_pause:         return "playerctl play-pause";
-        case next:               return "playerctl next";
-        case previous:           return "playerctl previous";
-        case volume_up:          return "playerctl volume 0.1+";
-        case volume_down:        return "playerctl volume 0.1-";
-        default:                 return "";
+        case play_pause:  return "playerctl play-pause";
+        case next:        return "playerctl next";
+        case previous:    return "playerctl previous";
+        case volume_up:   return "playerctl volume 0.1+";
+        case volume_down: return "playerctl volume 0.1-";
+        default:          return "";
         }
 }
 

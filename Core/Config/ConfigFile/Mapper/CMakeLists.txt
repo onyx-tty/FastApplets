@@ -7,7 +7,6 @@ add_applet_library(Core_Config_ConfigFile_Mapper
                     Core::Config::Resolve::PathContext
                     Core::Config::Resolve::Types
                     Core::Config::Types
-                    Core::UI::Widgets
                     Core::UI::Types
                     Core::Applets::Types
                     tomlplusplus::tomlplusplus

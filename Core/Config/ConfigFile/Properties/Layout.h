@@ -3,7 +3,7 @@
 
 #pragma once
 
-#include "Core/UI/Widgets/PrimaryButtonParams.h"
+#include "Core/UI/Types/PrimaryButtonParams.h"
 
 #include <vector>
 
