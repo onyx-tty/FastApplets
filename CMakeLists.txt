@@ -29,6 +29,7 @@ file(
 include(${CMAKE_CURRENT_BINARY_DIR}/cmake/CPM.cmake)
 
 find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets)
+find_package(tomlplusplus REQUIRED)
 
 if(ENABLE_CLANG_TIDY)
         set(CMAKE_CXX_CLANG_TIDY
