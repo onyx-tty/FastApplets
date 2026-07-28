@@ -10,6 +10,7 @@
 #include "Core/Config/KeysFile/Types/Keybindings.h"
 #include "Core/UI/Types/ButtonType.h"
 #include "Core/UI/Types/LayoutProperties.h"
+#include "Core/UI/Types/PrimaryButtonBehavior.h"
 #include "Core/UI/Types/PrimaryButtonParams.h"
 #include "Core/UI/Types/PrimaryButtonStyle.h"
 #include "Core/UI/Types/WindowParams.h"
@@ -30,13 +31,15 @@ config::schema::Config config::makeDefaultConfig() {
         QString         title  = applet::Traits<TApplet>::title.toString();
         auto            window = WindowParams(size, std::move(title));
 
-        constexpr bool          double_key_press = true;
-        constexpr Qt::Alignment text_alignment   = {Qt::AlignHCenter, Qt::AlignTop};
-        constexpr Qt::Alignment icon_alignment   = {Qt::AlignHCenter, Qt::AlignVCenter};
-        constexpr QSize         icon_size        = {64, 64};
-        constexpr QSizePolicy   policy           = {QSizePolicy::Expanding, QSizePolicy::Expanding};
-        auto button = PrimaryButtonStyle(text_alignment, icon_alignment, icon_size, policy,
-                                         double_key_press);
+        constexpr Qt::Alignment text_alignment = {Qt::AlignHCenter, Qt::AlignTop};
+        constexpr Qt::Alignment icon_alignment = {Qt::AlignHCenter, Qt::AlignVCenter};
+        constexpr QSize         icon_size      = {64, 64};
+        constexpr QSizePolicy   policy         = {QSizePolicy::Expanding, QSizePolicy::Expanding};
+        // TODO: constexpr
+        auto style = PrimaryButtonStyle(text_alignment, icon_alignment, icon_size, policy);
+
+        constexpr bool double_key_press = true;
+        constexpr auto behavior         = PrimaryButtonBehavior(double_key_press);
 
         auto layout = LayoutProperties();
 
@@ -66,7 +69,7 @@ config::schema::Config config::makeDefaultConfig() {
 
         layout = LayoutProperties(std::move(params));
 
-        return Config(window, button, layout);
+        return Config(window, style, behavior, layout);
 }
 
 template<applet::type TApplet>

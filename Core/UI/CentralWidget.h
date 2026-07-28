@@ -4,6 +4,7 @@
 #pragma once
 
 #include "Core/Config/KeysFile/Types/Keybindings.h"
+#include "Core/UI/Types/PrimaryButtonBehavior.h"
 #include "Core/UI/Types/PrimaryButtons.h"
 
 #include <vector>
@@ -34,7 +35,7 @@ private:
 
 public:
         explicit CentralWidget(PrimaryButtons buttons, const keybindings& quit_keys,
-                               bool double_key_press, QWidget* parent);
+                               PrimaryButtonBehavior behavior, QWidget* parent);
 
         // Adds the stage-then-confirm keyboard navigation. See class doc for more.
         void keyPressEvent(QKeyEvent* event) override;

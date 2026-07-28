@@ -40,7 +40,7 @@ WindowParams config::ConfigMapper::windowParams(const Candidates&   candidates,
                 });
 }
 
-/* LayoutProperties */
+/* PrimaryButtonStyle */
 
 PrimaryButtonStyle config::ConfigMapper::primaryButtonStyle(const Candidates&         candidates,
                                                             const PrimaryButtonStyle& defaults,
@@ -74,11 +74,21 @@ PrimaryButtonStyle config::ConfigMapper::primaryButtonStyle(const Candidates&   
                                                                    "policy"),
                                                            path_context.makeExtended("policy"))
                                         .value_or(defaults.policy);
-
-                        button.double_key_press =
-                                resolve::from<bool>(candidates.makeCopy().withExtension(
-                                                            "double_key_press"),
-                                                    path_context.makeExtended("double_key_press"))
-                                        .value_or(defaults.double_key_press);
                 });
+}
+
+/* PrimaryButtonBehavior */
+PrimaryButtonBehavior config::ConfigMapper::primaryButtonBehavior(
+        const Candidates& candidates, const PrimaryButtonBehavior& defaults,
+        const PathContext& path_context) {
+        return mapProperties(candidates, defaults, path_context,
+                             [&defaults, &candidates](PrimaryButtonBehavior& button,
+                                                      const PathContext&     path_context) {
+                                     button.double_key_press =
+                                             resolve::from<bool>(candidates.makeCopy().withExtension(
+                                                                         "double_key_press"),
+                                                                 path_context.makeExtended(
+                                                                         "double_key_press"))
+                                                     .value_or(defaults.double_key_press);
+                             });
 }

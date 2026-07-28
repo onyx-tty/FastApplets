@@ -14,5 +14,4 @@ struct PrimaryButtonStyle final {
         Qt::Alignment icon_alignment;
         QSize         icon_size;
         QSizePolicy   policy;
-        bool          double_key_press;
 };

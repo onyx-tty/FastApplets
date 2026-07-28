@@ -3,12 +3,12 @@
 
 #include "CentralWidget.h"
 #include "Core/Config/KeysFile/Types/Keybindings.h"
+#include "Core/UI/Types/PrimaryButtonBehavior.h"
 #include "Core/UI/Types/PrimaryButtons.h"
 #include "Widgets/PrimaryButton.h"
 
 #include <algorithm>
 #include <utility>
-#include <vector>
 #include <QApplication>
 #include <QHBoxLayout>
 #include <QKeyEvent>
@@ -35,9 +35,9 @@ namespace {
 } // namespace
 
 CentralWidget::CentralWidget(PrimaryButtons buttons, const keybindings& quit_keys,
-                             bool double_key_press, QWidget* parent) :
+                             PrimaryButtonBehavior behavior, QWidget* parent) :
         QWidget(parent), buttons(std::move(buttons)), quit_keys(quit_keys),
-        double_key_press(double_key_press) {
+        double_key_press(behavior.double_key_press) {
         setLayout(new QHBoxLayout(this));
 
         // Makes CentralWidget the parent of each button and adds them to the layout.

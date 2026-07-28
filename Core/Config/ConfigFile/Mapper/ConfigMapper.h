@@ -5,6 +5,7 @@
 
 #include "Core/Applets/Types/Type.h"
 #include "Core/Config/ConfigFile/Config/Config.h"
+#include "Core/UI/Types/PrimaryButtonBehavior.h"
 
 #include <optional>
 #include <toml++/toml.hpp>
@@ -18,6 +19,7 @@ class PathContext;
 class LayoutProperties;
 class PrimaryButtonParams;
 class PrimaryButtonStyle;
+class PrimaryButtonBehavior;
 class WindowParams;
 class QString;
 class QSize;
@@ -25,7 +27,7 @@ class QSizePolicy;
 
 namespace config {
 
-// Maps TOML configuration to config::schema::Config structure.
+// Maps TOML configuration to the config::schema::Config structure.
 //
 // All mapping failures will fall back to hardcoded defaults and log warnings.
 // Malformed values (wrong type, out of range, etc.) are treated as failures.
@@ -45,7 +47,7 @@ private:
 
         // Maps WindowParams from config nodes.
         //
-        // Fallback priority: applet.window -> global.window -> hardcoded defaults
+        // Fallback priority: applet.window_params -> global.window_params -> hardcoded defaults
         //
         // Expected format: window table containing title (string) and
         //                  size (array of two integers)
@@ -59,7 +61,7 @@ private:
 
         // Maps PrimaryButtonStyle from config candidates.
         //
-        // Fallback priority: applet.primary_button -> global.primary_button ->
+        // Fallback priority: applet.primary_button_style -> global.primary_button_style ->
         //                    hardcoded defaults
         //
         // Expected format: primary button table containing text_alignment (string),
@@ -69,6 +71,20 @@ private:
         // Return value: PrimaryButtonStyle
         [[nodiscard]] static PrimaryButtonStyle primaryButtonStyle(
                 const Candidates& candidates, const PrimaryButtonStyle& defaults,
+                const PathContext& path_context);
+
+        /* PrimaryButtonBehavior */
+
+        // Maps PrimaryButtonBehavior from config candidates.
+        //
+        // Fallback priority: applet.primary_button_behavior -> global.primary_button_behavior ->
+        //                    hardcoded defaults
+        //
+        // Expected format: primary button table containing double_key_press (bool).
+        //
+        // Return value: PrimaryButtonBehavior
+        [[nodiscard]] static PrimaryButtonBehavior primaryButtonBehavior(
+                const Candidates& candidates, const PrimaryButtonBehavior& defaults,
                 const PathContext& path_context);
 
         /* LayoutProperties */
