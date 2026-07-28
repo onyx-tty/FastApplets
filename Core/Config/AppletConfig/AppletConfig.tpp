@@ -16,12 +16,8 @@
 #include <QtGlobal>
 
 template<applet::type TApplet>
+requires(TApplet != applet::type::global)
 config::AppletConfig config::makeAppletConfig(const Filepaths& applet, const Filepaths& global) {
-        // TODO: Replace with constraints
-        static_assert(
-                TApplet != applet::type::global,
-                "Passing applet::type::global is an error! It will result in duplicate global nodes!");
-
         auto cfg = AppletConfig();
 
         cfg.default_config = makeDefaultConfig<TApplet>();
@@ -37,6 +33,7 @@ config::AppletConfig config::makeAppletConfig(const Filepaths& applet, const Fil
 }
 
 template<applet::type TApplet>
+requires(TApplet != applet::type::global)
 auto config::makeAppletConfigTuple(const Filepaths& applet, const Filepaths& global) {
         auto cfg = makeAppletConfig<TApplet>(applet, global);
 
