@@ -55,6 +55,11 @@ config::schema::Config config::makeDefaultConfig() {
                 using enum power_button_type;
 
                 params = {param(shutdown), param(reboot), param(suspend), param(hibernate)};
+        } else if constexpr (TApplet == applet::type::action) {
+                params = {{.text    = "Display greeting notification",
+                           .command = "notify-send 'FastApplets' 'Hello!'"},
+                          {.text    = "Display current date",
+                           .command = "notify-send 'Current date:' \"$(date +'%F %H:%M')\""}};
         } else if constexpr (TApplet == applet::type::player) {
                 using enum volume_button_type;
 
