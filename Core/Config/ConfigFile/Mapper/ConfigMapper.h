@@ -59,16 +59,12 @@ private:
 
         /* PrimaryButtonParams */
 
-        // Maps PrimaryButtonParams from a config source.
-        //
-        // Defaults the list of buttons if none are found.
+        // Maps PrimaryButtonParams from a list of candidates.
         //
         // Expected format: primary_button table containing double_key_press (bool),
         //                  text_alignment (string), icon_alignment (string),
         //                  icon_size (array of two integers), policy (string), and
         //                  list (array of tables)
-        //
-        // Fallback priority: applet > global > hardcoded defaults
         //
         // Return value: PrimaryButtonParams
         template<applet::type TApplet>
@@ -76,11 +72,9 @@ private:
                 const Candidates& candidates, const PrimaryButtonParams& defaults,
                 const PathContext& path_context);
 
-        // Maps std::vector<PerPrimaryButtonParams> from a config source.
+        // Maps std::vector<PerPrimaryButtonParams> from a list of candidates.
         //
         // Expected format: array of tables
-        //
-        // Fallback priority: applet > hardcoded defaults
         //
         // Return value: std::vector<PerPrimaryButtonParams>
         template<applet::type TApplet>
@@ -88,27 +82,21 @@ private:
                 const Candidates& candidates, const std::vector<PerPrimaryButtonParams>& defaults,
                 const PathContext& path_context);
 
-        // Maps PerPrimaryButtonParams from a config source.
+        // Maps PerPrimaryButtonParams from a list of candidates.
         //
         // Expected format: primary_buttons.list[index] table containing type (string),
         //                  text (string), and command (string)
         //
-        // applet::type must be specified due to differences in type enums.
-        //
         // Regarding PerPrimaryButtonParams::command: QProcess::splitCommand() does not
         // interpret single quotes as quotes, but as regular characters. This function
         // converts single quotes to double quotes to work around that limitation.
-        //
-        // Fallback priority: applet > hardcoded defaults
         //
         // Return value: std::optional<PerPrimaryButtonParams>
         template<applet::type TApplet>
         [[nodiscard]] static std::optional<PerPrimaryButtonParams> perPrimaryButtonParams(
                 const Candidates& candidates, const PathContext& path_context);
 
-        // Maps PrimaryButtonStyle from config candidates.
-        //
-        // Fallback priority: applet > global > hardcoded defaults
+        // Maps PrimaryButtonStyle from a list of candidates.
         //
         // Expected format: primary_button table containing text_alignment (string),
         //                  icon_alignment (string), icon_size (array of two integers),
@@ -119,9 +107,7 @@ private:
                 const Candidates& candidates, const PrimaryButtonStyle& defaults,
                 const PathContext& path_context);
 
-        // Maps PrimaryButtonBehavior from config candidates.
-        //
-        // Fallback priority: applet > global > hardcoded defaults
+        // Maps PrimaryButtonBehavior from a list of candidates.
         //
         // Expected format: primary button table containing double_key_press (bool).
         //
@@ -136,12 +122,12 @@ public:
         // Parses applet and global tables into config::schema::Config.
         //
         // Usage:
-        //   auto config = ConfigMapper::config<applet::type::x>(applet, global, defaults);
+        //   auto config = ConfigMapper::config<applet::type::foo>(applet, global, defaults);
         //
         // The applet table supplies primary configuration and overrides, global
         // provides fallbacks.
         //
-        // QApplication must exist before calling (initialized in main()).
+        // QApplication must exist before calling.
         //
         // Return value: config::schema::Config
         template<applet::type TApplet>

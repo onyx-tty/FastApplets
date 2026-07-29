@@ -17,8 +17,6 @@ class Candidates;
 class PathContext;
 } // namespace config::resolve
 
-class QString;
-
 // Parses key name strings (e.g. "Ctrl+A") into a keybindings set, stripped of
 // modifiers.
 [[nodiscard]] keybindings keysFromText(const std::vector<std::string>& texts);
@@ -37,30 +35,24 @@ private:
         using Candidates  = config::resolve::Candidates;
         using PathContext = config::resolve::PathContext;
 
-        // Maps quit keybindings from config nodes.
-        //
-        // Fallback priority: applet.quit -> global.quit -> hardcoded defaults
+        // Maps quit keybindings from a list of candidates.
         //
         // Return value: keybindings (std::unordered_set<int>)
         [[nodiscard]] static keybindings quit(const Candidates&  candidates,
                                               const keybindings& defaults,
                                               const PathContext& path_context);
 
-        // Maps the entire primary_buttons array from config nodes.
+        // Maps the entire primary_buttons array from a list of candidates.
         //
         // Length of the vector may differ from defaults if some buttons are omitted
         // from config. Omitted buttons are ignored silently.
-        //
-        // Fallback priority: applet.primary_buttons -> hardcoded defaults
         //
         // Return value: std::vector<keybindings> (std::vector<std::unordered_set<int>>)
         [[nodiscard]] static std::vector<keybindings> primaryButtons(
                 const Candidates& candidates, const std::vector<keybindings>& defaults,
                 const PathContext& path_context);
 
-        // Maps a single button's keybindings from a config candidate.
-        //
-        // Fallback priority: applet.primary_buttons[index] -> hardcoded defaults
+        // Maps a single button's keybindings from a list of candidates.
         //
         // Return value: keybindings (std::unordered_set<int>)
         [[nodiscard]] static keybindings primaryButton(const Candidates&  candidates,
@@ -73,12 +65,12 @@ public:
         // Parses applet and global tables into Keys.
         //
         // Usage:
-        //   auto keys = KeysMapper::keys(applet, global, defaults);
+        //   auto keys = KeysMapper::keys<TApplet>(applet, global, defaults);
         //
         // The applet table supplies primary configuration and overrides, global
         // provides fallbacks.
         //
-        // QApplication must exist before calling (initialized in main()).
+        // QApplication must exist before calling.
         //
         // Return value: config::schema::Keys
         template<applet::type TApplet>
