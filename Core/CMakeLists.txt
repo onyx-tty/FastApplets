@@ -1,3 +1,3 @@
-project(Core VERSION 0.36.6 LANGUAGES CXX)
+project(Core VERSION 0.36.7 LANGUAGES CXX)
 
 add_subdirectories(Config Shell UI Applets/Types Args)
