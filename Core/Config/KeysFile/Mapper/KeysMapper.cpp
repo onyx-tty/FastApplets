@@ -33,13 +33,11 @@ keybindings keysFromText(const std::vector<std::string>& texts) {
         return keys;
 }
 
-std::vector<std::string> textFromTomlArray(const toml::array* arr) {
-        if (!arr) { qFatal("Passed null arr"); }
-
+std::vector<std::string> textFromTomlArray(const toml::array& arr) {
         std::vector<std::string> texts = {};
-        texts.reserve(arr->size());
+        texts.reserve(arr.size());
 
-        for (const auto& element : *arr) {
+        for (const auto& element : arr) {
                 if (const auto* str_element = element.as_string()) {
                         texts.push_back(str_element->get());
                 }
@@ -55,7 +53,7 @@ keybindings config::KeysMapper::quit(const Candidates& candidates, const keybind
 
         if (!keys || keys->empty()) { return defaults; }
 
-        return keysFromText(textFromTomlArray(keys));
+        return keysFromText(textFromTomlArray(*keys));
 }
 
 std::vector<keybindings> config::KeysMapper::primaryButtons(const Candidates& candidates,
@@ -86,5 +84,5 @@ keybindings config::KeysMapper::primaryButton(const Candidates&  candidates,
 
         if (keys->empty()) { return defaults; }
 
-        return keysFromText(textFromTomlArray(keys));
+        return keysFromText(textFromTomlArray(*keys));
 }
