@@ -40,7 +40,7 @@ config::schema::Config config::makeDefaultConfig() {
         constexpr bool double_key_press = true;
         constexpr auto behavior         = PrimaryButtonBehavior(double_key_press);
 
-        constexpr auto param = [](TPrimaryButtonType type) -> PerPrimaryButtonParams {
+        auto param = [](TPrimaryButtonType type) -> PerPrimaryButtonParams {
                 return {.type    = type,
                         .text    = textFor(type),
                         .command = commandFor(type),
