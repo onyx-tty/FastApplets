@@ -6,6 +6,7 @@
 #include "Core/Applets/Types/Type.h"
 #include "Core/UI/Types/PerPrimaryButtonParams.h"
 #include "Core/UI/Types/PrimaryButtonBehavior.h"
+#include "Core/UI/Types/PrimaryButtonParams.h"
 #include "Core/UI/Types/PrimaryButtonStyle.h"
 #include "Core/UI/Types/WindowParams.h"
 
@@ -19,6 +20,9 @@ namespace config::details {
 
 template<applet::type TApplet>
 WindowParams makeWindowParams();
+
+template<applet::type TApplet>
+PrimaryButtonParams makePrimaryButtonParams();
 
 template<applet::type TApplet>
 std::vector<PerPrimaryButtonParams> makePerPrimaryButtonParams();

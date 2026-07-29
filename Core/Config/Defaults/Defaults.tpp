@@ -8,7 +8,6 @@
 #include "Core/Config/Defaults/Helpers/Helpers.h"
 #include "Core/Config/KeysFile/Keys/Keys.h"
 #include "Core/Config/KeysFile/Types/Keybindings.h"
-#include "Core/UI/Types/PrimaryButtonParams.h"
 #include "Defaults.h"
 
 #include <utility>
@@ -20,11 +19,7 @@ config::schema::Config config::makeDefaultConfig() {
         using namespace config::details;
 
         auto window = makeWindowParams<TApplet>();
-
-        auto           per_button = makePerPrimaryButtonParams<TApplet>();
-        constexpr auto style      = makePrimaryButtonStyle();
-        constexpr auto behavior   = makePrimaryButtonBehavior();
-        auto           params     = PrimaryButtonParams(std::move(per_button), style, behavior);
+        auto params = makePrimaryButtonParams<TApplet>();
 
         return Config(std::move(window), std::move(params));
 }

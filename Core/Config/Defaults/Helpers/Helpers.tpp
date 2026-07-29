@@ -7,6 +7,7 @@
 #include "Core/Applets/Types/Type.h"
 #include "Core/UI/Types/ButtonType.h"
 #include "Core/UI/Types/PerPrimaryButtonParams.h"
+#include "Core/UI/Types/PrimaryButtonParams.h"
 #include "Core/UI/Types/WindowParams.h"
 #include "Helpers.h"
 
@@ -23,6 +24,17 @@ WindowParams config::details::makeWindowParams() {
         QString         title = applet::Traits<TApplet>::title.toString();
 
         return WindowParams(size, std::move(title));
+}
+
+template<applet::type TApplet>
+PrimaryButtonParams config::details::makePrimaryButtonParams() {
+        using namespace config::details;
+
+        auto           per_button = makePerPrimaryButtonParams<TApplet>();
+        constexpr auto style      = makePrimaryButtonStyle();
+        constexpr auto behavior   = makePrimaryButtonBehavior();
+
+        return PrimaryButtonParams(std::move(per_button), style, behavior);
 }
 
 template<applet::type TApplet>
