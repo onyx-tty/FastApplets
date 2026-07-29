@@ -61,9 +61,8 @@ config::schema::Config config::makeDefaultConfig() {
         } else if constexpr (TApplet == applet::type::player) {
                 using enum volume_button_type;
 
-                // TODO: Remove volume_mute_output from default params
-                per_params = {param(play_pause), param(next),        param(previous),
-                              param(volume_up),  param(volume_down), param(volume_mute_output)};
+                per_params = {param(play_pause), param(next), param(previous), param(volume_up),
+                              param(volume_down)};
         }
 
         auto params = PrimaryButtonParams(std::move(per_params), std::move(style), behavior);
