@@ -129,8 +129,7 @@ std::optional<PerPrimaryButtonParams> config::ConfigMapper::perPrimaryButtonPara
                                                     path_context.makeExtended("command"))
                                      .value_or(commandFor(t));
 
-        // TODO: remove std::move on iconFor
-        new_button.icon = std::move(iconFor(t));
+        new_button.icon = iconFor(t);
 
         return std::move(new_button);
 }
