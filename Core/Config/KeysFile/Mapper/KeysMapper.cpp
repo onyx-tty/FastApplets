@@ -70,7 +70,7 @@ std::vector<keybindings> config::KeysMapper::primaryButtons(const Candidates& ca
                 keybindings found_for_button = primaryButton(candidates.makeCopy().withExtension(i),
                                                              defaults[i],
                                                              path_context.makeExtended(i));
-                if (!keys->empty()) { buttons.push_back(std::move(found_for_button)); }
+                if (!found_for_button.empty()) { buttons.push_back(std::move(found_for_button)); }
         }
 
         return std::move(buttons);
