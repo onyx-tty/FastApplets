@@ -35,8 +35,7 @@ config::schema::Config config::makeDefaultConfig() {
         constexpr Qt::Alignment icon_alignment = {Qt::AlignHCenter, Qt::AlignVCenter};
         constexpr QSize         icon_size      = {64, 64};
         constexpr QSizePolicy   policy         = {QSizePolicy::Expanding, QSizePolicy::Expanding};
-        // TODO: constexpr
-        auto style = PrimaryButtonStyle(text_alignment, icon_alignment, icon_size, policy);
+        constexpr auto style = PrimaryButtonStyle(text_alignment, icon_alignment, icon_size, policy);
 
         constexpr bool double_key_press = true;
         constexpr auto behavior         = PrimaryButtonBehavior(double_key_press);
@@ -65,7 +64,7 @@ config::schema::Config config::makeDefaultConfig() {
                               param(volume_down)};
         }
 
-        auto params = PrimaryButtonParams(std::move(per_params), std::move(style), behavior);
+        auto params = PrimaryButtonParams(std::move(per_params), style, behavior);
 
         return Config(std::move(window), std::move(params));
 }
