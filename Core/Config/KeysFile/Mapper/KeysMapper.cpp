@@ -22,6 +22,8 @@ using namespace config;
 using config::resolve::Candidates;
 using config::resolve::PathContext;
 
+/* Helpers */
+
 std::optional<int> keyFromText(const std::string& text) {
         return QKeySequence(QString::fromStdString(text))[0].key();
 }
@@ -44,6 +46,8 @@ keybindings keysFromTomlArray(const toml::array& arr) {
 
         return keys;
 }
+
+/* KeysMapper */
 
 keybindings config::KeysMapper::quit(const Candidates& candidates, const keybindings& defaults,
                                      const PathContext& path_context) {
