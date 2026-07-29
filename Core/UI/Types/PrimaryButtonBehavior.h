@@ -3,6 +3,7 @@
 
 #pragma once
 
+// TODO: Document this struct
 struct PrimaryButtonBehavior final {
         bool double_key_press;
 };

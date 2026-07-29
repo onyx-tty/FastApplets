@@ -10,6 +10,9 @@
 #include <vector>
 
 // Parameters required to construct a PrimaryButton.
+//   per_button: Properties unique to each button. Contains type, icon, and text.
+//   style:      Visual properties (alignments, icon size, size policy).
+//   behavior:   Parameters affecting widget logic.
 struct PrimaryButtonParams final {
         std::vector<PerPrimaryButtonParams> per_button;
         PrimaryButtonStyle                  style;

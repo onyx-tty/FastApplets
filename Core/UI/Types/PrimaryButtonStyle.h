@@ -8,6 +8,7 @@
 #include <QSizePolicy>
 #include <Qt>
 
+// TODO: Add more comprehensive docs
 // Stores data used to style each PrimaryButton.
 struct PrimaryButtonStyle final {
         Qt::Alignment text_alignment;
