@@ -6,8 +6,10 @@
 #include "Core/Config/Resolve/PathContext/PathContext.h"
 #include "Core/Config/Resolve/Resolve.h"
 #include "Core/Config/Resolve/Types/ResolverCandidate.h"
+#include "Core/Config/Types/NodeView.h"
 
 #include <cstddef>
+#include <optional>
 #include <string>
 #include <toml++/toml.hpp>
 #include <utility>
@@ -20,30 +22,27 @@ using namespace config;
 using config::resolve::Candidates;
 using config::resolve::PathContext;
 
-int keyFromText(const std::string& text) {
+std::optional<int> keyFromText(const std::string& text) {
         return QKeySequence(QString::fromStdString(text))[0].key();
 }
 
-keybindings keysFromText(const std::vector<std::string>& texts) {
-        keybindings keys = {};
-        keys.reserve(texts.size());
+std::optional<int> keyFromTomlElement(node_view element) {
+        const auto* str = element.as_string();
 
-        for (const std::string& text : texts) { keys.insert(keyFromText(text)); }
+        if (!str) { return std::nullopt; }
 
-        return keys;
+        return keyFromText(str->get());
 }
 
-std::vector<std::string> textFromTomlArray(const toml::array& arr) {
-        std::vector<std::string> texts = {};
-        texts.reserve(arr.size());
+keybindings keysFromTomlArray(const toml::array& arr) {
+        keybindings keys = {};
+        keys.reserve(arr.size());
 
         for (const auto& element : arr) {
-                if (const auto* str_element = element.as_string()) {
-                        texts.push_back(str_element->get());
-                }
+                if (auto key = keyFromTomlElement(node_view(element))) { keys.insert(key.value()); }
         }
 
-        return texts;
+        return keys;
 }
 
 keybindings config::KeysMapper::quit(const Candidates& candidates, const keybindings& defaults,
@@ -53,7 +52,7 @@ keybindings config::KeysMapper::quit(const Candidates& candidates, const keybind
 
         if (!keys || keys->empty()) { return defaults; }
 
-        return keysFromText(textFromTomlArray(*keys));
+        return keysFromTomlArray(*keys);
 }
 
 std::vector<keybindings> config::KeysMapper::primaryButtons(const Candidates& candidates,
@@ -66,6 +65,7 @@ std::vector<keybindings> config::KeysMapper::primaryButtons(const Candidates& ca
 
         std::vector<keybindings> buttons = {};
         buttons.reserve(keys->size());
+
         for (size_t i = 0; i != keys->size(); ++i) {
                 keybindings found_for_button = primaryButton(candidates.makeCopy().withExtension(i),
                                                              defaults[i],
@@ -73,7 +73,7 @@ std::vector<keybindings> config::KeysMapper::primaryButtons(const Candidates& ca
                 if (!found_for_button.empty()) { buttons.push_back(std::move(found_for_button)); }
         }
 
-        return std::move(buttons);
+        return buttons;
 }
 
 keybindings config::KeysMapper::primaryButton(const Candidates&  candidates,
@@ -84,5 +84,5 @@ keybindings config::KeysMapper::primaryButton(const Candidates&  candidates,
 
         if (!keys || keys->empty()) { return defaults; }
 
-        return keysFromText(textFromTomlArray(*keys));
+        return keysFromTomlArray(*keys);
 }

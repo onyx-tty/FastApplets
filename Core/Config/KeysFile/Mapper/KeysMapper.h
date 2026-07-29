@@ -7,7 +7,9 @@
 #include "Core/Applets/Types/Type.h"
 #include "Core/Config/KeysFile/Keys/Keys.h"
 #include "Core/Config/KeysFile/Types/Keybindings.h"
+#include "Core/Config/Types/NodeView.h"
 
+#include <optional>
 #include <string>
 #include <toml++/toml.hpp>
 #include <vector>
@@ -19,14 +21,16 @@ class PathContext;
 
 // Parses key name strings (e.g. "Ctrl+A") into a keybindings set, stripped of
 // modifiers.
-[[nodiscard]] int keyFromText(const std::string& text);
+// Returns std::nullopt if there is no matching string equivalent.
+[[nodiscard]] std::optional<int> keyFromText(const std::string& text);
 
-// Parses key name strings (e.g. "Ctrl+A") into a keybindings set, stripped of
-// modifiers.
-[[nodiscard]] keybindings keysFromText(const std::vector<std::string>& texts);
+// Converts nodes into int (Qt::Key).
+// Returns std::nullopt on non-string nodes and keys without a matching string equivalent.
+[[nodiscard]] std::optional<int> keyFromTomlElement(node_view element);
 
-// Extracts string elements from a toml::array, silently skipping non-string values.
-[[nodiscard]] std::vector<std::string> textFromTomlArray(const toml::array& arr);
+// Converts toml::array elements into int and returns them as keybindings, silently skipping
+// non-string values.
+[[nodiscard]] keybindings keysFromTomlArray(const toml::array& arr);
 
 namespace config {
 
