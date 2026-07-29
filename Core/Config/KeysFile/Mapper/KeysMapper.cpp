@@ -20,13 +20,15 @@ using namespace config;
 using config::resolve::Candidates;
 using config::resolve::PathContext;
 
+int keyFromText(const std::string& text) {
+        return QKeySequence(QString::fromStdString(text))[0].key();
+}
+
 keybindings keysFromText(const std::vector<std::string>& texts) {
         keybindings keys = {};
         keys.reserve(texts.size());
 
-        for (const std::string& text : texts) {
-                keys.insert(QKeySequence(QString::fromStdString(text))[0].key());
-        }
+        for (const std::string& text : texts) { keys.insert(keyFromText(text)); }
 
         return keys;
 }
@@ -49,7 +51,7 @@ std::vector<std::string> textFromTomlArray(const toml::array* arr) {
 keybindings config::KeysMapper::quit(const Candidates& candidates, const keybindings& defaults,
                                      const PathContext& path_context) {
         const auto* keys = resolve::fromAs<toml::array>(candidates, path_context, {.min_size = 1},
-                                                      u"[keybindings...]");
+                                                        u"[keybindings...]");
 
         if (!keys || keys->empty()) { return defaults; }
 
@@ -60,7 +62,7 @@ std::vector<keybindings> config::KeysMapper::primaryButtons(const Candidates& ca
                                                             const std::vector<keybindings>& defaults,
                                                             const PathContext& path_context) {
         const auto* keys = resolve::fromAs<toml::array>(candidates, path_context, {.min_size = 1},
-                                                      u"[keybindings...]");
+                                                        u"[keybindings...]");
 
         if (!keys || keys->empty()) { return defaults; }
 
@@ -80,7 +82,7 @@ keybindings config::KeysMapper::primaryButton(const Candidates&  candidates,
                                               const keybindings& defaults,
                                               const PathContext& path_context) {
         const auto* keys = resolve::fromAs<toml::array>(candidates, path_context, {.min_size = 1},
-                                                      u"[keybindings...]");
+                                                        u"[keybindings...]");
 
         if (keys->empty()) { return defaults; }
 

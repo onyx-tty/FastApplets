@@ -19,6 +19,10 @@ class PathContext;
 
 // Parses key name strings (e.g. "Ctrl+A") into a keybindings set, stripped of
 // modifiers.
+[[nodiscard]] int keyFromText(const std::string& text);
+
+// Parses key name strings (e.g. "Ctrl+A") into a keybindings set, stripped of
+// modifiers.
 [[nodiscard]] keybindings keysFromText(const std::vector<std::string>& texts);
 
 // Extracts string elements from a toml::array, silently skipping non-string values.
