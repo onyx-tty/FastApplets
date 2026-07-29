@@ -1,7 +1,7 @@
 // SPDX-FileCopyrightText: 2026 Łukasz Wrodarczyk
 // SPDX-License-Identifier: GPL-3.0-or-later
 
-#include "LayoutProperties.h"
+#include "PerPrimaryButtonParams.h"
 #include "Core/UI/Types/ButtonType.h"
 
 #include <variant>

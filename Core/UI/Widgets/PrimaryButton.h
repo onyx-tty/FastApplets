@@ -39,9 +39,8 @@ class QWidget;
 // Returns a vector containing every created button.
 // Calls qFatal instead if no button params are found.
 // TODO: This function does too much. It should not resolve keys on top of button construction.
-PrimaryButtons makePrimaryButtons(const std::vector<PrimaryButtonParams>& params,
-                                  const PrimaryButtonStyle&               style,
-                                  const std::vector<keybindings>&         keys,
+PrimaryButtons makePrimaryButtons(const PrimaryButtonParams&      params,
+                                  const std::vector<keybindings>& keys,
                                   const std::vector<keybindings>& default_keys, QWidget* parent);
 
 // Main button widget used for core functionality.
@@ -81,8 +80,8 @@ public:
         //   style:      Visual properties (alignments, icon size, size policy).
         // TODO: Pass a single PrimaryButtonParams argument
         explicit PrimaryButton(button_type type, const QIcon& icon, const QString& text,
-                               keybindings keys, QString command,
-                               const PrimaryButtonStyle& style, QWidget* parent);
+                               keybindings keys, QString command, const PrimaryButtonStyle& style,
+                               QWidget* parent);
 
         // Wrapper propagating event->reason() to focus_reason for use by paintEvent.
         void focusInEvent(QFocusEvent* event) override;

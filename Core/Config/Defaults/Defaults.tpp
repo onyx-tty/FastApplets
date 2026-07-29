@@ -9,7 +9,7 @@
 #include "Core/Config/KeysFile/Keys/Keys.h"
 #include "Core/Config/KeysFile/Types/Keybindings.h"
 #include "Core/UI/Types/ButtonType.h"
-#include "Core/UI/Types/LayoutProperties.h"
+#include "Core/UI/Types/PerPrimaryButtonParams.h"
 #include "Core/UI/Types/PrimaryButtonBehavior.h"
 #include "Core/UI/Types/PrimaryButtonParams.h"
 #include "Core/UI/Types/PrimaryButtonStyle.h"
@@ -41,35 +41,34 @@ config::schema::Config config::makeDefaultConfig() {
         constexpr bool double_key_press = true;
         constexpr auto behavior         = PrimaryButtonBehavior(double_key_press);
 
-        auto layout = LayoutProperties();
-
-        constexpr auto param = [](TPrimaryButtonType type) -> PrimaryButtonParams {
+        constexpr auto param = [](TPrimaryButtonType type) -> PerPrimaryButtonParams {
                 return {.type    = type,
                         .text    = textFor(type),
                         .command = commandFor(type),
                         .icon    = iconFor(type)};
         };
 
-        std::vector<PrimaryButtonParams> params = {};
+        std::vector<PerPrimaryButtonParams> per_params = {};
         if constexpr (TApplet == applet::type::power) {
                 using enum power_button_type;
 
-                params = {param(shutdown), param(reboot), param(suspend), param(hibernate)};
+                per_params = {param(shutdown), param(reboot), param(suspend), param(hibernate)};
         } else if constexpr (TApplet == applet::type::action) {
-                params = {{.text    = "Display greeting notification",
-                           .command = "notify-send 'FastApplets' 'Hello!'"},
-                          {.text    = "Display current date",
-                           .command = "notify-send 'Current date:' \"$(date +'%F %H:%M')\""}};
+                per_params = {{.text    = "Display greeting notification",
+                               .command = "notify-send 'FastApplets' 'Hello!'"},
+                              {.text    = "Display current date",
+                               .command = "notify-send 'Current date:' \"$(date +'%F %H:%M')\""}};
         } else if constexpr (TApplet == applet::type::player) {
                 using enum volume_button_type;
 
-                params = {param(play_pause), param(next),        param(previous),
-                          param(volume_up),  param(volume_down), param(volume_mute_output)};
+                // TODO: Remove volume_mute_output from default params
+                per_params = {param(play_pause), param(next),        param(previous),
+                              param(volume_up),  param(volume_down), param(volume_mute_output)};
         }
 
-        layout = LayoutProperties(std::move(params));
+        auto params = PrimaryButtonParams(std::move(per_params), std::move(style), behavior);
 
-        return Config(window, style, behavior, layout);
+        return Config(std::move(window), std::move(params));
 }
 
 template<applet::type TApplet>

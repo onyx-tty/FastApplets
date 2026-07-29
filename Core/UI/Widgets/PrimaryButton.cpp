@@ -9,6 +9,7 @@
 #include "Core/UI/Types/PrimaryButtonStyle.h"
 #include "Core/UI/Types/PrimaryButtons.h"
 
+#include <cstddef>
 #include <utility>
 #include <vector>
 #include <QFocusEvent>
@@ -23,9 +24,8 @@
 #include <QWidget>
 #include <Qt>
 
-PrimaryButtons makePrimaryButtons(const std::vector<PrimaryButtonParams>& params,
-                                  const PrimaryButtonStyle&               style,
-                                  const std::vector<keybindings>&         keys,
+PrimaryButtons makePrimaryButtons(const PrimaryButtonParams&      params,
+                                  const std::vector<keybindings>& keys,
                                   const std::vector<keybindings>& default_keys, QWidget* parent) {
         // TODO If applied key is already used elsewhere, the keybindings will be unpredictable.
         //      For example if for some reason keybinding for primary button 3 is Qt_Key4 and
@@ -42,19 +42,21 @@ PrimaryButtons makePrimaryButtons(const std::vector<PrimaryButtonParams>& params
                 }
 
                 qCritical() << "Number of buttons exceeds size of default keys! Buttons found:"
-                            << params.size();
-                return keybindings{Qt::Key_unknown};
+                            << params.per_button.size();
+                return keybindings(Qt::Key_unknown);
         };
 
         PrimaryButtons buttons = {};
-        buttons.reserve(params.size());
+        buttons.reserve(params.per_button.size());
 
-        for (size_t i = 0; i != params.size(); ++i) {
-                button_type type    = params[i].type;
-                QIcon       icon    = params[i].icon;
-                QString     text    = params[i].text;
-                QString     command = params[i].command;
-                keybindings keys    = key_getter(i);
+        for (size_t i = 0; i != params.per_button.size(); ++i) {
+                // TODO: Move semantics
+                button_type        type    = params.per_button[i].type;
+                QIcon              icon    = params.per_button[i].icon;
+                QString            text    = params.per_button[i].text;
+                QString            command = params.per_button[i].command;
+                PrimaryButtonStyle style   = params.style;
+                keybindings        keys    = key_getter(i);
                 auto* button = new PrimaryButton(type, icon, text, keys, command, style, parent);
                 buttons.push_back(button);
         }

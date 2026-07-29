@@ -5,7 +5,7 @@
 #include "Core/Config/Resolve/PathContext/PathContext.h"
 #include "Core/Config/Resolve/Resolve.h"
 #include "Core/Config/Resolve/Types/ResolverCandidate.h"
-#include "Core/UI/Types/LayoutProperties.h"
+#include "Core/UI/Types/PrimaryButtonBehavior.h"
 #include "Core/UI/Types/PrimaryButtonStyle.h"
 #include "Core/UI/Types/WindowParams.h"
 
@@ -40,7 +40,7 @@ WindowParams config::ConfigMapper::windowParams(const Candidates&   candidates,
                 });
 }
 
-/* PrimaryButtonStyle */
+/* PrimaryButtonParams */
 
 PrimaryButtonStyle config::ConfigMapper::primaryButtonStyle(const Candidates&         candidates,
                                                             const PrimaryButtonStyle& defaults,
@@ -77,7 +77,6 @@ PrimaryButtonStyle config::ConfigMapper::primaryButtonStyle(const Candidates&   
                 });
 }
 
-/* PrimaryButtonBehavior */
 PrimaryButtonBehavior config::ConfigMapper::primaryButtonBehavior(
         const Candidates& candidates, const PrimaryButtonBehavior& defaults,
         const PathContext& path_context) {

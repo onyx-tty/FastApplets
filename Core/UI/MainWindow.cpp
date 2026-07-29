@@ -17,13 +17,12 @@ using Config = config::schema::Config;
 using Keys   = config::schema::Keys;
 
 MainWindow makeMainWindow(const Config& config, const Keys& keys, const Keys& default_keys) {
-        auto primary_buttons = makePrimaryButtons(config.getLayoutProperties().primary_buttons,
-                                                  config.getPrimaryButtonStyle(),
+        auto primary_buttons = makePrimaryButtons(config.getPrimaryButtonParams(),
                                                   keys.getPrimaryButtons(),
                                                   default_keys.getPrimaryButtons(), nullptr);
 
         auto* central_widget = new CentralWidget(std::move(primary_buttons), keys.getQuit(),
-                                                 config.getPrimaryButtonBehavior(), nullptr);
+                                                 config.getPrimaryButtonParams().behavior, nullptr);
 
         return MainWindow(config.getWindowParams().title, config.getWindowParams().size,
                           central_widget);

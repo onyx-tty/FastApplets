@@ -3,9 +3,7 @@
 
 #pragma once
 
-#include "Core/UI/Types/LayoutProperties.h"
-#include "Core/UI/Types/PrimaryButtonBehavior.h"
-#include "Core/UI/Types/PrimaryButtonStyle.h"
+#include "Core/UI/Types/PrimaryButtonParams.h"
 #include "Core/UI/Types/WindowParams.h"
 
 namespace config {
@@ -19,20 +17,14 @@ class Config {
 private:
         friend class config::ConfigMapper;
 
-        WindowParams          window_params;
-        PrimaryButtonStyle    primary_button_style;
-        PrimaryButtonBehavior primary_button_behavior;
-        LayoutProperties      layout_properties;
+        WindowParams        window_params;
+        PrimaryButtonParams primary_button_params;
 
 public:
-        explicit Config(WindowParams          window_params           = WindowParams(),
-                        PrimaryButtonStyle    primary_button_style    = PrimaryButtonStyle(),
-                        PrimaryButtonBehavior primary_button_behavior = PrimaryButtonBehavior(),
-                        LayoutProperties      layout_properties       = LayoutProperties());
-        [[nodiscard]] const WindowParams&          getWindowParams() const;
-        [[nodiscard]] const PrimaryButtonStyle&    getPrimaryButtonStyle() const;
-        [[nodiscard]] const PrimaryButtonBehavior& getPrimaryButtonBehavior() const;
-        [[nodiscard]] const LayoutProperties&      getLayoutProperties() const;
+        explicit Config(WindowParams        window_params         = WindowParams(),
+                        PrimaryButtonParams primary_button_params = PrimaryButtonParams());
+        [[nodiscard]] const WindowParams&        getWindowParams() const;
+        [[nodiscard]] const PrimaryButtonParams& getPrimaryButtonParams() const;
 };
 
 } // namespace config::schema

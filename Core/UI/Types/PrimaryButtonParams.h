@@ -3,16 +3,15 @@
 
 #pragma once
 
-#include "Core/UI/Types/ButtonType.h"
+#include "Core/UI/Types/PerPrimaryButtonParams.h"
+#include "Core/UI/Types/PrimaryButtonBehavior.h"
+#include "Core/UI/Types/PrimaryButtonStyle.h"
 
-#include <variant>
-#include <QIcon>
-#include <QString>
+#include <vector>
 
 // Parameters required to construct a PrimaryButton.
 struct PrimaryButtonParams final {
-        button_type type = std::monostate{};
-        QString     text;
-        QString     command;
-        QIcon       icon;
+        std::vector<PerPrimaryButtonParams> per_button;
+        PrimaryButtonStyle                  style;
+        PrimaryButtonBehavior               behavior;
 };

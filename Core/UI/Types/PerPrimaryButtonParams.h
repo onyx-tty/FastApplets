@@ -3,12 +3,11 @@
 
 #pragma once
 
-#include "Core/UI/Types/PrimaryButtonParams.h"
+#include "Core/UI/Types/ButtonType.h"
 
-#include <vector>
-
-class QIcon;
-class QString;
+#include <variant>
+#include <QIcon>
+#include <QString>
 
 // Assign hardcoded icon associated with each button.
 template<typename TPrimaryButtonType>
@@ -22,7 +21,10 @@ template<typename TPrimaryButtonType>
 template<typename TPrimaryButtonType>
 [[nodiscard]] QString commandFor(TPrimaryButtonType type);
 
-// Stores properties describing the appearance of the layout.
-struct LayoutProperties final {
-        std::vector<PrimaryButtonParams> primary_buttons;
+// Parameters required to construct a PrimaryButton.
+struct PerPrimaryButtonParams final {
+        button_type type = std::monostate();
+        QString     text;
+        QString     command;
+        QIcon       icon;
 };

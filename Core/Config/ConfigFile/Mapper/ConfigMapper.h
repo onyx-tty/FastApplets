@@ -16,8 +16,8 @@ class Candidates;
 class PathContext;
 } // namespace config::resolve
 
-class LayoutProperties;
 class PrimaryButtonParams;
+class PerPrimaryButtonParams;
 class PrimaryButtonStyle;
 class PrimaryButtonBehavior;
 class WindowParams;
@@ -47,7 +47,7 @@ private:
 
         // Maps WindowParams from config nodes.
         //
-        // Fallback priority: applet.window_params -> global.window_params -> hardcoded defaults
+        // Fallback priority: applet > global > hardcoded defaults
         //
         // Expected format: window table containing title (string) and
         //                  size (array of two integers)
@@ -57,14 +57,60 @@ private:
                                                        const WindowParams& defaults,
                                                        const PathContext&  path_context);
 
-        /* PrimaryButtonStyle */
+        /* PrimaryButtonParams */
+
+        // Maps PrimaryButtonParams from a config source.
+        //
+        // Defaults the list of buttons if none are found.
+        //
+        // Expected format: primary_button table containing double_key_press (bool),
+        //                  text_alignment (string), icon_alignment (string),
+        //                  icon_size (array of two integers), policy (string), and
+        //                  list (array of tables)
+        //
+        // Fallback priority: applet > global > hardcoded defaults
+        //
+        // Return value: PrimaryButtonParams
+        template<applet::type TApplet>
+        [[nodiscard]] static PrimaryButtonParams primaryButtonParams(
+                const Candidates& candidates, const PrimaryButtonParams& defaults,
+                const PathContext& path_context);
+
+        // Maps std::vector<PerPrimaryButtonParams> from a config source.
+        //
+        // Expected format: array of tables
+        //
+        // Fallback priority: applet > hardcoded defaults
+        //
+        // Return value: std::vector<PerPrimaryButtonParams>
+        template<applet::type TApplet>
+        [[nodiscard]] static std::vector<PerPrimaryButtonParams> perPrimaryButtonParamsList(
+                const Candidates& candidates, const std::vector<PerPrimaryButtonParams>& defaults,
+                const PathContext& path_context);
+
+        // Maps PerPrimaryButtonParams from a config source.
+        //
+        // Expected format: primary_buttons.list[index] table containing type (string),
+        //                  text (string), and command (string)
+        //
+        // applet::type must be specified due to differences in type enums.
+        //
+        // Regarding PerPrimaryButtonParams::command: QProcess::splitCommand() does not
+        // interpret single quotes as quotes, but as regular characters. This function
+        // converts single quotes to double quotes to work around that limitation.
+        //
+        // Fallback priority: applet > hardcoded defaults
+        //
+        // Return value: std::optional<PerPrimaryButtonParams>
+        template<applet::type TApplet>
+        [[nodiscard]] static std::optional<PerPrimaryButtonParams> perPrimaryButtonParams(
+                const Candidates& candidates, const PathContext& path_context);
 
         // Maps PrimaryButtonStyle from config candidates.
         //
-        // Fallback priority: applet.primary_button_style -> global.primary_button_style ->
-        //                    hardcoded defaults
+        // Fallback priority: applet > global > hardcoded defaults
         //
-        // Expected format: primary button table containing text_alignment (string),
+        // Expected format: primary_button table containing text_alignment (string),
         //                  icon_alignment (string), icon_size (array of two integers),
         //                  and policy (string)
         //
@@ -73,12 +119,9 @@ private:
                 const Candidates& candidates, const PrimaryButtonStyle& defaults,
                 const PathContext& path_context);
 
-        /* PrimaryButtonBehavior */
-
         // Maps PrimaryButtonBehavior from config candidates.
         //
-        // Fallback priority: applet.primary_button_behavior -> global.primary_button_behavior ->
-        //                    hardcoded defaults
+        // Fallback priority: applet > global > hardcoded defaults
         //
         // Expected format: primary button table containing double_key_press (bool).
         //
@@ -86,50 +129,6 @@ private:
         [[nodiscard]] static PrimaryButtonBehavior primaryButtonBehavior(
                 const Candidates& candidates, const PrimaryButtonBehavior& defaults,
                 const PathContext& path_context);
-
-        /* LayoutProperties */
-
-        // Maps LayoutProperties from a config source.
-        //
-        // Fallback priority: applet.layout -> hardcoded defaults
-        //
-        // Return value: LayoutProperties
-        template<applet::type TApplet>
-        [[nodiscard]] static LayoutProperties layoutProperties(const Candidates&       candidates,
-                                                               const LayoutProperties& defaults,
-                                                               const PathContext& path_context);
-
-        // Maps std::vector<PrimaryButtonParams> from a config source.
-        //
-        // applet::type must be specified due to differences in type enums.
-        //
-        // Regarding PrimaryButtonParams::command: QProcess::splitCommand() does not
-        // interpret single quotes as quotes, but as regular characters. This function
-        // converts single quotes to double quotes to work around that limitation.
-        //
-        // Defaults the buttons if none are found.
-        //
-        // Fallback priority: applet.layout.primary_buttons -> hardcoded defaults
-        //
-        // Return value: std::vector<PrimaryButtonParams>
-        template<applet::type TApplet>
-        [[nodiscard]] static std::vector<PrimaryButtonParams> primaryButtonParams(
-                const Candidates& candidates, const std::vector<PrimaryButtonParams>& defaults,
-                const PathContext& path_context);
-
-        // Maps std::optional<PrimaryButtonParams>, including its attributes, from a config source.
-        //
-        // Buttons with invalid type are omitted with a warning.
-        //
-        // Fallback priority: applet.primary_buttons[index] -> hardcoded defaults
-        //
-        // Expected format: primary_buttons[index] table containing type (string),
-        //                  text (string), command (string)
-        //
-        // Return value: std::optional<PrimaryButtonParams>
-        template<applet::type TApplet>
-        [[nodiscard]] static std::optional<PrimaryButtonParams> primaryButtonParams(
-                const Candidates& candidates, const PathContext& path_context);
 
 public:
         ConfigMapper() = delete;

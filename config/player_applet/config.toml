@@ -45,7 +45,7 @@ title = "PlayerApplet"
 
 ## Primary buttons displayed in the applet.
 ##
-## Each [[layout.primary_buttons]] entry defines one button.
+## Each [[primary_button.list]] entry defines one button.
 ## Comment out the button if you want to disable it.
 ##
 ## Fields:
@@ -61,37 +61,37 @@ title = "PlayerApplet"
 ##          you are sure what you are doing. Commands requiring elevated access need
 ##          permissions via sudoers (for sudo) or similar.
 
-[[layout.primary_buttons]]
+[[primary_button.list]]
 id = "play_pause"
 text = "Play/Pause"
 command = "playerctl play-pause"
 
-[[layout.primary_buttons]]
+[[primary_button.list]]
 id = "next"
 text = "Next"
 command = "playerctl next"
 
-[[layout.primary_buttons]]
+[[primary_button.list]]
 id = "previous"
 text = "Previous"
 command = "playerctl previous"
 
-[[layout.primary_buttons]]
+[[primary_button.list]]
 id = "volume_up"
 text = "Volume Up"
 command = "playerctl volume 0.1+"
 
-[[layout.primary_buttons]]
+[[primary_button.list]]
 id = "volume_down"
 text = "Volume Down"
 command = "playerctl volume 0.1-"
 
-#[[layout.primary_buttons]]
+#[[primary_button.list]]
 #id = "volume_mute_output"
 #text = "Mute Output"
 #command = ""
 
-#[[layout.primary_buttons]]
+#[[primary_button.list]]
 #id = "volume_mute_input"
 #text = "Mute Input"
 #command = ""

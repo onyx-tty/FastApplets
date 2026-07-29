@@ -1,5 +1,5 @@
 add_applet_library(Core_UI_Types
-        SOURCES ButtonType.cpp LayoutProperties.cpp
+        SOURCES ButtonType.cpp PerPrimaryButtonParams.cpp
 
         PUBLIC_DEPS Core::UI::Types
                     Qt${QT_VERSION_MAJOR}::Widgets

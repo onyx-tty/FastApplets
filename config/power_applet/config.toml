@@ -45,7 +45,7 @@ title = "PowerApplet"
 
 ## Primary buttons displayed in the applet.
 ##
-## Each [[layout.primary_buttons]] entry defines one button.
+## Each [[primary_button.list]] entry defines one button.
 ## Comment out the button if you want to disable it.
 ##
 ## Fields:
@@ -59,22 +59,22 @@ title = "PowerApplet"
 ##          you are sure what you are doing. Commands requiring elevated access need
 ##          permissions via sudoers (for sudo) or similar.
 
-[[layout.primary_buttons]]
+[[primary_button.list]]
 id = "shutdown"
 text = "Shutdown"
 command = "systemctl poweroff"
 
-[[layout.primary_buttons]]
+[[primary_button.list]]
 id = "reboot"
 text = "Reboot"
 command = "systemctl reboot"
 
-[[layout.primary_buttons]]
+[[primary_button.list]]
 id = "suspend"
 text = "Suspend"
 command = "systemctl suspend"
 
-[[layout.primary_buttons]]
+[[primary_button.list]]
 id = "hibernate"
 text = "Hibernate"
 command = "systemctl hibernate"
