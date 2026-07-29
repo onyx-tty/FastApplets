@@ -82,7 +82,7 @@ keybindings config::KeysMapper::primaryButton(const Candidates&  candidates,
         const auto* keys = resolve::fromAs<toml::array>(candidates, path_context, {.min_size = 1},
                                                         u"[keybindings...]");
 
-        if (keys->empty()) { return defaults; }
+        if (!keys || keys->empty()) { return defaults; }
 
         return keysFromText(textFromTomlArray(*keys));
 }
