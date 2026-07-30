@@ -46,6 +46,7 @@ using result      = ArrayBounds::validation_result;
 //
 // On success: returns std::optional<T>
 // On failure: returns std::nullopt
+// TODO: The logic in from and fromAs largely repeats. Extract helpers.
 template<typename T>
 requires(!std::is_same_v<T, toml::table> && !std::is_same_v<T, toml::array>)
 [[nodiscard]] std::optional<T> from(const Candidates& candidates, const PathContext& path_context);
@@ -56,6 +57,7 @@ requires(!std::is_same_v<T, toml::table> && !std::is_same_v<T, toml::array>)
 //
 // On success: returns T*
 // On failure: returns nullptr
+// TODO: Make it an overload of "from()"."
 template<typename T>
 requires(!std::is_same_v<std::decay_t<T>, QSize> && !std::is_same_v<std::decay_t<T>, Qt::Alignment>
          && !std::is_same_v<std::decay_t<T>, QSizePolicy>

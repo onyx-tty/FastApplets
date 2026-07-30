@@ -51,7 +51,7 @@
 
     <br>
 
-# Infrastructure \[11/17\]
+# Infrastructure \[12/17\]
 
 1.  \[X\] CMake presets
 
@@ -102,7 +102,7 @@
 
 16. \[ \] Transition TODOs entirely to markdown format
 
-17. \[ \] Remove clang and ninja as recommended dependencies
+17. \[X\] Remove clang and ninja as recommended dependencies
 
     <br>
 

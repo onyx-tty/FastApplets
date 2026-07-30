@@ -41,7 +41,7 @@
 #+BEGIN_EXPORT markdown
 <br>
 #+END_EXPORT
-* Infrastructure [11/17]
+* Infrastructure [12/17]
 ** [X] CMake presets
 ** [X] TOML configuration
 ** [X] Centralized CMake structure
@@ -66,7 +66,7 @@
 ** [ ] Git tags and releases
 ** [ ] Improve template safety with constraints
 ** [ ] Transition TODOs entirely to markdown format
-** [ ] Remove clang and ninja as recommended dependencies
+** [X] Remove clang and ninja as recommended dependencies
 #+BEGIN_EXPORT markdown
 <br>
 #+END_EXPORT
