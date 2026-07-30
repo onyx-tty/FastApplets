@@ -29,12 +29,12 @@ class CentralWidget : public QWidget {
         Q_OBJECT
 
 private:
-        PrimaryButtons     buttons;
-        const keybindings& quit_keys;
-        bool               double_key_press;
+        PrimaryButtons buttons;
+        keybindings    quit_keys;
+        bool           double_key_press;
 
 public:
-        explicit CentralWidget(PrimaryButtons buttons, const keybindings& quit_keys,
+        explicit CentralWidget(PrimaryButtons buttons, keybindings quit_keys,
                                PrimaryButtonBehavior behavior, QWidget* parent);
 
         // Adds the stage-then-confirm keyboard navigation. See class doc for more.

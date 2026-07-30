@@ -34,9 +34,9 @@ namespace {
 
 } // namespace
 
-CentralWidget::CentralWidget(PrimaryButtons buttons, const keybindings& quit_keys,
+CentralWidget::CentralWidget(PrimaryButtons buttons, keybindings quit_keys,
                              PrimaryButtonBehavior behavior, QWidget* parent) :
-        QWidget(parent), buttons(std::move(buttons)), quit_keys(quit_keys),
+        QWidget(parent), buttons(std::move(buttons)), quit_keys(std::move(quit_keys)),
         double_key_press(behavior.double_key_press) {
         setLayout(new QHBoxLayout(this));
 
