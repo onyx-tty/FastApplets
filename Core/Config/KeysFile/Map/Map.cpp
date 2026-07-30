@@ -1,7 +1,7 @@
 // SPDX-FileCopyrightText: 2026 Łukasz Wrodarczyk
 // SPDX-License-Identifier: GPL-3.0-or-later
 
-#include "KeysMapper.h"
+#include "Map.h"
 #include "Core/Config/KeysFile/Types/Keybindings.h"
 #include "Core/Config/Resolve/PathContext/PathContext.h"
 #include "Core/Config/Resolve/Resolve.h"
@@ -49,8 +49,8 @@ keybindings keysFromTomlArray(const toml::array& arr) {
 
 /* KeysMapper */
 
-keybindings config::KeysMapper::quit(const Candidates& candidates, const keybindings& defaults,
-                                     const PathContext& path_context) {
+keybindings config::map::quit(const Candidates& candidates, const keybindings& defaults,
+                              const PathContext& path_context) {
         const auto* keys = resolve::fromAs<toml::array>(candidates, path_context, {.min_size = 1},
                                                         u"[keybindings...]");
 
@@ -59,9 +59,9 @@ keybindings config::KeysMapper::quit(const Candidates& candidates, const keybind
         return keysFromTomlArray(*keys);
 }
 
-std::vector<keybindings> config::KeysMapper::primaryButtons(const Candidates& candidates,
-                                                            const std::vector<keybindings>& defaults,
-                                                            const PathContext& path_context) {
+std::vector<keybindings> config::map::primaryButtons(const Candidates&               candidates,
+                                                     const std::vector<keybindings>& defaults,
+                                                     const PathContext&              path_context) {
         const auto* keys = resolve::fromAs<toml::array>(candidates, path_context, {.min_size = 1},
                                                         u"[keybindings...]");
 
@@ -80,9 +80,8 @@ std::vector<keybindings> config::KeysMapper::primaryButtons(const Candidates& ca
         return buttons;
 }
 
-keybindings config::KeysMapper::primaryButton(const Candidates&  candidates,
-                                              const keybindings& defaults,
-                                              const PathContext& path_context) {
+keybindings config::map::primaryButton(const Candidates& candidates, const keybindings& defaults,
+                                       const PathContext& path_context) {
         const auto* keys = resolve::fromAs<toml::array>(candidates, path_context, {.min_size = 1},
                                                         u"[keybindings...]");
 

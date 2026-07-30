@@ -8,7 +8,7 @@
 #include "Core/Config/Resolve/PathContext/PathContext.h"
 #include "Core/Config/Resolve/Types/ResolverCandidate.h"
 #include "Core/Config/Types/NodeView.h"
-#include "KeysMapper.h"
+#include "Map.h"
 
 #include <toml++/toml.hpp>
 #include <utility>
@@ -19,8 +19,8 @@
 #include <QtGlobal>
 
 template<applet::type TApplet>
-config::schema::Keys config::KeysMapper::keys(const toml::table& applet, const toml::table& global,
-                                              const Keys& defaults) {
+config::schema::Keys config::map::keys(const toml::table& applet, const toml::table& global,
+                                       const Keys& defaults) {
         // Confirm that a QApplication instance exists
         if (!QApplication::instance()) { qFatal("QApplication has not been instantiated yet!"); }
 
@@ -31,13 +31,13 @@ config::schema::Keys config::KeysMapper::keys(const toml::table& applet, const t
                                   {.node = node_view(global), .applet = applet::type::global}};
 
         /* Quit Keys */
-        keys.quit = quit(cands.makeCopy().withExtension("quit"), defaults.getQuit(),
+        keys.quit = quit(cands.makeCopy().withExtension("quit"), defaults.quit,
                          PathContext(filename, u"quit"));
 
         /* Primary Button Keys */
         keys.primary_buttons = primaryButtons(
                 {cands.get()[0].makeCopy().withExtension("primary_buttons").withQuiet(false)},
-                defaults.getPrimaryButtons(), PathContext(filename, u"primary_buttons"));
+                defaults.primary_buttons, PathContext(filename, u"primary_buttons"));
 
         return std::move(keys);
 }

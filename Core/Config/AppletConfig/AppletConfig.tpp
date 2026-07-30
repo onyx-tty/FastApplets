@@ -5,9 +5,9 @@
 
 #include "AppletConfig.h"
 #include "Core/Applets/Types/Type.h"
-#include "Core/Config/ConfigFile/Mapper/ConfigMapper.h"
+#include "Core/Config/ConfigFile/Map/Map.h"
 #include "Core/Config/Defaults/Defaults.h"
-#include "Core/Config/KeysFile/Mapper/KeysMapper.h"
+#include "Core/Config/KeysFile/Map/Map.h"
 #include "Core/Config/Toml/Parse.h"
 #include "Core/Config/Types/Filepaths.h"
 
@@ -21,13 +21,12 @@ config::AppletConfig config::makeAppletConfig(const Filepaths& applet, const Fil
         auto cfg = AppletConfig();
 
         cfg.default_config = makeDefaultConfig<TApplet>();
-        cfg.config         = ConfigMapper::config<TApplet>(parseTomlFile(applet.config),
-                                                           parseTomlFile(global.config),
-                                                           cfg.default_config);
+        cfg.config         = map::config<TApplet>(parseTomlFile(applet.config),
+                                                  parseTomlFile(global.config), cfg.default_config);
 
         cfg.default_keys = makeDefaultKeys<TApplet>();
-        cfg.keys = KeysMapper::keys<TApplet>(parseTomlFile(applet.keys), parseTomlFile(global.keys),
-                                             cfg.default_keys);
+        cfg.keys = map::keys<TApplet>(parseTomlFile(applet.keys), parseTomlFile(global.keys),
+                                      cfg.default_keys);
 
         return cfg;
 }

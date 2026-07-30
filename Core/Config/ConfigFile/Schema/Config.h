@@ -13,18 +13,9 @@ class ConfigMapper;
 namespace config::schema {
 
 // Holds user configuration used by the applets.
-class Config {
-private:
-        friend class config::ConfigMapper;
-
+struct Config final {
         WindowParams        window_params;
         PrimaryButtonParams primary_button_params;
-
-public:
-        explicit Config(WindowParams        window_params         = WindowParams(),
-                        PrimaryButtonParams primary_button_params = PrimaryButtonParams());
-        [[nodiscard]] const WindowParams&        getWindowParams() const;
-        [[nodiscard]] const PrimaryButtonParams& getPrimaryButtonParams() const;
 };
 
 } // namespace config::schema

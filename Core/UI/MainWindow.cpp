@@ -17,15 +17,14 @@ using Config = config::schema::Config;
 using Keys   = config::schema::Keys;
 
 MainWindow makeMainWindow(const Config& config, const Keys& keys, const Keys& default_keys) {
-        auto primary_buttons = makePrimaryButtons(config.getPrimaryButtonParams(),
-                                                  keys.getPrimaryButtons(),
-                                                  default_keys.getPrimaryButtons(), nullptr);
+        auto primary_buttons = makePrimaryButtons(config.primary_button_params,
+                                                  keys.primary_buttons,
+                                                  default_keys.primary_buttons, nullptr);
 
-        auto* central_widget = new CentralWidget(std::move(primary_buttons), keys.getQuit(),
-                                                 config.getPrimaryButtonParams().behavior, nullptr);
+        auto* central_widget = new CentralWidget(std::move(primary_buttons), keys.quit,
+                                                 config.primary_button_params.behavior, nullptr);
 
-        return MainWindow(config.getWindowParams().title, config.getWindowParams().size,
-                          central_widget);
+        return MainWindow(config.window_params.title, config.window_params.size, central_widget);
 }
 
 MainWindow::MainWindow(const QString& title, QSize size, QWidget* central_widget, QWidget* parent) :

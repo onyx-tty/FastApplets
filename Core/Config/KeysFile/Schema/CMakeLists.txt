@@ -1,5 +1,4 @@
 add_applet_library(Core_Config_KeysFile_Schema
-        SOURCES Keys.cpp
+        TYPE INTERFACE
 
-        PRIVATE_DEPS Core::Config::KeysFile::Types
-                     Core::Applets::Types)
+        INTERFACE_DEPS Core::Config::KeysFile::Types)

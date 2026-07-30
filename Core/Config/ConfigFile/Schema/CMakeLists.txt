@@ -1,4 +1,4 @@
 add_applet_library(Core_Config_ConfigFile_Schema
-        SOURCES Config.cpp
+        TYPE INTERFACE
 
-        PUBLIC_DEPS Core::UI::Types)
+        INTERFACE_DEPS Core::UI::Types)

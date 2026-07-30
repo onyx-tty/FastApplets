@@ -1,14 +1,12 @@
-add_applet_library(Core_Config_KeysFile_Mapper
-        SOURCES KeysMapper.cpp
+add_applet_library(Core_Config_ConfigFile_Map
+        SOURCES Map.cpp
 
-        PRIVATE_DEPS Core::Config::Toml
-                     Core::Config::Resolve
-
-        PUBLIC_DEPS Core::Config::KeysFile::Schema
-                    Core::Config::KeysFile::Types
+        PUBLIC_DEPS Core::Config::ConfigFile::Schema
+                    Core::Config::Resolve
                     Core::Config::Resolve::PathContext
                     Core::Config::Resolve::Types
                     Core::Config::Types
+                    Core::UI::Types
                     Core::Applets::Types
                     tomlplusplus::tomlplusplus
                     Qt${QT_VERSION_MAJOR}::Widgets)

@@ -1,7 +1,7 @@
 // SPDX-FileCopyrightText: 2026 Łukasz Wrodarczyk
 // SPDX-License-Identifier: GPL-3.0-or-later
 
-#include "ConfigMapper.h"
+#include "Map.h"
 #include "Core/Config/Resolve/PathContext/PathContext.h"
 #include "Core/Config/Resolve/Resolve.h"
 #include "Core/Config/Resolve/Types/ResolverCandidate.h"
@@ -21,10 +21,9 @@ using PathContext = config::resolve::PathContext;
 
 /* WindowParams */
 
-WindowParams config::ConfigMapper::windowParams(const Candidates&   candidates,
-                                                const WindowParams& defaults,
-                                                const PathContext&  path_context) {
-        return mapProperties(
+WindowParams config::map::windowParams(const Candidates& candidates, const WindowParams& defaults,
+                                       const PathContext& path_context) {
+        return properties(
                 candidates, defaults, path_context,
                 [&defaults, &candidates](WindowParams& window, const PathContext& path_context) {
                         window.size = resolve::from<QSize>(candidates.makeCopy().withExtension(
@@ -42,10 +41,10 @@ WindowParams config::ConfigMapper::windowParams(const Candidates&   candidates,
 
 /* PrimaryButtonParams */
 
-PrimaryButtonStyle config::ConfigMapper::primaryButtonStyle(const Candidates&         candidates,
-                                                            const PrimaryButtonStyle& defaults,
-                                                            const PathContext& path_context) {
-        return mapProperties(
+PrimaryButtonStyle config::map::primaryButtonStyle(const Candidates&         candidates,
+                                                   const PrimaryButtonStyle& defaults,
+                                                   const PathContext&        path_context) {
+        return properties(
                 candidates, defaults, path_context,
                 [&defaults, &candidates](PrimaryButtonStyle& button,
                                          const PathContext&  path_context) {
@@ -77,17 +76,17 @@ PrimaryButtonStyle config::ConfigMapper::primaryButtonStyle(const Candidates&   
                 });
 }
 
-PrimaryButtonBehavior config::ConfigMapper::primaryButtonBehavior(
-        const Candidates& candidates, const PrimaryButtonBehavior& defaults,
-        const PathContext& path_context) {
-        return mapProperties(candidates, defaults, path_context,
-                             [&defaults, &candidates](PrimaryButtonBehavior& button,
-                                                      const PathContext&     path_context) {
-                                     button.double_key_press =
-                                             resolve::from<bool>(candidates.makeCopy().withExtension(
-                                                                         "double_key_press"),
-                                                                 path_context.makeExtended(
-                                                                         "double_key_press"))
-                                                     .value_or(defaults.double_key_press);
-                             });
+PrimaryButtonBehavior config::map::primaryButtonBehavior(const Candidates&            candidates,
+                                                         const PrimaryButtonBehavior& defaults,
+                                                         const PathContext& path_context) {
+        return properties(candidates, defaults, path_context,
+                          [&defaults, &candidates](PrimaryButtonBehavior& button,
+                                                   const PathContext&     path_context) {
+                                  button.double_key_press =
+                                          resolve::from<bool>(candidates.makeCopy().withExtension(
+                                                                      "double_key_press"),
+                                                              path_context.makeExtended(
+                                                                      "double_key_press"))
+                                                  .value_or(defaults.double_key_press);
+                          });
 }
