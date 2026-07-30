@@ -82,28 +82,7 @@ const T* config::resolve::fromAs(const Candidates& candidates, const PathContext
                 if constexpr (std::is_same_v<DT, toml::table>) {
                         return node.as_table();
                 } else if constexpr (std::is_same_v<DT, toml::array>) {
-                        // TODO Extract as a separate function
-                        const toml::array* arr = node.as_array();
-                        if (!arr) { return nullptr; }
-
-                        auto res = arr_bounds.validate(arr);
-                        if (res == result::min_size_fail) {
-                                qWarning()
-                                        << QString("arr size < min_size! min_size: %1, arr size: %2")
-                                                   .arg(QString::number(arr_bounds.min_size.value()),
-                                                        QString::number(arr->size()));
-                                return nullptr;
-                        }
-
-                        if (res == result::max_size_fail) {
-                                qWarning()
-                                        << QString("arr size > max_size! max_size: %1, arr size: %2")
-                                                   .arg(QString::number(arr_bounds.max_size.value()),
-                                                        QString::number(arr->size()));
-                                return nullptr;
-                        }
-
-                        return arr;
+                        return tomlqt::asArrayWithBounds(node, arr_bounds);
                 } else {
                         return node.as<DT>();
                 }
