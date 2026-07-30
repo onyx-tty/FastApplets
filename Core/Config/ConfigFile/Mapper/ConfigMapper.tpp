@@ -7,7 +7,7 @@
 
 #include "Core/Applets/Types/Traits.h"
 #include "Core/Applets/Types/Type.h"
-#include "Core/Config/ConfigFile/Config/Config.h"
+#include "Core/Config/ConfigFile/Schema/Config.h"
 #include "Core/Config/Resolve/PathContext/PathContext.h"
 #include "Core/Config/Resolve/Resolve.h"
 #include "Core/Config/Resolve/Types/ResolverCandidate.h"

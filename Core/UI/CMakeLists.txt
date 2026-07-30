@@ -4,8 +4,8 @@ add_applet_library(Core_UI
         SOURCES CentralWidget.cpp
                 MainWindow.cpp
 
-        PRIVATE_DEPS Core::Config::ConfigFile::Config
-                     Core::Config::KeysFile::Keys
+        PRIVATE_DEPS Core::Config::ConfigFile::Schema
+                     Core::Config::KeysFile::Schema
 
         PUBLIC_DEPS Core::UI::Widgets
                     Core::UI::Types

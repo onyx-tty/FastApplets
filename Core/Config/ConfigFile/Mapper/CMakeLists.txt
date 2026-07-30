@@ -1,7 +1,7 @@
 add_applet_library(Core_Config_ConfigFile_Mapper
         SOURCES ConfigMapper.cpp
 
-        PUBLIC_DEPS Core::Config::ConfigFile::Config
+        PUBLIC_DEPS Core::Config::ConfigFile::Schema
                     Core::Config::Resolve
                     Core::Config::Resolve::PathContext
                     Core::Config::Resolve::Types

@@ -1,9 +1,9 @@
 add_applet_library(Core_Config_AppletConfig
         TYPE INTERFACE
 
-        INTERFACE_DEPS Core::Config::ConfigFile::Config
+        INTERFACE_DEPS Core::Config::ConfigFile::Schema
                        Core::Config::ConfigFile::Mapper
-                       Core::Config::KeysFile::Keys
+                       Core::Config::KeysFile::Schema
                        Core::Config::KeysFile::Mapper
                        Core::Config::Defaults
                        Core::Config::Toml

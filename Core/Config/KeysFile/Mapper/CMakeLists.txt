@@ -4,7 +4,7 @@ add_applet_library(Core_Config_KeysFile_Mapper
         PRIVATE_DEPS Core::Config::Toml
                      Core::Config::Resolve
 
-        PUBLIC_DEPS Core::Config::KeysFile::Keys
+        PUBLIC_DEPS Core::Config::KeysFile::Schema
                     Core::Config::KeysFile::Types
                     Core::Config::Resolve::PathContext
                     Core::Config::Resolve::Types

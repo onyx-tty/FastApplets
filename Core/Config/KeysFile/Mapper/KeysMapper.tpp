@@ -4,7 +4,7 @@
 #pragma once
 
 #include "Core/Applets/Types/Type.h"
-#include "Core/Config/KeysFile/Keys/Keys.h"
+#include "Core/Config/KeysFile/Schema/Keys.h"
 #include "Core/Config/Resolve/PathContext/PathContext.h"
 #include "Core/Config/Resolve/Types/ResolverCandidate.h"
 #include "Core/Config/Types/NodeView.h"

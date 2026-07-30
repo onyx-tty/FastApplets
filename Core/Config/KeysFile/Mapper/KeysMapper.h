@@ -5,7 +5,7 @@
 
 #include "Core/Applets/Types/Traits.h"
 #include "Core/Applets/Types/Type.h"
-#include "Core/Config/KeysFile/Keys/Keys.h"
+#include "Core/Config/KeysFile/Schema/Keys.h"
 #include "Core/Config/KeysFile/Types/Keybindings.h"
 #include "Core/Config/Types/NodeView.h"
 

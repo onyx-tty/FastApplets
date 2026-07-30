@@ -4,7 +4,7 @@
 #pragma once
 
 #include "Core/Applets/Types/Type.h"
-#include "Core/Config/ConfigFile/Config/Config.h"
+#include "Core/Config/ConfigFile/Schema/Config.h"
 #include "Core/UI/Types/PrimaryButtonBehavior.h"
 
 #include <optional>
