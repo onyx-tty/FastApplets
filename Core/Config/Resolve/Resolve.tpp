@@ -79,9 +79,7 @@ const T* config::resolve::fromAs(const Candidates& candidates, const PathContext
 
         // Collapse extraction logic into that of a corresponding type
         static auto extract = [&](node_view node, const ArrayBounds& arr_bounds = {}) -> DT* {
-                if constexpr (std::is_same_v<DT, toml::table>) {
-                        return node.as_table();
-                } else if constexpr (std::is_same_v<DT, toml::array>) {
+                if constexpr (std::is_same_v<DT, toml::array>) {
                         return tomlqt::asArrayWithBounds(node, arr_bounds);
                 } else {
                         return node.as<DT>();
