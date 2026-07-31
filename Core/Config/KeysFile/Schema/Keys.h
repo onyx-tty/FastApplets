@@ -7,10 +7,6 @@
 
 #include <vector>
 
-namespace config {
-class KeysMapper;
-} // namespace config
-
 namespace config::schema {
 
 // Holds user-configured keys used by an applet.

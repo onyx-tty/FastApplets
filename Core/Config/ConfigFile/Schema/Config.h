@@ -6,10 +6,6 @@
 #include "Core/UI/Types/PrimaryButtonParams.h"
 #include "Core/UI/Types/WindowParams.h"
 
-namespace config {
-class ConfigMapper;
-} // namespace config
-
 namespace config::schema {
 
 // Holds user configuration used by the applets.
