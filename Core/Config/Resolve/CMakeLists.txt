@@ -1,9 +1,10 @@
-add_subdirectories(PathContext Types)
+add_subdirectories(Helpers PathContext Types)
 
 add_applet_library(Core_Config_Resolve
         TYPE INTERFACE
 
-        INTERFACE_DEPS Core::Config::Resolve::PathContext
+        INTERFACE_DEPS Core::Config::Resolve::Helpers
+                       Core::Config::Resolve::PathContext
                        Core::Config::Resolve::Types
                        Core::Config::Types
                        TomlQt

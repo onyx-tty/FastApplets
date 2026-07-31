@@ -82,7 +82,8 @@ install(# Install compiled artifacts to correct destinations, register all targe
                 Core_Config_Defaults Core_Config_Defaults_Helpers
                 Core_Config_Locate
                 Core_Config_Toml
-                Core_Config_Resolve Core_Config_Resolve_PathContext Core_Config_Resolve_Types
+                Core_Config_Resolve Core_Config_Resolve_Helpers
+                Core_Config_Resolve_PathContext Core_Config_Resolve_Types
                 Core_Config_Types
                 Core_Shell
                 Core_UI
