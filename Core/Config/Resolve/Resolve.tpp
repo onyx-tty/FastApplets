@@ -4,7 +4,7 @@
 #pragma once
 
 #include "Core/Config/Resolve/Helpers/Helpers.h"
-#include "Core/Config/Resolve/Types/Candidate.h"
+#include "Core/Config/Resolve/Types/Candidates.h"
 #include "Core/Config/Types/NodeView.h"
 #include "PathContext/PathContext.h"
 #include "Resolve.h"
