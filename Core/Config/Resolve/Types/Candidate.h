@@ -13,9 +13,7 @@
 #include <utility>
 #include <vector>
 
-// TODO: Remove inlines for both; create dedicated Candidate.cpp
 // TODO: Consistent behaviors in chaining methods, separate overloads for ALL and index
-// TODO: Docs should explain what role these classes play in Resolve.h
 
 namespace config::resolve {
 
