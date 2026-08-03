@@ -30,13 +30,6 @@ std::optional<T> config::resolve::from(const Candidates&  candidates,
         using DT = std::decay_t<T>;
         using namespace config::resolve::detail;
 
-        // Collapse logging message variants
-        static auto log = [&](QStringView path) {
-                if (path.isNull()) { qFatal("Passed null path!"); }
-
-                qWarning() << QString("%1, missing or wrong type! Using defaults...").arg(path);
-        };
-
         // Validate and attempt extraction of each passed candidate, prioritizing earliest ones
         const auto candidate_ptr = candidates.get().begin();
         for (size_t i = 0; i != candidates.get().size(); ++i) {
@@ -54,7 +47,7 @@ std::optional<T> config::resolve::from(const Candidates&  candidates,
 
                 auto res = extract<DT>(candidate.node);
                 if (!res) {
-                        if (!silence_logs) { log(path_context.makePath(candidate.applet)); }
+                        if (!silence_logs) { log<DT>(path_context.makePath(candidate.applet)); }
                         continue;
                 }
 
@@ -75,20 +68,6 @@ const T* config::resolve::fromAs(const Candidates& candidates, const PathContext
         using DT = const std::decay_t<T>;
         using namespace config::resolve::detail;
 
-        // Collapse logging message variants
-        static auto log = [&, arr_format](QStringView path) {
-                if (path.isNull()) { qFatal("Passed null path!"); }
-
-                if constexpr (std::is_same_v<DT, toml::array>) {
-                        qWarning()
-                                << QString("%1, missing or wrong type! Format: %2. Using defaults...")
-                                           .arg(path, arr_format.toString());
-                } else {
-                        qWarning()
-                                << QString("%1, missing or wrong type! Using defaults...").arg(path);
-                }
-        };
-
         // Validate and attempt extraction of each passed candidate, prioritizing earliest ones
         const auto candidate_ptr = candidates.get().begin();
         for (size_t i = 0; i != candidates.get().size(); ++i) {
@@ -106,7 +85,13 @@ const T* config::resolve::fromAs(const Candidates& candidates, const PathContext
 
                 auto* res = extract<DT>(candidate.node, arr_bounds);
                 if (!res) {
-                        if (!silence_logs) { log(path_context.makePath(candidate.applet)); }
+                        if (!silence_logs) {
+                                if constexpr (std::is_same_v<toml::array, std::decay_t<DT>>) {
+                                        log<DT>(path_context.makePath(candidate.applet), arr_format);
+                                } else {
+                                        log<DT>(path_context.makePath(candidate.applet));
+                                }
+                        }
                         continue;
                 }
 

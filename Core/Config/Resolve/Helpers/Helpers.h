@@ -10,6 +10,7 @@
 #include <optional>
 #include <toml++/toml.hpp>
 #include <type_traits>
+#include <QStringView>
 
 namespace config::resolve::detail {
 
@@ -25,6 +26,14 @@ const std::decay_t<T>* extract(node_view node, const ArrayBounds& arr_bounds);
 template<typename T>
 requires(!ReturnPtr<std::decay_t<T>>)
 std::optional<std::decay_t<T>> extract(node_view node);
+
+template<typename T>
+requires(std::is_same_v<toml::array, std::decay_t<T>>)
+void log(QStringView path, QStringView arr_format);
+
+template<typename T>
+requires(!std::is_same_v<toml::array, std::decay_t<T>>)
+void log(QStringView path);
 
 } // namespace config::resolve::detail
 
