@@ -1,5 +1,5 @@
 add_applet_library(Core_Config_Resolve_Types
-        SOURCES ResolverCandidate.cpp
+        SOURCES Candidate.cpp
 
         PRIVATE_DEPS Qt${QT_VERSION_MAJOR}::Core
 

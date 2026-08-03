@@ -4,7 +4,7 @@
 #include "Map.h"
 #include "Core/Config/Resolve/PathContext/PathContext.h"
 #include "Core/Config/Resolve/Resolve.h"
-#include "Core/Config/Resolve/Types/ResolverCandidate.h"
+#include "Core/Config/Resolve/Types/Candidate.h"
 #include "Core/UI/Types/PrimaryButtonBehavior.h"
 #include "Core/UI/Types/PrimaryButtonStyle.h"
 #include "Core/UI/Types/WindowParams.h"

@@ -10,7 +10,7 @@
 #include "Core/Config/ConfigFile/Schema/Config.h"
 #include "Core/Config/Resolve/PathContext/PathContext.h"
 #include "Core/Config/Resolve/Resolve.h"
-#include "Core/Config/Resolve/Types/ResolverCandidate.h"
+#include "Core/Config/Resolve/Types/Candidate.h"
 #include "Core/Config/Types/NodeView.h"
 #include "Core/UI/Types/ButtonType.h"
 #include "Core/UI/Types/PerPrimaryButtonParams.h"
