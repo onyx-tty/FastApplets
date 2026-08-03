@@ -9,9 +9,10 @@
 class QStringView;
 
 // 'none' represents empty state, e.g. no button selected, if used for that purpose
-enum class power_button_type { none, shutdown, reboot, suspend, hibernate };
+enum class power_button_type { none, shutdown, reboot, suspend, hibernate, log_out };
 
 // 'none' represents empty state, e.g. no button selected, if used for that purpose
+// TODO: Rename volume_button_type to player_button_type
 enum class volume_button_type {
         none,
         play_pause,

@@ -32,10 +32,11 @@
 ## You can supply multiple keybindings.
 ##
 ## Format:  [ ["key1", ...], ["key2", ...] ...]
-## Default: [ ["1"], ["2"], ["3"], ["4"] ]
+## Default: [ ["1"], ["2"], ["3"], ["4"], ["5"] ]
 primary_buttons = [
     ["1"],
     ["2"],
     ["3"],
     ["4"],
+    ["5"],
 ]

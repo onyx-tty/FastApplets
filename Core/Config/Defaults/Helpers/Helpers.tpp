@@ -52,7 +52,8 @@ std::vector<PerPrimaryButtonParams> config::details::makePerPrimaryButtonParams(
         if constexpr (TApplet == applet::type::power) {
                 using enum power_button_type;
 
-                per_params = {param(shutdown), param(reboot), param(suspend), param(hibernate)};
+                per_params = {param(shutdown), param(reboot), param(suspend), param(hibernate),
+                              param(log_out)};
         } else if constexpr (TApplet == applet::type::action) {
                 per_params = {{.text    = "Display greeting notification",
                                .command = "notify-send 'FastApplets' 'Hello!'"},

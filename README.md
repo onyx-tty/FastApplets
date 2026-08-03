@@ -8,7 +8,7 @@ The applets are designed with focus on keyboard-first controls, but have full mo
 
 ### PowerApplet
 
-Provides shutdown, reboot, suspend, and hibernate controls.
+Provides shutdown, reboot, suspend, hibernate, and log out controls.
 
 ### PlayerApplet
 

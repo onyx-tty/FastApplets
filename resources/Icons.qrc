@@ -14,5 +14,6 @@
         <file>Icons/Player/volume2.svg</file>
         <file>Icons/Player/volume3.svg</file>
         <file>Icons/missing.svg</file>
+        <file>Icons/Power/log_out.svg</file>
     </qresource>
 </RCC>

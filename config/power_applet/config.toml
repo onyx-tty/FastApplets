@@ -50,7 +50,7 @@ title = "PowerApplet"
 ##
 ## Fields:
 ## id      - internal identifier, determines the icon and keys used.
-##           Supported values: "shutdown", "reboot", "suspend", "hibernate"
+##           Supported values: "shutdown", "reboot", "suspend", "hibernate", "log_out"
 ## text    - label shown on the button, any string is valid
 ## command - shell command run on button press; executed as-is
 ##
@@ -78,3 +78,8 @@ command = "systemctl suspend"
 id = "hibernate"
 text = "Hibernate"
 command = "systemctl hibernate"
+
+[[primary_button.list]]
+id = "log_out"
+text = "Log Out"
+command = "loginctl terminate-session $(loginctl session-status | head -1 | awk '{print $1}')"

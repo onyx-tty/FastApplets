@@ -22,6 +22,7 @@ QIcon iconFor<power_button_type>(power_button_type type) {
         case reboot:    return QIcon(":/Icons/Power/reboot.svg");
         case suspend:   return QIcon(":/Icons/Power/suspend.svg");
         case hibernate: return QIcon(":/Icons/Power/hibernate.svg");
+        case log_out:   return QIcon(":/Icons/Power/log_out.svg");
         default:        return QIcon(":/Icons/missing.svg");
         }
 }
@@ -35,6 +36,7 @@ QString textFor<power_button_type>(power_button_type type) {
         case reboot:    return "Reboot";
         case suspend:   return "Suspend";
         case hibernate: return "Hibernate";
+        case log_out:   return "Log Out";
         default:        return "";
         }
 }
@@ -43,13 +45,17 @@ template<>
 QString commandFor<power_button_type>(power_button_type type) {
         using enum power_button_type;
 
+        // clang-format off
         switch (type) {
         case shutdown:  return "systemctl poweroff";
         case reboot:    return "systemctl reboot";
         case suspend:   return "systemctl suspend";
         case hibernate: return "systemctl hibernate";
-        default:        return "";
+        case log_out:   return "loginctl terminate-session"
+                               "$(loginctl session-status | head -1 | awk '{print $1}')";
+        default: return "";
         }
+        // clang-format on
 }
 
 /* PlayerApplet */

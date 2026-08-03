@@ -14,7 +14,8 @@ power_button_type toPrimaryButtonType<power_button_type>(QStringView string) {
                  {u"shutdown", power_button_type::shutdown},
                  {u"reboot", power_button_type::reboot},
                  {u"suspend", power_button_type::suspend},
-                 {u"hibernate", power_button_type::hibernate}};
+                 {u"hibernate", power_button_type::hibernate},
+                 {u"log_out", power_button_type::log_out}};
 
         const auto iter = map.find(string);
         if (iter == map.cend()) { return power_button_type::none; }
