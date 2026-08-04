@@ -11,7 +11,7 @@
 #include <Qt>
 
 namespace config::resolve {
-class candidates;
+class Candidates;
 class PathContext;
 } // namespace config::resolve
 
