@@ -33,23 +33,27 @@ public:
         // Example: PathContext{u"config.toml", u".window"}
         explicit PathContext(QStringView filename, QStringView path_context, char separator = '.');
 
+        // Creates a copy of PathContext. An alternative to PathContext(old)
+        // that makes the intention clearer when chaining.
+        [[nodiscard]] PathContext makeCopy() const;
+
+        // Extends PathContext by an additional path segment.
+        //
+        // Example: "window" -> context.withExtension("size") -> ".window.size"
+        [[nodiscard]] PathContext& withExtension(std::string_view segment);
+
+        // Extends PathContext by an array index.
+        //
+        // Index is formatted with brackets, no separator is added.
+        //
+        // Example: ".window.size" context.withExtension(2) -> ".window.size[2]"
+        [[nodiscard]] PathContext& withExtension(size_t index);
+
         // Returns a full logging path by inserting name between filename and
         // path_context.
         //
         // Example: makePath("power_applet") -> "in config.toml, power_applet.window"
         [[nodiscard]] QString makePath(applet::type applet) const;
-
-        // Returns a new PathContext with an additional path segment appended.
-        //
-        // Example: context.makeExtended("size") -> PathContext with ".window.size"
-        [[nodiscard]] PathContext makeExtended(std::string_view segment) const;
-
-        // Returns a new PathContext with an array index appended.
-        //
-        // Index is formatted with brackets, no separator is added.
-        //
-        // Example: ctx.makeExtended(2) -> PathContext with ".window.size[2]"
-        [[nodiscard]] PathContext makeExtended(size_t index) const;
 };
 
 } // namespace config::resolve

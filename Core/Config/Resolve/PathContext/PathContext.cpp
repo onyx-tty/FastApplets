@@ -16,22 +16,26 @@ PathContext::PathContext(QStringView filename, QStringView path_context, char se
         filename(filename.toString()), path_context(path_context.toString()), separator(separator) {
 }
 
+PathContext PathContext::makeCopy() const {
+        return *this;
+}
+
+PathContext& PathContext::withExtension(std::string_view segment) {
+        path_context = QString("%1%2%3").arg(path_context, separator,
+                                            QString::fromStdString(std::string(segment)));
+
+        return *this;
+}
+
+PathContext& PathContext::withExtension(size_t index) {
+        path_context = QString("%1[%2]").arg(path_context).arg(index);
+
+        return *this;
+}
+
 QString PathContext::makePath(applet::type applet) const {
         return QString("in %1, %2%3%4")
                 .arg(QString(filename), applet::toString(applet))
                 .arg(separator)
                 .arg(path_context);
-}
-
-PathContext PathContext::makeExtended(std::string_view segment) const {
-        return PathContext(filename,
-                           QString("%1%2%3")
-                                   .arg(path_context)
-                                   .arg(separator)
-                                   .arg(QString::fromStdString(std::string(segment))),
-                           separator);
-}
-
-PathContext PathContext::makeExtended(size_t index) const {
-        return PathContext{filename, QString("%1[%2]").arg(path_context).arg(index), separator};
 }

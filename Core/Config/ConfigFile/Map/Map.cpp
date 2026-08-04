@@ -26,15 +26,16 @@ WindowParams config::map::windowParams(const Candidates& candidates, const Windo
         return properties(
                 candidates, defaults, path_context,
                 [&defaults, &candidates](WindowParams& window, const PathContext& path_context) {
-                        window.size = resolve::from<QSize>(candidates.makeCopy().withExtension(
-                                                                   "size"),
-                                                           path_context.makeExtended("size"))
-                                              .value_or(defaults.size);
+                        window.size =
+                                resolve::from<QSize>(candidates.makeCopy().withExtension("size"),
+                                                     path_context.makeCopy().withExtension("size"))
+                                        .value_or(defaults.size);
 
                         window.title = resolve::from<QString>(candidates.makeCopy()
                                                                       .withExtension("title")
                                                                       .withQuiet(true, 1),
-                                                              path_context.makeExtended("title"))
+                                                              path_context.makeCopy().withExtension(
+                                                                      "title"))
                                                .value_or(defaults.title);
                 });
 }
@@ -51,28 +52,27 @@ PrimaryButtonStyle config::map::primaryButtonStyle(const Candidates&         can
                         button.text_alignment =
                                 resolve::from<Qt::Alignment>(candidates.makeCopy().withExtension(
                                                                      "text_alignment"),
-                                                             path_context.makeExtended(
+                                                             path_context.makeCopy().withExtension(
                                                                      "text_alignment"))
                                         .value_or(defaults.text_alignment);
 
                         button.icon_alignment =
                                 resolve::from<Qt::Alignment>(candidates.makeCopy().withExtension(
                                                                      "icon_alignment"),
-                                                             path_context.makeExtended(
+                                                             path_context.makeCopy().withExtension(
                                                                      "icon_alignment"))
                                         .value_or(defaults.icon_alignment);
 
                         button.icon_size = resolve::from<QSize>(candidates.makeCopy().withExtension(
                                                                         "icon_size"),
-                                                                path_context.makeExtended(
-                                                                        "icon_size"))
+                                                                path_context.makeCopy()
+                                                                        .withExtension("icon_size"))
                                                    .value_or(defaults.icon_size);
 
-                        button.policy =
-                                resolve::from<QSizePolicy>(candidates.makeCopy().withExtension(
-                                                                   "policy"),
-                                                           path_context.makeExtended("policy"))
-                                        .value_or(defaults.policy);
+                        button.policy = resolve::from<QSizePolicy>(
+                                                candidates.makeCopy().withExtension("policy"),
+                                                path_context.makeCopy().withExtension("policy"))
+                                                .value_or(defaults.policy);
                 });
 }
 
@@ -85,7 +85,7 @@ PrimaryButtonBehavior config::map::primaryButtonBehavior(const Candidates&      
                                   button.double_key_press =
                                           resolve::from<bool>(candidates.makeCopy().withExtension(
                                                                       "double_key_press"),
-                                                              path_context.makeExtended(
+                                                              path_context.makeCopy().withExtension(
                                                                       "double_key_press"))
                                                   .value_or(defaults.double_key_press);
                           });

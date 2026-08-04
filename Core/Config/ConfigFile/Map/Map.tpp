@@ -63,7 +63,7 @@ PrimaryButtonParams config::map::primaryButtonParams(
 
         params.per_button = perPrimaryButtonParamsList<TApplet>(
                 {candidates.get()[0].makeCopy().withExtension("list").withQuiet(false)},
-                defaults.per_button, path_context.makeExtended("list"));
+                defaults.per_button, path_context.makeCopy().withExtension("list"));
 
         params.style = primaryButtonStyle(candidates, defaults.style, path_context);
 
@@ -80,7 +80,7 @@ std::vector<PerPrimaryButtonParams> config::map::perPrimaryButtonParamsList(
         using namespace config;
 
         const auto* arr = resolve::from<toml::array>(candidates, path_context, {.min_size = 1},
-                                                       u"Format: [primary buttons...]");
+                                                     u"Format: [primary buttons...]");
         if (!arr) { return defaults; }
 
         std::vector<PerPrimaryButtonParams> found = {};
@@ -89,7 +89,7 @@ std::vector<PerPrimaryButtonParams> config::map::perPrimaryButtonParamsList(
         for (size_t i = 0; i != arr->size(); ++i) {
                 auto new_button =
                         perPrimaryButtonParams<TApplet>(candidates.makeCopy().withExtension(i),
-                                                        path_context.makeExtended(i));
+                                                        path_context.makeCopy().withExtension(i));
                 if (new_button) { found.push_back(std::move(new_button.value())); }
         }
 
@@ -115,7 +115,7 @@ std::optional<PerPrimaryButtonParams> config::map::perPrimaryButtonParams(
         PerPrimaryButtonParams new_button = {};
 
         auto type_str = resolve::from<QString>(candidates.makeCopy().withExtension("id"),
-                                               path_context.makeExtended("id"));
+                                               path_context.makeCopy().withExtension("id"));
 
         new_button.type = toPrimaryButtonType<TPrimaryButtonType>(type_str.value_or(""));
 
@@ -124,11 +124,11 @@ std::optional<PerPrimaryButtonParams> config::map::perPrimaryButtonParams(
         auto t = std::get<TPrimaryButtonType>(new_button.type);
 
         new_button.text = resolve::from<QString>(candidates.makeCopy().withExtension("text"),
-                                                 path_context.makeExtended("text"))
+                                                 path_context.makeCopy().withExtension("text"))
                                   .value_or(textFor(t));
 
         new_button.command = resolve::from<QString>(candidates.makeCopy().withExtension("command"),
-                                                    path_context.makeExtended("command"))
+                                                    path_context.makeCopy().withExtension("command"))
                                      .value_or(commandFor(t));
 
         new_button.icon = iconFor(t);
