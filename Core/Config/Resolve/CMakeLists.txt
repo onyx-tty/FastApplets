@@ -6,7 +6,6 @@ add_applet_library(Core_Config_Resolve
         INTERFACE_DEPS Core::Config::Resolve::Helpers
                        Core::Config::Resolve::PathContext
                        Core::Config::Resolve::Types
-                       Core::Config::Types
                        TomlQt
-                       Qt${QT_VERSION_MAJOR}::Widgets
+                       Qt${QT_VERSION_MAJOR}::Core
                        tomlplusplus::tomlplusplus)
