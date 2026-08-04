@@ -36,7 +36,7 @@ T config::map::properties(const config::resolve::Candidates& candidates, const T
         std::vector<const toml::table*> resolved = {};
 
         for (const auto& candidate : candidates.get()) {
-                if (const auto* result = resolve::fromAs<toml::table>({candidate}, path_context)) {
+                if (const auto* result = resolve::from<toml::table>({candidate}, path_context)) {
                         resolved.push_back(result);
                 }
         }
@@ -56,7 +56,7 @@ PrimaryButtonParams config::map::primaryButtonParams(
         const config::resolve::PathContext& path_context) {
         using namespace config;
 
-        const auto* table = resolve::fromAs<toml::table>(candidates, path_context);
+        const auto* table = resolve::from<toml::table>(candidates, path_context);
         if (!table) { return defaults; }
 
         PrimaryButtonParams params = {};
@@ -79,7 +79,7 @@ std::vector<PerPrimaryButtonParams> config::map::perPrimaryButtonParamsList(
         const config::resolve::PathContext&        path_context) {
         using namespace config;
 
-        const auto* arr = resolve::fromAs<toml::array>(candidates, path_context, {.min_size = 1},
+        const auto* arr = resolve::from<toml::array>(candidates, path_context, {.min_size = 1},
                                                        u"Format: [primary buttons...]");
         if (!arr) { return defaults; }
 
@@ -109,7 +109,7 @@ std::optional<PerPrimaryButtonParams> config::map::perPrimaryButtonParams(
 
         using TPrimaryButtonType = applet::Traits<TApplet>::TPrimaryButtonType;
 
-        const auto* table = resolve::fromAs<toml::table>(candidates, path_context);
+        const auto* table = resolve::from<toml::table>(candidates, path_context);
         if (!table) { return std::nullopt; }
 
         PerPrimaryButtonParams new_button = {};

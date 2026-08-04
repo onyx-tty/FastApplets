@@ -60,11 +60,10 @@ std::optional<T> config::resolve::from(const Candidates&  candidates,
 }
 
 template<typename T>
-requires(!std::is_same_v<std::decay_t<T>, QSize> && !std::is_same_v<std::decay_t<T>, Qt::Alignment>
-         && !std::is_same_v<std::decay_t<T>, QSizePolicy>
-         && !std::is_same_v<std::decay_t<T>, QString>)
-const T* config::resolve::fromAs(const Candidates& candidates, const PathContext& path_context,
-                                 const ArrayBounds& arr_bounds, QStringView arr_format) {
+requires(std::is_same_v<std::decay_t<T>, toml::table>
+         || std::is_same_v<std::decay_t<T>, toml::array>)
+const T* config::resolve::from(const Candidates& candidates, const PathContext& path_context,
+                               const ArrayBounds& arr_bounds, QStringView arr_format) {
         using DT = const std::decay_t<T>;
         using namespace config::resolve::detail;
 

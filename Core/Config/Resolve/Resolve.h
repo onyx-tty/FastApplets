@@ -32,7 +32,7 @@ class QString;
 //
 // Quick reference:
 // - from()          -> returns optional<T>, manual error handling
-// - fromAs()        -> returns T*, manual error handling
+// - from()        -> returns T*, manual error handling
 // - fromOrDefault() -> sets attribute OR overwrites entire object
 // - fromTransformOrDefault() -> sets transformed attribute OR overwrites entire object
 namespace config::resolve {
@@ -46,7 +46,6 @@ using result      = ArrayBounds::validation_result;
 //
 // On success: returns std::optional<T>
 // On failure: returns std::nullopt
-// TODO: The logic in from and fromAs largely repeats. Extract helpers.
 template<typename T>
 requires(!std::is_same_v<T, toml::table> && !std::is_same_v<T, toml::array>)
 [[nodiscard]] std::optional<T> from(const Candidates& candidates, const PathContext& path_context);
@@ -55,15 +54,13 @@ requires(!std::is_same_v<T, toml::table> && !std::is_same_v<T, toml::array>)
 //
 // Requires a manual nullptr check.
 //
-// On success: returns T*
+// On success: returns const T*
 // On failure: returns nullptr
-// TODO: Make it an overload of "from()"."
 template<typename T>
-requires(!std::is_same_v<std::decay_t<T>, QSize> && !std::is_same_v<std::decay_t<T>, Qt::Alignment>
-         && !std::is_same_v<std::decay_t<T>, QSizePolicy>
-         && !std::is_same_v<std::decay_t<T>, QString>)
-[[nodiscard]] const T* fromAs(const Candidates& candidates, const PathContext& path_context,
-                              const ArrayBounds& arr_bounds = {}, QStringView arr_format = {});
+requires(std::is_same_v<std::decay_t<T>, toml::table>
+         || std::is_same_v<std::decay_t<T>, toml::array>)
+[[nodiscard]] const T* from(const Candidates& candidates, const PathContext& path_context,
+                            const ArrayBounds& arr_bounds = {}, QStringView arr_format = {});
 
 // Extraction that can fall back to replacing the entire parent object.
 //
