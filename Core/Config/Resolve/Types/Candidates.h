@@ -8,9 +8,9 @@
 #include <cstddef>
 #include <initializer_list>
 #include <optional>
-#include <string_view>
 #include <utility>
 #include <vector>
+#include <QStringView>
 
 // TODO: Consistent behaviors in chaining methods, separate overloads for ALL and index
 
@@ -43,7 +43,7 @@ public:
         //
         // With:
         //   auto new_cands = old_cands.withExtension(key);
-        [[nodiscard]] Candidates& withExtension(std::string_view key);
+        [[nodiscard]] Candidates& withExtension(QStringView key);
 
         // Extends ALL CANDIDATES by KEY.
         //

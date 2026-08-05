@@ -6,7 +6,6 @@
 #include "Core/Applets/Types/Type.h"
 
 #include <cstddef>
-#include <string_view>
 #include <QString>
 #include <QStringView>
 
@@ -30,7 +29,7 @@ private:
 public:
         // Creates a context for path construction.
         //
-        // Example: PathContext{u"config.toml", u".window"}
+        // Example: PathContext(u"config.toml", u".window")
         explicit PathContext(QStringView filename, QStringView path_context, char separator = '.');
 
         // Creates a copy of PathContext. An alternative to PathContext(old)
@@ -39,8 +38,8 @@ public:
 
         // Extends PathContext by an additional path segment.
         //
-        // Example: "window" -> context.withExtension("size") -> ".window.size"
-        [[nodiscard]] PathContext& withExtension(std::string_view segment);
+        // Example: "window" -> context.withExtension(u"size") -> ".window.size"
+        [[nodiscard]] PathContext& withExtension(QStringView segment);
 
         // Extends PathContext by an array index.
         //

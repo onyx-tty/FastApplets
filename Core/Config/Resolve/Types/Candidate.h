@@ -8,7 +8,7 @@
 #include "Core/Config/Types/NodeView.h"
 
 #include <cstddef>
-#include <string_view>
+#include <QStringView>
 
 // TODO: Consistent behaviors in chaining methods, separate overloads for ALL and index
 
@@ -39,7 +39,7 @@ struct Candidate final {
         //
         // With:
         //   auto new_cand = old_cand.withExtension(key);
-        [[nodiscard]] Candidate& withExtension(std::string_view key);
+        [[nodiscard]] Candidate& withExtension(QStringView key);
 
         // Extends CANDIDATE by INDEX.
         //

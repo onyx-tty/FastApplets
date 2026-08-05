@@ -38,11 +38,11 @@ config::schema::Keys config::map::keys(const toml::table& applet, const toml::ta
                                    .path_context = PathContext(filename, u"")}};
 
         /* Quit Keys */
-        keys.quit = quit(cands.makeCopy().withExtension("quit"), defaults.quit);
+        keys.quit = quit(cands.makeCopy().withExtension(u"quit"), defaults.quit);
 
         /* Primary Button Keys */
         keys.primary_buttons = primaryButtons(
-                {cands.get()[0].makeCopy().withExtension("primary_buttons").withQuiet(false)},
+                {cands.get()[0].makeCopy().withExtension(u"primary_buttons").withQuiet(false)},
                 defaults.primary_buttons);
 
         return std::move(keys);

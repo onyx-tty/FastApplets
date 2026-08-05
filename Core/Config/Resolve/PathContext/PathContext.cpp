@@ -5,8 +5,6 @@
 #include "Core/Applets/Types/Type.h"
 
 #include <cstddef>
-#include <string>
-#include <string_view>
 #include <QString>
 #include <QStringView>
 
@@ -20,13 +18,11 @@ PathContext PathContext::makeCopy() const {
         return *this;
 }
 
-PathContext& PathContext::withExtension(std::string_view segment) {
+PathContext& PathContext::withExtension(QStringView segment) {
         // Nothing to separate if empty
-        if (!path_context.isEmpty()) {
-                path_context += separator;
-        }
+        if (!path_context.isEmpty()) { path_context += separator; }
 
-        path_context += QString::fromStdString(std::string(segment));
+        path_context += segment.toString();
 
         return *this;
 }

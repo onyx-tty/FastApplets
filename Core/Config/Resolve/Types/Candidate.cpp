@@ -7,6 +7,7 @@
 #include <string_view>
 #include <QDebug>
 #include <QString>
+#include <QStringView>
 #include <QtGlobal>
 
 using config::resolve::Candidate;
@@ -15,9 +16,12 @@ Candidate Candidate::makeCopy() const {
         return *this;
 }
 
-Candidate& Candidate::withExtension(std::string_view key) {
-        node         = node[key];
-        path_context = path_context.withExtension(key);
+Candidate& Candidate::withExtension(QStringView key) {
+        // Qt logging uses UTF-16, TOML++ uses UTF-8
+        auto byte_arr = key.toUtf8();
+
+        node          = node[std::string_view(byte_arr.data(), byte_arr.size())];
+        path_context  = path_context.withExtension(key);
 
         return *this;
 }

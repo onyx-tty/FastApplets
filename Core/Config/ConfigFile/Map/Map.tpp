@@ -61,7 +61,7 @@ PrimaryButtonParams config::map::primaryButtonParams(const config::resolve::Cand
         PrimaryButtonParams params = {};
 
         params.per_button = perPrimaryButtonParamsList<TApplet>(
-                {candidates.get()[0].makeCopy().withExtension("list").withQuiet(false)},
+                {candidates.get()[0].makeCopy().withExtension(u"list").withQuiet(false)},
                 defaults.per_button);
 
         params.style = primaryButtonStyle(candidates, defaults.style);
@@ -110,7 +110,7 @@ std::optional<PerPrimaryButtonParams> config::map::perPrimaryButtonParams(
 
         PerPrimaryButtonParams new_button = {};
 
-        auto type_str = resolve::from<QString>(candidates.makeCopy().withExtension("id"));
+        auto type_str = resolve::from<QString>(candidates.makeCopy().withExtension(u"id"));
 
         new_button.type = toPrimaryButtonType<TPrimaryButtonType>(type_str.value_or(""));
 
@@ -118,10 +118,10 @@ std::optional<PerPrimaryButtonParams> config::map::perPrimaryButtonParams(
 
         auto t = std::get<TPrimaryButtonType>(new_button.type);
 
-        new_button.text = resolve::from<QString>(candidates.makeCopy().withExtension("text"))
+        new_button.text = resolve::from<QString>(candidates.makeCopy().withExtension(u"text"))
                                   .value_or(textFor(t));
 
-        new_button.command = resolve::from<QString>(candidates.makeCopy().withExtension("command"))
+        new_button.command = resolve::from<QString>(candidates.makeCopy().withExtension(u"command"))
                                      .value_or(commandFor(t));
 
         new_button.icon = iconFor(t);
@@ -150,12 +150,12 @@ config::schema::Config config::map::config(const toml::table& applet, const toml
                              .path_context = PathContext(filename, u"")}};
 
         // TODO: Use enum in .withQuiet() to avoid magic numbers
-        config.window_params = windowParams(cands.makeCopy().withExtension("window").withQuiet(false,
-                                                                                               0),
-                                            defaults.window_params);
+        config.window_params =
+                windowParams(cands.makeCopy().withExtension(u"window").withQuiet(false, 0),
+                             defaults.window_params);
 
         config.primary_button_params = primaryButtonParams<TApplet>(
-                cands.makeCopy().withExtension("primary_button").withQuiet(false),
+                cands.makeCopy().withExtension(u"primary_button").withQuiet(false),
                 defaults.primary_button_params);
 
         return std::move(config);

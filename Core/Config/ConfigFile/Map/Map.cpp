@@ -21,12 +21,12 @@ using Candidates = config::resolve::Candidates;
 
 WindowParams config::map::windowParams(const Candidates& candidates, const WindowParams& defaults) {
         return properties(candidates, defaults, [&defaults, &candidates](WindowParams& window) {
-                window.size = resolve::from<QSize>(candidates.makeCopy().withExtension("size"))
+                window.size = resolve::from<QSize>(candidates.makeCopy().withExtension(u"size"))
                                       .value_or(defaults.size);
 
                 window.title = resolve::from<QString>(
-                                       candidates.makeCopy().withExtension("title").withQuiet(true,
-                                                                                              1))
+                                       candidates.makeCopy().withExtension(u"title").withQuiet(true,
+                                                                                               1))
                                        .value_or(defaults.title);
         });
 }
@@ -38,20 +38,20 @@ PrimaryButtonStyle config::map::primaryButtonStyle(const Candidates&         can
         return properties(candidates, defaults, [&defaults, &candidates](PrimaryButtonStyle& button) {
                 button.text_alignment = resolve::from<Qt::Alignment>(
                                                 candidates.makeCopy().withExtension(
-                                                        "text_alignment"))
+                                                        u"text_alignment"))
                                                 .value_or(defaults.text_alignment);
 
                 button.icon_alignment = resolve::from<Qt::Alignment>(
                                                 candidates.makeCopy().withExtension(
-                                                        "icon_alignment"))
+                                                        u"icon_alignment"))
                                                 .value_or(defaults.icon_alignment);
 
                 button.icon_size = resolve::from<QSize>(
-                                           candidates.makeCopy().withExtension("icon_size"))
+                                           candidates.makeCopy().withExtension(u"icon_size"))
                                            .value_or(defaults.icon_size);
 
                 button.policy = resolve::from<QSizePolicy>(
-                                        candidates.makeCopy().withExtension("policy"))
+                                        candidates.makeCopy().withExtension(u"policy"))
                                         .value_or(defaults.policy);
         });
 }
@@ -62,7 +62,7 @@ PrimaryButtonBehavior config::map::primaryButtonBehavior(const Candidates&      
                           [&defaults, &candidates](PrimaryButtonBehavior& button) {
                                   button.double_key_press =
                                           resolve::from<bool>(candidates.makeCopy().withExtension(
-                                                                      "double_key_press"))
+                                                                      u"double_key_press"))
                                                   .value_or(defaults.double_key_press);
                           });
 }
