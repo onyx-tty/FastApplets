@@ -50,7 +50,8 @@ Candidates& Candidates::withQuiet(std::optional<size_t> cand_index, bool quiet) 
 
         if (cand_index.value() > candidates.size()) {
                 qWarning() << QString("Passed index (%1) exceeds candidates.size() (%2)")
-                                      .arg(cand_index.value(), candidates.size());
+                                      .arg(cand_index.value())
+                                      .arg(candidates.size());
         }
 
         candidates[cand_index.value()].quiet = quiet;
