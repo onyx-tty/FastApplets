@@ -21,8 +21,12 @@ PathContext PathContext::makeCopy() const {
 }
 
 PathContext& PathContext::withExtension(std::string_view segment) {
-        path_context = QString("%1%2%3").arg(path_context, separator,
-                                            QString::fromStdString(std::string(segment)));
+        // Nothing to separate if empty
+        if (!path_context.isEmpty()) {
+                path_context += separator;
+        }
+
+        path_context += QString::fromStdString(std::string(segment));
 
         return *this;
 }

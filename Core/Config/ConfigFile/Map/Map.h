@@ -13,7 +13,6 @@
 
 namespace config::resolve {
 class Candidates;
-class PathContext;
 } // namespace config::resolve
 
 class PrimaryButtonParams;
@@ -31,15 +30,13 @@ class QSizePolicy;
 // Malformed values (wrong type, out of range, etc.) are treated as failures.
 namespace config::map {
 
-using Config      = config::schema::Config;
-using Candidates  = config::resolve::Candidates;
-using PathContext = config::resolve::PathContext;
+using Config     = config::schema::Config;
+using Candidates = config::resolve::Candidates;
 
 /* Helpers */
 
 template<typename T>
-[[nodiscard]] T properties(const Candidates& candidates, const T& defaults,
-                           const PathContext& path_context, auto fill_fn);
+[[nodiscard]] T properties(const Candidates& candidates, const T& defaults, auto fill_fn);
 
 /* WindowParams */
 
@@ -51,8 +48,7 @@ template<typename T>
 //                  size (array of two integers)
 //
 // Return value: WindowParams
-[[nodiscard]] WindowParams windowParams(const Candidates& candidates, const WindowParams& defaults,
-                                        const PathContext& path_context);
+[[nodiscard]] WindowParams windowParams(const Candidates& candidates, const WindowParams& defaults);
 
 /* PrimaryButtonParams */
 
@@ -66,8 +62,7 @@ template<typename T>
 // Return value: PrimaryButtonParams
 template<applet::type TApplet>
 [[nodiscard]] PrimaryButtonParams primaryButtonParams(const Candidates&          candidates,
-                                                      const PrimaryButtonParams& defaults,
-                                                      const PathContext&         path_context);
+                                                      const PrimaryButtonParams& defaults);
 
 // Maps std::vector<PerPrimaryButtonParams> from a list of candidates.
 //
@@ -76,8 +71,7 @@ template<applet::type TApplet>
 // Return value: std::vector<PerPrimaryButtonParams>
 template<applet::type TApplet>
 [[nodiscard]] std::vector<PerPrimaryButtonParams> perPrimaryButtonParamsList(
-        const Candidates& candidates, const std::vector<PerPrimaryButtonParams>& defaults,
-        const PathContext& path_context);
+        const Candidates& candidates, const std::vector<PerPrimaryButtonParams>& defaults);
 
 // Maps PerPrimaryButtonParams from a list of candidates.
 //
@@ -91,7 +85,7 @@ template<applet::type TApplet>
 // Return value: std::optional<PerPrimaryButtonParams>
 template<applet::type TApplet>
 [[nodiscard]] std::optional<PerPrimaryButtonParams> perPrimaryButtonParams(
-        const Candidates& candidates, const PathContext& path_context);
+        const Candidates& candidates);
 
 // Maps PrimaryButtonStyle from a list of candidates.
 //
@@ -101,8 +95,7 @@ template<applet::type TApplet>
 //
 // Return value: PrimaryButtonStyle
 [[nodiscard]] PrimaryButtonStyle primaryButtonStyle(const Candidates&         candidates,
-                                                    const PrimaryButtonStyle& defaults,
-                                                    const PathContext&        path_context);
+                                                    const PrimaryButtonStyle& defaults);
 
 // Maps PrimaryButtonBehavior from a list of candidates.
 //
@@ -110,8 +103,7 @@ template<applet::type TApplet>
 //
 // Return value: PrimaryButtonBehavior
 [[nodiscard]] PrimaryButtonBehavior primaryButtonBehavior(const Candidates&            candidates,
-                                                          const PrimaryButtonBehavior& defaults,
-                                                          const PathContext& path_context);
+                                                          const PrimaryButtonBehavior& defaults);
 
 // Parses applet and global tables into config::schema::Config.
 //

@@ -18,13 +18,19 @@ Candidates Candidates::makeCopy() const {
 }
 
 Candidates& Candidates::withExtension(std::string_view key) {
-        for (auto& candidate : candidates) { candidate.node = candidate.node[key]; }
+        for (auto& candidate : candidates) {
+                candidate.node         = candidate.node[key];
+                candidate.path_context = candidate.path_context.withExtension(key);
+        }
 
         return *this;
 }
 
 Candidates& Candidates::withExtension(size_t index) {
-        for (auto& candidate : candidates) { candidate.node = candidate.node[index]; }
+        for (auto& candidate : candidates) {
+                candidate.node         = candidate.node[index];
+                candidate.path_context = candidate.path_context.withExtension(index);
+        }
 
         return *this;
 }

@@ -16,13 +16,15 @@ Candidate Candidate::makeCopy() const {
 }
 
 Candidate& Candidate::withExtension(std::string_view key) {
-        node = node[key];
+        node         = node[key];
+        path_context = path_context.withExtension(key);
 
         return *this;
 }
 
 Candidate& Candidate::withExtension(size_t index) {
-        node = node[index];
+        node         = node[index];
+        path_context = path_context.withExtension(index);
 
         return *this;
 }

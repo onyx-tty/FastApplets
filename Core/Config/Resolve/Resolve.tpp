@@ -21,8 +21,7 @@
 
 template<typename T>
 requires(!std::is_same_v<T, toml::table> && !std::is_same_v<T, toml::array>)
-std::optional<T> config::resolve::from(const Candidates&  candidates,
-                                       const PathContext& path_context) {
+std::optional<T> config::resolve::from(const Candidates& candidates) {
         using DT = std::decay_t<T>;
         using namespace config::resolve::detail;
 
@@ -43,11 +42,13 @@ std::optional<T> config::resolve::from(const Candidates&  candidates,
 
                 auto res = extract<DT>(candidate.node);
                 if (!res) {
-                        if (!silence_logs) { log<DT>(path_context.makePath(candidate.applet)); }
+                        if (!silence_logs) {
+                                log<DT>(candidate.path_context.makePath(candidate.applet));
+                        }
                         continue;
                 }
 
-                qDebug() << path_context.makePath(candidate.applet) << "found!";
+                qDebug() << candidate.path_context.makePath(candidate.applet) << "found!";
                 return *res;
         }
 
@@ -58,8 +59,8 @@ std::optional<T> config::resolve::from(const Candidates&  candidates,
 template<typename T>
 requires(std::is_same_v<std::decay_t<T>, toml::table>
          || std::is_same_v<std::decay_t<T>, toml::array>)
-const T* config::resolve::from(const Candidates& candidates, const PathContext& path_context,
-                               const ArrayBounds& arr_bounds, QStringView arr_format) {
+const T* config::resolve::from(const Candidates& candidates, const ArrayBounds& arr_bounds,
+                               QStringView arr_format) {
         using DT = const std::decay_t<T>;
         using namespace config::resolve::detail;
 
@@ -82,15 +83,16 @@ const T* config::resolve::from(const Candidates& candidates, const PathContext& 
                 if (!res) {
                         if (!silence_logs) {
                                 if constexpr (std::is_same_v<toml::array, std::decay_t<DT>>) {
-                                        log<DT>(path_context.makePath(candidate.applet), arr_format);
+                                        log<DT>(candidate.path_context.makePath(candidate.applet),
+                                                arr_format);
                                 } else {
-                                        log<DT>(path_context.makePath(candidate.applet));
+                                        log<DT>(candidate.path_context.makePath(candidate.applet));
                                 }
                         }
                         continue;
                 }
 
-                qDebug() << path_context.makePath(candidate.applet) << "found!";
+                qDebug() << candidate.path_context.makePath(candidate.applet) << "found!";
                 return res;
         }
 
@@ -101,9 +103,8 @@ const T* config::resolve::from(const Candidates& candidates, const PathContext& 
 template<typename TAttribute, typename TObject>
 void config::resolve::fromOrDefault(const Candidates& candidates, TAttribute& attribute,
                                     TObject& object, const TObject& object_defaults,
-                                    const PathContext& path_context, const ArrayBounds& arr_bounds,
-                                    QStringView arr_format) {
-        if (auto res = from<TAttribute>(candidates, path_context, arr_bounds, arr_format)) {
+                                    const ArrayBounds& arr_bounds, QStringView arr_format) {
+        if (auto res = from<TAttribute>(candidates, arr_bounds, arr_format)) {
                 attribute = std::move(res.value());
         } else {
                 object = object_defaults;
@@ -113,8 +114,8 @@ void config::resolve::fromOrDefault(const Candidates& candidates, TAttribute& at
 template<typename TRaw, typename TAttribute, typename TObject, typename Transform>
 void config::resolve::fromTransformOrDefault(const Candidates& candidates, TAttribute& attribute,
                                              TObject& object, const TObject& object_defaults,
-                                             Transform transform, const PathContext& path_context) {
-        if (auto res = from<TRaw>(candidates, path_context)) {
+                                             Transform transform) {
+        if (auto res = from<TRaw>(candidates)) {
                 attribute = transform(std::move(res.value()));
         } else {
                 object = object_defaults;

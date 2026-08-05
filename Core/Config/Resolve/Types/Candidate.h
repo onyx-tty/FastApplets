@@ -4,6 +4,7 @@
 #pragma once
 
 #include "Core/Applets/Types/Type.h"
+#include "Core/Config/Resolve/PathContext/PathContext.h"
 #include "Core/Config/Types/NodeView.h"
 
 #include <cstddef>
@@ -18,10 +19,12 @@ namespace config::resolve {
 // 'node' contains the toml::node_view with data for extraction.
 // 'type' is used for logging, to create QString path with config::resolve::PathContext.
 // 'quiet' disables logging if true.
+// 'path_context' provides an extensible interface for convenient storage and extension of paths.
 struct Candidate final {
         node_view    node;
         applet::type applet;
         bool         quiet = false;
+        PathContext  path_context;
 
         // Creates a copy of Candidate. An alternative to Candidate(old)
         // that makes the intention clearer when chaining.

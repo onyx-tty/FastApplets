@@ -16,7 +16,6 @@
 
 namespace config::resolve {
 class Candidates;
-class PathContext;
 } // namespace config::resolve
 
 // Parses key name strings (e.g. "Ctrl+A") into a keybindings set, stripped of
@@ -37,15 +36,13 @@ class PathContext;
 // All mapping failures will fall back to defaults and log warnings.
 namespace config::map {
 
-using Keys        = config::schema::Keys;
-using Candidates  = config::resolve::Candidates;
-using PathContext = config::resolve::PathContext;
+using Keys       = config::schema::Keys;
+using Candidates = config::resolve::Candidates;
 
 // Maps quit keybindings from a list of candidates.
 //
 // Return value: keybindings (std::unordered_set<int>)
-[[nodiscard]] keybindings quit(const Candidates& candidates, const keybindings& defaults,
-                               const PathContext& path_context);
+[[nodiscard]] keybindings quit(const Candidates& candidates, const keybindings& defaults);
 
 // Maps the entire primary_buttons array from a list of candidates.
 //
@@ -54,14 +51,12 @@ using PathContext = config::resolve::PathContext;
 //
 // Return value: std::vector<keybindings> (std::vector<std::unordered_set<int>>)
 [[nodiscard]] std::vector<keybindings> primaryButtons(const Candidates&               candidates,
-                                                      const std::vector<keybindings>& defaults,
-                                                      const PathContext&              path_context);
+                                                      const std::vector<keybindings>& defaults);
 
 // Maps a single button's keybindings from a list of candidates.
 //
 // Return value: keybindings (std::unordered_set<int>)
-[[nodiscard]] keybindings primaryButton(const Candidates& candidates, const keybindings& defaults,
-                                        const PathContext& path_context);
+[[nodiscard]] keybindings primaryButton(const Candidates& candidates, const keybindings& defaults);
 
 // Parses applet and global tables into Keys.
 //

@@ -48,7 +48,7 @@ using result      = ArrayBounds::validation_result;
 // On failure: returns std::nullopt
 template<typename T>
 requires(!std::is_same_v<T, toml::table> && !std::is_same_v<T, toml::array>)
-[[nodiscard]] std::optional<T> from(const Candidates& candidates, const PathContext& path_context);
+[[nodiscard]] std::optional<T> from(const Candidates& candidates);
 
 // Pure extraction with no side effects.
 //
@@ -59,8 +59,8 @@ requires(!std::is_same_v<T, toml::table> && !std::is_same_v<T, toml::array>)
 template<typename T>
 requires(std::is_same_v<std::decay_t<T>, toml::table>
          || std::is_same_v<std::decay_t<T>, toml::array>)
-[[nodiscard]] const T* from(const Candidates& candidates, const PathContext& path_context,
-                            const ArrayBounds& arr_bounds = {}, QStringView arr_format = {});
+[[nodiscard]] const T* from(const Candidates& candidates, const ArrayBounds& arr_bounds = {},
+                            QStringView arr_format = {});
 
 // Extraction that can fall back to replacing the entire parent object.
 //
@@ -71,8 +71,8 @@ requires(std::is_same_v<std::decay_t<T>, toml::table>
 //             no partial state
 template<typename TAttribute, typename TObject>
 void fromOrDefault(const Candidates& candidates, TAttribute& attribute, TObject& object,
-                   const TObject& object_defaults, const PathContext& path_context,
-                   const ArrayBounds& arr_bounds = {}, QStringView arr_format = {});
+                   const TObject& object_defaults, const ArrayBounds& arr_bounds = {},
+                   QStringView arr_format = {});
 
 // Like fromOrDefault but with a transformation step before attribute assignment.
 //
@@ -84,8 +84,7 @@ void fromOrDefault(const Candidates& candidates, TAttribute& attribute, TObject&
 //             no partial state
 template<typename TRaw, typename TAttribute, typename TObject, typename Transform>
 void fromTransformOrDefault(const Candidates& candidates, TAttribute& attribute, TObject& object,
-                            const TObject& object_defaults, Transform transform,
-                            const PathContext& path_context);
+                            const TObject& object_defaults, Transform transform);
 
 } // namespace config::resolve
 

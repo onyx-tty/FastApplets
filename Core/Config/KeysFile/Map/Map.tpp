@@ -21,23 +21,29 @@
 template<applet::type TApplet>
 config::schema::Keys config::map::keys(const toml::table& applet, const toml::table& global,
                                        const Keys& defaults) {
+        using resolve::PathContext;
+
         // Confirm that a QApplication instance exists
         if (!QApplication::instance()) { qFatal("QApplication has not been instantiated yet!"); }
 
         constexpr QStringView filename = u"keys.toml";
 
         auto             keys  = Keys();
-        const Candidates cands = {{.node = node_view(applet), .applet = TApplet, .quiet = true},
-                                  {.node = node_view(global), .applet = applet::type::global}};
+        const Candidates cands = {{.node         = node_view(applet),
+                                   .applet       = TApplet,
+                                   .quiet        = true,
+                                   .path_context = PathContext(filename, u"")},
+                                  {.node         = node_view(global),
+                                   .applet       = applet::type::global,
+                                   .path_context = PathContext(filename, u"")}};
 
         /* Quit Keys */
-        keys.quit = quit(cands.makeCopy().withExtension("quit"), defaults.quit,
-                         PathContext(filename, u"quit"));
+        keys.quit = quit(cands.makeCopy().withExtension("quit"), defaults.quit);
 
         /* Primary Button Keys */
         keys.primary_buttons = primaryButtons(
                 {cands.get()[0].makeCopy().withExtension("primary_buttons").withQuiet(false)},
-                defaults.primary_buttons, PathContext(filename, u"primary_buttons"));
+                defaults.primary_buttons);
 
         return std::move(keys);
 }
