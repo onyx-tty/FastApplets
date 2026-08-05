@@ -20,11 +20,11 @@ namespace config::resolve {
 //   "in config.toml, power_applet.window.size"
 //   "in config.toml, global.window.size"
 //
-// With this it's not necessary to store duplicate paths for each name in NodePair.
+// With this it's not necessary to store duplicate paths for each name in Candidates.
 class PathContext final {
 private:
-        QString path_context;
         QString filename;
+        QString path_context;
         char    separator;
 
 public:
