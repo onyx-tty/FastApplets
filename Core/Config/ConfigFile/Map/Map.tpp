@@ -150,8 +150,8 @@ config::schema::Config config::map::config(const toml::table& applet, const toml
                              .path_context = PathContext(filename, u"")}};
 
         config.window_params =
-                windowParams(cands.makeCopy().withExtension(u"window").withQuiet(false,
-                                                                                 candidate::applet),
+                windowParams(cands.makeCopy().withExtension(u"window").withQuiet(candidate::applet,
+                                                                                 false),
                              defaults.window_params);
 
         config.primary_button_params = primaryButtonParams<TApplet>(
