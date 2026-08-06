@@ -133,6 +133,7 @@ template<applet::type TApplet>
 config::schema::Config config::map::config(const toml::table& applet, const toml::table& global,
                                            const config::schema::Config& defaults) {
         using config::resolve::PathContext;
+        using candidate = config::resolve::candidate;
 
         // Confirm that a QApplication instance exists
         if (!QApplication::instance()) { qFatal("QApplication has not been instantiated yet!"); }
