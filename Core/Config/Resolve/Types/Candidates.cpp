@@ -12,7 +12,12 @@
 #include <QStringView>
 #include <QtGlobal>
 
+using config::resolve::Candidate;
 using config::resolve::Candidates;
+
+const Candidate& Candidates::operator[](int i) const {
+        return candidates[i];
+}
 
 Candidates Candidates::makeCopy() const {
         return *this;

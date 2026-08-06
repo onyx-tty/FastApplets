@@ -26,6 +26,8 @@ public:
         Candidates(std::vector<Candidate> candidates) : candidates(std::move(candidates)) {}
         Candidates(std::initializer_list<Candidate> candidates) : candidates(candidates) {}
 
+        const Candidate& operator[](int i) const;
+
         [[nodiscard]] const std::vector<Candidate>& get() const { return candidates; }
 
         // Creates a copy of Candidates. An alternative to Candidates(old)
