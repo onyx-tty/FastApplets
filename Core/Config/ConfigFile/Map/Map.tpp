@@ -103,7 +103,6 @@ template<applet::type TApplet>
 std::optional<PerPrimaryButtonParams> config::map::perPrimaryButtonParams(
         const config::resolve::Candidates& candidates) {
         using namespace config;
-
         using TPrimaryButtonType = applet::Traits<TApplet>::TPrimaryButtonType;
 
         const auto* table = resolve::from<toml::table>(candidates);

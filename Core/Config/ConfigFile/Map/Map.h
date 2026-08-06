@@ -30,8 +30,8 @@ class QSizePolicy;
 // Malformed values (wrong type, out of range, etc.) are treated as failures.
 namespace config::map {
 
-using Config     = config::schema::Config;
-using Candidates = config::resolve::Candidates;
+using config::resolve::Candidates;
+using config::schema::Config;
 
 /* Helpers */
 

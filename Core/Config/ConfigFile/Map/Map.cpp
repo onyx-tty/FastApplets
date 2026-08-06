@@ -15,7 +15,7 @@
 #include <Qt>
 #include <QtGlobal>
 
-using Candidates = config::resolve::Candidates;
+using config::resolve::Candidates;
 
 /* WindowParams */
 

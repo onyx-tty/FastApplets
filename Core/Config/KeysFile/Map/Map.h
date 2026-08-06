@@ -36,8 +36,8 @@ class Candidates;
 // All mapping failures will fall back to defaults and log warnings.
 namespace config::map {
 
-using Keys       = config::schema::Keys;
-using Candidates = config::resolve::Candidates;
+using config::resolve::Candidates;
+using config::schema::Keys;
 
 // Maps quit keybindings from a list of candidates.
 //

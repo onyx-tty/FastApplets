@@ -37,8 +37,8 @@ class QString;
 // - fromTransformOrDefault() -> sets transformed attribute OR overwrites entire object
 namespace config::resolve {
 
-using ArrayBounds = tomlqt::ArrayBounds;
-using result      = ArrayBounds::validation_result;
+using tomlqt::ArrayBounds;
+using result = ArrayBounds::validation_result;
 
 // Pure extraction with no side effects.
 //

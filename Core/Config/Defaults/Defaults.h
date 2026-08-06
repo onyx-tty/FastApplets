@@ -26,8 +26,8 @@
 
 namespace config {
 
-using Config = schema::Config;
-using Keys   = schema::Keys;
+using schema::Config;
+using schema::Keys;
 
 // Construct default Config for applet TApplet.
 template<applet::type TApplet>

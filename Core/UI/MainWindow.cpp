@@ -13,8 +13,8 @@
 #include <QString>
 #include <QWidget>
 
-using Config = config::schema::Config;
-using Keys   = config::schema::Keys;
+using config::schema::Config;
+using config::schema::Keys;
 
 MainWindow makeMainWindow(const Config& config, const Keys& keys, const Keys& default_keys) {
         auto primary_buttons = makePrimaryButtons(config.primary_button_params,
