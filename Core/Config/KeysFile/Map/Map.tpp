@@ -21,7 +21,7 @@
 template<applet::type TApplet>
 config::schema::Keys config::map::keys(const toml::table& applet, const toml::table& global,
                                        const Keys& defaults) {
-        using resolve::PathContext;
+        using namespace resolve;
 
         // Confirm that a QApplication instance exists
         if (!QApplication::instance()) { qFatal("QApplication has not been instantiated yet!"); }
@@ -42,7 +42,7 @@ config::schema::Keys config::map::keys(const toml::table& applet, const toml::ta
 
         /* Primary Button Keys */
         keys.primary_buttons = primaryButtons(
-                {cands.get()[0].makeCopy().withExtension(u"primary_buttons").withQuiet(false)},
+                {cands[candidate::applet].makeCopy().withExtension(u"primary_buttons").withQuiet(false)},
                 defaults.primary_buttons);
 
         return std::move(keys);

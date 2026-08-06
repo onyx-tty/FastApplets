@@ -30,7 +30,6 @@ struct Candidate final {
         // that makes the intention clearer when chaining.
         [[nodiscard]] Candidate makeCopy() const;
 
-        // TODO: Consolidate repetitive logic
         // Extends CANDIDATE by KEY.
         //
         // Replaces:

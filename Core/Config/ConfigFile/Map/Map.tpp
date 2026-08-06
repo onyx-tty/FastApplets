@@ -54,6 +54,7 @@ template<applet::type TApplet>
 PrimaryButtonParams config::map::primaryButtonParams(const config::resolve::Candidates& candidates,
                                                      const PrimaryButtonParams&         defaults) {
         using namespace config;
+        using config::resolve::candidate;
 
         const auto* table = resolve::from<toml::table>(candidates);
         if (!table) { return defaults; }
@@ -61,7 +62,7 @@ PrimaryButtonParams config::map::primaryButtonParams(const config::resolve::Cand
         PrimaryButtonParams params = {};
 
         params.per_button = perPrimaryButtonParamsList<TApplet>(
-                {candidates.get()[0].makeCopy().withExtension(u"list").withQuiet(false)},
+                {candidates[candidate::applet].makeCopy().withExtension(u"list").withQuiet(false)},
                 defaults.per_button);
 
         params.style = primaryButtonStyle(candidates, defaults.style);
@@ -149,9 +150,9 @@ config::schema::Config config::map::config(const toml::table& applet, const toml
                              .applet       = applet::type::global,
                              .path_context = PathContext(filename, u"")}};
 
-        // TODO: Use enum in .withQuiet() to avoid magic numbers
         config.window_params =
-                windowParams(cands.makeCopy().withExtension(u"window").withQuiet(false, 0),
+                windowParams(cands.makeCopy().withExtension(u"window").withQuiet(false,
+                                                                                 candidate::applet),
                              defaults.window_params);
 
         config.primary_button_params = primaryButtonParams<TApplet>(

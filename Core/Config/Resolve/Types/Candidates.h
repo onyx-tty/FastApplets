@@ -16,6 +16,8 @@
 
 namespace config::resolve {
 
+enum class candidate { applet, global };
+
 // Stores a dynamic array of Candidate objects for use in Resolve.
 class Candidates final {
 private:
@@ -27,6 +29,7 @@ public:
         Candidates(std::initializer_list<Candidate> candidates) : candidates(candidates) {}
 
         const Candidate& operator[](int i) const;
+        const Candidate& operator[](candidate i) const;
 
         [[nodiscard]] const std::vector<Candidate>& get() const { return candidates; }
 
@@ -82,6 +85,18 @@ public:
         // With:
         //   auto new_cands = old_cands.withQuiet(index, true/false);
         [[nodiscard]] Candidates& withQuiet(std::optional<size_t> cand_index, bool quiet = true);
+
+        // Sets .quiet in CANDIDATES[CAND_INDEX] to QUIET.
+        //
+        // Replaces:
+        //   auto new_cands = old_cands;
+        //   for (size_t i = 0; i != new_cands.size(); ++i) {
+        //       new_cands[i].candidates.quiet = true/false;
+        //   }
+        //
+        // With:
+        //   auto new_cands = old_cands.withQuiet(index, true/false);
+        [[nodiscard]] Candidates& withQuiet(std::optional<candidate> cand_index, bool quiet = true);
 };
 
 } // namespace config::resolve

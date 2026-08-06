@@ -19,6 +19,10 @@ const Candidate& Candidates::operator[](int i) const {
         return candidates[i];
 }
 
+const Candidate& Candidates::operator[](candidate i) const {
+        return candidates[static_cast<size_t>(i)];
+}
+
 Candidates Candidates::makeCopy() const {
         return *this;
 }
@@ -60,6 +64,20 @@ Candidates& Candidates::withQuiet(std::optional<size_t> cand_index, bool quiet) 
         }
 
         candidates[cand_index.value()].quiet = quiet;
+
+        return *this;
+}
+
+Candidates& Candidates::withQuiet(std::optional<candidate> cand_index, bool quiet) {
+        if (!cand_index) { qWarning() << "Passed std::nullopt, cannot make anything quiet"; }
+
+        if (static_cast<size_t>(cand_index.value()) > candidates.size()) {
+                qWarning() << QString("Passed index (%1) exceeds candidates.size() (%2)")
+                                      .arg(static_cast<size_t>(cand_index.value()))
+                                      .arg(candidates.size());
+        }
+
+        candidates[static_cast<size_t>(cand_index.value())].quiet = quiet;
 
         return *this;
 }
