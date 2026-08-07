@@ -8,25 +8,17 @@
 #include "Core/Config/KeysFile/Schema/Keys.h"
 
 #include <toml++/toml.hpp>
+#include <tuple>
 
 namespace config {
 
 class Filepaths;
 
-struct AppletConfig final {
-        schema::Config config;
-        schema::Config default_config;
-        schema::Keys   keys;
-        schema::Keys   default_keys;
-};
+using applet_config = std::tuple<schema::Config, schema::Config, schema::Keys, schema::Keys>;
 
 template<applet::type TApplet>
 requires(TApplet != applet::type::global)
-[[nodiscard]] AppletConfig makeAppletConfig(const Filepaths& applet, const Filepaths& global);
-
-template<applet::type TApplet>
-requires(TApplet != applet::type::global)
-[[nodiscard]] auto makeAppletConfigTuple(const Filepaths& applet, const Filepaths& global);
+[[nodiscard]] applet_config makeAppletConfig(const Filepaths& applet, const Filepaths& global);
 
 } // namespace config
 

@@ -11,31 +11,20 @@
 #include "Core/Config/Toml/Parse.h"
 #include "Core/Config/Types/Filepaths.h"
 
-#include <tuple>
 #include <QDebug>
 #include <QtGlobal>
 
 template<applet::type TApplet>
 requires(TApplet != applet::type::global)
-config::AppletConfig config::makeAppletConfig(const Filepaths& applet, const Filepaths& global) {
-        auto cfg = AppletConfig();
+config::applet_config config::makeAppletConfig(const Filepaths& applet, const Filepaths& global) {
+        auto default_config = makeDefaultConfig<TApplet>();
+        auto config         = map::config<TApplet>(parseTomlFile(applet.config),
+                                                   parseTomlFile(global.config), default_config);
 
-        cfg.default_config = makeDefaultConfig<TApplet>();
-        cfg.config         = map::config<TApplet>(parseTomlFile(applet.config),
-                                                  parseTomlFile(global.config), cfg.default_config);
+        auto default_keys = makeDefaultKeys<TApplet>();
+        auto keys = map::keys<TApplet>(parseTomlFile(applet.keys), parseTomlFile(global.keys),
+                                       default_keys);
 
-        cfg.default_keys = makeDefaultKeys<TApplet>();
-        cfg.keys = map::keys<TApplet>(parseTomlFile(applet.keys), parseTomlFile(global.keys),
-                                      cfg.default_keys);
-
-        return cfg;
-}
-
-template<applet::type TApplet>
-requires(TApplet != applet::type::global)
-auto config::makeAppletConfigTuple(const Filepaths& applet, const Filepaths& global) {
-        auto cfg = makeAppletConfig<TApplet>(applet, global);
-
-        return std::make_tuple(std::move(cfg.config), std::move(cfg.default_config),
-                               std::move(cfg.keys), std::move(cfg.default_keys));
+        return applet_config(std::move(config), std::move(default_config), std::move(keys),
+                             std::move(default_keys));
 }

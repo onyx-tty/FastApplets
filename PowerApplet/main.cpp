@@ -51,8 +51,8 @@ int main(int argc, char* argv[]) {
         // Config files
         constexpr applet::type type = applet::type::power;
         const auto [config, _, keys,
-                    default_keys]   = config::makeAppletConfigTuple<type>(applet_filepaths,
-                                                                          global_filepaths);
+                    default_keys]   = config::makeAppletConfig<type>(applet_filepaths,
+                                                                     global_filepaths);
 
         // GUI
         MainWindow main_window = makeMainWindow(config, keys, default_keys);
