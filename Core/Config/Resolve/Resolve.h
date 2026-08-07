@@ -62,30 +62,6 @@ requires(std::is_same_v<std::decay_t<T>, toml::table>
 [[nodiscard]] const T* from(const Candidates& candidates, const ArrayBounds& arr_bounds = {},
                             QStringView arr_format = {});
 
-// Extraction that can fall back to replacing the entire parent object.
-//
-// Automatically defaults the parent if the passed attribute is important.
-//
-// On success: writes extracted value to attribute
-// On failure: silently replaces entire object with object_defaults, with
-//             no partial state
-template<typename TAttribute, typename TObject>
-void fromOrDefault(const Candidates& candidates, TAttribute& attribute, TObject& object,
-                   const TObject& object_defaults, const ArrayBounds& arr_bounds = {},
-                   QStringView arr_format = {});
-
-// Like fromOrDefault but with a transformation step before attribute assignment.
-//
-// Automatically defaults the parent if the passed attribute is important.
-// Additionally, transforms the extracted value to adapt it to the attribute.
-//
-// On success: writes extracted and transformed value to attribute
-// On failure: silently replaces entire object with object_defaults, with
-//             no partial state
-template<typename TRaw, typename TAttribute, typename TObject, typename Transform>
-void fromTransformOrDefault(const Candidates& candidates, TAttribute& attribute, TObject& object,
-                            const TObject& object_defaults, Transform transform);
-
 } // namespace config::resolve
 
 #include "Resolve.tpp"

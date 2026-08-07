@@ -13,7 +13,6 @@
 #include <optional>
 #include <toml++/toml.hpp>
 #include <type_traits>
-#include <utility>
 #include <QDebug>
 #include <QStringView>
 #include <Qt>
@@ -98,26 +97,4 @@ const T* config::resolve::from(const Candidates& candidates, const ArrayBounds& 
 
         // Use hardcoded defaults if extraction failed
         return nullptr;
-}
-
-template<typename TAttribute, typename TObject>
-void config::resolve::fromOrDefault(const Candidates& candidates, TAttribute& attribute,
-                                    TObject& object, const TObject& object_defaults,
-                                    const ArrayBounds& arr_bounds, QStringView arr_format) {
-        if (auto res = from<TAttribute>(candidates, arr_bounds, arr_format)) {
-                attribute = std::move(res.value());
-        } else {
-                object = object_defaults;
-        }
-}
-
-template<typename TRaw, typename TAttribute, typename TObject, typename Transform>
-void config::resolve::fromTransformOrDefault(const Candidates& candidates, TAttribute& attribute,
-                                             TObject& object, const TObject& object_defaults,
-                                             Transform transform) {
-        if (auto res = from<TRaw>(candidates)) {
-                attribute = transform(std::move(res.value()));
-        } else {
-                object = object_defaults;
-        }
 }
