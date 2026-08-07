@@ -33,7 +33,7 @@ PathContext& PathContext::withExtension(size_t index) {
         return *this;
 }
 
-QString PathContext::makePath(applet::type applet) const {
+QString PathContext::makePath(applet::Type applet) const {
         return QString("in %1, %2%3%4")
                 .arg(QString(filename), applet::toString(applet))
                 .arg(separator)

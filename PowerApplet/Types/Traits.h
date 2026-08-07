@@ -12,8 +12,8 @@
 namespace applet {
 
 template<>
-struct Traits<applet::type::power> final {
-        using TPrimaryButtonType           = power_button_type;
+struct Traits<applet::Type::Power> final {
+        using TPrimaryButtonType           = PowerButtonType;
         constexpr static QStringView title = u"PowerApplet";
 };
 

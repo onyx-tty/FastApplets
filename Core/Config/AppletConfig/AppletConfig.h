@@ -16,8 +16,8 @@ class Filepaths;
 
 using applet_config = std::tuple<schema::Config, schema::Config, schema::Keys, schema::Keys>;
 
-template<applet::type TApplet>
-requires(TApplet != applet::type::global)
+template<applet::Type TApplet>
+requires(TApplet != applet::Type::Global)
 [[nodiscard]] applet_config makeAppletConfig(const Filepaths& applet, const Filepaths& global);
 
 } // namespace config

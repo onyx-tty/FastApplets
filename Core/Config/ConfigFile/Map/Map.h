@@ -60,7 +60,7 @@ template<typename T>
 //                  list (array of tables)
 //
 // Return value: PrimaryButtonParams
-template<applet::type TApplet>
+template<applet::Type TApplet>
 [[nodiscard]] PrimaryButtonParams primaryButtonParams(const Candidates&          candidates,
                                                       const PrimaryButtonParams& defaults);
 
@@ -69,7 +69,7 @@ template<applet::type TApplet>
 // Expected format: array of tables
 //
 // Return value: std::vector<PerPrimaryButtonParams>
-template<applet::type TApplet>
+template<applet::Type TApplet>
 [[nodiscard]] std::vector<PerPrimaryButtonParams> perPrimaryButtonParamsList(
         const Candidates& candidates, const std::vector<PerPrimaryButtonParams>& defaults);
 
@@ -83,7 +83,7 @@ template<applet::type TApplet>
 // converts single quotes to double quotes to work around that limitation.
 //
 // Return value: std::optional<PerPrimaryButtonParams>
-template<applet::type TApplet>
+template<applet::Type TApplet>
 [[nodiscard]] std::optional<PerPrimaryButtonParams> perPrimaryButtonParams(
         const Candidates& candidates);
 
@@ -108,7 +108,7 @@ template<applet::type TApplet>
 // Parses applet and global tables into config::schema::Config.
 //
 // Usage:
-//   auto config = ConfigMapper::config<applet::type::foo>(applet, global, defaults);
+//   auto config = ConfigMapper::config<applet::Type::foo>(applet, global, defaults);
 //
 // The applet table supplies primary configuration and overrides, global
 // provides fallbacks.
@@ -116,7 +116,7 @@ template<applet::type TApplet>
 // QApplication must exist before calling.
 //
 // Return value: config::schema::Config
-template<applet::type TApplet>
+template<applet::Type TApplet>
 [[nodiscard]] Config config(const toml::table& applet, const toml::table& global,
                             const Config& defaults);
 

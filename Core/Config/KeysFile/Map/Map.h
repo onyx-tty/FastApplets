@@ -69,7 +69,7 @@ using config::schema::Keys;
 // QApplication must exist before calling.
 //
 // Return value: config::schema::Keys
-template<applet::type TApplet>
+template<applet::Type TApplet>
 [[nodiscard]] Keys keys(const toml::table& applet, const toml::table& global, const Keys& defaults);
 
 } // namespace config::map

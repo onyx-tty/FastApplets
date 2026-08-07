@@ -8,34 +8,34 @@
 #include <QStringView>
 
 template<>
-power_button_type toPrimaryButtonType<power_button_type>(QStringView string) {
-        static const QHash<QStringView, power_button_type> map =
-                {{u"power_off", power_button_type::shutdown},
-                 {u"shutdown", power_button_type::shutdown},
-                 {u"reboot", power_button_type::reboot},
-                 {u"suspend", power_button_type::suspend},
-                 {u"hibernate", power_button_type::hibernate},
-                 {u"log_out", power_button_type::log_out}};
+PowerButtonType toPrimaryButtonType<PowerButtonType>(QStringView string) {
+        static const QHash<QStringView, PowerButtonType> map =
+                {{u"power_off", PowerButtonType::Shutdown},
+                 {u"shutdown", PowerButtonType::Shutdown},
+                 {u"reboot", PowerButtonType::Reboot},
+                 {u"suspend", PowerButtonType::Suspend},
+                 {u"hibernate", PowerButtonType::Hibernate},
+                 {u"log_out", PowerButtonType::LogOut}};
 
         const auto iter = map.find(string);
-        if (iter == map.cend()) { return power_button_type::none; }
+        if (iter == map.cend()) { return PowerButtonType::None; }
 
         return *iter;
 }
 
 template<>
-volume_button_type toPrimaryButtonType<volume_button_type>(QStringView string) {
-        static const QHash<QStringView, volume_button_type> map =
-                {{u"play_pause", volume_button_type::play_pause},
-                 {u"next", volume_button_type::next},
-                 {u"previous", volume_button_type::previous},
-                 {u"volume_up", volume_button_type::volume_up},
-                 {u"volume_down", volume_button_type::volume_down},
-                 {u"volume_mute_output", volume_button_type::volume_mute_output},
-                 {u"volume_mute_input", volume_button_type::volume_mute_input}};
+VolumeButtonType toPrimaryButtonType<VolumeButtonType>(QStringView string) {
+        static const QHash<QStringView, VolumeButtonType> map =
+                {{u"play_pause", VolumeButtonType::PlayPause},
+                 {u"next", VolumeButtonType::Next},
+                 {u"previous", VolumeButtonType::Previous},
+                 {u"volume_up", VolumeButtonType::VolumeUp},
+                 {u"volume_down", VolumeButtonType::VolumeDown},
+                 {u"volume_mute_output", VolumeButtonType::VolumeMuteOutput},
+                 {u"volume_mute_input", VolumeButtonType::VolumeMuteInput}};
 
         const auto iter = map.find(string);
-        if (iter == map.cend()) { return volume_button_type::none; }
+        if (iter == map.cend()) { return VolumeButtonType::None; }
 
         return *iter;
 }

@@ -22,7 +22,7 @@ namespace config::resolve {
 // 'path_context' provides an extensible interface for convenient storage and extension of paths.
 struct Candidate final {
         node_view    node;
-        applet::type applet;
+        applet::Type applet;
         bool         quiet = false;
         PathContext  path_context;
 

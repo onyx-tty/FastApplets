@@ -19,7 +19,7 @@
 #include <QStringView>
 #include <QtGlobal>
 
-void printHelpMenu(applet::type type) {
+void printHelpMenu(applet::Type type) {
         QStringView applet_name = applet::toTitle(type);
 
         // clang-format off

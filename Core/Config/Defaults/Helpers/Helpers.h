@@ -18,13 +18,13 @@
 
 namespace config::details {
 
-template<applet::type TApplet>
+template<applet::Type TApplet>
 WindowParams makeWindowParams();
 
-template<applet::type TApplet>
+template<applet::Type TApplet>
 PrimaryButtonParams makePrimaryButtonParams();
 
-template<applet::type TApplet>
+template<applet::Type TApplet>
 std::vector<PerPrimaryButtonParams> makePerPrimaryButtonParams();
 
 constexpr PrimaryButtonStyle makePrimaryButtonStyle() {

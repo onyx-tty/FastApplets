@@ -14,8 +14,8 @@
 #include <QDebug>
 #include <QtGlobal>
 
-template<applet::type TApplet>
-requires(TApplet != applet::type::global)
+template<applet::Type TApplet>
+requires(TApplet != applet::Type::Global)
 config::applet_config config::makeAppletConfig(const Filepaths& applet, const Filepaths& global) {
         auto default_config = makeDefaultConfig<TApplet>();
         auto config         = map::config<TApplet>(parseTomlFile(applet.config),

@@ -52,7 +52,7 @@ public:
         // path_context.
         //
         // Example: makePath("power_applet") -> "in config.toml, power_applet.window"
-        [[nodiscard]] QString makePath(applet::type applet) const;
+        [[nodiscard]] QString makePath(applet::Type applet) const;
 };
 
 } // namespace config::resolve

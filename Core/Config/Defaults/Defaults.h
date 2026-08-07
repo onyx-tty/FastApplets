@@ -30,11 +30,11 @@ using schema::Config;
 using schema::Keys;
 
 // Construct default Config for applet TApplet.
-template<applet::type TApplet>
+template<applet::Type TApplet>
 [[nodiscard]] Config makeDefaultConfig();
 
 // Construct default config::schema::Keys for applet TApplet.
-template<applet::type TApplet>
+template<applet::Type TApplet>
 [[nodiscard]] Keys makeDefaultKeys();
 
 } // namespace config

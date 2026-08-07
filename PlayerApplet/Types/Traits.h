@@ -12,8 +12,8 @@
 namespace applet {
 
 template<>
-struct Traits<applet::type::player> final {
-        using TPrimaryButtonType           = volume_button_type;
+struct Traits<applet::Type::Player> final {
+        using TPrimaryButtonType           = VolumeButtonType;
         constexpr static QStringView title = u"PlayerApplet";
 };
 

@@ -20,15 +20,16 @@ using config::resolve::Candidates;
 /* WindowParams */
 
 WindowParams config::map::windowParams(const Candidates& candidates, const WindowParams& defaults) {
-        using config::resolve::candidate;
+        using config::resolve::CandidateIndex;
 
         return properties(candidates, defaults, [&defaults, &candidates](WindowParams& window) {
                 window.size = resolve::from<QSize>(candidates.makeCopy().withExtension(u"size"))
                                       .value_or(defaults.size);
 
-                window.title = resolve::from<QString>(candidates.makeCopy()
-                                                              .withExtension(u"title")
-                                                              .withQuiet(candidate::global, true))
+                window.title = resolve::from<QString>(
+                                       candidates.makeCopy()
+                                               .withExtension(u"title")
+                                               .withQuiet(CandidateIndex::Global, true))
                                        .value_or(defaults.title);
         });
 }

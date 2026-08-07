@@ -1,4 +1,4 @@
-project(PlayerApplet VERSION 0.1.0 LANGUAGES CXX)
+project(PlayerApplet VERSION 0.1.1 LANGUAGES CXX)
 
 add_subdirectory(Types)
 

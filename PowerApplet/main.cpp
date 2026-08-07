@@ -33,7 +33,7 @@ int main(int argc, char* argv[]) {
                 QLatin1StringView msg(e.what());
                 if (!msg.empty()) { qWarning() << msg; }
 
-                printHelpMenu(applet::type::power);
+                printHelpMenu(applet::Type::Power);
 
                 QTimer::singleShot(0, &application, &QApplication::quit);
                 return application.exec();
@@ -41,15 +41,15 @@ int main(int argc, char* argv[]) {
 
         // Find config files
         config::Filepaths applet_filepaths = config::locateFiles(
-                applet::toLatin1String(applet::type::power));
+                applet::toLatin1String(applet::Type::Power));
         const config::Filepaths global_filepaths = config::locateFiles(
-                applet::toLatin1String(applet::type::global));
+                applet::toLatin1String(applet::Type::Global));
 
         // Inject config filepath and keys filepath if they are valid
         arg::injectArgs(args, applet_filepaths);
 
         // Config files
-        constexpr applet::type type = applet::type::power;
+        constexpr applet::Type type = applet::Type::Power;
         const auto [config, _, keys,
                     default_keys]   = config::makeAppletConfig<type>(applet_filepaths,
                                                                      global_filepaths);

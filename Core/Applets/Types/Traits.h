@@ -11,7 +11,7 @@ namespace applet {
 //
 // To work, each applet must include its own Traits template specializations
 // before including the classes requiring them.
-template<applet::type T>
+template<applet::Type T>
 struct Traits;
 
 } // namespace applet

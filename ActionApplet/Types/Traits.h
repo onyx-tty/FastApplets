@@ -12,7 +12,7 @@
 namespace applet {
 
 template<>
-struct Traits<applet::type::action> final {
+struct Traits<applet::Type::Action> final {
         using TPrimaryButtonType           = std::monostate;
         constexpr static QStringView title = u"ActionApplet";
 };

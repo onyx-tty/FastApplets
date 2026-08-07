@@ -12,46 +12,46 @@
 /* PowerApplet */
 
 template<>
-QIcon iconFor<power_button_type>(power_button_type type) {
-        using enum power_button_type;
+QIcon iconFor<PowerButtonType>(PowerButtonType type) {
+        using enum PowerButtonType;
 
         Q_INIT_RESOURCE(Icons);
 
         switch (type) {
-        case shutdown:  return QIcon(":/Icons/Power/shutdown.svg");
-        case reboot:    return QIcon(":/Icons/Power/reboot.svg");
-        case suspend:   return QIcon(":/Icons/Power/suspend.svg");
-        case hibernate: return QIcon(":/Icons/Power/hibernate.svg");
-        case log_out:   return QIcon(":/Icons/Power/log_out.svg");
+        case Shutdown:  return QIcon(":/Icons/Power/shutdown.svg");
+        case Reboot:    return QIcon(":/Icons/Power/reboot.svg");
+        case Suspend:   return QIcon(":/Icons/Power/suspend.svg");
+        case Hibernate: return QIcon(":/Icons/Power/hibernate.svg");
+        case LogOut:    return QIcon(":/Icons/Power/log_out.svg");
         default:        return QIcon(":/Icons/missing.svg");
         }
 }
 
 template<>
-QString textFor<power_button_type>(power_button_type type) {
-        using enum power_button_type;
+QString textFor<PowerButtonType>(PowerButtonType type) {
+        using enum PowerButtonType;
 
         switch (type) {
-        case shutdown:  return "Shutdown";
-        case reboot:    return "Reboot";
-        case suspend:   return "Suspend";
-        case hibernate: return "Hibernate";
-        case log_out:   return "Log Out";
+        case Shutdown:  return "Shutdown";
+        case Reboot:    return "Reboot";
+        case Suspend:   return "Suspend";
+        case Hibernate: return "Hibernate";
+        case LogOut:    return "Log Out";
         default:        return "";
         }
 }
 
 template<>
-QString commandFor<power_button_type>(power_button_type type) {
-        using enum power_button_type;
+QString commandFor<PowerButtonType>(PowerButtonType type) {
+        using enum PowerButtonType;
 
         // clang-format off
         switch (type) {
-        case shutdown:  return "systemctl poweroff";
-        case reboot:    return "systemctl reboot";
-        case suspend:   return "systemctl suspend";
-        case hibernate: return "systemctl hibernate";
-        case log_out:   return "loginctl terminate-session"
+        case Shutdown:  return "systemctl poweroff";
+        case Reboot:    return "systemctl reboot";
+        case Suspend:   return "systemctl suspend";
+        case Hibernate: return "systemctl hibernate";
+        case LogOut:   return "loginctl terminate-session"
                                "$(loginctl session-status | head -1 | awk '{print $1}')";
         default: return "";
         }
@@ -61,50 +61,50 @@ QString commandFor<power_button_type>(power_button_type type) {
 /* PlayerApplet */
 
 template<>
-QIcon iconFor<volume_button_type>(volume_button_type type) {
-        using enum volume_button_type;
+QIcon iconFor<VolumeButtonType>(VolumeButtonType type) {
+        using enum VolumeButtonType;
 
         Q_INIT_RESOURCE(Icons);
 
         switch (type) {
-        case play_pause:         return QIcon(":/Icons/Player/play.svg");
-        case next:               return QIcon(":/Icons/Player/next.svg");
-        case previous:           return QIcon(":/Icons/Player/back.svg");
-        case volume_up:          return QIcon(":/Icons/Player/volume3.svg");
-        case volume_down:        return QIcon(":/Icons/Player/volume1.svg");
-        case volume_mute_output: return QIcon(":/Icons/Player/mute.svg");
-        case volume_mute_input:  return QIcon(":/Icons/Player/microphone.svg");
-        default:                 return QIcon(":/Icons/missing.svg");
+        case PlayPause:        return QIcon(":/Icons/Player/play.svg");
+        case Next:             return QIcon(":/Icons/Player/next.svg");
+        case Previous:         return QIcon(":/Icons/Player/back.svg");
+        case VolumeUp:         return QIcon(":/Icons/Player/volume3.svg");
+        case VolumeDown:       return QIcon(":/Icons/Player/volume1.svg");
+        case VolumeMuteOutput: return QIcon(":/Icons/Player/mute.svg");
+        case VolumeMuteInput:  return QIcon(":/Icons/Player/microphone.svg");
+        default:               return QIcon(":/Icons/missing.svg");
         }
 }
 
 template<>
-QString textFor<volume_button_type>(volume_button_type type) {
-        using enum volume_button_type;
+QString textFor<VolumeButtonType>(VolumeButtonType type) {
+        using enum VolumeButtonType;
 
         switch (type) {
-        case play_pause:         return "Play/Pause";
-        case next:               return "Next";
-        case previous:           return "Previous";
-        case volume_up:          return "Volume Up";
-        case volume_down:        return "Volume Down";
-        case volume_mute_output: return "Mute Output";
-        case volume_mute_input:  return "Mute Input";
-        default:                 return "";
+        case PlayPause:        return "Play/Pause";
+        case Next:             return "Next";
+        case Previous:         return "Previous";
+        case VolumeUp:         return "Volume Up";
+        case VolumeDown:       return "Volume Down";
+        case VolumeMuteOutput: return "Mute Output";
+        case VolumeMuteInput:  return "Mute Input";
+        default:               return "";
         }
 }
 
 template<>
-QString commandFor<volume_button_type>(volume_button_type type) {
-        using enum volume_button_type;
+QString commandFor<VolumeButtonType>(VolumeButtonType type) {
+        using enum VolumeButtonType;
 
         switch (type) {
-        case play_pause:  return "playerctl play-pause";
-        case next:        return "playerctl next";
-        case previous:    return "playerctl previous";
-        case volume_up:   return "playerctl volume 0.1+";
-        case volume_down: return "playerctl volume 0.1-";
-        default:          return "";
+        case PlayPause:  return "playerctl play-pause";
+        case Next:       return "playerctl next";
+        case Previous:   return "playerctl previous";
+        case VolumeUp:   return "playerctl volume 0.1+";
+        case VolumeDown: return "playerctl volume 0.1-";
+        default:         return "";
         }
 }
 

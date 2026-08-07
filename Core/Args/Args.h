@@ -12,7 +12,7 @@
 #include <string_view>
 #include <QString>
 
-void printHelpMenu(applet::type type);
+void printHelpMenu(applet::Type type);
 void printArgs(int argc, const char* const argv[]);
 
 // Expects the program to print out the help menu and terminate right away.

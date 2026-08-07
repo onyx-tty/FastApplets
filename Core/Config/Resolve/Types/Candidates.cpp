@@ -19,7 +19,7 @@ const Candidate& Candidates::operator[](int i) const {
         return candidates[i];
 }
 
-const Candidate& Candidates::operator[](candidate i) const {
+const Candidate& Candidates::operator[](CandidateIndex i) const {
         return candidates[static_cast<size_t>(i)];
 }
 
@@ -68,7 +68,7 @@ Candidates& Candidates::withQuiet(std::optional<size_t> cand_index, bool quiet) 
         return *this;
 }
 
-Candidates& Candidates::withQuiet(std::optional<candidate> cand_index, bool quiet) {
+Candidates& Candidates::withQuiet(std::optional<CandidateIndex> cand_index, bool quiet) {
         if (!cand_index) { qWarning() << "Passed std::nullopt, cannot make anything quiet"; }
 
         if (static_cast<size_t>(cand_index.value()) > candidates.size()) {

@@ -14,7 +14,7 @@
 #include <vector>
 #include <Qt>
 
-template<applet::type TApplet>
+template<applet::Type TApplet>
 config::schema::Config config::makeDefaultConfig() {
         using namespace config::details;
 
@@ -24,7 +24,7 @@ config::schema::Config config::makeDefaultConfig() {
         return Config(std::move(window), std::move(params));
 }
 
-template<applet::type TApplet>
+template<applet::Type TApplet>
 config::schema::Keys config::makeDefaultKeys() {
         keybindings quit = {Qt::Key_Escape, Qt::Key_Q};
 

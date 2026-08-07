@@ -18,7 +18,7 @@
 #include <Qt>
 #include <QtGlobal>
 
-template<applet::type TApplet>
+template<applet::Type TApplet>
 config::schema::Keys config::map::keys(const toml::table& applet, const toml::table& global,
                                        const Keys& defaults) {
         using namespace resolve;
@@ -34,16 +34,18 @@ config::schema::Keys config::map::keys(const toml::table& applet, const toml::ta
                                    .quiet        = true,
                                    .path_context = PathContext(filename, u"")},
                                   {.node         = node_view(global),
-                                   .applet       = applet::type::global,
+                                   .applet       = applet::Type::Global,
                                    .path_context = PathContext(filename, u"")}};
 
         /* Quit Keys */
         keys.quit = quit(cands.makeCopy().withExtension(u"quit"), defaults.quit);
 
         /* Primary Button Keys */
-        keys.primary_buttons = primaryButtons(
-                {cands[candidate::applet].makeCopy().withExtension(u"primary_buttons").withQuiet(false)},
-                defaults.primary_buttons);
+        keys.primary_buttons = primaryButtons({cands[CandidateIndex::Applet]
+                                                       .makeCopy()
+                                                       .withExtension(u"primary_buttons")
+                                                       .withQuiet(false)},
+                                              defaults.primary_buttons);
 
         return std::move(keys);
 }

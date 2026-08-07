@@ -5,6 +5,6 @@
 
 namespace config {
 
-enum class type { config, keys };
+enum class Type { Config, Keys };
 
 } // namespace config

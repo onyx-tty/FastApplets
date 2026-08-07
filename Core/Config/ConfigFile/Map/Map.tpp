@@ -50,20 +50,22 @@ T config::map::properties(const config::resolve::Candidates& candidates, const T
 
 /* PrimaryButtonParams */
 
-template<applet::type TApplet>
+template<applet::Type TApplet>
 PrimaryButtonParams config::map::primaryButtonParams(const config::resolve::Candidates& candidates,
                                                      const PrimaryButtonParams&         defaults) {
         using namespace config;
-        using config::resolve::candidate;
+        using config::resolve::CandidateIndex;
 
         const auto* table = resolve::from<toml::table>(candidates);
         if (!table) { return defaults; }
 
         PrimaryButtonParams params = {};
 
-        params.per_button = perPrimaryButtonParamsList<TApplet>(
-                {candidates[candidate::applet].makeCopy().withExtension(u"list").withQuiet(false)},
-                defaults.per_button);
+        params.per_button = perPrimaryButtonParamsList<TApplet>({candidates[CandidateIndex::Applet]
+                                                                         .makeCopy()
+                                                                         .withExtension(u"list")
+                                                                         .withQuiet(false)},
+                                                                defaults.per_button);
 
         params.style = primaryButtonStyle(candidates, defaults.style);
 
@@ -72,7 +74,7 @@ PrimaryButtonParams config::map::primaryButtonParams(const config::resolve::Cand
         return std::move(params);
 }
 
-template<applet::type TApplet>
+template<applet::Type TApplet>
 std::vector<PerPrimaryButtonParams> config::map::perPrimaryButtonParamsList(
         const config::resolve::Candidates&         candidates,
         const std::vector<PerPrimaryButtonParams>& defaults) {
@@ -99,7 +101,7 @@ std::vector<PerPrimaryButtonParams> config::map::perPrimaryButtonParamsList(
         return std::move(found);
 }
 
-template<applet::type TApplet>
+template<applet::Type TApplet>
 std::optional<PerPrimaryButtonParams> config::map::perPrimaryButtonParams(
         const config::resolve::Candidates& candidates) {
         using namespace config;
@@ -129,11 +131,11 @@ std::optional<PerPrimaryButtonParams> config::map::perPrimaryButtonParams(
         return std::move(new_button);
 }
 
-template<applet::type TApplet>
+template<applet::Type TApplet>
 config::schema::Config config::map::config(const toml::table& applet, const toml::table& global,
                                            const config::schema::Config& defaults) {
+        using config::resolve::CandidateIndex;
         using config::resolve::PathContext;
-        using candidate = config::resolve::candidate;
 
         // Confirm that a QApplication instance exists
         if (!QApplication::instance()) { qFatal("QApplication has not been instantiated yet!"); }
@@ -147,13 +149,13 @@ config::schema::Config config::map::config(const toml::table& applet, const toml
                              .quiet        = true,
                              .path_context = PathContext(filename, u"")},
                             {.node         = node_view(global),
-                             .applet       = applet::type::global,
+                             .applet       = applet::Type::Global,
                              .path_context = PathContext(filename, u"")}};
 
-        config.window_params =
-                windowParams(cands.makeCopy().withExtension(u"window").withQuiet(candidate::applet,
-                                                                                 false),
-                             defaults.window_params);
+        config.window_params = windowParams(cands.makeCopy()
+                                                    .withExtension(u"window")
+                                                    .withQuiet(CandidateIndex::Applet, false),
+                                            defaults.window_params);
 
         config.primary_button_params = primaryButtonParams<TApplet>(
                 cands.makeCopy().withExtension(u"primary_button").withQuiet(false),

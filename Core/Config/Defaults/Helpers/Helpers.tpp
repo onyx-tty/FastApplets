@@ -18,7 +18,7 @@
 #include <QString>
 #include <Qt>
 
-template<applet::type TApplet>
+template<applet::Type TApplet>
 WindowParams config::details::makeWindowParams() {
         constexpr QSize size  = {960, 220};
         QString         title = applet::Traits<TApplet>::title.toString();
@@ -26,7 +26,7 @@ WindowParams config::details::makeWindowParams() {
         return WindowParams(size, std::move(title));
 }
 
-template<applet::type TApplet>
+template<applet::Type TApplet>
 PrimaryButtonParams config::details::makePrimaryButtonParams() {
         using namespace config::details;
 
@@ -37,7 +37,7 @@ PrimaryButtonParams config::details::makePrimaryButtonParams() {
         return PrimaryButtonParams(std::move(per_button), style, behavior);
 }
 
-template<applet::type TApplet>
+template<applet::Type TApplet>
 std::vector<PerPrimaryButtonParams> config::details::makePerPrimaryButtonParams() {
         using TPrimaryButtonType = applet::Traits<TApplet>::TPrimaryButtonType;
 
@@ -49,21 +49,21 @@ std::vector<PerPrimaryButtonParams> config::details::makePerPrimaryButtonParams(
         };
 
         std::vector<PerPrimaryButtonParams> per_params = {};
-        if constexpr (TApplet == applet::type::power) {
-                using enum power_button_type;
+        if constexpr (TApplet == applet::Type::Power) {
+                using enum PowerButtonType;
 
-                per_params = {param(shutdown), param(reboot), param(suspend), param(hibernate),
-                              param(log_out)};
-        } else if constexpr (TApplet == applet::type::action) {
+                per_params = {param(Shutdown), param(Reboot), param(Suspend), param(Hibernate),
+                              param(LogOut)};
+        } else if constexpr (TApplet == applet::Type::Action) {
                 per_params = {{.text    = "Display greeting notification",
                                .command = "notify-send 'FastApplets' 'Hello!'"},
                               {.text    = "Display current date",
                                .command = "notify-send 'Current date:' \"$(date +'%F %H:%M')\""}};
-        } else if constexpr (TApplet == applet::type::player) {
-                using enum volume_button_type;
+        } else if constexpr (TApplet == applet::Type::Player) {
+                using enum VolumeButtonType;
 
-                per_params = {param(play_pause), param(next), param(previous), param(volume_up),
-                              param(volume_down)};
+                per_params = {param(PlayPause), param(Next), param(Previous), param(VolumeUp),
+                              param(VolumeDown)};
         }
 
         return per_params;
