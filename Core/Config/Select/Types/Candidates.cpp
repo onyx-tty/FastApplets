@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 
 #include "Candidates.h"
-#include "Core/Config/Resolve/Types/Candidate.h"
+#include "Core/Config/Select/Types/Candidate.h"
 
 #include <cstddef>
 #include <optional>
@@ -12,8 +12,8 @@
 #include <QStringView>
 #include <QtGlobal>
 
-using config::resolve::Candidate;
-using config::resolve::Candidates;
+using config::select::Candidate;
+using config::select::Candidates;
 
 const Candidate& Candidates::operator[](int i) const {
         return candidates[i];

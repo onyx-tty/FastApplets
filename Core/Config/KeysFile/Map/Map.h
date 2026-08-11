@@ -7,6 +7,7 @@
 #include "Core/Applets/Types/Type.h"
 #include "Core/Config/KeysFile/Schema/Keys.h"
 #include "Core/Config/KeysFile/Types/Keybindings.h"
+#include "Core/Config/Select/Types/Candidates.h"
 #include "Core/Config/Types/NodeView.h"
 
 #include <optional>
@@ -14,9 +15,10 @@
 #include <toml++/toml.hpp>
 #include <vector>
 
-namespace config::resolve {
+namespace config::select {
 class Candidates;
-} // namespace config::resolve
+class PathContext;
+} // namespace config::select
 
 // Parses key name strings (e.g. "Ctrl+A") into a keybindings set, stripped of
 // modifiers.
@@ -36,8 +38,10 @@ class Candidates;
 // All mapping failures will fall back to defaults and log warnings.
 namespace config::map {
 
-using config::resolve::Candidates;
 using config::schema::Keys;
+using config::select::CandidateIndex;
+using config::select::Candidates;
+using config::select::PathContext;
 
 // Maps quit keybindings from a list of candidates.
 //

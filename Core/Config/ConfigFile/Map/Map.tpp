@@ -8,9 +8,9 @@
 #include "Core/Applets/Types/Traits.h"
 #include "Core/Applets/Types/Type.h"
 #include "Core/Config/ConfigFile/Schema/Config.h"
-#include "Core/Config/Resolve/PathContext/PathContext.h"
 #include "Core/Config/Resolve/Resolve.h"
-#include "Core/Config/Resolve/Types/Candidates.h"
+#include "Core/Config/Select/PathContext/PathContext.h"
+#include "Core/Config/Select/Types/Candidates.h"
 #include "Core/Config/Types/NodeView.h"
 #include "Core/UI/Types/ButtonType.h"
 #include "Core/UI/Types/PerPrimaryButtonParams.h"
@@ -29,7 +29,7 @@
 #include <QtGlobal>
 
 template<typename T>
-T config::map::properties(const config::resolve::Candidates& candidates, const T& defaults,
+T config::map::properties(const config::select::Candidates& candidates, const T& defaults,
                           auto fill_fn) {
         using namespace config;
 
@@ -51,10 +51,10 @@ T config::map::properties(const config::resolve::Candidates& candidates, const T
 /* PrimaryButtonParams */
 
 template<applet::Type TApplet>
-PrimaryButtonParams config::map::primaryButtonParams(const config::resolve::Candidates& candidates,
-                                                     const PrimaryButtonParams&         defaults) {
+PrimaryButtonParams config::map::primaryButtonParams(const config::select::Candidates& candidates,
+                                                     const PrimaryButtonParams&        defaults) {
         using namespace config;
-        using config::resolve::CandidateIndex;
+        using config::select::CandidateIndex;
 
         const auto* table = resolve::from<toml::table>(candidates);
         if (!table) { return defaults; }
@@ -76,7 +76,7 @@ PrimaryButtonParams config::map::primaryButtonParams(const config::resolve::Cand
 
 template<applet::Type TApplet>
 std::vector<PerPrimaryButtonParams> config::map::perPrimaryButtonParamsList(
-        const config::resolve::Candidates&         candidates,
+        const config::select::Candidates&          candidates,
         const std::vector<PerPrimaryButtonParams>& defaults) {
         using namespace config;
 
@@ -103,7 +103,7 @@ std::vector<PerPrimaryButtonParams> config::map::perPrimaryButtonParamsList(
 
 template<applet::Type TApplet>
 std::optional<PerPrimaryButtonParams> config::map::perPrimaryButtonParams(
-        const config::resolve::Candidates& candidates) {
+        const config::select::Candidates& candidates) {
         using namespace config;
         using TPrimaryButtonType = applet::Traits<TApplet>::TPrimaryButtonType;
 
@@ -134,8 +134,8 @@ std::optional<PerPrimaryButtonParams> config::map::perPrimaryButtonParams(
 template<applet::Type TApplet>
 config::schema::Config config::map::config(const toml::table& applet, const toml::table& global,
                                            const config::schema::Config& defaults) {
-        using config::resolve::CandidateIndex;
-        using config::resolve::PathContext;
+        using config::select::CandidateIndex;
+        using config::select::PathContext;
 
         // Confirm that a QApplication instance exists
         if (!QApplication::instance()) { qFatal("QApplication has not been instantiated yet!"); }

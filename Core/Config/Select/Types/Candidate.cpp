@@ -10,7 +10,7 @@
 #include <QStringView>
 #include <QtGlobal>
 
-using config::resolve::Candidate;
+using config::select::Candidate;
 
 Candidate Candidate::makeCopy() const {
         return *this;
@@ -20,8 +20,8 @@ Candidate& Candidate::withExtension(QStringView key) {
         // Qt logging uses UTF-16, TOML++ uses UTF-8
         auto byte_arr = key.toUtf8();
 
-        node          = node[std::string_view(byte_arr.data(), byte_arr.size())];
-        path_context  = path_context.withExtension(key);
+        node         = node[std::string_view(byte_arr.data(), byte_arr.size())];
+        path_context = path_context.withExtension(key);
 
         return *this;
 }

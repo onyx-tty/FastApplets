@@ -47,7 +47,7 @@ set(CPPUTILS_ENABLE_QT ON)
 
 # Third-party
 CPMAddPackage("gh:onyx-tty/CppUtils#cef444b")
-CPMAddPackage("gh:onyx-tty/TomlQt#367f769")
+CPMAddPackage("gh:onyx-tty/TomlQt#f2de454")
 
 set(ROOT_DIR ${CMAKE_CURRENT_LIST_DIR})
 
@@ -82,8 +82,9 @@ install(# Install compiled artifacts to correct destinations, register all targe
                 Core_Config_Defaults Core_Config_Defaults_Helpers
                 Core_Config_Locate
                 Core_Config_Toml
-                Core_Config_Resolve Core_Config_Resolve_Helpers
-                Core_Config_Resolve_PathContext Core_Config_Resolve_Types
+                Core_Config_Resolve
+                Core_Config_Select Core_Config_Select_Helpers
+                Core_Config_Select_PathContext Core_Config_Select_Types
                 Core_Config_Types
                 Core_Shell
                 Core_UI

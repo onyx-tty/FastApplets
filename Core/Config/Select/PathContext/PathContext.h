@@ -9,7 +9,7 @@
 #include <QString>
 #include <QStringView>
 
-namespace config::resolve {
+namespace config::select {
 
 // Builds logging paths with dynamic applet name substitution.
 //
@@ -55,4 +55,4 @@ public:
         [[nodiscard]] QString makePath(applet::Type applet) const;
 };
 
-} // namespace config::resolve
+} // namespace config::select

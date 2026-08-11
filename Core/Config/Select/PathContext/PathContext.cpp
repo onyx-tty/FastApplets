@@ -8,7 +8,7 @@
 #include <QString>
 #include <QStringView>
 
-using config::resolve::PathContext;
+using config::select::PathContext;
 
 PathContext::PathContext(QStringView filename, QStringView path_context, char separator) :
         filename(filename.toString()), path_context(path_context.toString()), separator(separator) {

@@ -10,18 +10,13 @@
 #include <QStringView>
 #include <Qt>
 
-namespace config::resolve {
+namespace config::select {
 class Candidates;
-class PathContext;
-} // namespace config::resolve
-
-class QSize;
-class QSizePolicy;
-class QString;
+} // namespace config::select
 
 // Extracts typed values from TOML nodes with fallback chains and error handling.
 //
-// All methods accept multiple config::resolve::Candidates (priority ordered). The first candidate that
+// All methods accept multiple config::select::Candidates (priority ordered). The first candidate that
 // provides a valid value wins. Invalid values (incorrect type, bound failures)
 // are treated as missing.
 //
@@ -37,6 +32,7 @@ class QString;
 // - fromTransformOrDefault() -> sets transformed attribute OR overwrites entire object
 namespace config::resolve {
 
+using config::select::Candidates;
 using tomlqt::ArrayBounds;
 using result = ArrayBounds::validation_result;
 

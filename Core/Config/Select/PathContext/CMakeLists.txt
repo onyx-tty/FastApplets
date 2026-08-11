@@ -1,4 +1,4 @@
-add_applet_library(Core_Config_Resolve_PathContext
+add_applet_library(Core_Config_Select_PathContext
         SOURCES PathContext.cpp
 
         PUBLIC_DEPS Core::Applets::Types

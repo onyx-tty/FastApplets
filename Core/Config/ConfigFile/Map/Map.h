@@ -11,9 +11,9 @@
 #include <toml++/toml.hpp>
 #include <vector>
 
-namespace config::resolve {
+namespace config::select {
 class Candidates;
-} // namespace config::resolve
+} // namespace config::select
 
 class PrimaryButtonParams;
 class PerPrimaryButtonParams;
@@ -30,8 +30,8 @@ class QSizePolicy;
 // Malformed values (wrong type, out of range, etc.) are treated as failures.
 namespace config::map {
 
-using config::resolve::Candidates;
 using config::schema::Config;
+using config::select::Candidates;
 
 /* Helpers */
 
