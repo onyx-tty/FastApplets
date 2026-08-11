@@ -26,10 +26,8 @@ class Candidates;
 //   - Other types: toml++ native value extraction
 //
 // Quick reference:
-// - from()          -> returns optional<T>, manual error handling
-// - from()        -> returns T*, manual error handling
-// - fromOrDefault() -> sets attribute OR overwrites entire object
-// - fromTransformOrDefault() -> sets transformed attribute OR overwrites entire object
+// - from() -> returns optional<T>, manual error handling
+// - from() -> returns T*, manual error handling
 namespace config::resolve {
 
 using config::select::Candidates;
