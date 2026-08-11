@@ -37,5 +37,5 @@ void config::select::helpers::log(const Candidate& candidate) {
 
         if (path.isNull()) { qFatal("Passed null path"); }
 
-        qWarning() << QString("%1, missing or wrong type").arg(std::move(path));
+        qWarning() << QString("%1, missing or wrong type").arg(path);
 }
