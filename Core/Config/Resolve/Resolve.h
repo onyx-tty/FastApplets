@@ -9,7 +9,6 @@
 #include <concepts>
 #include <optional>
 #include <toml++/toml.hpp>
-#include <type_traits>
 #include <QStringView>
 #include <Qt>
 
@@ -37,8 +36,8 @@ using config::ArraySpec;
 using config::select::Candidates;
 
 template<typename T>
-concept ReturnByView = tomlqt::TomlQtSupported<T> && std::is_same_v<T, toml::table>
-                    || std::is_same_v<T, toml::array>;
+concept ReturnByView = tomlqt::TomlQtSupported<T> && std::same_as<T, toml::table>
+                    || std::same_as<T, toml::array>;
 
 template<typename T>
 concept ReturnByValue = tomlqt::TomlQtSupported<T> && !ReturnByView<T>;
