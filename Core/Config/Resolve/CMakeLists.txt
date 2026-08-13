@@ -3,6 +3,7 @@ add_applet_library(Core_Config_Resolve
 
         INTERFACE_DEPS Core::Config::Select
                        Core::Config::Select::Types
+                       Core::Config::Types
                        TomlQt
                        Qt${QT_VERSION_MAJOR}::Core
                        tomlplusplus::tomlplusplus)

@@ -3,7 +3,8 @@
 
 #pragma once
 
-#include <TomlQt/ArrayBounds.h>
+#include "Core/Config/Types/ArraySpec.h"
+
 #include <optional>
 #include <toml++/toml.hpp>
 #include <type_traits>
@@ -30,9 +31,8 @@ class Candidates;
 // - from() -> returns T*, manual error handling
 namespace config::resolve {
 
+using config::ArraySpec;
 using config::select::Candidates;
-using tomlqt::ArrayBounds;
-using result = ArrayBounds::validation_result;
 
 // Pure extraction with no side effects.
 //
@@ -53,8 +53,7 @@ requires(!std::is_same_v<T, toml::table> && !std::is_same_v<T, toml::array>)
 template<typename T>
 requires(std::is_same_v<std::decay_t<T>, toml::table>
          || std::is_same_v<std::decay_t<T>, toml::array>)
-[[nodiscard]] const T* from(const Candidates& candidates, const ArrayBounds& arr_bounds = {},
-                            QStringView arr_format = {});
+[[nodiscard]] const T* from(const Candidates& candidates, const ArraySpec& array_spec = {});
 
 } // namespace config::resolve
 

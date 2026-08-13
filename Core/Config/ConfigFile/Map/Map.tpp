@@ -11,6 +11,7 @@
 #include "Core/Config/Resolve/Resolve.h"
 #include "Core/Config/Select/PathContext/PathContext.h"
 #include "Core/Config/Select/Types/Candidates.h"
+#include "Core/Config/Types/ArraySpec.h"
 #include "Core/Config/Types/NodeView.h"
 #include "Core/UI/Types/ButtonType.h"
 #include "Core/UI/Types/PerPrimaryButtonParams.h"
@@ -80,8 +81,9 @@ std::vector<PerPrimaryButtonParams> config::map::perPrimaryButtonParamsList(
         const std::vector<PerPrimaryButtonParams>& defaults) {
         using namespace config;
 
-        const auto* arr = resolve::from<toml::array>(candidates, {.min_size = 1},
-                                                     u"Format: [primary buttons...]");
+        const auto* arr = resolve::from<toml::array>(candidates,
+                                                     {.bounds = ArrayBounds{.min_size = 1},
+                                                      .format = u"Format: [primary buttons...]"});
         if (!arr) { return defaults; }
 
         std::vector<PerPrimaryButtonParams> found = {};

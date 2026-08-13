@@ -5,6 +5,7 @@
 
 #include "Core/Config/Select/Select.h"
 #include "Core/Config/Select/Types/Candidates.h"
+#include "Core/Config/Types/ArraySpec.h"
 #include "Resolve.h"
 
 #include <TomlQt/TomlQt.h>
@@ -26,11 +27,10 @@ std::optional<T> config::resolve::from(const Candidates& candidates) {
 template<typename T>
 requires(std::is_same_v<std::decay_t<T>, toml::table>
          || std::is_same_v<std::decay_t<T>, toml::array>)
-const T* config::resolve::from(const Candidates& candidates, const ArrayBounds& arr_bounds,
-                               QStringView arr_format) {
+const T* config::resolve::from(const Candidates& candidates, const ArraySpec& array_spec) {
         using DT = std::decay_t<T>;
 
-        auto result = config::select::candidate<DT>(candidates, arr_bounds, arr_format);
+        auto result = config::select::candidate<DT>(candidates, array_spec);
 
         return result.template as<DT>();
 }

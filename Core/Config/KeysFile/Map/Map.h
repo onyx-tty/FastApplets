@@ -8,6 +8,7 @@
 #include "Core/Config/KeysFile/Schema/Keys.h"
 #include "Core/Config/KeysFile/Types/Keybindings.h"
 #include "Core/Config/Select/Types/Candidates.h"
+#include "Core/Config/Types/ArraySpec.h"
 #include "Core/Config/Types/NodeView.h"
 
 #include <optional>
@@ -38,6 +39,7 @@ class PathContext;
 // All mapping failures will fall back to defaults and log warnings.
 namespace config::map {
 
+using config::ArraySpec;
 using config::schema::Keys;
 using config::select::CandidateIndex;
 using config::select::Candidates;

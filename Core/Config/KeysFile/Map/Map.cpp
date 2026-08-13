@@ -5,6 +5,7 @@
 #include "Core/Config/KeysFile/Types/Keybindings.h"
 #include "Core/Config/Resolve/Resolve.h"
 #include "Core/Config/Select/Types/Candidates.h"
+#include "Core/Config/Types/ArraySpec.h"
 #include "Core/Config/Types/NodeView.h"
 
 #include <cstddef>
@@ -48,8 +49,9 @@ keybindings keysFromTomlArray(const toml::array& arr) {
 /* KeysMapper */
 
 keybindings config::map::quit(const Candidates& candidates, const keybindings& defaults) {
-        const auto* keys = resolve::from<toml::array>(candidates, {.min_size = 1},
-                                                      u"[keybindings...]");
+        const auto* keys = resolve::from<toml::array>(candidates,
+                                                      {.bounds = ArrayBounds{.min_size = 1},
+                                                       .format = u"[keybindings...]"});
 
         if (!keys || keys->empty()) { return defaults; }
 
@@ -58,8 +60,9 @@ keybindings config::map::quit(const Candidates& candidates, const keybindings& d
 
 std::vector<keybindings> config::map::primaryButtons(const Candidates&               candidates,
                                                      const std::vector<keybindings>& defaults) {
-        const auto* keys = resolve::from<toml::array>(candidates, {.min_size = 1},
-                                                      u"[keybindings...]");
+        const auto* keys = resolve::from<toml::array>(candidates,
+                                                      {.bounds = ArrayBounds{.min_size = 1},
+                                                       .format = u"[keybindings...]"});
 
         if (!keys || keys->empty()) { return defaults; }
 
@@ -76,8 +79,9 @@ std::vector<keybindings> config::map::primaryButtons(const Candidates&          
 }
 
 keybindings config::map::primaryButton(const Candidates& candidates, const keybindings& defaults) {
-        const auto* keys = resolve::from<toml::array>(candidates, {.min_size = 1},
-                                                      u"[keybindings...]");
+        const auto* keys = resolve::from<toml::array>(candidates,
+                                                      {.bounds = ArrayBounds{.min_size = 1},
+                                                       .format = u"[keybindings...]"});
 
         if (!keys || keys->empty()) { return defaults; }
 

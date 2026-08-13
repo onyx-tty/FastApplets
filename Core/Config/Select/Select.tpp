@@ -10,17 +10,13 @@
 #include "Core/Config/Types/NodeView.h"
 
 #include <TomlQt/ArrayBounds.h>
-#include <TomlQt/TomlQt.h>
-#include <optional>
 #include <toml++/toml.hpp>
 #include <type_traits>
 #include <QDebug>
-#include <QStringView>
 #include <QtGlobal>
 
 template<typename TReturn>
-node_view config::select::candidate(const Candidates&          candidates,
-                                    std::optional<ArrayBounds> arr_bounds, QStringView arr_format) {
+node_view config::select::candidate(const Candidates& candidates, const ArraySpec& array_spec) {
         using DTReturn          = std::decay_t<TReturn>;
         using validation_result = tomlqt::ArrayBounds::validation_result;
 
@@ -44,10 +40,11 @@ node_view config::select::candidate(const Candidates&          candidates,
                                 if constexpr (std::is_same_v<toml::array, DTReturn>) {
                                         // Empty arr_bounds means there is no need for
                                         // bound checking therefore it's success by default.
-                                        auto res = arr_bounds ? arr_bounds.value().validate(
-                                                                        candidate.node.as_array())
-                                                              : validation_result::success;
-                                        log(candidate, res, arr_format);
+                                        auto res = array_spec.bounds
+                                                         ? array_spec.bounds.value().validate(
+                                                                   candidate.node.as_array())
+                                                         : validation_result::success;
+                                        log(candidate, res, array_spec.format);
                                 } else {
                                         log(candidate);
                                 }
