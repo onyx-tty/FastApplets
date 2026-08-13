@@ -19,12 +19,11 @@ template<typename T>
 requires(std::is_same_v<toml::array, std::decay_t<T>>)
 void config::select::helpers::log(const Candidate& candidate, tomlqt::ArrayBounds& arr_bounds,
                                   QStringView arr_format) {
-        constexpr bool display_logs = true;
-        auto           path         = candidate.path_context.makePath(candidate.applet);
+        auto path = candidate.path_context.makePath(candidate.applet);
 
         if (path.isNull()) { qFatal("Passed null path"); }
 
-        arr_bounds.validate(candidate.node.as_array(), display_logs);
+        tomlqt::logArrayBoundsResult(arr_bounds.validate(candidate.node.as_array()));
 
         qWarning() << QString("%1, missing or wrong type! Format: %2")
                               .arg(std::move(path), arr_format.toString());
