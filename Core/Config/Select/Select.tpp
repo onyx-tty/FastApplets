@@ -47,9 +47,9 @@ node_view config::select::candidate(const Candidates&          candidates,
                                         auto res = arr_bounds ? arr_bounds.value().validate(
                                                                         candidate.node.as_array())
                                                               : validation_result::success;
-                                        log<DTReturn>(candidate, res, arr_format);
+                                        log(candidate, res, arr_format);
                                 } else {
-                                        log<DTReturn>(candidate);
+                                        log(candidate);
                                 }
                         }
 

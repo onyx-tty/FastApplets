@@ -1,7 +1,8 @@
 add_applet_library(Core_Config_Select_Helpers
-        TYPE INTERFACE
+        SOURCES Helpers.cpp
 
-        INTERFACE_DEPS Core::Config::Select::Types
-                       TomlQt
-                       tomlplusplus::tomlplusplus
-                       Qt${QT_VERSION_MAJOR}::Core)
+        PRIVATE_DEPS Core::Config::Select::Types
+
+        PUBLIC_DEPS TomlQt
+                    tomlplusplus::tomlplusplus
+                    Qt${QT_VERSION_MAJOR}::Core)
