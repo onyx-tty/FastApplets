@@ -21,7 +21,8 @@
 template<typename TReturn>
 node_view config::select::candidate(const Candidates&          candidates,
                                     std::optional<ArrayBounds> arr_bounds, QStringView arr_format) {
-        using DTReturn = std::decay<TReturn>;
+        using DTReturn          = std::decay<TReturn>;
+        using validation_result = tomlqt::ArrayBounds::validation_result;
 
         const auto candidate_ptr = candidates.get().begin();
         for (size_t i = 0; i != candidates.get().size(); ++i) {
@@ -41,7 +42,12 @@ node_view config::select::candidate(const Candidates&          candidates,
                 if (!candidate.node) {
                         if (!silence_logs) {
                                 if constexpr (std::is_same_v<toml::array, DTReturn>) {
-                                        log<DTReturn>(candidate, arr_bounds, arr_format);
+                                        // Empty arr_bounds means there is no need for
+                                        // bound checking therefore it's success by default.
+                                        auto res = arr_bounds ? arr_bounds.value().validate(
+                                                                        candidate.node.as_array())
+                                                              : validation_result::success;
+                                        log<DTReturn>(candidate, res, arr_format);
                                 } else {
                                         log<DTReturn>(candidate);
                                 }

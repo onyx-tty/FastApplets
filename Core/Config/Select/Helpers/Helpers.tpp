@@ -17,13 +17,13 @@
 
 template<typename T>
 requires(std::is_same_v<toml::array, std::decay_t<T>>)
-void config::select::helpers::log(const Candidate& candidate, tomlqt::ArrayBounds& arr_bounds,
+void config::select::helpers::log(const Candidate& candidate, validation_result arr_result,
                                   QStringView arr_format) {
         auto path = candidate.path_context.makePath(candidate.applet);
 
         if (path.isNull()) { qFatal("Passed null path"); }
 
-        tomlqt::logArrayBoundsResult(arr_bounds.validate(candidate.node.as_array()));
+        tomlqt::logArrayBoundsResult(arr_result);
 
         qWarning() << QString("%1, missing or wrong type! Format: %2")
                               .arg(std::move(path), arr_format.toString());
