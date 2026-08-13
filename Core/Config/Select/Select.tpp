@@ -44,7 +44,7 @@ node_view config::select::candidate(const Candidates& candidates, const ArraySpe
                                                          ? array_spec.bounds.value().validate(
                                                                    candidate.node.as_array())
                                                          : validation_result::success;
-                                        log(candidate, res, array_spec.format);
+                                        log(candidate, {.result = res, .format = array_spec.format});
                                 } else {
                                         log(candidate);
                                 }

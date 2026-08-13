@@ -22,14 +22,13 @@ void config::select::helpers::log(const Candidate& candidate) {
         qWarning() << QString("%1, missing or wrong type").arg(path);
 }
 
-void config::select::helpers::log(const Candidate& candidate, validation_result arr_result,
-                                  QStringView arr_format) {
+void config::select::helpers::log(const Candidate& candidate, ArrayLogSpec array_log_spec) {
         auto path = candidate.path_context.makePath(candidate.applet);
 
         if (path.isNull()) { qFatal("Passed null path"); }
 
-        tomlqt::logArrayBoundsResult(arr_result);
+        tomlqt::logArrayBoundsResult(array_log_spec.result);
 
         qWarning() << QString("%1, missing or wrong type! Format: %2")
-                              .arg(std::move(path), arr_format.toString());
+                              .arg(std::move(path), array_log_spec.format.toString());
 }

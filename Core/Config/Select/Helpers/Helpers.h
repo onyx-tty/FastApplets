@@ -13,7 +13,12 @@ namespace config::select::helpers {
 
 using validation_result = tomlqt::ArrayBounds::validation_result;
 
+struct ArrayLogSpec final {
+        validation_result result;
+        QStringView       format;
+};
+
 void log(const Candidate& candidate);
-void log(const Candidate& candidate, validation_result arr_result, QStringView arr_format);
+void log(const Candidate& candidate, ArrayLogSpec array_log_spec);
 
 } // namespace config::select::helpers
