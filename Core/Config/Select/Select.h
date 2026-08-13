@@ -16,7 +16,7 @@ using config::ArraySpec;
 
 // TODO: Docs
 template<typename TReturn>
-node_view candidate(const Candidates& candidates, const ArraySpec& arr_bounds = {});
+node_view candidate(const Candidates& candidates, const ArraySpec& array_spec = {});
 
 } // namespace config::select
 
