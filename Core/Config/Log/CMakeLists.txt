@@ -1,5 +1,5 @@
-add_applet_library(Core_Config_Select_Helpers
-        SOURCES Helpers.cpp
+add_applet_library(Core_Config_Log
+        SOURCES Log.cpp
 
         PRIVATE_DEPS Core::Config::Select::Types
 

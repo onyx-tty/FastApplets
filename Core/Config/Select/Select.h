@@ -7,12 +7,10 @@
 #include "Core/Config/Types/ArraySpec.h"
 #include "Core/Config/Types/NodeView.h"
 
-namespace config::select::helpers {}
-
 namespace config::select {
 
-using namespace config::select::helpers;
 using config::ArraySpec;
+using namespace config;
 
 // TODO: Docs
 template<typename TReturn>

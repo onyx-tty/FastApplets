@@ -9,8 +9,9 @@
 #include <toml++/toml.hpp>
 #include <QStringView>
 
-namespace config::select::helpers {
+namespace config::log {
 
+using config::select::Candidate;
 using validation_result = tomlqt::ArrayBounds::validation_result;
 
 struct ArrayLogSpec final {
@@ -18,7 +19,7 @@ struct ArrayLogSpec final {
         QStringView       format;
 };
 
-void log(const Candidate& candidate);
-void log(const Candidate& candidate, ArrayLogSpec array_log_spec);
+void candidate(const Candidate& candidate);
+void candidate(const Candidate& candidate, ArrayLogSpec array_log_spec);
 
-} // namespace config::select::helpers
+} // namespace config::log
