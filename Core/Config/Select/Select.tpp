@@ -10,6 +10,7 @@
 #include "Core/Config/Types/NodeView.h"
 
 #include <TomlQt/ArrayBounds.h>
+#include <cstddef>
 #include <toml++/toml.hpp>
 #include <type_traits>
 #include <QDebug>

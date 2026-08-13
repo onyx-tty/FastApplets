@@ -15,7 +15,7 @@
 #include <QStringView>
 
 template<typename T>
-requires(!std::is_same_v<T, toml::table> && !std::is_same_v<T, toml::array>)
+requires(config::resolve::ReturnByValue<T>)
 std::optional<T> config::resolve::from(const Candidates& candidates) {
         using DT = std::decay_t<T>;
 
@@ -25,8 +25,7 @@ std::optional<T> config::resolve::from(const Candidates& candidates) {
 }
 
 template<typename T>
-requires(std::is_same_v<std::decay_t<T>, toml::table>
-         || std::is_same_v<std::decay_t<T>, toml::array>)
+requires(config::resolve::ReturnByView<T>)
 const T* config::resolve::from(const Candidates& candidates, const ArraySpec& array_spec) {
         using DT = std::decay_t<T>;
 

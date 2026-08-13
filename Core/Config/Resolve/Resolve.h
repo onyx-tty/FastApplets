@@ -5,6 +5,7 @@
 
 #include "Core/Config/Types/ArraySpec.h"
 
+#include <concepts>
 #include <optional>
 #include <toml++/toml.hpp>
 #include <type_traits>
@@ -34,6 +35,12 @@ namespace config::resolve {
 using config::ArraySpec;
 using config::select::Candidates;
 
+template<typename T>
+concept ReturnByView = std::is_same_v<T, toml::table> || std::is_same_v<T, toml::array>;
+
+template<typename T>
+concept ReturnByValue = !ReturnByView<T>;
+
 // Pure extraction with no side effects.
 //
 // Requires a manual std::nullopt check.
@@ -41,7 +48,7 @@ using config::select::Candidates;
 // On success: returns std::optional<T>
 // On failure: returns std::nullopt
 template<typename T>
-requires(!std::is_same_v<T, toml::table> && !std::is_same_v<T, toml::array>)
+requires(ReturnByValue<T>)
 [[nodiscard]] std::optional<T> from(const Candidates& candidates);
 
 // Pure extraction with no side effects.
@@ -51,8 +58,7 @@ requires(!std::is_same_v<T, toml::table> && !std::is_same_v<T, toml::array>)
 // On success: returns const T*
 // On failure: returns nullptr
 template<typename T>
-requires(std::is_same_v<std::decay_t<T>, toml::table>
-         || std::is_same_v<std::decay_t<T>, toml::array>)
+requires(ReturnByView<T>)
 [[nodiscard]] const T* from(const Candidates& candidates, const ArraySpec& array_spec = {});
 
 } // namespace config::resolve
