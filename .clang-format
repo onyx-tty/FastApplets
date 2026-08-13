@@ -85,7 +85,7 @@ BreakAfterJavaFieldAnnotations: false
 BreakArrays: false
 BreakBeforeBinaryOperators: NonAssignment
 BreakBeforeBraces: Custom
-BreakBeforeConceptDeclarations: Never
+BreakBeforeConceptDeclarations: Always
 BreakBeforeInlineASMColon: OnlyMultiline
 BreakBeforeTernaryOperators: true
 BreakConstructorInitializers: AfterColon
