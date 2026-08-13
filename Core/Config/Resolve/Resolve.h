@@ -5,6 +5,7 @@
 
 #include "Core/Config/Types/ArraySpec.h"
 
+#include <TomlQt/TomlQt.h>
 #include <concepts>
 #include <optional>
 #include <toml++/toml.hpp>
@@ -36,10 +37,11 @@ using config::ArraySpec;
 using config::select::Candidates;
 
 template<typename T>
-concept ReturnByView = std::is_same_v<T, toml::table> || std::is_same_v<T, toml::array>;
+concept ReturnByView = tomlqt::TomlQtSupported<T> && std::is_same_v<T, toml::table>
+                    || std::is_same_v<T, toml::array>;
 
 template<typename T>
-concept ReturnByValue = !ReturnByView<T>;
+concept ReturnByValue = tomlqt::TomlQtSupported<T> && !ReturnByView<T>;
 
 // Pure extraction with no side effects.
 //
