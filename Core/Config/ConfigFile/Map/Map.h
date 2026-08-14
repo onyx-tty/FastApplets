@@ -40,7 +40,7 @@ using config::schema::Config;
 /* Helpers */
 
 template<typename T>
-[[nodiscard]] T properties(const Candidates& candidates, const T& defaults, auto fill_fn);
+[[nodiscard]] std::optional<T> properties(const Candidates& candidates, auto fill_fn);
 
 /* WindowParams */
 

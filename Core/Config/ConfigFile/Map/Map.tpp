@@ -31,7 +31,7 @@
 #include <QtGlobal>
 
 template<typename T>
-T config::map::properties(const config::Candidates& candidates, const T& defaults, auto fill_fn) {
+std::optional<T> config::map::properties(const config::Candidates& candidates, auto fill_fn) {
         using namespace config;
 
         const toml::table* properties = nullptr;
@@ -43,8 +43,6 @@ T config::map::properties(const config::Candidates& candidates, const T& default
 
                 if (properties) { break; }
         }
-
-        if (!properties) { return defaults; }
 
         auto props = T();
         fill_fn(props);
