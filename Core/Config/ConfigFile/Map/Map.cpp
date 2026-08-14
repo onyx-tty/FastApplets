@@ -22,10 +22,7 @@ WindowParams config::map::windowParams(const Candidates& candidates, const Windo
                 window.size = resolve::from<QSize>(candidates.makeCopy().withExtension(u"size"))
                                       .value_or(defaults.size);
 
-                window.title = resolve::from<QString>(
-                                       candidates.makeCopy()
-                                               .withExtension(u"title")
-                                               .withQuiet(CandidateIndex::Global, true))
+                window.title = resolve::from<QString>(candidates.makeCopy().withExtension(u"title"))
                                        .value_or(defaults.title);
         });
 }

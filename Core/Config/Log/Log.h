@@ -23,7 +23,7 @@ struct ArrayLogSpec final {
         QStringView       format = u"";
 };
 
-void candidate(const Candidate& candidate);
-void candidate(const Candidate& candidate, ArrayLogSpec array_log_spec);
+void candidate(const Candidate& candidate, bool success);
+void candidate(const Candidate& candidate, bool success, ArrayLogSpec array_log_spec);
 
 } // namespace config::log

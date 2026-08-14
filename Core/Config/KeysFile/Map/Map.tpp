@@ -5,9 +5,9 @@
 
 #include "Core/Applets/Types/Type.h"
 #include "Core/Config/KeysFile/Schema/Keys.h"
-#include "Core/Config/Types/PathContext/PathContext.h"
 #include "Core/Config/Types/Candidates/Candidates.h"
 #include "Core/Config/Types/NodeView.h"
+#include "Core/Config/Types/PathContext/PathContext.h"
 #include "Map.h"
 
 #include <toml++/toml.hpp>
@@ -33,6 +33,7 @@ config::schema::Keys config::map::keys(const toml::table& applet, const toml::ta
                                    .path_context = PathContext(filename, u"")},
                                   {.node         = node_view(global),
                                    .applet       = applet::Type::Global,
+                                   .quiet        = false,
                                    .path_context = PathContext(filename, u"")}};
 
         /* Quit Keys */

@@ -8,6 +8,7 @@
 #include "Core/Config/Types/NodeView.h"
 
 #include <TomlQt/TomlQt.h>
+#include <type_traits>
 
 namespace config::select {
 
@@ -16,7 +17,7 @@ using namespace config;
 
 // TODO: Docs
 template<typename TReturn>
-requires(tomlqt::TomlQtSupported<TReturn>)
+requires(tomlqt::TomlQtSupported<std::decay_t<TReturn>>)
 node_view candidate(const Candidates& candidates, const ArraySpec& array_spec = {});
 
 } // namespace config::select

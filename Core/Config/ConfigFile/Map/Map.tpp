@@ -146,16 +146,15 @@ config::schema::Config config::map::config(const toml::table& applet, const toml
                              .path_context = PathContext(filename, u"")},
                             {.node         = node_view(global),
                              .applet       = applet::Type::Global,
+                             .quiet        = false,
                              .path_context = PathContext(filename, u"")}};
 
-        config.window_params = windowParams(cands.makeCopy()
-                                                    .withExtension(u"window")
-                                                    .withQuiet(CandidateIndex::Applet, false),
+        config.window_params = windowParams(cands.makeCopy().withExtension(u"window"),
                                             defaults.window_params);
 
-        config.primary_button_params = primaryButtonParams<TApplet>(
-                cands.makeCopy().withExtension(u"primary_button").withQuiet(false),
-                defaults.primary_button_params);
+        config.primary_button_params = primaryButtonParams<TApplet>(cands.makeCopy().withExtension(
+                                                                            u"primary_button"),
+                                                                    defaults.primary_button_params);
 
         return std::move(config);
 }

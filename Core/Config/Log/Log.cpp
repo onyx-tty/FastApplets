@@ -14,21 +14,35 @@
 
 using validation_result = tomlqt::ArrayBounds::validation_result;
 
-void config::log::candidate(const Candidate& candidate) {
+void config::log::candidate(const Candidate& candidate, bool success) {
+        if (candidate.quiet) { return; }
+
         auto path = candidate.path_context.makePath(candidate.applet);
 
         if (path.isNull()) { qFatal("Passed null path"); }
 
-        qWarning() << QString("%1, missing or wrong type").arg(path);
+        if (success) {
+                qDebug() << path << "found!";
+        } else {
+                qWarning() << QString("%1, missing or wrong type").arg(path);
+        }
 }
 
-void config::log::candidate(const Candidate& candidate, ArrayLogSpec array_log_spec) {
+void config::log::candidate(const Candidate& candidate, bool success, ArrayLogSpec array_log_spec) {
+        using result = tomlqt::ArrayBounds::validation_result;
+
+        if (candidate.quiet) { return; }
+
         auto path = candidate.path_context.makePath(candidate.applet);
 
         if (path.isNull()) { qFatal("Passed null path"); }
 
         tomlqt::logArrayBoundsResult(array_log_spec.result);
 
-        qWarning() << QString("%1, missing or wrong type! Format: %2")
-                              .arg(std::move(path), array_log_spec.format.toString());
+        if (success && array_log_spec.result == result::success) {
+                qDebug() << path << "found!";
+        } else {
+                qWarning() << QString("%1, missing or wrong type! Format: %2")
+                                      .arg(std::move(path), array_log_spec.format.toString());
+        }
 }
