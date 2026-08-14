@@ -31,7 +31,7 @@
 #include <QtGlobal>
 
 template<typename T>
-std::optional<T> config::map::properties(const config::Candidates& candidates, auto fill_fn) {
+std::optional<T> config::map::table(const config::Candidates& candidates, auto fill_fn) {
         using namespace config;
 
         const toml::table* properties = nullptr;
@@ -55,7 +55,7 @@ std::optional<T> config::map::properties(const config::Candidates& candidates, a
 template<applet::Type TApplet>
 PrimaryButtonParams config::map::primaryButtonParams(const config::Candidates&  candidates,
                                                      const PrimaryButtonParams& defaults) {
-        return properties<PrimaryButtonParams>(
+        return table<PrimaryButtonParams>(
                        candidates,
                        [&defaults, &candidates](PrimaryButtonParams& params) {
                                params.per_button = perPrimaryButtonParamsList<TApplet>(
@@ -106,8 +106,8 @@ std::optional<PerPrimaryButtonParams> config::map::perPrimaryButtonParams(
         using namespace config;
         using TPrimaryButtonType = applet::Traits<TApplet>::TPrimaryButtonType;
 
-        return properties<PerPrimaryButtonParams>(candidates, [&candidates](PerPrimaryButtonParams&
-                                                                                    params) {
+        return table<PerPrimaryButtonParams>(candidates, [&candidates](
+                                                                 PerPrimaryButtonParams& params) {
                 auto type_str = resolve::from<QString>(candidates.makeCopy().withExtension(u"id"));
 
                 params.type = toPrimaryButtonType<TPrimaryButtonType>(type_str.value_or(""));
@@ -144,17 +144,15 @@ config::schema::Config config::map::config(const toml::table& applet, const toml
                              .quiet        = false,
                              .path_context = PathContext(filename, u"")}};
 
-        return properties<Config>(
-                       cands,
-                       [&defaults, &cands](Config& config) {
-                               config.window_params = windowParams(cands.makeCopy().withExtension(
-                                                                           u"window"),
-                                                                   defaults.window_params);
+        return table<Config>(cands,
+                             [&defaults, &cands](Config& config) {
+                                     config.window_params =
+                                             windowParams(cands.makeCopy().withExtension(u"window"),
+                                                          defaults.window_params);
 
-                               config.primary_button_params =
-                                       primaryButtonParams<TApplet>(cands.makeCopy().withExtension(
-                                                                            u"primary_button"),
-                                                                    defaults.primary_button_params);
-                       })
+                                     config.primary_button_params = primaryButtonParams<TApplet>(
+                                             cands.makeCopy().withExtension(u"primary_button"),
+                                             defaults.primary_button_params);
+                             })
                 .value_or(defaults);
 }

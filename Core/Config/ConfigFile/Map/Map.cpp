@@ -18,17 +18,18 @@
 /* WindowParams */
 
 WindowParams config::map::windowParams(const Candidates& candidates, const WindowParams& defaults) {
-        return properties<WindowParams>(
-                       candidates,
-                       [&defaults, &candidates](WindowParams& window) {
-                               window.size = resolve::from<QSize>(
-                                                     candidates.makeCopy().withExtension(u"size"))
-                                                     .value_or(defaults.size);
+        return table<WindowParams>(candidates,
+                                   [&defaults, &candidates](WindowParams& window) {
+                                           window.size = resolve::from<QSize>(
+                                                                 candidates.makeCopy().withExtension(
+                                                                         u"size"))
+                                                                 .value_or(defaults.size);
 
-                               window.title = resolve::from<QString>(
-                                                      candidates.makeCopy().withExtension(u"title"))
-                                                      .value_or(defaults.title);
-                       })
+                                           window.title = resolve::from<QString>(
+                                                                  candidates.makeCopy()
+                                                                          .withExtension(u"title"))
+                                                                  .value_or(defaults.title);
+                                   })
                 .value_or(defaults);
 }
 
@@ -36,7 +37,7 @@ WindowParams config::map::windowParams(const Candidates& candidates, const Windo
 
 PrimaryButtonStyle config::map::primaryButtonStyle(const Candidates&         candidates,
                                                    const PrimaryButtonStyle& defaults) {
-        return properties<PrimaryButtonStyle>(
+        return table<PrimaryButtonStyle>(
                        candidates,
                        [&defaults, &candidates](PrimaryButtonStyle& button) {
                                button.text_alignment = resolve::from<Qt::Alignment>(
@@ -64,7 +65,7 @@ PrimaryButtonStyle config::map::primaryButtonStyle(const Candidates&         can
 
 PrimaryButtonBehavior config::map::primaryButtonBehavior(const Candidates&            candidates,
                                                          const PrimaryButtonBehavior& defaults) {
-        return properties<PrimaryButtonBehavior>(
+        return table<PrimaryButtonBehavior>(
                        candidates,
                        [&defaults, &candidates](PrimaryButtonBehavior& button) {
                                button.double_key_press =
