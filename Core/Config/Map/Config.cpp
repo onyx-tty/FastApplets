@@ -1,7 +1,7 @@
 // SPDX-FileCopyrightText: 2026 Łukasz Wrodarczyk
 // SPDX-License-Identifier: GPL-3.0-or-later
 
-#include "Map.h"
+#include "Config.h"
 #include "Core/Config/Resolve/Resolve.h"
 #include "Core/Config/Types/Candidates/Candidates.h"
 #include "Core/UI/Types/PrimaryButtonBehavior.h"

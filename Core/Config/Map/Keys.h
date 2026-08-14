@@ -5,10 +5,10 @@
 
 #include "Core/Applets/Types/Traits.h"
 #include "Core/Applets/Types/Type.h"
-#include "Core/Config/KeysFile/Schema/Keys.h"
-#include "Core/Config/KeysFile/Types/Keybindings.h"
+#include "Core/Config/Schema/Keys.h"
 #include "Core/Config/Types/ArraySpec.h"
 #include "Core/Config/Types/Candidates/Candidates.h"
+#include "Core/Config/Types/Keybindings.h"
 #include "Core/Config/Types/NodeView.h"
 
 #include <optional>
@@ -82,4 +82,4 @@ template<applet::Type TApplet>
 
 } // namespace config::map
 
-#include "Map.tpp"
+#include "Keys.tpp"

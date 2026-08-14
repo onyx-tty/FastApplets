@@ -3,13 +3,13 @@
 
 #pragma once
 
-#include "Map.h"
+#include "Config.h"
 
 #include "Core/Applets/Types/Traits.h"
 #include "Core/Applets/Types/Type.h"
-#include "Core/Config/ConfigFile/Schema/Config.h"
 #include "Core/Config/Log/Log.h"
 #include "Core/Config/Resolve/Resolve.h"
+#include "Core/Config/Schema/Config.h"
 #include "Core/Config/Types/ArraySpec.h"
 #include "Core/Config/Types/Candidates/Candidates.h"
 #include "Core/Config/Types/NodeView.h"

@@ -1,11 +1,11 @@
 // SPDX-FileCopyrightText: 2026 Łukasz Wrodarczyk
 // SPDX-License-Identifier: GPL-3.0-or-later
 
-#include "Map.h"
-#include "Core/Config/KeysFile/Types/Keybindings.h"
+#include "Keys.h"
 #include "Core/Config/Resolve/Resolve.h"
 #include "Core/Config/Types/ArraySpec.h"
 #include "Core/Config/Types/Candidates/Candidates.h"
+#include "Core/Config/Types/Keybindings.h"
 #include "Core/Config/Types/NodeView.h"
 
 #include <cstddef>

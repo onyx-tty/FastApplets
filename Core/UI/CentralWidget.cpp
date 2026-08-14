@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 
 #include "CentralWidget.h"
-#include "Core/Config/KeysFile/Types/Keybindings.h"
+#include "Core/Config/Types/Keybindings.h"
 #include "Core/UI/Types/PrimaryButtonBehavior.h"
 #include "Core/UI/Types/PrimaryButtons.h"
 #include "Widgets/PrimaryButton.h"

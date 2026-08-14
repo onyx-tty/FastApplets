@@ -4,7 +4,7 @@
 #pragma once
 
 #include "Core/Applets/Types/Type.h"
-#include "Core/Config/ConfigFile/Schema/Config.h"
+#include "Core/Config/Schema/Config.h"
 #include "Core/Config/Types/Candidates/Candidates.h"
 #include "Core/UI/Types/PrimaryButtonBehavior.h"
 
@@ -126,4 +126,4 @@ template<applet::Type TApplet>
 
 } // namespace config::map
 
-#include "Map.tpp"
+#include "Config.tpp"

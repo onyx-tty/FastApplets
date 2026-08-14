@@ -8,7 +8,7 @@
 #include <QPushButton>
 #include <Qt>
 
-#include "Core/Config/KeysFile/Types/Keybindings.h"
+#include "Core/Config/Types/Keybindings.h"
 #include "Core/UI/Types/ButtonType.h"
 #include "Core/UI/Types/PrimaryButtons.h"
 

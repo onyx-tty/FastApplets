@@ -4,8 +4,8 @@
 #pragma once
 
 #include "Core/Applets/Types/Type.h"
-#include "Core/Config/ConfigFile/Schema/Config.h"
-#include "Core/Config/KeysFile/Schema/Keys.h"
+#include "Core/Config/Schema/Config.h"
+#include "Core/Config/Schema/Keys.h"
 
 #include <toml++/toml.hpp>
 #include <tuple>

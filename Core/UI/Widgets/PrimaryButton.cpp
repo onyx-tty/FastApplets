@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 
 #include "PrimaryButton.h"
-#include "Core/Config/KeysFile/Types/Keybindings.h"
+#include "Core/Config/Types/Keybindings.h"
 #include "Core/Shell/Shell.h"
 #include "Core/UI/Types/ButtonType.h"
 #include "Core/UI/Types/PrimaryButtonParams.h"

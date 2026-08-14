@@ -4,11 +4,11 @@
 #pragma once
 
 #include "Core/Applets/Types/Type.h"
-#include "Core/Config/KeysFile/Schema/Keys.h"
+#include "Core/Config/Schema/Keys.h"
 #include "Core/Config/Types/Candidates/Candidates.h"
 #include "Core/Config/Types/NodeView.h"
 #include "Core/Config/Types/PathContext/PathContext.h"
-#include "Map.h"
+#include "Keys.h"
 
 #include <toml++/toml.hpp>
 #include <utility>

@@ -4,14 +4,14 @@ set(CMAKE_AUTORCC ON)
 # Requirements
 find_package(tomlplusplus REQUIRED)
 
-add_subdirectories(AppletConfig ConfigFile KeysFile Defaults Locate Log Select Resolve Toml Types)
+add_subdirectories(AppletConfig Schema Map Defaults Locate Log Select Resolve Toml Types)
 
 add_applet_library(Core_Config INTERFACE
         TYPE INTERFACE
 
-        INTERFACE_DEPS Core::Config::ConfigFile
-                       Core::Config::KeysFile
-                       Core::Config::AppletConfig
+        INTERFACE_DEPS Core::Config::AppletConfig
+                       Core::Config::Schema
+                       Core::Config::Map
                        Core::Config::Defaults
                        Core::Config::Locate
                        Core::Config::Toml

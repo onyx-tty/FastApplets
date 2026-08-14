@@ -1,1 +1,0 @@
-add_applet_library(Core_Config_KeysFile_Types INTERFACE)

@@ -1,7 +1,7 @@
-add_applet_library(Core_Config_ConfigFile_Map
-        SOURCES Map.cpp
+add_applet_library(Core_Config_Map
+        SOURCES Config.cpp Keys.cpp
 
-        PUBLIC_DEPS Core::Config::ConfigFile::Schema
+        PUBLIC_DEPS Core::Config::Schema
                     Core::Config::Resolve
                     Core::Config::Log
                     Core::Config::Types

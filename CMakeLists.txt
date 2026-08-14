@@ -73,11 +73,8 @@ endif()
 install(# Install compiled artifacts to correct destinations, register all targets
         # under the name FastApplets_export
         TARGETS Core_Config
-                Core_Config_ConfigFile
-                Core_Config_ConfigFile_Schema Core_Config_ConfigFile_Map
-                Core_Config_KeysFile
-                Core_Config_KeysFile_Schema Core_Config_KeysFile_Map
-                Core_Config_KeysFile_Types
+                Core_Config_Schema
+                Core_Config_Map
                 Core_Config_AppletConfig
                 Core_Config_Defaults Core_Config_Defaults_Helpers
                 Core_Config_Locate

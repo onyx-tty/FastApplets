@@ -4,9 +4,9 @@
 #pragma once
 
 #include "Core/Applets/Types/Type.h"
-#include "Core/Config/ConfigFile/Schema/Config.h"
-#include "Core/Config/KeysFile/Schema/Keys.h"
-#include "Core/Config/KeysFile/Types/Keybindings.h"
+#include "Core/Config/Schema/Config.h"
+#include "Core/Config/Schema/Keys.h"
+#include "Core/Config/Types/Keybindings.h"
 
 #include <vector>
 #include <Qt>

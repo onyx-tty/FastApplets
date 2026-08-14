@@ -3,7 +3,7 @@
 
 #pragma once
 
-#include "Core/Config/KeysFile/Types/Keybindings.h"
+#include "Core/Config/Types/Keybindings.h"
 #include "Core/UI/Types/PrimaryButtonBehavior.h"
 #include "Core/UI/Types/PrimaryButtons.h"
 

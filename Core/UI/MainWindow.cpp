@@ -2,8 +2,8 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 
 #include "MainWindow.h"
-#include "Core/Config/ConfigFile/Schema/Config.h"
-#include "Core/Config/KeysFile/Schema/Keys.h"
+#include "Core/Config/Schema/Config.h"
+#include "Core/Config/Schema/Keys.h"
 #include "Core/UI/CentralWidget.h"
 #include "Core/UI/Widgets/PrimaryButton.h"
 
