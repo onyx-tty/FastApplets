@@ -19,8 +19,8 @@ using config::Candidate;
 using validation_result = tomlqt::ArrayBounds::validation_result;
 
 struct ArrayLogSpec final {
-        validation_result result;
-        QStringView       format;
+        validation_result result = validation_result::null_ptr;
+        QStringView       format = u"";
 };
 
 void candidate(const Candidate& candidate);
