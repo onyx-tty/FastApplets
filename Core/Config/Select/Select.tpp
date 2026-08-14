@@ -6,7 +6,7 @@
 #include "Select.h"
 
 #include "Core/Config/Log/Log.h"
-#include "Core/Config/Select/Types/Candidates.h"
+#include "Core/Config/Types/Candidates/Candidates.h"
 #include "Core/Config/Types/NodeView.h"
 
 #include <TomlQt/ArrayBounds.h>
@@ -45,7 +45,8 @@ node_view config::select::candidate(const Candidates& candidates, const ArraySpe
                                                          ? array_spec.bounds.value().validate(
                                                                    candidate.node.as_array())
                                                          : validation_result::success;
-                                        log::candidate(candidate, {.result = res, .format = array_spec.format});
+                                        log::candidate(candidate, {.result = res,
+                                                                   .format = array_spec.format});
                                 } else {
                                         log::candidate(candidate);
                                 }

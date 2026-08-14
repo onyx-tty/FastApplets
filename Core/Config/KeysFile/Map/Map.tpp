@@ -6,7 +6,7 @@
 #include "Core/Applets/Types/Type.h"
 #include "Core/Config/KeysFile/Schema/Keys.h"
 #include "Core/Config/Select/PathContext/PathContext.h"
-#include "Core/Config/Select/Types/Candidates.h"
+#include "Core/Config/Types/Candidates/Candidates.h"
 #include "Core/Config/Types/NodeView.h"
 #include "Map.h"
 
@@ -21,8 +21,6 @@
 template<applet::Type TApplet>
 config::schema::Keys config::map::keys(const toml::table& applet, const toml::table& global,
                                        const Keys& defaults) {
-        using namespace config::select;
-
         // Confirm that a QApplication instance exists
         if (!QApplication::instance()) { qFatal("QApplication has not been instantiated yet!"); }
 

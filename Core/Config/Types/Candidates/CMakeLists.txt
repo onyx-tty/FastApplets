@@ -1,4 +1,4 @@
-add_applet_library(Core_Config_Select_Types
+add_applet_library(Core_Config_Types_Candidates
         SOURCES Candidate.cpp Candidates.cpp
 
         PUBLIC_DEPS Core::Config::Types

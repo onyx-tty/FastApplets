@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 
 #include "Log.h"
-#include "Core/Config/Select/Types/Candidate.h"
+#include "Core/Config/Types/Candidates/Candidate.h"
 
 #include <TomlQt/ArrayBounds.h>
 #include <toml++/toml.hpp>

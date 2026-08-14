@@ -12,7 +12,9 @@
 
 // TODO: Consistent behaviors in chaining methods, separate overloads for ALL and index
 
-namespace config::select {
+namespace config {
+
+using config::select::PathContext;
 
 // Stores a node with required metadata for use in Resolve method calls.
 //
@@ -62,4 +64,4 @@ struct Candidate final {
         [[nodiscard]] Candidate& withQuiet(bool quiet = true);
 };
 
-} // namespace config::select
+} // namespace config

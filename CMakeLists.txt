@@ -85,8 +85,8 @@ install(# Install compiled artifacts to correct destinations, register all targe
                 Core_Config_Resolve
                 Core_Config_Log
                 Core_Config_Select
-                Core_Config_Select_PathContext Core_Config_Select_Types
-                Core_Config_Types
+                Core_Config_Select_PathContext
+                Core_Config_Types Core_Config_Types_Candidates
                 Core_Shell
                 Core_UI
                 Core_UI_Widgets Core_UI_Types

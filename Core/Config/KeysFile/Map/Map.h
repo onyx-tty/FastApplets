@@ -7,8 +7,8 @@
 #include "Core/Applets/Types/Type.h"
 #include "Core/Config/KeysFile/Schema/Keys.h"
 #include "Core/Config/KeysFile/Types/Keybindings.h"
-#include "Core/Config/Select/Types/Candidates.h"
 #include "Core/Config/Types/ArraySpec.h"
+#include "Core/Config/Types/Candidates/Candidates.h"
 #include "Core/Config/Types/NodeView.h"
 
 #include <optional>
@@ -16,8 +16,11 @@
 #include <toml++/toml.hpp>
 #include <vector>
 
+namespace config {
+class Candidate;
+} // namespace config
+
 namespace config::select {
-class Candidates;
 class PathContext;
 } // namespace config::select
 
@@ -40,9 +43,8 @@ class PathContext;
 namespace config::map {
 
 using config::ArraySpec;
+using config::Candidates;
 using config::schema::Keys;
-using config::select::CandidateIndex;
-using config::select::Candidates;
 using config::select::PathContext;
 
 // Maps quit keybindings from a list of candidates.

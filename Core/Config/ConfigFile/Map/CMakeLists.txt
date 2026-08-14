@@ -4,8 +4,8 @@ add_applet_library(Core_Config_ConfigFile_Map
         PUBLIC_DEPS Core::Config::ConfigFile::Schema
                     Core::Config::Resolve
                     Core::Config::Select::PathContext
-                    Core::Config::Select::Types
                     Core::Config::Types
+                    Core::Config::Types::Candidates
                     Core::UI::Types
                     Core::Applets::Types
                     tomlplusplus::tomlplusplus

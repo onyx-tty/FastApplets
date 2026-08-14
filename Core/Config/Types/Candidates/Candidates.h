@@ -3,7 +3,7 @@
 
 #pragma once
 
-#include "Core/Config/Select/Types/Candidate.h"
+#include "Core/Config/Types/Candidates/Candidate.h"
 
 #include <cstddef>
 #include <initializer_list>
@@ -14,7 +14,7 @@
 
 // TODO: Consistent behaviors in chaining methods, separate overloads for ALL and index
 
-namespace config::select {
+namespace config {
 
 enum class CandidateIndex { Applet, Global };
 
@@ -101,4 +101,4 @@ public:
                                             bool                          quiet = true);
 };
 
-} // namespace config::select
+} // namespace config

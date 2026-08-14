@@ -4,8 +4,8 @@
 #include "Map.h"
 #include "Core/Config/KeysFile/Types/Keybindings.h"
 #include "Core/Config/Resolve/Resolve.h"
-#include "Core/Config/Select/Types/Candidates.h"
 #include "Core/Config/Types/ArraySpec.h"
+#include "Core/Config/Types/Candidates/Candidates.h"
 #include "Core/Config/Types/NodeView.h"
 
 #include <cstddef>
@@ -19,7 +19,6 @@
 #include <QString>
 
 using namespace config;
-using config::select::Candidates;
 
 /* Helpers */
 

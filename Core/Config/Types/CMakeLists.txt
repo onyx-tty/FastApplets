@@ -1,3 +1,5 @@
+add_subdirectory(Candidates)
+
 add_applet_library(Core_Config_Types
         TYPE INTERFACE
 

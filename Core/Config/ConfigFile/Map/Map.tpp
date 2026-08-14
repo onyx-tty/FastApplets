@@ -10,8 +10,8 @@
 #include "Core/Config/ConfigFile/Schema/Config.h"
 #include "Core/Config/Resolve/Resolve.h"
 #include "Core/Config/Select/PathContext/PathContext.h"
-#include "Core/Config/Select/Types/Candidates.h"
 #include "Core/Config/Types/ArraySpec.h"
+#include "Core/Config/Types/Candidates/Candidates.h"
 #include "Core/Config/Types/NodeView.h"
 #include "Core/UI/Types/ButtonType.h"
 #include "Core/UI/Types/PerPrimaryButtonParams.h"
@@ -30,8 +30,7 @@
 #include <QtGlobal>
 
 template<typename T>
-T config::map::properties(const config::select::Candidates& candidates, const T& defaults,
-                          auto fill_fn) {
+T config::map::properties(const config::Candidates& candidates, const T& defaults, auto fill_fn) {
         using namespace config;
 
         std::vector<const toml::table*> resolved = {};
@@ -52,10 +51,9 @@ T config::map::properties(const config::select::Candidates& candidates, const T&
 /* PrimaryButtonParams */
 
 template<applet::Type TApplet>
-PrimaryButtonParams config::map::primaryButtonParams(const config::select::Candidates& candidates,
-                                                     const PrimaryButtonParams&        defaults) {
+PrimaryButtonParams config::map::primaryButtonParams(const config::Candidates&  candidates,
+                                                     const PrimaryButtonParams& defaults) {
         using namespace config;
-        using config::select::CandidateIndex;
 
         const auto* table = resolve::from<toml::table>(candidates);
         if (!table) { return defaults; }
@@ -77,8 +75,7 @@ PrimaryButtonParams config::map::primaryButtonParams(const config::select::Candi
 
 template<applet::Type TApplet>
 std::vector<PerPrimaryButtonParams> config::map::perPrimaryButtonParamsList(
-        const config::select::Candidates&          candidates,
-        const std::vector<PerPrimaryButtonParams>& defaults) {
+        const config::Candidates& candidates, const std::vector<PerPrimaryButtonParams>& defaults) {
         using namespace config;
 
         const auto* arr = resolve::from<toml::array>(candidates,
@@ -105,7 +102,7 @@ std::vector<PerPrimaryButtonParams> config::map::perPrimaryButtonParamsList(
 
 template<applet::Type TApplet>
 std::optional<PerPrimaryButtonParams> config::map::perPrimaryButtonParams(
-        const config::select::Candidates& candidates) {
+        const config::Candidates& candidates) {
         using namespace config;
         using TPrimaryButtonType = applet::Traits<TApplet>::TPrimaryButtonType;
 
@@ -136,7 +133,6 @@ std::optional<PerPrimaryButtonParams> config::map::perPrimaryButtonParams(
 template<applet::Type TApplet>
 config::schema::Config config::map::config(const toml::table& applet, const toml::table& global,
                                            const config::schema::Config& defaults) {
-        using config::select::CandidateIndex;
         using config::select::PathContext;
 
         // Confirm that a QApplication instance exists

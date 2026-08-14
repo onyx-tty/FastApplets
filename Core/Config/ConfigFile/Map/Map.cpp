@@ -3,7 +3,7 @@
 
 #include "Map.h"
 #include "Core/Config/Resolve/Resolve.h"
-#include "Core/Config/Select/Types/Candidates.h"
+#include "Core/Config/Types/Candidates/Candidates.h"
 #include "Core/UI/Types/PrimaryButtonBehavior.h"
 #include "Core/UI/Types/PrimaryButtonStyle.h"
 #include "Core/UI/Types/WindowParams.h"
@@ -15,13 +15,9 @@
 #include <Qt>
 #include <QtGlobal>
 
-using config::select::Candidates;
-
 /* WindowParams */
 
 WindowParams config::map::windowParams(const Candidates& candidates, const WindowParams& defaults) {
-        using config::select::CandidateIndex;
-
         return properties(candidates, defaults, [&defaults, &candidates](WindowParams& window) {
                 window.size = resolve::from<QSize>(candidates.makeCopy().withExtension(u"size"))
                                       .value_or(defaults.size);

@@ -1,7 +1,7 @@
 add_applet_library(Core_Config_Log
         SOURCES Log.cpp
 
-        PRIVATE_DEPS Core::Config::Select::Types
+        PRIVATE_DEPS Core::Config::Types::Candidates
 
         PUBLIC_DEPS TomlQt
                     tomlplusplus::tomlplusplus

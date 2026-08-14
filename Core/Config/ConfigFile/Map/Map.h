@@ -5,15 +5,17 @@
 
 #include "Core/Applets/Types/Type.h"
 #include "Core/Config/ConfigFile/Schema/Config.h"
+#include "Core/Config/Types/Candidates/Candidates.h"
 #include "Core/UI/Types/PrimaryButtonBehavior.h"
 
 #include <optional>
 #include <toml++/toml.hpp>
 #include <vector>
 
-namespace config::select {
+namespace config {
+class Candidate;
 class Candidates;
-} // namespace config::select
+} // namespace config
 
 class PrimaryButtonParams;
 class PerPrimaryButtonParams;
@@ -30,8 +32,9 @@ class QSizePolicy;
 // Malformed values (wrong type, out of range, etc.) are treated as failures.
 namespace config::map {
 
+using config::CandidateIndex;
+using config::Candidates;
 using config::schema::Config;
-using config::select::Candidates;
 
 /* Helpers */
 

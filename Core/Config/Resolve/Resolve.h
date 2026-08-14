@@ -12,13 +12,13 @@
 #include <QStringView>
 #include <Qt>
 
-namespace config::select {
+namespace config {
 class Candidates;
-} // namespace config::select
+} // namespace config
 
 // Extracts typed values from TOML nodes with fallback chains and error handling.
 //
-// All methods accept multiple config::select::Candidates (priority ordered). The first candidate that
+// All methods accept multiple config::Candidates (priority ordered). The first candidate that
 // provides a valid value wins. Invalid values (incorrect type, bound failures)
 // are treated as missing.
 //
@@ -33,7 +33,7 @@ class Candidates;
 namespace config::resolve {
 
 using config::ArraySpec;
-using config::select::Candidates;
+using config::Candidates;
 
 template<typename T>
 concept ReturnByView = tomlqt::TomlQtSupported<T> && std::same_as<T, toml::table>

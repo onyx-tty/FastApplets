@@ -10,7 +10,7 @@
 #include <QStringView>
 #include <QtGlobal>
 
-using config::select::Candidate;
+using config::Candidate;
 
 Candidate Candidate::makeCopy() const {
         return *this;

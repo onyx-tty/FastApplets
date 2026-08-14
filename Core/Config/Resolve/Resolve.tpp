@@ -4,7 +4,7 @@
 #pragma once
 
 #include "Core/Config/Select/Select.h"
-#include "Core/Config/Select/Types/Candidates.h"
+#include "Core/Config/Types/Candidates/Candidates.h"
 #include "Core/Config/Types/ArraySpec.h"
 #include "Resolve.h"
 
