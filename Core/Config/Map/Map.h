@@ -3,12 +3,18 @@
 
 #pragma once
 
+#include "Core/Applets/Types/Traits.h"
 #include "Core/Applets/Types/Type.h"
 #include "Core/Config/Schema/Config.h"
+#include "Core/Config/Schema/Keys.h"
+#include "Core/Config/Types/ArraySpec.h"
 #include "Core/Config/Types/Candidates/Candidates.h"
+#include "Core/Config/Types/Keybindings.h"
+#include "Core/Config/Types/NodeView.h"
 #include "Core/UI/Types/PrimaryButtonBehavior.h"
 
 #include <optional>
+#include <string>
 #include <toml++/toml.hpp>
 #include <vector>
 
@@ -26,16 +32,31 @@ class QString;
 class QSize;
 class QSizePolicy;
 
-// Maps TOML configuration to the config::schema::Config structure.
+// Parses key name strings (e.g. "Ctrl+A") into a keybindings set, stripped of
+// modifiers.
+// Returns std::nullopt if there is no matching string equivalent.
+[[nodiscard]] std::optional<int> keyFromText(const std::string& text);
+
+// Converts nodes into int (Qt::Key).
+// Returns std::nullopt on non-string nodes and keys without a matching string equivalent.
+[[nodiscard]] std::optional<int> keyFromTomlElement(node_view element);
+
+// Converts toml::array elements into int and returns them as keybindings, silently skipping
+// non-string values.
+[[nodiscard]] keybindings keysFromTomlArray(const toml::array& arr);
+
+// Maps TOML configuration to the schemas.
 //
 // All mapping failures will fall back to hardcoded defaults and log warnings.
 // Malformed values (wrong type, out of range, etc.) are treated as failures.
 namespace config::map {
 
+using config::ArraySpec;
 using config::CandidateIndex;
 using config::Candidates;
 using config::PathContext;
 using config::schema::Config;
+using config::schema::Keys;
 
 /* Helpers */
 
@@ -109,6 +130,39 @@ template<applet::Type TApplet>
 [[nodiscard]] PrimaryButtonBehavior primaryButtonBehavior(const Candidates&            candidates,
                                                           const PrimaryButtonBehavior& defaults);
 
+// Maps quit keybindings from a list of candidates.
+//
+// Return value: keybindings (std::unordered_set<int>)
+[[nodiscard]] keybindings quit(const Candidates& candidates, const keybindings& defaults);
+
+// Maps the entire primary_buttons array from a list of candidates.
+//
+// Length of the vector may differ from defaults if some buttons are omitted
+// from config. Omitted buttons are ignored silently.
+//
+// Return value: std::vector<keybindings> (std::vector<std::unordered_set<int>>)
+[[nodiscard]] std::vector<keybindings> primaryButtons(const Candidates&               candidates,
+                                                      const std::vector<keybindings>& defaults);
+
+// Maps a single button's keybindings from a list of candidates.
+//
+// Return value: keybindings (std::unordered_set<int>)
+[[nodiscard]] keybindings primaryButton(const Candidates& candidates, const keybindings& defaults);
+
+// Parses applet and global tables into Keys.
+//
+// Usage:
+//   auto keys = KeysMapper::keys<TApplet>(applet, global, defaults);
+//
+// The applet table supplies primary configuration and overrides, global
+// provides fallbacks.
+//
+// QApplication must exist before calling.
+//
+// Return value: config::schema::Keys
+template<applet::Type TApplet>
+[[nodiscard]] Keys keys(const toml::table& applet, const toml::table& global, const Keys& defaults);
+
 // Parses applet and global tables into config::schema::Config.
 //
 // Usage:
@@ -126,4 +180,4 @@ template<applet::Type TApplet>
 
 } // namespace config::map
 
-#include "Config.tpp"
+#include "Map.tpp"

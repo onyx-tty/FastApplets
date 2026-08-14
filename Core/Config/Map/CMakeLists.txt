@@ -1,5 +1,5 @@
 add_applet_library(Core_Config_Map
-        SOURCES Config.cpp Keys.cpp
+        SOURCES Map.cpp
 
         PUBLIC_DEPS Core::Config::Schema
                     Core::Config::Resolve

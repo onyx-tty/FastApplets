@@ -5,9 +5,8 @@
 
 #include "AppletConfig.h"
 #include "Core/Applets/Types/Type.h"
-#include "Core/Config/Map/Config.h"
 #include "Core/Config/Defaults/Defaults.h"
-#include "Core/Config/Map/Keys.h"
+#include "Core/Config/Map/Map.h"
 #include "Core/Config/Toml/Parse.h"
 #include "Core/Config/Types/Filepaths.h"
 
