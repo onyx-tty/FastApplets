@@ -8,6 +8,7 @@
 #include "Core/Applets/Types/Traits.h"
 #include "Core/Applets/Types/Type.h"
 #include "Core/Config/ConfigFile/Schema/Config.h"
+#include "Core/Config/Log/Log.h"
 #include "Core/Config/Resolve/Resolve.h"
 #include "Core/Config/Types/ArraySpec.h"
 #include "Core/Config/Types/Candidates/Candidates.h"
@@ -33,18 +34,21 @@ template<typename T>
 T config::map::properties(const config::Candidates& candidates, const T& defaults, auto fill_fn) {
         using namespace config;
 
-        std::vector<const toml::table*> resolved = {};
+        const toml::table* properties = nullptr;
 
         for (const auto& candidate : candidates.get()) {
-                if (const auto* result = resolve::from<toml::table>({candidate})) {
-                        resolved.push_back(result);
-                }
+                properties = candidate.node.as_table();
+
+                config::log::candidate(candidate, properties);
+
+                if (properties) { break; }
         }
 
-        if (resolved.empty()) { return defaults; }
+        if (!properties) { return defaults; }
 
         auto props = T();
         fill_fn(props);
+
         return std::move(props);
 }
 

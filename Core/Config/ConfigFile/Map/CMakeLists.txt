@@ -3,6 +3,7 @@ add_applet_library(Core_Config_ConfigFile_Map
 
         PUBLIC_DEPS Core::Config::ConfigFile::Schema
                     Core::Config::Resolve
+                    Core::Config::Log
                     Core::Config::Types
                     Core::Config::Types::Candidates
                     Core::Config::Types::PathContext
