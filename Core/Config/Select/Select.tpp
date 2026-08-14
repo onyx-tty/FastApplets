@@ -36,8 +36,8 @@ node_view config::select::candidate(const Candidates& candidates, const ArraySpe
                 // If override or explicitly marked "quiet", don't log anything
                 bool silence_logs = is_override || candidate.quiet;
 
-                if (!candidate.node) {
-                        if (!silence_logs) {
+                if (!silence_logs) {
+                        if (!candidate.node) {
                                 if constexpr (std::is_same_v<toml::array, DTReturn>) {
                                         // Empty arr_bounds means there is no need for
                                         // bound checking therefore it's success by default.
@@ -50,12 +50,13 @@ node_view config::select::candidate(const Candidates& candidates, const ArraySpe
                                 } else {
                                         log::candidate(candidate);
                                 }
+
+                                continue;
                         }
 
-                        continue;
+                        qDebug() << candidate.path_context.makePath(candidate.applet) << "found!";
                 }
 
-                qDebug() << candidate.path_context.makePath(candidate.applet) << "found!";
                 return candidate.node;
         }
 
