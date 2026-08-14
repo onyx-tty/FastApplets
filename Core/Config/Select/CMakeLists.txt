@@ -1,5 +1,3 @@
-add_subdirectories(PathContext)
-
 add_applet_library(Core_Config_Select
         TYPE INTERFACE
 

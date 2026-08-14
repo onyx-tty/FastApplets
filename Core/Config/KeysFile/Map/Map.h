@@ -44,8 +44,8 @@ namespace config::map {
 
 using config::ArraySpec;
 using config::Candidates;
+using config::PathContext;
 using config::schema::Keys;
-using config::select::PathContext;
 
 // Maps quit keybindings from a list of candidates.
 //

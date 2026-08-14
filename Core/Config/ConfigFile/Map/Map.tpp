@@ -9,10 +9,10 @@
 #include "Core/Applets/Types/Type.h"
 #include "Core/Config/ConfigFile/Schema/Config.h"
 #include "Core/Config/Resolve/Resolve.h"
-#include "Core/Config/Select/PathContext/PathContext.h"
 #include "Core/Config/Types/ArraySpec.h"
 #include "Core/Config/Types/Candidates/Candidates.h"
 #include "Core/Config/Types/NodeView.h"
+#include "Core/Config/Types/PathContext/PathContext.h"
 #include "Core/UI/Types/ButtonType.h"
 #include "Core/UI/Types/PerPrimaryButtonParams.h"
 #include "Core/UI/Types/PrimaryButtonParams.h"
@@ -133,8 +133,6 @@ std::optional<PerPrimaryButtonParams> config::map::perPrimaryButtonParams(
 template<applet::Type TApplet>
 config::schema::Config config::map::config(const toml::table& applet, const toml::table& global,
                                            const config::schema::Config& defaults) {
-        using config::select::PathContext;
-
         // Confirm that a QApplication instance exists
         if (!QApplication::instance()) { qFatal("QApplication has not been instantiated yet!"); }
 

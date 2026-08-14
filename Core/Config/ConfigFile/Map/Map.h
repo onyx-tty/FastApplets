@@ -14,7 +14,7 @@
 
 namespace config {
 class Candidate;
-class Candidates;
+class PathContext;
 } // namespace config
 
 class PrimaryButtonParams;
@@ -34,6 +34,7 @@ namespace config::map {
 
 using config::CandidateIndex;
 using config::Candidates;
+using config::PathContext;
 using config::schema::Config;
 
 /* Helpers */

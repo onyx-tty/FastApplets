@@ -4,7 +4,7 @@
 #pragma once
 
 #include "Core/Applets/Types/Type.h"
-#include "Core/Config/Select/PathContext/PathContext.h"
+#include "Core/Config/Types/PathContext/PathContext.h"
 #include "Core/Config/Types/NodeView.h"
 
 #include <cstddef>
@@ -14,12 +14,10 @@
 
 namespace config {
 
-using config::select::PathContext;
-
 // Stores a node with required metadata for use in Resolve method calls.
 //
 // 'node' contains the toml::node_view with data for extraction.
-// 'type' is used for logging, to create QString path with config::select::PathContext.
+// 'type' is used for logging, to create QString path with config::PathContext.
 // 'quiet' disables logging if true.
 // 'path_context' provides an extensible interface for convenient storage and extension of paths.
 struct Candidate final {

@@ -5,7 +5,7 @@
 
 #include "Core/Applets/Types/Type.h"
 #include "Core/Config/KeysFile/Schema/Keys.h"
-#include "Core/Config/Select/PathContext/PathContext.h"
+#include "Core/Config/Types/PathContext/PathContext.h"
 #include "Core/Config/Types/Candidates/Candidates.h"
 #include "Core/Config/Types/NodeView.h"
 #include "Map.h"

@@ -5,9 +5,9 @@ add_applet_library(Core_Config_KeysFile_Map
 
         PUBLIC_DEPS Core::Config::KeysFile::Schema
                     Core::Config::KeysFile::Types
-                    Core::Config::Select::PathContext
                     Core::Config::Types
                     Core::Config::Types::Candidates
+                    Core::Config::Types::PathContext
                     Core::Applets::Types
                     tomlplusplus::tomlplusplus
                     Qt${QT_VERSION_MAJOR}::Widgets)

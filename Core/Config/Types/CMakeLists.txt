@@ -1,4 +1,4 @@
-add_subdirectory(Candidates)
+add_subdirectories(Candidates PathContext)
 
 add_applet_library(Core_Config_Types
         TYPE INTERFACE
