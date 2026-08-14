@@ -3,9 +3,11 @@
 
 #pragma once
 
-#include "Core/Config/Types/Candidates/Candidates.h"
 #include "Core/Config/Types/ArraySpec.h"
+#include "Core/Config/Types/Candidates/Candidates.h"
 #include "Core/Config/Types/NodeView.h"
+
+#include <TomlQt/TomlQt.h>
 
 namespace config::select {
 
@@ -14,6 +16,7 @@ using namespace config;
 
 // TODO: Docs
 template<typename TReturn>
+requires(tomlqt::TomlQtSupported<TReturn>)
 node_view candidate(const Candidates& candidates, const ArraySpec& array_spec = {});
 
 } // namespace config::select

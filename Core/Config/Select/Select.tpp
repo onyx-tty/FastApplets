@@ -11,12 +11,14 @@
 
 #include <TomlQt/ArrayBounds.h>
 #include <cstddef>
+#include <TomlQt/TomlQt.h>
 #include <toml++/toml.hpp>
 #include <type_traits>
 #include <QDebug>
 #include <QtGlobal>
 
 template<typename TReturn>
+requires(tomlqt::TomlQtSupported<TReturn>)
 node_view config::select::candidate(const Candidates& candidates, const ArraySpec& array_spec) {
         using DTReturn          = std::decay_t<TReturn>;
         using validation_result = tomlqt::ArrayBounds::validation_result;
