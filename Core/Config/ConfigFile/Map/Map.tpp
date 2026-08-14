@@ -55,24 +55,22 @@ std::optional<T> config::map::properties(const config::Candidates& candidates, a
 template<applet::Type TApplet>
 PrimaryButtonParams config::map::primaryButtonParams(const config::Candidates&  candidates,
                                                      const PrimaryButtonParams& defaults) {
-        using namespace config;
+        return properties<PrimaryButtonParams>(
+                       candidates,
+                       [&defaults, &candidates](PrimaryButtonParams& params) {
+                               params.per_button = perPrimaryButtonParamsList<TApplet>(
+                                       {candidates[CandidateIndex::Applet]
+                                                .makeCopy()
+                                                .withExtension(u"list")
+                                                .withQuiet(false)},
+                                       defaults.per_button);
 
-        const auto* table = resolve::from<toml::table>(candidates);
-        if (!table) { return defaults; }
+                               params.style = primaryButtonStyle(candidates, defaults.style);
 
-        PrimaryButtonParams params = {};
-
-        params.per_button = perPrimaryButtonParamsList<TApplet>({candidates[CandidateIndex::Applet]
-                                                                         .makeCopy()
-                                                                         .withExtension(u"list")
-                                                                         .withQuiet(false)},
-                                                                defaults.per_button);
-
-        params.style = primaryButtonStyle(candidates, defaults.style);
-
-        params.behavior = primaryButtonBehavior(candidates, defaults.behavior);
-
-        return std::move(params);
+                               params.behavior = primaryButtonBehavior(candidates,
+                                                                       defaults.behavior);
+                       })
+                .value_or(defaults);
 }
 
 template<applet::Type TApplet>
@@ -108,28 +106,25 @@ std::optional<PerPrimaryButtonParams> config::map::perPrimaryButtonParams(
         using namespace config;
         using TPrimaryButtonType = applet::Traits<TApplet>::TPrimaryButtonType;
 
-        const auto* table = resolve::from<toml::table>(candidates);
-        if (!table) { return std::nullopt; }
+        return properties<PerPrimaryButtonParams>(candidates, [&candidates](PerPrimaryButtonParams&
+                                                                                    params) {
+                auto type_str = resolve::from<QString>(candidates.makeCopy().withExtension(u"id"));
 
-        PerPrimaryButtonParams new_button = {};
+                params.type = toPrimaryButtonType<TPrimaryButtonType>(type_str.value_or(""));
 
-        auto type_str = resolve::from<QString>(candidates.makeCopy().withExtension(u"id"));
+                if (isNone<TPrimaryButtonType>(params.type)) { return; }
 
-        new_button.type = toPrimaryButtonType<TPrimaryButtonType>(type_str.value_or(""));
+                auto t = std::get<TPrimaryButtonType>(params.type);
 
-        if (isNone<TPrimaryButtonType>(new_button.type)) { return std::nullopt; }
+                params.text = resolve::from<QString>(candidates.makeCopy().withExtension(u"text"))
+                                      .value_or(textFor(t));
 
-        auto t = std::get<TPrimaryButtonType>(new_button.type);
+                params.command = resolve::from<QString>(
+                                         candidates.makeCopy().withExtension(u"command"))
+                                         .value_or(commandFor(t));
 
-        new_button.text = resolve::from<QString>(candidates.makeCopy().withExtension(u"text"))
-                                  .value_or(textFor(t));
-
-        new_button.command = resolve::from<QString>(candidates.makeCopy().withExtension(u"command"))
-                                     .value_or(commandFor(t));
-
-        new_button.icon = iconFor(t);
-
-        return std::move(new_button);
+                params.icon = iconFor(t);
+        });
 }
 
 template<applet::Type TApplet>
@@ -140,8 +135,6 @@ config::schema::Config config::map::config(const toml::table& applet, const toml
 
         constexpr QStringView filename = u"config.toml";
 
-        auto config = Config();
-
         Candidates cands = {{.node         = node_view(applet),
                              .applet       = TApplet,
                              .quiet        = true,
@@ -151,12 +144,17 @@ config::schema::Config config::map::config(const toml::table& applet, const toml
                              .quiet        = false,
                              .path_context = PathContext(filename, u"")}};
 
-        config.window_params = windowParams(cands.makeCopy().withExtension(u"window"),
-                                            defaults.window_params);
+        return properties<Config>(
+                       cands,
+                       [&defaults, &cands](Config& config) {
+                               config.window_params = windowParams(cands.makeCopy().withExtension(
+                                                                           u"window"),
+                                                                   defaults.window_params);
 
-        config.primary_button_params = primaryButtonParams<TApplet>(cands.makeCopy().withExtension(
+                               config.primary_button_params =
+                                       primaryButtonParams<TApplet>(cands.makeCopy().withExtension(
                                                                             u"primary_button"),
                                                                     defaults.primary_button_params);
-
-        return std::move(config);
+                       })
+                .value_or(defaults);
 }
