@@ -5,3 +5,9 @@ Diagnostics:
   UnusedIncludes: Strict
   MissingIncludes: Strict
 
+---
+
+If:
+  PathMatch: ['.*\.tpp$', '.*\.ipp$', '.*\.moc$']
+CompileFlags:
+  Add: [-xc++]
