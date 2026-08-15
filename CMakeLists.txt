@@ -74,7 +74,7 @@ install(# Install compiled artifacts to correct destinations, register all targe
         # under the name FastApplets_export
         TARGETS Core_Config
                 Core_Config_Schema
-                Core_Config_Map
+                Core_Config_Map Core_Config_Map_Helpers
                 Core_Config_AppletConfig
                 Core_Config_Defaults Core_Config_Defaults_Helpers
                 Core_Config_Locate

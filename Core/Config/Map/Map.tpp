@@ -5,133 +5,25 @@
 
 #include "Map.h"
 
-#include "Core/Applets/Types/Traits.h"
 #include "Core/Applets/Types/Type.h"
-#include "Core/Config/Log/Log.h"
-#include "Core/Config/Resolve/Resolve.h"
+#include "Core/Config/Map/Helpers/Config.h"
+#include "Core/Config/Map/Helpers/Helpers.h"
+#include "Core/Config/Map/Helpers/Keys.h"
 #include "Core/Config/Schema/Config.h"
 #include "Core/Config/Schema/Keys.h"
-#include "Core/Config/Types/ArraySpec.h"
 #include "Core/Config/Types/Candidates/Candidates.h"
 #include "Core/Config/Types/NodeView.h"
 #include "Core/Config/Types/PathContext/PathContext.h"
 #include "Core/UI/Types/ButtonType.h"
-#include "Core/UI/Types/PerPrimaryButtonParams.h"
-#include "Core/UI/Types/PrimaryButtonParams.h"
-#include "Core/UI/Types/PrimaryButtonStyle.h"
-#include "Core/UI/Types/WindowParams.h"
 
-#include <cstddef>
-#include <optional>
 #include <toml++/toml.hpp>
 #include <utility>
-#include <vector>
 #include <QApplication>
-#include <QDebug>
 #include <QStringView>
-#include <Qt>
-#include <QtGlobal>
-
-template<typename T>
-std::optional<T> config::map::table(const config::Candidates& candidates, auto fill_fn) {
-        using namespace config;
-
-        const toml::table* properties = nullptr;
-
-        for (const auto& candidate : candidates.get()) {
-                properties = candidate.node.as_table();
-
-                config::log::candidate(candidate, properties);
-
-                if (properties) { break; }
-        }
-
-        auto props = T();
-        fill_fn(props);
-
-        return std::move(props);
-}
-
-/* PrimaryButtonParams */
-
-template<applet::Type TApplet>
-PrimaryButtonParams config::map::primaryButtonParams(const config::Candidates&  candidates,
-                                                     const PrimaryButtonParams& defaults) {
-        return table<PrimaryButtonParams>(
-                       candidates,
-                       [&defaults, &candidates](PrimaryButtonParams& params) {
-                               params.per_button = perPrimaryButtonParamsList<TApplet>(
-                                       {candidates[CandidateIndex::Applet]
-                                                .makeCopy()
-                                                .withExtension(u"list")
-                                                .withQuiet(false)},
-                                       defaults.per_button);
-
-                               params.style = primaryButtonStyle(candidates, defaults.style);
-
-                               params.behavior = primaryButtonBehavior(candidates,
-                                                                       defaults.behavior);
-                       })
-                .value_or(defaults);
-}
-
-template<applet::Type TApplet>
-std::vector<PerPrimaryButtonParams> config::map::perPrimaryButtonParamsList(
-        const config::Candidates& candidates, const std::vector<PerPrimaryButtonParams>& defaults) {
-        using namespace config;
-
-        const auto* arr = resolve::from<toml::array>(candidates,
-                                                     {.bounds = ArrayBounds{.min_size = 1},
-                                                      .format = u"Format: [primary buttons...]"});
-        if (!arr) { return defaults; }
-
-        std::vector<PerPrimaryButtonParams> found = {};
-        found.reserve(arr->size());
-
-        for (size_t i = 0; i != arr->size(); ++i) {
-                auto new_button = perPrimaryButtonParams<TApplet>(
-                        candidates.makeCopy().withExtension(i));
-                if (new_button) { found.push_back(std::move(new_button.value())); }
-        }
-
-        if (found.empty()) {
-                qWarning() << "No enabled buttons found! Using defaults...";
-                return defaults;
-        }
-
-        return std::move(found);
-}
-
-template<applet::Type TApplet>
-std::optional<PerPrimaryButtonParams> config::map::perPrimaryButtonParams(
-        const config::Candidates& candidates) {
-        using namespace config;
-        using TPrimaryButtonType = applet::Traits<TApplet>::TPrimaryButtonType;
-
-        return table<PerPrimaryButtonParams>(candidates, [&candidates](
-                                                                 PerPrimaryButtonParams& params) {
-                auto type_str = resolve::from<QString>(candidates.makeCopy().withExtension(u"id"));
-
-                params.type = toPrimaryButtonType<TPrimaryButtonType>(type_str.value_or(""));
-
-                if (isNone<TPrimaryButtonType>(params.type)) { return; }
-
-                auto t = std::get<TPrimaryButtonType>(params.type);
-
-                params.text = resolve::from<QString>(candidates.makeCopy().withExtension(u"text"))
-                                      .value_or(textFor(t));
-
-                params.command = resolve::from<QString>(
-                                         candidates.makeCopy().withExtension(u"command"))
-                                         .value_or(commandFor(t));
-
-                params.icon = iconFor(t);
-        });
-}
 
 template<applet::Type TApplet>
 config::schema::Config config::map::config(const toml::table& applet, const toml::table& global,
-                                           const config::schema::Config& defaults) {
+                                           const Config& defaults) {
         // Confirm that a QApplication instance exists
         if (!QApplication::instance()) { qFatal("QApplication has not been instantiated yet!"); }
 
