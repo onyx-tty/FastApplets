@@ -17,14 +17,12 @@
 #include "Core/UI/Types/ButtonType.h"
 
 #include <toml++/toml.hpp>
-#include <utility>
 #include <QApplication>
 #include <QStringView>
 
 template<applet::Type TApplet>
 config::schema::Config config::map::config(const toml::table& applet, const toml::table& global,
                                            const Config& defaults) {
-        // Confirm that a QApplication instance exists
         if (!QApplication::instance()) { qFatal("QApplication has not been instantiated yet!"); }
 
         constexpr QStringView filename = u"config.toml";
@@ -54,7 +52,6 @@ config::schema::Config config::map::config(const toml::table& applet, const toml
 template<applet::Type TApplet>
 config::schema::Keys config::map::keys(const toml::table& applet, const toml::table& global,
                                        const Keys& defaults) {
-        // Confirm that a QApplication instance exists
         if (!QApplication::instance()) { qFatal("QApplication has not been instantiated yet!"); }
 
         constexpr QStringView filename = u"keys.toml";
@@ -69,15 +66,17 @@ config::schema::Keys config::map::keys(const toml::table& applet, const toml::ta
                                    .quiet        = false,
                                    .path_context = PathContext(filename, u"")}};
 
-        /* Quit Keys */
-        keys.quit = quit(cands.makeCopy().withExtension(u"quit"), defaults.quit);
+        return table<Keys>(cands,
+                           [&defaults, &cands](Keys& keys) {
+                                   keys.quit = quit(cands.makeCopy().withExtension(u"quit"),
+                                                    defaults.quit);
 
-        /* Primary Button Keys */
-        keys.primary_buttons = primaryButtons({cands[CandidateIndex::Applet]
-                                                       .makeCopy()
-                                                       .withExtension(u"primary_buttons")
-                                                       .withQuiet(false)},
-                                              defaults.primary_buttons);
-
-        return std::move(keys);
+                                   keys.primary_buttons =
+                                           primaryButtons({cands[CandidateIndex::Applet]
+                                                                   .makeCopy()
+                                                                   .withExtension(u"primary_buttons")
+                                                                   .withQuiet(false)},
+                                                          defaults.primary_buttons);
+                           })
+                .value_or(defaults);
 }
