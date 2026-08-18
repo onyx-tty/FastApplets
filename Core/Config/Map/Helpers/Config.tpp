@@ -7,6 +7,7 @@
 
 #include "Core/Applets/Types/Traits.h"
 #include "Core/Applets/Types/Type.h"
+#include "Core/Config/Map/Helpers/Field.h"
 #include "Core/Config/Resolve/Resolve.h"
 #include "Core/Config/Types/Candidates/Candidates.h"
 #include "Core/UI/Types/ButtonType.h"
@@ -22,8 +23,6 @@
 #include <QtGlobal>
 
 class QString;
-
-/* Config Schema */
 
 template<applet::Type TApplet>
 PrimaryButtonParams config::map::helpers::primaryButtonParams(const Candidates&          candidates,
@@ -79,6 +78,7 @@ std::optional<PerPrimaryButtonParams> config::map::helpers::perPrimaryButtonPara
         using namespace config;
         using TPrimaryButtonType = applet::Traits<TApplet>::TPrimaryButtonType;
 
+        // TODO: This has to be reworked so that field() can be applied here
         return table<PerPrimaryButtonParams>(candidates, [&candidates](
                                                                  PerPrimaryButtonParams& params) {
                 auto type_str = resolve::from<QString>(candidates.makeCopy().withExtension(u"id"));
@@ -89,13 +89,12 @@ std::optional<PerPrimaryButtonParams> config::map::helpers::perPrimaryButtonPara
 
                 auto t = std::get<TPrimaryButtonType>(params.type);
 
-                params.text = resolve::from<QString>(candidates.makeCopy().withExtension(u"text"))
-                                      .value_or(textFor(t));
+                PerPrimaryButtonParams defaults = {.text    = textFor(t),
+                                                   .command = commandFor(t),
+                                                   .icon    = iconFor(t)};
+                field(params, &PerPrimaryButtonParams::text, candidates, defaults, u"text");
+                field(params, &PerPrimaryButtonParams::command, candidates, defaults, u"command");
 
-                params.command = resolve::from<QString>(
-                                         candidates.makeCopy().withExtension(u"command"))
-                                         .value_or(commandFor(t));
-
-                params.icon = iconFor(t);
+                params.icon = defaults.icon;
         });
 }

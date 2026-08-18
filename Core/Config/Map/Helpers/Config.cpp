@@ -3,8 +3,8 @@
 
 #include "Config.h"
 
+#include "Core/Config/Map/Helpers/Field.h"
 #include "Core/Config/Map/Helpers/Helpers.h"
-#include "Core/Config/Resolve/Resolve.h"
 #include "Core/Config/Types/Candidates/Candidates.h"
 #include "Core/UI/Types/PrimaryButtonBehavior.h"
 #include "Core/UI/Types/PrimaryButtonStyle.h"
@@ -15,62 +15,42 @@
 #include <QString>
 #include <Qt>
 
-/* Config Schema */
-
 WindowParams config::map::helpers::windowParams(const Candidates&   candidates,
                                                 const WindowParams& defaults) {
         return table<WindowParams>(candidates,
                                    [&defaults, &candidates](WindowParams& window) {
-                                           window.size = resolve::from<QSize>(
-                                                                 candidates.makeCopy().withExtension(
-                                                                         u"size"))
-                                                                 .value_or(defaults.size);
-
-                                           window.title = resolve::from<QString>(
-                                                                  candidates.makeCopy()
-                                                                          .withExtension(u"title"))
-                                                                  .value_or(defaults.title);
+                                           field(window, &WindowParams::size, candidates, defaults,
+                                                 u"size");
+                                           field(window, &WindowParams::title, candidates, defaults,
+                                                 u"title");
                                    })
                 .value_or(defaults);
 }
 
 PrimaryButtonStyle config::map::helpers::primaryButtonStyle(const Candidates&         candidates,
                                                             const PrimaryButtonStyle& defaults) {
-        return table<PrimaryButtonStyle>(
-                       candidates,
-                       [&defaults, &candidates](PrimaryButtonStyle& button) {
-                               button.text_alignment = resolve::from<Qt::Alignment>(
-                                                               candidates.makeCopy().withExtension(
-                                                                       u"text_alignment"))
-                                                               .value_or(defaults.text_alignment);
-
-                               button.icon_alignment = resolve::from<Qt::Alignment>(
-                                                               candidates.makeCopy().withExtension(
-                                                                       u"icon_alignment"))
-                                                               .value_or(defaults.icon_alignment);
-
-                               button.icon_size = resolve::from<QSize>(
-                                                          candidates.makeCopy().withExtension(
-                                                                  u"icon_size"))
-                                                          .value_or(defaults.icon_size);
-
-                               button.policy = resolve::from<QSizePolicy>(
-                                                       candidates.makeCopy().withExtension(
-                                                               u"policy"))
-                                                       .value_or(defaults.policy);
-                       })
+        return table<PrimaryButtonStyle>(candidates,
+                                         [&defaults, &candidates](PrimaryButtonStyle& button) {
+                                                 field(button, &PrimaryButtonStyle::text_alignment,
+                                                       candidates, defaults, u"text_alignment");
+                                                 field(button, &PrimaryButtonStyle::icon_alignment,
+                                                       candidates, defaults, u"icon_alignment");
+                                                 field(button, &PrimaryButtonStyle::icon_size,
+                                                       candidates, defaults, u"icon_size");
+                                                 field(button, &PrimaryButtonStyle::policy,
+                                                       candidates, defaults, u"policy");
+                                         })
                 .value_or(defaults);
 }
 
 PrimaryButtonBehavior config::map::helpers::primaryButtonBehavior(
         const Candidates& candidates, const PrimaryButtonBehavior& defaults) {
-        return table<PrimaryButtonBehavior>(
-                       candidates,
-                       [&defaults, &candidates](PrimaryButtonBehavior& button) {
-                               button.double_key_press =
-                                       resolve::from<bool>(candidates.makeCopy().withExtension(
-                                                                   u"double_key_press"))
-                                               .value_or(defaults.double_key_press);
-                       })
+        return table<PrimaryButtonBehavior>(candidates,
+                                            [&defaults, &candidates](PrimaryButtonBehavior& button) {
+                                                    field(button,
+                                                          &PrimaryButtonBehavior::double_key_press,
+                                                          candidates, defaults,
+                                                          u"double_key_press");
+                                            })
                 .value_or(defaults);
 }
