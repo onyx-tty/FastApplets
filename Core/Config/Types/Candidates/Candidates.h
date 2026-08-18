@@ -49,7 +49,7 @@ public:
         //
         // With:
         //   auto new_cands = old_cands.withExtension(key);
-        [[nodiscard]] Candidates& withExtension(QStringView key);
+        Candidates& withExtension(QStringView key);
 
         // Extends ALL CANDIDATES by KEY.
         //
@@ -61,7 +61,7 @@ public:
         //
         // With:
         //   auto new_cands = old_cands.withExtension(key);
-        [[nodiscard]] Candidates& withExtension(size_t index);
+        Candidates& withExtension(size_t index);
 
         // Sets .quiet in ALL CANDIDATES to QUIET.
         //
@@ -73,7 +73,7 @@ public:
         //
         // With:
         //   auto new_cands = old_cands.withQuiet(true/false);
-        [[nodiscard]] Candidates& withQuiet(bool quiet = true);
+        Candidates& withQuiet(bool quiet = true);
 
         // Sets .quiet in CANDIDATES[CAND_INDEX] to QUIET.
         //
@@ -85,7 +85,7 @@ public:
         //
         // With:
         //   auto new_cands = old_cands.withQuiet(index, true/false);
-        [[nodiscard]] Candidates& withQuiet(std::optional<size_t> cand_index, bool quiet = true);
+        Candidates& withQuiet(std::optional<size_t> cand_index, bool quiet = true);
 
         // Sets .quiet in CANDIDATES[CAND_INDEX] to QUIET.
         //
@@ -97,8 +97,7 @@ public:
         //
         // With:
         //   auto new_cands = old_cands.withQuiet(index, true/false);
-        [[nodiscard]] Candidates& withQuiet(std::optional<CandidateIndex> cand_index,
-                                            bool                          quiet = true);
+        Candidates& withQuiet(std::optional<CandidateIndex> cand_index, bool quiet = true);
 };
 
 } // namespace config

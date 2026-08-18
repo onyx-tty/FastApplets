@@ -39,14 +39,14 @@ public:
         // Extends PathContext by an additional path segment.
         //
         // Example: "window" -> context.withExtension(u"size") -> ".window.size"
-        [[nodiscard]] PathContext& withExtension(QStringView segment);
+        PathContext& withExtension(QStringView segment);
 
         // Extends PathContext by an array index.
         //
         // Index is formatted with brackets, no separator is added.
         //
         // Example: ".window.size" context.withExtension(2) -> ".window.size[2]"
-        [[nodiscard]] PathContext& withExtension(size_t index);
+        PathContext& withExtension(size_t index);
 
         // Returns a full logging path by inserting name between filename and
         // path_context.

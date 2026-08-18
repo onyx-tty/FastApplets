@@ -4,8 +4,8 @@
 #pragma once
 
 #include "Core/Applets/Types/Type.h"
-#include "Core/Config/Types/PathContext/PathContext.h"
 #include "Core/Config/Types/NodeView.h"
+#include "Core/Config/Types/PathContext/PathContext.h"
 
 #include <cstddef>
 #include <QStringView>
@@ -38,7 +38,7 @@ struct Candidate final {
         //
         // With:
         //   auto new_cand = old_cand.withExtension(key);
-        [[nodiscard]] Candidate& withExtension(QStringView key);
+        Candidate& withExtension(QStringView key);
 
         // Extends CANDIDATE by INDEX.
         //
@@ -48,7 +48,7 @@ struct Candidate final {
         //
         // With:
         //   auto new_cand = old_cand.withExtension(index);
-        [[nodiscard]] Candidate& withExtension(size_t index);
+        Candidate& withExtension(size_t index);
 
         // Sets .quiet to QUIET.
         // True by default.
@@ -59,7 +59,7 @@ struct Candidate final {
         //
         // With:
         //   auto new_cand = old_cand.withQuiet(true/false);
-        [[nodiscard]] Candidate& withQuiet(bool quiet = true);
+        Candidate& withQuiet(bool quiet = true);
 };
 
 } // namespace config
