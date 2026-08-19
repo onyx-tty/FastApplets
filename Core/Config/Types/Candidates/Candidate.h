@@ -32,7 +32,7 @@ struct Candidate final {
         //
         // With:
         //   auto new_cand = old_cand[index];
-        Candidate operator[](size_t index) const;
+        [[nodiscard]] Candidate operator[](size_t index) const;
 
         // Creates Candidate copy extended by an additional segment.
         //
@@ -42,7 +42,7 @@ struct Candidate final {
         //
         // With:
         //   auto new_cand = old_cand[key];
-        Candidate operator[](QStringView key) const;
+        [[nodiscard]] Candidate operator[](QStringView key) const;
 };
 
 } // namespace config

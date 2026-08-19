@@ -27,7 +27,7 @@ public:
         Candidates(std::vector<Candidate> candidates) : candidates(std::move(candidates)) {}
         Candidates(std::initializer_list<Candidate> candidates) : candidates(candidates) {}
 
-        const Candidate& operator[](CandidateIndex i) const;
+        [[nodiscard]] const Candidate& operator[](CandidateIndex i) const;
 
         // Creates Candidates copy extended by an additional index.
         //
@@ -39,7 +39,7 @@ public:
         //
         // With:
         //   auto new_cands = old_cands[key];
-        Candidates operator[](size_t index) const;
+        [[nodiscard]] Candidates operator[](size_t index) const;
 
         // TODO: Consolidate repetitive logic
         // Creates Candidates copy extended by an additional segment.
@@ -52,7 +52,7 @@ public:
         //
         // With:
         //   auto new_cands = old_cands[key];
-        Candidates operator[](QStringView key) const;
+        [[nodiscard]] Candidates operator[](QStringView key) const;
 
         [[nodiscard]] const std::vector<Candidate>& get() const { return candidates; }
 };
