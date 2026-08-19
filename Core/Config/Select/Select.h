@@ -19,7 +19,7 @@ using namespace config;
 // TODO: Docs
 template<typename TReturn>
 requires(tomlqt::TomlQtSupported<std::decay_t<TReturn>>)
-const Candidate* candidate(const Candidates& candidates, const ArraySpec& array_spec = {});
+const Candidate* candidate(const Candidates& candidates);
 
 } // namespace config::select
 

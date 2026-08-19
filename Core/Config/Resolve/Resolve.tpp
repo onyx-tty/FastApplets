@@ -36,7 +36,7 @@ const T* config::resolve::from(const Candidates& candidates, const ArraySpec& ar
         using DT                = std::decay_t<T>;
         using validation_result = ArrayBounds::validation_result;
 
-        const auto*  candidate      = config::select::candidate<DT>(candidates, array_spec);
+        const auto*  candidate      = config::select::candidate<DT>(candidates);
         ArrayLogSpec array_log_spec = {.result = validation_result::null_ptr,
                 .format                        = array_spec.format};
 

@@ -20,8 +20,7 @@
 
 template<typename TReturn>
 requires(tomlqt::TomlQtSupported<std::decay_t<TReturn>>)
-const config::Candidate* config::select::candidate(
-        const Candidates& candidates, const ArraySpec& array_spec) {
+const config::Candidate* config::select::candidate(const Candidates& candidates) {
         using DTReturn          = std::decay_t<TReturn>;
         using validation_result = tomlqt::ArrayBounds::validation_result;
 
