@@ -20,7 +20,7 @@ std::optional<T> config::map::helpers::table(const Candidates& candidates, auto 
         for (const auto& candidate : candidates.get()) {
                 properties = candidate.node.as_table();
 
-                config::log::candidate(candidate, properties);
+                config::log::candidate(&candidate, properties);
 
                 if (properties) { break; }
         }
@@ -33,10 +33,7 @@ std::optional<T> config::map::helpers::table(const Candidates& candidates, auto 
 
 template<typename TContainer, typename TValue, typename TExtension>
 void config::map::helpers::field(TContainer& object, TValue TContainer::* member,
-        const Candidates& candidates, const TContainer& defaults, TExtension extension,
-        std::optional<bool> quiet) {
-        auto cands = candidates.makeCopy().withExtension(extension);
-        if (quiet) { cands.withQuiet(quiet.value()); }
-
+        const Candidates& candidates, const TContainer& defaults, TExtension extension) {
+        auto cands     = candidates.makeCopy().withExtension(extension);
         object.*member = resolve::from<TValue>(cands).value_or(defaults.*member);
 }

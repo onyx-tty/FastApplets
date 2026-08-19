@@ -18,12 +18,10 @@ namespace config {
 //
 // 'node' contains the toml::node_view with data for extraction.
 // 'type' is used for logging, to create QString path with config::PathContext.
-// 'quiet' disables logging if true.
 // 'path_context' provides an extensible interface for convenient storage and extension of paths.
 struct Candidate final {
         node_view    node;
         applet::Type applet;
-        bool         quiet = false;
         PathContext  path_context;
 
         // Creates a copy of Candidate. An alternative to Candidate(old)
@@ -49,17 +47,6 @@ struct Candidate final {
         // With:
         //   auto new_cand = old_cand.withExtension(index);
         Candidate& withExtension(size_t index);
-
-        // Sets .quiet to QUIET.
-        // True by default.
-        //
-        // Replaces:
-        //   auto new_cand = old_cand;
-        //   new_cand.quiet = true/false;
-        //
-        // With:
-        //   auto new_cand = old_cand.withQuiet(true/false);
-        Candidate& withQuiet(bool quiet = true);
 };
 
 } // namespace config

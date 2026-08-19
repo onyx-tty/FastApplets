@@ -8,7 +8,6 @@
 #include <QStringView>
 #include <cstddef>
 #include <initializer_list>
-#include <optional>
 #include <utility>
 #include <vector>
 
@@ -62,42 +61,6 @@ public:
         // With:
         //   auto new_cands = old_cands.withExtension(key);
         Candidates& withExtension(size_t index);
-
-        // Sets .quiet in ALL CANDIDATES to QUIET.
-        //
-        // Replaces:
-        //   auto new_cands = old_cands;
-        //   for (size_t i = 0; i != new_cands.size(); ++i) {
-        //       new_cands[i].candidates.quiet = true/false;
-        //   }
-        //
-        // With:
-        //   auto new_cands = old_cands.withQuiet(true/false);
-        Candidates& withQuiet(bool quiet = true);
-
-        // Sets .quiet in CANDIDATES[CAND_INDEX] to QUIET.
-        //
-        // Replaces:
-        //   auto new_cands = old_cands;
-        //   for (size_t i = 0; i != new_cands.size(); ++i) {
-        //       new_cands[i].candidates.quiet = true/false;
-        //   }
-        //
-        // With:
-        //   auto new_cands = old_cands.withQuiet(index, true/false);
-        Candidates& withQuiet(std::optional<size_t> cand_index, bool quiet = true);
-
-        // Sets .quiet in CANDIDATES[CAND_INDEX] to QUIET.
-        //
-        // Replaces:
-        //   auto new_cands = old_cands;
-        //   for (size_t i = 0; i != new_cands.size(); ++i) {
-        //       new_cands[i].candidates.quiet = true/false;
-        //   }
-        //
-        // With:
-        //   auto new_cands = old_cands.withQuiet(index, true/false);
-        Candidates& withQuiet(std::optional<CandidateIndex> cand_index, bool quiet = true);
 };
 
 } // namespace config

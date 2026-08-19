@@ -19,7 +19,7 @@ template<typename T>
 
 template<typename TContainer, typename TValue, typename TExtension>
 void field(TContainer& object, TValue TContainer::* member, const Candidates& candidates,
-        const TContainer& defaults, TExtension extension, std::optional<bool> quiet = std::nullopt);
+        const TContainer& defaults, TExtension extension);
 
 } // namespace config::map::helpers
 

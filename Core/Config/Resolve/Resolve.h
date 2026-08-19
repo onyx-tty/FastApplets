@@ -3,6 +3,7 @@
 
 #pragma once
 
+#include "Core/Config/Log/Log.h"
 #include "Core/Config/Types/ArraySpec.h"
 
 #include <QStringView>
@@ -32,6 +33,7 @@ namespace config::resolve {
 
 using config::ArraySpec;
 using config::Candidates;
+using config::log::ArrayLogSpec;
 
 template<typename T>
 concept ReturnByView = tomlqt::TomlQtSupported<T> && std::same_as<T, toml::table>

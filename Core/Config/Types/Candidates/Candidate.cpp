@@ -30,9 +30,3 @@ Candidate& Candidate::withExtension(size_t index) {
 
         return *this;
 }
-
-Candidate& Candidate::withQuiet(bool quiet) {
-        this->quiet = quiet;
-
-        return *this;
-}

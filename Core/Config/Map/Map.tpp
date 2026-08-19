@@ -29,17 +29,14 @@ config::schema::Config config::map::config(
 
         Candidate c = {.node  = node_view(applet),
                 .applet       = TApplet,
-                .quiet        = true,
                 .path_context = PathContext(filename, u"")};
 
         Candidates cands = {
                 {.node                = node_view(applet),
                  .applet       = TApplet,
-                 .quiet        = true,
                  .path_context = PathContext(filename, u"")},
                 {.node                = node_view(global),
                  .applet       = applet::Type::Global,
-                 .quiet        = false,
                  .path_context = PathContext(filename, u"")}
         };
 
@@ -64,11 +61,9 @@ config::schema::Keys config::map::keys(
         const Candidates cands = {
                 {.node                = node_view(applet),
                  .applet       = TApplet,
-                 .quiet        = true,
                  .path_context = PathContext(filename, u"")},
                 {.node                = node_view(global),
                  .applet       = applet::Type::Global,
-                 .quiet        = false,
                  .path_context = PathContext(filename, u"")}
         };
 
@@ -76,10 +71,7 @@ config::schema::Keys config::map::keys(
                 keys.quit = quit(cands.makeCopy().withExtension(u"quit"), defaults.quit);
 
                 keys.primary_buttons = primaryButtons(
-                        {cands[CandidateIndex::Applet]
-                                        .makeCopy()
-                                        .withExtension(u"primary_buttons")
-                                        .withQuiet(false)},
+                        {cands[CandidateIndex::Applet].makeCopy().withExtension(u"primary_buttons")},
                         defaults.primary_buttons);
         }).value_or(defaults);
 }

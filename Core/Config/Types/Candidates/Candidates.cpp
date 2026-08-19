@@ -9,7 +9,6 @@
 #include <QStringView>
 #include <QtGlobal>
 #include <cstddef>
-#include <optional>
 #include <string_view>
 
 using config::Candidate;
@@ -40,40 +39,6 @@ Candidates& Candidates::withExtension(size_t index) {
                 candidate.node         = candidate.node[index];
                 candidate.path_context = candidate.path_context.withExtension(index);
         }
-
-        return *this;
-}
-
-Candidates& Candidates::withQuiet(bool quiet) {
-        for (auto& candidate : candidates) { candidate.quiet = quiet; }
-
-        return *this;
-}
-
-Candidates& Candidates::withQuiet(std::optional<size_t> cand_index, bool quiet) {
-        if (!cand_index) { qWarning() << "Passed std::nullopt, cannot make anything quiet"; }
-
-        if (cand_index.value() > candidates.size()) {
-                qWarning() << QString("Passed index (%1) exceeds candidates.size() (%2)")
-                                      .arg(cand_index.value())
-                                      .arg(candidates.size());
-        }
-
-        candidates[cand_index.value()].quiet = quiet;
-
-        return *this;
-}
-
-Candidates& Candidates::withQuiet(std::optional<CandidateIndex> cand_index, bool quiet) {
-        if (!cand_index) { qWarning() << "Passed std::nullopt, cannot make anything quiet"; }
-
-        if (static_cast<size_t>(cand_index.value()) > candidates.size()) {
-                qWarning() << QString("Passed index (%1) exceeds candidates.size() (%2)")
-                                      .arg(static_cast<size_t>(cand_index.value()))
-                                      .arg(candidates.size());
-        }
-
-        candidates[static_cast<size_t>(cand_index.value())].quiet = quiet;
 
         return *this;
 }

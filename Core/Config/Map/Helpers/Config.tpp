@@ -30,10 +30,7 @@ PrimaryButtonParams config::map::helpers::primaryButtonParams(
         return table<PrimaryButtonParams>(candidates, [&defaults, &candidates](
                                                               PrimaryButtonParams& params) {
                 params.per_button = perPrimaryButtonParamsList<TApplet>(
-                        {candidates[CandidateIndex::Applet]
-                                        .makeCopy()
-                                        .withExtension(u"list")
-                                        .withQuiet(false)},
+                        {candidates[CandidateIndex::Applet].makeCopy().withExtension(u"list")},
                         defaults.per_button);
 
                 params.style = primaryButtonStyle(candidates, defaults.style);

@@ -14,10 +14,10 @@
 
 using validation_result = tomlqt::ArrayBounds::validation_result;
 
-void config::log::candidate(const Candidate& candidate, bool success) {
-        if (candidate.quiet) { return; }
+void config::log::candidate(const Candidate* candidate, bool success) {
+        if (!candidate) { return; }
 
-        auto path = candidate.path_context.makePath(candidate.applet);
+        auto path = candidate->path_context.makePath(candidate->applet);
 
         if (path.isNull()) { qFatal("Passed null path"); }
 
@@ -28,12 +28,12 @@ void config::log::candidate(const Candidate& candidate, bool success) {
         }
 }
 
-void config::log::candidate(const Candidate& candidate, bool success, ArrayLogSpec array_log_spec) {
+void config::log::candidate(const Candidate* candidate, bool success, ArrayLogSpec array_log_spec) {
         using result = tomlqt::ArrayBounds::validation_result;
 
-        if (candidate.quiet) { return; }
+        if (!candidate) { return; }
 
-        auto path = candidate.path_context.makePath(candidate.applet);
+        auto path = candidate->path_context.makePath(candidate->applet);
 
         if (path.isNull()) { qFatal("Passed null path"); }
 
