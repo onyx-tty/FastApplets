@@ -12,7 +12,7 @@ namespace config::map::helpers {
 // TODO: Document
 template<typename TContainer, typename TValue, typename TExtension>
 void field(TContainer& object, TValue TContainer::* member, const Candidates& candidates,
-           const TContainer& defaults, TExtension extension, std::optional<bool> quiet = false);
+           const TContainer& defaults, TExtension extension, std::optional<bool> quiet = std::nullopt);
 
 } // namespace config::map::helpers
 
