@@ -7,7 +7,7 @@
 
 #include "Core/Applets/Types/Traits.h"
 #include "Core/Applets/Types/Type.h"
-#include "Core/Config/Map/Helpers/Field.h"
+#include "Core/Config/Map/Helpers/Helpers.h"
 #include "Core/Config/Resolve/Resolve.h"
 #include "Core/Config/Types/Candidates/Candidates.h"
 #include "Core/UI/Types/ButtonType.h"

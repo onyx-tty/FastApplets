@@ -4,6 +4,7 @@
 #pragma once
 
 #include "Core/Config/Log/Log.h"
+#include "Core/Config/Resolve/Resolve.h"
 #include "Core/Config/Types/Candidates/Candidates.h"
 #include "Helpers.h"
 
@@ -28,4 +29,14 @@ std::optional<T> config::map::helpers::table(const Candidates& candidates, auto 
         fill_fn(props);
 
         return std::move(props);
+}
+
+template<typename TContainer, typename TValue, typename TExtension>
+void config::map::helpers::field(TContainer& object, TValue TContainer::* member,
+                                 const Candidates& candidates, const TContainer& defaults,
+                                 TExtension extension, std::optional<bool> quiet) {
+        auto cands = candidates.makeCopy().withExtension(extension);
+        if (quiet) { cands.withQuiet(quiet.value()); }
+
+        object.*member = resolve::from<TValue>(cands).value_or(defaults.*member);
 }

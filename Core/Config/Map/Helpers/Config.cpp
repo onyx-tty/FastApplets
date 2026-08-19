@@ -3,7 +3,6 @@
 
 #include "Config.h"
 
-#include "Core/Config/Map/Helpers/Field.h"
 #include "Core/Config/Map/Helpers/Helpers.h"
 #include "Core/Config/Types/Candidates/Candidates.h"
 #include "Core/UI/Types/PrimaryButtonBehavior.h"
