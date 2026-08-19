@@ -85,6 +85,18 @@ std::optional<PerPrimaryButtonParams> config::map::helpers::perPrimaryButtonPara
                 auto type_str = resolve::from<QString>(candidates.makeCopy().withExtension(u"id"));
                 params.type   = toPrimaryButtonType<TPrimaryButtonType>(type_str.value_or(""));
 
+                // If provided type is missing or invalid then it's impossible to deduce defaults.
+                // As a result, this function has to return std::nullopt to indicate that
+                // PerPrimaryButtonParams needs to be defaulted.
+                //
+                // If validation took place in separation and before extraction, it'd be possible
+                // to know if defaulting will have to happen at all, and thus the function
+                // could progress in such case. But with current architecture, this is not
+                // possible. As a result, the function has to return regardless. Type must be
+                // valid at all times.
+                //
+                // It is worth mentioning that isNone returns false for std::monostate, and
+                // textFor, commandFor, and iconFor can handle std::monostate themselves.
                 if (isNone<TPrimaryButtonType>(params.type)) { return; }
                 auto type = std::get<TPrimaryButtonType>(params.type);
 
