@@ -85,14 +85,12 @@ std::optional<PerPrimaryButtonParams> config::map::helpers::perPrimaryButtonPara
                 auto type_str = resolve::from<QString>(candidates.makeCopy().withExtension(u"id"));
                 params.type   = toPrimaryButtonType<TPrimaryButtonType>(type_str.value_or(""));
 
-
                 if (isNone<TPrimaryButtonType>(params.type)) { return; }
+                auto type = std::get<TPrimaryButtonType>(params.type);
 
-                auto t = std::get<TPrimaryButtonType>(params.type);
-
-                PerPrimaryButtonParams defaults = {.text    = textFor(t),
-                                                   .command = commandFor(t),
-                                                   .icon    = iconFor(t)};
+                PerPrimaryButtonParams defaults = {.text    = textFor(type),
+                                                   .command = commandFor(type),
+                                                   .icon    = iconFor(type)};
                 field(params, &PerPrimaryButtonParams::text, candidates, defaults, u"text");
                 field(params, &PerPrimaryButtonParams::command, candidates, defaults, u"command");
 
