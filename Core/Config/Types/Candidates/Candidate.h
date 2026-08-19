@@ -24,10 +24,6 @@ struct Candidate final {
         applet::Type applet;
         PathContext  path_context;
 
-        // Creates a copy of Candidate. An alternative to Candidate(old)
-        // that makes the intention clearer when chaining.
-        [[nodiscard]] Candidate makeCopy() const;
-
         // Creates Candidate copy extended by an additional segment.
         //
         // Replaces:

@@ -42,10 +42,6 @@ public:
         // Example: ".window" -> context[u"size"] -> ".window[u"size"]"
         [[nodiscard]] PathContext operator[](QStringView segment) const;
 
-        // Creates a copy of PathContext. An alternative to PathContext(old)
-        // that makes the intention clearer when chaining.
-        [[nodiscard]] PathContext makeCopy() const;
-
         // Returns a full logging path by inserting name between filename and
         // path_context.
         //

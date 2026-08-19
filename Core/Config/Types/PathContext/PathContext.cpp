@@ -14,8 +14,6 @@ PathContext::PathContext(QStringView filename, QStringView path_context, char se
         filename(filename.toString()), path_context(path_context.toString()), separator(separator) {
 }
 
-PathContext PathContext::makeCopy() const { return *this; }
-
 PathContext PathContext::operator[](QStringView segment) const {
         PathContext copy = *this;
 

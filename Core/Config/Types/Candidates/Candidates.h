@@ -31,10 +31,6 @@ public:
 
         [[nodiscard]] const std::vector<Candidate>& get() const { return candidates; }
 
-        // Creates a copy of Candidates. An alternative to Candidates(old)
-        // that makes the intention clearer when chaining.
-        [[nodiscard]] Candidates makeCopy() const;
-
         // TODO: Consolidate repetitive logic
         // Creates Candidates copy extended by an additional segment.
         //

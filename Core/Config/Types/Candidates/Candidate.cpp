@@ -12,8 +12,6 @@
 
 using config::Candidate;
 
-Candidate Candidate::makeCopy() const { return *this; }
-
 Candidate Candidate::operator[](QStringView key) const {
         // Qt logging uses UTF-16, TOML++ uses UTF-8
         auto byte_arr = key.toUtf8();

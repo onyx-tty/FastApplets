@@ -18,8 +18,6 @@ const Candidate& Candidates::operator[](CandidateIndex i) const {
         return candidates[static_cast<int>(i)];
 }
 
-Candidates Candidates::makeCopy() const { return *this; }
-
 Candidates Candidates::operator[](QStringView key) const {
         // Qt logging uses UTF-16, TOML++ uses UTF-8
         auto byte_arr = key.toUtf8();
