@@ -14,19 +14,23 @@ using config::Candidate;
 
 Candidate Candidate::makeCopy() const { return *this; }
 
-Candidate& Candidate::withExtension(QStringView key) {
+Candidate Candidate::operator[](QStringView key) const {
         // Qt logging uses UTF-16, TOML++ uses UTF-8
         auto byte_arr = key.toUtf8();
 
-        node         = node[std::string_view(byte_arr.data(), byte_arr.size())];
-        path_context = path_context.withExtension(key);
+        Candidate copy = *this;
 
-        return *this;
+        copy.node         = node[std::string_view(byte_arr.data(), byte_arr.size())];
+        copy.path_context = path_context[key];
+
+        return copy;
 }
 
-Candidate& Candidate::withExtension(size_t index) {
-        node         = node[index];
-        path_context = path_context.withExtension(index);
+Candidate Candidate::operator[](size_t index) const {
+        Candidate copy = *this;
 
-        return *this;
+        copy.node         = node[index];
+        copy.path_context = path_context[index];
+
+        return copy;
 }

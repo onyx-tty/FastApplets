@@ -64,8 +64,7 @@ std::vector<keybindings> config::map::helpers::primaryButtons(
         buttons.reserve(keys->size());
 
         for (size_t i = 0; i != keys->size(); ++i) {
-                keybindings found_for_button = primaryButton(
-                        candidates.makeCopy().withExtension(i), defaults[i]);
+                keybindings found_for_button = primaryButton(candidates[i], defaults[i]);
                 if (!found_for_button.empty()) { buttons.push_back(std::move(found_for_button)); }
         }
 

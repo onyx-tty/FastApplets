@@ -16,19 +16,23 @@ PathContext::PathContext(QStringView filename, QStringView path_context, char se
 
 PathContext PathContext::makeCopy() const { return *this; }
 
-PathContext& PathContext::withExtension(QStringView segment) {
+PathContext PathContext::operator[](QStringView segment) const {
+        PathContext copy = *this;
+
         // Nothing to separate if empty
-        if (!path_context.isEmpty()) { path_context += separator; }
+        if (!path_context.isEmpty()) { copy.path_context += copy.separator; }
 
-        path_context += segment.toString();
+        copy.path_context += segment.toString();
 
-        return *this;
+        return copy;
 }
 
-PathContext& PathContext::withExtension(size_t index) {
-        path_context = QString("%1[%2]").arg(path_context).arg(index);
+PathContext PathContext::operator[](size_t index) const {
+        PathContext copy = *this;
 
-        return *this;
+        copy.path_context = QString("%1[%2]").arg(path_context).arg(index);
+
+        return copy;
 }
 
 QString PathContext::makePath(applet::Type applet) const {

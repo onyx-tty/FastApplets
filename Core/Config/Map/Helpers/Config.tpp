@@ -30,8 +30,7 @@ PrimaryButtonParams config::map::helpers::primaryButtonParams(
         return table<PrimaryButtonParams>(candidates, [&defaults, &candidates](
                                                               PrimaryButtonParams& params) {
                 params.per_button = perPrimaryButtonParamsList<TApplet>(
-                        {candidates[CandidateIndex::Applet].makeCopy().withExtension(u"list")},
-                        defaults.per_button);
+                        {candidates[CandidateIndex::Applet][u"list"]}, defaults.per_button);
 
                 params.style = primaryButtonStyle(candidates, defaults.style);
 
@@ -52,8 +51,7 @@ std::vector<PerPrimaryButtonParams> config::map::helpers::perPrimaryButtonParams
         found.reserve(arr->size());
 
         for (size_t i = 0; i != arr->size(); ++i) {
-                auto new_button = perPrimaryButtonParams<TApplet>(
-                        candidates.makeCopy().withExtension(i));
+                auto new_button = perPrimaryButtonParams<TApplet>(candidates[i]);
                 if (new_button) { found.push_back(std::move(new_button.value())); }
         }
 
@@ -75,7 +73,7 @@ std::optional<PerPrimaryButtonParams> config::map::helpers::perPrimaryButtonPara
         return table<PerPrimaryButtonParams>(candidates, [&candidates](
                                                                  PerPrimaryButtonParams& params) {
                 // Deserializes string representation into TPrimaryButtonType.
-                auto type_str = resolve::from<QString>(candidates.makeCopy().withExtension(u"id"));
+                auto type_str = resolve::from<QString>(candidates[u"id"]);
                 params.type   = toPrimaryButtonType<TPrimaryButtonType>(type_str.value_or(""));
 
                 // If provided type is missing or invalid then it's impossible to deduce defaults.

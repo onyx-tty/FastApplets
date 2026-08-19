@@ -28,25 +28,25 @@ struct Candidate final {
         // that makes the intention clearer when chaining.
         [[nodiscard]] Candidate makeCopy() const;
 
-        // Extends CANDIDATE by KEY.
+        // Creates Candidate copy extended by an additional segment.
         //
         // Replaces:
         //   Candidate new_cand = old_cand;
         //   new_cand.node = old_cand.node[key];
         //
         // With:
-        //   auto new_cand = old_cand.withExtension(key);
-        Candidate& withExtension(QStringView key);
+        //   auto new_cand = old_cand[key];
+        Candidate operator[](QStringView key) const;
 
-        // Extends CANDIDATE by INDEX.
+        // Creates Candidate copy extended by an additional index.
         //
         // Replaces:
         //   auto new_cand = old_cand;
         //   new_cand.node = old_cand.node[index];
         //
         // With:
-        //   auto new_cand = old_cand.withExtension(index);
-        Candidate& withExtension(size_t index);
+        //   auto new_cand = old_cand[index];
+        Candidate operator[](size_t index) const;
 };
 
 } // namespace config

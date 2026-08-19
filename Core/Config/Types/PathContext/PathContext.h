@@ -32,21 +32,19 @@ public:
         // Example: PathContext(u"config.toml", u".window")
         explicit PathContext(QStringView filename, QStringView path_context, char separator = '.');
 
+        // Creates PathContext copy extended by an additional index.
+        //
+        // Example: ".window" -> context[0] -> ".window[0]"
+        [[nodiscard]] PathContext operator[](size_t index) const;
+
+        // Creates PathContext copy extended by an additional path segment.
+        //
+        // Example: ".window" -> context[u"size"] -> ".window[u"size"]"
+        [[nodiscard]] PathContext operator[](QStringView segment) const;
+
         // Creates a copy of PathContext. An alternative to PathContext(old)
         // that makes the intention clearer when chaining.
         [[nodiscard]] PathContext makeCopy() const;
-
-        // Extends PathContext by an additional path segment.
-        //
-        // Example: "window" -> context.withExtension(u"size") -> ".window.size"
-        PathContext& withExtension(QStringView segment);
-
-        // Extends PathContext by an array index.
-        //
-        // Index is formatted with brackets, no separator is added.
-        //
-        // Example: ".window.size" context.withExtension(2) -> ".window.size[2]"
-        PathContext& withExtension(size_t index);
 
         // Returns a full logging path by inserting name between filename and
         // path_context.

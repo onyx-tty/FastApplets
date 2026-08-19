@@ -27,8 +27,6 @@ public:
         Candidates(std::vector<Candidate> candidates) : candidates(std::move(candidates)) {}
         Candidates(std::initializer_list<Candidate> candidates) : candidates(candidates) {}
 
-        // TODO: Replace int with size_t to stay consistent
-        const Candidate& operator[](int i) const;
         const Candidate& operator[](CandidateIndex i) const;
 
         [[nodiscard]] const std::vector<Candidate>& get() const { return candidates; }
@@ -38,7 +36,7 @@ public:
         [[nodiscard]] Candidates makeCopy() const;
 
         // TODO: Consolidate repetitive logic
-        // Extends ALL CANDIDATES by KEY.
+        // Creates Candidates copy extended by an additional segment.
         //
         // Replaces:
         //   auto new_cands = old_cands;
@@ -47,10 +45,10 @@ public:
         //   }
         //
         // With:
-        //   auto new_cands = old_cands.withExtension(key);
-        Candidates& withExtension(QStringView key);
+        //   auto new_cands = old_cands[key];
+        Candidates operator[](QStringView key) const;
 
-        // Extends ALL CANDIDATES by KEY.
+        // Creates Candidates copy extended by an additional index.
         //
         // Replaces:
         //   auto new_cands = old_cands;
@@ -59,8 +57,8 @@ public:
         //   }
         //
         // With:
-        //   auto new_cands = old_cands.withExtension(key);
-        Candidates& withExtension(size_t index);
+        //   auto new_cands = old_cands[key];
+        Candidates operator[](size_t index) const;
 };
 
 } // namespace config

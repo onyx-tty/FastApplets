@@ -41,12 +41,10 @@ config::schema::Config config::map::config(
         };
 
         return table<Config>(cands, [&defaults, &cands](Config& config) {
-                config.window_params = windowParams(
-                        cands.makeCopy().withExtension(u"window"), defaults.window_params);
+                config.window_params = windowParams(cands[u"window"], defaults.window_params);
 
                 config.primary_button_params = primaryButtonParams<TApplet>(
-                        cands.makeCopy().withExtension(u"primary_button"),
-                        defaults.primary_button_params);
+                        cands[u"primary_button"], defaults.primary_button_params);
         }).value_or(defaults);
 }
 
@@ -68,10 +66,10 @@ config::schema::Keys config::map::keys(
         };
 
         return table<Keys>(cands, [&defaults, &cands](Keys& keys) {
-                keys.quit = quit(cands.makeCopy().withExtension(u"quit"), defaults.quit);
+                keys.quit = quit(cands[u"quit"], defaults.quit);
 
                 keys.primary_buttons = primaryButtons(
-                        {cands[CandidateIndex::Applet].makeCopy().withExtension(u"primary_buttons")},
+                        {cands[CandidateIndex::Applet][u"primary_buttons"]},
                         defaults.primary_buttons);
         }).value_or(defaults);
 }

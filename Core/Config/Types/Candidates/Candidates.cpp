@@ -14,31 +14,34 @@
 using config::Candidate;
 using config::Candidates;
 
-const Candidate& Candidates::operator[](int i) const { return candidates[i]; }
-
 const Candidate& Candidates::operator[](CandidateIndex i) const {
-        return candidates[static_cast<size_t>(i)];
+        return candidates[static_cast<int>(i)];
 }
 
 Candidates Candidates::makeCopy() const { return *this; }
 
-Candidates& Candidates::withExtension(QStringView key) {
+Candidates Candidates::operator[](QStringView key) const {
         // Qt logging uses UTF-16, TOML++ uses UTF-8
         auto byte_arr = key.toUtf8();
 
-        for (auto& candidate : candidates) {
-                candidate.node = candidate.node[std::string_view(byte_arr.data(), byte_arr.size())];
-                candidate.path_context = candidate.path_context.withExtension(key);
+        Candidates copy = *this;
+
+        for (size_t i = 0; i != candidates.size(); ++i) {
+                copy.candidates[i].node =
+                        candidates[i].node[std::string_view(byte_arr.data(), byte_arr.size())];
+                copy.candidates[i].path_context = candidates[i].path_context[key];
         }
 
-        return *this;
+        return copy;
 }
 
-Candidates& Candidates::withExtension(size_t index) {
-        for (auto& candidate : candidates) {
-                candidate.node         = candidate.node[index];
-                candidate.path_context = candidate.path_context.withExtension(index);
+Candidates Candidates::operator[](size_t index) const {
+        Candidates copy = *this;
+
+        for (size_t i = 0; i != candidates.size(); ++i) {
+                copy.candidates[i].node         = candidates[i].node[index];
+                copy.candidates[i].path_context = candidates[i].path_context[index];
         }
 
-        return *this;
+        return copy;
 }

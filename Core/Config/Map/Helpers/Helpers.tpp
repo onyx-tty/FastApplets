@@ -34,6 +34,6 @@ std::optional<T> config::map::helpers::table(const Candidates& candidates, auto 
 template<typename TContainer, typename TValue, typename TExtension>
 void config::map::helpers::field(TContainer& object, TValue TContainer::* member,
         const Candidates& candidates, const TContainer& defaults, TExtension extension) {
-        auto cands     = candidates.makeCopy().withExtension(extension);
+        auto cands     = candidates[extension];
         object.*member = resolve::from<TValue>(cands).value_or(defaults.*member);
 }
