@@ -81,9 +81,10 @@ std::optional<PerPrimaryButtonParams> config::map::helpers::perPrimaryButtonPara
         // TODO: This has to be reworked so that field() can be applied here
         return table<PerPrimaryButtonParams>(candidates, [&candidates](
                                                                  PerPrimaryButtonParams& params) {
+                // Deserializes string representation into TPrimaryButtonType.
                 auto type_str = resolve::from<QString>(candidates.makeCopy().withExtension(u"id"));
+                params.type   = toPrimaryButtonType<TPrimaryButtonType>(type_str.value_or(""));
 
-                params.type = toPrimaryButtonType<TPrimaryButtonType>(type_str.value_or(""));
 
                 if (isNone<TPrimaryButtonType>(params.type)) { return; }
 
