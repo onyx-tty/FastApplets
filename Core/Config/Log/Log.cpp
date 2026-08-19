@@ -22,9 +22,9 @@ void config::log::candidate(const Candidate* candidate, bool success) {
         if (path.isNull()) { qFatal("Passed null path"); }
 
         if (success) {
-                qDebug() << path << "found!";
+                qDebug().noquote() << path << "found!";
         } else {
-                qWarning() << QString("%1, missing or wrong type").arg(path);
+                qWarning().noquote() << QString("%1, missing or wrong type").arg(path);
         }
 }
 
@@ -40,9 +40,10 @@ void config::log::candidate(const Candidate* candidate, bool success, ArrayLogSp
         tomlqt::logArrayBoundsResult(array_log_spec.result);
 
         if (success && array_log_spec.result == result::success) {
-                qDebug() << path << "found!";
+                qDebug().noquote() << path << "found!";
         } else {
-                qWarning() << QString("%1, missing or wrong type! Format: %2")
-                                      .arg(std::move(path), array_log_spec.format.toString());
+                qWarning().noquote()
+                        << QString("%1, missing or wrong type! Format: %2")
+                                   .arg(std::move(path), array_log_spec.format.toString());
         }
 }
