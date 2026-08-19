@@ -1,8 +1,7 @@
 add_applet_library(Core_Config_Select
         TYPE INTERFACE
 
-        INTERFACE_DEPS Core::Config::Log
-                       Core::Config::Types
+        INTERFACE_DEPS Core::Config::Types
                        Core::Config::Types::Candidates
                        TomlQt
                        tomlplusplus::tomlplusplus

@@ -6,7 +6,6 @@
 #include "Core/Config/Types/ArraySpec.h"
 #include "Core/Config/Types/Candidates/Candidate.h"
 #include "Core/Config/Types/Candidates/Candidates.h"
-#include "Core/Config/Types/NodeView.h"
 
 #include <TomlQt/TomlQt.h>
 #include <type_traits>

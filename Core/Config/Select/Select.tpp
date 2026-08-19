@@ -5,7 +5,6 @@
 
 #include "Select.h"
 
-#include "Core/Config/Log/Log.h"
 #include "Core/Config/Types/Candidates/Candidate.h"
 #include "Core/Config/Types/Candidates/Candidates.h"
 #include "Core/Config/Types/NodeView.h"
@@ -14,7 +13,6 @@
 #include <QtGlobal>
 #include <TomlQt/ArrayBounds.h>
 #include <TomlQt/TomlQt.h>
-#include <concepts>
 #include <toml++/toml.hpp>
 #include <type_traits>
 
