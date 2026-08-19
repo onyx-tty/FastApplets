@@ -3,10 +3,10 @@
 
 #pragma once
 
-#include <vector>
 #include <QObject>
 #include <QPushButton>
 #include <Qt>
+#include <vector>
 
 #include "Core/Config/Types/Keybindings.h"
 #include "Core/UI/Types/ButtonType.h"
@@ -39,9 +39,9 @@ class QWidget;
 // Returns a vector containing every created button.
 // Calls qFatal instead if no button params are found.
 // TODO: This function does too much. It should not resolve keys on top of button construction.
-PrimaryButtons makePrimaryButtons(const PrimaryButtonParams&      params,
-                                  const std::vector<keybindings>& keys,
-                                  const std::vector<keybindings>& default_keys, QWidget* parent);
+PrimaryButtons makePrimaryButtons(const PrimaryButtonParams& params,
+        const std::vector<keybindings>& keys, const std::vector<keybindings>& default_keys,
+        QWidget* parent);
 
 // Main button widget used for core functionality.
 // It sets given text and icon, and aligns them according to alignments passed in
@@ -58,7 +58,7 @@ private:
         // QPushButton forces icon and text to share alignment. To position them
         // independently, this class uses QLabels instead of complete text() and icon().
         void setLabel(QLabel* label, const QString& text, const QPixmap& pixmap,
-                      Qt::Alignment alignment, QSizePolicy size_policy);
+                Qt::Alignment alignment, QSizePolicy size_policy);
 
         // Caches latest encountered focus reason for use by paintEvent.
         // It exists so that paintEvent can discern between key and mouse and
@@ -80,8 +80,8 @@ public:
         //   style:      Visual properties (alignments, icon size, size policy).
         // TODO: Pass a single PrimaryButtonParams argument
         explicit PrimaryButton(button_type type, const QIcon& icon, const QString& text,
-                               keybindings keys, QString command, const PrimaryButtonStyle& style,
-                               QWidget* parent);
+                keybindings keys, QString command, const PrimaryButtonStyle& style,
+                QWidget* parent);
 
         // Wrapper propagating event->reason() to focus_reason for use by paintEvent.
         void focusInEvent(QFocusEvent* event) override;

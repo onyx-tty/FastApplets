@@ -3,9 +3,9 @@
 
 #pragma once
 
+#include <QStringView>
 #include <TomlQt/ArrayBounds.h>
 #include <optional>
-#include <QStringView>
 
 namespace config {
 

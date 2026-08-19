@@ -5,9 +5,9 @@
 
 #include "Core/Applets/Types/Type.h"
 
-#include <cstddef>
 #include <QString>
 #include <QStringView>
+#include <cstddef>
 
 namespace config {
 

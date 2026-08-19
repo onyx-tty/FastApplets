@@ -3,16 +3,16 @@
 
 #pragma once
 
+#include "Defaults.h"
 #include "Core/Applets/Types/Type.h"
-#include "Core/Config/Schema/Config.h"
 #include "Core/Config/Defaults/Helpers/Helpers.h"
+#include "Core/Config/Schema/Config.h"
 #include "Core/Config/Schema/Keys.h"
 #include "Core/Config/Types/Keybindings.h"
-#include "Defaults.h"
 
+#include <Qt>
 #include <utility>
 #include <vector>
-#include <Qt>
 
 template<applet::Type TApplet>
 config::schema::Config config::makeDefaultConfig() {

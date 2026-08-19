@@ -7,23 +7,23 @@
 #include "Core/UI/Types/PrimaryButtons.h"
 #include "Widgets/PrimaryButton.h"
 
-#include <algorithm>
-#include <utility>
 #include <QApplication>
 #include <QHBoxLayout>
 #include <QKeyEvent>
 #include <QObject>
 #include <QWidget>
 #include <Qt>
+#include <algorithm>
+#include <utility>
 
 namespace {
 
 [[nodiscard]] PrimaryButton* findPrimaryButton(int key, PrimaryButtons buttons) {
-        const auto iter = std::find_if(buttons.cbegin(), buttons.cend(),
-                                       [key](const PrimaryButton* button) -> bool {
-                                               if (!button) { return false; }
-                                               return button->getKeys().contains(key);
-                                       });
+        const auto iter = std::find_if(
+                buttons.cbegin(), buttons.cend(), [key](const PrimaryButton* button) -> bool {
+                        if (!button) { return false; }
+                        return button->getKeys().contains(key);
+                });
 
         return iter != buttons.cend() ? *iter : nullptr;
 }
@@ -35,7 +35,7 @@ namespace {
 } // namespace
 
 CentralWidget::CentralWidget(PrimaryButtons buttons, keybindings quit_keys,
-                             PrimaryButtonBehavior behavior, QWidget* parent) :
+        PrimaryButtonBehavior behavior, QWidget* parent) :
         QWidget(parent), buttons(std::move(buttons)), quit_keys(std::move(quit_keys)),
         double_key_press(behavior.double_key_press) {
         setLayout(new QHBoxLayout(this));
@@ -97,6 +97,4 @@ void CentralWidget::showEvent(QShowEvent* event) {
         this->setFocus(Qt::FocusReason::OtherFocusReason);
 }
 
-const PrimaryButtons& CentralWidget::getButtons() const {
-        return buttons;
-}
+const PrimaryButtons& CentralWidget::getButtons() const { return buttons; }

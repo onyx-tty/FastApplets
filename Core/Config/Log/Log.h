@@ -5,13 +5,11 @@
 
 #include "Core/Config/Types/Candidates/Candidate.h"
 
+#include <QStringView>
 #include <TomlQt/ArrayBounds.h>
 #include <toml++/toml.hpp>
-#include <QStringView>
 
-namespace config {
-class Candidate;
-} // namespace config
+namespace config { class Candidate; } // namespace config
 
 namespace config::log {
 

@@ -47,8 +47,8 @@ using config::Candidates;
 //
 // Return value: PrimaryButtonParams
 template<applet::Type TApplet>
-[[nodiscard]] PrimaryButtonParams primaryButtonParams(const Candidates&          candidates,
-                                                      const PrimaryButtonParams& defaults);
+[[nodiscard]] PrimaryButtonParams primaryButtonParams(
+        const Candidates& candidates, const PrimaryButtonParams& defaults);
 
 // Maps std::vector<PerPrimaryButtonParams> from a list of candidates.
 //
@@ -80,16 +80,16 @@ template<applet::Type TApplet>
 //                  and policy (string)
 //
 // Return value: PrimaryButtonStyle
-[[nodiscard]] PrimaryButtonStyle primaryButtonStyle(const Candidates&         candidates,
-                                                    const PrimaryButtonStyle& defaults);
+[[nodiscard]] PrimaryButtonStyle primaryButtonStyle(
+        const Candidates& candidates, const PrimaryButtonStyle& defaults);
 
 // Maps PrimaryButtonBehavior from a list of candidates.
 //
 // Expected format: primary button table containing double_key_press (bool).
 //
 // Return value: PrimaryButtonBehavior
-[[nodiscard]] PrimaryButtonBehavior primaryButtonBehavior(const Candidates&            candidates,
-                                                          const PrimaryButtonBehavior& defaults);
+[[nodiscard]] PrimaryButtonBehavior primaryButtonBehavior(
+        const Candidates& candidates, const PrimaryButtonBehavior& defaults);
 
 } // namespace config::map::helpers
 

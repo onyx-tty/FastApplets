@@ -3,16 +3,16 @@
 
 #pragma once
 
-#include "Core/Config/Select/Select.h"
-#include "Core/Config/Types/Candidates/Candidates.h"
-#include "Core/Config/Types/ArraySpec.h"
 #include "Resolve.h"
+#include "Core/Config/Select/Select.h"
+#include "Core/Config/Types/ArraySpec.h"
+#include "Core/Config/Types/Candidates/Candidates.h"
 
+#include <QStringView>
 #include <TomlQt/TomlQt.h>
 #include <optional>
 #include <toml++/toml.hpp>
 #include <type_traits>
-#include <QStringView>
 
 template<typename T>
 requires(config::resolve::ReturnByValue<T>)

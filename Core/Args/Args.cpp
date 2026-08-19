@@ -5,6 +5,12 @@
 #include "Core/Applets/Types/Type.h"
 #include "Core/Config/Types/Filepaths.h" // Only needed for injectArgs
 
+#include <QApplication>
+#include <QDebug>
+#include <QFileInfo>
+#include <QString>
+#include <QStringView>
+#include <QtGlobal>
 #include <array>
 #include <cstddef>
 #include <format>
@@ -12,12 +18,6 @@
 #include <string>
 #include <string_view>
 #include <utility>
-#include <QApplication>
-#include <QDebug>
-#include <QFileInfo>
-#include <QString>
-#include <QStringView>
-#include <QtGlobal>
 
 void printHelpMenu(applet::Type type) {
         QStringView applet_name = applet::toTitle(type);
@@ -59,8 +59,8 @@ bool arg::isSingleFlag(std::string_view arg) {
         return arg == "-?" || arg == "-h" || arg == "--help";
 }
 
-void arg::parseFlag(std::array<std::string_view, 2> flag, arg::CmdArgs& parsed,
-                    bool is_single_flag) {
+void arg::parseFlag(
+        std::array<std::string_view, 2> flag, arg::CmdArgs& parsed, bool is_single_flag) {
         // Checks if both flags are valid before trying to dereference them.
         for (size_t i = 0; i != flag.size(); ++i) {
                 if (!flag[i].data()) {
@@ -129,7 +129,8 @@ void arg::injectArgs(arg::CmdArgs& args, config::Filepaths& filepaths) {
         const auto injector = [](QString& target, QString& source, QStringView source_name) {
                 QFileInfo file = QFileInfo(source);
                 if (file.exists() && file.isFile() && file.isReadable()) {
-                        qDebug() << QString("Found file %1, it was passed as a %2 cmd argument, injecting")
+                        qDebug() << QString(
+                                "Found file %1, it was passed as a %2 cmd argument, injecting")
                                             .arg(source)
                                             .arg(source_name);
                         target = source;

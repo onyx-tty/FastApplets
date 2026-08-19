@@ -5,16 +5,14 @@
 
 #include "Core/Config/Types/ArraySpec.h"
 
+#include <QStringView>
+#include <Qt>
 #include <TomlQt/TomlQt.h>
 #include <concepts>
 #include <optional>
 #include <toml++/toml.hpp>
-#include <QStringView>
-#include <Qt>
 
-namespace config {
-class Candidates;
-} // namespace config
+namespace config { class Candidates; } // namespace config
 
 // Extracts typed values from TOML nodes with fallback chains and error handling.
 //

@@ -3,8 +3,4 @@
 
 #pragma once
 
-namespace config {
-
-enum class Type { Config, Keys };
-
-} // namespace config
+namespace config { enum class Type { Config, Keys }; } // namespace config

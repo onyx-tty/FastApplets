@@ -5,9 +5,9 @@
 
 #include "Core/UI/Types/ButtonType.h"
 
-#include <variant>
 #include <QIcon>
 #include <QString>
+#include <variant>
 
 // Assign hardcoded icon associated with each button.
 template<typename TPrimaryButtonType>

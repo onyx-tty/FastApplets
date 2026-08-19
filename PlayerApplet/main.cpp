@@ -11,12 +11,12 @@
 #include "Core/Config/Types/Filepaths.h"
 #include "Core/UI/MainWindow.h"
 
-#include <CppUtils/Log/QtLog.h>
 #include <QApplication>
 #include <QDebug>
 #include <QLatin1StringView>
 #include <QTimer>
 #include <QtGlobal>
+#include <CppUtils/Log/QtLog.h>
 
 int main(int argc, char* argv[]) {
         auto application = QApplication(argc, argv);
@@ -49,10 +49,9 @@ int main(int argc, char* argv[]) {
         arg::injectArgs(args, applet_filepaths);
 
         // Config files
-        constexpr auto type       = applet::Type::Player;
-        const auto [config, _, keys,
-                    default_keys] = config::makeAppletConfig<type>(applet_filepaths,
-                                                                   global_filepaths);
+        constexpr auto type                        = applet::Type::Player;
+        const auto [config, _, keys, default_keys] = config::makeAppletConfig<type>(
+                applet_filepaths, global_filepaths);
 
         // GUI
         MainWindow main_window = makeMainWindow(config, keys, default_keys);

@@ -3,10 +3,10 @@
 
 #pragma once
 
+#include "Helpers.h"
 #include "Core/Config/Log/Log.h"
 #include "Core/Config/Resolve/Resolve.h"
 #include "Core/Config/Types/Candidates/Candidates.h"
-#include "Helpers.h"
 
 #include <optional>
 #include <toml++/toml.hpp>
@@ -33,8 +33,8 @@ std::optional<T> config::map::helpers::table(const Candidates& candidates, auto 
 
 template<typename TContainer, typename TValue, typename TExtension>
 void config::map::helpers::field(TContainer& object, TValue TContainer::* member,
-                                 const Candidates& candidates, const TContainer& defaults,
-                                 TExtension extension, std::optional<bool> quiet) {
+        const Candidates& candidates, const TContainer& defaults, TExtension extension,
+        std::optional<bool> quiet) {
         auto cands = candidates.makeCopy().withExtension(extension);
         if (quiet) { cands.withQuiet(quiet.value()); }
 

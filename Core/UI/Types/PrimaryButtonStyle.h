@@ -3,10 +3,10 @@
 
 #pragma once
 
-#include <toml++/toml.hpp>
 #include <QSize>
 #include <QSizePolicy>
 #include <Qt>
+#include <toml++/toml.hpp>
 
 // TODO: Add more comprehensive docs
 // Stores data used to style each PrimaryButton.

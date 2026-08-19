@@ -3,11 +3,11 @@
 
 #include "Core/Shell/Shell.h"
 
-#include <utility>
 #include <QDebug>
 #include <QProcess>
 #include <QString>
 #include <QtGlobal>
+#include <utility>
 
 void runCommand(QString command) {
         // Avoids passing empty command to shell, which does nothing.

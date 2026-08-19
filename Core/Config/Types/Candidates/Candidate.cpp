@@ -3,18 +3,16 @@
 
 #include "Candidate.h"
 
-#include <cstddef>
-#include <string_view>
 #include <QDebug>
 #include <QString>
 #include <QStringView>
 #include <QtGlobal>
+#include <cstddef>
+#include <string_view>
 
 using config::Candidate;
 
-Candidate Candidate::makeCopy() const {
-        return *this;
-}
+Candidate Candidate::makeCopy() const { return *this; }
 
 Candidate& Candidate::withExtension(QStringView key) {
         // Qt logging uses UTF-16, TOML++ uses UTF-8

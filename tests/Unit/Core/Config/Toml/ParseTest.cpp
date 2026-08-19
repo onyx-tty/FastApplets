@@ -39,14 +39,14 @@ private slots:
                 QDir parentdir("/tmp");
                 QVERIFY2(parentdir.exists() && parentdir.isReadable()
                                  && QFileInfo(parentdir.path()).isWritable(),
-                         "No access to /tmp");
+                        "No access to /tmp");
 
                 QVERIFY2(parentdir.mkdir("FastAppletsTests"), "Failed to create test directory");
 
                 // Write minimal valid and invalid TOML files for parser tests
                 QFile valid(QDir(dirpath).filePath(filename_valid));
                 QVERIFY2(valid.open(QIODevice::WriteOnly | QIODevice::Text),
-                         "Failed to create test valid TOML file");
+                        "Failed to create test valid TOML file");
 
                 // Valid
                 QTextStream writer(&valid);
@@ -57,7 +57,7 @@ private slots:
                 // Invalid
                 QFile invalid(QDir(dirpath).filePath(filename_invalid));
                 QVERIFY2(invalid.open(QIODevice::WriteOnly | QIODevice::Text),
-                         "Failed to create test invalid TOML file");
+                        "Failed to create test invalid TOML file");
                 writer.setDevice(&invalid);
                 writer << contents_invalid;
                 invalid.close();
@@ -75,26 +75,26 @@ private slots:
 
         static void handlesEmptyFilepath() {
                 QVERIFY2(config::parseTomlFile("").empty(),
-                         "Empty filepath must return empty toml::table");
+                        "Empty filepath must return empty toml::table");
         }
 
         static void handlesMissingFile() {
                 QVERIFY2(config::parseTomlFile("/tmp/invalid/path/found.toml").empty(),
-                         "Missing file must return empty toml::table");
+                        "Missing file must return empty toml::table");
         }
 
         static void handlesInvalidToml() {
                 const auto invalid = QDir(dirpath).filePath(filename_invalid);
 
                 QVERIFY2(config::parseTomlFile(invalid).empty(),
-                         "File with invalid TOML must return empty toml::table");
+                        "File with invalid TOML must return empty toml::table");
         }
 
         static void handlesValidToml() {
                 const auto valid = QDir(dirpath).filePath(filename_valid);
 
                 QVERIFY2(!config::parseTomlFile(valid).empty(),
-                         "Failed to parse file with valid TOML, must return non-empty table");
+                        "Failed to parse file with valid TOML, must return non-empty table");
         }
 };
 

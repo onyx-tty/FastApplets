@@ -3,12 +3,12 @@
 
 #include "Parse.h"
 
-#include <string>
-#include <toml++/toml.hpp>
 #include <QDebug>
 #include <QFileInfo>
 #include <QString>
 #include <QtGlobal>
+#include <string>
+#include <toml++/toml.hpp>
 
 toml::table config::parseTomlFile(const QString& filepath) {
         toml::table file = {};

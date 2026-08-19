@@ -26,7 +26,7 @@ private slots:
                 QDir parentdir("/tmp");
                 QVERIFY2(parentdir.exists() && parentdir.isReadable()
                                  && QFileInfo(parentdir.path()).isWritable(),
-                         "No access to /tmp");
+                        "No access to /tmp");
 
                 QVERIFY2(parentdir.mkdir("FastAppletsTests"), "Failed to create test directory");
 
@@ -60,10 +60,10 @@ private slots:
                 const auto filepaths = config::locateFiles("/tmp/invalid/path/found.toml"_L1);
                 for (const auto& filepath : {filepaths.config, filepaths.keys}) {
                         QVERIFY2(filepath.isEmpty(),
-                                 QString("Missing file %1 must return empty strings")
-                                         .arg(filepath)
-                                         .toStdString()
-                                         .c_str());
+                                QString("Missing file %1 must return empty strings")
+                                        .arg(filepath)
+                                        .toStdString()
+                                        .c_str());
                 }
         }
 };

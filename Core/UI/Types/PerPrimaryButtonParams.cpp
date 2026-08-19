@@ -4,10 +4,10 @@
 #include "PerPrimaryButtonParams.h"
 #include "Core/UI/Types/ButtonType.h"
 
-#include <variant>
 #include <QIcon>
 #include <QResource>
 #include <QString>
+#include <variant>
 
 /* PowerApplet */
 

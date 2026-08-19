@@ -14,35 +14,32 @@
 #include "Core/UI/Types/PerPrimaryButtonParams.h"
 #include "Core/UI/Types/PrimaryButtonParams.h"
 
+#include <QDebug>
+#include <QtGlobal>
 #include <TomlQt/ArrayBounds.h>
 #include <optional>
 #include <toml++/toml.hpp>
 #include <utility>
 #include <vector>
-#include <QDebug>
-#include <QtGlobal>
 
 class QString;
 
 template<applet::Type TApplet>
-PrimaryButtonParams config::map::helpers::primaryButtonParams(const Candidates&          candidates,
-                                                              const PrimaryButtonParams& defaults) {
-        return table<PrimaryButtonParams>(
-                       candidates,
-                       [&defaults, &candidates](PrimaryButtonParams& params) {
-                               params.per_button = perPrimaryButtonParamsList<TApplet>(
-                                       {candidates[CandidateIndex::Applet]
-                                                .makeCopy()
-                                                .withExtension(u"list")
-                                                .withQuiet(false)},
-                                       defaults.per_button);
+PrimaryButtonParams config::map::helpers::primaryButtonParams(
+        const Candidates& candidates, const PrimaryButtonParams& defaults) {
+        return table<PrimaryButtonParams>(candidates, [&defaults, &candidates](
+                                                              PrimaryButtonParams& params) {
+                params.per_button = perPrimaryButtonParamsList<TApplet>(
+                        {candidates[CandidateIndex::Applet]
+                                        .makeCopy()
+                                        .withExtension(u"list")
+                                        .withQuiet(false)},
+                        defaults.per_button);
 
-                               params.style = primaryButtonStyle(candidates, defaults.style);
+                params.style = primaryButtonStyle(candidates, defaults.style);
 
-                               params.behavior = primaryButtonBehavior(candidates,
-                                                                       defaults.behavior);
-                       })
-                .value_or(defaults);
+                params.behavior = primaryButtonBehavior(candidates, defaults.behavior);
+        }).value_or(defaults);
 }
 
 template<applet::Type TApplet>
@@ -51,8 +48,7 @@ std::vector<PerPrimaryButtonParams> config::map::helpers::perPrimaryButtonParams
         using namespace config;
 
         const auto* arr = resolve::from<toml::array>(candidates,
-                                                     {.bounds = ArrayBounds{.min_size = 1},
-                                                      .format = u"Format: [primary buttons...]"});
+                {.bounds = ArrayBounds{.min_size = 1}, .format = u"Format: [primary buttons...]"});
         if (!arr) { return defaults; }
 
         std::vector<PerPrimaryButtonParams> found = {};
@@ -100,9 +96,9 @@ std::optional<PerPrimaryButtonParams> config::map::helpers::perPrimaryButtonPara
                 if (isNone<TPrimaryButtonType>(params.type)) { return; }
                 auto type = std::get<TPrimaryButtonType>(params.type);
 
-                PerPrimaryButtonParams defaults = {.text    = textFor(type),
-                                                   .command = commandFor(type),
-                                                   .icon    = iconFor(type)};
+                PerPrimaryButtonParams defaults = {
+                        .text = textFor(type), .command = commandFor(type), .icon = iconFor(type)
+                };
                 field(params, &PerPrimaryButtonParams::text, candidates, defaults, u"text");
                 field(params, &PerPrimaryButtonParams::command, candidates, defaults, u"command");
 

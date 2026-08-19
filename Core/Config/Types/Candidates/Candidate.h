@@ -7,8 +7,8 @@
 #include "Core/Config/Types/NodeView.h"
 #include "Core/Config/Types/PathContext/PathContext.h"
 
-#include <cstddef>
 #include <QStringView>
+#include <cstddef>
 
 // TODO: Consistent behaviors in chaining methods, separate overloads for ALL and index
 

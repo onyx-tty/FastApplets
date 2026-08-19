@@ -6,11 +6,11 @@
 #include "Core/Applets/Types/Type.h"
 #include "Core/Config/Types/Filepaths.h" // Only needed for injectArgs
 
+#include <QString>
 #include <array>
 #include <stdexcept>
 #include <string>
 #include <string_view>
-#include <QString>
 
 void printHelpMenu(applet::Type type);
 void printArgs(int argc, const char* const argv[]);

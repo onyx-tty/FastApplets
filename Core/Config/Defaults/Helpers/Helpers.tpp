@@ -3,20 +3,20 @@
 
 #pragma once
 
+#include "Helpers.h"
 #include "Core/Applets/Types/Traits.h"
 #include "Core/Applets/Types/Type.h"
 #include "Core/UI/Types/ButtonType.h"
 #include "Core/UI/Types/PerPrimaryButtonParams.h"
 #include "Core/UI/Types/PrimaryButtonParams.h"
 #include "Core/UI/Types/WindowParams.h"
-#include "Helpers.h"
 
-#include <utility>
-#include <vector>
 #include <QSize>
 #include <QSizePolicy>
 #include <QString>
 #include <Qt>
+#include <utility>
+#include <vector>
 
 template<applet::Type TApplet>
 WindowParams config::details::makeWindowParams() {
@@ -53,17 +53,19 @@ std::vector<PerPrimaryButtonParams> config::details::makePerPrimaryButtonParams(
                 using enum PowerButtonType;
 
                 per_params = {param(Shutdown), param(Reboot), param(Suspend), param(Hibernate),
-                              param(LogOut)};
+                        param(LogOut)};
         } else if constexpr (TApplet == applet::Type::Action) {
-                per_params = {{.text    = "Display greeting notification",
-                               .command = "notify-send 'FastApplets' 'Hello!'"},
-                              {.text    = "Display current date",
-                               .command = "notify-send 'Current date:' \"$(date +'%F %H:%M')\""}};
+                per_params = {
+                        {.text           = "Display greeting notification",
+                         .command = "notify-send 'FastApplets' 'Hello!'"                 },
+                        {         .text           = "Display current date",
+                         .command = "notify-send 'Current date:' \"$(date +'%F %H:%M')\""}
+                };
         } else if constexpr (TApplet == applet::Type::Player) {
                 using enum VolumeButtonType;
 
                 per_params = {param(PlayPause), param(Next), param(Previous), param(VolumeUp),
-                              param(VolumeDown)};
+                        param(VolumeDown)};
         }
 
         return per_params;

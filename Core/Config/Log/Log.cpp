@@ -4,13 +4,13 @@
 #include "Log.h"
 #include "Core/Config/Types/Candidates/Candidate.h"
 
-#include <TomlQt/ArrayBounds.h>
-#include <toml++/toml.hpp>
-#include <utility>
 #include <QDebug>
 #include <QString>
 #include <QStringView>
 #include <QtGlobal>
+#include <TomlQt/ArrayBounds.h>
+#include <toml++/toml.hpp>
+#include <utility>
 
 using validation_result = tomlqt::ArrayBounds::validation_result;
 

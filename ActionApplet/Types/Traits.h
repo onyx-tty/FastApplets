@@ -6,8 +6,8 @@
 #include "Core/Applets/Types/Traits.h"
 #include "Core/Applets/Types/Type.h"
 
-#include <variant>
 #include <QStringView>
+#include <variant>
 
 namespace applet {
 

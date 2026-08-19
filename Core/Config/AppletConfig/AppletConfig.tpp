@@ -17,13 +17,13 @@ template<applet::Type TApplet>
 requires(TApplet != applet::Type::Global)
 config::applet_config config::makeAppletConfig(const Filepaths& applet, const Filepaths& global) {
         auto default_config = makeDefaultConfig<TApplet>();
-        auto config         = map::config<TApplet>(parseTomlFile(applet.config),
-                                                   parseTomlFile(global.config), default_config);
+        auto config         = map::config<TApplet>(
+                parseTomlFile(applet.config), parseTomlFile(global.config), default_config);
 
         auto default_keys = makeDefaultKeys<TApplet>();
-        auto keys = map::keys<TApplet>(parseTomlFile(applet.keys), parseTomlFile(global.keys),
-                                       default_keys);
+        auto keys         = map::keys<TApplet>(
+                parseTomlFile(applet.keys), parseTomlFile(global.keys), default_keys);
 
         return applet_config(std::move(config), std::move(default_config), std::move(keys),
-                             std::move(default_keys));
+                std::move(default_keys));
 }

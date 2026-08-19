@@ -8,14 +8,14 @@
 #include "Core/Config/Types/Keybindings.h"
 #include "Core/Config/Types/NodeView.h"
 
+#include <QKeySequence>
+#include <QString>
 #include <TomlQt/ArrayBounds.h>
 #include <optional>
 #include <string>
 #include <toml++/toml.hpp>
 #include <utility>
 #include <vector>
-#include <QKeySequence>
-#include <QString>
 
 using namespace config;
 
@@ -45,9 +45,8 @@ keybindings keysFromTomlArray(const toml::array& arr) {
 /* Keys Schema */
 
 keybindings config::map::helpers::quit(const Candidates& candidates, const keybindings& defaults) {
-        const auto* keys = resolve::from<toml::array>(candidates,
-                                                      {.bounds = ArrayBounds{.min_size = 1},
-                                                       .format = u"[keybindings...]"});
+        const auto* keys = resolve::from<toml::array>(
+                candidates, {.bounds = ArrayBounds{.min_size = 1}, .format = u"[keybindings...]"});
 
         if (!keys || keys->empty()) { return defaults; }
 
@@ -56,9 +55,8 @@ keybindings config::map::helpers::quit(const Candidates& candidates, const keybi
 
 std::vector<keybindings> config::map::helpers::primaryButtons(
         const Candidates& candidates, const std::vector<keybindings>& defaults) {
-        const auto* keys = resolve::from<toml::array>(candidates,
-                                                      {.bounds = ArrayBounds{.min_size = 1},
-                                                       .format = u"[keybindings...]"});
+        const auto* keys = resolve::from<toml::array>(
+                candidates, {.bounds = ArrayBounds{.min_size = 1}, .format = u"[keybindings...]"});
 
         if (!keys || keys->empty()) { return defaults; }
 
@@ -66,19 +64,18 @@ std::vector<keybindings> config::map::helpers::primaryButtons(
         buttons.reserve(keys->size());
 
         for (size_t i = 0; i != keys->size(); ++i) {
-                keybindings found_for_button = primaryButton(candidates.makeCopy().withExtension(i),
-                                                             defaults[i]);
+                keybindings found_for_button = primaryButton(
+                        candidates.makeCopy().withExtension(i), defaults[i]);
                 if (!found_for_button.empty()) { buttons.push_back(std::move(found_for_button)); }
         }
 
         return buttons;
 }
 
-keybindings config::map::helpers::primaryButton(const Candidates&  candidates,
-                                                const keybindings& defaults) {
-        const auto* keys = resolve::from<toml::array>(candidates,
-                                                      {.bounds = ArrayBounds{.min_size = 1},
-                                                       .format = u"[keybindings...]"});
+keybindings config::map::helpers::primaryButton(
+        const Candidates& candidates, const keybindings& defaults) {
+        const auto* keys = resolve::from<toml::array>(
+                candidates, {.bounds = ArrayBounds{.min_size = 1}, .format = u"[keybindings...]"});
 
         if (!keys || keys->empty()) { return defaults; }
 

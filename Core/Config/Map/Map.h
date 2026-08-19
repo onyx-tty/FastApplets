@@ -9,9 +9,7 @@
 
 #include <toml++/toml.hpp>
 
-namespace config {
-class Candidates;
-} // namespace config
+namespace config { class Candidates; } // namespace config
 
 namespace config::map::helpers {}
 
@@ -38,8 +36,8 @@ using config::schema::Keys;
 //
 // Return value: config::schema::Config
 template<applet::Type TApplet>
-[[nodiscard]] Config config(const toml::table& applet, const toml::table& global,
-                            const Config& defaults);
+[[nodiscard]] Config config(
+        const toml::table& applet, const toml::table& global, const Config& defaults);
 
 // Parses applet and global tables into config::schema::Keys.
 //

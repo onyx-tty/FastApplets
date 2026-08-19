@@ -16,67 +16,70 @@
 #include "Core/Config/Types/PathContext/PathContext.h"
 #include "Core/UI/Types/ButtonType.h"
 
-#include <toml++/toml.hpp>
 #include <QApplication>
 #include <QStringView>
+#include <toml++/toml.hpp>
 
 template<applet::Type TApplet>
-config::schema::Config config::map::config(const toml::table& applet, const toml::table& global,
-                                           const Config& defaults) {
+config::schema::Config config::map::config(
+        const toml::table& applet, const toml::table& global, const Config& defaults) {
         if (!QApplication::instance()) { qFatal("QApplication has not been instantiated yet!"); }
 
         constexpr QStringView filename = u"config.toml";
 
-        Candidates cands = {{.node         = node_view(applet),
-                             .applet       = TApplet,
-                             .quiet        = true,
-                             .path_context = PathContext(filename, u"")},
-                            {.node         = node_view(global),
-                             .applet       = applet::Type::Global,
-                             .quiet        = false,
-                             .path_context = PathContext(filename, u"")}};
+        Candidate c = {.node  = node_view(applet),
+                .applet       = TApplet,
+                .quiet        = true,
+                .path_context = PathContext(filename, u"")};
 
-        return table<Config>(cands,
-                             [&defaults, &cands](Config& config) {
-                                     config.window_params =
-                                             windowParams(cands.makeCopy().withExtension(u"window"),
-                                                          defaults.window_params);
+        Candidates cands = {
+                {.node                = node_view(applet),
+                 .applet       = TApplet,
+                 .quiet        = true,
+                 .path_context = PathContext(filename, u"")},
+                {.node                = node_view(global),
+                 .applet       = applet::Type::Global,
+                 .quiet        = false,
+                 .path_context = PathContext(filename, u"")}
+        };
 
-                                     config.primary_button_params = primaryButtonParams<TApplet>(
-                                             cands.makeCopy().withExtension(u"primary_button"),
-                                             defaults.primary_button_params);
-                             })
-                .value_or(defaults);
+        return table<Config>(cands, [&defaults, &cands](Config& config) {
+                config.window_params = windowParams(
+                        cands.makeCopy().withExtension(u"window"), defaults.window_params);
+
+                config.primary_button_params = primaryButtonParams<TApplet>(
+                        cands.makeCopy().withExtension(u"primary_button"),
+                        defaults.primary_button_params);
+        }).value_or(defaults);
 }
 
 template<applet::Type TApplet>
-config::schema::Keys config::map::keys(const toml::table& applet, const toml::table& global,
-                                       const Keys& defaults) {
+config::schema::Keys config::map::keys(
+        const toml::table& applet, const toml::table& global, const Keys& defaults) {
         if (!QApplication::instance()) { qFatal("QApplication has not been instantiated yet!"); }
 
         constexpr QStringView filename = u"keys.toml";
 
         auto             keys  = Keys();
-        const Candidates cands = {{.node         = node_view(applet),
-                                   .applet       = TApplet,
-                                   .quiet        = true,
-                                   .path_context = PathContext(filename, u"")},
-                                  {.node         = node_view(global),
-                                   .applet       = applet::Type::Global,
-                                   .quiet        = false,
-                                   .path_context = PathContext(filename, u"")}};
+        const Candidates cands = {
+                {.node                = node_view(applet),
+                 .applet       = TApplet,
+                 .quiet        = true,
+                 .path_context = PathContext(filename, u"")},
+                {.node                = node_view(global),
+                 .applet       = applet::Type::Global,
+                 .quiet        = false,
+                 .path_context = PathContext(filename, u"")}
+        };
 
-        return table<Keys>(cands,
-                           [&defaults, &cands](Keys& keys) {
-                                   keys.quit = quit(cands.makeCopy().withExtension(u"quit"),
-                                                    defaults.quit);
+        return table<Keys>(cands, [&defaults, &cands](Keys& keys) {
+                keys.quit = quit(cands.makeCopy().withExtension(u"quit"), defaults.quit);
 
-                                   keys.primary_buttons =
-                                           primaryButtons({cands[CandidateIndex::Applet]
-                                                                   .makeCopy()
-                                                                   .withExtension(u"primary_buttons")
-                                                                   .withQuiet(false)},
-                                                          defaults.primary_buttons);
-                           })
-                .value_or(defaults);
+                keys.primary_buttons = primaryButtons(
+                        {cands[CandidateIndex::Applet]
+                                        .makeCopy()
+                                        .withExtension(u"primary_buttons")
+                                        .withQuiet(false)},
+                        defaults.primary_buttons);
+        }).value_or(defaults);
 }

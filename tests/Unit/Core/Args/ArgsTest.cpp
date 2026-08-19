@@ -3,23 +3,23 @@
 
 #include "Core/Args/Args.h"
 
+#include <QDebug>
+#include <QObject>
+#include <QTest>
+#include <QtGlobal>
 #include <array>
 #include <cstddef>
 #include <format>
 #include <functional>
 #include <string_view>
 #include <tuple>
-#include <QDebug>
-#include <QObject>
-#include <QTest>
-#include <QtGlobal>
 
 namespace {
 
 // TODO: This function is overcomplicated
 // TODO: Single flag should be a separate overload, both in arg:: and here
-[[nodiscard]] bool parseFlag_hasThrownHelp(std::array<std::string_view, 2> flag,
-                                           bool                            is_single_flag) {
+[[nodiscard]] bool parseFlag_hasThrownHelp(
+        std::array<std::string_view, 2> flag, bool is_single_flag) {
         // Flags must be valid before dereferencing
         for (size_t i = 0; i != flag.size(); ++i) {
                 if (!flag[i].data()) {
@@ -56,7 +56,7 @@ private slots:
         static void isFlagName_returnsTrueForFlagNames() {
                 for (const auto* flag : {"--name", "-h"}) {
                         QVERIFY2(arg::isFlagName(flag),
-                                 std::format("{} must be recognized as a flag name!", flag).c_str());
+                                std::format("{} must be recognized as a flag name!", flag).c_str());
                 }
         }
 
@@ -67,15 +67,15 @@ private slots:
         static void isSingleFlag_returnsTrueForHelp() {
                 for (const auto* flag : {"-?", "-h", "--help"}) {
                         QVERIFY2(arg::isSingleFlag(flag),
-                                 std::format("{} must be recognized as a single flag", flag).c_str());
+                                std::format("{} must be recognized as a single flag", flag).c_str());
                 }
         }
 
         static void isSingleFlag_returnsFalseForUnlistedFlags() {
                 QVERIFY2(!arg::isSingleFlag("--flag-doesnt-exist"),
-                         "--flag-doesnt-exist should not be recognized as a single flag");
+                        "--flag-doesnt-exist should not be recognized as a single flag");
                 QVERIFY2(!arg::isSingleFlag("-c"),
-                         "-c is a config flag, it must not be recognized as a single flag");
+                        "-c is a config flag, it must not be recognized as a single flag");
         }
 
         static void parseFlag_handlesSupportedFlags() {
@@ -84,11 +84,11 @@ private slots:
 
                 // The args member is specified beforehand, because it's clear that the config
                 // args will go to .config_path, and the keys one to .keys_path.
-                const auto test_cases =
-                        {std::tuple("-c", "/config/path", std::ref(args.config_path)),
-                         std::tuple("--config", "/config/path", std::ref(args.config_path)),
-                         std::tuple("-k", "/keys/path", std::ref(args.keys_path)),
-                         std::tuple("--keys", "/keys/path", std::ref(args.keys_path))};
+                const auto test_cases = {std::tuple(
+                                                 "-c", "/config/path", std::ref(args.config_path)),
+                        std::tuple("--config", "/config/path", std::ref(args.config_path)),
+                        std::tuple("-k", "/keys/path", std::ref(args.keys_path)),
+                        std::tuple("--keys", "/keys/path", std::ref(args.keys_path))};
 
                 for (const auto& [key, value, member] : test_cases) {
                         arg::parseFlag({key, value}, args, is_single_flag);
@@ -104,7 +104,7 @@ private slots:
         static void parseFlag_throwsIfHelpPassed() {
                 for (const auto* flag : {"-?", "-h", "--help"}) {
                         QVERIFY2(parseFlag_hasThrownHelp(flag),
-                                 std::format("{} must throw HelpMenuRequested", flag).c_str());
+                                std::format("{} must throw HelpMenuRequested", flag).c_str());
                 }
         }
 
@@ -132,7 +132,7 @@ private slots:
 
         static void parse_handlesDoubleFlags() {
                 constexpr const char* argv[] = {"AppletName", "-c", "/config/path", "-k",
-                                                "/keys/path"};
+                        "/keys/path"};
 
                 arg::CmdArgs args = arg::parse(5, argv);
 

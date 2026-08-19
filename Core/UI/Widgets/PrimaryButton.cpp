@@ -9,9 +9,6 @@
 #include "Core/UI/Types/PrimaryButtonStyle.h"
 #include "Core/UI/Types/PrimaryButtons.h"
 
-#include <cstddef>
-#include <utility>
-#include <vector>
 #include <QFocusEvent>
 #include <QLabel>
 #include <QObject>
@@ -23,10 +20,13 @@
 #include <QStylePainter>
 #include <QWidget>
 #include <Qt>
+#include <cstddef>
+#include <utility>
+#include <vector>
 
-PrimaryButtons makePrimaryButtons(const PrimaryButtonParams&      params,
-                                  const std::vector<keybindings>& keys,
-                                  const std::vector<keybindings>& default_keys, QWidget* parent) {
+PrimaryButtons makePrimaryButtons(const PrimaryButtonParams& params,
+        const std::vector<keybindings>& keys, const std::vector<keybindings>& default_keys,
+        QWidget* parent) {
         // TODO If applied key is already used elsewhere, the keybindings will be unpredictable.
         //      For example if for some reason keybinding for primary button 3 is Qt_Key4 and
         //      primary button 4 has missing keybinding, both buttons will be assigned to Qt_Key4.
@@ -35,9 +35,9 @@ PrimaryButtons makePrimaryButtons(const PrimaryButtonParams&      params,
         const auto key_getter = [&params, &keys, &default_keys](size_t i) -> keybindings {
                 if (i < keys.size()) { return keys[i]; }
                 if (i < default_keys.size()) {
-                        qWarning()
-                                << QString("Key for button %1 not found, applying default Qt_Key%1!")
-                                           .arg(i + 1);
+                        qWarning() << QString(
+                                "Key for button %1 not found, applying default Qt_Key%1!")
+                                              .arg(i + 1);
                         return default_keys[i];
                 }
 
@@ -101,7 +101,7 @@ void PrimaryButton::paintEvent(QPaintEvent*) {
 }
 
 void PrimaryButton::setLabel(QLabel* label, const QString& text, const QPixmap& pixmap,
-                             Qt::Alignment alignment, QSizePolicy size_policy) {
+        Qt::Alignment alignment, QSizePolicy size_policy) {
         // If layout is somehow invalid then something in the initialization logic went
         // very wrong. Instability in the application is guaranteed at that point.
         if (!layout()) { qFatal("Called with no layout"); }
@@ -124,8 +124,7 @@ void PrimaryButton::setLabel(QLabel* label, const QString& text, const QPixmap& 
 }
 
 PrimaryButton::PrimaryButton(button_type type, const QIcon& icon, const QString& text,
-                             keybindings keys, QString command, const PrimaryButtonStyle& style,
-                             QWidget* parent) :
+        keybindings keys, QString command, const PrimaryButtonStyle& style, QWidget* parent) :
         QPushButton(parent), type(type), keys(std::move(keys)), command(std::move(command)),
         focus_reason(Qt::FocusReason::NoFocusReason) {
         connect(this, &PrimaryButton::clicked, [this]() { runCommand(this->command); });
@@ -162,10 +161,6 @@ QString PrimaryButton::text() const {
         return text_label->text();
 }
 
-const keybindings& PrimaryButton::getKeys() const {
-        return keys;
-}
+const keybindings& PrimaryButton::getKeys() const { return keys; }
 
-button_type PrimaryButton::getType() const {
-        return type;
-}
+button_type PrimaryButton::getType() const { return type; }

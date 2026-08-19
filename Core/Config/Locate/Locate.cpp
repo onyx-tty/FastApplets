@@ -25,8 +25,8 @@ Filepaths config::locateFiles(QLatin1StringView applet_name) {
 
         QString applet_path = QString("%1/FastApplets/%2%3")
                                       .arg(qEnvironmentVariable("XDG_CONFIG_HOME"),
-                                           applet_name.toString(),
-                                           applet_name.isEmpty() ? u"" : u"/");
+                                              applet_name.toString(),
+                                              applet_name.isEmpty() ? u"" : u"/");
 
         filepaths.config = QString("%1%2").arg(applet_path, u"config.toml");
         filepaths.keys   = QString("%1%2").arg(applet_path, u"keys.toml");

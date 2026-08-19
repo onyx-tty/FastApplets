@@ -5,12 +5,12 @@
 
 #include "Core/Config/Types/Candidates/Candidate.h"
 
+#include <QStringView>
 #include <cstddef>
 #include <initializer_list>
 #include <optional>
 #include <utility>
 #include <vector>
-#include <QStringView>
 
 // TODO: Consistent behaviors in chaining methods, separate overloads for ALL and index
 

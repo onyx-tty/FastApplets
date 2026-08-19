@@ -7,9 +7,9 @@
 #include "Core/UI/Types/PrimaryButtonBehavior.h"
 #include "Core/UI/Types/PrimaryButtons.h"
 
-#include <vector>
 #include <QObject>
 #include <QWidget>
+#include <vector>
 
 class PrimaryButton;
 class QKeyEvent;
@@ -35,7 +35,7 @@ private:
 
 public:
         explicit CentralWidget(PrimaryButtons buttons, keybindings quit_keys,
-                               PrimaryButtonBehavior behavior, QWidget* parent);
+                PrimaryButtonBehavior behavior, QWidget* parent);
 
         // Adds the stage-then-confirm keyboard navigation. See class doc for more.
         void keyPressEvent(QKeyEvent* event) override;

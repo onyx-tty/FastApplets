@@ -40,8 +40,8 @@ using config::Candidates;
 // from config. Omitted buttons are ignored silently.
 //
 // Return value: std::vector<keybindings> (std::vector<std::unordered_set<int>>)
-[[nodiscard]] std::vector<keybindings> primaryButtons(const Candidates&               candidates,
-                                                      const std::vector<keybindings>& defaults);
+[[nodiscard]] std::vector<keybindings> primaryButtons(
+        const Candidates& candidates, const std::vector<keybindings>& defaults);
 
 // Maps a single button's keybindings from a list of candidates.
 //

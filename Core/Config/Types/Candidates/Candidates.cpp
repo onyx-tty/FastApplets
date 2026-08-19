@@ -4,28 +4,24 @@
 #include "Candidates.h"
 #include "Core/Config/Types/Candidates/Candidate.h"
 
-#include <cstddef>
-#include <optional>
-#include <string_view>
 #include <QDebug>
 #include <QString>
 #include <QStringView>
 #include <QtGlobal>
+#include <cstddef>
+#include <optional>
+#include <string_view>
 
 using config::Candidate;
 using config::Candidates;
 
-const Candidate& Candidates::operator[](int i) const {
-        return candidates[i];
-}
+const Candidate& Candidates::operator[](int i) const { return candidates[i]; }
 
 const Candidate& Candidates::operator[](CandidateIndex i) const {
         return candidates[static_cast<size_t>(i)];
 }
 
-Candidates Candidates::makeCopy() const {
-        return *this;
-}
+Candidates Candidates::makeCopy() const { return *this; }
 
 Candidates& Candidates::withExtension(QStringView key) {
         // Qt logging uses UTF-16, TOML++ uses UTF-8

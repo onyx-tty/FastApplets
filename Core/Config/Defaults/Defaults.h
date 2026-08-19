@@ -8,9 +8,9 @@
 #include "Core/Config/Schema/Keys.h"
 #include "Core/Config/Types/Keybindings.h"
 
-#include <vector>
 #include <Qt>
 #include <QtGlobal>
+#include <vector>
 
 // TODO: Move elsewhere
 [[nodiscard]] inline std::vector<keybindings> makeKeyRange(Qt::Key first, Qt::Key last) {
