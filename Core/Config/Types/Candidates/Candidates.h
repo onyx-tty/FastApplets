@@ -29,7 +29,17 @@ public:
 
         const Candidate& operator[](CandidateIndex i) const;
 
-        [[nodiscard]] const std::vector<Candidate>& get() const { return candidates; }
+        // Creates Candidates copy extended by an additional index.
+        //
+        // Replaces:
+        //   auto new_cands = old_cands;
+        //   for (size_t i = 0; i != new_cands.size(); ++i) {
+        //       new_cands[i].candidates.node = old_cands[i].candidates.node[key];
+        //   }
+        //
+        // With:
+        //   auto new_cands = old_cands[key];
+        Candidates operator[](size_t index) const;
 
         // TODO: Consolidate repetitive logic
         // Creates Candidates copy extended by an additional segment.
@@ -44,17 +54,7 @@ public:
         //   auto new_cands = old_cands[key];
         Candidates operator[](QStringView key) const;
 
-        // Creates Candidates copy extended by an additional index.
-        //
-        // Replaces:
-        //   auto new_cands = old_cands;
-        //   for (size_t i = 0; i != new_cands.size(); ++i) {
-        //       new_cands[i].candidates.node = old_cands[i].candidates.node[key];
-        //   }
-        //
-        // With:
-        //   auto new_cands = old_cands[key];
-        Candidates operator[](size_t index) const;
+        [[nodiscard]] const std::vector<Candidate>& get() const { return candidates; }
 };
 
 } // namespace config

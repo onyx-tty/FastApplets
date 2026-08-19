@@ -24,16 +24,6 @@ struct Candidate final {
         applet::Type applet;
         PathContext  path_context;
 
-        // Creates Candidate copy extended by an additional segment.
-        //
-        // Replaces:
-        //   Candidate new_cand = old_cand;
-        //   new_cand.node = old_cand.node[key];
-        //
-        // With:
-        //   auto new_cand = old_cand[key];
-        Candidate operator[](QStringView key) const;
-
         // Creates Candidate copy extended by an additional index.
         //
         // Replaces:
@@ -43,6 +33,16 @@ struct Candidate final {
         // With:
         //   auto new_cand = old_cand[index];
         Candidate operator[](size_t index) const;
+
+        // Creates Candidate copy extended by an additional segment.
+        //
+        // Replaces:
+        //   Candidate new_cand = old_cand;
+        //   new_cand.node = old_cand.node[key];
+        //
+        // With:
+        //   auto new_cand = old_cand[key];
+        Candidate operator[](QStringView key) const;
 };
 
 } // namespace config
