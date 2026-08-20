@@ -5,25 +5,12 @@
 #+OPTIONS: num:1
 #+OPTIONS: \n:t
 
-* PROJ PowerApplet [0/2]
-** [ ] Display logs in a separate window on power action
+* PROJ PowerApplet [0/1]
 ** [ ] Exclude hibernate from a list of buttons if hibernation is not supported
 #+BEGIN_EXPORT markdown
 <br>
 #+END_EXPORT
-* PROJ ActionApplet [0/1]
-** [ ] Notify about missing buttons instead of quitting with qFatal
-#+BEGIN_EXPORT markdown
-<br>
-#+END_EXPORT
-* PROJ WeatherApplet [4/7]
-** [X] Curl
-** [X] JSON
-** [X] Data structure
-** [X] UI skeleton
-** [ ] Add WeatherApplet under current design
-** [ ] UI layout
-** [ ] Clean UI
+* PROJ ActionApplet [0/0]
 #+BEGIN_EXPORT markdown
 <br>
 #+END_EXPORT
@@ -31,94 +18,36 @@
 #+BEGIN_EXPORT markdown
 <br>
 #+END_EXPORT
-* Docs [3/6]
-** [X] LICENSE
-** [X] README.md
-** [X] TODO.md
+* Docs [0/3]
 ** [ ] CONTRIBUTE.md
 ** [ ] Doxygen
 ** [ ] Implementation docs
 #+BEGIN_EXPORT markdown
 <br>
 #+END_EXPORT
-* Infrastructure [12/17]
-** [X] CMake presets
-** [X] TOML configuration
-** [X] Centralized CMake structure
-** [X] Static linkage
-** [X] Cleaner build directories
-** [X] Docker
-*** [X] Compilation
-*** [X] Running tests
-*** [X] Deployment
-** [X] GitHub Workflow
-*** [X] Compilation
-*** [X] Running tests
-** [X] Testing
-*** [X] Unit tests
-** [X] Dependencies
-*** [X] Extract CppUtils
-*** [X] Extract TomlQt
-** [X] Extract src/Applets/PowerApplet into PowerApplet/, replace src/ with Core/
-** [X] Add 'develop' branch
+* Infrastructure [0/5]
 ** [ ] Support CPack
 ** [ ] Add unit tests for all Config libraries
 ** [ ] Git tags and releases
 ** [ ] Improve template safety with constraints
 ** [ ] Transition TODOs entirely to markdown format
-** [X] Remove clang and ninja as recommended dependencies
 #+BEGIN_EXPORT markdown
 <br>
 #+END_EXPORT
-* UI [1/2]
-** [X] Generic MainWindow, CentralWidget, and PrimaryButton
+* UI [0/1]
 ** [ ] Support different layouts
 #+BEGIN_EXPORT markdown
 <br>
 #+END_EXPORT
-* Controls [3/3]
-** [X] Keybindings
-** [X] Option to disable button 'staging', single button presses activate buttons
-** [X] Make mouse controls work well alongside 'staging', prevent sunken state on mouse click
-#+BEGIN_EXPORT markdown
-<br>
-#+END_EXPORT
-* Config [9/10]
-** [X] Standardized window class and title
-** [X] Config error handling
-** [X] Config value validation
-** [X] Fallback config
-** [X] $XDG_CONFIG_HOME for config
-** [X] Template overloads for Config/Keys mappers to avoid duplicate logic between applets
-** [X] Separate Config/Keys schema from instances
-** [X] Make config schemas generic
-** [X] Support args
+* Config [0/1]
 ** [ ] Add fallback $HOME/.config/FastApplets if $XDG_CONFIG_HOME envvar is missing/empty/wrong
 #+BEGIN_EXPORT markdown
 <br>
 #+END_EXPORT
-* Shell [2/2]
-** [X] Shell command mode
-** [X] Support shell expansion
-#+BEGIN_EXPORT markdown
-<br>
-#+END_EXPORT
-* Resources [1/3]
-** [X] PowerButton icons
+* Resources [0/2]
 ** [ ] Icons from current icon theme
 ** [ ] Custom icons
 #+BEGIN_EXPORT markdown
 <br>
 #+END_EXPORT
-* Style [2/2]
-** [X] nodiscard where applicable
-** [X] Standardize initialization style - always use '='
-#+BEGIN_EXPORT markdown
-<br>
-#+END_EXPORT
-* Other [0/1]
-** [ ] Consider 'notify-send' for warnings and similar, disable in config
 
-#  LocalWords:  md SecurityApplet SystemApplet LauncherApplet JSON XDG GMock
-#  LocalWords:  WeatherApplet PowerActionManager GBenchmark PowerApplet
-#  LocalWords:  PlayerApplet
