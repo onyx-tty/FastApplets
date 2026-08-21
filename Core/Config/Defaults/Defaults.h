@@ -12,7 +12,9 @@
 #include <QtGlobal>
 #include <vector>
 
-// TODO: Move elsewhere
+// Generates a vector of keybindings in range between 'first' and 'last', inclusive.
+// Example: makeKeyRange(Qt::Key_1, Qt::Key_4) -> {Qt::Key_1, Qt::Key_2, Qt::Key_3, Qt::Key_4}
+// TODO: Move this helper elsewhere
 [[nodiscard]] inline std::vector<keybindings> makeKeyRange(Qt::Key first, Qt::Key last) {
         if (first > last) { qFatal("First must come before last"); }
 
@@ -29,7 +31,7 @@ namespace config {
 using schema::Config;
 using schema::Keys;
 
-// Construct default Config for applet TApplet.
+// Construct default config::schema::Config for applet TApplet.
 template<applet::Type TApplet>
 [[nodiscard]] Config makeDefaultConfig();
 
