@@ -3,8 +3,6 @@
 
 #include "Keys.h"
 
-#include "Core/Config/Resolve/Resolve.h"
-#include "Core/Config/Types/Candidates/Candidates.h"
 #include "Core/Config/Types/Keybindings.h"
 #include "Core/Config/Types/NodeView.h"
 
@@ -44,9 +42,10 @@ keybindings keysFromTomlArray(const toml::array& arr) {
 
 /* Keys Schema */
 
-keybindings config::map::helpers::quit(const Candidates& candidates, const keybindings& defaults) {
-        const auto* keys = resolve::from<toml::array>(
-                candidates, {.bounds = ArrayBounds{.min_size = 1}, .format = u"[keybindings...]"});
+keybindings config::map::helpers::quit(const ConfigView& node, const keybindings& defaults) {
+        ArrayBounds bounds = {.min_size = 1};
+
+        const auto* keys = node.resolve<toml::array>(bounds);
 
         if (!keys || keys->empty()) { return defaults; }
 
@@ -54,17 +53,18 @@ keybindings config::map::helpers::quit(const Candidates& candidates, const keybi
 }
 
 std::vector<keybindings> config::map::helpers::primaryButtons(
-        const Candidates& candidates, const std::vector<keybindings>& defaults) {
-        const auto* keys = resolve::from<toml::array>(
-                candidates, {.bounds = ArrayBounds{.min_size = 1}, .format = u"[keybindings...]"});
+        const ConfigView& node, const std::vector<keybindings>& defaults) {
+        ArrayBounds bounds = {.min_size = 1};
+
+        const auto* keys = node.resolve<toml::array>(bounds);
 
         if (!keys || keys->empty()) { return defaults; }
 
         std::vector<keybindings> buttons = {};
         buttons.reserve(keys->size());
 
-        for (size_t i = 0; i != keys->size(); ++i) {
-                keybindings found_for_button = primaryButton(candidates[i], defaults[i]);
+        for (int i = 0; i != keys->size(); ++i) {
+                keybindings found_for_button = primaryButton(node[i], defaults[i]);
                 if (!found_for_button.empty()) { buttons.push_back(std::move(found_for_button)); }
         }
 
@@ -72,9 +72,10 @@ std::vector<keybindings> config::map::helpers::primaryButtons(
 }
 
 keybindings config::map::helpers::primaryButton(
-        const Candidates& candidates, const keybindings& defaults) {
-        const auto* keys = resolve::from<toml::array>(
-                candidates, {.bounds = ArrayBounds{.min_size = 1}, .format = u"[keybindings...]"});
+        const ConfigView& node, const keybindings& defaults) {
+        ArrayBounds bounds = {.min_size = 1};
+
+        const auto* keys = node.resolve<toml::array>(bounds);
 
         if (!keys || keys->empty()) { return defaults; }
 

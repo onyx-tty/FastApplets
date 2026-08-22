@@ -3,10 +3,11 @@
 
 #pragma once
 
-#include "Core/Config/Types/Candidates/Candidates.h"
 #include "Core/Config/Types/Keybindings.h"
 #include "Core/Config/Types/NodeView.h"
+#include "Core/Config/View/View.h"
 
+#include <TomlQt/ArrayBounds.h>
 #include <optional>
 #include <string>
 #include <toml++/toml.hpp>
@@ -27,25 +28,19 @@
 
 namespace config::map::helpers {
 
-using config::Candidates;
+using config::ConfigView;
+using tomlqt::ArrayBounds;
 
-// Maps quit keybindings from a list of candidates.
-//
-// Return value: keybindings (std::unordered_set<int>)
-[[nodiscard]] keybindings quit(const Candidates& candidates, const keybindings& defaults);
+[[nodiscard]] keybindings quit(const ConfigView& node, const keybindings& defaults);
 
-// Maps the entire primary_buttons array from a list of candidates.
+// Expected format: array of arrays of strings
 //
 // Length of the vector may differ from defaults if some buttons are omitted
 // from config. Omitted buttons are ignored silently.
-//
-// Return value: std::vector<keybindings> (std::vector<std::unordered_set<int>>)
 [[nodiscard]] std::vector<keybindings> primaryButtons(
-        const Candidates& candidates, const std::vector<keybindings>& defaults);
+        const ConfigView& node, const std::vector<keybindings>& defaults);
 
-// Maps a single button's keybindings from a list of candidates.
-//
-// Return value: keybindings (std::unordered_set<int>)
-[[nodiscard]] keybindings primaryButton(const Candidates& candidates, const keybindings& defaults);
+// Expected format: array of strings
+[[nodiscard]] keybindings primaryButton(const ConfigView& node, const keybindings& defaults);
 
 } // namespace config::map::helpers

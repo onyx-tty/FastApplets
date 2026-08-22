@@ -4,7 +4,7 @@ set(CMAKE_AUTORCC ON)
 # Requirements
 find_package(tomlplusplus REQUIRED)
 
-add_subdirectories(AppletConfig Schema Map Defaults Locate Log Select Resolve Toml Types)
+add_subdirectories(AppletConfig Schema Map Defaults Locate Toml Types Validate View)
 
 add_applet_library(Core_Config INTERFACE
         TYPE INTERFACE
@@ -15,9 +15,9 @@ add_applet_library(Core_Config INTERFACE
                        Core::Config::Defaults
                        Core::Config::Locate
                        Core::Config::Toml
-                       Core::Config::Select
-                       Core::Config::Resolve
                        Core::Config::Types
+                       Core::Config::Validate
+                       Core::Config::View
                        Core::UI::Widgets
                        CppUtils::String
                        tomlplusplus::tomlplusplus

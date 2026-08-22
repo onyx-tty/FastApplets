@@ -7,9 +7,7 @@
 
 #include "Core/Applets/Types/Traits.h"
 #include "Core/Applets/Types/Type.h"
-#include "Core/Config/Map/Helpers/Helpers.h"
-#include "Core/Config/Resolve/Resolve.h"
-#include "Core/Config/Types/Candidates/Candidates.h"
+#include "Core/Config/View/View.h"
 #include "Core/UI/Types/ButtonType.h"
 #include "Core/UI/Types/PerPrimaryButtonParams.h"
 #include "Core/UI/Types/PrimaryButtonParams.h"
@@ -26,37 +24,32 @@ class QString;
 
 template<applet::Type TApplet>
 PrimaryButtonParams config::map::helpers::primaryButtonParams(
-        const Candidates& candidates, const PrimaryButtonParams& defaults) {
-        return table<PrimaryButtonParams>(candidates, [&defaults, &candidates](
-                                                              PrimaryButtonParams& params) {
-                params.per_button = perPrimaryButtonParamsList<TApplet>(
-                        {candidates[CandidateIndex::Applet][u"list"]}, defaults.per_button);
-
-                params.style = primaryButtonStyle(candidates, defaults.style);
-
-                params.behavior = primaryButtonBehavior(candidates, defaults.behavior);
-        }).value_or(defaults);
+        const ConfigView& node, const PrimaryButtonParams& defaults) {
+        return {.per_button = perPrimaryButtonParamsList<TApplet>(node["list"], defaults.per_button),
+                .style    = primaryButtonStyle(node, defaults.style),
+                .behavior = primaryButtonBehavior(node, defaults.behavior)};
 }
 
 template<applet::Type TApplet>
 std::vector<PerPrimaryButtonParams> config::map::helpers::perPrimaryButtonParamsList(
-        const Candidates& candidates, const std::vector<PerPrimaryButtonParams>& defaults) {
+        const ConfigView& node, const std::vector<PerPrimaryButtonParams>& defaults) {
         using namespace config;
 
-        const auto* arr = resolve::from<toml::array>(candidates,
-                {.bounds = ArrayBounds{.min_size = 1}, .format = u"Format: [primary buttons...]"});
+        ArrayBounds bounds = {.min_size = 1};
+
+        const auto* arr = node.resolve<toml::array>(bounds);
         if (!arr) { return defaults; }
 
         std::vector<PerPrimaryButtonParams> found = {};
         found.reserve(arr->size());
 
-        for (size_t i = 0; i != arr->size(); ++i) {
-                auto new_button = perPrimaryButtonParams<TApplet>(candidates[i]);
+        for (int i = 0; i != arr->size(); ++i) {
+                auto new_button = perPrimaryButtonParams<TApplet>(node[i]);
                 if (new_button) { found.push_back(std::move(new_button.value())); }
         }
 
         if (found.empty()) {
-                qWarning() << "No enabled buttons found! Using defaults...";
+                qWarning() << "No buttons found";
                 return defaults;
         }
 
@@ -65,38 +58,37 @@ std::vector<PerPrimaryButtonParams> config::map::helpers::perPrimaryButtonParams
 
 template<applet::Type TApplet>
 std::optional<PerPrimaryButtonParams> config::map::helpers::perPrimaryButtonParams(
-        const Candidates& candidates) {
+        const ConfigView& node) {
         using namespace config;
         using TPrimaryButtonType = applet::Traits<TApplet>::TPrimaryButtonType;
 
-        // TODO: This has to be reworked so that field() can be applied here
-        return table<PerPrimaryButtonParams>(candidates, [&candidates](
-                                                                 PerPrimaryButtonParams& params) {
-                // Deserializes string representation into TPrimaryButtonType.
-                auto type_str = resolve::from<QString>(candidates[u"id"]);
-                params.type   = toPrimaryButtonType<TPrimaryButtonType>(type_str.value_or(""));
+        PerPrimaryButtonParams params = {};
 
-                // If provided type is missing or invalid then it's impossible to deduce defaults.
-                // As a result, this function has to return std::nullopt to indicate that
-                // PerPrimaryButtonParams needs to be defaulted.
-                //
-                // If validation took place in separation and before extraction, it'd be possible
-                // to know if defaulting will have to happen at all, and thus the function
-                // could progress in such case. But with current architecture, this is not
-                // possible. As a result, the function has to return regardless. Type must be
-                // valid at all times.
-                //
-                // It is worth mentioning that isNone returns false for std::monostate, and
-                // textFor, commandFor, and iconFor can handle std::monostate themselves.
-                if (isNone<TPrimaryButtonType>(params.type)) { return; }
-                auto type = std::get<TPrimaryButtonType>(params.type);
+        auto type_str = node["id"].resolve<QString>().value_or("");
+        params.type   = toPrimaryButtonType<TPrimaryButtonType>(type_str);
 
-                PerPrimaryButtonParams defaults = {
-                        .text = textFor(type), .command = commandFor(type), .icon = iconFor(type)
-                };
-                field(params, &PerPrimaryButtonParams::text, candidates, defaults, u"text");
-                field(params, &PerPrimaryButtonParams::command, candidates, defaults, u"command");
+        // If provided type is missing or invalid then it's impossible to deduce defaults.
+        // As a result, this function has to return std::nullopt to indicate that
+        // PerPrimaryButtonParams needs to be defaulted.
+        //
+        // If validation took place in separation and before extraction, it'd be possible
+        // to know if defaulting will have to happen at all, and thus the function
+        // could progress in such case. But with current architecture, this is not
+        // possible. As a result, the function has to return regardless. Type must be
+        // valid at all times.
+        //
+        // It is worth mentioning that isNone returns false for std::monostate, and
+        // textFor, commandFor, and iconFor can handle std::monostate themselves.
+        if (isNone<TPrimaryButtonType>(params.type)) { return std::nullopt; }
+        auto type = std::get<TPrimaryButtonType>(params.type);
 
-                params.icon = defaults.icon;
-        });
+        PerPrimaryButtonParams defaults = {
+                .text = textFor(type), .command = commandFor(type), .icon = iconFor(type)
+        };
+
+        params.text    = node["text"].resolve<QString>().value_or(std::move(defaults.text));
+        params.command = node["command"].resolve<QString>().value_or(std::move(defaults.command));
+        params.icon    = std::move(defaults.icon);
+
+        return std::move(params);
 }

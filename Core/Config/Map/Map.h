@@ -9,7 +9,7 @@
 
 #include <toml++/toml.hpp>
 
-namespace config { class Candidates; } // namespace config
+namespace config { class ConfigView; } // namespace config
 
 namespace config::map::helpers {}
 
@@ -20,7 +20,7 @@ namespace config::map::helpers {}
 namespace config::map {
 
 using namespace config::map::helpers;
-using config::Candidates;
+using config::ConfigView;
 using config::schema::Config;
 using config::schema::Keys;
 
@@ -33,8 +33,6 @@ using config::schema::Keys;
 // provides fallbacks.
 //
 // QApplication must exist before calling.
-//
-// Return value: config::schema::Config
 template<applet::Type TApplet>
 [[nodiscard]] Config config(
         const toml::table& applet, const toml::table& global, const Config& defaults);
@@ -48,8 +46,6 @@ template<applet::Type TApplet>
 // provides fallbacks.
 //
 // QApplication must exist before calling.
-//
-// Return value: config::schema::Keys
 template<applet::Type TApplet>
 [[nodiscard]] Keys keys(const toml::table& applet, const toml::table& global, const Keys& defaults);
 
