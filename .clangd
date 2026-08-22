@@ -11,3 +11,10 @@ If:
   PathMatch: ['.*\.tpp$', '.*\.ipp$', '.*\.moc$']
 CompileFlags:
   Add: [-xc++]
+
+---
+
+If:
+  PathMatch: .*\.h$
+CompileFlags:
+  Add: [-xc++-header]
