@@ -51,12 +51,12 @@ PrimaryButtons makePrimaryButtons(const PrimaryButtonParams& params,
 
         for (size_t i = 0; i != params.per_button.size(); ++i) {
                 // TODO: Move semantics
-                button_type        type    = params.per_button[i].type;
-                QIcon              icon    = params.per_button[i].icon;
-                QString            text    = params.per_button[i].text;
-                QString            command = params.per_button[i].command;
-                PrimaryButtonStyle style   = params.style;
-                keybindings        keys    = key_getter(i);
+                button_type               type    = params.per_button[i].type;
+                const QIcon&              icon    = params.per_button[i].icon;
+                const QString&            text    = params.per_button[i].text;
+                const QString&            command = params.per_button[i].command;
+                const PrimaryButtonStyle& style   = params.style;
+                keybindings               keys    = key_getter(i);
                 auto* button = new PrimaryButton(type, icon, text, keys, command, style, parent);
                 buttons.push_back(button);
         }
