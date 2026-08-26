@@ -7,44 +7,11 @@
 #include <QObject>
 #include <QTest>
 #include <QtGlobal>
-#include <array>
 #include <cstddef>
 #include <format>
 #include <functional>
 #include <string_view>
 #include <tuple>
-
-namespace {
-
-// TODO: This function is overcomplicated
-// TODO: Single flag should be a separate overload, both in arg:: and here
-[[nodiscard]] bool parseFlag_hasThrownHelp(
-        std::array<std::string_view, 2> flag, bool is_single_flag) {
-        // Flags must be valid before dereferencing
-        for (size_t i = 0; i != flag.size(); ++i) {
-                if (!flag[i].data()) {
-                        // It's expected for the second part of the flag to be missing if
-                        // it's a single flag.
-                        if (i == 1 && is_single_flag) { continue; }
-
-                        qFatal("Passed null flag[0]");
-                }
-        }
-
-        try {
-                arg::CmdArgs args = {};
-                arg::parseFlag(flag, args, is_single_flag);
-        } catch (const HelpMenuRequested& e) { return true; }
-
-        return false;
-}
-
-[[nodiscard]] bool parseFlag_hasThrownHelp(std::string_view single_flag) {
-        constexpr bool is_single_flag = true;
-        return parseFlag_hasThrownHelp({single_flag, {}}, is_single_flag);
-};
-
-} // namespace
 
 class ArgsTest final : public QObject {
         Q_OBJECT
@@ -78,9 +45,8 @@ private slots:
                         "-c is a config flag, it must not be recognized as a single flag");
         }
 
-        static void parseFlag_handlesSupportedFlags() {
-                constexpr bool is_single_flag = false;
-                arg::CmdArgs   args           = {};
+        static void parseDoubleFlag_handlesSupportedFlags() {
+                arg::CmdArgs args = {};
 
                 // The args member is specified beforehand, because it's clear that the config
                 // args will go to .config_path, and the keys one to .keys_path.
@@ -91,7 +57,7 @@ private slots:
                         std::tuple("--keys", "/keys/path", std::ref(args.keys_path))};
 
                 for (const auto& [key, value, member] : test_cases) {
-                        arg::parseFlag({key, value}, args, is_single_flag);
+                        arg::parseDoubleFlag({key, value}, args);
                         // TODO: If member != value, then just in case check if the other remaining
                         //       members are storing anything. That way if it's a problem caused
                         //       by parseFlag() assigning to the wrong member, a message noting
@@ -101,16 +67,71 @@ private slots:
                 }
         }
 
-        static void parseFlag_throwsIfHelpPassed() {
+        static void parseDoubleFlag_throwsIfUnrecognized() {
+                bool is_unrecognized = false;
+
+                try {
+                        arg::CmdArgs args = {};
+                        arg::parseDoubleFlag({"-unrecognized", "-flag"}, args);
+                } catch (const HelpMenuRequested&) { is_unrecognized = true; }
+
+                // clang-format off
+                QVERIFY2(is_unrecognized,
+                        "Unrecognized arguments must throw,"
+                        "-not-a-valid-argument was somehow recognized");
+                // clang-format on
+        }
+
+        static void parseDoubleFlag_forwardsSingleFlagsToParseDoubleFlag() {
+                bool is_unrecognized = false;
+
+                try {
+                        arg::CmdArgs args = {};
+                        arg::parseDoubleFlag({"-h", ""}, args);
+                } catch (const HelpMenuRequested&) { is_unrecognized = true; }
+
+                // clang-format off
+                QVERIFY2(is_unrecognized,
+                        "Must forward single flags to parseSingleFlag."
+                        "It did not throw on parseDoubleFlag");
+                // clang-format on
+        }
+
+        static void parseSingleFlag_handlesSupportedFlags() {
+                for (const auto* help_flags : {"-?", "-h", "--help"}) {
+                        try {
+                                arg::parseSingleFlag(help_flags);
+                        } catch (const HelpMenuRequested&) {
+                                QVERIFY(true);
+                                continue;
+                        }
+
+                        QVERIFY2(false, "All help flags must be recognized");
+                }
+        }
+
+        static void parseSingleFlag_throwsIfHelpPassed() {
                 for (const auto* flag : {"-?", "-h", "--help"}) {
-                        QVERIFY2(parseFlag_hasThrownHelp(flag),
+                        bool has_thrown = false;
+
+                        try {
+                                arg::parseSingleFlag(flag);
+                        } catch (const HelpMenuRequested&) { has_thrown = true; }
+
+                        QVERIFY2(has_thrown,
                                 std::format("{} must throw HelpMenuRequested", flag).c_str());
                 }
         }
 
-        static void parseFlag_throwsIfUnrecognized() {
+        static void parseSingleFlag_throwsIfUnrecognized() {
+                bool has_thrown = false;
+
+                try {
+                        arg::parseSingleFlag("-not-a-valid-argument");
+                } catch (const HelpMenuRequested&) { has_thrown = true; }
+
                 // clang-format off
-                QVERIFY2(parseFlag_hasThrownHelp("-not-a-valid-argument"),
+                QVERIFY2(has_thrown,
                         "Unrecognized arguments must throw,"
                         "-not-a-valid-argument was somehow recognized");
                 // clang-format on
@@ -122,7 +143,7 @@ private slots:
                 constexpr const char* argv[] = {"AppletName", "--help"};
 
                 // The only usable single flag at the moment is the help flag
-                // so it's the only one
+                // so only that one is tested
                 try {
                         arg::CmdArgs _ = arg::parse(2, argv);
                 } catch (const HelpMenuRequested&) { handled_single_flag = true; }
@@ -144,30 +165,30 @@ private slots:
         }
 
         static void parse_throwsOnStrayFlagName() {
-                constexpr bool is_single_flag  = false;
-                bool           has_thrown_help = false;
+                constexpr bool is_single_flag = false;
+                bool           has_thrown     = false;
 
                 size_t                argc   = 2;
                 constexpr const char* argv[] = {"FastApplet", "--stray-name"};
 
                 try {
                         auto _ = arg::parse(2, argv);
-                } catch (const HelpMenuRequested&) { has_thrown_help = true; }
+                } catch (const HelpMenuRequested&) { has_thrown = true; }
 
-                QVERIFY2(has_thrown_help, "Must throw on stray flag names");
+                QVERIFY2(has_thrown, "Must throw on stray flag names");
         }
 
         static void parse_throwsOnStrayFlagValue() {
-                constexpr bool is_single_flag  = false;
-                bool           has_thrown_help = false;
+                constexpr bool is_single_flag = false;
+                bool           has_thrown     = false;
 
                 constexpr const char* argv[] = {"FastApplet", "stray_value"};
 
                 try {
                         auto _ = arg::parse(2, argv);
-                } catch (const HelpMenuRequested&) { has_thrown_help = true; }
+                } catch (const HelpMenuRequested&) { has_thrown = true; }
 
-                QVERIFY2(has_thrown_help, "Must throw on stray flag values");
+                QVERIFY2(has_thrown, "Must throw on stray flag values");
         }
 };
 

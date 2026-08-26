@@ -59,18 +59,10 @@ bool arg::isSingleFlag(std::string_view arg) {
         return arg == "-?" || arg == "-h" || arg == "--help";
 }
 
-void arg::parseFlag(
-        std::array<std::string_view, 2> flag, arg::CmdArgs& parsed, bool is_single_flag) {
+void arg::parseDoubleFlag(std::array<std::string_view, 2> flag, arg::CmdArgs& parsed) {
         // Checks if both flags are valid before trying to dereference them.
-        for (size_t i = 0; i != flag.size(); ++i) {
-                if (!flag[i].data()) {
-                        // It's expected for the second part of the flag to be missing if
-                        // it's a single flag.
-                        if (i == 1 && is_single_flag) { continue; }
-
-                        qFatal("Passed flag part is null");
-                }
-        }
+        if (!flag[0].data() || flag[0].empty()) { qFatal("Passed null flag[0]"); }
+        if (!flag[1].data() || flag[1].empty()) { parseSingleFlag(flag[0]); }
 
         if (flag[0] == "-c" || flag[0] == "--config") {
                 parsed.config_path = QString::fromStdString(std::string(flag[1]));
@@ -80,6 +72,19 @@ void arg::parseFlag(
                 throw HelpMenuRequested();
         } else {
                 throw HelpMenuRequested(std::format("Unrecognized flag {} {}", flag[0], flag[1]));
+        }
+}
+
+void arg::parseSingleFlag(std::string_view flag) {
+        // Checks if both flags are valid before trying to dereference them.
+        if (!flag.data() || flag.empty()) {
+                throw HelpMenuRequested(std::format("Passed flag is null"));
+        }
+
+        if (flag == "-?" || flag == "-h" || flag == "--help") {
+                throw HelpMenuRequested();
+        } else {
+                throw HelpMenuRequested(std::format("Unrecognized flag {}", flag));
         }
 }
 
@@ -119,7 +124,11 @@ arg::CmdArgs arg::parse(int argc, const char* const argv[]) {
                                 "Stray flag value {} is not associated with any flag name", arg));
                 }
 
-                parseFlag(flag, flags, is_single_flag);
+                if (is_single_flag) {
+                        parseSingleFlag(flag[0]);
+                } else {
+                        parseDoubleFlag(flag, flags);
+                }
         }
 
         return std::move(flags);

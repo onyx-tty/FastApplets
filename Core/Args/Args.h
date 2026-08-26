@@ -45,13 +45,17 @@ struct CmdArgs {
 // - Passed -?/-h/--help, which throws an empty HelpMenuRequested instead.
 // - Passed an unrecognized flag, which throws a non-empty HelpMenuRequested instead.
 //
-// Terminates with qFatal if the flag fails a null check for either part.
-// The only exception is flag[1] if is_single_flag = true, because that means
-// only flag[0] will be used.
-// TODO: Create an overload for single flags instead.
+// Terminates with qFatal if flag[0] fails the null-check.
+// Throws HelpMenuRequested if flag[1] fails the null-check.
 //
-// Currently supports config, keys, and help.
-void parseFlag(std::array<std::string_view, 2> flag, CmdArgs& parsed, bool is_single_flag = false);
+// Currently supports config and keys.
+void parseDoubleFlag(std::array<std::string_view, 2> flag, CmdArgs& parsed);
+
+// Performs an action with one of the recognized flags.
+// Passing -?/-h/--help or an unrecognized flag throws a non-empty HelpMenuRequested.
+//
+// Currently supports help.
+void parseSingleFlag(std::string_view flag);
 
 // Parses raw argc and argv into CmdArgs.
 //
