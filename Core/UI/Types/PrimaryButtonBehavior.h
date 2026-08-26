@@ -3,7 +3,7 @@
 
 #pragma once
 
-// TODO: Document this struct
+// Stores values driving the behavior of buttons.
 struct PrimaryButtonBehavior final {
         bool double_key_press;
 };

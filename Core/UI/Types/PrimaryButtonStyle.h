@@ -8,7 +8,6 @@
 #include <Qt>
 #include <toml++/toml.hpp>
 
-// TODO: Add more comprehensive docs
 // Stores data used to style each PrimaryButton.
 struct PrimaryButtonStyle final {
         Qt::Alignment text_alignment;
