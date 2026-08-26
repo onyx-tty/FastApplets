@@ -61,8 +61,8 @@ QString commandFor<PowerButtonType>(PowerButtonType type) {
 /* PlayerApplet */
 
 template<>
-QIcon iconFor<VolumeButtonType>(VolumeButtonType type) {
-        using enum VolumeButtonType;
+QIcon iconFor<PlayerButtonType>(PlayerButtonType type) {
+        using enum PlayerButtonType;
 
         Q_INIT_RESOURCE(Icons);
 
@@ -79,8 +79,8 @@ QIcon iconFor<VolumeButtonType>(VolumeButtonType type) {
 }
 
 template<>
-QString textFor<VolumeButtonType>(VolumeButtonType type) {
-        using enum VolumeButtonType;
+QString textFor<PlayerButtonType>(PlayerButtonType type) {
+        using enum PlayerButtonType;
 
         switch (type) {
         case PlayPause:        return "Play/Pause";
@@ -95,8 +95,8 @@ QString textFor<VolumeButtonType>(VolumeButtonType type) {
 }
 
 template<>
-QString commandFor<VolumeButtonType>(VolumeButtonType type) {
-        using enum VolumeButtonType;
+QString commandFor<PlayerButtonType>(PlayerButtonType type) {
+        using enum PlayerButtonType;
 
         switch (type) {
         case PlayPause:  return "playerctl play-pause";

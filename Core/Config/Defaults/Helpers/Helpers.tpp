@@ -62,7 +62,7 @@ std::vector<PerPrimaryButtonParams> config::details::makePerPrimaryButtonParams(
                          .command = "notify-send 'Current date:' \"$(date +'%F %H:%M')\""}
                 };
         } else if constexpr (TApplet == applet::Type::Player) {
-                using enum VolumeButtonType;
+                using enum PlayerButtonType;
 
                 per_params = {param(PlayPause), param(Next), param(Previous), param(VolumeUp),
                         param(VolumeDown)};

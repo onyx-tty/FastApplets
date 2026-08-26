@@ -25,19 +25,19 @@ PowerButtonType toPrimaryButtonType<PowerButtonType>(QStringView string) {
 }
 
 template<>
-VolumeButtonType toPrimaryButtonType<VolumeButtonType>(QStringView string) {
-        static const QHash<QStringView, VolumeButtonType> map = {
-                {        u"play_pause",        VolumeButtonType::PlayPause},
-                {              u"next",             VolumeButtonType::Next},
-                {          u"previous",         VolumeButtonType::Previous},
-                {         u"volume_up",         VolumeButtonType::VolumeUp},
-                {       u"volume_down",       VolumeButtonType::VolumeDown},
-                {u"volume_mute_output", VolumeButtonType::VolumeMuteOutput},
-                { u"volume_mute_input",  VolumeButtonType::VolumeMuteInput}
+PlayerButtonType toPrimaryButtonType<PlayerButtonType>(QStringView string) {
+        static const QHash<QStringView, PlayerButtonType> map = {
+                {        u"play_pause",        PlayerButtonType::PlayPause},
+                {              u"next",             PlayerButtonType::Next},
+                {          u"previous",         PlayerButtonType::Previous},
+                {         u"volume_up",         PlayerButtonType::VolumeUp},
+                {       u"volume_down",       PlayerButtonType::VolumeDown},
+                {u"volume_mute_output", PlayerButtonType::VolumeMuteOutput},
+                { u"volume_mute_input",  PlayerButtonType::VolumeMuteInput}
         };
 
         const auto iter = map.find(string);
-        if (iter == map.cend()) { return VolumeButtonType::None; }
+        if (iter == map.cend()) { return PlayerButtonType::None; }
 
         return *iter;
 }
