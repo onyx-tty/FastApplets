@@ -131,6 +131,16 @@ private slots:
                 }
         }
 
+        static void parseSingleFlag_throwsIfFlagInvalid() {
+                bool is_invalid = false;
+
+                try {
+                        arg::parseSingleFlag("");
+                } catch (const HelpMenuRequested&) { is_invalid = true; }
+
+                QVERIFY2(is_invalid, "Invalid single flag must throw HelpMenuRequested");
+        }
+
         static void parseSingleFlag_throwsIfUnrecognized() {
                 bool has_thrown = false;
 
