@@ -10,7 +10,7 @@
 
 #include "Core/Config/Types/Keybindings.h"
 #include "Core/UI/Types/ButtonType.h"
-#include "Core/UI/Types/PrimaryButtons.h"
+#include "Core/UI/Widgets/PrimaryButtons.h"
 
 class PrimaryButton;
 class PrimaryButtonParams;

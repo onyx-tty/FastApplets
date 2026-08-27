@@ -4,8 +4,8 @@
 #include "CentralWidget.h"
 #include "Core/Config/Types/Keybindings.h"
 #include "Core/UI/Types/PrimaryButtonBehavior.h"
-#include "Core/UI/Types/PrimaryButtons.h"
-#include "Widgets/PrimaryButton.h"
+#include "Core/UI/Widgets/PrimaryButton.h"
+#include "Core/UI/Widgets/PrimaryButtons.h"
 
 #include <QApplication>
 #include <QHBoxLayout>

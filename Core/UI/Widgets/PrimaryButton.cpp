@@ -7,7 +7,7 @@
 #include "Core/UI/Types/ButtonType.h"
 #include "Core/UI/Types/PrimaryButtonParams.h"
 #include "Core/UI/Types/PrimaryButtonStyle.h"
-#include "Core/UI/Types/PrimaryButtons.h"
+#include "Core/UI/Widgets/PrimaryButtons.h"
 
 #include <QFocusEvent>
 #include <QLabel>
