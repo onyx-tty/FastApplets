@@ -10,7 +10,6 @@
 #include <array>
 #include <cstddef>
 #include <format>
-#include <functional>
 #include <string_view>
 #include <tuple>
 
@@ -51,11 +50,14 @@ private slots:
 
                 // The args member is specified beforehand, because it's clear that the config
                 // args will go to .config_path, and the keys one to .keys_path.
-                const auto test_cases = {std::tuple(
-                                                 "-c", "/config/path", std::ref(args.config_path)),
-                        std::tuple("--config", "/config/path", std::ref(args.config_path)),
-                        std::tuple("-k", "/keys/path", std::ref(args.keys_path)),
-                        std::tuple("--keys", "/keys/path", std::ref(args.keys_path))};
+                using TestCases =
+                        std::array<std::tuple<std::string_view, std::string_view, QString&>, 4>;
+                const TestCases test_cases = {
+                        {{"-c", "/config/path", args.config_path},
+                         {"--config", "/config/path", args.config_path},
+                         {"-k", "/keys/path", args.keys_path},
+                         {"--keys", "/keys/path", args.keys_path}}
+                };
 
                 for (const auto& [key, value, member] : test_cases) {
                         arg::parseDoubleFlag({key, value}, args);
