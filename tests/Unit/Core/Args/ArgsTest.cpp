@@ -67,6 +67,17 @@ private slots:
                 }
         }
 
+        static void parseDoubleFlag_throwsIfIndexZeroInvalid() {
+                bool is_invalid = false;
+
+                try {
+                        arg::CmdArgs args = {};
+                        arg::parseDoubleFlag({"", "value"}, args);
+                } catch (const HelpMenuRequested&) { is_invalid = true; }
+
+                QVERIFY2(is_invalid, "Invalid flag[0] must throw HelpMenuRequested");
+        }
+
         static void parseDoubleFlag_throwsIfUnrecognized() {
                 bool is_unrecognized = false;
 
