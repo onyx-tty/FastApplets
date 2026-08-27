@@ -38,9 +38,10 @@ PrimaryButton* findPrimaryButton(int key, PrimaryButtons buttons) {
 PrimaryButtons makePrimaryButtons(const PrimaryButtonParams& params,
         const std::vector<keybindings>& keys, const std::vector<keybindings>& default_keys,
         QWidget* parent) {
-        // TODO If applied key is already used elsewhere, the keybindings will be unpredictable.
+        // TODO If applied key is already used elsewhere, the keys will behave unpredictably.
         //      For example if for some reason keybinding for primary button 3 is Qt_Key4 and
-        //      primary button 4 has missing keybinding, both buttons will be assigned to Qt_Key4.
+        //      primary button 4 has missing keybinding, upon defaulting, primary button 4
+        //      will be set to Qt_Key4 and both buttons will then be set to Qt_Key4.
         //      There should be a validation system in place for all keybindings, for example a
         //      set with all keys which have already been exhausted.
         const auto key_getter = [&params, &keys, &default_keys](size_t i) -> keybindings {
@@ -61,7 +62,6 @@ PrimaryButtons makePrimaryButtons(const PrimaryButtonParams& params,
         buttons.reserve(params.per_button.size());
 
         for (size_t i = 0; i != params.per_button.size(); ++i) {
-                // TODO: Move semantics
                 button_type               type    = params.per_button[i].type;
                 const QIcon&              icon    = params.per_button[i].icon;
                 const QString&            text    = params.per_button[i].text;
@@ -82,7 +82,7 @@ void PrimaryButton::paintEvent(QPaintEvent*) {
         initStyleOption(&option);
 
         // Disable Qt's hover effect
-        // TODO: Re-implement
+        // TODO: Re-implement the MouseOver state
         option.state &= ~QStyle::State_MouseOver;
 
         if (hasFocus()) {
@@ -140,6 +140,8 @@ PrimaryButton::PrimaryButton(button_type type, const QIcon& icon, const QString&
         focus_reason(Qt::FocusReason::NoFocusReason) {
         connect(this, &PrimaryButton::clicked, [this]() { runCommand(this->command); });
         connect(this, &PrimaryButton::clicked, [this]() {
+                // Resets focus on button click to prevent it from remaining
+                // and conflicting with the stage-then-confirm key controls.
                 clearFocus();
                 if (auto* parent = this->parentWidget()) {
                         parent->setFocus(Qt::FocusReason::OtherFocusReason);
