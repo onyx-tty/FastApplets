@@ -10,6 +10,7 @@
 #include <array>
 #include <optional>
 #include <string_view>
+#include <toml++/toml.hpp>
 #include <type_traits>
 
 namespace config {

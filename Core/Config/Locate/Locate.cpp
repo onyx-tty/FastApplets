@@ -7,7 +7,6 @@
 #include <QFileInfo>
 #include <QLatin1StringView>
 #include <QString>
-#include <QStringView>
 #include <Qt>
 #include <QtGlobal>
 

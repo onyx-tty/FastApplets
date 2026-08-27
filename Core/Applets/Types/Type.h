@@ -3,6 +3,7 @@
 
 #pragma once
 
+#include <QDebug>
 #include <QLatin1StringView>
 #include <QStringView>
 #include <Qt>
