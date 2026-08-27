@@ -9,7 +9,6 @@
 
 #include <QObject>
 #include <QWidget>
-#include <vector>
 
 class PrimaryButton;
 class QKeyEvent;

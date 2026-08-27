@@ -24,6 +24,10 @@ class QString;
 class QFocusEvent;
 class QWidget;
 
+// Looks for the first button in 'buttons' whose keybindings contain 'key'.
+// If no button is found, returns nullptr instead.
+[[nodiscard]] PrimaryButton* findPrimaryButton(int key, PrimaryButtons buttons);
+
 // Constructs PrimaryButtons from given PrimaryButtonParams, assigns visual properties from
 // PrimaryButtonStyle, and keybindings from keys, with fallback default_keys
 //

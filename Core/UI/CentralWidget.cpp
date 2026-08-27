@@ -13,20 +13,9 @@
 #include <QObject>
 #include <QWidget>
 #include <Qt>
-#include <algorithm>
 #include <utility>
 
 namespace {
-
-[[nodiscard]] PrimaryButton* findPrimaryButton(int key, PrimaryButtons buttons) {
-        const auto iter = std::find_if(
-                buttons.cbegin(), buttons.cend(), [key](const PrimaryButton* button) -> bool {
-                        if (!button) { return false; }
-                        return button->getKeys().contains(key);
-                });
-
-        return iter != buttons.cend() ? *iter : nullptr;
-}
 
 [[nodiscard]] bool isQuitKey(int key, const keybindings& quit_keys) {
         return quit_keys.contains(key);

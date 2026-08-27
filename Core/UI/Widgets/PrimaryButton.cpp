@@ -20,9 +20,20 @@
 #include <QStylePainter>
 #include <QWidget>
 #include <Qt>
+#include <algorithm>
 #include <cstddef>
 #include <utility>
 #include <vector>
+
+PrimaryButton* findPrimaryButton(int key, PrimaryButtons buttons) {
+        const auto iter = std::find_if(
+                buttons.cbegin(), buttons.cend(), [key](const PrimaryButton* button) -> bool {
+                        if (!button) { return false; }
+                        return button->getKeys().contains(key);
+                });
+
+        return iter != buttons.cend() ? *iter : nullptr;
+}
 
 PrimaryButtons makePrimaryButtons(const PrimaryButtonParams& params,
         const std::vector<keybindings>& keys, const std::vector<keybindings>& default_keys,
