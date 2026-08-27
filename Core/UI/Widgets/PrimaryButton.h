@@ -42,10 +42,10 @@ private:
         // Caches latest encountered focus reason for use by paintEvent.
         // It exists so that paintEvent can discern between key and mouse and
         // apply the style appropriate for each.
-        Qt::FocusReason   focus_reason;
-        const button_type type;
-        const keybindings keys;
-        const QString     command;
+        Qt::FocusReason focus_reason;
+        button_type     type;
+        keybindings     keys;
+        QString         command;
 
         QLabel* text_label = nullptr;
         QLabel* icon_label = nullptr;
