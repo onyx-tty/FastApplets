@@ -6,11 +6,9 @@
 #include <QObject>
 #include <QPushButton>
 #include <Qt>
-#include <vector>
 
 #include "Core/Config/Types/Keybindings.h"
 #include "Core/UI/Types/ButtonType.h"
-#include "Core/UI/Widgets/PrimaryButtons.h"
 
 class PrimaryButton;
 class PrimaryButtonParams;
@@ -23,29 +21,6 @@ class QSizePolicy;
 class QString;
 class QFocusEvent;
 class QWidget;
-
-// Looks for the first button in 'buttons' whose keybindings contain 'key'.
-// If no button is found, returns nullptr instead.
-[[nodiscard]] PrimaryButton* findPrimaryButton(int key, PrimaryButtons buttons);
-
-// Constructs PrimaryButtons from given PrimaryButtonParams, assigns visual properties from
-// PrimaryButtonStyle, and keybindings from keys, with fallback default_keys
-//
-// Keybinding resolution order:
-// 1. User-configured keys (keys).
-// 2. Default keys (default_keys).
-// 3. Qt::Key_unknown if the defaults are exhausted.
-//
-// WARNING: If a resolved key is already bound elsewhere, both buttons
-//          will share it silently. A global keybinding validation pass is not
-//          implemented yet.
-//
-// Returns a vector containing every created button.
-// Calls qFatal instead if no button params are found.
-// TODO: This function does too much. It should not resolve keys on top of button construction.
-PrimaryButtons makePrimaryButtons(const PrimaryButtonParams& params,
-        const std::vector<keybindings>& keys, const std::vector<keybindings>& default_keys,
-        QWidget* parent);
 
 // Main button widget used for core functionality.
 // It sets given text and icon, and aligns them according to alignments passed in

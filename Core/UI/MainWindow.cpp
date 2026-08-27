@@ -6,6 +6,7 @@
 #include "Core/Config/Schema/Keys.h"
 #include "Core/UI/CentralWidget.h"
 #include "Core/UI/Widgets/PrimaryButton.h"
+#include "Core/UI/Widgets/PrimaryButtons.h"
 
 #include <QMainWindow>
 #include <QSize>

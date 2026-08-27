@@ -1,5 +1,5 @@
 add_applet_library(Core_UI_Widgets
-        SOURCES PrimaryButton.cpp
+        SOURCES PrimaryButton.cpp PrimaryButtons.cpp
 
         PRIVATE_DEPS Core::UI::Types
                      Core::Config::Types
