@@ -41,17 +41,14 @@ struct CmdArgs {
 [[nodiscard]] bool isSingleFlag(std::string_view arg);
 
 // Parses a 'flag' by finding flag[0] on the list and the assigning flag[1] to 'parsed'.
-// Exceptions to that rule:
-// - Passed -?/-h/--help, which throws an empty HelpMenuRequested instead.
-// - Passed an unrecognized flag, which throws a non-empty HelpMenuRequested instead.
 //
-// Terminates with qFatal if flag[0] fails the null-check.
-// Throws HelpMenuRequested if flag[1] fails the null-check.
+// Passing any unrecognized flags throws a non-empty HelpMenuRequested instead.
 //
 // Currently supports config and keys.
 void parseDoubleFlag(std::array<std::string_view, 2> flag, CmdArgs& parsed);
 
 // Performs an action with one of the recognized flags.
+//
 // Passing -?/-h/--help or an unrecognized flag throws a non-empty HelpMenuRequested.
 //
 // Currently supports help.

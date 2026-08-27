@@ -61,10 +61,11 @@ bool arg::isSingleFlag(std::string_view arg) {
 
 void arg::parseDoubleFlag(std::array<std::string_view, 2> flag, arg::CmdArgs& parsed) {
         // Checks if both flags are valid before trying to dereference them.
-        if (!flag[0].data() || flag[0].empty()) {
-                throw HelpMenuRequested(std::format("Passed flag[0] is null"));
+        for (size_t i = 0; i != flag.size(); ++i) {
+                if (!flag[i].data() || flag[i].empty()) {
+                        throw HelpMenuRequested(std::format("Passed flag[{}] is null", i));
+                }
         }
-        if (!flag[1].data() || flag[1].empty()) { parseSingleFlag(flag[0]); }
 
         if (flag[0] == "-c" || flag[0] == "--config") {
                 parsed.config_path = QString::fromStdString(std::string(flag[1]));

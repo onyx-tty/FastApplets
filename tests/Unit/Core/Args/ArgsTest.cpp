@@ -7,6 +7,7 @@
 #include <QObject>
 #include <QTest>
 #include <QtGlobal>
+#include <array>
 #include <cstddef>
 #include <format>
 #include <functional>
@@ -67,15 +68,24 @@ private slots:
                 }
         }
 
-        static void parseDoubleFlag_throwsIfIndexZeroInvalid() {
-                bool is_invalid = false;
+        static void parseDoubleFlag_throwsIfFlagsInvalid() {
+                using TestCases = std::array<std::tuple<std::string_view, std::string_view, int>, 2>;
+                constexpr TestCases test_cases = {
+                        {{"key", "", 0}, {"", "value", 1}}
+                };
 
-                try {
-                        arg::CmdArgs args = {};
-                        arg::parseDoubleFlag({"", "value"}, args);
-                } catch (const HelpMenuRequested&) { is_invalid = true; }
+                for (auto [key, value, index] : test_cases) {
+                        bool is_invalid = false;
 
-                QVERIFY2(is_invalid, "Invalid flag[0] must throw HelpMenuRequested");
+                        try {
+                                arg::CmdArgs args = {};
+                                arg::parseDoubleFlag({key, value}, args);
+                        } catch (const HelpMenuRequested&) { is_invalid = true; }
+
+                        QVERIFY2(is_invalid,
+                                std::format("Invalid flag[{}] must throw HelpMenuRequested", index)
+                                        .c_str());
+                }
         }
 
         static void parseDoubleFlag_throwsIfUnrecognized() {
@@ -90,21 +100,6 @@ private slots:
                 QVERIFY2(is_unrecognized,
                         "Unrecognized arguments must throw,"
                         "-not-a-valid-argument was somehow recognized");
-                // clang-format on
-        }
-
-        static void parseDoubleFlag_forwardsSingleFlagsToParseDoubleFlag() {
-                bool is_unrecognized = false;
-
-                try {
-                        arg::CmdArgs args = {};
-                        arg::parseDoubleFlag({"-h", ""}, args);
-                } catch (const HelpMenuRequested&) { is_unrecognized = true; }
-
-                // clang-format off
-                QVERIFY2(is_unrecognized,
-                        "Must forward single flags to parseSingleFlag."
-                        "It did not throw on parseDoubleFlag");
                 // clang-format on
         }
 
