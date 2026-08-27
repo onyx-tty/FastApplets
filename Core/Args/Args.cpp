@@ -80,9 +80,7 @@ void arg::parseDoubleFlag(std::array<std::string_view, 2> flag, arg::CmdArgs& pa
 
 void arg::parseSingleFlag(std::string_view flag) {
         // Checks if both flags are valid before trying to dereference them.
-        if (!flag.data() || flag.empty()) {
-                throw HelpMenuRequested(std::format("Passed flag is null"));
-        }
+        if (!flag.data() || flag.empty()) { throw HelpMenuRequested("Passed flag is null"); }
 
         if (flag == "-?" || flag == "-h" || flag == "--help") {
                 throw HelpMenuRequested();
