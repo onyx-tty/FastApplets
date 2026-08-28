@@ -23,12 +23,12 @@ private slots:
         static void isFlagName_returnsTrueForFlagNames() {
                 for (const auto* flag : {"--name", "-h"}) {
                         QVERIFY2(arg::isFlagName(flag),
-                                std::format("{} must be recognized as a flag name!", flag).c_str());
+                                std::format("{} must be recognized as a flag name", flag).c_str());
                 }
         }
 
         static void isFlagName_returnsFalseForNonFlagNames() {
-                QVERIFY2(!arg::isFlagName("abc"), "abc must not be recognized as a flag name!");
+                QVERIFY2(!arg::isFlagName("abc"), "abc must not be recognized as a flag name");
         }
 
         static void isSingleFlag_returnsTrueForHelp() {
@@ -65,7 +65,8 @@ private slots:
                         //       members are storing anything. That way if it's a problem caused
                         //       by parseFlag() assigning to the wrong member, a message noting
                         //       it will help narrow the problem.
-                        QVERIFY2(member == value, std::format("{} must be recognized", key).c_str());
+                        QVERIFY2(member.toStdString() == value,
+                                std::format("{} must be recognized", key).c_str());
                         args = {};
                 }
         }
