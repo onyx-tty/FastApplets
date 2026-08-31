@@ -17,9 +17,6 @@ class ArgsTest final : public QObject {
         Q_OBJECT
 
 private slots:
-        // TODO: In IsFlagName and IsSingle Flag, test for null and empty flags.
-        //       This is not possible right now as the functions qFatal if they
-        //       encounter that, and don't throw anything.
         static void isFlagName_returnsTrueForFlagNames() {
                 for (const auto* flag : {"--name", "-h"}) {
                         QVERIFY2(arg::isFlagName(flag),

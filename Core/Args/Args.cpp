@@ -47,16 +47,10 @@ void printArgs(int argc, const char* const argv[]) {
         qDebug().noquote() << "Passed args:" << formatted;
 }
 
-bool arg::isFlagName(std::string_view arg) {
-        if (!arg.data() || arg.size() == 0) { qFatal("Received empty arg!"); }
-
-        return arg[0] == '-';
-}
+bool arg::isFlagName(std::string_view arg) { return !arg.empty() && arg[0] == '-'; }
 
 bool arg::isSingleFlag(std::string_view arg) {
-        if (!arg.data() || arg.size() == 0) { qFatal("Received empty arg!"); }
-
-        return arg == "-?" || arg == "-h" || arg == "--help";
+        return !arg.empty() && (arg == "-?" || arg == "-h" || arg == "--help");
 }
 
 void arg::parseDoubleFlag(std::array<std::string_view, 2> flag, arg::CmdArgs& parsed) {
