@@ -86,7 +86,10 @@ void arg::parseSingleFlag(std::string_view flag) {
 arg::CmdArgs arg::parse(int argc, const char* const argv[]) {
         // Under normal circumstances, argc should always be at least 1, because program name is a
         // part of the argv array. Something must have gone wrong along the way if this executed.
-        if (argc < 1) { qFatal("argc should always be at least 1, but here it's %i", argc); }
+        if (argc < 1) {
+                qCritical() << "argc should always be at least 1, but here it's" << argc;
+                std::unreachable();
+        }
 
         arg::CmdArgs flags = {};
 
