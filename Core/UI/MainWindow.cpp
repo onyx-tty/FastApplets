@@ -17,9 +17,9 @@
 using config::schema::Config;
 using config::schema::Keys;
 
-MainWindow makeMainWindow(const Config& config, const Keys& keys, const Keys& default_keys) {
-        auto primary_buttons = makePrimaryButtons(config.primary_button_params,
-                keys.primary_buttons, default_keys.primary_buttons, nullptr);
+MainWindow makeMainWindow(const Config& config, const Keys& keys) {
+        auto primary_buttons = makePrimaryButtons(
+                config.primary_button_params, keys.primary_buttons, nullptr);
 
         auto* central_widget = new CentralWidget(std::move(primary_buttons), keys.quit,
                 config.primary_button_params.behavior, nullptr);

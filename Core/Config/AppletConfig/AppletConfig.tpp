@@ -24,6 +24,5 @@ config::applet_config config::makeAppletConfig(const Filepaths& applet, const Fi
         auto keys         = map::keys<TApplet>(
                 parseTomlFile(applet.keys), parseTomlFile(global.keys), default_keys);
 
-        return applet_config(std::move(config), std::move(default_config), std::move(keys),
-                std::move(default_keys));
+        return applet_config(std::move(config), std::move(keys));
 }

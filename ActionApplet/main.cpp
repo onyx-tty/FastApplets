@@ -49,12 +49,12 @@ int main(int argc, char* argv[]) {
         arg::injectArgs(args, applet_filepaths);
 
         // Config files
-        constexpr auto type                        = applet::Type::Action;
-        const auto [config, _, keys, default_keys] = config::makeAppletConfig<type>(
+        constexpr auto type       = applet::Type::Action;
+        const auto [config, keys] = config::makeAppletConfig<type>(
                 applet_filepaths, global_filepaths);
 
         // GUI
-        MainWindow main_window = makeMainWindow(config, keys, default_keys);
+        MainWindow main_window = makeMainWindow(config, keys);
 
         // Print application info
         qInfo() << "Applet resolution:" << main_window.size();

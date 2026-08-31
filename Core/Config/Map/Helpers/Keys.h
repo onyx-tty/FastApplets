@@ -26,6 +26,12 @@
 // non-string values.
 [[nodiscard]] keybindings keysFromTomlArray(const toml::array& arr);
 
+// TODO If applied key is already used elsewhere, the keys will behave unpredictably.
+//      For example if for some reason keybinding for primary button 3 is Qt_Key4 and
+//      primary button 4 has missing keybinding, upon defaulting, primary button 4
+//      will be set to Qt_Key4 and both buttons will then be set to Qt_Key4.
+//      There should be a validation system in place for all keybindings, for example a
+//      set with all keys which have already been exhausted.
 namespace config::map::helpers {
 
 using config::ConfigView;

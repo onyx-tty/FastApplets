@@ -18,20 +18,16 @@ using PrimaryButtons = std::vector<PrimaryButton*>;
 [[nodiscard]] PrimaryButton* findPrimaryButton(int key, PrimaryButtons buttons);
 
 // Constructs PrimaryButtons from given PrimaryButtonParams, assigns visual properties from
-// PrimaryButtonStyle, and keybindings from keys, with fallback default_keys
+// PrimaryButtonStyle, and assigns keybindings from keys.
 //
-// Keybinding resolution order:
-// 1. User-configured keys (keys).
-// 2. Default keys (default_keys).
-// 3. Qt::Key_unknown if the defaults are exhausted.
+// If a key is missing, a warning is logged and a keybindings set consisting of Qt::Keys_unknown
+// is returned.
 //
 // WARNING: If a resolved key is already bound elsewhere, both buttons
 //          will share it silently. A global keybinding validation pass is not
 //          implemented yet.
 //
-// Returns a vector containing every created button.
+// Returns a PrimaryButtons vector containing every created button.
 // Calls qFatal instead if no button params are found.
-// TODO: This function does too much. It should not resolve keys on top of button construction.
 PrimaryButtons makePrimaryButtons(const PrimaryButtonParams& params,
-        const std::vector<keybindings>& keys, const std::vector<keybindings>& default_keys,
-        QWidget* parent);
+        const std::vector<keybindings>& keys_vec, QWidget* parent);

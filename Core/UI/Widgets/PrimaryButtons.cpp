@@ -28,30 +28,20 @@ PrimaryButton* findPrimaryButton(int key, PrimaryButtons buttons) {
 }
 
 PrimaryButtons makePrimaryButtons(const PrimaryButtonParams& params,
-        const std::vector<keybindings>& keys, const std::vector<keybindings>& default_keys,
-        QWidget* parent) {
-        // TODO If applied key is already used elsewhere, the keys will behave unpredictably.
-        //      For example if for some reason keybinding for primary button 3 is Qt_Key4 and
-        //      primary button 4 has missing keybinding, upon defaulting, primary button 4
-        //      will be set to Qt_Key4 and both buttons will then be set to Qt_Key4.
-        //      There should be a validation system in place for all keybindings, for example a
-        //      set with all keys which have already been exhausted.
-        const auto key_getter = [&params, &keys, &default_keys](size_t i) -> keybindings {
-                if (i < keys.size()) { return keys[i]; }
-                if (i < default_keys.size()) {
-                        qWarning() << QString(
-                                "Key for button %1 not found, applying default Qt_Key%1!")
-                                              .arg(i + 1);
-                        return default_keys[i];
-                }
-
-                qCritical() << "Number of buttons exceeds size of default keys! Buttons found:"
-                            << params.per_button.size();
-                return keybindings(Qt::Key_unknown);
-        };
-
+        const std::vector<keybindings>& keys_vec, QWidget* parent) {
         PrimaryButtons buttons = {};
         buttons.reserve(params.per_button.size());
+
+        // Log a warning and substitute a keybindings set with Qt::Key_unknown for missing keys.
+        const auto keys_getter = [&keys_vec](size_t i) -> const keybindings& {
+                if (i > keys_vec.size() || keys_vec[i] == keybindings(Qt::Key_unknown)) {
+                        qWarning() << "No key found";
+                        static keybindings unknown = {Qt::Key_unknown};
+                        return unknown;
+                }
+
+                return keys_vec[i];
+        };
 
         for (size_t i = 0; i != params.per_button.size(); ++i) {
                 button_type               type    = params.per_button[i].type;
@@ -59,7 +49,8 @@ PrimaryButtons makePrimaryButtons(const PrimaryButtonParams& params,
                 const QString&            text    = params.per_button[i].text;
                 const QString&            command = params.per_button[i].command;
                 const PrimaryButtonStyle& style   = params.style;
-                keybindings               keys    = key_getter(i);
+                const keybindings&        keys    = keys_getter(i);
+
                 auto* button = new PrimaryButton(type, icon, text, keys, command, style, parent);
                 buttons.push_back(button);
         }
