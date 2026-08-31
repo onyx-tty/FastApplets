@@ -33,10 +33,6 @@ CentralWidget::CentralWidget(PrimaryButtons buttons, keybindings quit_keys,
         for (auto* button : this->buttons) { layout()->addWidget(button); }
 }
 
-// TODO: Simplify this function by overriding each event signal or by hooking
-//       actions to appropriate signals.
-//       As an example, focus is already set to parent when clicked, it does not
-//       have to be done again in here.
 // TODO: Make this function easier to read by creating helpers for some of the
 //       complex actions, such as changing focus from one button to another,
 //       unselecting if a button is already focused, and more.
@@ -58,8 +54,6 @@ void CentralWidget::keyPressEvent(QKeyEvent* event) {
                         // Click if already focused
                         if (primary_button->hasFocus()) {
                                 primary_button->animateClick();
-                                primary_button->clearFocus();
-                                this->setFocus(Qt::FocusReason::OtherFocusReason);
                         } else { // Re-focus if not
                                 if (auto* focused = qobject_cast<PrimaryButton*>(
                                             QApplication::focusWidget())) {
