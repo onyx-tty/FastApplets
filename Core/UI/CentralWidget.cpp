@@ -23,6 +23,36 @@ namespace {
 
 } // namespace
 
+void CentralWidget::handleQuitKey() {
+        auto* focused_button = qobject_cast<PrimaryButton*>(QApplication::focusWidget());
+
+        // If no button is focused then quit simply terminates the program.
+        if (!focused_button) {
+                QApplication::quit();
+                return;
+        }
+
+        // Otherwise it unfocuses any focused buttons and sets focus to the central widget.
+        focused_button->clearFocus();
+        this->setFocus(Qt::FocusReason::OtherFocusReason);
+}
+
+void CentralWidget::handlePrimaryButtonKey(int key, bool double_key_press) {
+        // Find the primary button with that key.
+        auto* primary_button = findPrimaryButton(key, buttons);
+
+        // Click it if it's focused or if double_key_press=true, which disables a two-press
+        // stage-then-press mechanism and makes buttons instantly clickable.
+        if (primary_button->hasFocus() || !double_key_press) {
+                primary_button->animateClick();
+        } else { // Otherwise focus it.
+                if (auto* focused = qobject_cast<PrimaryButton*>(QApplication::focusWidget())) {
+                        focused->clearFocus();
+                }
+                primary_button->setFocus(Qt::FocusReason::OtherFocusReason);
+        }
+}
+
 CentralWidget::CentralWidget(PrimaryButtons buttons, keybindings quit_keys,
         PrimaryButtonBehavior behavior, QWidget* parent) :
         QWidget(parent), buttons(std::move(buttons)), quit_keys(std::move(quit_keys)),
@@ -33,41 +63,13 @@ CentralWidget::CentralWidget(PrimaryButtons buttons, keybindings quit_keys,
         for (auto* button : this->buttons) { layout()->addWidget(button); }
 }
 
-// TODO: Make this function easier to read by creating helpers for some of the
-//       complex actions, such as changing focus from one button to another,
-//       unselecting if a button is already focused, and more.
 void CentralWidget::keyPressEvent(QKeyEvent* event) {
         int key = event->key();
 
-        if (double_key_press) {
-                // Quit pressed
-                if (isQuitKey(key, quit_keys)) {
-                        // Unselect if a button is focused
-                        if (auto* focused = qobject_cast<PrimaryButton*>(
-                                    QApplication::focusWidget())) {
-                                focused->clearFocus();
-                                this->setFocus(Qt::FocusReason::OtherFocusReason);
-                        } else { // Quit if not
-                                QApplication::quit();
-                        }
-                } else if (auto* primary_button = findPrimaryButton(key, buttons)) {
-                        // Click if already focused
-                        if (primary_button->hasFocus()) {
-                                primary_button->animateClick();
-                        } else { // Re-focus if not
-                                if (auto* focused = qobject_cast<PrimaryButton*>(
-                                            QApplication::focusWidget())) {
-                                        focused->clearFocus();
-                                }
-                                primary_button->setFocus(Qt::FocusReason::OtherFocusReason);
-                        }
-                }
-        } else {
-                if (isQuitKey(key, quit_keys)) {
-                        QApplication::quit();
-                } else if (auto* primary_button = findPrimaryButton(key, buttons)) {
-                        primary_button->animateClick();
-                }
+        if (isQuitKey(key, quit_keys)) {
+                handleQuitKey();
+        } else if (auto* primary_button = findPrimaryButton(key, buttons)) {
+                handlePrimaryButtonKey(key, double_key_press);
         }
 }
 

@@ -32,6 +32,9 @@ private:
         keybindings    quit_keys;
         bool           double_key_press;
 
+        void handleQuitKey();
+        void handlePrimaryButtonKey(int key, bool double_key_press);
+
 public:
         explicit CentralWidget(PrimaryButtons buttons, keybindings quit_keys,
                 PrimaryButtonBehavior behavior, QWidget* parent);
