@@ -102,7 +102,7 @@ private slots:
                 // clang-format off
                 QVERIFY2(is_unrecognized,
                         "Unrecognized arguments must throw,"
-                        "-not-a-valid-argument was somehow recognized");
+                        "-unrecognized -flag was somehow recognized");
                 // clang-format on
         }
 
