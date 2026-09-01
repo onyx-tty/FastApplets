@@ -9,20 +9,22 @@
 #include "Core/Config/Map/Map.h"
 #include "Core/Config/Toml/Parse.h"
 #include "Core/Config/Types/Filepaths.h"
+#include "Core/Config/Types/Keybindings.h"
 
 #include <QDebug>
 #include <QtGlobal>
 
 template<applet::Type TApplet>
 requires(TApplet != applet::Type::Global)
-config::applet_config config::makeAppletConfig(const Filepaths& applet, const Filepaths& global) {
+config::applet_config config::makeAppletConfig(
+        const Filepaths& applet, const Filepaths& global, keybindings& claimed_keys) {
         auto default_config = makeDefaultConfig<TApplet>();
         auto config         = map::config<TApplet>(
                 parseTomlFile(applet.config), parseTomlFile(global.config), default_config);
 
         auto default_keys = makeDefaultKeys<TApplet>();
         auto keys         = map::keys<TApplet>(
-                parseTomlFile(applet.keys), parseTomlFile(global.keys), default_keys);
+                parseTomlFile(applet.keys), parseTomlFile(global.keys), default_keys, claimed_keys);
 
         return applet_config(std::move(config), std::move(keys));
 }

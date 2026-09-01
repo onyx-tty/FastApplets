@@ -6,6 +6,7 @@
 #include "Core/Applets/Types/Type.h"
 #include "Core/Config/Schema/Config.h"
 #include "Core/Config/Schema/Keys.h"
+#include "Core/Config/Types/Keybindings.h"
 
 #include <Qt>
 #include <QtGlobal>
@@ -21,7 +22,7 @@ template<applet::Type TApplet>
 
 // Construct default config::schema::Keys for applet TApplet.
 template<applet::Type TApplet>
-[[nodiscard]] Keys makeDefaultKeys();
+[[nodiscard]] Keys makeDefaultKeys(keybindings& claimed_keys);
 
 } // namespace config
 

@@ -6,6 +6,7 @@
 #include "Core/Applets/Types/Type.h"
 #include "Core/Config/Schema/Config.h"
 #include "Core/Config/Schema/Keys.h"
+#include "Core/Config/Types/Keybindings.h"
 
 #include <toml++/toml.hpp>
 
@@ -47,7 +48,8 @@ template<applet::Type TApplet>
 //
 // QApplication must exist before calling.
 template<applet::Type TApplet>
-[[nodiscard]] Keys keys(const toml::table& applet, const toml::table& global, const Keys& defaults);
+[[nodiscard]] Keys keys(const toml::table& applet, const toml::table& global, const Keys& defaults,
+        keybindings& claimed_keys);
 
 } // namespace config::map
 

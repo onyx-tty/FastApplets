@@ -6,6 +6,7 @@
 #include "Core/Applets/Types/Type.h"
 #include "Core/Config/Schema/Config.h"
 #include "Core/Config/Schema/Keys.h"
+#include "Core/Config/Types/Keybindings.h"
 
 #include <toml++/toml.hpp>
 #include <tuple>
@@ -16,9 +17,11 @@ class Filepaths;
 
 using applet_config = std::tuple<schema::Config, schema::Keys>;
 
+// TODO: Document this function
 template<applet::Type TApplet>
 requires(TApplet != applet::Type::Global)
-[[nodiscard]] applet_config makeAppletConfig(const Filepaths& applet, const Filepaths& global);
+[[nodiscard]] applet_config makeAppletConfig(
+        const Filepaths& applet, const Filepaths& global, keybindings& claimed_keys);
 
 } // namespace config
 

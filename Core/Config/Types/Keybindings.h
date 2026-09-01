@@ -6,6 +6,7 @@
 #include <QDebug>
 #include <Qt>
 #include <QtGlobal>
+#include <initializer_list>
 #include <unordered_set>
 #include <vector>
 
@@ -22,4 +23,25 @@ using keybindings = std::unordered_set<int>;
         for (int key = first; key <= last; ++key) { ret.push_back(keybindings(key)); }
 
         return ret;
+}
+
+// Assigns unclaimed incoming_keys to target and adds them to claimed_keys to guard against
+// future reuse. If an incoming key is already claimed, the function logs that and ignores
+// that key.
+inline void claimKeys(
+        keybindings& target, keybindings& claimed_keys, std::initializer_list<int> incoming_keys) {
+        if (&target == &claimed_keys) {
+                qWarning() << "Passed the same key container as both target and claimed_keys."
+                           << "Ensure this is intended";
+        }
+
+        for (auto key : incoming_keys) {
+                if (claimed_keys.contains(key)) {
+                        qInfo() << "Key" << key << "is already claimed";
+                        continue;
+                }
+
+                target.insert(key);
+                claimed_keys.insert(key);
+        }
 }

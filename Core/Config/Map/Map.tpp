@@ -10,6 +10,7 @@
 #include "Core/Config/Map/Helpers/Keys.h"
 #include "Core/Config/Schema/Config.h"
 #include "Core/Config/Schema/Keys.h"
+#include "Core/Config/Types/Keybindings.h"
 #include "Core/Config/Types/NodeView.h"
 #include "Core/Config/View/View.h"
 
@@ -35,8 +36,8 @@ config::schema::Config config::map::config(
 }
 
 template<applet::Type TApplet>
-config::schema::Keys config::map::keys(
-        const toml::table& applet, const toml::table& global, const Keys& defaults) {
+config::schema::Keys config::map::keys(const toml::table& applet, const toml::table& global,
+        const Keys& defaults, keybindings& claimed_keys) {
         if (!QApplication::instance()) { qFatal("QApplication has not been instantiated yet!"); }
 
         QString path     = {};
@@ -45,7 +46,7 @@ config::schema::Keys config::map::keys(
         ConfigView node = {node_view(applet), node_view(global), std::move(path),
                 std::move(filename)};
 
-        return {.quit            = quit(node["quit"], defaults.quit),
+        return {.quit            = quit(node["quit"], defaults.quit, claimed_keys),
                 .primary_buttons = primaryButtons(
-                        node["primary_buttons"], defaults.primary_buttons)};
+                        node["primary_buttons"], defaults.primary_buttons, claimed_keys)};
 }

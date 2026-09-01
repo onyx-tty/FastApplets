@@ -29,12 +29,14 @@ std::optional<int> keyFromTomlElement(node_view element) {
         return keyFromText(str->get());
 }
 
-keybindings keysFromTomlArray(const toml::array& arr) {
+keybindings keysFromTomlArray(const toml::array& arr, keybindings& claimed_keys) {
         keybindings keys = {};
         keys.reserve(arr.size());
 
         for (const auto& element : arr) {
-                if (auto key = keyFromTomlElement(node_view(element))) { keys.insert(key.value()); }
+                if (auto key = keyFromTomlElement(node_view(element))) {
+                        claimKeys(keys, claimed_keys, {key.value()});
+                }
         }
 
         return keys;
@@ -42,18 +44,19 @@ keybindings keysFromTomlArray(const toml::array& arr) {
 
 /* Keys Schema */
 
-keybindings config::map::helpers::quit(const ConfigView& node, const keybindings& defaults) {
+keybindings config::map::helpers::quit(
+        const ConfigView& node, const keybindings& defaults, keybindings& claimed_keys) {
         ArrayBounds bounds = {.min_size = 1};
 
         const auto* keys = node.resolve<toml::array>(bounds);
 
         if (!keys || keys->empty()) { return defaults; }
 
-        return keysFromTomlArray(*keys);
+        return keysFromTomlArray(*keys, claimed_keys);
 }
 
-std::vector<keybindings> config::map::helpers::primaryButtons(
-        const ConfigView& node, const std::vector<keybindings>& defaults) {
+std::vector<keybindings> config::map::helpers::primaryButtons(const ConfigView& node,
+        const std::vector<keybindings>& defaults, keybindings& claimed_keys) {
         ArrayBounds bounds = {.min_size = 1};
 
         const auto* keys = node.resolve<toml::array>(bounds);
@@ -64,7 +67,7 @@ std::vector<keybindings> config::map::helpers::primaryButtons(
         buttons.reserve(keys->size());
 
         for (int i = 0; i != keys->size(); ++i) {
-                keybindings found_for_button = primaryButton(node[i], defaults[i]);
+                keybindings found_for_button = primaryButton(node[i], defaults[i], claimed_keys);
                 if (!found_for_button.empty()) { buttons.push_back(std::move(found_for_button)); }
         }
 
@@ -72,12 +75,12 @@ std::vector<keybindings> config::map::helpers::primaryButtons(
 }
 
 keybindings config::map::helpers::primaryButton(
-        const ConfigView& node, const keybindings& defaults) {
+        const ConfigView& node, const keybindings& defaults, keybindings& claimed_keys) {
         ArrayBounds bounds = {.min_size = 1};
 
         const auto* keys = node.resolve<toml::array>(bounds);
 
         if (!keys || keys->empty()) { return defaults; }
 
-        return keysFromTomlArray(*keys);
+        return keysFromTomlArray(*keys, claimed_keys);
 }

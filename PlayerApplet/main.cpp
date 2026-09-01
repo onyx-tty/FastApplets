@@ -9,6 +9,7 @@
 #include "Core/Config/AppletConfig/AppletConfig.h"
 #include "Core/Config/Locate/Locate.h"
 #include "Core/Config/Types/Filepaths.h"
+#include "Core/Config/Types/Keybindings.h"
 #include "Core/UI/MainWindow.h"
 
 #include <QApplication>
@@ -19,7 +20,8 @@
 #include <CppUtils/Log/QtLog.h>
 
 int main(int argc, char* argv[]) {
-        auto application = QApplication(argc, argv);
+        auto        application  = QApplication(argc, argv);
+        keybindings claimed_keys = {};
 
         // Setup log formatting
         qt::log::setupLogging();
@@ -51,7 +53,7 @@ int main(int argc, char* argv[]) {
         // Config files
         constexpr auto type       = applet::Type::Player;
         const auto [config, keys] = config::makeAppletConfig<type>(
-                applet_filepaths, global_filepaths);
+                applet_filepaths, global_filepaths, claimed_keys);
 
         // GUI
         MainWindow main_window = makeMainWindow(config, keys);
