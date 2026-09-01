@@ -8,6 +8,7 @@
 
 #include <QKeySequence>
 #include <QString>
+#include <Qt>
 #include <TomlQt/ArrayBounds.h>
 #include <optional>
 #include <string>
@@ -67,7 +68,10 @@ std::vector<keybindings> config::map::helpers::primaryButtons(const ConfigView& 
         buttons.reserve(keys->size());
 
         for (int i = 0; i != keys->size(); ++i) {
-                keybindings found_for_button = primaryButton(node[i], defaults[i], claimed_keys);
+                // Handles index out bounds
+                const auto& def = i < defaults.size() ? defaults[i] : keybindings(Qt::Key_unknown);
+
+                keybindings found_for_button = primaryButton(node[i], def, claimed_keys);
                 if (!found_for_button.empty()) { buttons.push_back(std::move(found_for_button)); }
         }
 
