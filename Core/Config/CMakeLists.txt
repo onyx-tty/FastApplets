@@ -1,9 +1,6 @@
 # Enable support for Qt's resource files
 set(CMAKE_AUTORCC ON)
 
-# Requirements
-find_package(tomlplusplus REQUIRED)
-
 add_subdirectories(AppletConfig Schema Map Defaults Locate Toml Types Validate View)
 
 add_applet_library(Core_Config INTERFACE
