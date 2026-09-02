@@ -8,6 +8,7 @@
 #include <QDebug>
 #include <QProcess>
 #include <QString>
+#include <QTimer>
 #include <QtGlobal>
 #include <utility>
 
@@ -24,7 +25,11 @@ void runCommand(QString command, ShellContext context) {
 
                 process->deleteLater();
 
-                if (context.terminate_on_command_exit) { QCoreApplication::quit(); }
+                if (context.terminate_on_command_exit) {
+                        // Let the event loop process all pending events before quitting.
+                        // This allows all logs to be printed out before quitting.
+                        QTimer::singleShot(0, []() { QCoreApplication::quit(); });
+                }
         });
 
         process->start("/bin/sh", {"-c", std::move(command)});
