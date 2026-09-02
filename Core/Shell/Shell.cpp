@@ -21,6 +21,11 @@ void runCommand(QString command, ShellContext context) {
 
         auto* process = new QProcess();
         QProcess::connect(process, &QProcess::finished, [process, context]() {
+                QByteArray stdout = process->readAllStandardOutput();
+                QByteArray stderr = process->readAllStandardError();
+
+                if (!stdout.isEmpty()) { qInfo().noquote() << stdout; }
+                if (!stderr.isEmpty()) { qWarning().noquote() << stderr; }
                 qInfo() << "Command dispatched, quitting...";
 
                 process->deleteLater();
