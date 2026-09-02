@@ -4,6 +4,7 @@
 #include "Config.h"
 
 #include "Core/Config/View/View.h"
+#include "Core/Shell/Types/ShellContext.h"
 #include "Core/UI/Types/PrimaryButtonBehavior.h"
 #include "Core/UI/Types/PrimaryButtonStyle.h"
 #include "Core/UI/Types/WindowParams.h"
@@ -12,6 +13,13 @@
 #include <QSizePolicy>
 #include <QString>
 #include <Qt>
+
+ShellContext config::map::helpers::shellContext(
+        const ConfigView& node, const ShellContext& defaults) {
+        return {.terminate_on_command_exit =
+                        node["terminate_on_command_exit"].resolve<bool>().value_or(
+                                defaults.terminate_on_command_exit)};
+}
 
 WindowParams config::map::helpers::windowParams(
         const ConfigView& node, const WindowParams& defaults) {

@@ -3,6 +3,7 @@ add_applet_library(Core_Config_Map_Helpers
 
         PUBLIC_DEPS Core::Config::View
                     Core::Config::Types
+                    Core::Shell::Types
                     Core::UI::Types
                     Core::Applets::Types
                     TomlQt

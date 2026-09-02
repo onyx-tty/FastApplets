@@ -18,10 +18,11 @@ template<applet::Type TApplet>
 config::schema::Config config::makeDefaultConfig() {
         using namespace config::details;
 
-        auto window = makeWindowParams<TApplet>();
-        auto params = makePrimaryButtonParams<TApplet>();
+        constexpr auto shell  = makeShellContext();
+        auto           window = makeWindowParams<TApplet>();
+        auto           button = makePrimaryButtonParams<TApplet>();
 
-        return Config(std::move(window), std::move(params));
+        return Config(shell, std::move(window), std::move(button));
 }
 
 template<applet::Type TApplet>

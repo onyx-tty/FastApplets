@@ -8,6 +8,7 @@
 #include <Qt>
 
 #include "Core/Config/Types/Keybindings.h"
+#include "Core/Shell/Types/ShellContext.h"
 #include "Core/UI/Types/ButtonType.h"
 
 class PrimaryButton;
@@ -60,7 +61,7 @@ public:
         // TODO: Pass a single PrimaryButtonParams argument
         explicit PrimaryButton(button_type type, const QIcon& icon, const QString& text,
                 keybindings keys, QString command, const PrimaryButtonStyle& style,
-                QWidget* parent);
+                ShellContext context, QWidget* parent);
 
         // Wrapper propagating event->reason() to focus_reason for use by paintEvent.
         void focusInEvent(QFocusEvent* event) override;

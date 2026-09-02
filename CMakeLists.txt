@@ -82,7 +82,7 @@ install(# Install compiled artifacts to correct destinations, register all targe
                 Core_Config_Types
                 Core_Config_Validate
                 Core_Config_View
-                Core_Shell
+                Core_Shell Core_Shell_Types
                 Core_UI
                 Core_UI_Widgets Core_UI_Types
                 Core_Applets_Types

@@ -4,6 +4,7 @@
 #pragma once
 
 #include "Core/Applets/Types/Type.h"
+#include "Core/Shell/Types/ShellContext.h"
 #include "Core/UI/Types/PerPrimaryButtonParams.h"
 #include "Core/UI/Types/PrimaryButtonBehavior.h"
 #include "Core/UI/Types/PrimaryButtonParams.h"
@@ -17,6 +18,8 @@
 #include <vector>
 
 namespace config::details {
+
+constexpr ShellContext makeShellContext();
 
 template<applet::Type TApplet>
 WindowParams makeWindowParams();

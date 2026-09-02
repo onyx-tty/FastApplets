@@ -6,6 +6,7 @@
 #include "Helpers.h"
 #include "Core/Applets/Types/Traits.h"
 #include "Core/Applets/Types/Type.h"
+#include "Core/Shell/Types/ShellContext.h"
 #include "Core/UI/Types/ButtonType.h"
 #include "Core/UI/Types/PerPrimaryButtonParams.h"
 #include "Core/UI/Types/PrimaryButtonParams.h"
@@ -17,6 +18,12 @@
 #include <Qt>
 #include <utility>
 #include <vector>
+
+constexpr ShellContext config::details::makeShellContext() {
+        constexpr bool terminate_on_command_exit = true;
+
+        return ShellContext(terminate_on_command_exit);
+}
 
 template<applet::Type TApplet>
 WindowParams config::details::makeWindowParams() {

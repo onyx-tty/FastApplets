@@ -3,6 +3,7 @@
 
 #include "PrimaryButtons.h"
 #include "Core/Config/Types/Keybindings.h"
+#include "Core/Shell/Types/ShellContext.h"
 #include "Core/UI/Types/ButtonType.h"
 #include "Core/UI/Types/PrimaryButtonParams.h"
 #include "Core/UI/Types/PrimaryButtonStyle.h"
@@ -28,7 +29,7 @@ PrimaryButton* findPrimaryButton(int key, PrimaryButtons buttons) {
 }
 
 PrimaryButtons makePrimaryButtons(const PrimaryButtonParams& params,
-        const std::vector<keybindings>& keys_vec, QWidget* parent) {
+        const std::vector<keybindings>& keys_vec, ShellContext shell_context, QWidget* parent) {
         PrimaryButtons buttons = {};
         buttons.reserve(params.per_button.size());
 
@@ -51,7 +52,8 @@ PrimaryButtons makePrimaryButtons(const PrimaryButtonParams& params,
                 const PrimaryButtonStyle& style   = params.style;
                 const keybindings&        keys    = keys_getter(i);
 
-                auto* button = new PrimaryButton(type, icon, text, keys, command, style, parent);
+                auto* button = new PrimaryButton(
+                        type, icon, text, keys, command, style, shell_context, parent);
                 buttons.push_back(button);
         }
 

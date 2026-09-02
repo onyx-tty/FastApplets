@@ -5,5 +5,6 @@ add_applet_library(Core_Config_Defaults
 
         INTERFACE_DEPS Core::Config::Defaults::Helpers
                        Core::Config::Types
+                       Core::Shell::Types
                        Core::Applets::Types
                        Qt${QT_VERSION_MAJOR}::Widgets)

@@ -4,6 +4,7 @@
 #include "PrimaryButton.h"
 #include "Core/Config/Types/Keybindings.h"
 #include "Core/Shell/Shell.h"
+#include "Core/Shell/Types/ShellContext.h"
 #include "Core/UI/Types/ButtonType.h"
 #include "Core/UI/Types/PrimaryButtonStyle.h"
 
@@ -78,10 +79,12 @@ void PrimaryButton::setLabel(QLabel* label, const QString& text, const QPixmap& 
 }
 
 PrimaryButton::PrimaryButton(button_type type, const QIcon& icon, const QString& text,
-        keybindings keys, QString command, const PrimaryButtonStyle& style, QWidget* parent) :
+        keybindings keys, QString command, const PrimaryButtonStyle& style, ShellContext context,
+        QWidget* parent) :
         QPushButton(parent), type(type), keys(std::move(keys)), command(std::move(command)),
         focus_reason(Qt::FocusReason::NoFocusReason) {
-        connect(this, &PrimaryButton::clicked, [this]() { runCommand(this->command); });
+        connect(this, &PrimaryButton::clicked,
+                [this, context]() { runCommand(this->command, context); });
         connect(this, &PrimaryButton::clicked, [this]() {
                 // Resets focus on button click to prevent it from remaining
                 // and conflicting with the stage-then-confirm key controls.

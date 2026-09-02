@@ -6,6 +6,20 @@
 ## Applet-specific:
 ## - layout
 
+## Environment properties.
+[environment]
+
+## Termination of the program on command exit.
+##
+## true  - once a command is triggered by button click and the process finishes,
+##         the application terminates.
+##
+## false - nothing happens, the application continues running.
+##
+## Uncomment to override global.
+##
+## Default: true
+#terminate_on_command_exit = true
 
 ## Properties of the main window.
 [window]

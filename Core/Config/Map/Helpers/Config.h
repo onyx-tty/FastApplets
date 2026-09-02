@@ -5,6 +5,7 @@
 
 #include "Core/Applets/Types/Type.h"
 #include "Core/Config/View/View.h"
+#include "Core/Shell/Types/ShellContext.h"
 #include "Core/UI/Types/PerPrimaryButtonParams.h"
 #include "Core/UI/Types/PrimaryButtonBehavior.h"
 #include "Core/UI/Types/PrimaryButtonParams.h"
@@ -20,6 +21,11 @@ namespace config::map::helpers {
 
 using config::ConfigView;
 using tomlqt::ArrayBounds;
+
+/* ShellContext */
+
+// Expected format: environment table containing terminate_on_command_exit (bool)
+[[nodiscard]] ShellContext shellContext(const ConfigView& node, const ShellContext& defaults);
 
 /* WindowParams */
 
@@ -57,7 +63,7 @@ template<applet::Type TApplet>
 [[nodiscard]] PrimaryButtonStyle primaryButtonStyle(
         const ConfigView& node, const PrimaryButtonStyle& defaults);
 
-// Expected format: primary button table containing double_key_press (bool).
+// Expected format: primary button table containing double_key_press (bool)
 [[nodiscard]] PrimaryButtonBehavior primaryButtonBehavior(
         const ConfigView& node, const PrimaryButtonBehavior& defaults);
 

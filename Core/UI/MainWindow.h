@@ -3,6 +3,8 @@
 
 #pragma once
 
+#include "Core/Shell/Types/ShellContext.h"
+
 #include <QMainWindow>
 #include <QObject>
 #include <QWidget>

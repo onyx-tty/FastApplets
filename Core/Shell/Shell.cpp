@@ -1,20 +1,31 @@
 // SPDX-FileCopyrightText: 2026 Łukasz Wrodarczyk
 // SPDX-License-Identifier: GPL-3.0-or-later
 
-#include "Core/Shell/Shell.h"
+#include "Shell.h"
+#include "Core/Shell/Types/ShellContext.h"
 
+#include <QCoreApplication>
 #include <QDebug>
 #include <QProcess>
 #include <QString>
 #include <QtGlobal>
 #include <utility>
 
-void runCommand(QString command) {
+void runCommand(QString command, ShellContext context) {
         // Avoids passing empty command to shell, which does nothing.
         if (command.isEmpty()) {
                 qWarning() << "Passed empty command!";
                 return;
         }
 
-        QProcess::startDetached("/bin/sh", {"-c", std::move(command)});
+        auto* process = new QProcess();
+        QProcess::connect(process, &QProcess::finished, [process, context]() {
+                qInfo() << "Command dispatched, quitting...";
+
+                process->deleteLater();
+
+                if (context.terminate_on_command_exit) { QCoreApplication::quit(); }
+        });
+
+        process->start("/bin/sh", {"-c", std::move(command)});
 }

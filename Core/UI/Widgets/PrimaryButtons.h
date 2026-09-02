@@ -4,6 +4,7 @@
 #pragma once
 
 #include "Core/Config/Types/Keybindings.h"
+#include "Core/Shell/Types/ShellContext.h"
 #include "Core/UI/Types/PrimaryButtonParams.h"
 
 #include <QWidget>
@@ -19,6 +20,7 @@ using PrimaryButtons = std::vector<PrimaryButton*>;
 
 // Constructs PrimaryButtons from given PrimaryButtonParams, assigns visual properties from
 // PrimaryButtonStyle, and assigns keybindings from keys.
+// shell_context specifies how shell commands are supposed to behave on button command dispatch.
 //
 // If a key is missing, a warning is logged and a keybindings set consisting of Qt::Keys_unknown
 // is returned.
@@ -30,4 +32,4 @@ using PrimaryButtons = std::vector<PrimaryButton*>;
 // Returns a PrimaryButtons vector containing every created button.
 // Calls qFatal instead if no button params are found.
 PrimaryButtons makePrimaryButtons(const PrimaryButtonParams& params,
-        const std::vector<keybindings>& keys_vec, QWidget* parent);
+        const std::vector<keybindings>& keys_vec, ShellContext shell_context, QWidget* parent);

@@ -4,5 +4,6 @@ add_applet_library(Core_UI_Widgets
         PRIVATE_DEPS Core::UI::Types
                      Core::Config::Types
                      Core::Shell
+                     Core::Shell::Types
 
         PUBLIC_DEPS Qt${QT_VERSION_MAJOR}::Widgets)

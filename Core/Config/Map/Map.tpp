@@ -30,7 +30,8 @@ config::schema::Config config::map::config(
         ConfigView node = {node_view(applet), node_view(global), std::move(path),
                 std::move(filename)};
 
-        return {.window_params         = windowParams(node["window"], defaults.window_params),
+        return {.shell_context         = shellContext(node["environment"], defaults.shell_context),
+                .window_params         = windowParams(node["window"], defaults.window_params),
                 .primary_button_params = primaryButtonParams<TApplet>(
                         node["primary_button"], defaults.primary_button_params)};
 }
