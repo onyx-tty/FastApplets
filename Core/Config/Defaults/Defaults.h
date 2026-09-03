@@ -16,11 +16,11 @@ namespace config {
 using schema::Config;
 using schema::Keys;
 
-// Construct default config::schema::Config for applet TApplet.
+// Construct default config for TApplet.
 template<applet::Type TApplet>
 [[nodiscard]] Config makeDefaultConfig();
 
-// Construct default config::schema::Keys for applet TApplet.
+// Construct default keys for TApplet.
 template<applet::Type TApplet>
 [[nodiscard]] Keys makeDefaultKeys(keybindings& claimed_keys);
 

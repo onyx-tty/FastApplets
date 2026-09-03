@@ -9,7 +9,6 @@
 
 namespace config::schema {
 
-// Holds user-configured keys used by an applet.
 struct Keys final {
         keybindings              quit;
         std::vector<keybindings> primary_buttons;

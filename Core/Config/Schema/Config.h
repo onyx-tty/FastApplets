@@ -9,7 +9,6 @@
 
 namespace config::schema {
 
-// Holds user configuration used by the applets.
 struct Config final {
         ShellContext        shell_context;
         WindowParams        window_params;

@@ -26,13 +26,13 @@ namespace {
 void CentralWidget::handleQuitKey() {
         auto* focused_button = qobject_cast<PrimaryButton*>(QApplication::focusWidget());
 
-        // If no button is focused then quit simply terminates the program.
+        // If no button is focused then quit should simply terminate the program.
         if (!focused_button) {
                 QApplication::quit();
                 return;
         }
 
-        // Otherwise it unfocuses any focused buttons and sets focus to the central widget.
+        // Otherwise it resets focus.
         focused_button->clearFocus();
         this->setFocus(Qt::FocusReason::OtherFocusReason);
 }
@@ -59,7 +59,7 @@ CentralWidget::CentralWidget(PrimaryButtons buttons, keybindings quit_keys,
         double_key_press(behavior.double_key_press) {
         setLayout(new QHBoxLayout(this));
 
-        // Makes CentralWidget the parent of each button and adds them to the layout.
+        // CentralWidget should be made the parent of each button to prevent memory leaks.
         for (auto* button : this->buttons) { layout()->addWidget(button); }
 }
 

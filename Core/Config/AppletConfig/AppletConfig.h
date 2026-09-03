@@ -17,7 +17,7 @@ class Filepaths;
 
 using applet_config = std::tuple<schema::Config, schema::Keys>;
 
-// TODO: Document this function
+// Returns complete, mapped configs required by an applet.
 template<applet::Type TApplet>
 requires(TApplet != applet::Type::Global)
 [[nodiscard]] applet_config makeAppletConfig(

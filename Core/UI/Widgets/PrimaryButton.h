@@ -57,21 +57,22 @@ public:
         //   icon:       Button icon (scaled to style.icon_size).
         //   text:       Button label text.
         //   keys:       Key combinations that trigger this button.
+        //   command:    Command synchronized with button click.
         //   style:      Visual properties (alignments, icon size, size policy).
-        // TODO: Pass a single PrimaryButtonParams argument
+        //   context:    Determines the behavior of shell runner used to trigger 'command'.
         explicit PrimaryButton(button_type type, const QIcon& icon, const QString& text,
                 keybindings keys, QString command, const PrimaryButtonStyle& style,
                 ShellContext context, QWidget* parent);
 
-        // Wrapper propagating event->reason() to focus_reason for use by paintEvent.
+        // Wrapper propagating event->reason() to focus_reason for use by paintEvent().
         void focusInEvent(QFocusEvent* event) override;
 
-        // Wrapper propagating event->reason() to focus_reason for use by paintEvent.
+        // Wrapper propagating event->reason() to focus_reason for use by paintEvent().
         void focusOutEvent(QFocusEvent* event) override;
 
         // QPushButton::icon() would return garbage because the inherited icon
-        // storage is not used, and a separate QLabel is used instead. Deleted
-        // to prevent misuse.
+        // storage is not utilized, and a separate QLabel is used instead.
+        // Deleted to prevent misuse.
         QIcon icon() = delete;
 
         // Returns text from the custom QLabel.

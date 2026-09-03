@@ -16,9 +16,9 @@ class QKeyEvent;
 // By default, keyboard navigation follows a two-press "stage-then-confirm" pattern to
 // prevent accidental triggers of destructive actions (shutdown, reboot, etc.):
 //
-//   First press -> focuses ("stages") the matching button; visible via highlights.
-//   Second pres -> animates and triggers the click, then clears focus.
-//   Quit key    -> clears focus if a button is staged, otherwise quits the app.
+//   First press  -> focuses ("stages") the matching button; visible via highlights.
+//   Second press -> animates and triggers the click, then clears focus.
+//   Quit key     -> clears focus if a button is staged, otherwise quits the app.
 //
 // 'primary_button.double_key_press = false' in config.toml disables this, making
 // each key press instantly trigger button click.
@@ -42,8 +42,8 @@ public:
         // Adds the stage-then-confirm keyboard navigation. See class doc for more.
         void keyPressEvent(QKeyEvent* event) override;
 
-        // Clears button focus on show so no button starts pre-staged, keeping the
-        // stage-then-confirm flow consistent from the first keypress.
+        // Prevents buttons from starting pre-focused, avoiding interferences
+        // with the stage-then-confirm mechanism.
         void showEvent(QShowEvent* event) override;
 
         [[nodiscard]] const PrimaryButtons& getButtons() const;
